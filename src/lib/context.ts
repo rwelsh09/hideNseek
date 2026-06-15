@@ -357,7 +357,7 @@ export const thunderforestApiKey = persistentAtom<string>(
         decode: (value: string) => value,
     },
 );
-export const followMe = persistentAtom<boolean>("followMe", false, {
+export const followMe = persistentAtom<boolean>("followMe", true, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
