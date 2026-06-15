@@ -46,6 +46,17 @@ export const QuestionSidebar = () => {
                 />
             </div>
             <SidebarContent>
+                <div className="mx-4 mb-4 p-4 rounded-md bg-slate-800 text-white shadow-md">
+                    <h3 className="font-bold mb-3 text-lg">Game Info / Questions</h3>
+                    <ul className="text-sm list-none pl-0 space-y-3">
+                        <li><label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500" /> Are you further North than us?</label></li>
+                        <li><label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500" /> Are you further East than us?</label></li>
+                        <li><label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500" /> Are you further South than us?</label></li>
+                        <li><label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500" /> Are you further West than us?</label></li>
+                        <li><label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500" /> Riding has same political party?</label></li>
+                        <li><label className="flex items-center gap-3 cursor-pointer"><input type="checkbox" className="w-4 h-4 rounded text-blue-600 focus:ring-blue-500" /> Is the Calgary Tower visible?</label></li>
+                    </ul>
+                </div>
                 {$questions.map((question) => {
                     switch (question.id) {
                         case "radius":
