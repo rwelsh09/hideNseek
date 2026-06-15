@@ -22,7 +22,7 @@ export function AddQuestionDialog() {
                     <Plus className="w-6 h-6" /> Add Question
                 </Button>
             </DialogTrigger>
-
+            
             <DialogContent className="max-w-6xl bg-gray-100 p-0 flex flex-col max-h-[90dvh] w-[95vw] sm:w-full rounded-lg overflow-hidden">
                 <DialogHeader className="bg-red-600 p-3 sm:p-4 m-0 shrink-0">
                     <DialogTitle className="text-white text-center font-bold text-xl sm:text-2xl uppercase tracking-widest m-0">
@@ -124,13 +124,13 @@ export function AddQuestionDialog() {
                             </div>
                             <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mt-2">
                                 <button onClick={() => handleQuestionSelect("thermometer", "1")} className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none">
-                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5 mb-0.5 sm:mb-1"/> 1 mi
+                                    <Thermometer className="w-5 h-5 sm:w-6 sm:h-6 mb-0.5 sm:mb-1"/> 1 mi
                                 </button>
                                 <button onClick={() => handleQuestionSelect("thermometer", "5")} className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none">
-                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5 mb-0.5 sm:mb-1"/> 5 mi
+                                    <Thermometer className="w-5 h-5 sm:w-6 sm:h-6 mb-0.5 sm:mb-1"/> 5 mi
                                 </button>
                                 <button onClick={() => handleQuestionSelect("thermometer", "10")} className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none">
-                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5 mb-0.5 sm:mb-1"/> 10 mi
+                                    <Thermometer className="w-5 h-5 sm:w-6 sm:h-6 mb-0.5 sm:mb-1"/> 10 mi
                                 </button>
                             </div>
                         </div>
@@ -147,10 +147,10 @@ export function AddQuestionDialog() {
                                 </div>
                             </div>
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                                <button onClick={() => handleQuestionSelect("tentacles", "landmark")} className="bg-purple-600 text-white p-2 flex flex-col justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"><Landmark className="w-4 h-4 sm:w-5 sm:h-5"/></button>
-                                <button onClick={() => handleQuestionSelect("tentacles", "map")} className="bg-purple-600 text-white p-2 flex flex-col justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"><Map className="w-4 h-4 sm:w-5 sm:h-5"/></button>
-                                <button onClick={() => handleQuestionSelect("tentacles", "ferris")} className="bg-purple-600 text-white p-2 flex flex-col justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"><Target className="w-4 h-4 sm:w-5 sm:h-5"/></button>
-                                <button onClick={() => handleQuestionSelect("tentacles", "building")} className="bg-purple-600 text-white p-2 flex flex-col justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"><Landmark className="w-4 h-4 sm:w-5 sm:h-5"/></button>
+                                <button onClick={() => handleQuestionSelect("tentacles", "landmark")} className="bg-purple-600 text-white p-2 flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"><Landmark className="w-5 h-5 sm:w-6 sm:h-6"/></button>
+                                <button onClick={() => handleQuestionSelect("tentacles", "map")} className="bg-purple-600 text-white p-2 flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"><Map className="w-5 h-5 sm:w-6 sm:h-6"/></button>
+                                <button onClick={() => handleQuestionSelect("tentacles", "ferris")} className="bg-purple-600 text-white p-2 flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"><Target className="w-5 h-5 sm:w-6 sm:h-6"/></button>
+                                <button onClick={() => handleQuestionSelect("tentacles", "building")} className="bg-purple-600 text-white p-2 flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"><Landmark className="w-5 h-5 sm:w-6 sm:h-6"/></button>
                             </div>
                         </div>
                     </div>
