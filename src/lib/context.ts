@@ -403,3 +403,22 @@ export const allowGooglePlusCodes = persistentAtom<boolean>(
         decode: JSON.parse,
     },
 );
+
+// --- TIME PENALTY & INFO BOARD STATE ---
+export const penaltyMinutes = persistentAtom<number>(
+    "penaltyMinutes",
+    0,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+
+export const softQuestionsChecked = persistentAtom<string[]>(
+    "softQuestionsChecked",
+    [],
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
