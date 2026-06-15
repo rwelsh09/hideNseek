@@ -82,9 +82,7 @@ export const AddQuestionDialog = ({
         const center = map.getCenter();
         addQuestion({
             id: "matching",
-            data: defaultCustomQuestions.get()
-                ? { lat: center.lat, lng: center.lng, type: "custom-points" }
-                : { lat: center.lat, lng: center.lng },
+            data: { lat: center.lat, lng: center.lng },
         });
         return true;
     };
@@ -95,9 +93,7 @@ export const AddQuestionDialog = ({
         const center = map.getCenter();
         addQuestion({
             id: "measuring",
-            data: defaultCustomQuestions.get()
-                ? { lat: center.lat, lng: center.lng, type: "custom-measure" }
-                : { lat: center.lat, lng: center.lng },
+            data: { lat: center.lat, lng: center.lng },
         });
         return true;
     };
