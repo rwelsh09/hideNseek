@@ -535,6 +535,22 @@ export const Map = ({ className }: { className?: string }) => {
         if (!map) return;
         if (sessionStorage.getItem("hasCenteredOnPlayer")) return;
 
+        const fallbackToCalgary = () => {
+            sessionStorage.setItem("hasCenteredOnPlayer", "true");
+            const extent = $mapGeoLocation?.properties?.extent;
+            if (extent) {
+                map.fitBounds([
+                    [extent[0], extent[1]],
+                    [extent[2], extent[3]],
+                ]);
+            }
+        };
+
+        if (!navigator.geolocation) {
+            fallbackToCalgary();
+            return;
+        }
+
         navigator.geolocation.getCurrentPosition(
             (pos) => {
                 const { latitude, longitude } = pos.coords;
@@ -543,9 +559,10 @@ export const Map = ({ className }: { className?: string }) => {
             },
             () => {
                 toast.error("Unable to center map on your location.");
+                fallbackToCalgary();
             }
         );
-    }, [map]);
+    }, [$mapGeoLocation, map]);
 
     return displayMap;
 };
