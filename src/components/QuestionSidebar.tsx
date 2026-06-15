@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { SidebarCloseIcon, Clock } from "lucide-react";
+import { Clock,SidebarCloseIcon } from "lucide-react";
 
 import {
     Sidebar,
@@ -14,14 +14,13 @@ import {
 import {
     autoSave,
     isLoading,
+    penaltyMinutes,
     questions,
     save,
     triggerLocalRefresh,
-    penaltyMinutes,
 } from "@/lib/context";
 
 import { AddQuestionDialog } from "./AddQuestionDialog";
-import { Button } from "./ui/button";
 import {
     MatchingQuestionComponent,
     MeasuringQuestionComponent,
@@ -29,6 +28,7 @@ import {
     TentacleQuestionComponent,
     ThermometerQuestionComponent,
 } from "./QuestionCards";
+import { Button } from "./ui/button";
 
 export const QuestionSidebar = () => {
     useStore(triggerLocalRefresh);
