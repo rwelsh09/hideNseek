@@ -29,7 +29,7 @@ export const mapGeoLocation = persistentAtom<OpenStreetMap>(
         type: "Feature",
         properties: {
             osm_type: "R",
-            osm_id: 111111,
+            osm_id: 3227127,
             extent: [50.8427, -114.3158, 51.2124, -113.8599],
             country: "Canada",
             osm_key: "place",
