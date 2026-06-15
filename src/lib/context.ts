@@ -23,20 +23,20 @@ export const mapGeoLocation = persistentAtom<OpenStreetMap>(
     "mapGeoLocation",
     {
         geometry: {
-            coordinates: [36.5748441, 139.2394179],
+            coordinates: [-114.0719, 51.0447],
             type: "Point",
         },
         type: "Feature",
         properties: {
             osm_type: "R",
-            osm_id: 382313,
-            extent: [45.7112046, 122.7141754, 20.2145811, 154.205541],
-            country: "Japan",
+            osm_id: 3227127,
+            extent: [50.8427, -114.3158, 51.2124, -113.8599],
+            country: "Canada",
             osm_key: "place",
-            countrycode: "JP",
-            osm_value: "country",
-            name: "Japan",
-            type: "country",
+            countrycode: "CA",
+            osm_value: "city",
+            name: "Calgary",
+            type: "city",
         },
     },
     {
@@ -59,6 +59,7 @@ export const permanentOverlay = persistentAtom<FeatureCollection | null>(
         decode: JSON.parse,
     },
 );
+
 
 export const mapGeoJSON = atom<FeatureCollection<
     Polygon | MultiPolygon
@@ -87,7 +88,7 @@ export const questionModified = (..._: any[]) => {
 
 export const leafletMapContext = atom<Map | null>(null);
 
-export const defaultUnit = persistentAtom<Units>("defaultUnit", "miles");
+export const defaultUnit = persistentAtom<Units>("defaultUnit", "kilometers");
 export const hiderMode = persistentAtom<
     | false
     | {
@@ -131,7 +132,7 @@ onSet(trainStations, ({ newValue }) => {
 
 export const useCustomStations = persistentAtom<boolean>(
     "useCustomStations",
-    false,
+    true,
     {
         encode: JSON.stringify,
         decode: JSON.parse,
@@ -139,7 +140,15 @@ export const useCustomStations = persistentAtom<boolean>(
 );
 export const customStations = persistentAtom<CustomStation[]>(
     "customStations",
-    [],
+    [
+      { type: "Feature", geometry: { type: "Point", coordinates: [-114.2384, 51.1345] }, properties: { id: "tuscany", name: "Tuscany" } },
+      { type: "Feature", geometry: { type: "Point", coordinates: [-114.1481, 51.0851] }, properties: { id: "dalhousie", name: "Dalhousie" } },
+      { type: "Feature", geometry: { type: "Point", coordinates: [-114.0625, 51.0458] }, properties: { id: "city_hall", name: "City Hall" } },
+      { type: "Feature", geometry: { type: "Point", coordinates: [-114.0724, 50.9856] }, properties: { id: "chinook", name: "Chinook" } },
+      { type: "Feature", geometry: { type: "Point", coordinates: [-114.0674, 50.8872] }, properties: { id: "somerset", name: "Somerset - Bridlewood" } },
+      { type: "Feature", geometry: { type: "Point", coordinates: [-114.1866, 51.0378] }, properties: { id: "69_st", name: "69 Street" } },
+      { type: "Feature", geometry: { type: "Point", coordinates: [-113.9482, 51.1235] }, properties: { id: "saddletowne", name: "Saddletowne" } }
+    ],
     {
         encode: JSON.stringify,
         decode: JSON.parse,
@@ -169,13 +178,13 @@ export const animateMapMovements = persistentAtom<boolean>(
         decode: JSON.parse,
     },
 );
-export const hidingRadius = persistentAtom<number>("hidingRadius", 0.5, {
+export const hidingRadius = persistentAtom<number>("hidingRadius", 0.8, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
 export const hidingRadiusUnits = persistentAtom<Units>(
     "hidingRadiusUnits",
-    "miles",
+    "kilometers",
     {
         encode: JSON.stringify,
         decode: JSON.parse,

@@ -45,7 +45,6 @@ import {
     findTentacleLocations,
     nearestToQuestion,
     normalizeToStationFeatures,
-    parseCustomStationsFromText,
     QuestionSpecificLocation,
     type StationCircle,
     type StationPlace,
@@ -78,10 +77,6 @@ import { ScrollToTop } from "./ui/scroll-to-top";
 import { MENU_ITEM_CLASSNAME } from "./ui/sidebar-l";
 import { UnitSelect } from "./UnitSelect";
 
-function _previewText(count: number) {
-    return `${count} custom station${count === 1 ? "" : "s"} imported`;
-}
-
 let buttonJustClicked = false;
 
 export const ZoneSidebar = () => {
@@ -99,20 +94,16 @@ export const ZoneSidebar = () => {
     const mergeDuplicates = useStore(mergeDuplicatesAtom);
     const includeDefaultStations = useStore(includeDefaultStationsAtom);
     const $customStations = useStore(customStationsAtom);
-    const [hidingZoneModeStationID, setHidingZoneModeStationID] =
-        useState<string>("");
+    const [hidingZoneModeStationID, setHidingZoneModeStationID] = useState<string>("");
     const [stationSearch, setStationSearch] = useState<string>("");
     const isStationSearchActive = stationSearch.trim().length > 0;
     const setStations = trainStations.set;
     const sidebarRef = useRef<HTMLDivElement>(null);
-    const [importUrl, setImportUrl] = useState("");
 
     const removeHidingZones = () => {
         if (!map) return;
-
         map.eachLayer((layer: any) => {
             if (layer.hidingZones) {
-                // Hopefully only geoJSON layers
                 map.removeLayer(layer);
             }
         });
@@ -124,7 +115,6 @@ export const ZoneSidebar = () => {
         additionalOptions: L.GeoJSONOptions = {},
     ) => {
         if (!map) return;
-
         removeHidingZones();
 
         const geoJsonLayer = L.geoJSON(geoJSONData, {
@@ -137,10 +127,7 @@ export const ZoneSidebar = () => {
                 ? (feature, layer) => {
                       layer.on("click", async () => {
                           if (!map) return;
-
-                          setHidingZoneModeStationID(
-                              feature.properties.properties.id,
-                          );
+                          setHidingZoneModeStationID(feature.properties.properties.id);
                       });
                   }
                 : undefined,
@@ -167,7 +154,6 @@ export const ZoneSidebar = () => {
 
         // @ts-expect-error This is intentionally added as a check
         geoJsonLayer.hidingZones = true;
-
         geoJsonLayer.addTo(map);
     };
 
@@ -187,48 +173,34 @@ export const ZoneSidebar = () => {
             let places: StationPlace[] = [];
 
             if (!needsDefault) {
-                // Custom only
-                places = normalizeToStationFeatures(
-                    $customStations,
-                ).features.map((f) => ({
+                places = normalizeToStationFeatures($customStations).features.map((f) => ({
                     type: "Feature",
                     geometry: f.geometry,
                     properties: {
-                        id:
-                            f.properties?.id ||
-                            `${(f.geometry as any).coordinates[1]},${(f.geometry as any).coordinates[0]}`,
+                        id: f.properties?.id || `${(f.geometry as any).coordinates[1]},${(f.geometry as any).coordinates[0]}`,
                         name: f.properties?.name,
                     },
                 }));
             } else {
-                // Fetch default, optionally merge custom
                 // @ts-expect-error osmtogeojson always defines properties with an "id" string
                 places = osmtogeojson(
                     await findPlacesInZone(
                         $displayHidingZonesOptions[0],
-                        "Finding stations. This may take a while. Do not press any buttons while this is processing. Don't worry, it will be cached.",
+                        "Finding stations. This may take a while...",
                         "nwr",
                         "center",
                         $displayHidingZonesOptions.slice(1),
                     ),
                 ).features;
 
-                if (
-                    useCustomStations &&
-                    $customStations.length > 0 &&
-                    includeDefaultStations
-                ) {
-                    const customFeatures = normalizeToStationFeatures(
-                        $customStations,
-                    ).features.map(
+                if (useCustomStations && $customStations.length > 0 && includeDefaultStations) {
+                    const customFeatures = normalizeToStationFeatures($customStations).features.map(
                         (f) =>
                             ({
                                 type: "Feature",
                                 geometry: f.geometry,
                                 properties: {
-                                    id:
-                                        f.properties?.id ||
-                                        `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
+                                    id: f.properties?.id || `${(f.geometry as any).coordinates[1]},${(f.geometry as any).coordinates[0]}`,
                                     name: f.properties?.name,
                                 },
                             }) as StationPlace,
@@ -237,10 +209,7 @@ export const ZoneSidebar = () => {
                     const merged: StationPlace[] = [];
                     const add = (feat: StationPlace) => {
                         const id = feat.properties.id as string | undefined;
-                        const key =
-                            id && id.includes("/")
-                                ? `id:${id}`
-                                : `pt:${feat.geometry.coordinates[1]},${feat.geometry.coordinates[0]}`;
+                        const key = id && id.includes("/") ? `id:${id}` : `pt:${feat.geometry.coordinates[1]},${feat.geometry.coordinates[0]}`;
                         if (!seen.has(key)) {
                             seen.add(key);
                             merged.push(feat);
@@ -252,32 +221,23 @@ export const ZoneSidebar = () => {
                 }
             }
 
-            // merge duplicate stations if selected
             if (mergeDuplicates) {
-                places = mergeDuplicateStation(
-                    places,
-                    $hidingRadius,
-                    $hidingRadiusUnits,
-                );
+                places = mergeDuplicateStation(places, $hidingRadius, $hidingRadiusUnits);
             }
 
             const unionized = safeUnion(
-                turf.simplify($questionFinishedMapData, {
-                    tolerance: 0.001,
-                }),
+                turf.simplify($questionFinishedMapData, { tolerance: 0.001 }),
             );
 
             let circles = places
                 .map((place) => {
                     const radius = $hidingRadius;
                     const center = turf.getCoord(place);
-                    const circle = turf.circle(center, radius, {
+                    return turf.circle(center, radius, {
                         steps: 32,
                         units: $hidingRadiusUnits,
                         properties: place,
                     });
-
-                    return circle;
                 })
                 .filter((circle) => {
                     return !turf.booleanWithin(circle, unionized);
@@ -294,99 +254,58 @@ export const ZoneSidebar = () => {
                         question.data.type === "same-length-station" ||
                         question.data.type === "same-train-line")
                 ) {
-                    const location = turf.point([
-                        question.data.lng,
-                        question.data.lat,
-                    ]);
-
+                    const location = turf.point([question.data.lng, question.data.lat]);
                     const nearestTrainStation = turf.nearestPoint(
                         location,
-                        turf.featureCollection(
-                            circles.map((x) => x.properties),
-                        ) as any,
+                        turf.featureCollection(circles.map((x) => x.properties)) as any,
                     );
 
                     if (question.data.type === "same-train-line") {
-                        // Custom-only lists don't have reliable OSM IDs
                         if (useCustomStations && !includeDefaultStations) {
-                            toast.warning(
-                                "'Same train line' isn't supported with custom-only station lists; skipping this filter.",
-                            );
+                            toast.warning("'Same train line' isn't supported with custom-only station lists.");
                         } else {
-                            const nid = nearestTrainStation.properties.id as
-                                | string
-                                | undefined;
+                            const nid = nearestTrainStation.properties.id as string | undefined;
                             if (!nid || !nid.includes("/")) {
-                                toast.warning(
-                                    "Nearest station has no OSM id; skipping 'same train line' filter.",
-                                );
                                 continue;
                             }
-
                             const nodes = await trainLineNodeFinder(nid);
-
-                            if (nodes.length === 0) {
-                                toast.warning(
-                                    `No train line found for ${extractStationName(
-                                        nearestTrainStation,
-                                    )}`,
-                                );
-                                continue;
-                            } else {
+                            if (nodes.length > 0) {
                                 circles = circles.filter((circle) => {
-                                    const idProp =
-                                        circle.properties.properties.id;
-                                    if (!idProp || !idProp.includes("/"))
-                                        return false;
+                                    const idProp = circle.properties.properties.id;
+                                    if (!idProp || !idProp.includes("/")) return false;
                                     const id = parseInt(idProp.split("/")[1]);
-
-                                    return question.data.same
-                                        ? nodes.includes(id)
-                                        : !nodes.includes(id);
+                                    return question.data.same ? nodes.includes(id) : !nodes.includes(id);
                                 });
                             }
                         }
                     }
 
                     const englishName = extractStationName(nearestTrainStation);
-
-                    if (!englishName)
-                        return toast.error("No English name found");
+                    if (!englishName) return toast.error("No English name found");
 
                     if (question.data.type === "same-first-letter-station") {
                         const letter = englishName[0].toUpperCase();
-
                         circles = circles.filter((circle) => {
                             const name = extractStationName(circle.properties);
                             if (!name) return false;
-
-                            return question.data.same
-                                ? name[0].toUpperCase() === letter
-                                : name[0].toUpperCase() !== letter;
+                            return question.data.same ? name[0].toUpperCase() === letter : name[0].toUpperCase() !== letter;
                         });
                     } else if (question.data.type === "same-length-station") {
                         const seekerLength = englishName.length;
                         const comparison = question.data.lengthComparison;
-
                         circles = circles.filter((circle) => {
                             const name = extractStationName(circle.properties);
                             if (!name) return false;
-
-                            if (comparison === "same") {
-                                return name.length === seekerLength;
-                            } else if (comparison === "shorter") {
-                                return name.length < seekerLength;
-                            } else if (comparison === "longer") {
-                                return name.length > seekerLength;
-                            }
+                            if (comparison === "same") return name.length === seekerLength;
+                            if (comparison === "shorter") return name.length < seekerLength;
+                            if (comparison === "longer") return name.length > seekerLength;
                             return false;
                         });
                     }
                 }
                 if (
                     question.id === "measuring" &&
-                    (question.data.type === "mcdonalds" ||
-                        question.data.type === "seven11")
+                    (question.data.type === "mcdonalds" || question.data.type === "seven11")
                 ) {
                     const points = await findPlacesSpecificInZone(
                         question.data.type === "mcdonalds"
@@ -394,35 +313,15 @@ export const ZoneSidebar = () => {
                             : QuestionSpecificLocation.Seven11,
                     );
 
-                    const nearestPoint = turf.nearestPoint(
-                        turf.point([question.data.lng, question.data.lat]),
-                        points as any,
-                    );
-
-                    const distance = turf.distance(
-                        turf.point([question.data.lng, question.data.lat]),
-                        nearestPoint as any,
-                        {
-                            units: "miles",
-                        },
-                    );
+                    const nearestPoint = turf.nearestPoint(turf.point([question.data.lng, question.data.lat]), points as any);
+                    const distance = turf.distance(turf.point([question.data.lng, question.data.lat]), nearestPoint as any, { units: "miles" });
 
                     circles = circles.filter((circle) => {
-                        const point = turf.point(
-                            turf.getCoord(circle.properties),
-                        );
-
+                        const point = turf.point(turf.getCoord(circle.properties));
                         const nearest = turf.nearestPoint(point, points as any);
-
                         return question.data.hiderCloser
-                            ? turf.distance(point, nearest as any, {
-                                  units: "miles",
-                              }) <
-                                  distance + $hidingRadius
-                            : turf.distance(point, nearest as any, {
-                                  units: "miles",
-                              }) >
-                                  distance - $hidingRadius;
+                            ? turf.distance(point, nearest as any, { units: "miles" }) < distance + $hidingRadius
+                            : turf.distance(point, nearest as any, { units: "miles" }) > distance - $hidingRadius;
                     });
                 }
             }
@@ -434,10 +333,7 @@ export const ZoneSidebar = () => {
         if ($displayHidingZones && $questionFinishedMapData) {
             initializeHidingZones().catch((error) => {
                 console.log("Error in hiding zone initialization:", error);
-                toast.error(
-                    "An error occurred during hiding zone initialization",
-                    { toastId: "hiding-zone-initialization-error" },
-                );
+                toast.error("An error occurred during hiding zone initialization", { toastId: "hiding-zone-initialization-error" });
             });
         }
     }, [
@@ -455,35 +351,17 @@ export const ZoneSidebar = () => {
         if (!map || isLoading.get()) return;
 
         if ($displayHidingZones && hidingZoneModeStationID) {
-            const hiderStation = _.find(
-                stations,
-                (c) => c.properties.properties.id === hidingZoneModeStationID,
-            );
-
+            const hiderStation = _.find(stations, (c) => c.properties.properties.id === hidingZoneModeStationID);
             if (hiderStation !== undefined) {
-                selectionProcess(
-                    hiderStation,
-                    map,
-                    stations,
-                    showGeoJSON,
-                    $questionFinishedMapData,
-                    $hidingRadius,
-                ).catch((error) => {
+                selectionProcess(hiderStation, map, stations, showGeoJSON, $questionFinishedMapData, $hidingRadius).catch((error) => {
                     console.log("Error in hiding zone selection:", error);
-                    toast.error(
-                        "An error occurred during hiding zone selection",
-                        { toastId: "hiding-zone-selection-error" },
-                    );
+                    toast.error("An error occurred during hiding zone selection", { toastId: "hiding-zone-selection-error" });
                 });
             } else {
-                toast.error("Invalid hiding zone selected", {
-                    toastId: "hiding-zone-selection-error",
-                });
+                toast.error("Invalid hiding zone selected", { toastId: "hiding-zone-selection-error" });
             }
         } else if ($displayHidingZones) {
-            const activeStations = stations.filter(
-                (x) => !$disabledStations.includes(x.properties.properties.id),
-            );
+            const activeStations = stations.filter((x) => !$disabledStations.includes(x.properties.properties.id));
             showGeoJSON(
                 styleStations(activeStations, $displayHidingZonesStyle),
                 $displayHidingZonesStyle === "zones",
@@ -528,324 +406,45 @@ export const ZoneSidebar = () => {
                                     disabled={$isLoading}
                                 />
                             </SidebarMenuItem>
-                            <SidebarMenuItem
-                                className={cn(
-                                    MENU_ITEM_CLASSNAME,
-                                    "text-orange-500",
-                                )}
-                            >
-                                Warning: This feature can drastically slow down
-                                your device.
+                            <SidebarMenuItem className={cn(MENU_ITEM_CLASSNAME, "text-orange-500")}>
+                                Warning: This feature can drastically slow down your device.
                             </SidebarMenuItem>
-                            <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                                <div className="flex flex-row items-center justify-between w-full">
-                                    <Label className="font-semibold font-poppins">
-                                        Use custom station list?
-                                    </Label>
-                                    <Checkbox
-                                        checked={useCustomStations}
-                                        onCheckedChange={(v) =>
-                                            useCustomStationsAtom.set(!!v)
-                                        }
-                                        disabled={$isLoading}
-                                    />
-                                </div>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                                <div className="flex flex-row items-center justify-between w-full">
-                                    <Label className="font-semibold font-poppins">
-                                        Merge duplicated stations?
-                                    </Label>
-                                    <Checkbox
-                                        checked={mergeDuplicates}
-                                        onCheckedChange={(v) =>
-                                            mergeDuplicatesAtom.set(!!v)
-                                        }
-                                        disabled={$isLoading}
-                                    />
-                                </div>
-                            </SidebarMenuItem>
-                            {useCustomStations && (
-                                <>
-                                    <SidebarMenuItem
-                                        className={MENU_ITEM_CLASSNAME}
-                                    >
-                                        <div className="flex flex-col gap-2 w-full">
-                                            <Label className="font-semibold font-poppins leading-5">
-                                                Import stations from URL (CSV,
-                                                GeoJSON, KML). This must be a
-                                                raw file link.
-                                            </Label>
-                                            <div className="flex gap-2">
-                                                <Input
-                                                    placeholder="https://..."
-                                                    value={importUrl}
-                                                    onChange={(e) =>
-                                                        setImportUrl(
-                                                            e.target.value,
-                                                        )
-                                                    }
-                                                    disabled={$isLoading}
-                                                />
-                                                <button
-                                                    className="bg-blue-600 text-white px-3 rounded-md"
-                                                    disabled={$isLoading}
-                                                    onClick={async () => {
-                                                        if (!importUrl) return;
-                                                        try {
-                                                            const res =
-                                                                await fetch(
-                                                                    importUrl,
-                                                                );
-                                                            const contentType =
-                                                                res.headers.get(
-                                                                    "content-type",
-                                                                ) || undefined;
-                                                            const text =
-                                                                await res.text();
-                                                            const parsed =
-                                                                parseCustomStationsFromText(
-                                                                    text,
-                                                                    contentType ||
-                                                                        undefined,
-                                                                );
-                                                            if (
-                                                                parsed.length ===
-                                                                0
-                                                            ) {
-                                                                toast.error(
-                                                                    "No stations found in provided URL",
-                                                                );
-                                                                return;
-                                                            }
-                                                            customStationsAtom.set(
-                                                                parsed,
-                                                            );
-                                                            toast.success(
-                                                                `Imported ${parsed.length} stations`,
-                                                            );
-                                                        } catch (e: any) {
-                                                            toast.error(
-                                                                `Failed to import from URL: ${e.message || e}`,
-                                                            );
-                                                        }
-                                                    }}
-                                                >
-                                                    Import
-                                                </button>
-                                            </div>
-                                            <div>
-                                                <Input
-                                                    type="file"
-                                                    multiple
-                                                    accept=".csv,.json,.geojson,.kml,application/json,application/vnd.google-earth.kml+xml,text/csv,application/vnd.google-apps.kml+xml,application/xml,text/xml"
-                                                    onInput={async (e) => {
-                                                        const files = (
-                                                            e.target as HTMLInputElement
-                                                        ).files;
-                                                        if (
-                                                            !files ||
-                                                            files.length === 0
-                                                        )
-                                                            return;
-                                                        try {
-                                                            const all: any[] =
-                                                                [];
-                                                            for (const file of Array.from(
-                                                                files,
-                                                            )) {
-                                                                const text =
-                                                                    await file.text();
-                                                                const parsed =
-                                                                    parseCustomStationsFromText(
-                                                                        text,
-                                                                        file.type,
-                                                                    );
-                                                                all.push(
-                                                                    ...parsed,
-                                                                );
-                                                            }
-                                                            if (
-                                                                all.length === 0
-                                                            ) {
-                                                                toast.error(
-                                                                    "No stations found in uploaded files",
-                                                                );
-                                                                return;
-                                                            }
-                                                            const byKey =
-                                                                new Map<
-                                                                    string,
-                                                                    any
-                                                                >();
-                                                            for (const s of all) {
-                                                                const key =
-                                                                    s.id &&
-                                                                    s.id.includes(
-                                                                        "/",
-                                                                    )
-                                                                        ? `id:${s.id}`
-                                                                        : `pt:${s.lat},${s.lng}`;
-                                                                if (
-                                                                    !byKey.has(
-                                                                        key,
-                                                                    )
-                                                                )
-                                                                    byKey.set(
-                                                                        key,
-                                                                        s,
-                                                                    );
-                                                            }
-                                                            const unique =
-                                                                Array.from(
-                                                                    byKey.values(),
-                                                                );
-                                                            customStationsAtom.set(
-                                                                unique,
-                                                            );
-                                                            toast.success(
-                                                                `Imported ${unique.length} stations`,
-                                                            );
-                                                        } catch (e: any) {
-                                                            toast.error(
-                                                                `Failed to import files: ${e.message || e}`,
-                                                            );
-                                                        }
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className="flex flex-row items-center justify-between w-full">
-                                                <Label className="font-semibold font-poppins">
-                                                    Include default stations
-                                                    with custom list?
-                                                </Label>
-                                                <Checkbox
-                                                    checked={
-                                                        includeDefaultStations
-                                                    }
-                                                    onCheckedChange={(v) =>
-                                                        includeDefaultStationsAtom.set(
-                                                            !!v,
-                                                        )
-                                                    }
-                                                    disabled={$isLoading}
-                                                />
-                                            </div>
-                                            {$customStations.length > 0 && (
-                                                <div className="text-sm text-gray-300">
-                                                    {_previewText(
-                                                        $customStations.length,
-                                                    )}
-                                                </div>
-                                            )}
-                                            {$customStations.length > 0 && (
-                                                <div className="flex gap-2">
-                                                    <Button
-                                                        className="w-full"
-                                                        onClick={() =>
-                                                            customStationsAtom.set(
-                                                                [],
-                                                            )
-                                                        }
-                                                    >
-                                                        Clear Imported
-                                                    </Button>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </SidebarMenuItem>
-                                </>
-                            )}
                             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                                 <MultiSelect
                                     options={[
-                                        {
-                                            label: "Railway Stations",
-                                            value: "[railway=station]",
-                                        },
-                                        {
-                                            label: "Railway Halts",
-                                            value: "[railway=halt]",
-                                        },
-                                        {
-                                            label: "Railway Stops",
-                                            value: "[railway=stop]",
-                                        },
-                                        {
-                                            label: "Tram Stops",
-                                            value: "[railway=tram_stop]",
-                                        },
-                                        {
-                                            label: "Bus Stops",
-                                            value: "[highway=bus_stop]",
-                                        },
-                                        {
-                                            label: "Ferry Terminals",
-                                            value: "[amenity=ferry_terminal]",
-                                        },
-                                        {
-                                            label: "Ferry Platforms (public transport)",
-                                            value: "[public_transport=platform][platform=ferry]",
-                                        },
-                                        {
-                                            label: "Funicular Stations",
-                                            value: "[railway=funicular]",
-                                        },
-                                        {
-                                            label: "Aerialway Stations",
-                                            value: "[aerialway=station]",
-                                        },
-                                        {
-                                            label: "Railway Stations Excluding Subways",
-                                            value: "[railway=station][subway!=yes]",
-                                        },
-                                        {
-                                            label: "Subway Stations",
-                                            value: "[railway=station][subway=yes]",
-                                        },
-                                        {
-                                            label: "Light Rail Stations",
-                                            value: "[railway=station][light_rail=yes]",
-                                        },
-                                        {
-                                            label: "Light Rail Halts",
-                                            value: "[railway=halt][light_rail=yes]",
-                                        },
+                                        { label: "Railway Stations", value: "[railway=station]" },
+                                        { label: "Railway Halts", value: "[railway=halt]" },
+                                        { label: "Railway Stops", value: "[railway=stop]" },
+                                        { label: "Tram Stops", value: "[railway=tram_stop]" },
+                                        { label: "Bus Stops", value: "[highway=bus_stop]" },
+                                        { label: "Ferry Terminals", value: "[amenity=ferry_terminal]" },
+                                        { label: "Ferry Platforms (public transport)", value: "[public_transport=platform][platform=ferry]" },
+                                        { label: "Funicular Stations", value: "[railway=funicular]" },
+                                        { label: "Aerialway Stations", value: "[aerialway=station]" },
+                                        { label: "Railway Stations Excluding Subways", value: "[railway=station][subway!=yes]" },
+                                        { label: "Subway Stations", value: "[railway=station][subway=yes]" },
+                                        { label: "Light Rail Stations", value: "[railway=station][light_rail=yes]" },
+                                        { label: "Light Rail Halts", value: "[railway=halt][light_rail=yes]" },
                                     ]}
-                                    onValueChange={
-                                        displayHidingZonesOptions.set
-                                    }
+                                    onValueChange={displayHidingZonesOptions.set}
                                     defaultValue={$displayHidingZonesOptions}
                                     placeholder="Select allowed places"
                                     animation={2}
                                     maxCount={3}
                                     modalPopover
                                     className="!bg-popover bg-opacity-100"
-                                    disabled={
-                                        $isLoading ||
-                                        (useCustomStations &&
-                                            !includeDefaultStations)
-                                    }
+                                    disabled={$isLoading || (useCustomStations && !includeDefaultStations)}
                                 />
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <Label className="font-semibold font-poppins ml-2">
-                                    Hiding Zone Radius
-                                </Label>
-                                <div
-                                    className={cn(
-                                        MENU_ITEM_CLASSNAME,
-                                        "gap-2 flex flex-row",
-                                    )}
-                                >
+                                <Label className="font-semibold font-poppins ml-2">Hiding Zone Radius</Label>
+                                <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-row")}>
                                     <Input
                                         type="number"
                                         className="rounded-md p-2 w-16"
                                         value={$hidingRadius}
                                         onChange={(e) => {
-                                            hidingRadius.set(
-                                                parseFloat(e.target.value),
-                                            );
+                                            hidingRadius.set(parseFloat(e.target.value));
                                         }}
                                         disabled={$isLoading}
                                     />
@@ -863,9 +462,7 @@ export const ZoneSidebar = () => {
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         setHidingZoneModeStationID("");
-                                        displayHidingZonesStyle.set(
-                                            "no-display",
-                                        );
+                                        displayHidingZonesStyle.set("no-display");
                                     }}
                                     disabled={$isLoading}
                                 >
@@ -901,9 +498,7 @@ export const ZoneSidebar = () => {
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         setHidingZoneModeStationID("");
-                                        displayHidingZonesStyle.set(
-                                            "no-overlap",
-                                        );
+                                        displayHidingZonesStyle.set("no-overlap");
                                     }}
                                     disabled={$isLoading}
                                 >
@@ -912,67 +507,42 @@ export const ZoneSidebar = () => {
                             )}
                             {$displayHidingZones && hidingZoneModeStationID && (
                                 <SidebarMenuItem
-                                    className={cn(
-                                        MENU_ITEM_CLASSNAME,
-                                        "bg-popover hover:bg-accent",
-                                    )}
+                                    className={cn(MENU_ITEM_CLASSNAME, "bg-popover hover:bg-accent")}
                                     disabled={$isLoading}
                                 >
                                     Current:{" "}
                                     {(() => {
-                                        const selected = stations.find(
-                                            (x) =>
-                                                x.properties.properties.id ===
-                                                hidingZoneModeStationID,
-                                        );
-                                        const displayName = extractStationLabel(
-                                            selected?.properties,
-                                        );
-                                        const id = selected?.properties
-                                            .properties.id as string;
-                                        const coords = selected?.properties
-                                            .geometry.coordinates as [
-                                            number,
-                                            number,
-                                        ];
+                                        const selected = stations.find((x) => x.properties.properties.id === hidingZoneModeStationID);
+                                        const displayName = extractStationLabel(selected?.properties);
+                                        const id = selected?.properties.properties.id as string;
+                                        const coords = selected?.properties.geometry.coordinates as [number, number];
                                         const href = id?.includes("/")
                                             ? `https://www.openstreetmap.org/${id}`
                                             : `https://www.openstreetmap.org/?mlat=${coords[1]}&mlon=${coords[0]}#map=17/${coords[1]}/${coords[0]}`;
                                         return (
-                                            <a
-                                                href={href}
-                                                target="_blank"
-                                                rel="noreferrer"
-                                                className="text-blue-500"
-                                            >
+                                            <a href={href} target="_blank" rel="noreferrer" className="text-blue-500">
                                                 {displayName}
                                             </a>
                                         );
                                     })()}
                                 </SidebarMenuItem>
                             )}
-                            {$displayHidingZones &&
-                                $disabledStations.length > 0 && (
-                                    <SidebarMenuItem
-                                        className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                        onClick={() => {
-                                            disabledStations.set([]);
-                                        }}
-                                        disabled={$isLoading}
-                                    >
-                                        Clear Disabled
-                                    </SidebarMenuItem>
-                                )}
+                            {$displayHidingZones && $disabledStations.length > 0 && (
+                                <SidebarMenuItem
+                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                    onClick={() => {
+                                        disabledStations.set([]);
+                                    }}
+                                    disabled={$isLoading}
+                                >
+                                    Clear Disabled
+                                </SidebarMenuItem>
+                            )}
                             {$displayHidingZones && (
                                 <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
-                                        disabledStations.set(
-                                            stations.map(
-                                                (x) =>
-                                                    x.properties.properties.id,
-                                            ),
-                                        );
+                                        disabledStations.set(stations.map((x) => x.properties.properties.id));
                                     }}
                                     disabled={$isLoading}
                                 >
@@ -981,11 +551,7 @@ export const ZoneSidebar = () => {
                             )}
                             {$displayHidingZones && (
                                 <Command
-                                    key={
-                                        isStationSearchActive
-                                            ? "station-search-active"
-                                            : "station-search-idle"
-                                    }
+                                    key={isStationSearchActive ? "station-search-active" : "station-search-idle"}
                                     shouldFilter={isStationSearchActive}
                                 >
                                     <CommandInput
@@ -995,95 +561,38 @@ export const ZoneSidebar = () => {
                                         disabled={$isLoading}
                                     />
                                     <CommandList className="max-h-full">
-                                        <CommandEmpty>
-                                            No hiding zones found.
-                                        </CommandEmpty>
+                                        <CommandEmpty>No hiding zones found.</CommandEmpty>
                                         <CommandGroup>
                                             {stations.map((station) => (
                                                 <CommandItem
-                                                    key={
-                                                        station.properties
-                                                            .properties.id
-                                                    }
-                                                    data-station-id={
-                                                        station.properties
-                                                            .properties.id
-                                                    }
-                                                    className={cn(
-                                                        $disabledStations.includes(
-                                                            station.properties
-                                                                .properties.id,
-                                                        ) && "line-through",
-                                                    )}
+                                                    key={station.properties.properties.id}
+                                                    data-station-id={station.properties.properties.id}
+                                                    className={cn($disabledStations.includes(station.properties.properties.id) && "line-through")}
                                                     onSelect={async () => {
                                                         if (!map) return;
-
                                                         setTimeout(() => {
-                                                            if (
-                                                                buttonJustClicked
-                                                            ) {
-                                                                buttonJustClicked =
-                                                                    false;
+                                                            if (buttonJustClicked) {
+                                                                buttonJustClicked = false;
                                                                 return;
                                                             }
-
-                                                            if (
-                                                                $disabledStations.includes(
-                                                                    station
-                                                                        .properties
-                                                                        .properties
-                                                                        .id,
-                                                                )
-                                                            ) {
-                                                                disabledStations.set(
-                                                                    [
-                                                                        ...$disabledStations.filter(
-                                                                            (
-                                                                                x,
-                                                                            ) =>
-                                                                                x !==
-                                                                                station
-                                                                                    .properties
-                                                                                    .properties
-                                                                                    .id,
-                                                                        ),
-                                                                    ],
-                                                                );
+                                                            if ($disabledStations.includes(station.properties.properties.id)) {
+                                                                disabledStations.set([
+                                                                    ...$disabledStations.filter((x) => x !== station.properties.properties.id),
+                                                                ]);
                                                             } else {
-                                                                disabledStations.set(
-                                                                    [
-                                                                        ...$disabledStations,
-                                                                        station
-                                                                            .properties
-                                                                            .properties
-                                                                            .id,
-                                                                    ],
-                                                                );
+                                                                disabledStations.set([...$disabledStations, station.properties.properties.id]);
                                                             }
-
-                                                            setStations([
-                                                                ...stations,
-                                                            ]);
+                                                            setStations([...stations]);
                                                         }, 100);
                                                     }}
                                                     disabled={$isLoading}
                                                 >
-                                                    {extractStationLabel(
-                                                        station.properties,
-                                                    )}
+                                                    {extractStationLabel(station.properties)}
                                                     <button
                                                         onClick={async () => {
                                                             if (!map) return;
-
-                                                            buttonJustClicked =
-                                                                true;
-
-                                                            setHidingZoneModeStationID(
-                                                                station
-                                                                    .properties
-                                                                    .properties
-                                                                    .id,
-                                                            );
+                                                            buttonJustClicked = true;
+                                                            setHidingZoneModeStationID(station.properties.properties.id);
                                                         }}
                                                         className="bg-slate-600 p-0.5 rounded-md"
                                                         disabled={$isLoading}
@@ -1111,13 +620,10 @@ function styleStations(
     switch (style) {
         case "no-display":
             return { type: "FeatureCollection", features: [] };
-
         case "no-overlap":
             return safeUnion(turf.featureCollection(circles));
-
         case "stations":
             return turf.featureCollection(circles.map((c) => c.properties));
-
         default:
             return turf.featureCollection(circles);
     }
@@ -1132,25 +638,17 @@ async function selectionProcess(
     $hidingRadius: number,
 ) {
     const bbox = turf.bbox(station);
-
     const bounds: [[number, number], [number, number]] = [
         [bbox[1], bbox[0]],
         [bbox[3], bbox[2]],
     ];
 
     let mapData: any = turf.featureCollection([
-        safeUnion(
-            turf.featureCollection([
-                ...$questionFinishedMapData.features,
-                turf.mask(station),
-            ]),
-        ),
+        safeUnion(turf.featureCollection([...$questionFinishedMapData.features, turf.mask(station)])),
     ]);
 
     for (const question of questions.get()) {
-        if (planningModeEnabled.get() && question.data.drag) {
-            continue;
-        }
+        if (planningModeEnabled.get() && question.data.drag) continue;
 
         if (
             (question.id === "measuring" || question.id === "matching") &&
@@ -1167,11 +665,8 @@ async function selectionProcess(
                 question.data.type === "park")
         ) {
             const nearestQuestion = await nearestToQuestion(question.data);
-
             let radius = 30;
-
             let instances: any = { features: [] };
-
             const nearestPoints = [];
 
             while (instances.features.length === 0) {
@@ -1192,13 +687,7 @@ async function selectionProcess(
 
                 const distances: any[] = instances.features.map((x: any) => {
                     return {
-                        distance: turf.distance(
-                            turf.point(turf.getCoord(x)),
-                            station.properties,
-                            {
-                                units: "miles",
-                            },
-                        ),
+                        distance: turf.distance(turf.point(turf.getCoord(x)), station.properties, { units: "miles" }),
                         point: x,
                     };
                 });
@@ -1209,7 +698,6 @@ async function selectionProcess(
                 }
 
                 const minimumPoint = _.minBy(distances, "distance")!;
-
                 if (minimumPoint.distance + $hidingRadius * 2 > radius) {
                     radius = minimumPoint.distance + $hidingRadius * 2;
                     continue;
@@ -1217,173 +705,78 @@ async function selectionProcess(
 
                 nearestPoints.push(
                     ...distances
-                        .filter(
-                            (x) =>
-                                x.distance <
-                                    minimumPoint.distance + $hidingRadius * 2 &&
-                                x.point.properties.name, // If it doesn't have a name, it's not a valid location
-                        )
+                        .filter((x) => x.distance < minimumPoint.distance + $hidingRadius * 2 && x.point.properties.name)
                         .map((x) => x.point),
                 );
             }
 
             if (question.id === "matching") {
-                const voronoi = geoSpatialVoronoi(
-                    turf.featureCollection(nearestPoints),
-                );
-
+                const voronoi = geoSpatialVoronoi(turf.featureCollection(nearestPoints));
                 const correctPolygon = voronoi.features.find((feature: any) => {
-                    return (
-                        feature.properties.site.properties.name ===
-                        nearestQuestion.properties.name
-                    );
+                    return feature.properties.site.properties.name === nearestQuestion.properties.name;
                 });
 
                 if (!correctPolygon) {
-                    if (question.data.same) {
-                        mapData = BLANK_GEOJSON;
-                    }
-
+                    if (question.data.same) mapData = BLANK_GEOJSON;
                     continue;
                 }
 
                 if (question.data.same) {
-                    mapData = safeUnion(
-                        turf.featureCollection([
-                            ...mapData.features,
-                            turf.mask(correctPolygon),
-                        ]),
-                    );
+                    mapData = safeUnion(turf.featureCollection([...mapData.features, turf.mask(correctPolygon)]));
                 } else {
-                    mapData = safeUnion(
-                        turf.featureCollection([
-                            ...mapData.features,
-                            correctPolygon,
-                        ]),
-                    );
+                    mapData = safeUnion(turf.featureCollection([...mapData.features, correctPolygon]));
                 }
             } else {
-                const circles = nearestPoints.map((x) =>
-                    turf.circle(
-                        turf.getCoord(x),
-                        nearestQuestion.properties.distanceToPoint,
-                    ),
-                );
-
+                const circles = nearestPoints.map((x) => turf.circle(turf.getCoord(x), nearestQuestion.properties.distanceToPoint));
                 if (question.data.hiderCloser) {
-                    mapData = safeUnion(
-                        turf.featureCollection([
-                            ...mapData.features,
-                            holedMask(turf.featureCollection(circles)),
-                        ]),
-                    );
+                    mapData = safeUnion(turf.featureCollection([...mapData.features, holedMask(turf.featureCollection(circles))]));
                 } else {
-                    mapData = safeUnion(
-                        turf.featureCollection([
-                            ...mapData.features,
-                            ...circles,
-                        ]),
-                    );
+                    mapData = safeUnion(turf.featureCollection([...mapData.features, ...circles]));
                 }
             }
         }
-        if (
-            question.id === "measuring" &&
-            question.data.type === "rail-measure"
-        ) {
+        if (question.id === "measuring" && question.data.type === "rail-measure") {
             const location = turf.point([question.data.lng, question.data.lat]);
-
-            const nearestTrainStation = turf.nearestPoint(
-                location,
-                turf.featureCollection(
-                    stations.map((x) => x.properties.geometry),
-                ),
-            );
-
+            const nearestTrainStation = turf.nearestPoint(location, turf.featureCollection(stations.map((x) => x.properties.geometry)));
             const distance = turf.distance(location, nearestTrainStation);
 
             const circles = stations
-                .filter(
-                    (x) =>
-                        turf.distance(
-                            station.properties.geometry,
-                            x.properties.geometry,
-                        ) <
-                        distance + 1.61 * $hidingRadius,
-                )
+                .filter((x) => turf.distance(station.properties.geometry, x.properties.geometry) < distance + 1.61 * $hidingRadius)
                 .map((x) => turf.circle(x.properties.geometry, distance));
 
             if (question.data.hiderCloser) {
-                mapData = safeUnion(
-                    turf.featureCollection([
-                        ...mapData.features,
-                        holedMask(turf.featureCollection(circles)),
-                    ]),
-                );
+                mapData = safeUnion(turf.featureCollection([...mapData.features, holedMask(turf.featureCollection(circles))]));
             } else {
-                mapData = safeUnion(
-                    turf.featureCollection([...mapData.features, ...circles]),
-                );
+                mapData = safeUnion(turf.featureCollection([...mapData.features, ...circles]));
             }
         }
-        if (
-            question.id === "measuring" &&
-            (question.data.type === "mcdonalds" ||
-                question.data.type === "seven11")
-        ) {
+        if (question.id === "measuring" && (question.data.type === "mcdonalds" || question.data.type === "seven11")) {
             const points = await findPlacesSpecificInZone(
-                question.data.type === "mcdonalds"
-                    ? QuestionSpecificLocation.McDonalds
-                    : QuestionSpecificLocation.Seven11,
+                question.data.type === "mcdonalds" ? QuestionSpecificLocation.McDonalds : QuestionSpecificLocation.Seven11,
             );
-
             const seeker = turf.point([question.data.lng, question.data.lat]);
             const nearest = turf.nearestPoint(seeker, points as any);
-
-            const distance = turf.distance(seeker, nearest, {
-                units: "miles",
-            });
+            const distance = turf.distance(seeker, nearest, { units: "miles" });
 
             const filtered = points.features.filter(
-                (x) =>
-                    turf.distance(x as any, station.properties.geometry, {
-                        units: "miles",
-                    }) <
-                    distance + $hidingRadius,
+                (x) => turf.distance(x as any, station.properties.geometry, { units: "miles" }) < distance + $hidingRadius,
             );
-
-            const circles = filtered.map((x) =>
-                turf.circle(x as any, distance, {
-                    units: "miles",
-                }),
-            );
+            const circles = filtered.map((x) => turf.circle(x as any, distance, { units: "miles" }));
 
             if (question.data.hiderCloser) {
-                mapData = safeUnion(
-                    turf.featureCollection([
-                        ...mapData.features,
-                        holedMask(turf.featureCollection(circles)),
-                    ]),
-                );
+                mapData = safeUnion(turf.featureCollection([...mapData.features, holedMask(turf.featureCollection(circles))]));
             } else {
-                mapData = safeUnion(
-                    turf.featureCollection([...mapData.features, ...circles]),
-                );
+                mapData = safeUnion(turf.featureCollection([...mapData.features, ...circles]));
             }
         }
 
         if (mapData.type !== "FeatureCollection") {
-            mapData = {
-                type: "FeatureCollection",
-                features: [mapData],
-            };
+            mapData = { type: "FeatureCollection", features: [mapData] };
         }
     }
 
     if (_.isEqual(mapData, BLANK_GEOJSON)) {
-        toast.warning(
-            "The hider cannot be in this hiding zone. This wasn't eliminated on the sidebar as its absence was caused by multiple criteria.",
-        );
+        toast.warning("The hider cannot be in this hiding zone. This wasn't eliminated on the sidebar as its absence was caused by multiple criteria.");
     }
 
     showGeoJSON(mapData);
@@ -1396,17 +789,10 @@ async function selectionProcess(
         }
     }
 
-    const element: HTMLDivElement | null = document.querySelector(
-        `[data-station-id="${station.properties.properties.id}"]`,
-    );
-
+    const element: HTMLDivElement | null = document.querySelector(`[data-station-id="${station.properties.properties.id}"]`);
     if (element) {
-        element.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-        });
+        element.scrollIntoView({ behavior: "smooth", block: "center" });
         element.classList.add("selected-card-background-temporary");
-
         setTimeout(() => {
             element.classList.remove("selected-card-background-temporary");
         }, 5000);
