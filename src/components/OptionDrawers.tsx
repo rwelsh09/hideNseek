@@ -12,7 +12,6 @@ import {
 import {
     additionalMapGeoLocations,
     allowGooglePlusCodes,
-    alwaysUsePastebin,
     animateMapMovements,
     autoSave,
     autoZoom,
@@ -33,14 +32,11 @@ import {
     leafletMapContext,
     mapGeoJSON,
     mapGeoLocation,
-    pastebinApiKey,
     permanentOverlay,
     planningModeEnabled,
     polyGeoJSON,
     questions,
     save,
-    showTutorial,
-    thunderforestApiKey,
     triggerLocalRefresh,
     useCustomStations,
 } from "@/lib/context";
@@ -48,16 +44,13 @@ import {
     cn,
     compress,
     decompress,
-    fetchFromPastebin,
     shareOrFallback,
-    uploadToPastebin,
 } from "@/lib/utils";
 import { questionsSchema } from "@/maps/schema";
 
 import { LatitudeLongitude } from "./LatLngPicker";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
-import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Select } from "./ui/select";
 import { Separator } from "./ui/separator";
@@ -70,7 +63,6 @@ import { UnitSelect } from "./UnitSelect";
 
 const HIDING_ZONE_URL_PARAM = "hz";
 const HIDING_ZONE_COMPRESSED_URL_PARAM = "hzc";
-const PASTEBIN_URL_PARAM = "pb";
 
 export const OptionDrawers = ({ className }: { className?: string }) => {
     useStore(triggerLocalRefresh);
@@ -84,9 +76,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $hidingZone = useStore(hidingZone);
     const $planningMode = useStore(planningModeEnabled);
     const $baseTileLayer = useStore(baseTileLayer);
-    const $thunderforestApiKey = useStore(thunderforestApiKey);
-    const $pastebinApiKey = useStore(pastebinApiKey);
-    const $alwaysUsePastebin = useStore(alwaysUsePastebin);
     const $followMe = useStore(followMe);
     const $customInitPref = useStore(customInitPreference);
     const lastDefaultUnit = useRef($defaultUnit);
@@ -114,23 +103,18 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
         const hidingZoneCompressed = params.get(
             HIDING_ZONE_COMPRESSED_URL_PARAM,
         );
-        const pastebinId = params.get(PASTEBIN_URL_PARAM);
 
         if (hidingZoneOld !== null) {
-            // Legacy base64 encoding
             try {
                 loadHidingZone(atob(hidingZoneOld));
-                // Remove hiding zone parameter after initial load
                 window.history.replaceState({}, "", window.location.pathname);
             } catch (e) {
                 toast.error(`Invalid hiding zone settings: ${e}`);
             }
         } else if (hidingZoneCompressed !== null) {
-            // Modern compressed format
             decompress(hidingZoneCompressed).then((data) => {
                 try {
                     loadHidingZone(data);
-                    // Remove hiding zone parameter after initial load
                     window.history.replaceState(
                         {},
                         "",
@@ -140,30 +124,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                     toast.error(`Invalid hiding zone settings: ${e}`);
                 }
             });
-        } else if (pastebinId !== null) {
-            fetchFromPastebin(pastebinId)
-                .then((data) => {
-                    try {
-                        loadHidingZone(data);
-                        // Remove pb parameter after initial load
-                        window.history.replaceState(
-                            {},
-                            "",
-                            window.location.pathname,
-                        );
-                        toast.success(
-                            "Successfully loaded data from Pastebin link!",
-                        );
-                    } catch (e) {
-                        toast.error(`Invalid data from Pastebin: ${e}`);
-                    }
-                })
-                .catch((error) => {
-                    console.error("Failed to fetch from Pastebin:", error);
-                    toast.error(
-                        `Failed to load from Pastebin: ${error.message}`,
-                    );
-                });
         }
     }, []);
 
@@ -299,35 +259,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                     const baseUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
                     let shareUrl = `${baseUrl}?${HIDING_ZONE_COMPRESSED_URL_PARAM}=${compressedData}`;
 
-                    if ($alwaysUsePastebin || shareUrl.length > 2000) {
-                        if (!$pastebinApiKey) {
-                            toast.error(
-                                "Data is too large for a URL or Pastebin is forced. Please enter a Pastebin API key in Options to share via Pastebin.",
-                            );
-                            return;
-                        }
-                        try {
-                            toast.info("Data is being shared via Pastebin...");
-                            const pastebinUrl = await uploadToPastebin(
-                                $pastebinApiKey,
-                                hidingZoneString,
-                            );
-                            const pasteId = pastebinUrl.substring(
-                                pastebinUrl.lastIndexOf("/") + 1,
-                            );
-                            shareUrl = `${baseUrl}?${PASTEBIN_URL_PARAM}=${pasteId}`;
-                            toast.success(
-                                "Successfully uploaded to Pastebin! URL is ready to be shared.",
-                            );
-                        } catch (error) {
-                            console.error("Pastebin upload failed:", error);
-                            toast.error(
-                                `Pastebin upload failed. Please check your API key and try again.`,
-                            );
-                            return;
-                        }
-                    }
-
                     // Show platform native share sheet if possible
                     await shareOrFallback(shareUrl).then((result) => {
                         console.log(`result ${result}`);
@@ -348,23 +279,13 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                         }
                     });
                 }}
-                data-tutorial-id="share-questions-button"
             >
                 Share
-            </Button>
-            <Button
-                className="w-24 shadow-md"
-                onClick={() => {
-                    showTutorial.set(true);
-                }}
-            >
-                Tutorial
             </Button>
             <Drawer open={isOptionsOpen} onOpenChange={setOptionsOpen}>
                 <DrawerTrigger className="w-24" asChild>
                     <Button
                         className="w-24 shadow-md"
-                        data-tutorial-id="option-questions-button"
                     >
                         Options
                     </Button>
@@ -376,8 +297,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 Options
                             </DrawerTitle>
                         </DrawerHeader>
-                        <div className="overflow-y-scroll max-h-[40vh] flex flex-col items-center gap-4 max-w-[1000px] px-12">
-                            <div className="flex flex-row max-[330px]:flex-col gap-4">
+                        <div className="overflow-y-scroll max-h-[40vh] flex flex-col items-center gap-4 max-w-[1000px] px-12 pb-10">
+                            <div className="flex flex-row max-[330px]:flex-col gap-4 mt-2">
                                 <Button
                                     onClick={() => {
                                         if (!navigator || !navigator.clipboard)
@@ -439,9 +360,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     voyager: "CARTO Voyager",
                                     light: "CARTO Light",
                                     dark: "CARTO Dark",
-                                    transport: "Thunderforest Transport",
-                                    neighbourhood:
-                                        "Thunderforest Neighbourhood",
                                     osmcarto: "OpenStreetMap Carto",
                                 }}
                                 value={$baseTileLayer}
@@ -449,57 +367,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     baseTileLayer.set(v as any)
                                 }
                             />
-                            <div className="flex flex-col items-center gap-2">
-                                <Label>Thunderforest API Key</Label>
-                                <Input
-                                    type="text"
-                                    value={$thunderforestApiKey}
-                                    id="thunderforestApiKey"
-                                    onChange={(e) =>
-                                        thunderforestApiKey.set(e.target.value)
-                                    }
-                                    placeholder="Enter your Thunderforest API key"
-                                />
-                                <p className="text-xs text-gray-500">
-                                    Needed for Thunderforest map styles. Create
-                                    a key{" "}
-                                    <a
-                                        href="https://manage.thunderforest.com/users/sign_up?price=hobby-project-usd"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-500 cursor-pointer"
-                                    >
-                                        here.
-                                    </a>{" "}
-                                    Don&apos;t worry, it&apos;s free.
-                                </p>
-                            </div>
-                            <Separator className="bg-slate-300 w-[280px]" />
-                            <div className="flex flex-col items-center gap-2">
-                                <Label>Pastebin API Key</Label>
-                                <Input
-                                    type="text"
-                                    value={$pastebinApiKey}
-                                    id="pastebinApiKey"
-                                    onChange={(e) =>
-                                        pastebinApiKey.set(e.target.value)
-                                    }
-                                    placeholder="Enter your Pastebin API key"
-                                />
-                                <p className="text-xs text-gray-500">
-                                    Needed for sharing large game data. Create a
-                                    key{" "}
-                                    <a
-                                        href="https://pastebin.com/doc_api"
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="text-blue-500 cursor-pointer"
-                                    >
-                                        here
-                                    </a>
-                                    .
-                                </p>
-                            </div>
                             <Separator className="bg-slate-300 w-[280px]" />
                             <Label>Permanent Map Overlay</Label>
                             <div className="flex flex-row max-[330px]:flex-col gap-4">
@@ -547,19 +414,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             </div>
                             <div className="flex flex-row items-center gap-2">
                                 <label className="text-2xl font-semibold font-poppins">
-                                    Force Pastebin for sharing?
-                                </label>
-                                <Checkbox
-                                    checked={$alwaysUsePastebin}
-                                    onCheckedChange={() =>
-                                        alwaysUsePastebin.set(
-                                            !$alwaysUsePastebin,
-                                        )
-                                    }
-                                />
-                            </div>
-                            <div className="flex flex-row items-center gap-2">
-                                <label className="text-2xl font-semibold font-poppins">
                                     Enable planning mode?
                                 </label>
                                 <Checkbox
@@ -579,7 +433,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                                 });
                                             }
                                         } else {
-                                            questions.set([...questions.get()]); // I think that this should always be auto-saved
+                                            questions.set([...questions.get()]); 
                                         }
 
                                         planningModeEnabled.set(!$planningMode);
