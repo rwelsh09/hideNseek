@@ -68,7 +68,7 @@ export const permanentOverlay = persistentAtom<FeatureCollection | null>(
         }
       ]
     },
-    {
+);
 
 export const mapGeoJSON = atom<FeatureCollection<
     Polygon | MultiPolygon
