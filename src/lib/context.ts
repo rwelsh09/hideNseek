@@ -380,7 +380,7 @@ export const alwaysUsePastebin = persistentAtom<boolean>(
     },
 );
 
-export const showTutorial = persistentAtom<boolean>("showTutorials", true, {
+export const showTutorial = persistentAtom<boolean>("showTutorials", false, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
@@ -398,6 +398,25 @@ export const customInitPreference = persistentAtom<"ask" | "blank" | "prefill">(
 export const allowGooglePlusCodes = persistentAtom<boolean>(
     "allowGooglePlusCodes",
     false,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+
+// --- TIME PENALTY & INFO BOARD STATE ---
+export const penaltyMinutes = persistentAtom<number>(
+    "penaltyMinutes",
+    0,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+
+export const softQuestionsChecked = persistentAtom<string[]>(
+    "softQuestionsChecked",
+    [],
     {
         encode: JSON.stringify,
         decode: JSON.parse,
