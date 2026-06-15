@@ -531,5 +531,21 @@ export const Map = ({ className }: { className?: string }) => {
         }
     }, [$permanentOverlay, map]);
 
+    useEffect(() => {
+        if (!map) return;
+        if (sessionStorage.getItem("hasCenteredOnPlayer")) return;
+
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                const { latitude, longitude } = pos.coords;
+                map.setView([latitude, longitude], 12);
+                sessionStorage.setItem("hasCenteredOnPlayer", "true");
+            },
+            () => {
+                toast.error("Unable to center map on your location.");
+            }
+        );
+    }, [map]);
+
     return displayMap;
 };
