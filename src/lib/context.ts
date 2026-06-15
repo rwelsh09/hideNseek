@@ -53,22 +53,13 @@ export const additionalMapGeoLocations = persistentAtom<
 });
 export const permanentOverlay = persistentAtom<FeatureCollection | null>(
     "permanentOverlay",
+    null,
     {
-      "type": "FeatureCollection",
-      "features": [
-        {
-          "type": "Feature",
-          "properties": { "stroke": "#e31837", "stroke-width": 4, "stroke-opacity": 1 },
-          "geometry": { "type": "LineString", "coordinates": [ [-114.2384, 51.1345], [-114.1481, 51.0851], [-114.0625, 51.0458], [-114.0724, 50.9856], [-114.0674, 50.8872] ] }
-        },
-        {
-          "type": "Feature",
-          "properties": { "stroke": "#00539b", "stroke-width": 4, "stroke-opacity": 1 },
-          "geometry": { "type": "LineString", "coordinates": [ [-114.1866, 51.0378], [-114.0884, 51.0450], [-114.0625, 51.0458], [-113.9850, 51.0740], [-113.9482, 51.1235] ] }
-        }
-      ]
+        encode: JSON.stringify,
+        decode: JSON.parse,
     },
 );
+
 
 export const mapGeoJSON = atom<FeatureCollection<
     Polygon | MultiPolygon
