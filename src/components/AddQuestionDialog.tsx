@@ -23,11 +23,11 @@ export function AddQuestionDialog() {
         let qId = type;
         let qData: any = { lat: center.lat, lng: center.lng, drag: true };
 
-        // Map the grid button to the actual data schema payloads
+        // METRIC UPDATE: Changed all unit payloads to kilometers
         if (type === "radar") {
             qId = "radius";
             qData.radius = detail === "unknown" ? 5 : parseFloat(detail || "5");
-            qData.unit = "miles";
+            qData.unit = "kilometers";
             qData.within = true;
         } else if (type === "matching") {
             qData.type = detail || "airport";
@@ -36,7 +36,7 @@ export function AddQuestionDialog() {
             qData.type = detail || "coastline";
             qData.hiderCloser = true;
         } else if (type === "thermometer") {
-            const destination = turf.destination([center.lng, center.lat], parseFloat(detail || "5"), 90, { units: "miles" });
+            const destination = turf.destination([center.lng, center.lat], parseFloat(detail || "5"), 90, { units: "kilometers" });
             qData = {
                 latA: center.lat, lngA: center.lng,
                 latB: destination.geometry.coordinates[1], lngB: destination.geometry.coordinates[0],
@@ -45,24 +45,23 @@ export function AddQuestionDialog() {
         } else if (type === "tentacles") {
             qData.locationType = detail || "theme_park";
             qData.radius = 15;
-            qData.unit = "miles";
+            qData.unit = "kilometers";
         } else if (type === "photo") {
-            // Photo doesn't have a map presence, drop a 0-radius marker to hold the UI space
             qId = "radius";
             qData.radius = 0;
-            qData.unit = "miles";
+            qData.unit = "kilometers";
         }
 
-        // 1. Add to map immediately
+        // Add to map immediately
         addQuestion({ id: qId as any, key, data: qData });
         
-        // 2. Trigger the floating panel to open in DraggableMarkers
+        // Trigger the floating panel to open in DraggableMarkers
         editingQuestionId.set(key);
         
-        // 3. Close this grid menu instantly
+        // Close this grid menu instantly
         setOpen(false); 
         
-        // 4. Force the mobile sidebar to close so the map is completely visible
+        // Force the mobile sidebar to close so the map is completely visible
         SidebarContext.get().setOpenMobile(false);
     };
 
@@ -130,7 +129,7 @@ export function AddQuestionDialog() {
                         </div>
                     </div>
 
-                    {/* RADAR */}
+                    {/* RADAR - Updated buttons for Kilometers */}
                     <div className="flex flex-col border-t-4 border-orange-500 pt-3">
                         <div className="flex items-center gap-2 mb-1">
                             <div className="bg-orange-500 p-1.5 rounded text-white shrink-0">
@@ -142,24 +141,24 @@ export function AddQuestionDialog() {
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                            <button onClick={() => handleQuestionSelect("radar", "0.25")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">¼ mi</button>
-                            <button onClick={() => handleQuestionSelect("radar", "0.5")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">½ mi</button>
-                            <button onClick={() => handleQuestionSelect("radar", "1")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">1 mi</button>
-                            <button onClick={() => handleQuestionSelect("radar", "3")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">3 mi</button>
+                            <button onClick={() => handleQuestionSelect("radar", "0.5")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">0.5 km</button>
+                            <button onClick={() => handleQuestionSelect("radar", "1")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">1 km</button>
+                            <button onClick={() => handleQuestionSelect("radar", "2")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">2 km</button>
+                            <button onClick={() => handleQuestionSelect("radar", "5")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">5 km</button>
                             
-                            <button onClick={() => handleQuestionSelect("radar", "5")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">5 mi</button>
-                            <button onClick={() => handleQuestionSelect("radar", "10")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">10 mi</button>
-                            <button onClick={() => handleQuestionSelect("radar", "25")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">25 mi</button>
-                            <button onClick={() => handleQuestionSelect("radar", "50")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">50 mi</button>
+                            <button onClick={() => handleQuestionSelect("radar", "10")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">10 km</button>
+                            <button onClick={() => handleQuestionSelect("radar", "15")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">15 km</button>
+                            <button onClick={() => handleQuestionSelect("radar", "20")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">20 km</button>
+                            <button onClick={() => handleQuestionSelect("radar", "30")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">30 km</button>
                             
-                            <button onClick={() => handleQuestionSelect("radar", "100")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">100 mi</button>
+                            <button onClick={() => handleQuestionSelect("radar", "50")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">50 km</button>
                             <button onClick={() => handleQuestionSelect("radar", "unknown")} className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none">????</button>
                         </div>
                     </div>
 
                     {/* THERMOMETER & TENTACLES COLUMN */}
                     <div className="flex flex-col gap-6">
-                        {/* Thermometer */}
+                        {/* Thermometer - Updated buttons for Kilometers */}
                         <div className="flex flex-col border-t-4 border-yellow-400 pt-3">
                             <div className="flex items-center gap-2 mb-1">
                                 <div className="bg-yellow-400 p-1.5 rounded text-white shrink-0">
@@ -172,13 +171,13 @@ export function AddQuestionDialog() {
                             </div>
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                                 <button onClick={() => handleQuestionSelect("thermometer", "1")} className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none">
-                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5"/> 1m
+                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5"/> 1km
+                                </button>
+                                <button onClick={() => handleQuestionSelect("thermometer", "2")} className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none">
+                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5"/> 2km
                                 </button>
                                 <button onClick={() => handleQuestionSelect("thermometer", "5")} className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none">
-                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5"/> 5m
-                                </button>
-                                <button onClick={() => handleQuestionSelect("thermometer", "10")} className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none">
-                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5"/> 10m
+                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5"/> 5km
                                 </button>
                             </div>
                         </div>
