@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 
 import { addQuestion, questions, leafletMapContext } from "@/lib/context";
+import { SidebarContext } from "@/components/ui/sidebar-l";
 import {
     MatchingQuestionComponent,
     MeasuringQuestionComponent,
@@ -76,8 +77,11 @@ export function AddQuestionDialog() {
         addQuestion({ id: qId as any, key, data: qData });
         setDraft({ id: qId, key });
         
-        // INSTANTLY CLOSE THE GRID MENU so the map is visible
+        // INSTANTLY CLOSE THE GRID MENU
         setOpen(false); 
+        
+        // FIX: Force the mobile sidebar to close so the map is visible and touches aren't blocked by the overlay
+        SidebarContext.get().setOpenMobile(false);
     };
 
     const handleCancelDraft = () => {
@@ -254,21 +258,21 @@ export function AddQuestionDialog() {
                 </DialogContent>
             </Dialog>
 
-            {/* FLOATING PREVIEW PANEL (Using React Portal so it ignores Sidebar overflow/clipping) */}
+            {/* FIX: Styled panel to dark theme (bg-slate-900) so the imported QuestionCards text is readable */}
             {mounted && draftQuestion && typeof document !== 'undefined' && createPortal(
-                <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-[420px] z-[9999] bg-slate-50 rounded-2xl shadow-2xl border border-slate-300 flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-8 fade-in duration-300">
+                <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-[420px] z-[9999] bg-slate-900 text-white rounded-2xl shadow-2xl border border-slate-700 flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-8 fade-in duration-300">
                     
-                    <div className="bg-slate-800 px-5 py-3 flex items-center justify-between shrink-0 shadow-sm">
+                    <div className="bg-slate-950 px-5 py-3 flex items-center justify-between shrink-0 shadow-sm border-b border-slate-800">
                         <h2 className="text-white font-bold uppercase tracking-wider text-sm flex items-center gap-2">
                             <Target className="w-4 h-4 text-sky-400" />
                             Preview Settings
                         </h2>
-                        <Button variant="ghost" size="sm" onClick={handleCancelDraft} className="text-white hover:bg-slate-700 hover:text-white h-8 rounded-full px-3 text-xs">
+                        <Button variant="ghost" size="sm" onClick={handleCancelDraft} className="text-slate-300 hover:bg-slate-800 hover:text-white h-8 rounded-full px-3 text-xs">
                             Cancel
                         </Button>
                     </div>
                     
-                    <div className="p-4 overflow-y-auto flex-1 flex flex-col gap-4">
+                    <div className="p-4 overflow-y-auto flex-1 flex flex-col gap-4 text-white">
                         {draftQuestion.id === "radius" && <RadiusQuestionComponent data={draftQuestion.data as any} questionKey={draftQuestion.key} />}
                         {draftQuestion.id === "matching" && <MatchingQuestionComponent data={draftQuestion.data as any} questionKey={draftQuestion.key} />}
                         {draftQuestion.id === "measuring" && <MeasuringQuestionComponent data={draftQuestion.data as any} questionKey={draftQuestion.key} />}
@@ -276,8 +280,8 @@ export function AddQuestionDialog() {
                         {draftQuestion.id === "tentacles" && <TentacleQuestionComponent data={draftQuestion.data as any} questionKey={draftQuestion.key} />}
                     </div>
 
-                    <div className="p-4 bg-white border-t border-slate-200 shrink-0 flex gap-3 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.02)]">
-                        <Button type="button" onClick={handleSubmitDraft} size="lg" className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold text-base shadow-md hover:shadow-lg transition-all">
+                    <div className="p-4 bg-slate-900 border-t border-slate-800 shrink-0 flex gap-3 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.2)]">
+                        <Button type="button" onClick={handleSubmitDraft} size="lg" className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-base shadow-md hover:shadow-lg transition-all">
                             Lock In Question
                         </Button>
                     </div>
