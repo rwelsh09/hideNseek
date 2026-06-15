@@ -19,23 +19,23 @@ export default defineConfig({
         }),
         AstroPWA({
             manifest: {
-                name: "Jet Lag Hide and Seek Map Generator",
+                name: "Hide and Seek Map",
                 short_name: "Map Generator",
                 description:
-                    "Automatically generate maps for Jet Lag The Game: Hide and Seek with ease! Simply name the questions and watch the map eliminate hundreds of possibilities in seconds.",
+                    "Automatically generate maps for Hide and Seek with ease! Simply name the questions and watch the map eliminate hundreds of possibilities in seconds.",
                 icons: [
                     {
-                        src: "https://taibeled.github.io/JetLagHideAndSeek/JLIcon.png",
+                        src: "https://rwelsh09.github.io/HideAndSeek/JLIcon.png",
                         sizes: "1080x1080",
                         type: "image/png",
                     },
                     {
-                        src: "https://taibeled.github.io/JetLagHideAndSeek/android-chrome-192x192.png",
+                        src: "https://rwelsh09.github.io/HideAndSeek/android-chrome-192x192.png",
                         sizes: "192x192",
                         type: "image/png",
                     },
                     {
-                        src: "https://taibeled.github.io/JetLagHideAndSeek/android-chrome-512x512.png",
+                        src: "https://rwelsh09.github.io/HideAndSeek/android-chrome-512x512.png",
                         sizes: "512x512",
                         type: "image/png",
                     },
@@ -47,6 +47,6 @@ export default defineConfig({
     devToolbar: {
         enabled: false,
     },
-    site: "https://taibeled.github.io",
-    base: "JetLagHideAndSeek",
+    site: "https://rwelsh09.github.io",
+    base: "/HideAndSeek",
 });
