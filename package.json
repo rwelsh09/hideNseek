@@ -1,5 +1,5 @@
 {
-    "name": "Jet Lag Hide and Seek Map Generator",
+    "name": "Hide and Seek Map",
     "type": "module",
     "version": "0.0.1",
     "scripts": {
@@ -85,5 +85,12 @@
     },
     "engines": {
         "node": "<25"
+    },
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "@vaadin/vaadin-usage-statistics",
+            "esbuild",
+            "sharp"
+        ]
     }
 }
