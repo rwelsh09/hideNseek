@@ -257,11 +257,10 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                     }
 
                     const baseUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
-                    let shareUrl = `${baseUrl}?${HIDING_ZONE_COMPRESSED_URL_PARAM}=${compressedData}`;
+                    const shareUrl = `${baseUrl}?${HIDING_ZONE_COMPRESSED_URL_PARAM}=${compressedData}`;
 
                     // Show platform native share sheet if possible
                     await shareOrFallback(shareUrl).then((result) => {
-                        console.log(`result ${result}`);
                         if (result === false) {
                             return toast.error(
                                 `Clipboard not supported. Try manually copying/pasting: ${shareUrl}`,

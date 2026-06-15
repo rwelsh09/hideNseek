@@ -161,7 +161,7 @@ export const Map = ({ className }: { className?: string }) => {
                             mapGeoJSON.set(x);
                             mapGeoData = x;
                         })
-                        .catch((error) => console.log(error)),
+                        .catch(() => {}),
                     {
                         error: "Error refreshing map data",
                     },
@@ -228,9 +228,7 @@ export const Map = ({ className }: { className?: string }) => {
                     map.fitBounds(bounds as any);
                 }
             }
-        } catch (error) {
-            console.log(error);
-
+        } catch {
             isLoading.set(false);
             if (document.querySelectorAll(".Toastify__toast").length === 0) {
                 return toast.error("No solutions found / error occurred");
@@ -411,7 +409,6 @@ export const Map = ({ className }: { className?: string }) => {
                 }
             });
             if (layerCount > 1) {
-                console.log("Too many layers, refreshing...");
                 refreshQuestions(false);
             }
         }, 1000);

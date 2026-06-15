@@ -75,8 +75,7 @@ export const PlacePicker = ({
                     setResults(x);
                     setLoading(false);
                 })
-                .catch((e) => {
-                    console.log(e);
+                .catch(() => {
                     setError(true);
                     setLoading(false);
                 });
