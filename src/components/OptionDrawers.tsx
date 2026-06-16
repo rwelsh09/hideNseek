@@ -40,12 +40,7 @@ import {
     triggerLocalRefresh,
     useCustomStations,
 } from "@/lib/context";
-import {
-    cn,
-    compress,
-    decompress,
-    shareOrFallback,
-} from "@/lib/utils";
+import { cn, compress, decompress, shareOrFallback } from "@/lib/utils";
 import { questionsSchema } from "@/maps/schema";
 
 import { LatitudeLongitude } from "./LatLngPicker";
@@ -283,11 +278,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
             </Button>
             <Drawer open={isOptionsOpen} onOpenChange={setOptionsOpen}>
                 <DrawerTrigger className="w-24" asChild>
-                    <Button
-                        className="w-24 shadow-md"
-                    >
-                        Options
-                    </Button>
+                    <Button className="w-24 shadow-md">Options</Button>
                 </DrawerTrigger>
                 <DrawerContent>
                     <div className="flex flex-col items-center gap-4 mb-4">
@@ -432,7 +423,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                                 });
                                             }
                                         } else {
-                                            questions.set([...questions.get()]); 
+                                            questions.set([...questions.get()]);
                                         }
 
                                         planningModeEnabled.set(!$planningMode);
