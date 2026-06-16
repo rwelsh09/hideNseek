@@ -277,7 +277,8 @@ const SidebarTrigger = React.forwardRef<
     React.ElementRef<typeof Button>,
     React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-    const { toggleSidebar } = useStore(SidebarContext);
+    const state = useStore(SidebarContext);
+    const toggleSidebar = state.toggleSidebar;
 
     return (
         <button
@@ -305,7 +306,8 @@ const SidebarRail = React.forwardRef<
     HTMLButtonElement,
     React.ComponentProps<"button">
 >(({ className, ...props }, ref) => {
-    const { toggleSidebar } = useStore(SidebarContext);
+    const state = useStore(SidebarContext);
+    const toggleSidebar = state.toggleSidebar;
 
     return (
         <button
