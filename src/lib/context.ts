@@ -401,12 +401,12 @@ export const allowGooglePlusCodes = persistentAtom<boolean>(
 
 // --- TIME PENALTY & INFO BOARD STATE ---
 export const TIME_PENALTIES: Record<string, number> = {
-    matching: 20,
-    measuring: 20,
+    matching: 15,
+    measuring: 15,
     radar: 10,
-    tentacles: 15,
+    tentacles: 20,
     thermometer: 10,
-    photo: 15,
+    photo: 5,
 };
 
 export const penaltyMinutes = persistentAtom<number>("penaltyMinutes", 0, {
