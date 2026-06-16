@@ -1,9 +1,9 @@
 import { persistentAtom } from "@nanostores/persistent";
-import defaultStationsData from "@/data/export.json";
 import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import type { Map } from "leaflet";
 import { atom, computed, onSet } from "nanostores";
 
+import defaultStationsData from "@/data/export.json";
 import type {
     AdditionalMapGeoLocations,
     CustomStation,
@@ -400,6 +400,15 @@ export const allowGooglePlusCodes = persistentAtom<boolean>(
 );
 
 // --- TIME PENALTY & INFO BOARD STATE ---
+export const TIME_PENALTIES: Record<string, number> = {
+    matching: 20,
+    measuring: 20,
+    radar: 10,
+    tentacles: 15,
+    thermometer: 10,
+    photo: 15,
+};
+
 export const penaltyMinutes = persistentAtom<number>("penaltyMinutes", 0, {
     encode: JSON.stringify,
     decode: JSON.parse,
