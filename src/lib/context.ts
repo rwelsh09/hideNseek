@@ -428,6 +428,17 @@ export const allowGooglePlusCodes = persistentAtom<boolean>(
 );
 
 // --- TIME PENALTY & INFO BOARD STATE ---
+
+// Default time penalties for each question type
+export const QUESTION_PENALTIES: Record<string, number> = {
+    matching: 20,
+    measuring: 20,
+    radar: 15,
+    tentacles: 15,
+    thermometer: 10,
+    photo: 5,
+};
+
 export const penaltyMinutes = persistentAtom<number>("penaltyMinutes", 0, {
     encode: JSON.stringify,
     decode: JSON.parse,

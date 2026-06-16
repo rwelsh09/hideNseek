@@ -41,17 +41,8 @@ export function AddQuestionDialog() {
         let qId = type;
         let qData: any = { lat: center.lat, lng: center.lng, drag: true };
 
-        const penalties: Record<string, number> = {
-            matching: 20,
-            measuring: 20,
-            radar: 15,
-            tentacles: 15,
-            thermometer: 10,
-            photo: 5,
-        };
-
         qData.isDraft = true;
-        qData.penalty = penalties[type] || 0;
+        qData.penalty = QUESTION_PENALTIES[type] || 0;
 
         // METRIC UPDATE: Changed all unit payloads to kilometers
         if (type === "radar") {
@@ -130,8 +121,8 @@ export function AddQuestionDialog() {
                                     <h3 className="font-bold text-slate-800 uppercase leading-none text-sm sm:text-base">
                                         Matching
                                     </h3>
-                                    <span className="px-2 py-0.5 rounded-full bg-slate-700 text-red-400 text-[10px] font-bold">
-                                        +20 MIN
+                                    <span className="ml-2 px-2 py-0.5 rounded-full bg-[#334155] text-[#f87171] text-[10px] font-bold">
+                                        +{QUESTION_PENALTIES["matching"]} MIN
                                     </span>
                                 </div>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
@@ -237,8 +228,8 @@ export function AddQuestionDialog() {
                                     <h3 className="font-bold text-green-600 uppercase leading-none text-sm sm:text-base">
                                         Measuring
                                     </h3>
-                                    <span className="px-2 py-0.5 rounded-full bg-slate-700 text-red-400 text-[10px] font-bold">
-                                        +20 MIN
+                                    <span className="ml-2 px-2 py-0.5 rounded-full bg-[#334155] text-[#f87171] text-[10px] font-bold">
+                                        +{QUESTION_PENALTIES["measuring"]} MIN
                                     </span>
                                 </div>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
@@ -344,8 +335,8 @@ export function AddQuestionDialog() {
                                     <h3 className="font-bold text-orange-500 uppercase leading-none text-sm sm:text-base">
                                         Radar
                                     </h3>
-                                    <span className="px-2 py-0.5 rounded-full bg-slate-700 text-red-400 text-[10px] font-bold">
-                                        +15 MIN
+                                    <span className="ml-2 px-2 py-0.5 rounded-full bg-[#334155] text-[#f87171] text-[10px] font-bold">
+                                        +{QUESTION_PENALTIES["radar"]} MIN
                                     </span>
                                 </div>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
@@ -452,8 +443,9 @@ export function AddQuestionDialog() {
                                         <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base">
                                             Thermometer
                                         </h3>
-                                        <span className="px-2 py-0.5 rounded-full bg-slate-700 text-red-400 text-[10px] font-bold">
-                                            +10 MIN
+                                        <span className="ml-2 px-2 py-0.5 rounded-full bg-[#334155] text-[#f87171] text-[10px] font-bold">
+                                            +{QUESTION_PENALTIES["thermometer"]}{" "}
+                                            MIN
                                         </span>
                                     </div>
                                     <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
@@ -503,8 +495,9 @@ export function AddQuestionDialog() {
                                         <h3 className="font-bold text-purple-600 uppercase leading-none text-sm sm:text-base">
                                             Tentacles
                                         </h3>
-                                        <span className="px-2 py-0.5 rounded-full bg-slate-700 text-red-400 text-[10px] font-bold">
-                                            +15 MIN
+                                        <span className="ml-2 px-2 py-0.5 rounded-full bg-[#334155] text-[#f87171] text-[10px] font-bold">
+                                            +{QUESTION_PENALTIES["tentacles"]}{" "}
+                                            MIN
                                         </span>
                                     </div>
                                     <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
@@ -572,8 +565,8 @@ export function AddQuestionDialog() {
                                     <h3 className="font-bold text-sky-400 uppercase leading-none text-sm sm:text-base">
                                         Photo
                                     </h3>
-                                    <span className="px-2 py-0.5 rounded-full bg-slate-700 text-red-400 text-[10px] font-bold">
-                                        +5 MIN
+                                    <span className="ml-2 px-2 py-0.5 rounded-full bg-[#334155] text-[#f87171] text-[10px] font-bold">
+                                        +{QUESTION_PENALTIES["photo"]} MIN
                                     </span>
                                 </div>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">

@@ -331,6 +331,7 @@ export const DraggableMarkers = () => {
                                         }
                                         delete activeQuestion.data.isDraft;
                                         delete activeQuestion.data.penalty;
+                                        activeQuestion.data.drag = false;
                                         save();
                                     }
                                     closePanel();
