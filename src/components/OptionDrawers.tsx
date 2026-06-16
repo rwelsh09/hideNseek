@@ -565,6 +565,25 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     )}
                                 </SidebarMenu>
                             )}
+                            <Separator className="bg-slate-300 w-[280px]" />
+                            <div className="flex flex-row items-center gap-2">
+                                <Button
+                                    variant="destructive"
+                                    className="w-[280px]"
+                                    onClick={() => {
+                                        if (
+                                            window.confirm(
+                                                "Are you sure you want to reset everything? This will delete all saved data and settings.",
+                                            )
+                                        ) {
+                                            localStorage.clear();
+                                            window.location.reload();
+                                        }
+                                    }}
+                                >
+                                    Reset Everything
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </DrawerContent>
