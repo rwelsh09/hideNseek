@@ -12,8 +12,6 @@ import { toast } from "react-toastify";
 import {
     additionalMapGeoLocations,
     addQuestion,
-    animateMapMovements,
-    autoZoom,
     baseTileLayer,
     followMe,
     hiderMode,
@@ -35,8 +33,7 @@ import { hiderifyQuestion } from "@/maps";
 import { clearCache, determineMapBoundaries } from "@/maps/api";
 
 import { DraggableMarkers } from "./DraggableMarkers";
-import { LeafletFullScreenButton } from "./LeafletFullScreenButton";
-import { MapPrint } from "./MapPrint";
+import { LeafletActionButtons } from "./LeafletActionButtons";
 import { PolygonDraw } from "./PolygonDraw";
 
 const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
@@ -136,7 +133,7 @@ export const Map = ({ className }: { className?: string }) => {
         [],
     );
 
-    const refreshQuestions = async (focus: boolean = false) => {
+    const refreshQuestions = async () => {
         if (!map) return;
 
         if ($isLoading) return;
@@ -214,20 +211,6 @@ export const Map = ({ className }: { className?: string }) => {
             g.addTo(map);
 
             questionFinishedMapData.set(mapGeoData);
-
-            if (autoZoom.get() && focus) {
-                const bbox = turf.bbox(holedMask(mapGeoData) as any);
-                const bounds = [
-                    [bbox[1], bbox[0]],
-                    [bbox[3], bbox[2]],
-                ];
-
-                if (animateMapMovements.get()) {
-                    map.flyToBounds(bounds as any);
-                } else {
-                    map.fitBounds(bounds as any);
-                }
-            }
         } catch {
             isLoading.set(false);
             if (document.querySelectorAll(".Toastify__toast").length === 0) {
@@ -370,23 +353,11 @@ export const Map = ({ className }: { className?: string }) => {
                 <DraggableMarkers />
                 <div className="leaflet-top leaflet-right">
                     <div className="leaflet-control flex-col flex gap-2">
-                        <LeafletFullScreenButton />
+                        <LeafletActionButtons />
                     </div>
                 </div>
                 <PolygonDraw />
                 <ScaleControl position="bottomleft" />
-                <MapPrint
-                    position="topright"
-                    sizeModes={["Current", "A4Portrait", "A4Landscape"]}
-                    hideControlContainer={false}
-                    hideClasses={[
-                        "leaflet-full-screen-specific-name",
-                        "leaflet-top",
-                        "leaflet-control-easyPrint",
-                        "leaflet-draw",
-                    ]}
-                    title="Print"
-                />
             </MapContainer>
         ),
         [map, $baseTileLayer, $thunderforestApiKey],
@@ -395,7 +366,7 @@ export const Map = ({ className }: { className?: string }) => {
     useEffect(() => {
         if (!map) return;
 
-        refreshQuestions(true);
+        refreshQuestions();
     }, [$questions, map, $hiderMode]);
 
     useEffect(() => {
@@ -409,7 +380,7 @@ export const Map = ({ className }: { className?: string }) => {
                 }
             });
             if (layerCount > 1) {
-                refreshQuestions(false);
+                refreshQuestions();
             }
         }, 1000);
 
@@ -557,7 +528,7 @@ export const Map = ({ className }: { className?: string }) => {
             () => {
                 toast.error("Unable to center map on your location.");
                 fallbackToCalgary();
-            }
+            },
         );
     }, [$mapGeoLocation, map]);
 

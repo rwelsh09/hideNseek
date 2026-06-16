@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { Clock,SidebarCloseIcon } from "lucide-react";
+import { Clock, SidebarCloseIcon } from "lucide-react";
 
 import {
     Sidebar,
@@ -35,7 +35,7 @@ export const QuestionSidebar = () => {
     const $questions = useStore(questions);
     const $autoSave = useStore(autoSave);
     const $isLoading = useStore(isLoading);
-    
+
     const $penaltyMinutes = useStore(penaltyMinutes);
 
     const addTime = (mins: number) => {
@@ -45,7 +45,9 @@ export const QuestionSidebar = () => {
     return (
         <Sidebar>
             <div className="flex items-center justify-between shrink-0">
-                <h2 className="ml-4 mt-4 font-poppins text-2xl font-bold text-white">Questions</h2>
+                <h2 className="ml-4 mt-4 font-poppins text-2xl font-bold text-white">
+                    Questions
+                </h2>
                 <SidebarCloseIcon
                     className="mr-2 visible md:hidden text-white cursor-pointer"
                     onClick={() => {
@@ -53,9 +55,8 @@ export const QuestionSidebar = () => {
                     }}
                 />
             </div>
-            
+
             <SidebarContent className="px-4 pt-4 pb-2 flex flex-col gap-5 overflow-y-auto">
-                
                 {/* --- TIME PENALTY TRACKER --- */}
                 <div className="bg-slate-800 rounded-xl p-3 shadow-md border border-slate-700 flex flex-col gap-3">
                     <div className="flex justify-between items-center px-1">
@@ -64,20 +65,51 @@ export const QuestionSidebar = () => {
                             Time Penalty
                         </h3>
                         <div className="text-white font-mono font-bold text-xl">
-                            +{$penaltyMinutes} <span className="text-xs text-slate-400 font-sans">MIN</span>
+                            +{$penaltyMinutes}{" "}
+                            <span className="text-xs text-slate-400 font-sans">
+                                MIN
+                            </span>
                         </div>
                     </div>
-                    
+
                     <div className="grid grid-cols-4 gap-2">
-                        <Button variant="outline" size="sm" onClick={() => addTime(-5)} className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white h-8">-5</Button>
-                        <Button variant="outline" size="sm" onClick={() => addTime(5)} className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white h-8">+5</Button>
-                        <Button variant="outline" size="sm" onClick={() => addTime(10)} className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white h-8">+10</Button>
-                        <Button variant="outline" size="sm" onClick={() => addTime(15)} className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white h-8">+15</Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => addTime(-5)}
+                            className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white h-8"
+                        >
+                            -5
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => addTime(5)}
+                            className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white h-8"
+                        >
+                            +5
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => addTime(10)}
+                            className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white h-8"
+                        >
+                            +10
+                        </Button>
+                        <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => addTime(15)}
+                            className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white h-8"
+                        >
+                            +15
+                        </Button>
                     </div>
                 </div>
 
                 {/* --- ACTIVE MAP ZONES --- */}
-                {($questions.length > 0) && (
+                {$questions.length > 0 && (
                     <div className="flex items-center gap-2 mt-1 px-1">
                         <h3 className="text-slate-400 font-bold uppercase tracking-wider text-xs">
                             Active Map Zones
@@ -88,21 +120,51 @@ export const QuestionSidebar = () => {
                 {$questions.map((question) => {
                     switch (question.id) {
                         case "radius":
-                            return <RadiusQuestionComponent data={question.data} key={question.key} questionKey={question.key} />;
+                            return (
+                                <RadiusQuestionComponent
+                                    data={question.data}
+                                    key={question.key}
+                                    questionKey={question.key}
+                                />
+                            );
                         case "thermometer":
-                            return <ThermometerQuestionComponent data={question.data} key={question.key} questionKey={question.key} />;
+                            return (
+                                <ThermometerQuestionComponent
+                                    data={question.data}
+                                    key={question.key}
+                                    questionKey={question.key}
+                                />
+                            );
                         case "tentacles":
-                            return <TentacleQuestionComponent data={question.data} key={question.key} questionKey={question.key} />;
+                            return (
+                                <TentacleQuestionComponent
+                                    data={question.data}
+                                    key={question.key}
+                                    questionKey={question.key}
+                                />
+                            );
                         case "matching":
-                            return <MatchingQuestionComponent data={question.data} key={question.key} questionKey={question.key} />;
+                            return (
+                                <MatchingQuestionComponent
+                                    data={question.data}
+                                    key={question.key}
+                                    questionKey={question.key}
+                                />
+                            );
                         case "measuring":
-                            return <MeasuringQuestionComponent data={question.data} key={question.key} questionKey={question.key} />;
+                            return (
+                                <MeasuringQuestionComponent
+                                    data={question.data}
+                                    key={question.key}
+                                    questionKey={question.key}
+                                />
+                            );
                         default:
                             return null;
                     }
                 })}
             </SidebarContent>
-            
+
             <SidebarGroup>
                 <SidebarGroupContent>
                     <SidebarMenu>

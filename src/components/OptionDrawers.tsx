@@ -14,7 +14,6 @@ import {
     allowGooglePlusCodes,
     animateMapMovements,
     autoSave,
-    autoZoom,
     baseTileLayer,
     customInitPreference,
     customPresets,
@@ -40,12 +39,7 @@ import {
     triggerLocalRefresh,
     useCustomStations,
 } from "@/lib/context";
-import {
-    cn,
-    compress,
-    decompress,
-    shareOrFallback,
-} from "@/lib/utils";
+import { cn, compress, decompress, shareOrFallback } from "@/lib/utils";
 import { questionsSchema } from "@/maps/schema";
 
 import { LatitudeLongitude } from "./LatLngPicker";
@@ -70,7 +64,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $allowGooglePlusCodes = useStore(allowGooglePlusCodes);
     const $defaultUnit = useStore(defaultUnit);
     const $animateMapMovements = useStore(animateMapMovements);
-    const $autoZoom = useStore(autoZoom);
     const $hiderMode = useStore(hiderMode);
     const $autoSave = useStore(autoSave);
     const $hidingZone = useStore(hidingZone);
@@ -283,11 +276,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
             </Button>
             <Drawer open={isOptionsOpen} onOpenChange={setOptionsOpen}>
                 <DrawerTrigger className="w-24" asChild>
-                    <Button
-                        className="w-24 shadow-md"
-                    >
-                        Options
-                    </Button>
+                    <Button className="w-24 shadow-md">Options</Button>
                 </DrawerTrigger>
                 <DrawerContent>
                     <div className="flex flex-col items-center gap-4 mb-4">
@@ -432,7 +421,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                                 });
                                             }
                                         } else {
-                                            questions.set([...questions.get()]); 
+                                            questions.set([...questions.get()]);
                                         }
 
                                         planningModeEnabled.set(!$planningMode);
@@ -450,17 +439,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     }
                                 />
                             </div>
-                            <div className="flex flex-row items-center gap-2">
-                                <label className="text-2xl font-semibold font-poppins">
-                                    Auto zoom?
-                                </label>
-                                <Checkbox
-                                    checked={$autoZoom}
-                                    onCheckedChange={() =>
-                                        autoZoom.set(!$autoZoom)
-                                    }
-                                />
-                            </div>
+
                             <div className="flex flex-row items-center gap-2">
                                 <label className="text-2xl font-semibold font-poppins">
                                     Follow Me (GPS)?
