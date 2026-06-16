@@ -182,8 +182,8 @@ const Sidebar = React.forwardRef<
         },
         ref,
     ) => {
-        const { isMobile, state, openMobile, setOpenMobile } =
-            useStore(SidebarContext);
+        const sidebarState = useStore(SidebarContext);
+        const { isMobile, state, openMobile, setOpenMobile } = sidebarState;
 
         if (collapsible === "none") {
             return (
@@ -576,7 +576,8 @@ const SidebarMenuButton = React.forwardRef<
         ref,
     ) => {
         const Comp = asChild ? Slot : "button";
-        const { isMobile, state } = useStore(SidebarContext);
+        const sidebarState2 = useStore(SidebarContext);
+        const { isMobile, state } = sidebarState2;
 
         const button = (
             <Comp
