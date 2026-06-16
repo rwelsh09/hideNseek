@@ -526,9 +526,7 @@ export const ZoneSidebar = () => {
                                 />
                             </SidebarMenuItem>
                             {useCustomStations && (
-                                <SidebarMenuItem
-                                    className={MENU_ITEM_CLASSNAME}
-                                >
+                                <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                                     <Input
                                         type="file"
                                         accept=".json,.kml,.csv"
@@ -536,20 +534,11 @@ export const ZoneSidebar = () => {
                                             const file = e.target.files?.[0];
                                             if (file) {
                                                 try {
-                                                    const text =
-                                                        await file.text();
-                                                    const parsed =
-                                                        parseCustomStationsFromText(
-                                                            text,
-                                                            file.name,
-                                                        );
-                                                    customStationsAtom.set(
-                                                        parsed,
-                                                    );
-                                                } catch {
-                                                    toast.error(
-                                                        "Failed to parse custom stations file.",
-                                                    );
+                                                    const text = await file.text();
+                                                    const parsed = parseCustomStationsFromText(text, file.name);
+                                                    customStationsAtom.set(parsed);
+                                                } catch (err) {
+                                                    toast.error("Failed to parse custom stations file.");
                                                 }
                                             }
                                         }}

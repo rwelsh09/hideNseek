@@ -1,0 +1,62 @@
+--- src/components/ZoneSidebar.tsx
++++ src/components/ZoneSidebar.tsx
+@@ -74,6 +74,7 @@
+ import {
+     Select,
+     SelectContent,
+     SelectItem,
+     SelectTrigger,
+     SelectValue,
+ } from "./ui/select";
++import { parseCustomStationsFromText } from "@/maps/api/importers";
+
+ const MENU_ITEM_CLASSNAME =
+     "w-[90%] mx-auto flex flex-row items-center justify-between";
+@@ -413,7 +414,8 @@
+
+         if ($displayHidingZones && $questionFinishedMapData) {
+-            initializeHidingZones().catch(() => {
++            initializeHidingZones().catch((err) => {
++                console.error(err);
+                 toast.error(
+                     "An error occurred during hiding zone initialization",
+                     { toastId: "hiding-zone-initialization-error" },
+@@ -512,6 +514,38 @@
+                                 Warning: This feature can drastically slow down
+                                 your device.
+                             </SidebarMenuItem>
++                            <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
++                                <Label className="font-semibold font-poppins">
++                                    Use Custom Stations
++                                </Label>
++                                <Checkbox
++                                    defaultChecked={useCustomStations}
++                                    checked={useCustomStations}
++                                    onCheckedChange={useCustomStationsAtom.set}
++                                    disabled={$isLoading}
++                                />
++                            </SidebarMenuItem>
++                            {useCustomStations && (
++                                <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
++                                    <Input
++                                        type="file"
++                                        accept=".json,.kml,.csv"
++                                        onChange={async (e) => {
++                                            const file = e.target.files?.[0];
++                                            if (file) {
++                                                try {
++                                                    const text = await file.text();
++                                                    const parsed = parseCustomStationsFromText(text, file.name);
++                                                    customStationsAtom.set(parsed);
++                                                } catch (err) {
++                                                    toast.error("Failed to parse custom stations file.");
++                                                }
++                                            }
++                                        }}
++                                        disabled={$isLoading}
++                                    />
++                                </SidebarMenuItem>
++                            )}
+                             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
+                                 <MultiSelect
+                                     options={[
