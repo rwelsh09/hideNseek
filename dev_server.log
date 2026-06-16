@@ -1,0 +1,41 @@
+
+> Hide and Seek Map@0.0.1 dev /app
+> astro dev
+
+▶ Astro collects anonymous usage data.
+  This information helps us improve Astro.
+  Run "astro telemetry disable" to opt-out.
+  https://astro.build/telemetry
+
+01:14:22 [types] Generated 1ms
+01:14:22 [content] Syncing content
+01:14:22 [content] Synced content
+
+ astro  v5.7.13 ready in 740 ms
+
+┃ Local    http://localhost:4321/HideAndSeek
+┃ Network  use --host to expose
+
+01:14:22 watching for file changes...
+
+ update  ▶ New version of Astro available: 6.4.7
+  Run pnpm dlx @astrojs/upgrade to update
+
+Browserslist: browsers data (caniuse-lite) is 10 months old. Please run:
+  npx update-browserslist-db@latest
+  Why you should do it regularly: https://github.com/browserslist/update-db#readme
+01:16:23 [200] / 764ms
+01:16:29 [vite] ✨ new dependencies optimized: @arcgis/core/core/units.js, @arcgis/core/unionTypes.js
+01:16:29 [vite] ✨ optimized dependencies changed. reloading
+01:17:44 [200] / 42ms
+01:18:50 [200] / 36ms
+01:19:30 [200] / 26ms
+01:20:08 [200] / 26ms
+01:20:48 [200] / 27ms
+01:22:18 [200] / 28ms
+01:22:56 [200] / 24ms
+01:29:03 [200] / 26ms
+01:30:08 [200] / 32ms
+01:32:44 [200] / 25ms
+01:33:32 [200] / 25ms
+01:34:07 [200] / 24ms

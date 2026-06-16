@@ -60,7 +60,6 @@ import {
     safeUnion,
 } from "@/maps/geo-utils";
 
-import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import {
     Command,
@@ -94,7 +93,8 @@ export const ZoneSidebar = () => {
     const mergeDuplicates = useStore(mergeDuplicatesAtom);
     const includeDefaultStations = useStore(includeDefaultStationsAtom);
     const $customStations = useStore(customStationsAtom);
-    const [hidingZoneModeStationID, setHidingZoneModeStationID] = useState<string>("");
+    const [hidingZoneModeStationID, setHidingZoneModeStationID] =
+        useState<string>("");
     const [stationSearch, setStationSearch] = useState<string>("");
     const isStationSearchActive = stationSearch.trim().length > 0;
     const setStations = trainStations.set;
@@ -127,7 +127,9 @@ export const ZoneSidebar = () => {
                 ? (feature, layer) => {
                       layer.on("click", async () => {
                           if (!map) return;
-                          setHidingZoneModeStationID(feature.properties.properties.id);
+                          setHidingZoneModeStationID(
+                              feature.properties.properties.id,
+                          );
                       });
                   }
                 : undefined,
@@ -173,11 +175,15 @@ export const ZoneSidebar = () => {
             let places: StationPlace[] = [];
 
             if (!needsDefault) {
-                places = normalizeToStationFeatures($customStations).features.map((f) => ({
+                places = normalizeToStationFeatures(
+                    $customStations,
+                ).features.map((f) => ({
                     type: "Feature",
                     geometry: f.geometry,
                     properties: {
-                        id: f.properties?.id || `${(f.geometry as any).coordinates[1]},${(f.geometry as any).coordinates[0]}`,
+                        id:
+                            f.properties?.id ||
+                            `${(f.geometry as any).coordinates[1]},${(f.geometry as any).coordinates[0]}`,
                         name: f.properties?.name,
                     },
                 }));
@@ -193,14 +199,22 @@ export const ZoneSidebar = () => {
                     ),
                 ).features;
 
-                if (useCustomStations && $customStations.length > 0 && includeDefaultStations) {
-                    const customFeatures = normalizeToStationFeatures($customStations).features.map(
+                if (
+                    useCustomStations &&
+                    $customStations.length > 0 &&
+                    includeDefaultStations
+                ) {
+                    const customFeatures = normalizeToStationFeatures(
+                        $customStations,
+                    ).features.map(
                         (f) =>
                             ({
                                 type: "Feature",
                                 geometry: f.geometry,
                                 properties: {
-                                    id: f.properties?.id || `${(f.geometry as any).coordinates[1]},${(f.geometry as any).coordinates[0]}`,
+                                    id:
+                                        f.properties?.id ||
+                                        `${(f.geometry as any).coordinates[1]},${(f.geometry as any).coordinates[0]}`,
                                     name: f.properties?.name,
                                 },
                             }) as StationPlace,
@@ -209,7 +223,10 @@ export const ZoneSidebar = () => {
                     const merged: StationPlace[] = [];
                     const add = (feat: StationPlace) => {
                         const id = feat.properties.id as string | undefined;
-                        const key = id && id.includes("/") ? `id:${id}` : `pt:${feat.geometry.coordinates[1]},${feat.geometry.coordinates[0]}`;
+                        const key =
+                            id && id.includes("/")
+                                ? `id:${id}`
+                                : `pt:${feat.geometry.coordinates[1]},${feat.geometry.coordinates[0]}`;
                         if (!seen.has(key)) {
                             seen.add(key);
                             merged.push(feat);
@@ -222,7 +239,11 @@ export const ZoneSidebar = () => {
             }
 
             if (mergeDuplicates) {
-                places = mergeDuplicateStation(places, $hidingRadius, $hidingRadiusUnits);
+                places = mergeDuplicateStation(
+                    places,
+                    $hidingRadius,
+                    $hidingRadiusUnits,
+                );
             }
 
             const unionized = safeUnion(
@@ -254,41 +275,57 @@ export const ZoneSidebar = () => {
                         question.data.type === "same-length-station" ||
                         question.data.type === "same-train-line")
                 ) {
-                    const location = turf.point([question.data.lng, question.data.lat]);
+                    const location = turf.point([
+                        question.data.lng,
+                        question.data.lat,
+                    ]);
                     const nearestTrainStation = turf.nearestPoint(
                         location,
-                        turf.featureCollection(circles.map((x) => x.properties)) as any,
+                        turf.featureCollection(
+                            circles.map((x) => x.properties),
+                        ) as any,
                     );
 
                     if (question.data.type === "same-train-line") {
                         if (useCustomStations && !includeDefaultStations) {
-                            toast.warning("'Same train line' isn't supported with custom-only station lists.");
+                            toast.warning(
+                                "'Same train line' isn't supported with custom-only station lists.",
+                            );
                         } else {
-                            const nid = nearestTrainStation.properties.id as string | undefined;
+                            const nid = nearestTrainStation.properties.id as
+                                | string
+                                | undefined;
                             if (!nid || !nid.includes("/")) {
                                 continue;
                             }
                             const nodes = await trainLineNodeFinder(nid);
                             if (nodes.length > 0) {
                                 circles = circles.filter((circle) => {
-                                    const idProp = circle.properties.properties.id;
-                                    if (!idProp || !idProp.includes("/")) return false;
+                                    const idProp =
+                                        circle.properties.properties.id;
+                                    if (!idProp || !idProp.includes("/"))
+                                        return false;
                                     const id = parseInt(idProp.split("/")[1]);
-                                    return question.data.same ? nodes.includes(id) : !nodes.includes(id);
+                                    return question.data.same
+                                        ? nodes.includes(id)
+                                        : !nodes.includes(id);
                                 });
                             }
                         }
                     }
 
                     const englishName = extractStationName(nearestTrainStation);
-                    if (!englishName) return toast.error("No English name found");
+                    if (!englishName)
+                        return toast.error("No English name found");
 
                     if (question.data.type === "same-first-letter-station") {
                         const letter = englishName[0].toUpperCase();
                         circles = circles.filter((circle) => {
                             const name = extractStationName(circle.properties);
                             if (!name) return false;
-                            return question.data.same ? name[0].toUpperCase() === letter : name[0].toUpperCase() !== letter;
+                            return question.data.same
+                                ? name[0].toUpperCase() === letter
+                                : name[0].toUpperCase() !== letter;
                         });
                     } else if (question.data.type === "same-length-station") {
                         const seekerLength = englishName.length;
@@ -296,16 +333,20 @@ export const ZoneSidebar = () => {
                         circles = circles.filter((circle) => {
                             const name = extractStationName(circle.properties);
                             if (!name) return false;
-                            if (comparison === "same") return name.length === seekerLength;
-                            if (comparison === "shorter") return name.length < seekerLength;
-                            if (comparison === "longer") return name.length > seekerLength;
+                            if (comparison === "same")
+                                return name.length === seekerLength;
+                            if (comparison === "shorter")
+                                return name.length < seekerLength;
+                            if (comparison === "longer")
+                                return name.length > seekerLength;
                             return false;
                         });
                     }
                 }
                 if (
                     question.id === "measuring" &&
-                    (question.data.type === "mcdonalds" || question.data.type === "seven11")
+                    (question.data.type === "mcdonalds" ||
+                        question.data.type === "seven11")
                 ) {
                     const points = await findPlacesSpecificInZone(
                         question.data.type === "mcdonalds"
@@ -313,15 +354,30 @@ export const ZoneSidebar = () => {
                             : QuestionSpecificLocation.Seven11,
                     );
 
-                    const nearestPoint = turf.nearestPoint(turf.point([question.data.lng, question.data.lat]), points as any);
-                    const distance = turf.distance(turf.point([question.data.lng, question.data.lat]), nearestPoint as any, { units: "miles" });
+                    const nearestPoint = turf.nearestPoint(
+                        turf.point([question.data.lng, question.data.lat]),
+                        points as any,
+                    );
+                    const distance = turf.distance(
+                        turf.point([question.data.lng, question.data.lat]),
+                        nearestPoint as any,
+                        { units: "miles" },
+                    );
 
                     circles = circles.filter((circle) => {
-                        const point = turf.point(turf.getCoord(circle.properties));
+                        const point = turf.point(
+                            turf.getCoord(circle.properties),
+                        );
                         const nearest = turf.nearestPoint(point, points as any);
                         return question.data.hiderCloser
-                            ? turf.distance(point, nearest as any, { units: "miles" }) < distance + $hidingRadius
-                            : turf.distance(point, nearest as any, { units: "miles" }) > distance - $hidingRadius;
+                            ? turf.distance(point, nearest as any, {
+                                  units: "miles",
+                              }) <
+                                  distance + $hidingRadius
+                            : turf.distance(point, nearest as any, {
+                                  units: "miles",
+                              }) >
+                                  distance - $hidingRadius;
                     });
                 }
             }
@@ -332,7 +388,10 @@ export const ZoneSidebar = () => {
 
         if ($displayHidingZones && $questionFinishedMapData) {
             initializeHidingZones().catch(() => {
-                toast.error("An error occurred during hiding zone initialization", { toastId: "hiding-zone-initialization-error" });
+                toast.error(
+                    "An error occurred during hiding zone initialization",
+                    { toastId: "hiding-zone-initialization-error" },
+                );
             });
         }
     }, [
@@ -350,16 +409,33 @@ export const ZoneSidebar = () => {
         if (!map || isLoading.get()) return;
 
         if ($displayHidingZones && hidingZoneModeStationID) {
-            const hiderStation = _.find(stations, (c) => c.properties.properties.id === hidingZoneModeStationID);
+            const hiderStation = _.find(
+                stations,
+                (c) => c.properties.properties.id === hidingZoneModeStationID,
+            );
             if (hiderStation !== undefined) {
-                selectionProcess(hiderStation, map, stations, showGeoJSON, $questionFinishedMapData, $hidingRadius).catch(() => {
-                    toast.error("An error occurred during hiding zone selection", { toastId: "hiding-zone-selection-error" });
+                selectionProcess(
+                    hiderStation,
+                    map,
+                    stations,
+                    showGeoJSON,
+                    $questionFinishedMapData,
+                    $hidingRadius,
+                ).catch(() => {
+                    toast.error(
+                        "An error occurred during hiding zone selection",
+                        { toastId: "hiding-zone-selection-error" },
+                    );
                 });
             } else {
-                toast.error("Invalid hiding zone selected", { toastId: "hiding-zone-selection-error" });
+                toast.error("Invalid hiding zone selected", {
+                    toastId: "hiding-zone-selection-error",
+                });
             }
         } else if ($displayHidingZones) {
-            const activeStations = stations.filter((x) => !$disabledStations.includes(x.properties.properties.id));
+            const activeStations = stations.filter(
+                (x) => !$disabledStations.includes(x.properties.properties.id),
+            );
             showGeoJSON(
                 styleStations(activeStations, $displayHidingZonesStyle),
                 $displayHidingZonesStyle === "zones",
@@ -404,45 +480,105 @@ export const ZoneSidebar = () => {
                                     disabled={$isLoading}
                                 />
                             </SidebarMenuItem>
-                            <SidebarMenuItem className={cn(MENU_ITEM_CLASSNAME, "text-orange-500")}>
-                                Warning: This feature can drastically slow down your device.
+                            <SidebarMenuItem
+                                className={cn(
+                                    MENU_ITEM_CLASSNAME,
+                                    "text-orange-500",
+                                )}
+                            >
+                                Warning: This feature can drastically slow down
+                                your device.
                             </SidebarMenuItem>
                             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                                 <MultiSelect
                                     options={[
-                                        { label: "Railway Stations", value: "[railway=station]" },
-                                        { label: "Railway Halts", value: "[railway=halt]" },
-                                        { label: "Railway Stops", value: "[railway=stop]" },
-                                        { label: "Tram Stops", value: "[railway=tram_stop]" },
-                                        { label: "Bus Stops", value: "[highway=bus_stop]" },
-                                        { label: "Ferry Terminals", value: "[amenity=ferry_terminal]" },
-                                        { label: "Ferry Platforms (public transport)", value: "[public_transport=platform][platform=ferry]" },
-                                        { label: "Funicular Stations", value: "[railway=funicular]" },
-                                        { label: "Aerialway Stations", value: "[aerialway=station]" },
-                                        { label: "Railway Stations Excluding Subways", value: "[railway=station][subway!=yes]" },
-                                        { label: "Subway Stations", value: "[railway=station][subway=yes]" },
-                                        { label: "Light Rail Stations", value: "[railway=station][light_rail=yes]" },
-                                        { label: "Light Rail Halts", value: "[railway=halt][light_rail=yes]" },
+                                        {
+                                            label: "Railway Stations",
+                                            value: "[railway=station]",
+                                        },
+                                        {
+                                            label: "Railway Halts",
+                                            value: "[railway=halt]",
+                                        },
+                                        {
+                                            label: "Railway Stops",
+                                            value: "[railway=stop]",
+                                        },
+                                        {
+                                            label: "Tram Stops",
+                                            value: "[railway=tram_stop]",
+                                        },
+                                        {
+                                            label: "Bus Stops",
+                                            value: "[highway=bus_stop]",
+                                        },
+                                        {
+                                            label: "Ferry Terminals",
+                                            value: "[amenity=ferry_terminal]",
+                                        },
+                                        {
+                                            label: "Ferry Platforms (public transport)",
+                                            value: "[public_transport=platform][platform=ferry]",
+                                        },
+                                        {
+                                            label: "Funicular Stations",
+                                            value: "[railway=funicular]",
+                                        },
+                                        {
+                                            label: "Aerialway Stations",
+                                            value: "[aerialway=station]",
+                                        },
+                                        {
+                                            label: "Railway Stations Excluding Subways",
+                                            value: "[railway=station][subway!=yes]",
+                                        },
+                                        {
+                                            label: "Subway Stations",
+                                            value: "[railway=station][subway=yes]",
+                                        },
+                                        {
+                                            label: "Light Rail Stations",
+                                            value: "[railway=station][light_rail=yes]",
+                                        },
+                                        {
+                                            label: "Light Rail Halts",
+                                            value: "[railway=halt][light_rail=yes]",
+                                        },
                                     ]}
-                                    onValueChange={displayHidingZonesOptions.set}
+                                    onValueChange={
+                                        displayHidingZonesOptions.set
+                                    }
                                     defaultValue={$displayHidingZonesOptions}
                                     placeholder="Select allowed places"
                                     animation={2}
                                     maxCount={3}
                                     modalPopover
                                     className="!bg-popover bg-opacity-100"
-                                    disabled={$isLoading || (useCustomStations && !includeDefaultStations)}
+                                    disabled={
+                                        $isLoading ||
+                                        (useCustomStations &&
+                                            !includeDefaultStations)
+                                    }
                                 />
                             </SidebarMenuItem>
                             <SidebarMenuItem>
-                                <Label className="font-semibold font-poppins ml-2">Hiding Zone Radius</Label>
-                                <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-row")}>
+                                <Label className="font-semibold font-poppins ml-2">
+                                    Hiding Zone Radius
+                                </Label>
+                                <div
+                                    className={cn(
+                                        MENU_ITEM_CLASSNAME,
+                                        "gap-2 flex flex-row",
+                                    )}
+                                >
                                     <Input
                                         type="number"
                                         className="rounded-md p-2 w-16"
                                         value={$hidingRadius}
                                         onChange={(e) => {
-                                            hidingRadius.set(parseFloat(e.target.value));
+                                            hidingRadius.set(
+                                                parseFloat(e.target.value),
+                                            );
                                         }}
                                         disabled={$isLoading}
                                     />
@@ -460,7 +596,9 @@ export const ZoneSidebar = () => {
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         setHidingZoneModeStationID("");
-                                        displayHidingZonesStyle.set("no-display");
+                                        displayHidingZonesStyle.set(
+                                            "no-display",
+                                        );
                                     }}
                                     disabled={$isLoading}
                                 >
@@ -496,7 +634,9 @@ export const ZoneSidebar = () => {
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         setHidingZoneModeStationID("");
-                                        displayHidingZonesStyle.set("no-overlap");
+                                        displayHidingZonesStyle.set(
+                                            "no-overlap",
+                                        );
                                     }}
                                     disabled={$isLoading}
                                 >
@@ -505,42 +645,67 @@ export const ZoneSidebar = () => {
                             )}
                             {$displayHidingZones && hidingZoneModeStationID && (
                                 <SidebarMenuItem
-                                    className={cn(MENU_ITEM_CLASSNAME, "bg-popover hover:bg-accent")}
+                                    className={cn(
+                                        MENU_ITEM_CLASSNAME,
+                                        "bg-popover hover:bg-accent",
+                                    )}
                                     disabled={$isLoading}
                                 >
                                     Current:{" "}
                                     {(() => {
-                                        const selected = stations.find((x) => x.properties.properties.id === hidingZoneModeStationID);
-                                        const displayName = extractStationLabel(selected?.properties);
-                                        const id = selected?.properties.properties.id as string;
-                                        const coords = selected?.properties.geometry.coordinates as [number, number];
+                                        const selected = stations.find(
+                                            (x) =>
+                                                x.properties.properties.id ===
+                                                hidingZoneModeStationID,
+                                        );
+                                        const displayName = extractStationLabel(
+                                            selected?.properties,
+                                        );
+                                        const id = selected?.properties
+                                            .properties.id as string;
+                                        const coords = selected?.properties
+                                            .geometry.coordinates as [
+                                            number,
+                                            number,
+                                        ];
                                         const href = id?.includes("/")
                                             ? `https://www.openstreetmap.org/${id}`
                                             : `https://www.openstreetmap.org/?mlat=${coords[1]}&mlon=${coords[0]}#map=17/${coords[1]}/${coords[0]}`;
                                         return (
-                                            <a href={href} target="_blank" rel="noreferrer" className="text-blue-500">
+                                            <a
+                                                href={href}
+                                                target="_blank"
+                                                rel="noreferrer"
+                                                className="text-blue-500"
+                                            >
                                                 {displayName}
                                             </a>
                                         );
                                     })()}
                                 </SidebarMenuItem>
                             )}
-                            {$displayHidingZones && $disabledStations.length > 0 && (
-                                <SidebarMenuItem
-                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                    onClick={() => {
-                                        disabledStations.set([]);
-                                    }}
-                                    disabled={$isLoading}
-                                >
-                                    Clear Disabled
-                                </SidebarMenuItem>
-                            )}
+                            {$displayHidingZones &&
+                                $disabledStations.length > 0 && (
+                                    <SidebarMenuItem
+                                        className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                        onClick={() => {
+                                            disabledStations.set([]);
+                                        }}
+                                        disabled={$isLoading}
+                                    >
+                                        Clear Disabled
+                                    </SidebarMenuItem>
+                                )}
                             {$displayHidingZones && (
                                 <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
-                                        disabledStations.set(stations.map((x) => x.properties.properties.id));
+                                        disabledStations.set(
+                                            stations.map(
+                                                (x) =>
+                                                    x.properties.properties.id,
+                                            ),
+                                        );
                                     }}
                                     disabled={$isLoading}
                                 >
@@ -549,7 +714,11 @@ export const ZoneSidebar = () => {
                             )}
                             {$displayHidingZones && (
                                 <Command
-                                    key={isStationSearchActive ? "station-search-active" : "station-search-idle"}
+                                    key={
+                                        isStationSearchActive
+                                            ? "station-search-active"
+                                            : "station-search-idle"
+                                    }
                                     shouldFilter={isStationSearchActive}
                                 >
                                     <CommandInput
@@ -559,38 +728,90 @@ export const ZoneSidebar = () => {
                                         disabled={$isLoading}
                                     />
                                     <CommandList className="max-h-full">
-                                        <CommandEmpty>No hiding zones found.</CommandEmpty>
+                                        <CommandEmpty>
+                                            No hiding zones found.
+                                        </CommandEmpty>
                                         <CommandGroup>
                                             {stations.map((station) => (
                                                 <CommandItem
-                                                    key={station.properties.properties.id}
-                                                    data-station-id={station.properties.properties.id}
-                                                    className={cn($disabledStations.includes(station.properties.properties.id) && "line-through")}
+                                                    key={
+                                                        station.properties
+                                                            .properties.id
+                                                    }
+                                                    data-station-id={
+                                                        station.properties
+                                                            .properties.id
+                                                    }
+                                                    className={cn(
+                                                        $disabledStations.includes(
+                                                            station.properties
+                                                                .properties.id,
+                                                        ) && "line-through",
+                                                    )}
                                                     onSelect={async () => {
                                                         if (!map) return;
                                                         setTimeout(() => {
-                                                            if (buttonJustClicked) {
-                                                                buttonJustClicked = false;
+                                                            if (
+                                                                buttonJustClicked
+                                                            ) {
+                                                                buttonJustClicked =
+                                                                    false;
                                                                 return;
                                                             }
-                                                            if ($disabledStations.includes(station.properties.properties.id)) {
-                                                                disabledStations.set([
-                                                                    ...$disabledStations.filter((x) => x !== station.properties.properties.id),
-                                                                ]);
+                                                            if (
+                                                                $disabledStations.includes(
+                                                                    station
+                                                                        .properties
+                                                                        .properties
+                                                                        .id,
+                                                                )
+                                                            ) {
+                                                                disabledStations.set(
+                                                                    [
+                                                                        ...$disabledStations.filter(
+                                                                            (
+                                                                                x,
+                                                                            ) =>
+                                                                                x !==
+                                                                                station
+                                                                                    .properties
+                                                                                    .properties
+                                                                                    .id,
+                                                                        ),
+                                                                    ],
+                                                                );
                                                             } else {
-                                                                disabledStations.set([...$disabledStations, station.properties.properties.id]);
+                                                                disabledStations.set(
+                                                                    [
+                                                                        ...$disabledStations,
+                                                                        station
+                                                                            .properties
+                                                                            .properties
+                                                                            .id,
+                                                                    ],
+                                                                );
                                                             }
-                                                            setStations([...stations]);
+                                                            setStations([
+                                                                ...stations,
+                                                            ]);
                                                         }, 100);
                                                     }}
                                                     disabled={$isLoading}
                                                 >
-                                                    {extractStationLabel(station.properties)}
+                                                    {extractStationLabel(
+                                                        station.properties,
+                                                    )}
                                                     <button
                                                         onClick={async () => {
                                                             if (!map) return;
-                                                            buttonJustClicked = true;
-                                                            setHidingZoneModeStationID(station.properties.properties.id);
+                                                            buttonJustClicked =
+                                                                true;
+                                                            setHidingZoneModeStationID(
+                                                                station
+                                                                    .properties
+                                                                    .properties
+                                                                    .id,
+                                                            );
                                                         }}
                                                         className="bg-slate-600 p-0.5 rounded-md"
                                                         disabled={$isLoading}
@@ -642,7 +863,12 @@ async function selectionProcess(
     ];
 
     let mapData: any = turf.featureCollection([
-        safeUnion(turf.featureCollection([...$questionFinishedMapData.features, turf.mask(station)])),
+        safeUnion(
+            turf.featureCollection([
+                ...$questionFinishedMapData.features,
+                turf.mask(station),
+            ]),
+        ),
     ]);
 
     for (const question of questions.get()) {
@@ -685,7 +911,11 @@ async function selectionProcess(
 
                 const distances: any[] = instances.features.map((x: any) => {
                     return {
-                        distance: turf.distance(turf.point(turf.getCoord(x)), station.properties, { units: "miles" }),
+                        distance: turf.distance(
+                            turf.point(turf.getCoord(x)),
+                            station.properties,
+                            { units: "miles" },
+                        ),
                         point: x,
                     };
                 });
@@ -703,15 +933,25 @@ async function selectionProcess(
 
                 nearestPoints.push(
                     ...distances
-                        .filter((x) => x.distance < minimumPoint.distance + $hidingRadius * 2 && x.point.properties.name)
+                        .filter(
+                            (x) =>
+                                x.distance <
+                                    minimumPoint.distance + $hidingRadius * 2 &&
+                                x.point.properties.name,
+                        )
                         .map((x) => x.point),
                 );
             }
 
             if (question.id === "matching") {
-                const voronoi = geoSpatialVoronoi(turf.featureCollection(nearestPoints));
+                const voronoi = geoSpatialVoronoi(
+                    turf.featureCollection(nearestPoints),
+                );
                 const correctPolygon = voronoi.features.find((feature: any) => {
-                    return feature.properties.site.properties.name === nearestQuestion.properties.name;
+                    return (
+                        feature.properties.site.properties.name ===
+                        nearestQuestion.properties.name
+                    );
                 });
 
                 if (!correctPolygon) {
@@ -720,51 +960,117 @@ async function selectionProcess(
                 }
 
                 if (question.data.same) {
-                    mapData = safeUnion(turf.featureCollection([...mapData.features, turf.mask(correctPolygon)]));
+                    mapData = safeUnion(
+                        turf.featureCollection([
+                            ...mapData.features,
+                            turf.mask(correctPolygon),
+                        ]),
+                    );
                 } else {
-                    mapData = safeUnion(turf.featureCollection([...mapData.features, correctPolygon]));
+                    mapData = safeUnion(
+                        turf.featureCollection([
+                            ...mapData.features,
+                            correctPolygon,
+                        ]),
+                    );
                 }
             } else {
-                const circles = nearestPoints.map((x) => turf.circle(turf.getCoord(x), nearestQuestion.properties.distanceToPoint));
+                const circles = nearestPoints.map((x) =>
+                    turf.circle(
+                        turf.getCoord(x),
+                        nearestQuestion.properties.distanceToPoint,
+                    ),
+                );
                 if (question.data.hiderCloser) {
-                    mapData = safeUnion(turf.featureCollection([...mapData.features, holedMask(turf.featureCollection(circles))]));
+                    mapData = safeUnion(
+                        turf.featureCollection([
+                            ...mapData.features,
+                            holedMask(turf.featureCollection(circles)),
+                        ]),
+                    );
                 } else {
-                    mapData = safeUnion(turf.featureCollection([...mapData.features, ...circles]));
+                    mapData = safeUnion(
+                        turf.featureCollection([
+                            ...mapData.features,
+                            ...circles,
+                        ]),
+                    );
                 }
             }
         }
-        if (question.id === "measuring" && question.data.type === "rail-measure") {
+        if (
+            question.id === "measuring" &&
+            question.data.type === "rail-measure"
+        ) {
             const location = turf.point([question.data.lng, question.data.lat]);
-            const nearestTrainStation = turf.nearestPoint(location, turf.featureCollection(stations.map((x) => x.properties.geometry)));
+            const nearestTrainStation = turf.nearestPoint(
+                location,
+                turf.featureCollection(
+                    stations.map((x) => x.properties.geometry),
+                ),
+            );
             const distance = turf.distance(location, nearestTrainStation);
 
             const circles = stations
-                .filter((x) => turf.distance(station.properties.geometry, x.properties.geometry) < distance + 1.61 * $hidingRadius)
+                .filter(
+                    (x) =>
+                        turf.distance(
+                            station.properties.geometry,
+                            x.properties.geometry,
+                        ) <
+                        distance + 1.61 * $hidingRadius,
+                )
                 .map((x) => turf.circle(x.properties.geometry, distance));
 
             if (question.data.hiderCloser) {
-                mapData = safeUnion(turf.featureCollection([...mapData.features, holedMask(turf.featureCollection(circles))]));
+                mapData = safeUnion(
+                    turf.featureCollection([
+                        ...mapData.features,
+                        holedMask(turf.featureCollection(circles)),
+                    ]),
+                );
             } else {
-                mapData = safeUnion(turf.featureCollection([...mapData.features, ...circles]));
+                mapData = safeUnion(
+                    turf.featureCollection([...mapData.features, ...circles]),
+                );
             }
         }
-        if (question.id === "measuring" && (question.data.type === "mcdonalds" || question.data.type === "seven11")) {
+        if (
+            question.id === "measuring" &&
+            (question.data.type === "mcdonalds" ||
+                question.data.type === "seven11")
+        ) {
             const points = await findPlacesSpecificInZone(
-                question.data.type === "mcdonalds" ? QuestionSpecificLocation.McDonalds : QuestionSpecificLocation.Seven11,
+                question.data.type === "mcdonalds"
+                    ? QuestionSpecificLocation.McDonalds
+                    : QuestionSpecificLocation.Seven11,
             );
             const seeker = turf.point([question.data.lng, question.data.lat]);
             const nearest = turf.nearestPoint(seeker, points as any);
             const distance = turf.distance(seeker, nearest, { units: "miles" });
 
             const filtered = points.features.filter(
-                (x) => turf.distance(x as any, station.properties.geometry, { units: "miles" }) < distance + $hidingRadius,
+                (x) =>
+                    turf.distance(x as any, station.properties.geometry, {
+                        units: "miles",
+                    }) <
+                    distance + $hidingRadius,
             );
-            const circles = filtered.map((x) => turf.circle(x as any, distance, { units: "miles" }));
+            const circles = filtered.map((x) =>
+                turf.circle(x as any, distance, { units: "miles" }),
+            );
 
             if (question.data.hiderCloser) {
-                mapData = safeUnion(turf.featureCollection([...mapData.features, holedMask(turf.featureCollection(circles))]));
+                mapData = safeUnion(
+                    turf.featureCollection([
+                        ...mapData.features,
+                        holedMask(turf.featureCollection(circles)),
+                    ]),
+                );
             } else {
-                mapData = safeUnion(turf.featureCollection([...mapData.features, ...circles]));
+                mapData = safeUnion(
+                    turf.featureCollection([...mapData.features, ...circles]),
+                );
             }
         }
 
@@ -774,7 +1080,9 @@ async function selectionProcess(
     }
 
     if (_.isEqual(mapData, BLANK_GEOJSON)) {
-        toast.warning("The hider cannot be in this hiding zone. This wasn't eliminated on the sidebar as its absence was caused by multiple criteria.");
+        toast.warning(
+            "The hider cannot be in this hiding zone. This wasn't eliminated on the sidebar as its absence was caused by multiple criteria.",
+        );
     }
 
     showGeoJSON(mapData);
@@ -787,7 +1095,9 @@ async function selectionProcess(
         }
     }
 
-    const element: HTMLDivElement | null = document.querySelector(`[data-station-id="${station.properties.properties.id}"]`);
+    const element: HTMLDivElement | null = document.querySelector(
+        `[data-station-id="${station.properties.properties.id}"]`,
+    );
     if (element) {
         element.scrollIntoView({ behavior: "smooth", block: "center" });
         element.classList.add("selected-card-background-temporary");

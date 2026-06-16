@@ -557,7 +557,7 @@ export const Map = ({ className }: { className?: string }) => {
             () => {
                 toast.error("Unable to center map on your location.");
                 fallbackToCalgary();
-            }
+            },
         );
     }, [$mapGeoLocation, map]);
 
