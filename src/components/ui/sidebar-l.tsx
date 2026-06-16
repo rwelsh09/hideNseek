@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
-import { atom } from "nanostores";
+import { map } from "nanostores";
 import * as React from "react";
 import { TbMessage2Question } from "react-icons/tb";
 
@@ -38,7 +38,7 @@ type SidebarContextType = {
     toggleSidebar: () => void;
 };
 
-export const SidebarContext = atom<SidebarContextType>({
+export const SidebarContext = map<SidebarContextType>({
     state: "expanded",
     open: true,
     setOpen: () => {},
@@ -182,8 +182,8 @@ const Sidebar = React.forwardRef<
         },
         ref,
     ) => {
-        const sidebarState = useStore(SidebarContext);
-        const { isMobile, state, openMobile, setOpenMobile } = sidebarState;
+        const { isMobile, state, openMobile, setOpenMobile } =
+            useStore(SidebarContext);
 
         if (collapsible === "none") {
             return (
@@ -277,8 +277,7 @@ const SidebarTrigger = React.forwardRef<
     React.ElementRef<typeof Button>,
     React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-    const state = useStore(SidebarContext);
-    const toggleSidebar = state.toggleSidebar;
+    const { toggleSidebar } = useStore(SidebarContext);
 
     return (
         <button
@@ -306,8 +305,7 @@ const SidebarRail = React.forwardRef<
     HTMLButtonElement,
     React.ComponentProps<"button">
 >(({ className, ...props }, ref) => {
-    const state = useStore(SidebarContext);
-    const toggleSidebar = state.toggleSidebar;
+    const { toggleSidebar } = useStore(SidebarContext);
 
     return (
         <button
@@ -576,8 +574,7 @@ const SidebarMenuButton = React.forwardRef<
         ref,
     ) => {
         const Comp = asChild ? Slot : "button";
-        const sidebarState2 = useStore(SidebarContext);
-        const { isMobile, state } = sidebarState2;
+        const { isMobile, state } = useStore(SidebarContext);
 
         const button = (
             <Comp
