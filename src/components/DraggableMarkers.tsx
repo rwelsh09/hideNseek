@@ -117,7 +117,10 @@ export const DraggableMarkers = () => {
     };
 
     const lockInQuestion = () => {
-        if (!activeQuestion) return;
+        if (!activeQuestion) {
+            editingQuestionId.set(null);
+            return;
+        }
 
         if (draftQuestionId.get() === activeQuestion.key) {
             // It's a draft! Lock it in.
