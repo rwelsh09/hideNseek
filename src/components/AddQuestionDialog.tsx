@@ -17,9 +17,13 @@ import {
 import { useState } from "react";
 
 import { SidebarContext } from "@/components/ui/sidebar-l";
-import { addQuestion, leafletMapContext } from "@/lib/context";
+import { addQuestion, leafletMapContext, TIME_PENALTIES } from "@/lib/context";
 
-import { editingQuestionId } from "./DraggableMarkers";
+import {
+    draftQuestionId,
+    draftQuestionType,
+    editingQuestionId,
+} from "./DraggableMarkers";
 import { Button } from "./ui/button";
 import {
     Dialog,
@@ -83,6 +87,8 @@ export function AddQuestionDialog() {
 
         // Trigger the floating panel to open in DraggableMarkers
         editingQuestionId.set(key);
+        draftQuestionId.set(key);
+        draftQuestionType.set(type);
 
         // Close this grid menu instantly
         setOpen(false);
@@ -114,8 +120,11 @@ export function AddQuestionDialog() {
                                 <MapIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-slate-800 uppercase leading-none text-sm sm:text-base">
-                                    Matching
+                                <h3 className="font-bold text-slate-800 uppercase leading-none text-sm sm:text-base flex items-center">
+                                    Matching{" "}
+                                    <span className="ml-2 bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                        +{TIME_PENALTIES.matching}
+                                    </span>
                                 </h3>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                     Draw 3, Pick 1
@@ -216,8 +225,11 @@ export function AddQuestionDialog() {
                                 <Ruler className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-green-600 uppercase leading-none text-sm sm:text-base">
-                                    Measuring
+                                <h3 className="font-bold text-green-600 uppercase leading-none text-sm sm:text-base flex items-center">
+                                    Measuring{" "}
+                                    <span className="ml-2 bg-green-100 text-green-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                        +{TIME_PENALTIES.measuring}
+                                    </span>
                                 </h3>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                     Draw 3, Pick 1
@@ -318,8 +330,11 @@ export function AddQuestionDialog() {
                                 <Target className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-orange-500 uppercase leading-none text-sm sm:text-base">
-                                    Radar
+                                <h3 className="font-bold text-orange-500 uppercase leading-none text-sm sm:text-base flex items-center">
+                                    Radar{" "}
+                                    <span className="ml-2 bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                        +{TIME_PENALTIES.radar}
+                                    </span>
                                 </h3>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                     Draw 2, Pick 1
@@ -421,8 +436,11 @@ export function AddQuestionDialog() {
                                     <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base">
-                                        Thermometer
+                                    <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base flex items-center">
+                                        Thermometer{" "}
+                                        <span className="ml-2 bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                            +{TIME_PENALTIES.thermometer}
+                                        </span>
                                     </h3>
                                     <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                         Draw 2, Pick 1
@@ -467,8 +485,11 @@ export function AddQuestionDialog() {
                                     <Network className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-purple-600 uppercase leading-none text-sm sm:text-base">
-                                        Tentacles
+                                    <h3 className="font-bold text-purple-600 uppercase leading-none text-sm sm:text-base flex items-center">
+                                        Tentacles{" "}
+                                        <span className="ml-2 bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                            +{TIME_PENALTIES.tentacles}
+                                        </span>
                                     </h3>
                                     <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                         Draw 4, Pick 2
@@ -531,8 +552,11 @@ export function AddQuestionDialog() {
                                 <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-sky-400 uppercase leading-none text-sm sm:text-base">
-                                    Photo
+                                <h3 className="font-bold text-sky-400 uppercase leading-none text-sm sm:text-base flex items-center">
+                                    Photo{" "}
+                                    <span className="ml-2 bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                        +{TIME_PENALTIES.photo}
+                                    </span>
                                 </h3>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                     Draw 1
