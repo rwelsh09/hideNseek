@@ -18,8 +18,6 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar-r";
 import {
-    animateMapMovements,
-    autoZoom,
     customStations as customStationsAtom,
     disabledStations,
     displayHidingZones,
@@ -856,12 +854,6 @@ async function selectionProcess(
     $questionFinishedMapData: any,
     $hidingRadius: number,
 ) {
-    const bbox = turf.bbox(station);
-    const bounds: [[number, number], [number, number]] = [
-        [bbox[1], bbox[0]],
-        [bbox[3], bbox[2]],
-    ];
-
     let mapData: any = turf.featureCollection([
         safeUnion(
             turf.featureCollection([
@@ -1086,14 +1078,6 @@ async function selectionProcess(
     }
 
     showGeoJSON(mapData);
-
-    if (autoZoom.get()) {
-        if (animateMapMovements.get()) {
-            map?.flyToBounds(bounds);
-        } else {
-            map?.fitBounds(bounds);
-        }
-    }
 
     const element: HTMLDivElement | null = document.querySelector(
         `[data-station-id="${station.properties.properties.id}"]`,
