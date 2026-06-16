@@ -10,6 +10,7 @@ import { Marker } from "react-leaflet";
 import {
     autoSave,
     hiderMode,
+    penaltyMinutes,
     questionModified,
     questions,
     save,
@@ -215,7 +216,18 @@ export const DraggableMarkers = () => {
                             <Button
                                 variant="ghost"
                                 size="sm"
-                                onClick={closePanel}
+                                onClick={() => {
+                                    if (
+                                        activeQuestion &&
+                                        activeQuestion.data.isDraft
+                                    ) {
+                                        const newQuestions = $questions.filter(
+                                            (q) => q.key !== activeQuestion.key,
+                                        );
+                                        questions.set(newQuestions);
+                                    }
+                                    closePanel();
+                                }}
                                 className="text-slate-300 hover:bg-slate-800 hover:text-white h-8 w-8 p-0 rounded-full"
                             >
                                 <X className="w-4 h-4" />
@@ -305,7 +317,24 @@ export const DraggableMarkers = () => {
                         <div className="p-4 bg-slate-900 border-t border-slate-800 shrink-0 flex gap-3 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.2)]">
                             <Button
                                 type="button"
-                                onClick={closePanel}
+                                onClick={() => {
+                                    if (
+                                        activeQuestion &&
+                                        activeQuestion.data.isDraft
+                                    ) {
+                                        const penalty =
+                                            activeQuestion.data.penalty || 0;
+                                        if (penalty > 0) {
+                                            penaltyMinutes.set(
+                                                penaltyMinutes.get() + penalty,
+                                            );
+                                        }
+                                        delete activeQuestion.data.isDraft;
+                                        delete activeQuestion.data.penalty;
+                                        save();
+                                    }
+                                    closePanel();
+                                }}
                                 size="lg"
                                 className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-base shadow-md hover:shadow-lg transition-all"
                             >

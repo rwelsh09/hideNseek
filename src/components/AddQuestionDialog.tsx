@@ -41,6 +41,18 @@ export function AddQuestionDialog() {
         let qId = type;
         let qData: any = { lat: center.lat, lng: center.lng, drag: true };
 
+        const penalties: Record<string, number> = {
+            matching: 20,
+            measuring: 20,
+            radar: 15,
+            tentacles: 15,
+            thermometer: 10,
+            photo: 5,
+        };
+
+        qData.isDraft = true;
+        qData.penalty = penalties[type] || 0;
+
         // METRIC UPDATE: Changed all unit payloads to kilometers
         if (type === "radar") {
             qId = "radius";
@@ -114,9 +126,14 @@ export function AddQuestionDialog() {
                                 <MapIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-slate-800 uppercase leading-none text-sm sm:text-base">
-                                    Matching
-                                </h3>
+                                <div className="flex items-center gap-2">
+                                    <h3 className="font-bold text-slate-800 uppercase leading-none text-sm sm:text-base">
+                                        Matching
+                                    </h3>
+                                    <span className="px-2 py-0.5 rounded-full bg-slate-700 text-red-400 text-[10px] font-bold">
+                                        +20 MIN
+                                    </span>
+                                </div>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                     Draw 3, Pick 1
                                 </span>
@@ -216,9 +233,14 @@ export function AddQuestionDialog() {
                                 <Ruler className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-green-600 uppercase leading-none text-sm sm:text-base">
-                                    Measuring
-                                </h3>
+                                <div className="flex items-center gap-2">
+                                    <h3 className="font-bold text-green-600 uppercase leading-none text-sm sm:text-base">
+                                        Measuring
+                                    </h3>
+                                    <span className="px-2 py-0.5 rounded-full bg-slate-700 text-red-400 text-[10px] font-bold">
+                                        +20 MIN
+                                    </span>
+                                </div>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                     Draw 3, Pick 1
                                 </span>
@@ -318,9 +340,14 @@ export function AddQuestionDialog() {
                                 <Target className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-orange-500 uppercase leading-none text-sm sm:text-base">
-                                    Radar
-                                </h3>
+                                <div className="flex items-center gap-2">
+                                    <h3 className="font-bold text-orange-500 uppercase leading-none text-sm sm:text-base">
+                                        Radar
+                                    </h3>
+                                    <span className="px-2 py-0.5 rounded-full bg-slate-700 text-red-400 text-[10px] font-bold">
+                                        +15 MIN
+                                    </span>
+                                </div>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                     Draw 2, Pick 1
                                 </span>
@@ -421,9 +448,14 @@ export function AddQuestionDialog() {
                                     <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base">
-                                        Thermometer
-                                    </h3>
+                                    <div className="flex items-center gap-2">
+                                        <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base">
+                                            Thermometer
+                                        </h3>
+                                        <span className="px-2 py-0.5 rounded-full bg-slate-700 text-red-400 text-[10px] font-bold">
+                                            +10 MIN
+                                        </span>
+                                    </div>
                                     <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                         Draw 2, Pick 1
                                     </span>
@@ -467,9 +499,14 @@ export function AddQuestionDialog() {
                                     <Network className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-purple-600 uppercase leading-none text-sm sm:text-base">
-                                        Tentacles
-                                    </h3>
+                                    <div className="flex items-center gap-2">
+                                        <h3 className="font-bold text-purple-600 uppercase leading-none text-sm sm:text-base">
+                                            Tentacles
+                                        </h3>
+                                        <span className="px-2 py-0.5 rounded-full bg-slate-700 text-red-400 text-[10px] font-bold">
+                                            +15 MIN
+                                        </span>
+                                    </div>
                                     <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                         Draw 4, Pick 2
                                     </span>
@@ -531,9 +568,14 @@ export function AddQuestionDialog() {
                                 <Camera className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-sky-400 uppercase leading-none text-sm sm:text-base">
-                                    Photo
-                                </h3>
+                                <div className="flex items-center gap-2">
+                                    <h3 className="font-bold text-sky-400 uppercase leading-none text-sm sm:text-base">
+                                        Photo
+                                    </h3>
+                                    <span className="px-2 py-0.5 rounded-full bg-slate-700 text-red-400 text-[10px] font-bold">
+                                        +5 MIN
+                                    </span>
+                                </div>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                     Draw 1
                                 </span>
