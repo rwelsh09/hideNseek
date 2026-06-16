@@ -1,4 +1,5 @@
 import { persistentAtom } from "@nanostores/persistent";
+import defaultStationsData from "@/data/export.json";
 import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import type { Map } from "leaflet";
 import { atom, computed, onSet } from "nanostores";
@@ -139,43 +140,14 @@ export const useCustomStations = persistentAtom<boolean>(
 );
 export const customStations = persistentAtom<CustomStation[]>(
     "customStations",
-    [
-        {
-            type: "Feature",
-            geometry: { type: "Point", coordinates: [-114.2384, 51.1345] },
-            properties: { id: "tuscany", name: "Tuscany" },
+    defaultStationsData.features.map((feature: any) => ({
+        type: feature.type,
+        geometry: feature.geometry,
+        properties: {
+            id: feature.properties?.["@id"] || feature.id,
+            name: feature.properties?.name,
         },
-        {
-            type: "Feature",
-            geometry: { type: "Point", coordinates: [-114.1481, 51.0851] },
-            properties: { id: "dalhousie", name: "Dalhousie" },
-        },
-        {
-            type: "Feature",
-            geometry: { type: "Point", coordinates: [-114.0625, 51.0458] },
-            properties: { id: "city_hall", name: "City Hall" },
-        },
-        {
-            type: "Feature",
-            geometry: { type: "Point", coordinates: [-114.0724, 50.9856] },
-            properties: { id: "chinook", name: "Chinook" },
-        },
-        {
-            type: "Feature",
-            geometry: { type: "Point", coordinates: [-114.0674, 50.8872] },
-            properties: { id: "somerset", name: "Somerset - Bridlewood" },
-        },
-        {
-            type: "Feature",
-            geometry: { type: "Point", coordinates: [-114.1866, 51.0378] },
-            properties: { id: "69_st", name: "69 Street" },
-        },
-        {
-            type: "Feature",
-            geometry: { type: "Point", coordinates: [-113.9482, 51.1235] },
-            properties: { id: "saddletowne", name: "Saddletowne" },
-        },
-    ],
+    })) as any[],
     {
         encode: JSON.stringify,
         decode: JSON.parse,
