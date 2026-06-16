@@ -239,9 +239,7 @@ export const findPlacesInZone = async (
 [out:json]${timeoutDuration != 0 ? `[timeout:${timeoutDuration}]` : ""};
 (
 ${searchType}${filter}(poly:"${turf
-            .getCoords($polyGeoJSON.features)
-            .flatMap((polygon) => polygon.geometry.coordinates)
-            .flat()
+            .coordAll($polyGeoJSON)
             .map((coord) => [coord[1], coord[0]].join(" "))
             .join(" ")}");
 ${
@@ -250,9 +248,7 @@ ${
               .map(
                   (alternative) =>
                       `${searchType}${alternative}(poly:"${turf
-                          .getCoords($polyGeoJSON.features)
-                          .flatMap((polygon) => polygon.geometry.coordinates)
-                          .flat()
+                          .coordAll($polyGeoJSON)
                           .map((coord) => [coord[1], coord[0]].join(" "))
                           .join(" ")}");`,
               )

@@ -331,7 +331,7 @@ export const ZoneSidebar = () => {
         };
 
         if ($displayHidingZones && $questionFinishedMapData) {
-            initializeHidingZones().catch(() => {
+            initializeHidingZones().catch((e) => { console.error(e); isLoading.set(false);
                 toast.error("An error occurred during hiding zone initialization", { toastId: "hiding-zone-initialization-error" });
             });
         }
@@ -352,7 +352,7 @@ export const ZoneSidebar = () => {
         if ($displayHidingZones && hidingZoneModeStationID) {
             const hiderStation = _.find(stations, (c) => c.properties.properties.id === hidingZoneModeStationID);
             if (hiderStation !== undefined) {
-                selectionProcess(hiderStation, map, stations, showGeoJSON, $questionFinishedMapData, $hidingRadius).catch(() => {
+                selectionProcess(hiderStation, map, stations, showGeoJSON, $questionFinishedMapData, $hidingRadius).catch((e) => { console.error(e); isLoading.set(false);
                     toast.error("An error occurred during hiding zone selection", { toastId: "hiding-zone-selection-error" });
                 });
             } else {
