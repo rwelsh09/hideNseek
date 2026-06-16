@@ -3,17 +3,6 @@ import { LockIcon, UnlockIcon } from "lucide-react";
 import { useRef, useState } from "react";
 import { VscChevronDown, VscShare, VscTrash } from "react-icons/vsc";
 
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import {
     Dialog,
@@ -188,55 +177,22 @@ export const QuestionCard = ({
                                     ></textarea>
                                 </DialogContent>
                             </Dialog>
-                            <AlertDialog>
-                                <AlertDialogTrigger asChild>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        disabled={$isLoading}
-                                    >
-                                        <VscTrash />
-                                    </Button>
-                                </AlertDialogTrigger>
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>
-                                            Are you absolutely sure?
-                                        </AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            This action cannot be undone. This
-                                            will permanently delete the
-                                            question.
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel>
-                                            Cancel
-                                        </AlertDialogCancel>
-                                        <AlertDialogAction
-                                            onClick={() => {
-                                                questions.set([]);
-                                            }}
-                                        >
-                                            Delete All Questions
-                                        </AlertDialogAction>
-                                        <AlertDialogAction
-                                            onClick={() => {
-                                                questions.set(
-                                                    $questions.filter(
-                                                        (q) =>
-                                                            q.key !==
-                                                            questionKey,
-                                                    ),
-                                                );
-                                            }}
-                                            className="mb-2 sm:mb-0"
-                                        >
-                                            Delete Question
-                                        </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                disabled={$isLoading}
+                                onClick={() => {
+                                    if (!locked) {
+                                        questions.set(
+                                            $questions.filter(
+                                                (q) => q.key !== questionKey,
+                                            ),
+                                        );
+                                    }
+                                }}
+                            >
+                                <VscTrash />
+                            </Button>
                             {locked !== undefined && (
                                 <Button
                                     variant="outline"
