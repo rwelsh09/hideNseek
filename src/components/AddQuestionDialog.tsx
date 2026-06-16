@@ -225,8 +225,11 @@ export function AddQuestionDialog() {
                                 <Ruler className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-green-600 uppercase leading-none text-sm sm:text-base">
-                                    Measuring
+                                <h3 className="font-bold text-green-600 uppercase leading-none text-sm sm:text-base flex items-center">
+                                    Measuring{" "}
+                                    <span className="ml-2 bg-green-100 text-green-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                        +{TIME_PENALTIES.measuring} MIN
+                                    </span>
                                 </h3>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                     Draw 3, Pick 1
@@ -433,8 +436,11 @@ export function AddQuestionDialog() {
                                     <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </div>
                                 <div>
-                                    <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base">
-                                        Thermometer
+                                    <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base flex items-center">
+                                        Thermometer{" "}
+                                        <span className="ml-2 bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                            +{TIME_PENALTIES.thermometer} MIN
+                                        </span>
                                     </h3>
                                     <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
                                         Draw 2, Pick 1

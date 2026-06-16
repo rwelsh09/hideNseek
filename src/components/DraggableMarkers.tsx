@@ -119,12 +119,13 @@ export const DraggableMarkers = () => {
     const lockInQuestion = () => {
         if (!activeQuestion) return;
 
-        if ($draftQuestionId === activeQuestion.key) {
+        if (draftQuestionId.get() === activeQuestion.key) {
             // It's a draft! Lock it in.
             activeQuestion.data.drag = false;
             const type = draftQuestionType.get();
             if (type && TIME_PENALTIES[type]) {
                 penaltyMinutes.set(penaltyMinutes.get() + TIME_PENALTIES[type]);
+                console.log("PENALTY APPLIED:", TIME_PENALTIES[type]);
             }
             draftQuestionId.set(null);
             draftQuestionType.set(null);
