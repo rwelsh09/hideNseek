@@ -14,6 +14,8 @@ import {
     questions,
     save,
     triggerLocalRefresh,
+    TIME_PENALTIES,
+    penaltyMinutes,
 } from "@/lib/context";
 import type { ICON_COLORS } from "@/maps/api";
 

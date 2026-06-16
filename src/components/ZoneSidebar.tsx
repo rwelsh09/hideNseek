@@ -1065,7 +1065,7 @@ async function selectionProcess(
             question.data.type === "rail-measure"
         ) {
             if (stations.length === 0) {
-                if (question.data.same) {
+                if (question.data.hiderCloser) {
                     mapData = BLANK_GEOJSON;
                 }
                 continue;
@@ -1116,7 +1116,7 @@ async function selectionProcess(
             );
 
             if (points.features.length === 0) {
-                if (question.data.same) {
+                if (question.data.hiderCloser) {
                     mapData = BLANK_GEOJSON;
                 }
                 continue;
