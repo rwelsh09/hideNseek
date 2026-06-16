@@ -70,9 +70,7 @@ export const cacheFetch = async (
         } finally {
             inFlightFetches.delete(inflightKey);
         }
-    } catch (e) {
-        console.log(e); // Probably a caches not supported error
-
+    } catch {
         return fetch(url);
     }
 };
@@ -85,7 +83,7 @@ export const clearCache = async (cacheType: CacheType = CacheType.CACHE) => {
                 cache.delete(key);
             });
         });
-    } catch (e) {
-        console.log(e); // Probably a caches not supported error
+    } catch {
+        // Probably a caches not supported error
     }
 };
