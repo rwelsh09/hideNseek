@@ -123,7 +123,7 @@ export function AddQuestionDialog() {
                                 <h3 className="font-bold text-slate-800 uppercase leading-none text-sm sm:text-base flex items-center">
                                     Matching{" "}
                                     <span className="ml-2 bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES.matching} MIN
+                                        +{TIME_PENALTIES.matching}
                                     </span>
                                 </h3>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
@@ -228,7 +228,7 @@ export function AddQuestionDialog() {
                                 <h3 className="font-bold text-green-600 uppercase leading-none text-sm sm:text-base flex items-center">
                                     Measuring{" "}
                                     <span className="ml-2 bg-green-100 text-green-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES.measuring} MIN
+                                        +{TIME_PENALTIES.measuring}
                                     </span>
                                 </h3>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
@@ -332,8 +332,8 @@ export function AddQuestionDialog() {
                             <div>
                                 <h3 className="font-bold text-orange-500 uppercase leading-none text-sm sm:text-base flex items-center">
                                     Radar{" "}
-                                    <span className="ml-2 bg-slate-800/80 text-white px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES.radar} MIN
+                                    <span className="ml-2 bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                        +{TIME_PENALTIES.radar}
                                     </span>
                                 </h3>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
@@ -439,7 +439,7 @@ export function AddQuestionDialog() {
                                     <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base flex items-center">
                                         Thermometer{" "}
                                         <span className="ml-2 bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                            +{TIME_PENALTIES.thermometer} MIN
+                                            +{TIME_PENALTIES.thermometer}
                                         </span>
                                     </h3>
                                     <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
@@ -488,7 +488,7 @@ export function AddQuestionDialog() {
                                     <h3 className="font-bold text-purple-600 uppercase leading-none text-sm sm:text-base flex items-center">
                                         Tentacles{" "}
                                         <span className="ml-2 bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                            +{TIME_PENALTIES.tentacles} MIN
+                                            +{TIME_PENALTIES.tentacles}
                                         </span>
                                     </h3>
                                     <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
@@ -555,7 +555,7 @@ export function AddQuestionDialog() {
                                 <h3 className="font-bold text-sky-400 uppercase leading-none text-sm sm:text-base flex items-center">
                                     Photo{" "}
                                     <span className="ml-2 bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES.photo} MIN
+                                        +{TIME_PENALTIES.photo}
                                     </span>
                                 </h3>
                                 <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
