@@ -34,8 +34,6 @@ import { clearCache, determineMapBoundaries } from "@/maps/api";
 
 import { DraggableMarkers } from "./DraggableMarkers";
 import { LeafletActionButtons } from "./LeafletActionButtons";
-import { LeafletFullScreenButton } from "./LeafletFullScreenButton";
-import { MapPrint } from "./MapPrint";
 import { PolygonDraw } from "./PolygonDraw";
 
 const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
@@ -356,23 +354,10 @@ export const Map = ({ className }: { className?: string }) => {
                 <div className="leaflet-top leaflet-right">
                     <div className="leaflet-control flex-col flex gap-2">
                         <LeafletActionButtons />
-                        <LeafletFullScreenButton />
                     </div>
                 </div>
                 <PolygonDraw />
                 <ScaleControl position="bottomleft" />
-                <MapPrint
-                    position="topright"
-                    sizeModes={["Current", "A4Portrait", "A4Landscape"]}
-                    hideControlContainer={false}
-                    hideClasses={[
-                        "leaflet-full-screen-specific-name",
-                        "leaflet-top",
-                        "leaflet-control-easyPrint",
-                        "leaflet-draw",
-                    ]}
-                    title="Print"
-                />
             </MapContainer>
         ),
         [map, $baseTileLayer, $thunderforestApiKey],
