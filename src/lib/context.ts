@@ -132,7 +132,7 @@ onSet(trainStations, ({ newValue }) => {
 
 export const useCustomStations = persistentAtom<boolean>(
     "useCustomStations",
-    true,
+    false,
     {
         encode: JSON.stringify,
         decode: JSON.parse,
