@@ -205,12 +205,7 @@ export function AddQuestionDialog() {
                                 <Waves className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "custom-points",
-                                    )
-                                }
+                                onClick={() => handleQuestionSelect("matching")}
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Target className="w-5 h-5 sm:w-6 sm:h-6" />
@@ -311,10 +306,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measuring",
-                                        "custom-measure",
-                                    )
+                                    handleQuestionSelect("measuring")
                                 }
                                 className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -510,10 +502,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "tentacles",
-                                            "custom",
-                                        )
+                                        handleQuestionSelect("tentacles")
                                     }
                                     className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
