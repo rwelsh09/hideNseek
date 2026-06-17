@@ -157,45 +157,6 @@
         {
             "type": "Feature",
             "properties": {
-                "@id": "node/91101397",
-                "name": "Shepard",
-                "railway": "station"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-114.1093247, 50.9849153]
-            },
-            "id": "node/91101397"
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "@id": "node/91101428",
-                "name": "Laggan",
-                "railway": "station"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-114.1046061, 50.9857874]
-            },
-            "id": "node/91101428"
-        },
-        {
-            "type": "Feature",
-            "properties": {
-                "@id": "node/91101477",
-                "name": "Midnapore",
-                "railway": "station"
-            },
-            "geometry": {
-                "type": "Point",
-                "coordinates": [-114.1060511, 50.983204]
-            },
-            "id": "node/91101477"
-        },
-        {
-            "type": "Feature",
-            "properties": {
                 "@id": "node/1456230431",
                 "@relations": [
                     {
