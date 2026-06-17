@@ -2,6 +2,7 @@ import * as turf from "@turf/turf";
 import {
     Camera,
     Landmark,
+    Lectern,
     Map as MapIcon,
     Network,
     Plane,
@@ -15,7 +16,6 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-import { Podium } from "@/components/ui/PodiumIcon";
 import { SidebarContext } from "@/components/ui/sidebar-l";
 import { addQuestion, leafletMapContext, TIME_PENALTIES } from "@/lib/context";
 
@@ -594,7 +594,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Podium className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Lectern className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
