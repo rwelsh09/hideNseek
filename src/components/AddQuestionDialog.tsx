@@ -6,7 +6,6 @@ import {
     Network,
     Plane,
     Plus,
-    Podium,
     Ruler,
     Target,
     Thermometer,
@@ -16,6 +15,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
+import { Podium } from "@/components/ui/PodiumIcon";
 import { SidebarContext } from "@/components/ui/sidebar-l";
 import { addQuestion, leafletMapContext, TIME_PENALTIES } from "@/lib/context";
 
