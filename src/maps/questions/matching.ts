@@ -136,11 +136,90 @@ export const determineMatchingBoundary = _.memoize(
             case "park":
             case "same-first-letter-station":
             case "same-length-station":
-            case "same-train-line":
-            case "same-neighbourhood":
-            case "same-first-letter-neighbourhood":
-            case "same-quadrant": {
+            case "same-train-line": {
                 return false;
+            }
+            case "same-neighbourhood":
+            case "same-first-letter-neighbourhood": {
+                const places = (
+                    await findPlacesInZone(
+                        "[place=neighbourhood]",
+                        "Finding neighbourhoods...",
+                        "node"
+                    )
+                ).elements;
+
+                if (!places || places.length === 0) {
+                    toast.error("No neighbourhoods found in this area");
+                    throw new Error("No neighbourhoods found");
+                }
+
+                const data = turf.featureCollection(places.map((x: any) =>
+                    turf.point([
+                        x.center ? x.center.lon : x.lon,
+                        x.center ? x.center.lat : x.lat,
+                    ], x.tags)
+                ));
+
+                const point = turf.point([question.lng, question.lat]);
+                const nearest = turf.nearestPoint(point, data as any);
+
+                const voronoi = geoSpatialVoronoi(data.features as any);
+
+                if (question.type === "same-neighbourhood") {
+                    for (const feature of voronoi.features) {
+                        if (turf.booleanPointInPolygon(nearest, feature)) {
+                            boundary = feature;
+                            break;
+                        }
+                    }
+                } else {
+                    const hiderEnglishName = nearest.properties?.["name:en"] || nearest.properties?.name;
+                    if (!hiderEnglishName) {
+                        toast.error("No English name found for nearest neighbourhood");
+                        throw new Error("No English name found");
+                    }
+                    const letter = hiderEnglishName[0].toUpperCase();
+
+                    const matchingPoints = data.features.filter((p: any) => {
+                        const name = p.properties?.["name:en"] || p.properties?.name;
+                        return name && name[0].toUpperCase() === letter;
+                    });
+
+                    const matchingPolygons = voronoi.features.filter((feature: any) => {
+                        return matchingPoints.some((p: any) => turf.booleanPointInPolygon(p, feature));
+                    });
+
+                    if (matchingPolygons.length > 0) {
+                        boundary = safeUnion(turf.featureCollection(matchingPolygons as any));
+                    }
+                }
+                break;
+            }
+            case "same-quadrant": {
+                const $mapGeoJSON = mapGeoJSON.get();
+                if (!$mapGeoJSON) {
+                    toast.error("Map bounds not found");
+                    throw new Error("Map bounds not found");
+                }
+                const center = turf.center($mapGeoJSON);
+                const centerLng = center.geometry.coordinates[0];
+                const centerLat = center.geometry.coordinates[1];
+
+                const seekerLng = question.lng;
+                const seekerLat = question.lat;
+
+                const seekerEast = seekerLng >= centerLng;
+                const seekerNorth = seekerLat >= centerLat;
+
+                const bbox = turf.bbox($mapGeoJSON);
+                const minX = seekerEast ? centerLng : bbox[0];
+                const maxX = seekerEast ? bbox[2] : centerLng;
+                const minY = seekerNorth ? centerLat : bbox[1];
+                const maxY = seekerNorth ? bbox[3] : centerLat;
+
+                boundary = turf.bboxPolygon([minX, minY, maxX, maxY]);
+                break;
             }
             case "custom-zone": {
                 boundary = question.geo;
