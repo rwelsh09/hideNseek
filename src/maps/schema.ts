@@ -243,6 +243,15 @@ const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
             z
                 .literal("park-full")
                 .describe("Park Question (Small+Medium Games)"),
+            z
+                .literal("same-neighbourhood")
+                .describe("Neighbourhood (Same As Me) Question"),
+            z
+                .literal("same-first-letter-neighbourhood")
+                .describe("Neighbourhood (Same First Letter) Question"),
+            z
+                .literal("same-quadrant")
+                .describe("Quadrant (Same As Me) Question"),
         ])
         .default("airport"),
 });
@@ -298,15 +307,6 @@ const hidingZoneMatchingQuestionsSchema = baseMatchingQuestionSchema.extend({
         z
             .literal("same-train-line")
             .describe("Station On Same Train Line Question"),
-        z
-            .literal("same-neighbourhood")
-            .describe("Neighbourhood (Same As Me) Question"),
-        z
-            .literal("same-first-letter-neighbourhood")
-            .describe("Neighbourhood (Same First Letter) Question"),
-        z
-            .literal("same-quadrant")
-            .describe("Quadrant (Same As Me) Question"),
     ]),
 });
 
