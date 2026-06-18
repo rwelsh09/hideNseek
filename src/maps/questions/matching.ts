@@ -15,7 +15,10 @@ import {
     mapGeoJSON,
     mapGeoLocation,
     polyGeoJSON,
+    trainStations,
 } from "@/lib/context";
+import { getOverpassData } from "@/maps/api/overpass";
+import { CacheType } from "@/maps/api/types";
 import {
     findAdminBoundary,
     findPlacesInZone,
@@ -136,43 +139,55 @@ export const determineMatchingBoundary = _.memoize(
             case "park":
             case "same-first-letter-station":
             case "same-length-station":
-            case "same-train-line": {
+            case "same-train-line":
+            case "same-quadrant": {
                 return false;
             }
             case "same-neighbourhood":
             case "same-first-letter-neighbourhood": {
-                const places = (
+                const data = osmtogeojson(
                     await findPlacesInZone(
-                        "[place=neighbourhood]",
+                        '["admin_level"="10"]',
                         "Finding neighbourhoods...",
-                        "node"
+                        "nwr",
+                        "geom"
                     )
-                ).elements;
+                ) as FeatureCollection<Polygon | MultiPolygon>;
 
-                if (!places || places.length === 0) {
-                    toast.error("No neighbourhoods found in this area");
+                if (!data.features || data.features.length === 0) {
+                    toast.error("No neighbourhood polygons found in this map");
                     throw new Error("No neighbourhoods found");
                 }
 
-                const data = turf.featureCollection(places.map((x: any) =>
-                    turf.point([
-                        x.center ? x.center.lon : x.lon,
-                        x.center ? x.center.lat : x.lat,
-                    ], x.tags)
-                ));
-
                 const point = turf.point([question.lng, question.lat]);
-                const nearest = turf.nearestPoint(point, data as any);
 
-                const voronoi = geoSpatialVoronoi(data.features as any);
+                let nearest: any = null;
+                for (const feature of data.features) {
+                    if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                    if (turf.booleanPointInPolygon(point, feature)) {
+                        nearest = feature;
+                        break;
+                    }
+                }
 
-                if (question.type === "same-neighbourhood") {
-                    for (const feature of voronoi.features) {
-                        if (turf.booleanPointInPolygon(nearest, feature)) {
-                            boundary = feature;
-                            break;
+                if (!nearest) {
+                    let minDistance = Infinity;
+                    for (const feature of data.features) {
+                        if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                        const d = turf.distance(point, turf.center(feature));
+                        if (d < minDistance) {
+                            minDistance = d;
+                            nearest = feature;
                         }
                     }
+                }
+
+                if (!nearest) {
+                    throw new Error("No nearest found");
+                }
+
+                if (question.type === "same-neighbourhood") {
+                    boundary = nearest;
                 } else {
                     const hiderEnglishName = nearest.properties?.["name:en"] || nearest.properties?.name;
                     if (!hiderEnglishName) {
@@ -181,44 +196,15 @@ export const determineMatchingBoundary = _.memoize(
                     }
                     const letter = hiderEnglishName[0].toUpperCase();
 
-                    const matchingPoints = data.features.filter((p: any) => {
+                    const matchingPolygons = data.features.filter((p: any) => {
                         const name = p.properties?.["name:en"] || p.properties?.name;
                         return name && name[0].toUpperCase() === letter;
-                    });
-
-                    const matchingPolygons = voronoi.features.filter((feature: any) => {
-                        return matchingPoints.some((p: any) => turf.booleanPointInPolygon(p, feature));
                     });
 
                     if (matchingPolygons.length > 0) {
                         boundary = safeUnion(turf.featureCollection(matchingPolygons as any));
                     }
                 }
-                break;
-            }
-            case "same-quadrant": {
-                const $mapGeoJSON = mapGeoJSON.get();
-                if (!$mapGeoJSON) {
-                    toast.error("Map bounds not found");
-                    throw new Error("Map bounds not found");
-                }
-                const center = turf.center($mapGeoJSON);
-                const centerLng = center.geometry.coordinates[0];
-                const centerLat = center.geometry.coordinates[1];
-
-                const seekerLng = question.lng;
-                const seekerLat = question.lat;
-
-                const seekerEast = seekerLng >= centerLng;
-                const seekerNorth = seekerLat >= centerLat;
-
-                const bbox = turf.bbox($mapGeoJSON);
-                const minX = seekerEast ? centerLng : bbox[0];
-                const maxX = seekerEast ? bbox[2] : centerLng;
-                const minY = seekerNorth ? centerLat : bbox[1];
-                const maxY = seekerNorth ? bbox[3] : centerLat;
-
-                boundary = turf.bboxPolygon([minX, minY, maxX, maxY]);
                 break;
             }
             case "custom-zone": {
@@ -394,6 +380,24 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
         return question;
     }
 
+    if (question.type === "same-quadrant") {
+        const quadrants = await fetchQuadrantsForPoints([
+            {lng: $hiderMode.longitude, lat: $hiderMode.latitude},
+            {lng: question.lng, lat: question.lat}
+        ]);
+
+        const hiderQuadrant = quadrants[0];
+        const seekerQuadrant = quadrants[1];
+
+        if (hiderQuadrant && seekerQuadrant) {
+            question.same = hiderQuadrant === seekerQuadrant;
+        } else {
+            question.same = false;
+        }
+
+        return question;
+    }
+
     if (
         question.type === "same-neighbourhood" ||
         question.type === "same-first-letter-neighbourhood"
@@ -404,43 +408,64 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
         ]);
         const seekerPoint = turf.point([question.lng, question.lat]);
 
-        const places = osmtogeojson(
+        const data = osmtogeojson(
             await findPlacesInZone(
-                "[place=neighbourhood]",
-                "Finding neighbourhoods. This may take a while. Do not press any buttons while this is processing. Don't worry, it will be cached.",
-                "node",
-            ),
-        ) as FeatureCollection<Point>;
+                '["admin_level"="10"]',
+                "Finding neighbourhoods...",
+                "nwr",
+                "geom"
+            )
+        ) as FeatureCollection<Polygon | MultiPolygon>;
 
-        const nearestHiderNeighbourhood = turf.nearestPoint(hiderPoint, places);
-        const nearestSeekerNeighbourhood = turf.nearestPoint(
-            seekerPoint,
-            places,
-        );
+        if (!data.features || data.features.length === 0) return question;
+
+        const findNearest = (pt: any) => {
+            let nearest: any = null;
+            for (const feature of data.features) {
+                if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                if (turf.booleanPointInPolygon(pt, feature)) {
+                    nearest = feature;
+                    break;
+                }
+            }
+            if (!nearest) {
+                let minDistance = Infinity;
+                for (const feature of data.features) {
+                    if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                    const d = turf.distance(pt, turf.center(feature));
+                    if (d < minDistance) {
+                        minDistance = d;
+                        nearest = feature;
+                    }
+                }
+            }
+            return nearest;
+        };
+
+        const nearestHiderNeighbourhood = findNearest(hiderPoint);
+        const nearestSeekerNeighbourhood = findNearest(seekerPoint);
+
+        if (!nearestHiderNeighbourhood || !nearestSeekerNeighbourhood) {
+            return question;
+        }
 
         if (question.type === "same-neighbourhood") {
             if (
-                nearestHiderNeighbourhood.properties.id ===
-                nearestSeekerNeighbourhood.properties.id
+                nearestHiderNeighbourhood.id ===
+                nearestSeekerNeighbourhood.id
             ) {
                 question.same = true;
             } else {
                 question.same = false;
             }
-        }
+        } else {
+            const hiderEnglishName = nearestHiderNeighbourhood.properties?.["name:en"] || nearestHiderNeighbourhood.properties?.name;
+            const seekerEnglishName = nearestSeekerNeighbourhood.properties?.["name:en"] || nearestSeekerNeighbourhood.properties?.name;
 
-        const hiderEnglishName =
-            nearestHiderNeighbourhood.properties["name:en"] ||
-            nearestHiderNeighbourhood.properties.name;
-        const seekerEnglishName =
-            nearestSeekerNeighbourhood.properties["name:en"] ||
-            nearestSeekerNeighbourhood.properties.name;
+            if (!hiderEnglishName || !seekerEnglishName) {
+                return question;
+            }
 
-        if (!hiderEnglishName || !seekerEnglishName) {
-            return question;
-        }
-
-        if (question.type === "same-first-letter-neighbourhood") {
             if (
                 hiderEnglishName[0].toUpperCase() ===
                 seekerEnglishName[0].toUpperCase()
@@ -449,35 +474,6 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
             } else {
                 question.same = false;
             }
-        }
-
-        return question;
-    }
-
-    if (question.type === "same-quadrant") {
-        const $mapGeoJSON = mapGeoJSON.get();
-        if ($mapGeoJSON === null) return question;
-
-        const center = turf.center($mapGeoJSON);
-        const centerLng = center.geometry.coordinates[0];
-        const centerLat = center.geometry.coordinates[1];
-
-        const hiderLng = $hiderMode.longitude;
-        const hiderLat = $hiderMode.latitude;
-
-        const seekerLng = question.lng;
-        const seekerLat = question.lat;
-
-        const hiderEast = hiderLng >= centerLng;
-        const hiderNorth = hiderLat >= centerLat;
-
-        const seekerEast = seekerLng >= centerLng;
-        const seekerNorth = seekerLat >= centerLat;
-
-        if (hiderEast === seekerEast && hiderNorth === seekerNorth) {
-            question.same = true;
-        } else {
-            question.same = false;
         }
 
         return question;
@@ -598,4 +594,39 @@ export const matchingPlanningPolygon = async (question: MatchingQuestion) => {
     } catch {
         return false;
     }
+};
+
+
+export const fetchQuadrantsForPoints = async (points: {lng: number, lat: number}[]) => {
+    const chunks = _.chunk(points, 200);
+    const results: any[] = [];
+    for (const chunk of chunks) {
+        const queryBlocks = chunk.map(p => `way(around:500, ${p.lat}, ${p.lng})[highway][name];`).join("\n");
+        const query = `[out:json];(${queryBlocks});out tags center;`;
+        const data = await getOverpassData(query, "Determining quadrants...", CacheType.ZONE_CACHE);
+        if (data && data.elements) {
+            results.push(...data.elements);
+        }
+    }
+
+    const streetPoints = results.filter((el: any) => el.center).map((el: any) => turf.point([el.center.lon, el.center.lat], el.tags));
+
+    return points.map(p => {
+        const pt = turf.point([p.lng, p.lat]);
+        let quadrant = null;
+        let minD = Infinity;
+        for (const sp of streetPoints) {
+            const d = turf.distance(pt, sp);
+            if (d < minD) {
+                const name = sp.properties.name;
+                if (!name) continue;
+                const upper = name.toUpperCase();
+                if (upper.endsWith(" NW") || upper.endsWith(" NE") || upper.endsWith(" SW") || upper.endsWith(" SE")) {
+                    minD = d;
+                    quadrant = upper.slice(-2);
+                }
+            }
+        }
+        return quadrant;
+    });
 };

@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
-import type { Feature, FeatureCollection, Point } from "geojson";
+import type { Feature, FeatureCollection, Point, Polygon, MultiPolygon } from "geojson";
 import * as L from "leaflet";
 import _ from "lodash";
 import { SidebarCloseIcon } from "lucide-react";
@@ -34,7 +34,6 @@ import {
     questions,
     trainStations,
     useCustomStations as useCustomStationsAtom,
-    mapGeoJSON,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import {
@@ -50,6 +49,7 @@ import {
     type StationPlace,
     trainLineNodeFinder,
 } from "@/maps/api";
+import { fetchQuadrantsForPoints } from "@/maps/questions/matching";
 import {
     extractStationLabel,
     extractStationName,
@@ -278,31 +278,25 @@ export const ZoneSidebar = () => {
                         question.id === "matching" &&
                         question.data.type === "same-quadrant"
                     ) {
-                        const $mapGeoJSON = mapGeoJSON.get();
-                        if ($mapGeoJSON) {
-                            const center = turf.center($mapGeoJSON);
-                            const centerLng = center.geometry.coordinates[0] as unknown as number;
-                            const centerLat = center.geometry.coordinates[1] as unknown as number;
+                        const pointsToFetch = [
+                            { lng: question.data.lng, lat: question.data.lat },
+                            ...circles.map((c) => {
+                                const center = turf.center(c as any);
+                                return {
+                                    lng: center.geometry.coordinates[0] as unknown as number,
+                                    lat: center.geometry.coordinates[1] as unknown as number,
+                                };
+                            }),
+                        ];
 
-                            const seekerEast = question.data.lng >= centerLng;
-                            const seekerNorth = question.data.lat >= centerLat;
+                        const quadrants = await fetchQuadrantsForPoints(pointsToFetch);
+                        const seekerQuadrant = quadrants[0];
 
-                            circles = circles.filter((circle) => {
-                                const hiderLng =
-                                    circle.geometry.coordinates[0] as unknown as number;
-                                const hiderLat =
-                                    circle.geometry.coordinates[1] as unknown as number;
-
-                                const hiderEast = hiderLng >= centerLng;
-                                const hiderNorth = hiderLat >= centerLat;
-
-                                const same =
-                                    hiderEast === seekerEast &&
-                                    hiderNorth === seekerNorth;
-
-                                return question.data.same ? same : !same;
-                            });
-                        }
+                        circles = circles.filter((circle, i) => {
+                            const hiderQuadrant = quadrants[i + 1];
+                            const same = Boolean(hiderQuadrant && seekerQuadrant && hiderQuadrant === seekerQuadrant);
+                            return question.data.same ? same : !same;
+                        });
                     }
 
                     if (
@@ -316,44 +310,57 @@ export const ZoneSidebar = () => {
                             question.data.lat,
                         ]);
 
-                        const places = osmtogeojson(
+                        const data = osmtogeojson(
                             await findPlacesInZone(
-                                "[place=neighbourhood]",
+                                '["admin_level"="10"]',
                                 "Finding neighbourhoods. This may take a while. Do not press any buttons while this is processing. Don't worry, it will be cached.",
-                                "node",
-                            ),
-                        ) as FeatureCollection<Point>;
+                                "nwr",
+                                "geom"
+                            )
+                        ) as FeatureCollection<Polygon | MultiPolygon>;
 
-                        const nearestSeekerNeighbourhood = turf.nearestPoint(
-                            location,
-                            places,
-                        );
+                        if (!data.features || data.features.length === 0) continue;
+
+                        const findNearest = (pt: any) => {
+                            let nearest: any = null;
+                            for (const feature of data.features) {
+                                if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                                if (turf.booleanPointInPolygon(pt, feature)) {
+                                    nearest = feature;
+                                    break;
+                                }
+                            }
+                            if (!nearest) {
+                                let minDistance = Infinity;
+                                for (const feature of data.features) {
+                                    if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                                    const d = turf.distance(pt, turf.center(feature));
+                                    if (d < minDistance) {
+                                        minDistance = d;
+                                        nearest = feature;
+                                    }
+                                }
+                            }
+                            return nearest;
+                        };
+
+                        const nearestSeekerNeighbourhood = findNearest(location);
 
                         circles = circles.filter((circle) => {
-                            const nearestHiderNeighbourhood = turf.nearestPoint(
-                                turf.point([
-                                    circle.geometry.coordinates[0] as unknown as number,
-                                    circle.geometry.coordinates[1] as unknown as number,
-                                ]),
-                                places,
-                            );
+                            const nearestHiderNeighbourhood = findNearest(turf.center(circle as any));
+
+                            if (!nearestHiderNeighbourhood || !nearestSeekerNeighbourhood) {
+                                return question.data.same ? false : true;
+                            }
 
                             if (question.data.type === "same-neighbourhood") {
                                 const same =
-                                    nearestHiderNeighbourhood.properties.id ===
-                                    nearestSeekerNeighbourhood.properties.id;
+                                    nearestHiderNeighbourhood.id ===
+                                    nearestSeekerNeighbourhood.id;
                                 return question.data.same ? same : !same;
                             } else {
-                                const hiderEnglishName =
-                                    nearestHiderNeighbourhood.properties[
-                                        "name:en"
-                                    ] ||
-                                    nearestHiderNeighbourhood.properties.name;
-                                const seekerEnglishName =
-                                    nearestSeekerNeighbourhood.properties[
-                                        "name:en"
-                                    ] ||
-                                    nearestSeekerNeighbourhood.properties.name;
+                                const hiderEnglishName = nearestHiderNeighbourhood.properties?.["name:en"] || nearestHiderNeighbourhood.properties?.name;
+                                const seekerEnglishName = nearestSeekerNeighbourhood.properties?.["name:en"] || nearestSeekerNeighbourhood.properties?.name;
 
                                 if (!hiderEnglishName || !seekerEnglishName) {
                                     return true;

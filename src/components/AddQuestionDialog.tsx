@@ -13,9 +13,6 @@ import {
     TrainFront,
     TreePine,
     Waves,
-    MapPinned,
-    MapPin,
-    Compass,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -217,39 +214,6 @@ export function AddQuestionDialog() {
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Target className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "same-neighbourhood",
-                                    )
-                                }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <MapPinned className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "same-first-letter-neighbourhood",
-                                    )
-                                }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "same-quadrant",
-                                    )
-                                }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Compass className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                         </div>
                     </div>
