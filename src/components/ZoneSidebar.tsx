@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
-import type { Feature, FeatureCollection } from "geojson";
+import type { Feature, FeatureCollection, Point } from "geojson";
 import * as L from "leaflet";
 import _ from "lodash";
 import { SidebarCloseIcon } from "lucide-react";
@@ -34,6 +34,7 @@ import {
     questions,
     trainStations,
     useCustomStations as useCustomStationsAtom,
+    mapGeoJSON,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import {
@@ -271,6 +272,99 @@ export const ZoneSidebar = () => {
 
                     if (planningModeEnabled.get() && question.data.drag) {
                         continue;
+                    }
+
+                    if (
+                        question.id === "matching" &&
+                        question.data.type === "same-quadrant"
+                    ) {
+                        const $mapGeoJSON = mapGeoJSON.get();
+                        if ($mapGeoJSON) {
+                            const center = turf.center($mapGeoJSON);
+                            const centerLng = center.geometry.coordinates[0] as unknown as number;
+                            const centerLat = center.geometry.coordinates[1] as unknown as number;
+
+                            const seekerEast = question.data.lng >= centerLng;
+                            const seekerNorth = question.data.lat >= centerLat;
+
+                            circles = circles.filter((circle) => {
+                                const hiderLng =
+                                    circle.geometry.coordinates[0] as unknown as number;
+                                const hiderLat =
+                                    circle.geometry.coordinates[1] as unknown as number;
+
+                                const hiderEast = hiderLng >= centerLng;
+                                const hiderNorth = hiderLat >= centerLat;
+
+                                const same =
+                                    hiderEast === seekerEast &&
+                                    hiderNorth === seekerNorth;
+
+                                return question.data.same ? same : !same;
+                            });
+                        }
+                    }
+
+                    if (
+                        question.id === "matching" &&
+                        (question.data.type === "same-neighbourhood" ||
+                            question.data.type ===
+                                "same-first-letter-neighbourhood")
+                    ) {
+                        const location = turf.point([
+                            question.data.lng,
+                            question.data.lat,
+                        ]);
+
+                        const places = osmtogeojson(
+                            await findPlacesInZone(
+                                "[place=neighbourhood]",
+                                "Finding neighbourhoods. This may take a while. Do not press any buttons while this is processing. Don't worry, it will be cached.",
+                                "node",
+                            ),
+                        ) as FeatureCollection<Point>;
+
+                        const nearestSeekerNeighbourhood = turf.nearestPoint(
+                            location,
+                            places,
+                        );
+
+                        circles = circles.filter((circle) => {
+                            const nearestHiderNeighbourhood = turf.nearestPoint(
+                                turf.point([
+                                    circle.geometry.coordinates[0] as unknown as number,
+                                    circle.geometry.coordinates[1] as unknown as number,
+                                ]),
+                                places,
+                            );
+
+                            if (question.data.type === "same-neighbourhood") {
+                                const same =
+                                    nearestHiderNeighbourhood.properties.id ===
+                                    nearestSeekerNeighbourhood.properties.id;
+                                return question.data.same ? same : !same;
+                            } else {
+                                const hiderEnglishName =
+                                    nearestHiderNeighbourhood.properties[
+                                        "name:en"
+                                    ] ||
+                                    nearestHiderNeighbourhood.properties.name;
+                                const seekerEnglishName =
+                                    nearestSeekerNeighbourhood.properties[
+                                        "name:en"
+                                    ] ||
+                                    nearestSeekerNeighbourhood.properties.name;
+
+                                if (!hiderEnglishName || !seekerEnglishName) {
+                                    return true;
+                                }
+
+                                const same =
+                                    hiderEnglishName[0].toUpperCase() ===
+                                    seekerEnglishName[0].toUpperCase();
+                                return question.data.same ? same : !same;
+                            }
+                        });
                     }
 
                     if (
