@@ -221,42 +221,34 @@ export const ZoneSidebar = () => {
                     if (specialOptions.includes("SPECIAL:MAX_STOPS")) {
                         const maxFeatures = (
                             maxStationsData as any
-                        ).features.map((f: any) => {
-                            const centerCoords =
-                                turf.center(f).geometry.coordinates;
-                            return {
-                                type: "Feature",
-                                geometry: turf.center(f).geometry,
-                                properties: {
-                                    id:
-                                        f.properties?.["@id"] ||
-                                        f.id ||
-                                        `${centerCoords[1]},${centerCoords[0]}`,
-                                    name: f.properties?.name,
-                                },
-                            };
-                        });
+                        ).features.map((f: any) => ({
+                            type: "Feature",
+                            geometry: f.geometry,
+                            properties: {
+                                id:
+                                    f.properties?.["@id"] ||
+                                    f.id ||
+                                    `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
+                                name: f.properties?.name,
+                            },
+                        }));
                         places.push(...maxFeatures);
                     }
 
                     if (specialOptions.includes("SPECIAL:TRAIN_STATIONS")) {
                         const trainFeatures = (
                             defaultStationsData as any
-                        ).features.map((f: any) => {
-                            const centerCoords =
-                                turf.center(f).geometry.coordinates;
-                            return {
-                                type: "Feature",
-                                geometry: turf.center(f).geometry,
-                                properties: {
-                                    id:
-                                        f.properties?.["@id"] ||
-                                        f.id ||
-                                        `${centerCoords[1]},${centerCoords[0]}`,
-                                    name: f.properties?.name,
-                                },
-                            };
-                        });
+                        ).features.map((f: any) => ({
+                            type: "Feature",
+                            geometry: f.geometry,
+                            properties: {
+                                id:
+                                    f.properties?.["@id"] ||
+                                    f.id ||
+                                    `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
+                                name: f.properties?.name,
+                            },
+                        }));
                         places.push(...trainFeatures);
                     }
 
