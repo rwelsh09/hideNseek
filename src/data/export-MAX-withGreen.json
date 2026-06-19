@@ -4,6 +4,90 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "NB Centre ST N @ 64 AV N & SB Centre ST N @ 64 AV N",
+        "merged_station_count": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.06246275000001,
+          51.110703099999995
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SB Centre ST N @ 56 AV N",
+        "merged_station_count": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.06244065,
+          51.1025949
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SB Centre ST N @ 78 AV N & NB Centre ST N @ 78 AV N",
+        "merged_station_count": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.07143715,
+          51.1226844
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SB Centre ST N @ N of Beddington BV N & NB Centre ST N @ N of Beddington BV N",
+        "merged_station_count": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.07147305000001,
+          51.126901149999995
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "North Pointe Terminal A (SB Country Village Link NE @ Country Village WY NE)",
+        "merged_station_count": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.067957,
+          51.1570352
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SB Harvest Hills BV @ Panamount GA NW",
+        "merged_station_count": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.069807,
+          51.1558593
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "Southland Leisure Centre (WB) & Southland Leisure Centre (EB)",
         "merged_station_count": 2
       },
@@ -82,6 +166,48 @@
         "coordinates": [
           -113.97001954999999,
           51.0378424
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "NB Harvest Hills BV @ 96 AV NE & SB Harvest Hills BV @ Country Hills RD NW",
+        "merged_station_count": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.06805265,
+          51.14323765
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "NB Centre ST N @ 40 AV N & SB Centre ST N @ 40 AV N",
+        "merged_station_count": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.0624663,
+          51.08872195
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "Southbound Centre Street N @ 16 Avenue N & Centre Street N Station (WB) & Centre Street N Station (EB) & Northbound Centre Street N @ 17 Avenue N",
+        "merged_station_count": 4
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.062448075,
+          51.06700815
         ]
       }
     },
@@ -326,14 +452,14 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB 5 AV SW @ 1 ST SW & SB 1 ST SW & 6 AV SW",
-        "merged_station_count": 2
+        "name": "EB 5 AV SW @ 2 ST SW & EB 5 AV SW @ 1 ST SW & SB 1 ST SW & 6 AV SW",
+        "merged_station_count": 3
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.06571819999999,
-          51.04771289999999
+          -114.06601583333334,
+          51.047946499999995
         ]
       }
     },
@@ -410,14 +536,14 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 6 AV SW @ W. of 7 ST SW",
-        "merged_station_count": 1
+        "name": "SB 7 ST SW @ 7 AVE SW & WB 6 AV SW @ W. of 7 ST SW",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.0797535,
-          51.047989
+          -114.07932595,
+          51.04753465
         ]
       }
     },
@@ -620,20 +746,6 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Centre Street N Station (WB) & Centre Street N Station (EB)",
-        "merged_station_count": 2
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.062357,
-          51.0669156
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "4th Street NW Station (WB) & 4th Street NW Station (EB)",
         "merged_station_count": 2
       },
@@ -704,6 +816,20 @@
     {
       "type": "Feature",
       "properties": {
+        "name": "SB Centre St N @ 28 Ave N & NB Centre St N @ 28 Ave N",
+        "merged_station_count": 2
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.06255375,
+          51.0778717
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
         "name": "NB 6 St SW @ 7 Ave SW",
         "merged_station_count": 1
       },
@@ -740,6 +866,20 @@
         "coordinates": [
           -114.02129830000001,
           51.03666385
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "WB 6 Avenue & 1 Street & Southbound Centre Street S @ 5 Avenue S & Northbound Centre Street S @ 4 Avenue S",
+        "merged_station_count": 3
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.06252003333334,
+          51.04821663333333
         ]
       }
     },
@@ -838,6 +978,34 @@
         "coordinates": [
           -114.00739375,
           50.95721135
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SB Harvest Hills Boulevard @ Country Hillls Boulevard NW",
+        "merged_station_count": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.0656959,
+          51.1523164
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "name": "SB Harvest Hills Blvd @ Harvest Oak Gate NE",
+        "merged_station_count": 1
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -114.0643689,
+          51.1465529
         ]
       }
     },
@@ -1006,20 +1174,6 @@
         "coordinates": [
           -114.0555096,
           51.0454952
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "WB 6 Avenue & 1 Street",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.061975,
-          51.0475373
         ]
       }
     }
