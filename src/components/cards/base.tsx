@@ -19,7 +19,7 @@ import {
     SidebarGroupLabel,
     SidebarMenu,
 } from "@/components/ui/sidebar-l";
-import { isLoading, questions } from "@/lib/context";
+import { isLoading, questions, softQuestionsChecked } from "@/lib/context";
 import { cn } from "@/lib/utils";
 
 export const QuestionCard = ({
@@ -183,11 +183,29 @@ export const QuestionCard = ({
                                 disabled={$isLoading}
                                 onClick={() => {
                                     if (!locked) {
+                                        const questionToDelete =
+                                            $questions.find(
+                                                (q) => q.key === questionKey,
+                                            );
                                         questions.set(
                                             $questions.filter(
                                                 (q) => q.key !== questionKey,
                                             ),
                                         );
+                                        if (
+                                            questionToDelete &&
+                                            questionToDelete._softKey
+                                        ) {
+                                            const $softQuestionsChecked =
+                                                softQuestionsChecked.get();
+                                            softQuestionsChecked.set(
+                                                $softQuestionsChecked.filter(
+                                                    (key) =>
+                                                        key !==
+                                                        questionToDelete._softKey,
+                                                ),
+                                            );
+                                        }
                                     }
                                 }}
                             >

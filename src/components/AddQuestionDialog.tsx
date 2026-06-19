@@ -1,3 +1,4 @@
+import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
 import {
     Camera,
@@ -17,7 +18,13 @@ import {
 import { useState } from "react";
 
 import { SidebarContext } from "@/components/ui/sidebar-l";
-import { addQuestion, leafletMapContext, TIME_PENALTIES } from "@/lib/context";
+import {
+    addQuestion,
+    leafletMapContext,
+    softQuestionsChecked,
+    TIME_PENALTIES,
+} from "@/lib/context";
+import { cn } from "@/lib/utils";
 
 import {
     draftQuestionId,
@@ -35,6 +42,7 @@ import {
 
 export function AddQuestionDialog() {
     const [open, setOpen] = useState(false);
+    const $softQuestionsChecked = useStore(softQuestionsChecked);
 
     const handleQuestionSelect = (type: string, detail?: string) => {
         const map = leafletMapContext.get();
@@ -83,7 +91,8 @@ export function AddQuestionDialog() {
         }
 
         // Add to map immediately
-        addQuestion({ id: qId as any, key, data: qData });
+        const _softKey = `${type}-${detail || ""}`.replace(/-$/, "");
+        addQuestion({ id: qId as any, key, data: qData, _softKey });
 
         // Trigger the floating panel to open in DraggableMarkers
         editingQuestionId.set(key);
@@ -136,7 +145,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("matching", "airport")
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "matching-airport",
+                                )}
+                                className={cn(
+                                    "bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "matching-airport",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <Plane className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -144,7 +162,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("matching", "zone")
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "matching-zone",
+                                )}
+                                className={cn(
+                                    "bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "matching-zone",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -155,7 +182,16 @@ export function AddQuestionDialog() {
                                         "park-full",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "matching-park-full",
+                                )}
+                                className={cn(
+                                    "bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "matching-park-full",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <TreePine className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -166,7 +202,16 @@ export function AddQuestionDialog() {
                                         "museum-full",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "matching-museum-full",
+                                )}
+                                className={cn(
+                                    "bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "matching-museum-full",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -178,7 +223,16 @@ export function AddQuestionDialog() {
                                         "same-train-line",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "matching-same-train-line",
+                                )}
+                                className={cn(
+                                    "bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "matching-same-train-line",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <TrainFront className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -189,7 +243,16 @@ export function AddQuestionDialog() {
                                         "letter-zone",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "matching-letter-zone",
+                                )}
+                                className={cn(
+                                    "bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "matching-letter-zone",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -200,7 +263,16 @@ export function AddQuestionDialog() {
                                         "aquarium-full",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "matching-aquarium-full",
+                                )}
+                                className={cn(
+                                    "bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "matching-aquarium-full",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <Waves className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -211,7 +283,16 @@ export function AddQuestionDialog() {
                                         "custom-points",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "matching-custom-points",
+                                )}
+                                className={cn(
+                                    "bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "matching-custom-points",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <Target className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -241,7 +322,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("measuring", "airport")
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "measuring-airport",
+                                )}
+                                className={cn(
+                                    "bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "measuring-airport",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <Plane className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -252,7 +342,16 @@ export function AddQuestionDialog() {
                                         "coastline",
                                     )
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "measuring-coastline",
+                                )}
+                                className={cn(
+                                    "bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "measuring-coastline",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -263,7 +362,16 @@ export function AddQuestionDialog() {
                                         "park-full",
                                     )
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "measuring-park-full",
+                                )}
+                                className={cn(
+                                    "bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "measuring-park-full",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <TreePine className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -274,7 +382,16 @@ export function AddQuestionDialog() {
                                         "museum-full",
                                     )
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "measuring-museum-full",
+                                )}
+                                className={cn(
+                                    "bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "measuring-museum-full",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -286,7 +403,16 @@ export function AddQuestionDialog() {
                                         "rail-measure",
                                     )
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "measuring-rail-measure",
+                                )}
+                                className={cn(
+                                    "bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "measuring-rail-measure",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <TrainFront className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -294,7 +420,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("measuring", "city")
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "measuring-city",
+                                )}
+                                className={cn(
+                                    "bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "measuring-city",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -305,7 +440,16 @@ export function AddQuestionDialog() {
                                         "aquarium-full",
                                     )
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "measuring-aquarium-full",
+                                )}
+                                className={cn(
+                                    "bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "measuring-aquarium-full",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <Waves className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -316,7 +460,16 @@ export function AddQuestionDialog() {
                                         "custom-measure",
                                     )
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "measuring-custom-measure",
+                                )}
+                                className={cn(
+                                    "bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "measuring-custom-measure",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <Target className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -346,7 +499,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "0.5")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "radar-0.5",
+                                )}
+                                className={cn(
+                                    "bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "radar-0.5",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 0.5 km
                             </button>
@@ -354,7 +516,14 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "1")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "radar-1",
+                                )}
+                                className={cn(
+                                    "bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes("radar-1") &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 1 km
                             </button>
@@ -362,7 +531,14 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "2")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "radar-2",
+                                )}
+                                className={cn(
+                                    "bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes("radar-2") &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 2 km
                             </button>
@@ -370,7 +546,14 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "5")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "radar-5",
+                                )}
+                                className={cn(
+                                    "bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes("radar-5") &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 5 km
                             </button>
@@ -379,7 +562,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "10")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "radar-10",
+                                )}
+                                className={cn(
+                                    "bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "radar-10",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 10 km
                             </button>
@@ -387,7 +579,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "15")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "radar-15",
+                                )}
+                                className={cn(
+                                    "bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "radar-15",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 15 km
                             </button>
@@ -395,7 +596,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "20")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "radar-20",
+                                )}
+                                className={cn(
+                                    "bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "radar-20",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 20 km
                             </button>
@@ -403,7 +613,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "30")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "radar-30",
+                                )}
+                                className={cn(
+                                    "bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "radar-30",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 30 km
                             </button>
@@ -412,7 +631,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "50")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "radar-50",
+                                )}
+                                className={cn(
+                                    "bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "radar-50",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 50 km
                             </button>
@@ -420,7 +648,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "unknown")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "radar-unknown",
+                                )}
+                                className={cn(
+                                    "bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "radar-unknown",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 ????
                             </button>
@@ -452,7 +689,16 @@ export function AddQuestionDialog() {
                                     onClick={() =>
                                         handleQuestionSelect("thermometer", "1")
                                     }
-                                    className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    disabled={$softQuestionsChecked.includes(
+                                        "thermometer-1",
+                                    )}
+                                    className={cn(
+                                        "bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                        $softQuestionsChecked.includes(
+                                            "thermometer-1",
+                                        ) &&
+                                            "opacity-30 cursor-not-allowed saturate-0",
+                                    )}
                                 >
                                     <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                     1km
@@ -461,7 +707,16 @@ export function AddQuestionDialog() {
                                     onClick={() =>
                                         handleQuestionSelect("thermometer", "2")
                                     }
-                                    className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    disabled={$softQuestionsChecked.includes(
+                                        "thermometer-2",
+                                    )}
+                                    className={cn(
+                                        "bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                        $softQuestionsChecked.includes(
+                                            "thermometer-2",
+                                        ) &&
+                                            "opacity-30 cursor-not-allowed saturate-0",
+                                    )}
                                 >
                                     <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                     2km
@@ -470,7 +725,16 @@ export function AddQuestionDialog() {
                                     onClick={() =>
                                         handleQuestionSelect("thermometer", "5")
                                     }
-                                    className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    disabled={$softQuestionsChecked.includes(
+                                        "thermometer-5",
+                                    )}
+                                    className={cn(
+                                        "bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                        $softQuestionsChecked.includes(
+                                            "thermometer-5",
+                                        ) &&
+                                            "opacity-30 cursor-not-allowed saturate-0",
+                                    )}
                                 >
                                     <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                     5km
@@ -504,7 +768,16 @@ export function AddQuestionDialog() {
                                             "museum",
                                         )
                                     }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    disabled={$softQuestionsChecked.includes(
+                                        "tentacles-museum",
+                                    )}
+                                    className={cn(
+                                        "bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                        $softQuestionsChecked.includes(
+                                            "tentacles-museum",
+                                        ) &&
+                                            "opacity-30 cursor-not-allowed saturate-0",
+                                    )}
                                 >
                                     <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
@@ -515,7 +788,16 @@ export function AddQuestionDialog() {
                                             "custom",
                                         )
                                     }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    disabled={$softQuestionsChecked.includes(
+                                        "tentacles-custom",
+                                    )}
+                                    className={cn(
+                                        "bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                        $softQuestionsChecked.includes(
+                                            "tentacles-custom",
+                                        ) &&
+                                            "opacity-30 cursor-not-allowed saturate-0",
+                                    )}
                                 >
                                     <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
@@ -526,7 +808,16 @@ export function AddQuestionDialog() {
                                             "theme_park",
                                         )
                                     }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    disabled={$softQuestionsChecked.includes(
+                                        "tentacles-theme_park",
+                                    )}
+                                    className={cn(
+                                        "bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                        $softQuestionsChecked.includes(
+                                            "tentacles-theme_park",
+                                        ) &&
+                                            "opacity-30 cursor-not-allowed saturate-0",
+                                    )}
                                 >
                                     <Target className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
@@ -537,7 +828,16 @@ export function AddQuestionDialog() {
                                             "consulate",
                                         )
                                     }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    disabled={$softQuestionsChecked.includes(
+                                        "tentacles-consulate",
+                                    )}
+                                    className={cn(
+                                        "bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                        $softQuestionsChecked.includes(
+                                            "tentacles-consulate",
+                                        ) &&
+                                            "opacity-30 cursor-not-allowed saturate-0",
+                                    )}
                                 >
                                     <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
@@ -568,7 +868,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "camera")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "photo-camera",
+                                )}
+                                className={cn(
+                                    "bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "photo-camera",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <Camera className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -576,7 +885,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "tree")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "photo-tree",
+                                )}
+                                className={cn(
+                                    "bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "photo-tree",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <TreePine className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -584,7 +902,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "train")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "photo-train",
+                                )}
+                                className={cn(
+                                    "bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "photo-train",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <TrainFront className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -592,7 +919,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "car")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "photo-car",
+                                )}
+                                className={cn(
+                                    "bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "photo-car",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <Podium className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -600,7 +936,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "map")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "photo-map",
+                                )}
+                                className={cn(
+                                    "bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "photo-map",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <Waves className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
@@ -608,7 +953,16 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "landmark")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                disabled={$softQuestionsChecked.includes(
+                                    "photo-landmark",
+                                )}
+                                className={cn(
+                                    "bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none",
+                                    $softQuestionsChecked.includes(
+                                        "photo-landmark",
+                                    ) &&
+                                        "opacity-30 cursor-not-allowed saturate-0",
+                                )}
                             >
                                 <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
