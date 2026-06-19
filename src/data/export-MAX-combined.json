@@ -4,14 +4,14 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Southland Leisure Centre (WB)",
-        "merged_station_count": 1
+        "name": "Southland Leisure Centre (WB) & Southland Leisure Centre (EB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.1069999,
-          50.9615361
+          -114.10613255000001,
+          50.9614102
         ]
       }
     },
@@ -74,14 +74,14 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "44th Street SE Station (EB)",
-        "merged_station_count": 1
+        "name": "44th Street SE Station (EB) & 44th Street SE Station (WB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -113.9689317,
-          51.0378128
+          -113.97001954999999,
+          51.0378424
         ]
       }
     },
@@ -200,28 +200,28 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Woodview Station (NB)",
-        "merged_station_count": 1
+        "name": "Woodview Station (SB) & Woodview Station (NB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.1177906,
-          50.941725
+          -114.1179783,
+          50.941026949999994
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "Braeside Station (NB)",
-        "merged_station_count": 1
+        "name": "Braeside Station (NB) & Cedarbrae Station (SB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.117781,
-          50.9545883
+          -114.11799225,
+          50.95402215
         ]
       }
     },
@@ -256,14 +256,14 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Crowchild TR @ 33 AV SW",
-        "merged_station_count": 1
+        "name": "SB Crowchild TR @ 33 AV SW & Marda Loop Station",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.1186102,
-          51.0241466
+          -114.11800435,
+          51.02454365
         ]
       }
     },
@@ -312,28 +312,28 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB 5 AV SW @ 5 ST SW",
-        "merged_station_count": 1
+        "name": "EB 5 AV SW @ 5 ST SW & WB 6 AV SW @ 5 ST SW",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.072535,
-          51.0485916
+          -114.0735135,
+          51.048222300000006
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "EB 5 AV SW @ 1 ST SW",
-        "merged_station_count": 1
+        "name": "EB 5 AV SW @ 1 ST SW & SB 1 ST SW & 6 AV SW",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.065911,
-          51.048396
+          -114.06571819999999,
+          51.04771289999999
         ]
       }
     },
@@ -354,28 +354,28 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Falshire Drive Station (NB)",
-        "merged_station_count": 1
+        "name": "Falshire Drive Station (NB) & Falshire Drive Station (SB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -113.9490622,
-          51.1069344
+          -113.9498232,
+          51.1066475
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "Castleridge Boulevard Station (NB)",
-        "merged_station_count": 1
+        "name": "Castleridge Boulevard Station (NB) & Castleridge Boulevard Station (SB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -113.9579877,
-          51.1003899
+          -113.95832300000001,
+          51.09982085
         ]
       }
     },
@@ -390,48 +390,6 @@
         "coordinates": [
           -114.145777,
           51.07546285
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "WB 6 AV SW @ 5 ST SW",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.074492,
-          51.047853
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "SB 1 ST SW & 6 AV SW",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.0655254,
-          51.0470298
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Marda Loop Station",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.1173985,
-          51.0249407
         ]
       }
     },
@@ -536,28 +494,14 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Elbow Drive Station (WB)",
-        "merged_station_count": 1
+        "name": "Elbow Drive Station (EB) & Elbow Drive Station (WB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.0841347,
-          50.9796759
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Elbow Drive Station (EB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.0824578,
-          50.9794633
+          -114.08329625,
+          50.9795696
         ]
       }
     },
@@ -578,56 +522,28 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Deerfoot Meadows Station (EB)",
-        "merged_station_count": 1
+        "name": "Deerfoot Meadows Station (WB) & Deerfoot Meadows Station (EB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.0429225,
-          50.987102
+          -114.04187354999999,
+          50.98724425
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "Deerfoot Meadows Station (WB)",
-        "merged_station_count": 1
+        "name": "Quarry Park Station (SB) & Quarry Park Station (NB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.0408246,
-          50.9873865
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Quarry Park Station (NB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.0122142,
-          50.9640453
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Quarry Park Station (SB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.0120025,
-          50.9627423
+          -114.01210835,
+          50.963393800000006
         ]
       }
     },
@@ -662,20 +578,6 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Southland Leisure Centre (EB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.1052652,
-          50.9612843
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Rundle LRT Station (NB 36 ST NE @ 25 AV NE) & Rundle LRT Station (SB 36 ST NE @ 25 AV NE)",
         "merged_station_count": 2
       },
@@ -690,112 +592,56 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "19th Street NE Station (EB)",
-        "merged_station_count": 1
+        "name": "19th Street NE Station (WB) & 19th Street NE Station (EB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.012334,
-          51.0668171
+          -114.0135199,
+          51.0669605
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "19th Street NE Station (WB)",
-        "merged_station_count": 1
+        "name": "Edmonton Trail Station (WB) & Edmonton Trail Station (EB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.0147058,
-          51.0671039
+          -114.05624184999999,
+          51.066932550000004
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "Edmonton Trail Station (WB)",
-        "merged_station_count": 1
+        "name": "Centre Street N Station (WB) & Centre Street N Station (EB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.0570036,
-          51.0670834
+          -114.062357,
+          51.0669156
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "Edmonton Trail Station (EB)",
-        "merged_station_count": 1
+        "name": "4th Street NW Station (WB) & 4th Street NW Station (EB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.0554801,
-          51.0667817
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Centre Street N Station (WB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.0632204,
-          51.0670927
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Centre Street N Station (EB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.0614936,
-          51.0667385
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "4th Street NW Station (EB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.0707713,
-          51.06678
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "4th Street NW Station (WB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.0728501,
-          51.0670767
+          -114.0718107,
+          51.06692835
         ]
       }
     },
@@ -830,28 +676,14 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Foothills Medical Centre (EB)",
-        "merged_station_count": 1
+        "name": "Foothills Medical Centre (EB) & Foothills Medical Centre (WB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.1280848,
-          51.0683088
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Foothills Medical Centre (WB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.1303673,
-          51.0686189
+          -114.12922605,
+          51.06846385
         ]
       }
     },
@@ -914,112 +746,42 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Castleridge Boulevard Station (SB)",
-        "merged_station_count": 1
+        "name": "33rd Street SE Station (EB) & 33rd Street SE Station (WB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -113.9586583,
-          51.0992518
+          -113.98663214999999,
+          51.0378369
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "33rd Street SE Station (WB)",
-        "merged_station_count": 1
+        "name": "52nd Street SE Station (WB) & 52nd Street SE Station (EB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -113.9877738,
-          51.0378656
+          -113.9584,
+          51.037851599999996
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "52nd Street SE Station (WB)",
-        "merged_station_count": 1
+        "name": "36th Street SE Station (EB) & 36th Street SE Station (WB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -113.9595384,
-          51.0378778
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "33rd Street SE Station (EB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.9854905,
-          51.0378082
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "52nd Street SE Station (EB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.9572616,
-          51.0378254
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "44th Street SE Station (WB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.9711074,
-          51.037872
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "36th Street SE Station (WB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.9827178,
-          51.0378693
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "36th Street SE Station (EB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.9804942,
-          51.0378148
+          -113.981606,
+          51.037842049999995
         ]
       }
     },
@@ -1040,20 +802,6 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Cedarbrae Station (SB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.1182035,
-          50.953456
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "North Hill Station (WB)",
         "merged_station_count": 1
       },
@@ -1068,42 +816,28 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Oakridge Station (EB)",
-        "merged_station_count": 1
+        "name": "Oakridge Station (SB) & Oakridge Station (EB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.1167176,
-          50.9611959
+          -114.1174807,
+          50.96080215
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "Douglas Glen Boulevard Station (NB)",
-        "merged_station_count": 1
+        "name": "Douglas Glen Boulevard Station (NB) & Douglas Glen Boulevard Station (SB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.0079768,
-          50.9576128
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Douglas Glen Boulevard Station (SB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -114.0068107,
-          50.9568099
+          -114.00739375,
+          50.95721135
         ]
       }
     },
@@ -1124,42 +858,14 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Martindale Boulevard Station (SB)",
-        "merged_station_count": 1
+        "name": "Martindale Boulevard Station (NB) & Martindale Boulevard Station (SB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -113.9469418,
-          51.1135469
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Martindale Boulevard Station (NB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.9465851,
-          51.1147626
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Falshire Drive Station (SB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.9505842,
-          51.1063606
+          -113.94676344999999,
+          51.11415475
         ]
       }
     },
@@ -1180,56 +886,28 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "44th Avenue NE Station (NB)",
-        "merged_station_count": 1
+        "name": "44th Avenue NE Station (NB) & 44th Avenue NE Station (SB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -113.958242,
-          51.0920275
+          -113.958423,
+          51.0914059
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "44th Avenue NE Station (SB)",
-        "merged_station_count": 1
+        "name": "Whitehorn Drive Station (NB) & Whitehorn Drive Station (SB)",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -113.958604,
-          51.0907843
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Whitehorn Drive Station (NB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.9582661,
-          51.0863568
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Whitehorn Drive Station (SB)",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.9585863,
-          51.0853604
+          -113.95842619999999,
+          51.085858599999995
         ]
       }
     },
@@ -1278,84 +956,28 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Woodview Station (SB)",
-        "merged_station_count": 1
+        "name": "WB 17 Ave SE @ 70th St SE & EB 17 Ave SE @ 70th St SE",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.118166,
-          50.9403289
+          -113.9303644,
+          51.037831100000005
         ]
       }
     },
     {
       "type": "Feature",
       "properties": {
-        "name": "Oakridge Station (SB)",
-        "merged_station_count": 1
+        "name": "EB 17 Ave SE @ 61st St SE & WB 17 Ave SE @ 61st St SE",
+        "merged_station_count": 2
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -114.1182438,
-          50.9604084
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "WB 17 Ave SE @ 70th St SE",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.9310551,
-          51.03795
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "EB 17 Ave SE @ 70th St SE",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.9296737,
-          51.0377122
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "WB 17 Ave SE @ 61st St SE",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.9437017,
-          51.0379652
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "EB 17 Ave SE @ 61st St SE",
-        "merged_station_count": 1
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.942256,
-          51.0377594
+          -113.94297885,
+          51.0378623
         ]
       }
     },
