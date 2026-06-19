@@ -656,6 +656,10 @@ export const ZoneSidebar = () => {
                                             value: "[highway=bus_stop]",
                                         },
                                         {
+                                            label: "MAX Bus Stations",
+                                            value: "SPECIAL:MAX_BUS",
+                                        },
+                                        {
                                             label: "Ferry Terminals",
                                             value: "[amenity=ferry_terminal]",
                                         },

@@ -216,33 +216,78 @@ out geom;
     return uniqNodes;
 };
 
-export const findPlacesInZone = async (
-    filter: string,
-    loadingText?: string,
-    searchType:
-        | "node"
-        | "way"
-        | "relation"
-        | "nwr"
-        | "nw"
-        | "wr"
-        | "nr"
-        | "area" = "nwr",
-    outType: "center" | "geom" = "center",
-    alternatives: string[] = [],
-    timeoutDuration: number = 0,
-) => {
-    let query = "";
-    const $polyGeoJSON = polyGeoJSON.get();
-    if ($polyGeoJSON) {
-        query = `
+export const buildSearchQuery = ({
+    filter,
+    searchType,
+    timeoutDuration,
+    alternatives,
+    outMode,
+    allLocations,
+    polyGeoJSON,
+}: {
+    filter: string;
+    searchType: string;
+    timeoutDuration: number;
+    alternatives: string[];
+    outMode: string;
+    allLocations: any[];
+    polyGeoJSON?: any;
+}) => {
+    if (filter === "SPECIAL:MAX_BUS") {
+        if (polyGeoJSON) {
+            const polyCoords = turf
+                .getCoords(polyGeoJSON.features)
+                .flatMap((polygon: any) => polygon.geometry.coordinates)
+                .flat()
+                .map((coord: any) => [coord[1], coord[0]].join(" "))
+                .join(" ");
+
+            return `
+[out:json]${timeoutDuration != 0 ? `[timeout:${timeoutDuration}]` : ""};
+(
+  relation["route"="bus"]["name"~"MAX"](poly:"${polyCoords}");
+);
+node(r)["highway"="bus_stop"];
+out ${outMode};
+            `;
+        } else {
+            const relationToAreaBlocks = allLocations
+                .map((loc, idx) => {
+                    const regionVar = `.region${idx}`;
+                    return `relation(${loc.properties.osm_id});map_to_area->${regionVar};`;
+                })
+                .join("\n");
+
+            const searchBlocks = allLocations
+                .map((_, idx) => {
+                    const regionVar = `area.region${idx}`;
+                    return `
+            relation["route"="bus"]["name"~"MAX"](${regionVar});
+            `;
+                })
+                .join("\n");
+
+            return `
+[out:json]${timeoutDuration !== 0 ? `[timeout:${timeoutDuration}]` : ""};
+${relationToAreaBlocks}
+(
+${searchBlocks}
+);
+node(r)["highway"="bus_stop"];
+out ${outMode};
+            `;
+        }
+    }
+
+    if (polyGeoJSON) {
+        return `
 [out:json]${timeoutDuration != 0 ? `[timeout:${timeoutDuration}]` : ""};
 (
 ${searchType}${filter}(poly:"${turf
-            .getCoords($polyGeoJSON.features)
-            .flatMap((polygon) => polygon.geometry.coordinates)
+            .getCoords(polyGeoJSON.features)
+            .flatMap((polygon: any) => polygon.geometry.coordinates)
             .flat()
-            .map((coord) => [coord[1], coord[0]].join(" "))
+            .map((coord: any) => [coord[1], coord[0]].join(" "))
             .join(" ")}");
 ${
     alternatives.length > 0
@@ -250,25 +295,21 @@ ${
               .map(
                   (alternative) =>
                       `${searchType}${alternative}(poly:"${turf
-                          .getCoords($polyGeoJSON.features)
-                          .flatMap((polygon) => polygon.geometry.coordinates)
+                          .getCoords(polyGeoJSON.features)
+                          .flatMap(
+                              (polygon: any) => polygon.geometry.coordinates,
+                          )
                           .flat()
-                          .map((coord) => [coord[1], coord[0]].join(" "))
+                          .map((coord: any) => [coord[1], coord[0]].join(" "))
                           .join(" ")}");`,
               )
               .join("\n")
         : ""
 }
 );
-out ${outType};
+out ${outMode};
 `;
     } else {
-        const primaryLocation = mapGeoLocation.get();
-        const additionalLocations = additionalMapGeoLocations
-            .get()
-            .filter((entry) => entry.added)
-            .map((entry) => entry.location);
-        const allLocations = [primaryLocation, ...additionalLocations];
         const relationToAreaBlocks = allLocations
             .map((loc, idx) => {
                 const regionVar = `.region${idx}`;
@@ -292,15 +333,52 @@ out ${outType};
           `;
             })
             .join("\n");
-        query = `
+        return `
         [out:json]${timeoutDuration !== 0 ? `[timeout:${timeoutDuration}]` : ""};
         ${relationToAreaBlocks}
         (
         ${searchBlocks}
         );
-        out ${outType};
+        out ${outMode};
         `;
     }
+};
+
+export const findPlacesInZone = async (
+    filter: string,
+    loadingText?: string,
+    searchType:
+        | "node"
+        | "way"
+        | "relation"
+        | "nwr"
+        | "nw"
+        | "wr"
+        | "nr"
+        | "area" = "nwr",
+    outType: "center" | "geom" = "center",
+    alternatives: string[] = [],
+    timeoutDuration: number = 0,
+) => {
+    let query = "";
+    const $polyGeoJSON = polyGeoJSON.get();
+
+    const primaryLocation = mapGeoLocation.get();
+    const additionalLocations = additionalMapGeoLocations
+        .get()
+        .filter((entry) => entry.added)
+        .map((entry) => entry.location);
+    const allLocations = [primaryLocation, ...additionalLocations];
+
+    query = buildSearchQuery({
+        filter,
+        searchType,
+        timeoutDuration,
+        alternatives,
+        outMode: outType,
+        allLocations,
+        polyGeoJSON: $polyGeoJSON,
+    });
     const data = await getOverpassData(
         query,
         loadingText,
