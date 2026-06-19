@@ -111,7 +111,7 @@ export const displayHidingZones = persistentAtom<boolean>(
 );
 export const displayHidingZonesOptions = persistentAtom<string[]>(
     "displayHidingZonesOptions",
-    ["[railway=station]"],
+    ["SPECIAL:MAX_STOPS", "SPECIAL:TRAIN_STATIONS"],
     {
         encode: JSON.stringify,
         decode: JSON.parse,
