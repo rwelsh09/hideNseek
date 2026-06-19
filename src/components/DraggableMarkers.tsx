@@ -10,9 +10,11 @@ import { Marker } from "react-leaflet";
 import {
     autoSave,
     hiderMode,
+    penaltyMinutes,
     questionModified,
     questions,
     save,
+    TIME_PENALTIES,
     triggerLocalRefresh,
 } from "@/lib/context";
 import type { ICON_COLORS } from "@/maps/api";
@@ -35,6 +37,24 @@ export const draftQuestionType = atom<string | null>(null);
 
 let isDragging = false;
 
+// Cache icons to prevent unnecessary re-renders in react-leaflet by avoiding new object references
+const iconCache: Partial<Record<keyof typeof ICON_COLORS, Icon>> = {};
+
+const getIcon = (color: keyof typeof ICON_COLORS) => {
+    if (!iconCache[color]) {
+        iconCache[color] = new Icon({
+            iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
+            shadowUrl:
+                "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
+        });
+    }
+    return iconCache[color];
+};
+
 const ColoredMarker = ({
     latitude,
     longitude,
@@ -51,19 +71,7 @@ const ColoredMarker = ({
     return (
         <Marker
             position={[latitude, longitude]}
-            icon={
-                color
-                    ? new Icon({
-                          iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
-                          shadowUrl:
-                              "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
-                          iconSize: [25, 41],
-                          iconAnchor: [12, 41],
-                          popupAnchor: [1, -34],
-                          shadowSize: [41, 41],
-                      })
-                    : undefined
-            }
+            icon={color ? getIcon(color) : undefined}
             draggable={true}
             eventHandlers={{
                 dragstart: () => {
