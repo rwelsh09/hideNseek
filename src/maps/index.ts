@@ -112,16 +112,22 @@ export async function applyQuestionsToMapGeoData(
         question: any,
     ) => void,
 ): Promise<any> {
-    for (const question of questions) {
-        if (planningModeCallback) {
-            const planningPolygon = await determinePlanningPolygon(
-                question,
-                planningModeEnabled,
-            );
+    if (planningModeCallback) {
+        const planningPolygons = await Promise.all(
+            questions.map((question) =>
+                determinePlanningPolygon(question, planningModeEnabled),
+            ),
+        );
+
+        for (let i = 0; i < questions.length; i++) {
+            const planningPolygon = planningPolygons[i];
             if (planningPolygon) {
-                planningModeCallback(planningPolygon, question);
+                planningModeCallback(planningPolygon, questions[i]);
             }
         }
+    }
+
+    for (const question of questions) {
         if (planningModeEnabled && question.data.drag) {
             continue;
         }
