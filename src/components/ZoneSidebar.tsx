@@ -1,6 +1,11 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
-import type { Feature, FeatureCollection, Point, Polygon, MultiPolygon } from "geojson";
+import type {
+    Feature,
+    FeatureCollection,
+    MultiPolygon,
+    Polygon,
+} from "geojson";
 import * as L from "leaflet";
 import _ from "lodash";
 import { SidebarCloseIcon } from "lucide-react";
@@ -289,16 +294,21 @@ export const ZoneSidebar = () => {
                                 '["admin_level"="10"]',
                                 "Finding neighbourhoods. This may take a while. Do not press any buttons while this is processing. Don't worry, it will be cached.",
                                 "nwr",
-                                "geom"
-                            )
+                                "geom",
+                            ),
                         ) as FeatureCollection<Polygon | MultiPolygon>;
 
-                        if (!data.features || data.features.length === 0) continue;
+                        if (!data.features || data.features.length === 0)
+                            continue;
 
                         const findNearest = (pt: any) => {
                             let nearest: any = null;
                             for (const feature of data.features) {
-                                if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                                if (
+                                    feature.geometry.type !== "Polygon" &&
+                                    feature.geometry.type !== "MultiPolygon"
+                                )
+                                    continue;
                                 if (turf.booleanPointInPolygon(pt, feature)) {
                                     nearest = feature;
                                     break;
@@ -307,8 +317,15 @@ export const ZoneSidebar = () => {
                             if (!nearest) {
                                 let minDistance = Infinity;
                                 for (const feature of data.features) {
-                                    if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
-                                    const d = turf.distance(pt, turf.center(feature));
+                                    if (
+                                        feature.geometry.type !== "Polygon" &&
+                                        feature.geometry.type !== "MultiPolygon"
+                                    )
+                                        continue;
+                                    const d = turf.distance(
+                                        pt,
+                                        turf.center(feature),
+                                    );
                                     if (d < minDistance) {
                                         minDistance = d;
                                         nearest = feature;
@@ -318,12 +335,18 @@ export const ZoneSidebar = () => {
                             return nearest;
                         };
 
-                        const nearestSeekerNeighbourhood = findNearest(location);
+                        const nearestSeekerNeighbourhood =
+                            findNearest(location);
 
                         circles = circles.filter((circle) => {
-                            const nearestHiderNeighbourhood = findNearest(turf.center(circle as any));
+                            const nearestHiderNeighbourhood = findNearest(
+                                turf.center(circle as any),
+                            );
 
-                            if (!nearestHiderNeighbourhood || !nearestSeekerNeighbourhood) {
+                            if (
+                                !nearestHiderNeighbourhood ||
+                                !nearestSeekerNeighbourhood
+                            ) {
                                 return question.data.same ? false : true;
                             }
 
@@ -333,8 +356,16 @@ export const ZoneSidebar = () => {
                                     nearestSeekerNeighbourhood.id;
                                 return question.data.same ? same : !same;
                             } else {
-                                const hiderEnglishName = nearestHiderNeighbourhood.properties?.["name:en"] || nearestHiderNeighbourhood.properties?.name;
-                                const seekerEnglishName = nearestSeekerNeighbourhood.properties?.["name:en"] || nearestSeekerNeighbourhood.properties?.name;
+                                const hiderEnglishName =
+                                    nearestHiderNeighbourhood.properties?.[
+                                        "name:en"
+                                    ] ||
+                                    nearestHiderNeighbourhood.properties?.name;
+                                const seekerEnglishName =
+                                    nearestSeekerNeighbourhood.properties?.[
+                                        "name:en"
+                                    ] ||
+                                    nearestSeekerNeighbourhood.properties?.name;
 
                                 if (!hiderEnglishName || !seekerEnglishName) {
                                     return true;
