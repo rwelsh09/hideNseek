@@ -204,48 +204,59 @@ export const ZoneSidebar = () => {
 
                     if (overpassOptions.length > 0) {
                         // @ts-expect-error osmtogeojson always defines properties with an "id" string
-                        places = osmtogeojson(
-                            await findPlacesInZone(
-                                overpassOptions[0],
-                                "Finding stations. This may take a while...",
-                                "nwr",
-                                "center",
-                                overpassOptions.slice(1),
-                            ),
-                        ).features;
+                        places =
+                            osmtogeojson(
+                                await findPlacesInZone(
+                                    overpassOptions[0],
+                                    "Finding stations. This may take a while...",
+                                    "nwr",
+                                    "center",
+                                    overpassOptions.slice(1),
+                                ),
+                            ).features || [];
+                    } else {
+                        places = [];
                     }
 
                     if (specialOptions.includes("SPECIAL:MAX_STOPS")) {
                         const maxFeatures = (
                             maxStationsData as any
-                        ).features.map((f: any) => ({
-                            type: "Feature",
-                            geometry: f.geometry,
-                            properties: {
-                                id:
-                                    f.properties?.["@id"] ||
-                                    f.id ||
-                                    `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
-                                name: f.properties?.name,
-                            },
-                        }));
+                        ).features.map((f: any) => {
+                            const centerCoords =
+                                turf.center(f).geometry.coordinates;
+                            return {
+                                type: "Feature",
+                                geometry: f.geometry,
+                                properties: {
+                                    id:
+                                        f.properties?.["@id"] ||
+                                        f.id ||
+                                        `${centerCoords[1]},${centerCoords[0]}`,
+                                    name: f.properties?.name,
+                                },
+                            };
+                        });
                         places.push(...maxFeatures);
                     }
 
                     if (specialOptions.includes("SPECIAL:TRAIN_STATIONS")) {
                         const trainFeatures = (
                             defaultStationsData as any
-                        ).features.map((f: any) => ({
-                            type: "Feature",
-                            geometry: f.geometry,
-                            properties: {
-                                id:
-                                    f.properties?.["@id"] ||
-                                    f.id ||
-                                    `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
-                                name: f.properties?.name,
-                            },
-                        }));
+                        ).features.map((f: any) => {
+                            const centerCoords =
+                                turf.center(f).geometry.coordinates;
+                            return {
+                                type: "Feature",
+                                geometry: f.geometry,
+                                properties: {
+                                    id:
+                                        f.properties?.["@id"] ||
+                                        f.id ||
+                                        `${centerCoords[1]},${centerCoords[0]}`,
+                                    name: f.properties?.name,
+                                },
+                            };
+                        });
                         places.push(...trainFeatures);
                     }
 
@@ -736,7 +747,7 @@ export const ZoneSidebar = () => {
                                             value: "SPECIAL:MAX_STOPS",
                                         },
                                         {
-                                            label: "CT Train Stations",
+                                            label: "CTrain Stations",
                                             value: "SPECIAL:TRAIN_STATIONS",
                                         },
                                         {
