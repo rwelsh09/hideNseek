@@ -43,7 +43,13 @@ const { className } = Astro.props;
             sizes="16x16"
             href="https://rwelsh09.github.io/HideAndSeek/favicon-16x16.png"
         />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <script is:inline>
+            // Run before anything else
+            if (sessionStorage.getItem("resetEverything") === "true") {
+                localStorage.clear();
+                sessionStorage.removeItem("resetEverything");
+            }
+        </script>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link

@@ -556,6 +556,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                             )
                                         ) {
                                             localStorage.clear();
+                                            sessionStorage.clear();
+                                            sessionStorage.setItem("resetEverything", "true");
                                             window.location.reload();
                                         }
                                     }}
