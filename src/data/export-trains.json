@@ -7,7 +7,7 @@
     {
       "type": "Feature",
       "properties": {
-        "@id": "way/195614894",
+        "@id": "node/195614894",
         "building": "train_station",
         "building:levels": "3",
         "layer": "2",
@@ -28,7 +28,7 @@
           51.0447565
         ]
       },
-      "id": "way/195614894"
+      "id": "node/195614894"
     },
     {
       "type": "Feature",
