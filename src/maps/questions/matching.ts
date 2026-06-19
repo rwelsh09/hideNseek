@@ -139,8 +139,7 @@ export const determineMatchingBoundary = _.memoize(
             case "park":
             case "same-first-letter-station":
             case "same-length-station":
-            case "same-train-line":
-            case "same-quadrant": {
+            case "same-train-line": {
                 return false;
             }
             case "same-neighbourhood":
@@ -380,24 +379,6 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
         return question;
     }
 
-    if (question.type === "same-quadrant") {
-        const quadrants = await fetchQuadrantsForPoints([
-            {lng: $hiderMode.longitude, lat: $hiderMode.latitude},
-            {lng: question.lng, lat: question.lat}
-        ]);
-
-        const hiderQuadrant = quadrants[0];
-        const seekerQuadrant = quadrants[1];
-
-        if (hiderQuadrant && seekerQuadrant) {
-            question.same = hiderQuadrant === seekerQuadrant;
-        } else {
-            question.same = false;
-        }
-
-        return question;
-    }
-
     if (
         question.type === "same-neighbourhood" ||
         question.type === "same-first-letter-neighbourhood"
@@ -594,39 +575,4 @@ export const matchingPlanningPolygon = async (question: MatchingQuestion) => {
     } catch {
         return false;
     }
-};
-
-
-export const fetchQuadrantsForPoints = async (points: {lng: number, lat: number}[]) => {
-    const chunks = _.chunk(points, 200);
-    const results: any[] = [];
-    for (const chunk of chunks) {
-        const queryBlocks = chunk.map(p => `way(around:500, ${p.lat}, ${p.lng})[highway][name];`).join("\n");
-        const query = `[out:json];(${queryBlocks});out tags center;`;
-        const data = await getOverpassData(query, "Determining quadrants...", CacheType.ZONE_CACHE);
-        if (data && data.elements) {
-            results.push(...data.elements);
-        }
-    }
-
-    const streetPoints = results.filter((el: any) => el.center).map((el: any) => turf.point([el.center.lon, el.center.lat], el.tags));
-
-    return points.map(p => {
-        const pt = turf.point([p.lng, p.lat]);
-        let quadrant = null;
-        let minD = Infinity;
-        for (const sp of streetPoints) {
-            const d = turf.distance(pt, sp);
-            if (d < minD) {
-                const name = sp.properties.name;
-                if (!name) continue;
-                const upper = name.toUpperCase();
-                if (upper.endsWith(" NW") || upper.endsWith(" NE") || upper.endsWith(" SW") || upper.endsWith(" SE")) {
-                    minD = d;
-                    quadrant = upper.slice(-2);
-                }
-            }
-        }
-        return quadrant;
-    });
 };

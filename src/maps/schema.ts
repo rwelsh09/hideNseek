@@ -249,9 +249,6 @@ const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
             z
                 .literal("same-first-letter-neighbourhood")
                 .describe("Neighbourhood (Same First Letter) Question"),
-            z
-                .literal("same-quadrant")
-                .describe("Quadrant (Same As Me) Question"),
         ])
         .default("airport"),
 });

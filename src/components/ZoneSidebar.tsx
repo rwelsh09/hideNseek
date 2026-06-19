@@ -49,7 +49,6 @@ import {
     type StationPlace,
     trainLineNodeFinder,
 } from "@/maps/api";
-import { fetchQuadrantsForPoints } from "@/maps/questions/matching";
 import {
     extractStationLabel,
     extractStationName,
@@ -272,31 +271,6 @@ export const ZoneSidebar = () => {
 
                     if (planningModeEnabled.get() && question.data.drag) {
                         continue;
-                    }
-
-                    if (
-                        question.id === "matching" &&
-                        question.data.type === "same-quadrant"
-                    ) {
-                        const pointsToFetch = [
-                            { lng: question.data.lng, lat: question.data.lat },
-                            ...circles.map((c) => {
-                                const center = turf.center(c as any);
-                                return {
-                                    lng: center.geometry.coordinates[0] as unknown as number,
-                                    lat: center.geometry.coordinates[1] as unknown as number,
-                                };
-                            }),
-                        ];
-
-                        const quadrants = await fetchQuadrantsForPoints(pointsToFetch);
-                        const seekerQuadrant = quadrants[0];
-
-                        circles = circles.filter((circle, i) => {
-                            const hiderQuadrant = quadrants[i + 1];
-                            const same = Boolean(hiderQuadrant && seekerQuadrant && hiderQuadrant === seekerQuadrant);
-                            return question.data.same ? same : !same;
-                        });
                     }
 
                     if (
