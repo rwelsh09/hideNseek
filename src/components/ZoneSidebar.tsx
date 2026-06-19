@@ -22,6 +22,8 @@ import {
     SidebarMenu,
     SidebarMenuItem,
 } from "@/components/ui/sidebar-r";
+import maxStationsData from "@/data/export-MAX.json";
+import defaultStationsData from "@/data/export-trains.json";
 import {
     customStations as customStationsAtom,
     disabledStations,
@@ -193,16 +195,62 @@ export const ZoneSidebar = () => {
                         },
                     }));
                 } else {
-                    // @ts-expect-error osmtogeojson always defines properties with an "id" string
-                    places = osmtogeojson(
-                        await findPlacesInZone(
-                            $displayHidingZonesOptions[0],
-                            "Finding stations. This may take a while...",
-                            "nwr",
-                            "center",
-                            $displayHidingZonesOptions.slice(1),
-                        ),
-                    ).features;
+                    const overpassOptions = $displayHidingZonesOptions.filter(
+                        (o) => !o.startsWith("SPECIAL:"),
+                    );
+                    const specialOptions = $displayHidingZonesOptions.filter(
+                        (o) => o.startsWith("SPECIAL:"),
+                    );
+
+                    if (overpassOptions.length > 0) {
+                        // @ts-expect-error osmtogeojson always defines properties with an "id" string
+                        places =
+                            osmtogeojson(
+                                await findPlacesInZone(
+                                    overpassOptions[0],
+                                    "Finding stations. This may take a while...",
+                                    "nwr",
+                                    "center",
+                                    overpassOptions.slice(1),
+                                ),
+                            ).features || [];
+                    } else {
+                        places = [];
+                    }
+
+                    if (specialOptions.includes("SPECIAL:MAX_STOPS")) {
+                        const maxFeatures = (
+                            maxStationsData as any
+                        ).features.map((f: any) => ({
+                            type: "Feature",
+                            geometry: f.geometry,
+                            properties: {
+                                id:
+                                    f.properties?.["@id"] ||
+                                    f.id ||
+                                    `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
+                                name: f.properties?.name,
+                            },
+                        }));
+                        places.push(...maxFeatures);
+                    }
+
+                    if (specialOptions.includes("SPECIAL:TRAIN_STATIONS")) {
+                        const trainFeatures = (
+                            defaultStationsData as any
+                        ).features.map((f: any) => ({
+                            type: "Feature",
+                            geometry: f.geometry,
+                            properties: {
+                                id:
+                                    f.properties?.["@id"] ||
+                                    f.id ||
+                                    `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
+                                name: f.properties?.name,
+                            },
+                        }));
+                        places.push(...trainFeatures);
+                    }
 
                     if (
                         useCustomStations &&
@@ -685,6 +733,14 @@ export const ZoneSidebar = () => {
                                         {
                                             label: "Bus Stops",
                                             value: "[highway=bus_stop]",
+                                        },
+                                        {
+                                            label: "MAX Stops",
+                                            value: "SPECIAL:MAX_STOPS",
+                                        },
+                                        {
+                                            label: "CTrain Stations",
+                                            value: "SPECIAL:TRAIN_STATIONS",
                                         },
                                         {
                                             label: "Ferry Terminals",
