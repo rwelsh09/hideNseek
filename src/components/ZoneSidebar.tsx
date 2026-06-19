@@ -1073,7 +1073,41 @@ function styleStations(
             return safeUnion(turf.featureCollection(circles));
         case "stations":
             return turf.featureCollection(circles.map((c) => c.properties));
+        case "zones":
         default:
+            if (circles.length > 1) {
+                const points = turf.featureCollection(
+                    circles.map((c) => c.properties),
+                );
+                try {
+                    const voronoi = geoSpatialVoronoi(points as any);
+
+                    if (voronoi && voronoi.features) {
+                        const intersectedCircles = circles.map((circle) => {
+                            const stationId = circle.properties.properties.id;
+                            const v = voronoi.features.find(
+                                (f: any) =>
+                                    f.properties?.site?.properties?.id ===
+                                    stationId,
+                            );
+
+                            if (v) {
+                                const intersection = turf.intersect(
+                                    turf.featureCollection([circle, v as any]),
+                                );
+                                if (intersection) {
+                                    intersection.properties = circle.properties;
+                                    return intersection;
+                                }
+                            }
+                            return circle;
+                        });
+                        return turf.featureCollection(intersectedCircles);
+                    }
+                } catch (e) {
+                    console.error("Error generating voronoi for zones:", e);
+                }
+            }
             return turf.featureCollection(circles);
     }
 }
