@@ -13,8 +13,8 @@ import {
     TrainFront,
     TreePine,
     Waves,
-    MapPin,
     MapPinned,
+    MapPin,
 } from "lucide-react";
 import { useState } from "react";
 
