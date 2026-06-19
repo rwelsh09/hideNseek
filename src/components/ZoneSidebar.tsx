@@ -226,7 +226,7 @@ export const ZoneSidebar = () => {
                                 turf.center(f).geometry.coordinates;
                             return {
                                 type: "Feature",
-                                geometry: f.geometry,
+                                geometry: turf.center(f).geometry,
                                 properties: {
                                     id:
                                         f.properties?.["@id"] ||
@@ -247,7 +247,7 @@ export const ZoneSidebar = () => {
                                 turf.center(f).geometry.coordinates;
                             return {
                                 type: "Feature",
-                                geometry: f.geometry,
+                                geometry: turf.center(f).geometry,
                                 properties: {
                                     id:
                                         f.properties?.["@id"] ||

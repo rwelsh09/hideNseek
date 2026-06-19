@@ -1,4 +1,5 @@
 import { persistentAtom } from "@nanostores/persistent";
+import * as turf from "@turf/turf";
 import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import type { Map } from "leaflet";
 import { atom, computed, onSet } from "nanostores";
@@ -143,8 +144,8 @@ export const customStations = persistentAtom<CustomStation[]>(
     "customStations",
     [...defaultStationsData.features, ...maxStationsData.features].map(
         (feature: any) => ({
-            type: feature.type,
-            geometry: feature.geometry,
+            type: "Feature",
+            geometry: turf.center(feature).geometry,
             properties: {
                 id: feature.properties?.["@id"] || feature.id,
                 name: feature.properties?.name,
