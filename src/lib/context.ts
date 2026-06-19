@@ -3,7 +3,7 @@ import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import type { Map } from "leaflet";
 import { atom, computed, onSet } from "nanostores";
 
-import defaultStationsData from "@/data/export.json";
+import defaultStationsData from "@/data/export-trains.json";
 import type {
     AdditionalMapGeoLocations,
     CustomStation,
