@@ -4,8 +4,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Centre ST N @ 64 AV N & SB Centre ST N @ 64 AV N",
-        "merged_station_count": 2
+        "name": "Huntington Hills",
+        "original_names": "NB Centre ST N @ 64 AV N & SB Centre ST N @ 64 AV N",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -18,8 +19,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Centre ST N @ 56 AV N",
-        "merged_station_count": 2
+        "name": "Thorncliffe",
+        "original_names": "SB Centre ST N @ 56 AV N",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -32,8 +34,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Centre ST N @ 78 AV N & NB Centre ST N @ 78 AV N",
-        "merged_station_count": 2
+        "name": "Centre St N & 78 Av N",
+        "original_names": "SB Centre ST N @ 78 AV N & NB Centre ST N @ 78 AV N",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -46,8 +49,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Centre ST N @ N of Beddington BV N & NB Centre ST N @ N of Beddington BV N",
-        "merged_station_count": 2
+        "name": "Beddington Heights",
+        "original_names": "SB Centre ST N @ N of Beddington BV N & NB Centre ST N @ N of Beddington BV N",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -60,7 +64,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "North Pointe Terminal A (SB Country Village Link NE @ Country Village WY NE)",
+        "name": "Country Hills Village",
+        "original_names": "North Pointe Terminal A (SB Country Village Link NE @ Country Village WY NE)",
         "merged_station_count": 1
       },
       "geometry": {
@@ -74,7 +79,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Harvest Hills BV @ Panamount GA NW",
+        "name": "Panorama Hills",
+        "original_names": "SB Harvest Hills BV @ Panamount GA NW",
         "merged_station_count": 1
       },
       "geometry": {
@@ -88,8 +94,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Southland Leisure Centre (WB) & Southland Leisure Centre (EB)",
-        "merged_station_count": 2
+        "name": "Pump Hill",
+        "original_names": "Southland Leisure Centre (WB) & Southland Leisure Centre (EB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -102,7 +109,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB 9 Avenue & Macleod Trail SE",
+        "name": "Downtown Commercial Core",
+        "original_names": "EB 9 Avenue & Macleod Trail SE",
         "merged_station_count": 1
       },
       "geometry": {
@@ -116,8 +124,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB 9 AV SE @ 12 ST SE & WB 9 Avenue & 12 Street",
-        "merged_station_count": 2
+        "name": "Inglewood",
+        "original_names": "EB 9 AV SE @ 12 ST SE & WB 9 Avenue & 12 Street",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -130,8 +139,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 9 Avenue & 6 Street SE & EB 9 Avenue & 6 Street SE",
-        "merged_station_count": 2
+        "name": "Downtown East Village",
+        "original_names": "WB 9 Avenue & 6 Street SE & EB 9 Avenue & 6 Street SE",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -144,8 +154,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 9 AV SE @ 9 ST SE & EB 9 AV SE @ 8 ST SE",
-        "merged_station_count": 2
+        "name": "9 Av SE & 9 St SE",
+        "original_names": "WB 9 AV SE @ 9 ST SE & EB 9 AV SE @ 8 ST SE",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -158,8 +169,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "44th Street SE Station (EB) & 44th Street SE Station (WB)",
-        "merged_station_count": 2
+        "name": "Forest Lawn",
+        "original_names": "44th Street SE Station (EB) & 44th Street SE Station (WB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -172,8 +184,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Harvest Hills BV @ 96 AV NE & SB Harvest Hills BV @ Country Hills RD NW",
-        "merged_station_count": 2
+        "name": "Harvest Hills",
+        "original_names": "NB Harvest Hills BV @ 96 AV NE & SB Harvest Hills BV @ Country Hills RD NW",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -186,8 +199,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Centre ST N @ 40 AV N & SB Centre ST N @ 40 AV N",
-        "merged_station_count": 2
+        "name": "Highland Park",
+        "original_names": "NB Centre ST N @ 40 AV N & SB Centre ST N @ 40 AV N",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -200,8 +214,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Southbound Centre Street N @ 16 Avenue N & Centre Street N Station (WB) & Centre Street N Station (EB) & Northbound Centre Street N @ 17 Avenue N",
-        "merged_station_count": 4
+        "name": "Tuxedo Park",
+        "original_names": "Southbound Centre Street N @ 16 Avenue N & Centre Street N Station (WB) & Centre Street N Station (EB) & Northbound Centre Street N @ 17 Avenue N",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -214,8 +229,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Heritage LRT Station",
-        "merged_station_count": 2
+        "name": "Haysboro",
+        "original_names": "Heritage LRT Station",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -228,7 +244,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Brentwood LRT Station",
+        "name": "Brentwood",
+        "original_names": "Brentwood LRT Station",
         "merged_station_count": 1
       },
       "geometry": {
@@ -242,7 +259,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 16th Av NW @ 19th St NW",
+        "name": "Banff Trail",
+        "original_names": "WB 16th Av NW @ 19th St NW",
         "merged_station_count": 1
       },
       "geometry": {
@@ -256,8 +274,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Riverbend Station (SB) & Riverbend Station (NB)",
-        "merged_station_count": 2
+        "name": "Riverbend",
+        "original_names": "Riverbend Station (SB) & Riverbend Station (NB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -270,8 +289,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "17 Avenue SW Station (NB) & SB Crowchild TR @ 17 AV SW Overpass",
-        "merged_station_count": 2
+        "name": "17 Avenue SW",
+        "original_names": "17 Avenue SW Station (NB) & SB Crowchild TR @ 17 AV SW Overpass",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -284,7 +304,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB 9 AV SE & Centre ST S",
+        "name": "9 Av SE",
+        "original_names": "EB 9 AV SE & Centre ST S",
         "merged_station_count": 1
       },
       "geometry": {
@@ -298,7 +319,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 9 AV SE @ The Confluence",
+        "name": "9 Av SE & The Confluence",
+        "original_names": "WB 9 AV SE @ The Confluence",
         "merged_station_count": 1
       },
       "geometry": {
@@ -312,7 +334,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB 9 AV SE @ 9 ST SW",
+        "name": "Downtown West End",
+        "original_names": "EB 9 AV SE @ 9 ST SW",
         "merged_station_count": 1
       },
       "geometry": {
@@ -326,8 +349,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Woodview Station (SB) & Woodview Station (NB)",
-        "merged_station_count": 2
+        "name": "Woodview",
+        "original_names": "Woodview Station (SB) & Woodview Station (NB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -340,8 +364,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Braeside Station (NB) & Cedarbrae Station (SB)",
-        "merged_station_count": 2
+        "name": "Cedarbrae",
+        "original_names": "Braeside Station (NB) & Cedarbrae Station (SB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -354,8 +379,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "54 Avenue SW Station (SB) & 54 Avenue SW Station (NB)",
-        "merged_station_count": 2
+        "name": "North Glenmore",
+        "original_names": "54 Avenue SW Station (SB) & 54 Avenue SW Station (NB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -368,7 +394,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Mount Royal University Station (NB)",
+        "name": "Mount Royal University Station",
+        "original_names": "Mount Royal University Station (NB)",
         "merged_station_count": 1
       },
       "geometry": {
@@ -382,8 +409,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Crowchild TR @ 33 AV SW & Marda Loop Station",
-        "merged_station_count": 2
+        "name": "Richmond",
+        "original_names": "SB Crowchild TR @ 33 AV SW & Marda Loop Station",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -396,8 +424,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Crowchild TR @ 26 AV SW Overpass & Crowchild Trail & 26 Avenue NB",
-        "merged_station_count": 2
+        "name": "Crowchild Tr & 26 Av SW Overpass",
+        "original_names": "SB Crowchild TR @ 26 AV SW Overpass & Crowchild Trail & 26 Avenue NB",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -411,6 +440,7 @@
       "type": "Feature",
       "properties": {
         "name": "Mount Royal University Terminal",
+        "original_names": "Mount Royal University Terminal",
         "merged_station_count": 1
       },
       "geometry": {
@@ -424,8 +454,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Sarcee Road Station (WB) & Sarcee Road Station (EB)",
-        "merged_station_count": 2
+        "name": "Lincoln Park",
+        "original_names": "Sarcee Road Station (WB) & Sarcee Road Station (EB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -438,8 +469,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB 5 AV SW @ 5 ST SW & WB 6 AV SW @ 5 ST SW",
-        "merged_station_count": 2
+        "name": "5 Av SW & 5 St SW",
+        "original_names": "EB 5 AV SW @ 5 ST SW & WB 6 AV SW @ 5 ST SW",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -452,8 +484,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB 5 AV SW @ 2 ST SW & EB 5 AV SW @ 1 ST SW & SB 1 ST SW & 6 AV SW",
-        "merged_station_count": 3
+        "name": "5 Av SW & 2 St SW",
+        "original_names": "EB 5 AV SW @ 2 ST SW & EB 5 AV SW @ 1 ST SW & SB 1 ST SW & 6 AV SW",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -466,7 +499,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Saddletowne Terminal Stop F",
+        "name": "Saddle Ridge",
+        "original_names": "Saddletowne Terminal Stop F",
         "merged_station_count": 1
       },
       "geometry": {
@@ -480,8 +514,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Falshire Drive Station (NB) & Falshire Drive Station (SB)",
-        "merged_station_count": 2
+        "name": "Falshire Drive",
+        "original_names": "Falshire Drive Station (NB) & Falshire Drive Station (SB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -494,8 +529,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Castleridge Boulevard Station (NB) & Castleridge Boulevard Station (SB)",
-        "merged_station_count": 2
+        "name": "Falconridge",
+        "original_names": "Castleridge Boulevard Station (NB) & Castleridge Boulevard Station (SB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -508,8 +544,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Alberta Children's Hospital Station (SB) & Alberta Children's Hospital Station NB",
-        "merged_station_count": 2
+        "name": "University District",
+        "original_names": "Alberta Children's Hospital Station (SB) & Alberta Children's Hospital Station NB",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -522,7 +559,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 6 AV SW @ 2 ST SW",
+        "name": "6 Av SW & 2 St SW",
+        "original_names": "WB 6 AV SW @ 2 ST SW",
         "merged_station_count": 1
       },
       "geometry": {
@@ -536,8 +574,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB 7 ST SW @ 7 AVE SW & WB 6 AV SW @ W. of 7 ST SW",
-        "merged_station_count": 2
+        "name": "7 St SW & 7 Ave SW",
+        "original_names": "SB 7 ST SW @ 7 AVE SW & WB 6 AV SW @ W. of 7 ST SW",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -550,8 +589,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Richmond Road Station (SB) & Richmond Road Station (NB)",
-        "merged_station_count": 2
+        "name": "Glenbrook",
+        "original_names": "Richmond Road Station (SB) & Richmond Road Station (NB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -564,8 +604,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "26th Avenue SW Station (NB) & 26 Avenue SW Station (SB)",
-        "merged_station_count": 2
+        "name": "Glendale",
+        "original_names": "26th Avenue SW Station (NB) & 26 Avenue SW Station (SB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -578,7 +619,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Westbrook LRT Station",
+        "name": "Rosscarrock",
+        "original_names": "Westbrook LRT Station",
         "merged_station_count": 1
       },
       "geometry": {
@@ -592,8 +634,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Rockyview Hospital (Southbound) & Rockyview Hospital (Northbound)",
-        "merged_station_count": 2
+        "name": "Eagle Ridge",
+        "original_names": "Rockyview Hospital (Southbound) & Rockyview Hospital (Northbound)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -606,8 +649,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Heritage Park (Northbound) & Heritage Park (Southbound)",
-        "merged_station_count": 2
+        "name": "Glenmore Park",
+        "original_names": "Heritage Park (Northbound) & Heritage Park (Southbound)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -620,8 +664,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Elbow Drive Station (EB) & Elbow Drive Station (WB)",
-        "merged_station_count": 2
+        "name": "Chinook Park",
+        "original_names": "Elbow Drive Station (EB) & Elbow Drive Station (WB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -634,8 +679,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Fairmount Drive Station (EB) & Fairmount Drive Station (WB)",
-        "merged_station_count": 2
+        "name": "Fairview",
+        "original_names": "Fairmount Drive Station (EB) & Fairmount Drive Station (WB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -648,8 +694,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Deerfoot Meadows Station (WB) & Deerfoot Meadows Station (EB)",
-        "merged_station_count": 2
+        "name": "East Fairview Industrial",
+        "original_names": "Deerfoot Meadows Station (WB) & Deerfoot Meadows Station (EB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -662,8 +709,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Quarry Park Station (SB) & Quarry Park Station (NB)",
-        "merged_station_count": 2
+        "name": "Quarry Park",
+        "original_names": "Quarry Park Station (SB) & Quarry Park Station (NB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -676,7 +724,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Douglas Glen Terminal (WB 114 Avenue SE)",
+        "name": "Shepard Industrial",
+        "original_names": "Douglas Glen Terminal (WB 114 Avenue SE)",
         "merged_station_count": 1
       },
       "geometry": {
@@ -690,8 +739,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "90 Avenue SW (Southbound) & 90 Avenue SW (Northbound)",
-        "merged_station_count": 2
+        "name": "Bayview",
+        "original_names": "90 Avenue SW (Southbound) & 90 Avenue SW (Northbound)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -704,8 +754,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Rundle LRT Station (NB 36 ST NE @ 25 AV NE) & Rundle LRT Station (SB 36 ST NE @ 25 AV NE)",
-        "merged_station_count": 2
+        "name": "Sunridge",
+        "original_names": "Rundle LRT Station (NB 36 ST NE @ 25 AV NE) & Rundle LRT Station (SB 36 ST NE @ 25 AV NE)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -718,8 +769,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "19th Street NE Station (WB) & 19th Street NE Station (EB)",
-        "merged_station_count": 2
+        "name": "Mayland Heights",
+        "original_names": "19th Street NE Station (WB) & 19th Street NE Station (EB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -732,8 +784,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Edmonton Trail Station (WB) & Edmonton Trail Station (EB)",
-        "merged_station_count": 2
+        "name": "Edmonton Trail",
+        "original_names": "Edmonton Trail Station (WB) & Edmonton Trail Station (EB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -746,8 +799,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "4th Street NW Station (WB) & 4th Street NW Station (EB)",
-        "merged_station_count": 2
+        "name": "Mount Pleasant",
+        "original_names": "4th Street NW Station (WB) & 4th Street NW Station (EB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -760,8 +814,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SAIT Station (EB) & SAIT Station (WB)",
-        "merged_station_count": 2
+        "name": "Hillhurst",
+        "original_names": "SAIT Station (EB) & SAIT Station (WB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -774,7 +829,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "North Hill Station (EB)",
+        "name": "Hounsfield Heights/Briar Hill",
+        "original_names": "North Hill Station (EB)",
         "merged_station_count": 1
       },
       "geometry": {
@@ -788,8 +844,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Foothills Medical Centre (EB) & Foothills Medical Centre (WB)",
-        "merged_station_count": 2
+        "name": "St. Andrews Heights",
+        "original_names": "Foothills Medical Centre (EB) & Foothills Medical Centre (WB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -802,8 +859,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "31st Street NW Station (WB) & 31st Street NW Station (EB)",
-        "merged_station_count": 2
+        "name": "Varsity",
+        "original_names": "31st Street NW Station (WB) & 31st Street NW Station (EB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -816,8 +874,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Centre St N @ 28 Ave N & NB Centre St N @ 28 Ave N",
-        "merged_station_count": 2
+        "name": "Balmoral",
+        "original_names": "SB Centre St N @ 28 Ave N & NB Centre St N @ 28 Ave N",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -830,7 +889,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB 6 St SW @ 7 Ave SW",
+        "name": "6 St SW & 7 Ave SW",
+        "original_names": "NB 6 St SW @ 7 Ave SW",
         "merged_station_count": 1
       },
       "geometry": {
@@ -844,7 +904,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 17th AV SE @ 84th ST SE",
+        "name": "17Th Av SE & 84Th St SE",
+        "original_names": "WB 17th AV SE @ 84th ST SE",
         "merged_station_count": 1
       },
       "geometry": {
@@ -858,8 +919,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "9 Avenue SE Station (WB)",
-        "merged_station_count": 2
+        "name": "9 Avenue SE",
+        "original_names": "9 Avenue SE Station (WB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -872,8 +934,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 6 Avenue & 1 Street & Southbound Centre Street S @ 5 Avenue S & Northbound Centre Street S @ 4 Avenue S",
-        "merged_station_count": 3
+        "name": "6 Avenue",
+        "original_names": "WB 6 Avenue & 1 Street & Southbound Centre Street S @ 5 Avenue S & Northbound Centre Street S @ 4 Avenue S",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -886,8 +949,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "33rd Street SE Station (EB) & 33rd Street SE Station (WB)",
-        "merged_station_count": 2
+        "name": "Albert Park/Radisson Heights",
+        "original_names": "33rd Street SE Station (EB) & 33rd Street SE Station (WB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -900,8 +964,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "52nd Street SE Station (WB) & 52nd Street SE Station (EB)",
-        "merged_station_count": 2
+        "name": "Penbrooke Meadows",
+        "original_names": "52nd Street SE Station (WB) & 52nd Street SE Station (EB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -914,8 +979,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "36th Street SE Station (EB) & 36th Street SE Station (WB)",
-        "merged_station_count": 2
+        "name": "36Th Street SE",
+        "original_names": "36th Street SE Station (EB) & 36th Street SE Station (WB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -928,7 +994,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB East Hills SQ @ East Hills BV SE",
+        "name": "Belvedere",
+        "original_names": "SB East Hills SQ @ East Hills BV SE",
         "merged_station_count": 1
       },
       "geometry": {
@@ -942,7 +1009,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "North Hill Station (WB)",
+        "name": "Capitol Hill",
+        "original_names": "North Hill Station (WB)",
         "merged_station_count": 1
       },
       "geometry": {
@@ -956,8 +1024,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Oakridge Station (SB) & Oakridge Station (EB)",
-        "merged_station_count": 2
+        "name": "Braeside",
+        "original_names": "Oakridge Station (SB) & Oakridge Station (EB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -970,8 +1039,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Douglas Glen Boulevard Station (NB) & Douglas Glen Boulevard Station (SB)",
-        "merged_station_count": 2
+        "name": "Douglas Glen",
+        "original_names": "Douglas Glen Boulevard Station (NB) & Douglas Glen Boulevard Station (SB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -984,7 +1054,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Harvest Hills Boulevard @ Country Hillls Boulevard NW",
+        "name": "Country Hills",
+        "original_names": "SB Harvest Hills Boulevard @ Country Hillls Boulevard NW",
         "merged_station_count": 1
       },
       "geometry": {
@@ -998,7 +1069,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Harvest Hills Blvd @ Harvest Oak Gate NE",
+        "name": "Harvest Hills Blvd & Harvest Oak Gate NE",
+        "original_names": "SB Harvest Hills Blvd @ Harvest Oak Gate NE",
         "merged_station_count": 1
       },
       "geometry": {
@@ -1012,8 +1084,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Saddletowne Circle Station (NB) & Saddletowne Circle Station (SB)",
-        "merged_station_count": 2
+        "name": "Martindale",
+        "original_names": "Saddletowne Circle Station (NB) & Saddletowne Circle Station (SB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -1026,8 +1099,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Martindale Boulevard Station (NB) & Martindale Boulevard Station (SB)",
-        "merged_station_count": 2
+        "name": "Taradale",
+        "original_names": "Martindale Boulevard Station (NB) & Martindale Boulevard Station (SB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -1040,8 +1114,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Falconridge Boulevard NE @ Falconworth Rd NE & Falconridge Boulevard NE @ Castlebrook Dr NE",
-        "merged_station_count": 2
+        "name": "Falconridge Boulevard NE & Falconworth Rd NE",
+        "original_names": "Falconridge Boulevard NE @ Falconworth Rd NE & Falconridge Boulevard NE @ Castlebrook Dr NE",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -1054,8 +1129,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "44th Avenue NE Station (NB) & 44th Avenue NE Station (SB)",
-        "merged_station_count": 2
+        "name": "Whitehorn",
+        "original_names": "44th Avenue NE Station (NB) & 44th Avenue NE Station (SB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -1068,8 +1144,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Whitehorn Drive Station (NB) & Whitehorn Drive Station (SB)",
-        "merged_station_count": 2
+        "name": "Whitehorn Drive",
+        "original_names": "Whitehorn Drive Station (NB) & Whitehorn Drive Station (SB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -1082,8 +1159,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "32 Avenue NE Station (NB) & 32 Avenue NE Station (SB)",
-        "merged_station_count": 2
+        "name": "32 Avenue NE",
+        "original_names": "32 Avenue NE Station (NB) & 32 Avenue NE Station (SB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -1096,8 +1174,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Rundleside Drive Station (WB) & Rundleside Drive Station (EB)",
-        "merged_station_count": 2
+        "name": "Rundle",
+        "original_names": "Rundleside Drive Station (WB) & Rundleside Drive Station (EB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -1110,7 +1189,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Woodpark Station (NB)",
+        "name": "Woodlands",
+        "original_names": "Woodpark Station (NB)",
         "merged_station_count": 1
       },
       "geometry": {
@@ -1124,8 +1204,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 17 Ave SE @ 70th St SE & EB 17 Ave SE @ 70th St SE",
-        "merged_station_count": 2
+        "name": "17 Ave SE & 70Th St SE",
+        "original_names": "WB 17 Ave SE @ 70th St SE & EB 17 Ave SE @ 70th St SE",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -1138,8 +1219,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB 17 Ave SE @ 61st St SE & WB 17 Ave SE @ 61st St SE",
-        "merged_station_count": 2
+        "name": "Red Carpet",
+        "original_names": "EB 17 Ave SE @ 61st St SE & WB 17 Ave SE @ 61st St SE",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -1152,8 +1234,9 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "26th Street SE Station (EB) & 26th Street SE Station (WB)",
-        "merged_station_count": 2
+        "name": "Southview",
+        "original_names": "26th Street SE Station (EB) & 26th Street SE Station (WB)",
+        "merged_station_count": 1
       },
       "geometry": {
         "type": "Point",
@@ -1166,7 +1249,8 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB 3 Street & 7 Avenue",
+        "name": "3rd Street",
+        "original_names": "NB 3 Street & 7 Avenue",
         "merged_station_count": 1
       },
       "geometry": {
