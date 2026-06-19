@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/react";
 import { type DragEndEvent, Icon } from "leaflet";
 import { Target, X } from "lucide-react";
 import { atom } from "nanostores";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { createPortal } from "react-dom";
 import { Marker } from "react-leaflet";
@@ -10,11 +10,9 @@ import { Marker } from "react-leaflet";
 import {
     autoSave,
     hiderMode,
-    penaltyMinutes,
     questionModified,
     questions,
     save,
-    TIME_PENALTIES,
     triggerLocalRefresh,
 } from "@/lib/context";
 import type { ICON_COLORS } from "@/maps/api";
@@ -68,27 +66,41 @@ const ColoredMarker = ({
     longitude: number;
     color: keyof typeof ICON_COLORS;
 }) => {
+    const handlersRef = useRef({ onChange, onClick });
+
+    // Update refs without causing re-renders
+    useEffect(() => {
+        handlersRef.current = { onChange, onClick };
+    }, [onChange, onClick]);
+
+    // Memoize event handlers to prevent react-leaflet from constantly re-binding events
+    // which negatively impacts performance when many markers are rendered.
+    const eventHandlers = useMemo(
+        () => ({
+            dragstart: () => {
+                isDragging = true;
+            },
+            dragend: (x: DragEndEvent) => {
+                handlersRef.current.onChange(x);
+                setTimeout(() => {
+                    isDragging = false;
+                }, 100);
+            },
+            click: () => {
+                if (!isDragging) {
+                    handlersRef.current.onClick();
+                }
+            },
+        }),
+        [],
+    );
+
     return (
         <Marker
             position={[latitude, longitude]}
             icon={color ? getIcon(color) : undefined}
             draggable={true}
-            eventHandlers={{
-                dragstart: () => {
-                    isDragging = true;
-                },
-                dragend: (x) => {
-                    onChange(x);
-                    setTimeout(() => {
-                        isDragging = false;
-                    }, 100);
-                },
-                click: () => {
-                    if (!isDragging) {
-                        onClick();
-                    }
-                },
-            }}
+            eventHandlers={eventHandlers}
         />
     );
 };

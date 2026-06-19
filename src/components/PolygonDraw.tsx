@@ -9,7 +9,7 @@ import type {
 } from "geojson";
 import * as L from "leaflet";
 import _ from "lodash";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { FeatureGroup, Marker, Polygon, Polyline } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
 
@@ -40,6 +40,10 @@ import {
     SidebarMenuItem,
 } from "./ui/sidebar-l";
 
+// Cache static styles to prevent react-leaflet from re-rendering layers unnecessarily via setStyle()
+const RED_PATH_OPTIONS = { color: "red" };
+const INVISIBLE_SHAPE_OPTIONS = { shapeOptions: { fillOpacity: 0 } };
+
 const swapCoordinates = (geojson: any) => {
     return JSON.parse(JSON.stringify(geojson), (key, value) => {
         if (
@@ -62,6 +66,15 @@ const TentacleMarker = ({
     const $autoSave = useStore(autoSave);
     const [open, setOpen] = useState(false);
 
+    const eventHandlers = useMemo(
+        () => ({
+            click: () => {
+                setOpen(true);
+            },
+        }),
+        [],
+    );
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <Marker
@@ -71,11 +84,7 @@ const TentacleMarker = ({
                     point.geometry.coordinates[1],
                     point.geometry.coordinates[0],
                 ]}
-                eventHandlers={{
-                    click: () => {
-                        setOpen(true);
-                    },
-                }}
+                eventHandlers={eventHandlers}
             />
             <DialogContent>
                 <div className="flex flex-col gap-2">
@@ -128,6 +137,15 @@ const MatchingPointMarker = ({
     const $autoSave = useStore(autoSave);
     const [open, setOpen] = useState(false);
 
+    const eventHandlers = useMemo(
+        () => ({
+            click: () => {
+                setOpen(true);
+            },
+        }),
+        [],
+    );
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <Marker
@@ -137,11 +155,7 @@ const MatchingPointMarker = ({
                 ]}
                 // @ts-expect-error This is passed to options, so it is not typed
                 isDialog={true}
-                eventHandlers={{
-                    click: () => {
-                        setOpen(true);
-                    },
-                }}
+                eventHandlers={eventHandlers}
             />
             <DialogContent>
                 <div className="flex flex-col gap-2">
@@ -186,6 +200,15 @@ const MeasuringPointMarker = ({
     const $autoSave = useStore(autoSave);
     const [open, setOpen] = useState(false);
 
+    const eventHandlers = useMemo(
+        () => ({
+            click: () => {
+                setOpen(true);
+            },
+        }),
+        [],
+    );
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <Marker
@@ -195,11 +218,7 @@ const MeasuringPointMarker = ({
                 ]}
                 // @ts-expect-error This is passed to options, so it is not typed
                 isDialog={true}
-                eventHandlers={{
-                    click: () => {
-                        setOpen(true);
-                    },
-                }}
+                eventHandlers={eventHandlers}
             />
             <DialogContent>
                 <div className="flex flex-col gap-2">
@@ -437,7 +456,7 @@ export const PolygonDraw = () => {
                             // @ts-expect-error This is passed to options, so it is not typed
                             isSpecial={true}
                             stroke
-                            pathOptions={{ color: "red" }}
+                            pathOptions={RED_PATH_OPTIONS}
                             fill={false}
                         />
                     ))}
@@ -456,7 +475,7 @@ export const PolygonDraw = () => {
                             // @ts-expect-error This is passed to options, so it is not typed
                             isSpecial={true}
                             stroke
-                            pathOptions={{ color: "red" }}
+                            pathOptions={RED_PATH_OPTIONS}
                             fill={false}
                         />
                     ))}
@@ -474,7 +493,7 @@ export const PolygonDraw = () => {
                         // @ts-expect-error This is passed to options, so it is not typed
                         isSpecial={true}
                         stroke
-                        pathOptions={{ color: "red" }}
+                        pathOptions={RED_PATH_OPTIONS}
                         fill={false}
                     />
                 ))}
@@ -497,9 +516,7 @@ export const PolygonDraw = () => {
                         (question?.id === "matching" &&
                             question.data.type === "custom-points")
                             ? false
-                            : {
-                                  shapeOptions: { fillOpacity: 0 },
-                              },
+                            : INVISIBLE_SHAPE_OPTIONS,
                 }}
                 onCreated={onChange}
                 onEdited={onChange}

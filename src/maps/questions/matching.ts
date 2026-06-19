@@ -15,10 +15,7 @@ import {
     mapGeoJSON,
     mapGeoLocation,
     polyGeoJSON,
-    trainStations,
 } from "@/lib/context";
-import { getOverpassData } from "@/maps/api/overpass";
-import { CacheType } from "@/maps/api/types";
 import {
     findAdminBoundary,
     findPlacesInZone,
@@ -149,8 +146,8 @@ export const determineMatchingBoundary = _.memoize(
                         '["admin_level"="10"]',
                         "Finding neighbourhoods...",
                         "nwr",
-                        "geom"
-                    )
+                        "geom",
+                    ),
                 ) as FeatureCollection<Polygon | MultiPolygon>;
 
                 if (!data.features || data.features.length === 0) {
@@ -162,7 +159,11 @@ export const determineMatchingBoundary = _.memoize(
 
                 let nearest: any = null;
                 for (const feature of data.features) {
-                    if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                    if (
+                        feature.geometry.type !== "Polygon" &&
+                        feature.geometry.type !== "MultiPolygon"
+                    )
+                        continue;
                     if (turf.booleanPointInPolygon(point, feature)) {
                         nearest = feature;
                         break;
@@ -172,7 +173,11 @@ export const determineMatchingBoundary = _.memoize(
                 if (!nearest) {
                     let minDistance = Infinity;
                     for (const feature of data.features) {
-                        if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                        if (
+                            feature.geometry.type !== "Polygon" &&
+                            feature.geometry.type !== "MultiPolygon"
+                        )
+                            continue;
                         const d = turf.distance(point, turf.center(feature));
                         if (d < minDistance) {
                             minDistance = d;
@@ -188,20 +193,27 @@ export const determineMatchingBoundary = _.memoize(
                 if (question.type === "same-neighbourhood") {
                     boundary = nearest;
                 } else {
-                    const hiderEnglishName = nearest.properties?.["name:en"] || nearest.properties?.name;
+                    const hiderEnglishName =
+                        nearest.properties?.["name:en"] ||
+                        nearest.properties?.name;
                     if (!hiderEnglishName) {
-                        toast.error("No English name found for nearest neighbourhood");
+                        toast.error(
+                            "No English name found for nearest neighbourhood",
+                        );
                         throw new Error("No English name found");
                     }
                     const letter = hiderEnglishName[0].toUpperCase();
 
                     const matchingPolygons = data.features.filter((p: any) => {
-                        const name = p.properties?.["name:en"] || p.properties?.name;
+                        const name =
+                            p.properties?.["name:en"] || p.properties?.name;
                         return name && name[0].toUpperCase() === letter;
                     });
 
                     if (matchingPolygons.length > 0) {
-                        boundary = safeUnion(turf.featureCollection(matchingPolygons as any));
+                        boundary = safeUnion(
+                            turf.featureCollection(matchingPolygons as any),
+                        );
                     }
                 }
                 break;
@@ -394,8 +406,8 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
                 '["admin_level"="10"]',
                 "Finding neighbourhoods...",
                 "nwr",
-                "geom"
-            )
+                "geom",
+            ),
         ) as FeatureCollection<Polygon | MultiPolygon>;
 
         if (!data.features || data.features.length === 0) return question;
@@ -403,7 +415,11 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
         const findNearest = (pt: any) => {
             let nearest: any = null;
             for (const feature of data.features) {
-                if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                if (
+                    feature.geometry.type !== "Polygon" &&
+                    feature.geometry.type !== "MultiPolygon"
+                )
+                    continue;
                 if (turf.booleanPointInPolygon(pt, feature)) {
                     nearest = feature;
                     break;
@@ -412,7 +428,11 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
             if (!nearest) {
                 let minDistance = Infinity;
                 for (const feature of data.features) {
-                    if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                    if (
+                        feature.geometry.type !== "Polygon" &&
+                        feature.geometry.type !== "MultiPolygon"
+                    )
+                        continue;
                     const d = turf.distance(pt, turf.center(feature));
                     if (d < minDistance) {
                         minDistance = d;
@@ -432,16 +452,19 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
 
         if (question.type === "same-neighbourhood") {
             if (
-                nearestHiderNeighbourhood.id ===
-                nearestSeekerNeighbourhood.id
+                nearestHiderNeighbourhood.id === nearestSeekerNeighbourhood.id
             ) {
                 question.same = true;
             } else {
                 question.same = false;
             }
         } else {
-            const hiderEnglishName = nearestHiderNeighbourhood.properties?.["name:en"] || nearestHiderNeighbourhood.properties?.name;
-            const seekerEnglishName = nearestSeekerNeighbourhood.properties?.["name:en"] || nearestSeekerNeighbourhood.properties?.name;
+            const hiderEnglishName =
+                nearestHiderNeighbourhood.properties?.["name:en"] ||
+                nearestHiderNeighbourhood.properties?.name;
+            const seekerEnglishName =
+                nearestSeekerNeighbourhood.properties?.["name:en"] ||
+                nearestSeekerNeighbourhood.properties?.name;
 
             if (!hiderEnglishName || !seekerEnglishName) {
                 return question;
