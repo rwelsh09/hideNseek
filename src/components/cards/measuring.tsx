@@ -18,8 +18,10 @@ import {
     drawingQuestionKey,
     hiderMode,
     isLoading,
+    penaltyMinutes,
     questionModified,
     questions,
+    TIME_PENALTIES,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
@@ -135,7 +137,21 @@ export const MeasuringQuestionComponent = ({
                 data.collapsed = collapsed; // Doesn't trigger a re-render so no need for questionModified
             }}
             locked={!data.drag}
-            setLocked={(locked) => questionModified((data.drag = !locked))}
+            setLocked={(locked) => {
+                questionModified((data.drag = !locked));
+                if (locked) {
+                    penaltyMinutes.set(
+                        penaltyMinutes.get() + TIME_PENALTIES.measuring,
+                    );
+                } else {
+                    penaltyMinutes.set(
+                        Math.max(
+                            0,
+                            penaltyMinutes.get() - TIME_PENALTIES.measuring,
+                        ),
+                    );
+                }
+            }}
         >
             <CustomInitDialog
                 open={customDialogOpen}
