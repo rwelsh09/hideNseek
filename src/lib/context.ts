@@ -3,6 +3,7 @@ import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import type { Map } from "leaflet";
 import { atom, computed, onSet } from "nanostores";
 
+import maxStationsData from "@/data/export-MAX.json";
 import defaultStationsData from "@/data/export-trains.json";
 import type {
     AdditionalMapGeoLocations,
@@ -140,14 +141,16 @@ export const useCustomStations = persistentAtom<boolean>(
 );
 export const customStations = persistentAtom<CustomStation[]>(
     "customStations",
-    defaultStationsData.features.map((feature: any) => ({
-        type: feature.type,
-        geometry: feature.geometry,
-        properties: {
-            id: feature.properties?.["@id"] || feature.id,
-            name: feature.properties?.name,
-        },
-    })) as any[],
+    [...defaultStationsData.features, ...maxStationsData.features].map(
+        (feature: any) => ({
+            type: feature.type,
+            geometry: feature.geometry,
+            properties: {
+                id: feature.properties?.["@id"] || feature.id,
+                name: feature.properties?.name,
+            },
+        }),
+    ) as any[],
     {
         encode: JSON.stringify,
         decode: JSON.parse,
