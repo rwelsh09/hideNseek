@@ -448,13 +448,15 @@ export const LatitudeLongitude = ({
                                         },
                                     )
                                         .then((position) => {
+                                            isLoading.set(false);
                                             onChange(
                                                 position.coords.latitude,
                                                 position.coords.longitude,
                                             );
                                         })
-                                        .finally(() => {
+                                        .catch((error) => {
                                             isLoading.set(false);
+                                            throw error;
                                         }),
                                     {
                                         pending: "Fetching location",
@@ -491,6 +493,7 @@ export const LatitudeLongitude = ({
                                                 coords.lat !== null &&
                                                 coords.lng !== null
                                             ) {
+                                                isLoading.set(false);
                                                 onChange(
                                                     coords.lat,
                                                     coords.lng,
@@ -501,8 +504,9 @@ export const LatitudeLongitude = ({
                                                 "Could not find coordinates in clipboard content",
                                             );
                                         })
-                                        .finally(() => {
+                                        .catch((error) => {
                                             isLoading.set(false);
+                                            throw error;
                                         }),
                                     {
                                         pending: "Reading from clipboard",
