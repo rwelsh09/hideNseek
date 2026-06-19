@@ -49,9 +49,9 @@ export const QuestionSidebar = () => {
                     Questions
                 </h2>
                 <SidebarCloseIcon
-                    className="mr-2 visible md:hidden text-white cursor-pointer"
+                    className="mr-2 visible text-white cursor-pointer"
                     onClick={() => {
-                        SidebarContext.get().setOpenMobile(false);
+                        SidebarContext.get().toggleSidebar();
                     }}
                 />
             </div>

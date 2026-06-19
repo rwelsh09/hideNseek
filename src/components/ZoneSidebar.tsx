@@ -558,9 +558,9 @@ export const ZoneSidebar = () => {
             <div className="flex items-center justify-between">
                 <h2 className="ml-4 mt-4 font-poppins text-2xl">Hiding Zone</h2>
                 <SidebarCloseIcon
-                    className="mr-2 visible md:hidden scale-x-[-1]"
+                    className="mr-2 visible cursor-pointer scale-x-[-1]"
                     onClick={() => {
-                        SidebarContext.get().setOpenMobile(false);
+                        SidebarContext.get().toggleSidebar();
                     }}
                 />
             </div>
