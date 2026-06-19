@@ -17,6 +17,8 @@ import {
     polyGeoJSON,
     trainStations,
 } from "@/lib/context";
+import { getOverpassData } from "@/maps/api/overpass";
+import { CacheType } from "@/maps/api/types";
 import {
     findAdminBoundary,
     findPlacesInZone,
@@ -25,8 +27,6 @@ import {
     prettifyLocation,
     trainLineNodeFinder,
 } from "@/maps/api";
-import { getOverpassData } from "@/maps/api/overpass";
-import { CacheType } from "@/maps/api/types";
 import { holedMask, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils";
 import type {
