@@ -23,9 +23,11 @@ export const LeafletActionButtons = () => {
 
     return (
         <>
-            <a
+            <button
+                type="button"
                 className={buttonClass}
                 title="Focus on your location"
+                aria-label="Focus on your location"
                 onClick={() => {
                     if (!navigator.geolocation) {
                         toast.error(
@@ -49,11 +51,13 @@ export const LeafletActionButtons = () => {
                 }}
             >
                 <MdMyLocation className="w-5 h-5 text-black" />
-            </a>
+            </button>
 
-            <a
+            <button
+                type="button"
                 className={buttonClass}
                 title="Zoom to hider area"
+                aria-label="Zoom to hider area"
                 onClick={() => {
                     if (!$questionFinishedMapData) {
                         toast.error("No hider area to zoom to");
@@ -80,11 +84,13 @@ export const LeafletActionButtons = () => {
                 }}
             >
                 <MdZoomInMap className="w-5 h-5 text-black" />
-            </a>
+            </button>
 
-            <a
+            <button
+                type="button"
                 className={buttonClass}
                 title="Show whole map"
+                aria-label="Show whole map"
                 onClick={() => {
                     const extent = $mapGeoLocation?.properties?.extent;
                     if (extent) {
@@ -118,7 +124,7 @@ export const LeafletActionButtons = () => {
                 }}
             >
                 <FaGlobe className="w-5 h-5 text-black" />
-            </a>
+            </button>
         </>
     );
 };

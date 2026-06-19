@@ -10,12 +10,12 @@ import { Marker } from "react-leaflet";
 import {
     autoSave,
     hiderMode,
+    penaltyMinutes,
     questionModified,
     questions,
     save,
-    triggerLocalRefresh,
     TIME_PENALTIES,
-    penaltyMinutes,
+    triggerLocalRefresh,
 } from "@/lib/context";
 import type { ICON_COLORS } from "@/maps/api";
 
