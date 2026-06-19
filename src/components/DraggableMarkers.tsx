@@ -14,8 +14,6 @@ import {
     questions,
     save,
     triggerLocalRefresh,
-    TIME_PENALTIES,
-    penaltyMinutes,
 } from "@/lib/context";
 import type { ICON_COLORS } from "@/maps/api";
 
@@ -118,26 +116,19 @@ export const DraggableMarkers = () => {
         editingQuestionId.set(null);
     };
 
-    const lockInQuestion = () => {
+    const saveQuestion = () => {
         if (!activeQuestion) {
             editingQuestionId.set(null);
             return;
         }
 
         if (draftQuestionId.get() === activeQuestion.key) {
-            // It's a draft! Lock it in.
-            activeQuestion.data.drag = false;
-            const type = draftQuestionType.get();
-            if (type && TIME_PENALTIES[type]) {
-                penaltyMinutes.set(penaltyMinutes.get() + TIME_PENALTIES[type]);
-                console.log("PENALTY APPLIED:", TIME_PENALTIES[type]);
-            }
+            // It's a draft! Save it but don't lock it.
             draftQuestionId.set(null);
             draftQuestionType.set(null);
             questionModified();
         } else {
             // Just saving changes for an existing question
-            activeQuestion.data.drag = false;
             questionModified();
         }
         editingQuestionId.set(null);
@@ -345,11 +336,11 @@ export const DraggableMarkers = () => {
                         <div className="p-4 bg-slate-900 border-t border-slate-800 shrink-0 flex gap-3 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.2)]">
                             <Button
                                 type="button"
-                                onClick={lockInQuestion}
+                                onClick={saveQuestion}
                                 size="lg"
                                 className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-base shadow-md hover:shadow-lg transition-all"
                             >
-                                Lock In Question
+                                Save Question
                             </Button>
                         </div>
                     </div>,

@@ -16,8 +16,10 @@ import {
     drawingQuestionKey,
     hiderMode,
     isLoading,
+    penaltyMinutes,
     questionModified,
     questions,
+    TIME_PENALTIES,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn, mapToObj } from "@/lib/utils";
@@ -65,7 +67,21 @@ export const TentacleQuestionComponent = ({
                 data.collapsed = collapsed; // Doesn't trigger a re-render so no need for questionModified
             }}
             locked={!data.drag}
-            setLocked={(locked) => questionModified((data.drag = !locked))}
+            setLocked={(locked) => {
+                questionModified((data.drag = !locked));
+                if (locked) {
+                    penaltyMinutes.set(
+                        penaltyMinutes.get() + TIME_PENALTIES.tentacles,
+                    );
+                } else {
+                    penaltyMinutes.set(
+                        Math.max(
+                            0,
+                            penaltyMinutes.get() - TIME_PENALTIES.tentacles,
+                        ),
+                    );
+                }
+            }}
         >
             <SidebarMenuItem>
                 <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-row")}>

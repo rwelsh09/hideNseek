@@ -8,8 +8,10 @@ import { defaultUnit } from "@/lib/context";
 import {
     hiderMode,
     isLoading,
+    penaltyMinutes,
     questionModified,
     questions,
+    TIME_PENALTIES,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
@@ -76,7 +78,21 @@ export const ThermometerQuestionComponent = ({
                 data.collapsed = collapsed;
             }}
             locked={!data.drag}
-            setLocked={(locked) => questionModified((data.drag = !locked))}
+            setLocked={(locked) => {
+                questionModified((data.drag = !locked));
+                if (locked) {
+                    penaltyMinutes.set(
+                        penaltyMinutes.get() + TIME_PENALTIES.thermometer,
+                    );
+                } else {
+                    penaltyMinutes.set(
+                        Math.max(
+                            0,
+                            penaltyMinutes.get() - TIME_PENALTIES.thermometer,
+                        ),
+                    );
+                }
+            }}
         >
             <LatitudeLongitude
                 latitude={data.latA}
