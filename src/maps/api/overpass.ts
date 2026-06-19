@@ -267,6 +267,8 @@ out ${outMode};
                 })
                 .join("\n");
 
+            const realOutMode = outMode === "geom" ? "center geom" : outMode;
+
             return `
 [out:json]${timeoutDuration !== 0 ? `[timeout:${timeoutDuration}]` : ""};
 ${relationToAreaBlocks}
@@ -274,7 +276,7 @@ ${relationToAreaBlocks}
 ${searchBlocks}
 );
 node(r)["highway"="bus_stop"];
-out ${outMode};
+out ${realOutMode};
             `;
         }
     }
