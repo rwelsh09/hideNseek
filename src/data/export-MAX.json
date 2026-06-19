@@ -904,7 +904,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "17Th Av SE & 84Th St SE",
+        "name": "17th Av SE & 84th St SE",
         "original_names": "WB 17th AV SE @ 84th ST SE",
         "merged_station_count": 1
       },
@@ -979,7 +979,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "36Th Street SE",
+        "name": "36th Street SE",
         "original_names": "36th Street SE Station (EB) & 36th Street SE Station (WB)",
         "merged_station_count": 1
       },
@@ -1204,7 +1204,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "17 Ave SE & 70Th St SE",
+        "name": "17 Ave SE & 70th St SE",
         "original_names": "WB 17 Ave SE @ 70th St SE & EB 17 Ave SE @ 70th St SE",
         "merged_station_count": 1
       },
