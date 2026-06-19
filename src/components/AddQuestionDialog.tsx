@@ -141,14 +141,6 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect("matching", "zone")
-                                }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                onClick={() =>
                                     handleQuestionSelect(
                                         "matching",
                                         "park-full",
@@ -180,17 +172,6 @@ export function AddQuestionDialog() {
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <TrainFront className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "letter-zone",
-                                    )
-                                }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>

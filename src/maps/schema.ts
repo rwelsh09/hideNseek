@@ -253,30 +253,6 @@ const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
         .default("airport"),
 });
 
-const zoneMatchingQuestionsSchema = baseMatchingQuestionSchema.extend({
-    type: z.union([
-        z.literal("zone").describe("Zone Question"),
-        z
-            .literal("letter-zone")
-            .describe("Zone Starts With Same Letter Question"),
-    ]),
-    cat: z
-        .object({
-            adminLevel: z.union([
-                z.literal(2),
-                z.literal(3),
-                z.literal(4),
-                z.literal(5),
-                z.literal(6),
-                z.literal(7),
-                z.literal(8),
-                z.literal(9),
-                z.literal(10),
-            ]),
-        })
-        .default(() => ({ adminLevel: 3 }) as { adminLevel: 3 }),
-});
-
 const homeGameMatchingQuestionsSchema = baseMatchingQuestionSchema.extend({
     type: z.union([
         z.literal("aquarium").describe("Aquarium Question"),
@@ -316,7 +292,6 @@ const customMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
 });
 
 export const matchingQuestionSchema = z.union([
-    zoneMatchingQuestionsSchema.describe(NO_GROUP),
     ordinaryMatchingQuestionSchema.describe(NO_GROUP),
     customMatchingQuestionSchema.describe(NO_GROUP),
     hidingZoneMatchingQuestionsSchema.describe("Hiding Zone Mode"),
@@ -450,7 +425,6 @@ export type MatchingQuestion = z.infer<typeof matchingQuestionSchema>;
 export type HomeGameMatchingQuestions = z.infer<
     typeof homeGameMatchingQuestionsSchema
 >;
-export type ZoneMatchingQuestions = z.infer<typeof zoneMatchingQuestionsSchema>;
 export type CustomMatchingQuestion = z.infer<
     typeof customMatchingQuestionSchema
 >;
