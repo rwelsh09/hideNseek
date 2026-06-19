@@ -128,9 +128,6 @@ export function AddQuestionDialog() {
                                         +{TIME_PENALTIES.matching}
                                     </span>
                                 </h3>
-                                <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
-                                    Draw 3, Pick 1
-                                </span>
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
@@ -255,9 +252,6 @@ export function AddQuestionDialog() {
                                         +{TIME_PENALTIES.measuring}
                                     </span>
                                 </h3>
-                                <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
-                                    Draw 3, Pick 1
-                                </span>
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
@@ -360,9 +354,6 @@ export function AddQuestionDialog() {
                                         +{TIME_PENALTIES.radar}
                                     </span>
                                 </h3>
-                                <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
-                                    Draw 2, Pick 1
-                                </span>
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
@@ -466,9 +457,6 @@ export function AddQuestionDialog() {
                                             +{TIME_PENALTIES.thermometer}
                                         </span>
                                     </h3>
-                                    <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
-                                        Draw 2, Pick 1
-                                    </span>
                                 </div>
                             </div>
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
@@ -515,9 +503,6 @@ export function AddQuestionDialog() {
                                             +{TIME_PENALTIES.tentacles}
                                         </span>
                                     </h3>
-                                    <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
-                                        Draw 4, Pick 2
-                                    </span>
                                 </div>
                             </div>
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
@@ -582,9 +567,6 @@ export function AddQuestionDialog() {
                                         +{TIME_PENALTIES.photo}
                                     </span>
                                 </h3>
-                                <span className="text-[9px] sm:text-[10px] text-slate-600 font-semibold uppercase tracking-wider">
-                                    Draw 1
-                                </span>
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
