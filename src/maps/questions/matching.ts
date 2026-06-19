@@ -1,11 +1,5 @@
 import * as turf from "@turf/turf";
-import type {
-    Feature,
-    FeatureCollection,
-    MultiPolygon,
-    Point,
-    Polygon,
-} from "geojson";
+import type { FeatureCollection, MultiPolygon, Point, Polygon } from "geojson";
 import _ from "lodash";
 import osmtogeojson from "osmtogeojson";
 import { toast } from "react-toastify";
@@ -17,7 +11,6 @@ import {
     polyGeoJSON,
 } from "@/lib/context";
 import {
-    findAdminBoundary,
     findPlacesInZone,
     LOCATION_FIRST_TAG,
     nearestToQuestion,
@@ -220,76 +213,6 @@ export const determineMatchingBoundary = _.memoize(
             }
             case "custom-zone": {
                 boundary = question.geo;
-                break;
-            }
-            case "zone": {
-                boundary = await findAdminBoundary(
-                    question.lat,
-                    question.lng,
-                    question.cat.adminLevel,
-                );
-
-                if (!boundary) {
-                    toast.error("No boundary found for this zone");
-                    throw new Error("No boundary found");
-                }
-                break;
-            }
-            case "letter-zone": {
-                const zone = await findAdminBoundary(
-                    question.lat,
-                    question.lng,
-                    question.cat.adminLevel,
-                );
-
-                if (!zone) {
-                    toast.error("No boundary found for this zone");
-                    throw new Error("No boundary found");
-                }
-
-                let englishName = zone.properties?.["name:en"];
-
-                if (!englishName) {
-                    const name = zone.properties?.name;
-
-                    if (/^[a-zA-Z]$/.test(name[0])) {
-                        englishName = name;
-                    } else {
-                        toast.error("No English name found for this zone");
-                        throw new Error("No English name");
-                    }
-                }
-
-                const letter = englishName[0].toUpperCase();
-
-                boundary = turf.featureCollection(
-                    osmtogeojson(
-                        await findPlacesInZone(
-                            `[admin_level=${question.cat.adminLevel}]["name:en"~"^${letter}.+"]`, // Regex is faster than filtering afterward
-                            `Finding zones that start with the same letter (${letter})...`,
-                            "relation",
-                            "geom",
-                            [
-                                `[admin_level=${question.cat.adminLevel}]["name"~"^${letter}.+"]`,
-                            ], // Regex is faster than filtering afterward
-                        ),
-                    ).features.filter(
-                        (x): x is Feature<Polygon | MultiPolygon> =>
-                            x.geometry &&
-                            (x.geometry.type === "Polygon" ||
-                                x.geometry.type === "MultiPolygon"),
-                    ),
-                );
-
-                // It's either simplify or crash. Technically this could be bad if someone's hiding zone was inside multiple zones, but that's unlikely.
-                boundary = safeUnion(
-                    turf.simplify(boundary, {
-                        tolerance: 0.001,
-                        highQuality: true,
-                        mutate: true,
-                    }),
-                );
-
                 break;
             }
             case "airport":
