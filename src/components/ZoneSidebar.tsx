@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
-import type { Feature, FeatureCollection, Point, Polygon, MultiPolygon } from "geojson";
+import type { Feature, FeatureCollection, MultiPolygon,Point, Polygon } from "geojson";
 import * as L from "leaflet";
 import _ from "lodash";
 import { SidebarCloseIcon } from "lucide-react";

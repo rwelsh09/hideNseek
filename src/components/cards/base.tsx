@@ -60,7 +60,14 @@ export const QuestionCard = ({
             <SidebarGroup className={className}>
                 <div className="relative">
                     <button
+                        type="button"
                         onClick={toggleCollapse}
+                        aria-label={
+                            isCollapsed
+                                ? "Expand Question"
+                                : "Collapse Question"
+                        }
+                        aria-expanded={!isCollapsed}
                         className={cn(
                             "absolute top-2 left-2 text-white border rounded-md transition-all duration-500",
                             isCollapsed && "-rotate-90",
@@ -84,7 +91,11 @@ export const QuestionCard = ({
                         <div className="flex gap-2 pt-2 px-2 justify-center">
                             <Dialog>
                                 <DialogTrigger asChild>
-                                    <Button variant="outline" size="sm">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        aria-label="Share Question"
+                                    >
                                         <VscShare />
                                     </Button>
                                 </DialogTrigger>
@@ -180,6 +191,7 @@ export const QuestionCard = ({
                             <Button
                                 variant="outline"
                                 size="sm"
+                                aria-label="Delete Question"
                                 disabled={$isLoading}
                                 onClick={() => {
                                     if (!locked) {
@@ -197,6 +209,11 @@ export const QuestionCard = ({
                                 <Button
                                     variant="outline"
                                     size="sm"
+                                    aria-label={
+                                        locked
+                                            ? "Unlock Question"
+                                            : "Lock Question"
+                                    }
                                     onClick={() => setLocked!(!locked)}
                                     disabled={$isLoading}
                                 >

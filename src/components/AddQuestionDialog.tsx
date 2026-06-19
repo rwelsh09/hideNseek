@@ -3,6 +3,8 @@ import {
     Camera,
     Landmark,
     Map as MapIcon,
+    MapPin,
+    MapPinned,
     Network,
     Plane,
     Plus,
@@ -13,8 +15,6 @@ import {
     TrainFront,
     TreePine,
     Waves,
-    MapPinned,
-    MapPin,
 } from "lucide-react";
 import { useState } from "react";
 
