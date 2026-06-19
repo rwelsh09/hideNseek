@@ -243,6 +243,12 @@ const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
             z
                 .literal("park-full")
                 .describe("Park Question (Small+Medium Games)"),
+            z
+                .literal("same-neighbourhood")
+                .describe("Neighbourhood (Same As Me) Question"),
+            z
+                .literal("same-first-letter-neighbourhood")
+                .describe("Neighbourhood (Same First Letter) Question"),
         ])
         .default("airport"),
 });

@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
-import type { Feature, FeatureCollection } from "geojson";
+import type { Feature, FeatureCollection, Point, Polygon, MultiPolygon } from "geojson";
 import * as L from "leaflet";
 import _ from "lodash";
 import { SidebarCloseIcon } from "lucide-react";
@@ -271,6 +271,81 @@ export const ZoneSidebar = () => {
 
                     if (planningModeEnabled.get() && question.data.drag) {
                         continue;
+                    }
+
+                    if (
+                        question.id === "matching" &&
+                        (question.data.type === "same-neighbourhood" ||
+                            question.data.type ===
+                                "same-first-letter-neighbourhood")
+                    ) {
+                        const location = turf.point([
+                            question.data.lng,
+                            question.data.lat,
+                        ]);
+
+                        const data = osmtogeojson(
+                            await findPlacesInZone(
+                                '["admin_level"="10"]',
+                                "Finding neighbourhoods. This may take a while. Do not press any buttons while this is processing. Don't worry, it will be cached.",
+                                "nwr",
+                                "geom"
+                            )
+                        ) as FeatureCollection<Polygon | MultiPolygon>;
+
+                        if (!data.features || data.features.length === 0) continue;
+
+                        const findNearest = (pt: any) => {
+                            let nearest: any = null;
+                            for (const feature of data.features) {
+                                if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                                if (turf.booleanPointInPolygon(pt, feature)) {
+                                    nearest = feature;
+                                    break;
+                                }
+                            }
+                            if (!nearest) {
+                                let minDistance = Infinity;
+                                for (const feature of data.features) {
+                                    if (feature.geometry.type !== "Polygon" && feature.geometry.type !== "MultiPolygon") continue;
+                                    const d = turf.distance(pt, turf.center(feature));
+                                    if (d < minDistance) {
+                                        minDistance = d;
+                                        nearest = feature;
+                                    }
+                                }
+                            }
+                            return nearest;
+                        };
+
+                        const nearestSeekerNeighbourhood = findNearest(location);
+
+                        circles = circles.filter((circle) => {
+                            const nearestHiderNeighbourhood = findNearest(turf.center(circle as any));
+
+                            if (!nearestHiderNeighbourhood || !nearestSeekerNeighbourhood) {
+                                return question.data.same ? false : true;
+                            }
+
+                            if (question.data.type === "same-neighbourhood") {
+                                const same =
+                                    nearestHiderNeighbourhood.id ===
+                                    nearestSeekerNeighbourhood.id;
+                                return question.data.same ? same : !same;
+                            } else {
+                                const hiderEnglishName = nearestHiderNeighbourhood.properties?.["name:en"] || nearestHiderNeighbourhood.properties?.name;
+                                const seekerEnglishName = nearestSeekerNeighbourhood.properties?.["name:en"] || nearestSeekerNeighbourhood.properties?.name;
+
+                                if (!hiderEnglishName || !seekerEnglishName) {
+                                    return true;
+                                }
+
+                                const same =
+                                    hiderEnglishName[0].toUpperCase() ===
+                                    seekerEnglishName[0].toUpperCase();
+                                return question.data.same ? same : !same;
+                            }
+                        });
                     }
 
                     if (
