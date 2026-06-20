@@ -6,7 +6,7 @@ import type { StationPlace } from "@/maps/api";
  * Function to merge duplicates stations into one station, by averaging their longitude and latitude
  * @param places    Array of all unmerged stations
  * @param radius    Radius of the hiding zone
- * @param units     turf.Units unit of the radius ("kilometers", "meters" etc.)
+ * @param units     turf.Units unit of the radius ("kilometers" or "meters")
  * @returns         Array of all merged stations
  */
 export function mergeDuplicateStation(
