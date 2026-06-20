@@ -15,6 +15,18 @@ import {
     TrainFront,
     TreePine,
     Waves,
+    TreeDeciduous,
+    TrainTrack,
+    Fish,
+    TramFront,
+    Building2,
+    Palette,
+    Waypoints,
+    FerrisWheel,
+    Flag,
+    Leaf,
+    Car,
+    Mountain,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -148,7 +160,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <TreePine className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <TreeDeciduous className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
@@ -171,7 +183,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <TrainFront className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <TrainTrack className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
@@ -182,7 +194,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Waves className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Fish className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
@@ -276,7 +288,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <TrainFront className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <TramFront className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
@@ -284,7 +296,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
@@ -306,7 +318,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Target className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Ruler className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                         </div>
                     </div>
@@ -452,7 +464,7 @@ export function AddQuestionDialog() {
                                     }
                                     className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
-                                    <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    <Palette className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
                                 <button
                                     onClick={() =>
@@ -463,7 +475,7 @@ export function AddQuestionDialog() {
                                     }
                                     className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
-                                    <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    <Waypoints className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
                                 <button
                                     onClick={() =>
@@ -474,7 +486,7 @@ export function AddQuestionDialog() {
                                     }
                                     className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
-                                    <Target className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    <FerrisWheel className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
                                 <button
                                     onClick={() =>
@@ -485,7 +497,7 @@ export function AddQuestionDialog() {
                                     }
                                     className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
-                                    <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    <Flag className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
                             </div>
                         </div>
@@ -521,7 +533,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <TreePine className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Leaf className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
@@ -537,7 +549,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Podium className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Car className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
@@ -545,7 +557,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Waves className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
@@ -553,7 +565,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Mountain className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                         </div>
                     </div>
