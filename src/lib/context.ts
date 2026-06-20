@@ -89,7 +89,7 @@ export const questionModified = (..._: any[]) => {
 
 export const leafletMapContext = atom<Map | null>(null);
 
-export const defaultUnit = persistentAtom<Units>("defaultUnit", "kilometers");
+
 export const hiderMode = persistentAtom<
     | false
     | {

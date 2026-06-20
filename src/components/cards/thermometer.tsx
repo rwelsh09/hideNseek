@@ -4,7 +4,6 @@ import { distance, point } from "@turf/turf";
 import { LatitudeLongitude } from "@/components/LatLngPicker";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { defaultUnit } from "@/lib/context";
 import {
     hiderMode,
     isLoading,
@@ -35,8 +34,7 @@ export const ThermometerQuestionComponent = ({
     const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
 
-    const $defaultUnit = useStore(defaultUnit);
-    const DISTANCE_UNIT = $defaultUnit ?? "miles";
+    const DISTANCE_UNIT = "kilometers";
 
     const label = `Thermometer
     ${
@@ -56,16 +54,11 @@ export const ThermometerQuestionComponent = ({
         ? distance(
               point([data.lngA!, data.latA!]),
               point([data.lngB!, data.latB!]),
-              { units: DISTANCE_UNIT },
+              { units: DISTANCE_UNIT as any },
           )
         : null;
 
-    const unitLabel =
-        DISTANCE_UNIT === "meters"
-            ? "Meters"
-            : DISTANCE_UNIT === "kilometers"
-              ? "KM"
-              : "Miles";
+    const unitLabel = "km";
 
     return (
         <QuestionCard
