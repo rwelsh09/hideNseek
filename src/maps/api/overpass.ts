@@ -17,13 +17,13 @@ import {
     OVERPASS_API,
     OVERPASS_API_FALLBACK,
 } from "./constants";
+import type { APILocations } from "./types";
 import type {
     EncompassingTentacleQuestionSchema,
     HomeGameMatchingQuestions,
     HomeGameMeasuringQuestions,
-    QuestionSpecificLocation,
 } from "./types";
-import { CacheType } from "./types";
+import { CacheType, QuestionSpecificLocation } from "./types";
 
 export const getOverpassData = async (
     query: string,
@@ -157,7 +157,7 @@ out geom;
 
 export const fetchCoastline = async () => {
     const response = await cacheFetch(
-        import.meta.env.BASE_URL + "/coastline50.geojson",
+        (import.meta as any).env.BASE_URL + "/coastline50.geojson",
         "Fetching coastline data...",
         CacheType.PERMANENT_CACHE,
     );
@@ -383,6 +383,109 @@ export const nearestToQuestion = async (
     }
     const questionPoint = turf.point([question.lng, question.lat]);
     return turf.nearestPoint(questionPoint, instances as any);
+};
+
+export const cacheAllPlaces = async () => {
+    const tasks: (() => Promise<any>)[] = [];
+
+    const coordinates = mapGeoLocation.get().geometry.coordinates;
+
+    // Standard Locations (from LOCATION_FIRST_TAG)
+    Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
+        const location = locationStr as APILocations;
+
+        tasks.push(() =>
+            findPlacesInZone(
+                `[${LOCATION_FIRST_TAG[location]}=${location}]`,
+                undefined,
+                "nwr",
+                "center",
+                [],
+                0,
+            ),
+        );
+
+        tasks.push(() =>
+            findTentacleLocations(
+                {
+                    locationType: location,
+                    radius: 10,
+                    unit: "kilometers",
+                    lat: coordinates[1],
+                    lng: coordinates[0],
+                    location: false,
+                    drag: false,
+                    color: "black",
+                    collapsed: false,
+                },
+                undefined,
+            ),
+        );
+    });
+
+    // Specific Hardcoded Queries
+    tasks.push(() =>
+        findPlacesInZone('["aeroway"="aerodrome"]["iata"]', undefined),
+    );
+    tasks.push(() =>
+        findPlacesInZone(
+            '[place=city]["population"~"^[1-9]+[0-9]{6}$"]',
+            undefined,
+        ),
+    );
+    tasks.push(() =>
+        findPlacesInZone("[highspeed=yes]", undefined, "nwr", "geom"),
+    );
+    tasks.push(() =>
+        findPlacesInZone('["admin_level"="10"]', undefined, "nwr", "geom"),
+    );
+    tasks.push(() => findPlacesInZone("[railway=station]", undefined, "node"));
+
+    // Specific Location Enum Queries (McDonalds, 7Eleven)
+    Object.values(QuestionSpecificLocation).forEach((loc) => {
+        tasks.push(() => findPlacesSpecificInZone(loc as any));
+    });
+
+    const total = tasks.length;
+    let completed = 0;
+    let failed = 0;
+
+    const toastId = toast.loading(`Caching places... (0/${total})`);
+
+    // Run sequentially to avoid 504 Gateway Timeouts from Overpass
+    for (const task of tasks) {
+        try {
+            await task();
+        } catch (e) {
+            console.error("Cache task failed", e);
+            failed++;
+        } finally {
+            completed++;
+            const progress = completed / total;
+            toast.update(toastId, {
+                render: `Caching places... (${completed}/${total})`,
+                progress: progress,
+            });
+            // Add a small delay between requests to be nice to Overpass
+            await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+    }
+
+    if (failed > 0) {
+        toast.update(toastId, {
+            render: `Cached most places, but ${failed} failed.`,
+            type: "warning",
+            isLoading: false,
+            autoClose: 5000,
+        });
+    } else {
+        toast.update(toastId, {
+            render: "All possible places have been cached!",
+            type: "success",
+            isLoading: false,
+            autoClose: 3000,
+        });
+    }
 };
 
 export const determineMapBoundaries = async () => {
