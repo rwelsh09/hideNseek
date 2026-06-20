@@ -122,9 +122,6 @@ export const Map = ({ className }: { className?: string }) => {
     const $followMe = useStore(followMe);
     const map = useStore(leafletMapContext);
 
-    // Refactored from useMemo to useRef to guarantee reference stability and slightly improve performance
-    // by removing the overhead of useMemo, resolving potential bugs where useMemo clears its cache.
-    // Impact: Avoids unnecessary re-evaluation and ensures state persists consistently across renders.
     const followMeMarkerRef = useRef<L.Marker | null>(null);
     const geoWatchIdRef = useRef<number | null>(null);
 
