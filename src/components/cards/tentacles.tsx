@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
-import { Suspense, use } from "react";
+import { useEffect, useState } from "react";
 
 import { LatitudeLongitude } from "@/components/LatLngPicker";
 import PresetsDialog from "@/components/PresetsDialog";
@@ -203,38 +203,10 @@ export const TentacleQuestionComponent = ({
             />
             {!isPreview && (
                 <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                    <Suspense
-                        fallback={
-                            <div className="flex items-center justify-center w-full h-8">
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="24"
-                                    height="24"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    className="animate-spin"
-                                >
-                                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-                                </svg>
-                            </div>
-                        }
-                    >
-                        <TentacleLocationSelector
-                            data={data}
-                            promise={
-                                data.locationType === "custom"
-                                    ? Promise.resolve(
-                                          turf.featureCollection(data.places),
-                                      )
-                                    : findTentacleLocations(data)
-                            }
-                            disabled={!data.drag || $isLoading}
-                        />
-                    </Suspense>
+                    <TentacleLocationSelector
+                        data={data}
+                        disabled={!data.drag || $isLoading}
+                    />
                 </SidebarMenuItem>
             )}
         </QuestionCard>
@@ -243,16 +215,60 @@ export const TentacleQuestionComponent = ({
 
 const TentacleLocationSelector = ({
     data,
-    promise,
     disabled,
 }: {
     data: TentacleQuestion;
-    promise: Promise<any>;
     disabled: boolean;
 }) => {
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
-    const locations = use(promise);
+    const [locations, setLocations] = useState<any>({ features: [] });
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        let isMounted = true;
+        setLoading(true);
+        if (data.locationType === "custom") {
+            setLocations(turf.featureCollection(data.places || []));
+            setLoading(false);
+        } else {
+            findTentacleLocations(data).then((res) => {
+                if (isMounted) {
+                    setLocations(res);
+                    setLoading(false);
+                }
+            }).catch(() => {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            });
+        }
+        return () => {
+            isMounted = false;
+        };
+    }, [data.locationType, data.lat, data.lng, data.radius, data.unit, data.places]);
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center w-full h-8">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    className="animate-spin"
+                >
+                    <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+                </svg>
+            </div>
+        );
+    }
+
 
     // Filter locations to only those within the radius of the primary location
     const filteredFeatures = (() => {
