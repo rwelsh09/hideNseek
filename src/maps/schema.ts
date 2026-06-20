@@ -213,37 +213,6 @@ const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
                 .literal("major-city")
                 .describe("Major City (1,000,000+ people) In Zone Question"),
             z
-                .literal("aquarium-full")
-                .describe("Aquarium Question (Small+Medium Games)"),
-            z.literal("zoo-full").describe("Zoo Question (Small+Medium Games)"),
-            z
-                .literal("theme_park-full")
-                .describe("Theme Park Question (Small+Medium Games)"),
-            z
-                .literal("peak-full")
-                .describe("Mountain Question (Small+Medium Games)"),
-            z
-                .literal("museum-full")
-                .describe("Museum Question (Small+Medium Games)"),
-            z
-                .literal("hospital-full")
-                .describe("Hospital Question (Small+Medium Games)"),
-            z
-                .literal("cinema-full")
-                .describe("Cinema Question (Small+Medium Games)"),
-            z
-                .literal("library-full")
-                .describe("Library Question (Small+Medium Games)"),
-            z
-                .literal("golf_course-full")
-                .describe("Golf Course Question (Small+Medium Games)"),
-            z
-                .literal("consulate-full")
-                .describe("Foreign Consulate Question (Small+Medium Games)"),
-            z
-                .literal("park-full")
-                .describe("Park Question (Small+Medium Games)"),
-            z
                 .literal("same-neighbourhood")
                 .describe("Neighbourhood (Same As Me) Question"),
             z
@@ -340,37 +309,6 @@ const ordinaryMeasuringQuestionSchema = baseMeasuringQuestionSchema.extend({
             z
                 .literal("highspeed-measure-shinkansen")
                 .describe("High-Speed Rail Question"),
-            z
-                .literal("aquarium-full")
-                .describe("Aquarium Question (Small+Medium Games)"),
-            z.literal("zoo-full").describe("Zoo Question (Small+Medium Games)"),
-            z
-                .literal("theme_park-full")
-                .describe("Theme Park Question (Small+Medium Games)"),
-            z
-                .literal("peak-full")
-                .describe("Mountain Question (Small+Medium Games)"),
-            z
-                .literal("museum-full")
-                .describe("Museum Question (Small+Medium Games)"),
-            z
-                .literal("hospital-full")
-                .describe("Hospital Question (Small+Medium Games)"),
-            z
-                .literal("cinema-full")
-                .describe("Cinema Question (Small+Medium Games)"),
-            z
-                .literal("library-full")
-                .describe("Library Question (Small+Medium Games)"),
-            z
-                .literal("golf_course-full")
-                .describe("Golf Course Question (Small+Medium Games)"),
-            z
-                .literal("consulate-full")
-                .describe("Foreign Consulate Question (Small+Medium Games)"),
-            z
-                .literal("park-full")
-                .describe("Park Question (Small+Medium Games)"),
         ])
         .default("coastline"),
 });
@@ -411,33 +349,52 @@ export const measuringQuestionSchema = z.union([
     homeGameMeasuringQuestionsSchema.describe("Hiding Zone Mode"),
 ]);
 
-export const questionSchema = z.union([
-    z.object({
-        id: z.literal("radius"),
-        key: z.number().default(Math.random),
-        data: radiusQuestionSchema,
-    }),
-    z.object({
-        id: z.literal("thermometer"),
-        key: z.number().default(Math.random),
-        data: thermometerQuestionSchema,
-    }),
-    z.object({
-        id: z.literal("tentacles"),
-        key: z.number().default(Math.random),
-        data: tentacleQuestionSchema,
-    }),
-    z.object({
-        id: z.literal("measuring"),
-        key: z.number().default(Math.random),
-        data: measuringQuestionSchema,
-    }),
-    z.object({
-        id: z.literal("matching"),
-        key: z.number().default(Math.random),
-        data: matchingQuestionSchema,
-    }),
-]);
+export const questionSchema = z.preprocess(
+    (val: any) => {
+        if (
+            val &&
+            val.data &&
+            typeof val.data.type === "string" &&
+            val.data.type.endsWith("-full")
+        ) {
+            return {
+                ...val,
+                data: {
+                    ...val.data,
+                    type: val.data.type.replace("-full", ""),
+                },
+            };
+        }
+        return val;
+    },
+    z.union([
+        z.object({
+            id: z.literal("radius"),
+            key: z.number().default(Math.random),
+            data: radiusQuestionSchema,
+        }),
+        z.object({
+            id: z.literal("thermometer"),
+            key: z.number().default(Math.random),
+            data: thermometerQuestionSchema,
+        }),
+        z.object({
+            id: z.literal("tentacles"),
+            key: z.number().default(Math.random),
+            data: tentacleQuestionSchema,
+        }),
+        z.object({
+            id: z.literal("measuring"),
+            key: z.number().default(Math.random),
+            data: measuringQuestionSchema,
+        }),
+        z.object({
+            id: z.literal("matching"),
+            key: z.number().default(Math.random),
+            data: matchingQuestionSchema,
+        }),
+    ]),
+);
 
 export const questionsSchema = z.array(questionSchema);
 

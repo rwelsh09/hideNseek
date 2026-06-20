@@ -232,17 +232,7 @@ export const MatchingQuestionComponent = ({
                         if (
                             data.type === "airport" ||
                             data.type === "major-city" ||
-                            data.type === "aquarium-full" ||
-                            data.type === "zoo-full" ||
-                            data.type === "theme_park-full" ||
-                            data.type === "peak-full" ||
-                            data.type === "museum-full" ||
-                            data.type === "hospital-full" ||
-                            data.type === "cinema-full" ||
-                            data.type === "library-full" ||
-                            data.type === "golf_course-full" ||
-                            data.type === "consulate-full" ||
-                            data.type === "park-full"
+                            false
                         ) {
                             (data as any).geo = await findMatchingPlaces(data);
                         } else {
@@ -262,7 +252,20 @@ export const MatchingQuestionComponent = ({
                         matchingQuestionSchema.options
                             .filter((x) => x.description === NO_GROUP)
                             .flatMap((x) =>
-                                determineUnionizedStrings(x.shape.type).filter(z => !["airport", "major-city", "aquarium-full", "zoo-full", "theme_park-full", "peak-full", "consulate-full", "aquarium", "zoo", "theme_park", "peak", "consulate", "custom-zone", "custom-points"].includes(z._def.value)),
+                                determineUnionizedStrings(x.shape.type).filter(
+                                    (z) =>
+                                        ![
+                                            "airport",
+                                            "major-city",
+                                            "aquarium",
+                                            "zoo",
+                                            "theme_park",
+                                            "peak",
+                                            "consulate",
+                                            "custom-zone",
+                                            "custom-points",
+                                        ].includes(z._def.value),
+                                ),
                             )
                             .map((x) => [(x._def as any).value, x.description]),
                     )}
@@ -271,12 +274,25 @@ export const MatchingQuestionComponent = ({
                         .map((x) => [
                             x.description,
                             Object.fromEntries(
-                                determineUnionizedStrings(x.shape.type).filter(z => !["airport", "major-city", "aquarium-full", "zoo-full", "theme_park-full", "peak-full", "consulate-full", "aquarium", "zoo", "theme_park", "peak", "consulate", "custom-zone", "custom-points"].includes(z._def.value)).map(
-                                    (x) => [
+                                determineUnionizedStrings(x.shape.type)
+                                    .filter(
+                                        (z) =>
+                                            ![
+                                                "airport",
+                                                "major-city",
+                                                "aquarium",
+                                                "zoo",
+                                                "theme_park",
+                                                "peak",
+                                                "consulate",
+                                                "custom-zone",
+                                                "custom-points",
+                                            ].includes(z._def.value),
+                                    )
+                                    .map((x) => [
                                         (x._def as any).value,
                                         x.description,
-                                    ],
-                                ),
+                                    ]),
                             ),
                         ])
                         .reduce(
@@ -337,17 +353,7 @@ export const MatchingQuestionComponent = ({
                                     if (
                                         data.type === "airport" ||
                                         data.type === "major-city" ||
-                                        data.type === "aquarium-full" ||
-                                        data.type === "zoo-full" ||
-                                        data.type === "theme_park-full" ||
-                                        data.type === "peak-full" ||
-                                        data.type === "museum-full" ||
-                                        data.type === "hospital-full" ||
-                                        data.type === "cinema-full" ||
-                                        data.type === "library-full" ||
-                                        data.type === "golf_course-full" ||
-                                        data.type === "consulate-full" ||
-                                        data.type === "park-full"
+                                        false
                                     ) {
                                         (data as any).geo =
                                             await findMatchingPlaces(data);

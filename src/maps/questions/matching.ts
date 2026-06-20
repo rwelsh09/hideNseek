@@ -19,15 +19,12 @@ import {
 import {
     findAdminBoundary,
     findPlacesInZone,
-    LOCATION_FIRST_TAG,
     nearestToQuestion,
-    prettifyLocation,
     trainLineNodeFinder,
 } from "@/maps/api";
 import { holedMask, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils";
 import type {
-    APILocations,
     HomeGameMatchingQuestions,
     MatchingQuestion,
 } from "@/maps/schema";
@@ -65,55 +62,6 @@ export const findMatchingPlaces = async (question: MatchingQuestion) => {
         }
         case "custom-points": {
             return question.geo!;
-        }
-        case "aquarium-full":
-        case "zoo-full":
-        case "theme_park-full":
-        case "peak-full":
-        case "museum-full":
-        case "hospital-full":
-        case "cinema-full":
-        case "library-full":
-        case "golf_course-full":
-        case "consulate-full":
-        case "park-full": {
-            const location = question.type.split("-full")[0] as APILocations;
-
-            const data = await findPlacesInZone(
-                `[${LOCATION_FIRST_TAG[location]}=${location}]`,
-                `Finding ${prettifyLocation(location, true).toLowerCase()}...`,
-                "nwr",
-                "center",
-                [],
-                60,
-            );
-
-            if (data.remark && data.remark.startsWith("runtime error")) {
-                toast.error(
-                    `Error finding ${prettifyLocation(
-                        location,
-                        true,
-                    ).toLowerCase()}. Please enable hiding zone mode and switch to the Large Game variation of this question.`,
-                );
-                return [];
-            }
-
-            if (data.elements.length >= 1000) {
-                toast.error(
-                    `Too many ${prettifyLocation(
-                        location,
-                        true,
-                    ).toLowerCase()} found (${data.elements.length}). Please enable hiding zone mode and switch to the Large Game variation of this question.`,
-                );
-                return [];
-            }
-
-            return data.elements.map((x: any) =>
-                turf.point([
-                    x.center ? x.center.lon : x.lon,
-                    x.center ? x.center.lat : x.lat,
-                ]),
-            );
         }
     }
 };
@@ -294,17 +242,6 @@ export const determineMatchingBoundary = _.memoize(
             }
             case "airport":
             case "major-city":
-            case "aquarium-full":
-            case "zoo-full":
-            case "theme_park-full":
-            case "peak-full":
-            case "museum-full":
-            case "hospital-full":
-            case "cinema-full":
-            case "library-full":
-            case "golf_course-full":
-            case "consulate-full":
-            case "park-full":
             case "custom-points": {
                 const data = await findMatchingPlaces(question);
 

@@ -54,7 +54,7 @@ export function AddQuestionDialog() {
             qData.unit = "kilometers";
             qData.within = true;
         } else if (type === "matching") {
-            qData.type = detail || "same-neighbourhood";
+            qData.type = detail || "airport";
             qData.same = true;
         } else if (type === "measuring") {
             qData.type = detail || "coastline";
@@ -131,7 +131,14 @@ export function AddQuestionDialog() {
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect("matching", "airport")
+                                }
+                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Plane className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
                             <button
                                 onClick={() =>
                                     handleQuestionSelect("matching", "zone")
@@ -142,10 +149,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "park-full",
-                                    )
+                                    handleQuestionSelect("matching", "park")
                                 }
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -153,10 +157,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "museum-full",
-                                    )
+                                    handleQuestionSelect("matching", "museum")
                                 }
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -187,16 +188,23 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "aquarium-full",
-                                    )
+                                    handleQuestionSelect("matching", "aquarium")
                                 }
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Waves className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
-
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect(
+                                        "matching",
+                                        "custom-points",
+                                    )
+                                }
+                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Target className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
@@ -238,7 +246,14 @@ export function AddQuestionDialog() {
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect("measuring", "airport")
+                                }
+                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Plane className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
@@ -252,10 +267,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measuring",
-                                        "park-full",
-                                    )
+                                    handleQuestionSelect("measuring", "park")
                                 }
                                 className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -263,10 +275,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measuring",
-                                        "museum-full",
-                                    )
+                                    handleQuestionSelect("measuring", "museum")
                                 }
                                 className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -296,7 +305,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect(
                                         "measuring",
-                                        "aquarium-full",
+                                        "aquarium",
                                     )
                                 }
                                 className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
