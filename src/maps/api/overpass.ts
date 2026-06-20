@@ -386,7 +386,7 @@ export const nearestToQuestion = async (
 };
 
 export const cacheAllPlaces = async () => {
-    const promises: Promise<any>[] = [];
+    const tasks: (() => Promise<any>)[] = [];
 
     const coordinates = mapGeoLocation.get().geometry.coordinates;
 
@@ -394,7 +394,7 @@ export const cacheAllPlaces = async () => {
     Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
         const location = locationStr as APILocations;
 
-        promises.push(
+        tasks.push(() =>
             findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
                 undefined,
@@ -405,7 +405,7 @@ export const cacheAllPlaces = async () => {
             ),
         );
 
-        promises.push(
+        tasks.push(() =>
             findTentacleLocations(
                 {
                     locationType: location,
@@ -424,66 +424,64 @@ export const cacheAllPlaces = async () => {
     });
 
     // Specific Hardcoded Queries
-    promises.push(
+    tasks.push(() =>
         findPlacesInZone('["aeroway"="aerodrome"]["iata"]', undefined),
     );
-    promises.push(
+    tasks.push(() =>
         findPlacesInZone(
             '[place=city]["population"~"^[1-9]+[0-9]{6}$"]',
             undefined,
         ),
     );
-    promises.push(
+    tasks.push(() =>
         findPlacesInZone("[highspeed=yes]", undefined, "nwr", "geom"),
     );
-    promises.push(
+    tasks.push(() =>
         findPlacesInZone('["admin_level"="10"]', undefined, "nwr", "geom"),
     );
-    promises.push(findPlacesInZone("[railway=station]", undefined, "node"));
+    tasks.push(() => findPlacesInZone("[railway=station]", undefined, "node"));
 
     // Specific Location Enum Queries (McDonalds, 7Eleven)
     Object.values(QuestionSpecificLocation).forEach((loc) => {
-        promises.push(findPlacesSpecificInZone(loc as any));
+        tasks.push(() => findPlacesSpecificInZone(loc as any));
     });
 
-    const total = promises.length;
+    const total = tasks.length;
     let completed = 0;
+    let failed = 0;
 
     const toastId = toast.loading(`Caching places... (0/${total})`);
 
-    const trackedPromises = promises.map((p) =>
-        p
-            .then((res) => {
-                completed++;
-                const progress = completed / total;
-                toast.update(toastId, {
-                    render: `Caching places... (${completed}/${total})`,
-                    progress: progress,
-                });
-                return res;
-            })
-            .catch((err) => {
-                completed++;
-                toast.update(toastId, {
-                    render: `Caching places... (${completed}/${total})`,
-                    progress: completed / total,
-                });
-                throw err;
-            }),
-    );
+    // Run sequentially to avoid 504 Gateway Timeouts from Overpass
+    for (const task of tasks) {
+        try {
+            await task();
+        } catch (e) {
+            console.error("Cache task failed", e);
+            failed++;
+        } finally {
+            completed++;
+            const progress = completed / total;
+            toast.update(toastId, {
+                render: `Caching places... (${completed}/${total})`,
+                progress: progress,
+            });
+            // Add a small delay between requests to be nice to Overpass
+            await new Promise((resolve) => setTimeout(resolve, 500));
+        }
+    }
 
-    try {
-        await Promise.all(trackedPromises);
+    if (failed > 0) {
+        toast.update(toastId, {
+            render: `Cached most places, but ${failed} failed.`,
+            type: "warning",
+            isLoading: false,
+            autoClose: 5000,
+        });
+    } else {
         toast.update(toastId, {
             render: "All possible places have been cached!",
             type: "success",
-            isLoading: false,
-            autoClose: 3000,
-        });
-    } catch {
-        toast.update(toastId, {
-            render: "Failed to cache all places.",
-            type: "error",
             isLoading: false,
             autoClose: 3000,
         });
