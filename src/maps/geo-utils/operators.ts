@@ -122,3 +122,54 @@ export const arcBufferToPoint = async (
 
     return innateArcBuffer(arcgisGeometry, Math.min(...distances));
 };
+
+export const distanceToPolygon = (
+    point: Feature<GeoJSON.Point>,
+    polygon: FeatureCollection<Polygon | MultiPolygon>,
+) => {
+    if (polygon.features.length === 0) return 0;
+
+    // We calculate distance from a point to a polygon collection using turf
+    let minDistance = Infinity;
+    for (const feature of polygon.features) {
+        if (
+            feature.geometry.type === "Polygon" ||
+            feature.geometry.type === "MultiPolygon"
+        ) {
+            const isInside = turf.booleanPointInPolygon(
+                point.geometry.coordinates,
+                feature,
+            );
+            if (isInside) {
+                return 0; // The point is inside one of the polygons!
+            }
+
+            // Convert polygon to lines to calculate distance to edge
+            const lines = turf.polygonToLine(feature);
+            if (lines) {
+                if (lines.type === "Feature") {
+                    const distance = turf.pointToLineDistance(
+                        point,
+                        lines as any,
+                        { units: "kilometers" },
+                    );
+                    if (distance < minDistance) {
+                        minDistance = distance;
+                    }
+                } else if (lines.type === "FeatureCollection") {
+                    for (const line of lines.features) {
+                        const distance = turf.pointToLineDistance(
+                            point,
+                            line as any,
+                            { units: "kilometers" },
+                        );
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return minDistance === Infinity ? 0 : minDistance;
+};

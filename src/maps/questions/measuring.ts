@@ -27,6 +27,7 @@ import {
     holedMask,
     modifyMapData,
 } from "@/maps/geo-utils";
+import { distanceToPolygon } from "@/maps/geo-utils/operators";
 import type {
     APILocations,
     HomeGameMeasuringQuestions,
@@ -292,6 +293,7 @@ export const hiderifyMeasuring = async (question: MeasuringQuestion) => {
             collapsed: false,
         });
 
+        question.distanceToNearest = questionNearest.properties.distanceToPoint;
         question.hiderCloser =
             questionNearest.properties.distanceToPoint >
             hiderNearest.properties.distanceToPoint;
@@ -324,6 +326,7 @@ export const hiderifyMeasuring = async (question: MeasuringQuestion) => {
 
         const hiderDistance = turf.distance(hider, hiderNearest);
 
+        question.distanceToNearest = distance;
         question.hiderCloser = hiderDistance < distance;
     }
 
@@ -348,8 +351,18 @@ export const hiderifyMeasuring = async (question: MeasuringQuestion) => {
             units: "kilometers",
         });
 
+        question.distanceToNearest = distance;
         question.hiderCloser = hiderDistance < distance;
         return question;
+    }
+
+    const placeData = await determineMeasuringBoundary(question);
+    if (placeData !== false && placeData !== undefined) {
+        const seeker = turf.point([question.lng, question.lat]);
+        question.distanceToNearest = distanceToPolygon(
+            seeker,
+            turf.featureCollection(placeData as any),
+        );
     }
 
     const $mapGeoJSON = mapGeoJSON.get();
