@@ -2,11 +2,6 @@ import "leaflet-draw/dist/leaflet.draw.css";
 
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
-import type {
-    FeatureCollection,
-    MultiPolygon,
-    Polygon as GeoJSONPolygon,
-} from "geojson";
 import * as L from "leaflet";
 import _ from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -16,13 +11,10 @@ import { EditControl } from "react-leaflet-draw";
 import {
     autoSave,
     drawingQuestionKey,
-    mapGeoJSON,
-    polyGeoJSON,
     questionModified,
     questions,
     save,
 } from "@/lib/context";
-import { CacheType, clearCache } from "@/maps/api";
 import { lngLatToText } from "@/maps/geo-utils";
 import type {
     CustomMatchingQuestion,
@@ -263,9 +255,7 @@ export const PolygonDraw = () => {
 
     let question: Question | undefined;
 
-    if ($drawingQuestionKey === -1) {
-        L.drawLocal.draw.toolbar.buttons.polygon = "Draw the hiding zone!";
-    } else {
+    if ($drawingQuestionKey !== -1) {
         question = $questions.find((q) => q.key === $drawingQuestionKey);
 
         if (question?.data.drag === false) {
@@ -282,22 +272,7 @@ export const PolygonDraw = () => {
     }
 
     const onChange = () => {
-        if (drawingQuestionKey.get() === -1) {
-            if (!featureRef.current?._layers) return;
-
-            const layers = featureRef.current._layers;
-            const geoJSONs = Object.values(layers).map((layer: any) =>
-                layer.toGeoJSON(),
-            );
-            const geoJSON = turf.featureCollection(
-                geoJSONs,
-            ) as FeatureCollection<GeoJSONPolygon | MultiPolygon>;
-
-            mapGeoJSON.set(geoJSON);
-            polyGeoJSON.set(geoJSON);
-            questions.set([]);
-            clearCache(CacheType.ZONE_CACHE);
-        } else if (
+        if (
             question?.id === "tentacles" &&
             question.data.locationType === "custom"
         ) {
@@ -353,30 +328,6 @@ export const PolygonDraw = () => {
             }
             questionModified();
         } else if (
-            question?.id === "matching" &&
-            question.data.type === "custom-points"
-        ) {
-            if (!featureRef.current?._layers) return;
-
-            const layers = featureRef.current._layers;
-            const geoJSONs = Object.values(layers).map((layer: any) =>
-                layer.toGeoJSON(),
-            );
-            const geoJSON = turf.featureCollection(geoJSONs);
-
-            question.data.geo = _.uniqBy(
-                geoJSON.features as CustomTentacleQuestion["places"],
-                (x) => x.geometry.coordinates.join(","),
-            ); // Sometimes keys are duplicated
-            if (featureRef.current) {
-                Object.values(featureRef.current._layers).map((layer: any) => {
-                    if (!layer.options.isDialog) {
-                        featureRef.current.removeLayer(layer);
-                    }
-                });
-            }
-            questionModified();
-        } else if (
             question?.id === "measuring" &&
             question.data.type === "custom-measure"
         ) {
@@ -418,15 +369,6 @@ export const PolygonDraw = () => {
                 question.data.locationType === "custom" &&
                 question.data.places.map((x) => (
                     <TentacleMarker
-                        key={x.geometry.coordinates.join(",")}
-                        point={x}
-                    />
-                ))}
-            {question &&
-                question.id === "matching" &&
-                question.data.type === "custom-points" &&
-                question.data.geo.map((x: any) => (
-                    <MatchingPointMarker
                         key={x.geometry.coordinates.join(",")}
                         point={x}
                     />
@@ -505,18 +447,15 @@ export const PolygonDraw = () => {
                     circlemarker: false,
                     marker:
                         question?.id === "tentacles" ||
-                        (question?.id === "matching" &&
-                            question.data.type === "custom-points") ||
                         question?.id === "measuring"
                             ? true
                             : false,
                     polyline: question?.id === "measuring",
-                    polygon:
-                        question?.id === "tentacles" ||
-                        (question?.id === "matching" &&
-                            question.data.type === "custom-points")
+                    polygon: question
+                        ? question.id === "tentacles"
                             ? false
-                            : INVISIBLE_SHAPE_OPTIONS,
+                            : INVISIBLE_SHAPE_OPTIONS
+                        : false,
                 }}
                 onCreated={onChange}
                 onEdited={onChange}
