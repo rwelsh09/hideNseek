@@ -125,11 +125,12 @@ export const ZoneSidebar = () => {
         const geoJsonLayer = L.geoJSON(geoJSONData, {
             style: (feature: any) => {
                 let color = "blue";
-                if (feature?.properties?.transit_type === "CTrain") {
+                const transitType = feature?.properties?.properties?.transit_type || feature?.properties?.transit_type;
+                if (transitType === "CTrain") {
                     color = "red";
-                } else if (feature?.properties?.transit_type === "MAX") {
+                } else if (transitType === "MAX") {
                     color = "blue";
-                } else if (feature?.properties?.transit_type === "CTrain & MAX Hub") {
+                } else if (transitType === "CTrain & MAX Hub") {
                     color = "purple";
                 } else {
                     color = "green";
@@ -236,6 +237,7 @@ export const ZoneSidebar = () => {
                             type: "Feature",
                             geometry: f.geometry,
                             properties: {
+                                ...f.properties,
                                 id:
                                     f.properties?.["@id"] ||
                                     f.id ||
@@ -1062,7 +1064,7 @@ function styleStations(
         case "no-overlap":
             return safeUnion(turf.featureCollection(circles));
         case "stations":
-            return turf.featureCollection(circles.map((c) => c.properties));
+            return turf.featureCollection(circles);
         case "zones":
         default:
             if (circles.length > 1) {
