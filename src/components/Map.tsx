@@ -226,7 +226,7 @@ export const Map = ({ className }: { className?: string }) => {
                     $mapGeoLocation.geometry.coordinates[1],
                     $mapGeoLocation.geometry.coordinates[0],
                 ]}
-                zoom={5}
+                zoom={11}
                 className={cn("w-[500px] h-[500px]", className)}
                 ref={leafletMapContext.set}
                 // @ts-expect-error Typing doesn't update from react-contextmenu

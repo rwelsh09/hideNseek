@@ -112,9 +112,9 @@ export const LeafletActionButtons = () => {
                             ] as [number, number];
 
                             if ($animateMapMovements) {
-                                map.flyTo(center, 5);
+                                map.flyTo(center, 11);
                             } else {
-                                map.setView(center, 5);
+                                map.setView(center, 11);
                             }
                         } else {
                             toast.error("Map extent is unavailable");
