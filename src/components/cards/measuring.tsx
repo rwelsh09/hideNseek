@@ -190,7 +190,7 @@ export const MeasuringQuestionComponent = ({
                         measuringQuestionSchema.options
                             .filter((x) => x.description === NO_GROUP)
                             .flatMap((x) =>
-                                determineUnionizedStrings(x.shape.type),
+                                determineUnionizedStrings(x.shape.type).filter(z => !["airport", "city", "aquarium-full", "zoo-full", "theme_park-full", "peak-full", "consulate-full", "aquarium", "zoo", "theme_park", "peak", "consulate", "custom-measure"].includes(z._def.value)),
                             )
                             .map((x) => [(x._def as any).value, x.description]),
                     )}
@@ -199,7 +199,7 @@ export const MeasuringQuestionComponent = ({
                         .map((x) => [
                             x.description,
                             Object.fromEntries(
-                                determineUnionizedStrings(x.shape.type).map(
+                                determineUnionizedStrings(x.shape.type).filter(z => !["airport", "city", "aquarium-full", "zoo-full", "theme_park-full", "peak-full", "consulate-full", "aquarium", "zoo", "theme_park", "peak", "consulate", "custom-measure"].includes(z._def.value)).map(
                                     (x) => [
                                         (x._def as any).value,
                                         x.description,

@@ -262,7 +262,7 @@ export const MatchingQuestionComponent = ({
                         matchingQuestionSchema.options
                             .filter((x) => x.description === NO_GROUP)
                             .flatMap((x) =>
-                                determineUnionizedStrings(x.shape.type),
+                                determineUnionizedStrings(x.shape.type).filter(z => !["airport", "major-city", "aquarium-full", "zoo-full", "theme_park-full", "peak-full", "consulate-full", "aquarium", "zoo", "theme_park", "peak", "consulate", "custom-zone", "custom-points"].includes(z._def.value)),
                             )
                             .map((x) => [(x._def as any).value, x.description]),
                     )}
@@ -271,7 +271,7 @@ export const MatchingQuestionComponent = ({
                         .map((x) => [
                             x.description,
                             Object.fromEntries(
-                                determineUnionizedStrings(x.shape.type).map(
+                                determineUnionizedStrings(x.shape.type).filter(z => !["airport", "major-city", "aquarium-full", "zoo-full", "theme_park-full", "peak-full", "consulate-full", "aquarium", "zoo", "theme_park", "peak", "consulate", "custom-zone", "custom-points"].includes(z._def.value)).map(
                                     (x) => [
                                         (x._def as any).value,
                                         x.description,

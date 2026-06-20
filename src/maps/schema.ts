@@ -250,7 +250,7 @@ const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
                 .literal("same-first-letter-neighbourhood")
                 .describe("Neighbourhood (Same First Letter) Question"),
         ])
-        .default("airport"),
+        .default("same-neighbourhood"),
 });
 
 const zoneMatchingQuestionsSchema = baseMatchingQuestionSchema.extend({
