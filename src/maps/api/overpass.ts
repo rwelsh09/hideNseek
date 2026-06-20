@@ -446,11 +446,48 @@ export const cacheAllPlaces = async () => {
         promises.push(findPlacesSpecificInZone(loc as any));
     });
 
-    await toast.promise(Promise.all(promises), {
-        pending: "Caching all possible places...",
-        success: "All possible places have been cached!",
-        error: "Failed to cache all places.",
-    });
+    const total = promises.length;
+    let completed = 0;
+
+    const toastId = toast.loading(`Caching places... (0/${total})`);
+
+    const trackedPromises = promises.map((p) =>
+        p
+            .then((res) => {
+                completed++;
+                const progress = completed / total;
+                toast.update(toastId, {
+                    render: `Caching places... (${completed}/${total})`,
+                    progress: progress,
+                });
+                return res;
+            })
+            .catch((err) => {
+                completed++;
+                toast.update(toastId, {
+                    render: `Caching places... (${completed}/${total})`,
+                    progress: completed / total,
+                });
+                throw err;
+            }),
+    );
+
+    try {
+        await Promise.all(trackedPromises);
+        toast.update(toastId, {
+            render: "All possible places have been cached!",
+            type: "success",
+            isLoading: false,
+            autoClose: 3000,
+        });
+    } catch {
+        toast.update(toastId, {
+            render: "Failed to cache all places.",
+            type: "error",
+            isLoading: false,
+            autoClose: 3000,
+        });
+    }
 };
 
 export const determineMapBoundaries = async () => {
