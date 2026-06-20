@@ -34,6 +34,7 @@ import { clearCache, determineMapBoundaries } from "@/maps/api";
 import { DraggableMarkers } from "./DraggableMarkers";
 import { LeafletActionButtons } from "./LeafletActionButtons";
 import { PolygonDraw } from "./PolygonDraw";
+import { TentaclePlaces } from "./TentaclePlaces";
 
 const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
     switch (tileLayer) {
@@ -220,7 +221,7 @@ export const Map = ({ className }: { className?: string }) => {
                     $mapGeoLocation.geometry.coordinates[1],
                     $mapGeoLocation.geometry.coordinates[0],
                 ]}
-                zoom={11}
+                zoom={10}
                 className={cn("w-[500px] h-[500px]", className)}
                 ref={leafletMapContext.set}
                 // @ts-expect-error Typing doesn't update from react-contextmenu
@@ -329,6 +330,7 @@ export const Map = ({ className }: { className?: string }) => {
             >
                 {getTileLayer($baseTileLayer, $thunderforestApiKey)}
                 <DraggableMarkers />
+                <TentaclePlaces />
                 <div className="leaflet-top leaflet-right">
                     <div className="leaflet-control flex-col flex gap-2">
                         <LeafletActionButtons />

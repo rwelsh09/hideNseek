@@ -3,8 +3,6 @@ import {
     Building2,
     Camera,
     Car,
-    FerrisWheel,
-    Fish,
     Flag,
     Landmark,
     Leaf,
@@ -14,7 +12,6 @@ import {
     Mountain,
     Network,
     Palette,
-    Plane,
     Plus,
     Ruler,
     Target,
@@ -22,9 +19,6 @@ import {
     TrainFront,
     TrainTrack,
     TramFront,
-    TreeDeciduous,
-    TreePine,
-    Waves,
     Waypoints,
 } from "lucide-react";
 import { useState } from "react";
@@ -65,7 +59,7 @@ export function AddQuestionDialog() {
             qData.unit = "kilometers";
             qData.within = true;
         } else if (type === "matching") {
-            qData.type = detail || "airport";
+            qData.type = detail || "major-city";
             qData.same = true;
         } else if (type === "measuring") {
             qData.type = detail || "coastline";
@@ -86,7 +80,7 @@ export function AddQuestionDialog() {
                 drag: true,
             };
         } else if (type === "tentacles") {
-            qData.locationType = detail || "theme_park";
+            qData.locationType = detail || "museum";
             qData.radius = 15;
             qData.unit = "kilometers";
         } else if (type === "photo") {
@@ -143,28 +137,6 @@ export function AddQuestionDialog() {
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             <button
-                                type="button"
-                                aria-label="Add matching question for airport"
-                                title="Add matching question for airport"
-                                onClick={() =>
-                                    handleQuestionSelect("matching", "airport")
-                                }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Plane className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "park-full",
-                                    )
-                                }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <TreeDeciduous className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
                                 onClick={() =>
                                     handleQuestionSelect(
                                         "matching",
@@ -186,17 +158,6 @@ export function AddQuestionDialog() {
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <TrainTrack className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "aquarium-full",
-                                    )
-                                }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Fish className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
@@ -240,17 +201,6 @@ export function AddQuestionDialog() {
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             <button
-                                type="button"
-                                aria-label="Add measuring question for airport"
-                                title="Add measuring question for airport"
-                                onClick={() =>
-                                    handleQuestionSelect("measuring", "airport")
-                                }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Plane className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
                                 onClick={() =>
                                     handleQuestionSelect(
                                         "measuring",
@@ -260,17 +210,6 @@ export function AddQuestionDialog() {
                                 className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "measuring",
-                                        "park-full",
-                                    )
-                                }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <TreePine className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
@@ -305,17 +244,6 @@ export function AddQuestionDialog() {
                                 className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "measuring",
-                                        "aquarium-full",
-                                    )
-                                }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Waves className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
@@ -511,17 +439,6 @@ export function AddQuestionDialog() {
                                     className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
                                     <Waypoints className="w-5 h-5 sm:w-6 sm:h-6" />
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "tentacles",
-                                            "theme_park",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <FerrisWheel className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
                                 <button
                                     onClick={() =>

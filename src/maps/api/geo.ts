@@ -24,18 +24,12 @@ export const prettifyLocation = (
     }
 
     switch (location) {
-        case "aquarium":
-            return "Aquarium";
         case "hospital":
             return "Hospital";
         case "peak":
             return "Mountain";
         case "museum":
             return "Museum";
-        case "theme_park":
-            return "Theme Park";
-        case "zoo":
-            return "Zoo";
         case "cinema":
             return "Cinema";
         case "library":
@@ -44,8 +38,6 @@ export const prettifyLocation = (
             return "Golf Course";
         case "consulate":
             return "Foreign Consulate";
-        case "park":
-            return "Park";
     }
 };
 

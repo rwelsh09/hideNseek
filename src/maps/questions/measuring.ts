@@ -138,27 +138,6 @@ export const determineMeasuringBoundary = async (
                 )!,
             ];
         }
-        case "airport":
-            return [
-                turf.combine(
-                    turf.featureCollection(
-                        _.uniqBy(
-                            (
-                                await findPlacesInZone(
-                                    '["aeroway"="aerodrome"]["iata"]', // Only commercial airports have IATA codes,
-                                    "Finding airports...",
-                                )
-                            ).elements,
-                            (feature: any) => feature.tags.iata,
-                        ).map((x: any) =>
-                            turf.point([
-                                x.center ? x.center.lon : x.lon,
-                                x.center ? x.center.lat : x.lat,
-                            ]),
-                        ),
-                    ),
-                ).features[0],
-            ];
         case "city":
             return [
                 turf.combine(
@@ -177,17 +156,13 @@ export const determineMeasuringBoundary = async (
                     ),
                 ).features[0],
             ];
-        case "aquarium-full":
-        case "zoo-full":
-        case "theme_park-full":
         case "peak-full":
         case "museum-full":
         case "hospital-full":
         case "cinema-full":
         case "library-full":
         case "golf_course-full":
-        case "consulate-full":
-        case "park-full": {
+        case "consulate-full": {
             const location = question.type.split("-full")[0] as APILocations;
 
             const data = await findPlacesInZone(
@@ -204,17 +179,17 @@ export const determineMeasuringBoundary = async (
                     `Error finding ${prettifyLocation(
                         location,
                         true,
-                    ).toLowerCase()}. Please enable hiding zone mode and switch to the Large Game variation of this question.`,
+                    ).toLowerCase()}.`,
                 );
                 return [turf.multiPolygon([])];
             }
 
-            if (data.elements.length >= 1000) {
+            if (data.elements.length >= 5000) {
                 toast.error(
                     `Too many ${prettifyLocation(
                         location,
                         true,
-                    ).toLowerCase()} found (${data.elements.length}). Please enable hiding zone mode and switch to the Large Game variation of this question.`,
+                    ).toLowerCase()} found (${data.elements.length}).`,
                 );
                 return [turf.multiPolygon([])];
             }
@@ -236,9 +211,6 @@ export const determineMeasuringBoundary = async (
             return turf.combine(
                 turf.featureCollection((question as any).geo.features),
             ).features;
-        case "aquarium":
-        case "zoo":
-        case "theme_park":
         case "peak":
         case "museum":
         case "hospital":
@@ -246,7 +218,6 @@ export const determineMeasuringBoundary = async (
         case "library":
         case "golf_course":
         case "consulate":
-        case "park":
         case "mcdonalds":
         case "seven11":
         case "rail-measure":
@@ -299,9 +270,6 @@ export const hiderifyMeasuring = async (question: MeasuringQuestion) => {
 
     if (
         [
-            "aquarium",
-            "zoo",
-            "theme_park",
             "peak",
             "museum",
             "hospital",
@@ -309,7 +277,6 @@ export const hiderifyMeasuring = async (question: MeasuringQuestion) => {
             "library",
             "golf_course",
             "consulate",
-            "park",
         ].includes(question.type)
     ) {
         const questionNearest = await nearestToQuestion(
