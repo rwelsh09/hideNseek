@@ -25,7 +25,10 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
-import { determineMeasuringBoundary } from "@/maps/questions/measuring";
+import {
+    calculateMeasuringDistance,
+    determineMeasuringBoundary,
+} from "@/maps/questions/measuring";
 import {
     determineUnionizedStrings,
     type MeasuringQuestion,
@@ -56,6 +59,21 @@ export const MeasuringQuestionComponent = ({
     const $isLoading = useStore(isLoading);
     const $customInitPref = useStore(customInitPreference);
     const [customDialogOpen, setCustomDialogOpen] = React.useState(false);
+    const [distanceValue, setDistanceValue] = React.useState<number | null>(
+        null,
+    );
+    React.useEffect(() => {
+        let active = true;
+        calculateMeasuringDistance(data).then((dist) => {
+            if (active) setDistanceValue(dist);
+        }).catch(() => {
+            if (active) setDistanceValue(null);
+        });
+        return () => {
+            active = false;
+        };
+    }, [data.lat, data.lng, data.type, (data as any).geo]);
+
     const label = `Measuring
     ${
         $questions
@@ -286,6 +304,15 @@ export const MeasuringQuestionComponent = ({
                 }}
                 disabled={!data.drag || $isLoading}
             />
+            {distanceValue !== null && (
+                <div className="px-2 text-sm text-muted-foreground">
+                    Distance:{" "}
+                    <span className="font-medium text-foreground">
+                        {distanceValue.toFixed(3)} km
+                    </span>
+                </div>
+            )}
+
             {!isPreview && (
                 <div className="flex gap-2 items-center p-2">
                     <Label
