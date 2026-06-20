@@ -499,6 +499,7 @@ export const PolygonDraw = () => {
                 ))}
             <EditControl
                 position="bottomleft"
+                edit={{ edit: false, remove: false }}
                 draw={{
                     rectangle: false,
                     circle: false,
