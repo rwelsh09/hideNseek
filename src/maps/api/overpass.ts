@@ -17,13 +17,13 @@ import {
     OVERPASS_API,
     OVERPASS_API_FALLBACK,
 } from "./constants";
+import type { APILocations } from "./types";
 import type {
     EncompassingTentacleQuestionSchema,
     HomeGameMatchingQuestions,
     HomeGameMeasuringQuestions,
-    QuestionSpecificLocation,
 } from "./types";
-import { CacheType } from "./types";
+import { CacheType, QuestionSpecificLocation } from "./types";
 
 export const getOverpassData = async (
     query: string,
@@ -157,7 +157,7 @@ out geom;
 
 export const fetchCoastline = async () => {
     const response = await cacheFetch(
-        import.meta.env.BASE_URL + "/coastline50.geojson",
+        (import.meta as any).env.BASE_URL + "/coastline50.geojson",
         "Fetching coastline data...",
         CacheType.PERMANENT_CACHE,
     );
@@ -383,6 +383,74 @@ export const nearestToQuestion = async (
     }
     const questionPoint = turf.point([question.lng, question.lat]);
     return turf.nearestPoint(questionPoint, instances as any);
+};
+
+export const cacheAllPlaces = async () => {
+    const promises: Promise<any>[] = [];
+
+    const coordinates = mapGeoLocation.get().geometry.coordinates;
+
+    // Standard Locations (from LOCATION_FIRST_TAG)
+    Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
+        const location = locationStr as APILocations;
+
+        promises.push(
+            findPlacesInZone(
+                `[${LOCATION_FIRST_TAG[location]}=${location}]`,
+                undefined,
+                "nwr",
+                "center",
+                [],
+                0,
+            ),
+        );
+
+        promises.push(
+            findTentacleLocations(
+                {
+                    locationType: location,
+                    radius: 10,
+                    unit: "kilometers",
+                    lat: coordinates[1],
+                    lng: coordinates[0],
+                    location: false,
+                    drag: false,
+                    color: "black",
+                    collapsed: false,
+                },
+                undefined,
+            ),
+        );
+    });
+
+    // Specific Hardcoded Queries
+    promises.push(
+        findPlacesInZone('["aeroway"="aerodrome"]["iata"]', undefined),
+    );
+    promises.push(
+        findPlacesInZone(
+            '[place=city]["population"~"^[1-9]+[0-9]{6}$"]',
+            undefined,
+        ),
+    );
+    promises.push(
+        findPlacesInZone("[highspeed=yes]", undefined, "nwr", "geom"),
+    );
+    promises.push(
+        findPlacesInZone('["admin_level"="10"]', undefined, "nwr", "geom"),
+    );
+    promises.push(findPlacesInZone("[railway=station]", undefined, "node"));
+
+    // Specific Location Enum Queries (McDonalds, 7Eleven)
+    Object.values(QuestionSpecificLocation).forEach((loc) => {
+        promises.push(findPlacesSpecificInZone(loc as any));
+    });
+
+    await toast.promise(Promise.all(promises), {
+        pending: "Caching all possible places...",
+        success: "All possible places have been cached!",
+        error: "Failed to cache all places.",
+    });
 };
 
 export const determineMapBoundaries = async () => {

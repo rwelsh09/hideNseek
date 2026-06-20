@@ -448,6 +448,19 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     className="w-full sm:w-[280px] font-normal hover:bg-slate-200"
                                     onClick={() => {
                                         import("@/maps/api").then(
+                                            ({ cacheAllPlaces }) => {
+                                                cacheAllPlaces();
+                                            },
+                                        );
+                                    }}
+                                >
+                                    Cache All Possible Places
+                                </Button>
+                                <Button
+                                    variant="outline"
+                                    className="w-full sm:w-[280px] font-normal hover:bg-slate-200"
+                                    onClick={() => {
+                                        import("@/maps/api").then(
                                             ({ clearCache, CacheType }) => {
                                                 mapGeoJSON.set(null);
                                                 polyGeoJSON.set(null);
