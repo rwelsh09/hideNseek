@@ -187,8 +187,8 @@ const customTentacleQuestionSchema = baseTentacleQuestionSchema.extend({
 
 export const tentacleQuestionSchema = z.union([
     customTentacleQuestionSchema.describe(NO_GROUP),
-    tentacleQuestionSpecificSchemaFifteen.describe("15 Kilometers (Typically)"),
-    tentacleQuestionSpecificSchemaOne.describe("1 Kilometer (Typically)"),
+    tentacleQuestionSpecificSchemaFifteen.describe("25 Kilometers"),
+    tentacleQuestionSpecificSchemaOne.describe("2 Kilometer"),
 ]);
 
 const baseMatchingQuestionSchema = ordinaryBaseQuestionSchema.extend({
