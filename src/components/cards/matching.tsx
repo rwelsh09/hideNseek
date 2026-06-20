@@ -252,20 +252,7 @@ export const MatchingQuestionComponent = ({
                         matchingQuestionSchema.options
                             .filter((x) => x.description === NO_GROUP)
                             .flatMap((x) =>
-                                determineUnionizedStrings(x.shape.type).filter(
-                                    (z) =>
-                                        ![
-                                            "airport",
-                                            "major-city",
-                                            "aquarium",
-                                            "zoo",
-                                            "theme_park",
-                                            "peak",
-                                            "consulate",
-                                            "custom-zone",
-                                            "custom-points",
-                                        ].includes(z._def.value),
-                                ),
+                                determineUnionizedStrings(x.shape.type)
                             )
                             .map((x) => [(x._def as any).value, x.description]),
                     )}
@@ -275,20 +262,6 @@ export const MatchingQuestionComponent = ({
                             x.description,
                             Object.fromEntries(
                                 determineUnionizedStrings(x.shape.type)
-                                    .filter(
-                                        (z) =>
-                                            ![
-                                                "airport",
-                                                "major-city",
-                                                "aquarium",
-                                                "zoo",
-                                                "theme_park",
-                                                "peak",
-                                                "consulate",
-                                                "custom-zone",
-                                                "custom-points",
-                                            ].includes(z._def.value),
-                                    )
                                     .map((x) => [
                                         (x._def as any).value,
                                         x.description,
@@ -298,7 +271,7 @@ export const MatchingQuestionComponent = ({
                         .reduce(
                             (acc, [key, value]) => {
                                 const values = {
-                                    disabled: !$displayHidingZones,
+                                    disabled: key === "Hiding Zone Mode" && !$displayHidingZones,
                                     options: value,
                                 };
 
