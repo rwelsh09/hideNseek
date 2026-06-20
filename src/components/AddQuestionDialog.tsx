@@ -370,39 +370,6 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect("radar", "15")
-                                }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                15 km
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect("radar", "20")
-                                }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                20 km
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect("radar", "30")
-                                }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                30 km
-                            </button>
-
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect("radar", "50")
-                                }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                50 km
-                            </button>
-                            <button
-                                onClick={() =>
                                     handleQuestionSelect("radar", "unknown")
                                 }
                                 className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
