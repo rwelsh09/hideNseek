@@ -14,7 +14,6 @@ import {
     animateMapMovements,
     autoSave,
     baseTileLayer,
-    customInitPreference,
     customPresets,
     customStations,
     disabledStations,
@@ -56,7 +55,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $planningMode = useStore(planningModeEnabled);
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
-    const $customInitPref = useStore(customInitPreference);
     const [isOptionsOpen, setOptionsOpen] = useState(false);
 
     useEffect(() => {
@@ -248,9 +246,9 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 Options
                             </DrawerTitle>
                         </DrawerHeader>
-                        <div className="overflow-y-scroll max-h-[40vh] flex flex-col items-center gap-4 max-w-[1000px] px-12 pb-10">
+                        <div className="overflow-y-scroll max-h-[40vh] flex flex-col items-center gap-4 max-w-[1000px] px-4 sm:px-12 pb-10">
                             <div className="flex flex-row items-center gap-2 mt-2">
-                                <label className="text-2xl font-semibold font-poppins">
+                                <label className="text-2xl font-semibold font-poppins text-center">
                                     Hider mode?
                                 </label>
                                 <Checkbox
@@ -306,8 +304,9 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 </SidebarMenu>
                             )}
                             <Separator className="bg-slate-300 w-[280px]" />
-                            <div className="flex flex-row max-[330px]:flex-col gap-4 mt-2">
+                            <div className="flex flex-col sm:flex-row gap-4 mt-2 w-full max-w-[280px] sm:max-w-none">
                                 <Button
+                                    className="w-full sm:w-auto"
                                     onClick={() => {
                                         if (!navigator || !navigator.clipboard)
                                             return toast.error(
@@ -327,6 +326,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     Copy Hiding Zone
                                 </Button>
                                 <Button
+                                    className="w-full sm:w-auto"
                                     onClick={() => {
                                         if (!navigator || !navigator.clipboard)
                                             return toast.error(
@@ -340,20 +340,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     Paste Hiding Zone
                                 </Button>
                             </div>
-                            <Separator className="bg-slate-300 w-[280px]" />
-                            <Label>New Custom Question Defaults</Label>
-                            <Select
-                                trigger="New custom default"
-                                options={{
-                                    ask: "Ask each time",
-                                    blank: "Start blank",
-                                    prefill: "Copy from current",
-                                }}
-                                value={$customInitPref}
-                                onValueChange={(v) =>
-                                    customInitPreference.set(v as any)
-                                }
-                            />
                             <Separator className="bg-slate-300 w-[280px]" />
                             <Label>Base map style</Label>
                             <Select
@@ -370,8 +356,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 }
                             />
                             <Separator className="bg-slate-300 w-[280px]" />
-                            <div className="flex flex-row items-center gap-2">
-                                <label className="text-2xl font-semibold font-poppins">
+                            <div className="flex flex-row items-center gap-2 text-center">
+                                <label className="text-xl sm:text-2xl font-semibold font-poppins">
                                     Animate map movements?
                                 </label>
                                 <Checkbox
@@ -383,8 +369,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     }}
                                 />
                             </div>
-                            <div className="flex flex-row items-center gap-2">
-                                <label className="text-2xl font-semibold font-poppins">
+                            <div className="flex flex-row items-center gap-2 text-center">
+                                <label className="text-xl sm:text-2xl font-semibold font-poppins">
                                     Enable planning mode?
                                 </label>
                                 <Checkbox
@@ -411,8 +397,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     }}
                                 />
                             </div>
-                            <div className="flex flex-row items-center gap-2">
-                                <label className="text-2xl font-semibold font-poppins">
+                            <div className="flex flex-row items-center gap-2 text-center">
+                                <label className="text-xl sm:text-2xl font-semibold font-poppins">
                                     Auto save?
                                 </label>
                                 <Checkbox
@@ -423,8 +409,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 />
                             </div>
 
-                            <div className="flex flex-row items-center gap-2">
-                                <label className="text-2xl font-semibold font-poppins">
+                            <div className="flex flex-row items-center gap-2 text-center">
+                                <label className="text-xl sm:text-2xl font-semibold font-poppins">
                                     Follow Me (GPS)?
                                 </label>
                                 <Checkbox
@@ -435,10 +421,10 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 />
                             </div>
                             <Separator className="bg-slate-300 w-[280px]" />
-                            <div className="flex flex-row items-center gap-2">
+                            <div className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-[280px] sm:max-w-none">
                                 <Button
                                     variant="destructive"
-                                    className="w-[280px]"
+                                    className="w-full sm:w-[280px]"
                                     onClick={() => {
                                         if (
                                             window.confirm(
@@ -459,7 +445,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 </Button>
                                 <Button
                                     variant="outline"
-                                    className="w-[280px] font-normal hover:bg-slate-200"
+                                    className="w-full sm:w-[280px] font-normal hover:bg-slate-200"
                                     onClick={() => {
                                         import("@/maps/api").then(
                                             ({ clearCache, CacheType }) => {
