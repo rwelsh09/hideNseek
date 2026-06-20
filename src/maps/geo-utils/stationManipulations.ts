@@ -118,7 +118,7 @@ export type Location = {
  * @param station1 First station location.
  * @param station2 Second station location.
  * @param radius   The zone radius around each station.
- * @param units    The unit for the radius ("kilometers", "meters").
+ * @param units    The unit for the radius ("kilometers" or "meters").
  * @returns        True if both stations share a zone, otherwise false.
  */
 export function checkIfStationsShareZones(
