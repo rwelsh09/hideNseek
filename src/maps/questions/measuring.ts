@@ -162,8 +162,7 @@ export const determineMeasuringBoundary = async (
         case "cinema-full":
         case "library-full":
         case "golf_course-full":
-        case "consulate-full":
-        case "park-full": {
+        case "consulate-full": {
             const location = question.type.split("-full")[0] as APILocations;
 
             const data = await findPlacesInZone(
@@ -185,7 +184,7 @@ export const determineMeasuringBoundary = async (
                 return [turf.multiPolygon([])];
             }
 
-            if (data.elements.length >= 1000) {
+            if (data.elements.length >= 5000) {
                 toast.error(
                     `Too many ${prettifyLocation(
                         location,
@@ -219,7 +218,6 @@ export const determineMeasuringBoundary = async (
         case "library":
         case "golf_course":
         case "consulate":
-        case "park":
         case "mcdonalds":
         case "seven11":
         case "rail-measure":
@@ -279,7 +277,6 @@ export const hiderifyMeasuring = async (question: MeasuringQuestion) => {
             "library",
             "golf_course",
             "consulate",
-            "park",
         ].includes(question.type)
     ) {
         const questionNearest = await nearestToQuestion(

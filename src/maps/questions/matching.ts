@@ -46,8 +46,7 @@ export const findMatchingPlaces = async (question: MatchingQuestion) => {
         case "cinema-full":
         case "library-full":
         case "golf_course-full":
-        case "consulate-full":
-        case "park-full": {
+        case "consulate-full": {
             const location = question.type.split("-full")[0] as APILocations;
 
             const data = await findPlacesInZone(
@@ -69,7 +68,7 @@ export const findMatchingPlaces = async (question: MatchingQuestion) => {
                 return [];
             }
 
-            if (data.elements.length >= 1000) {
+            if (data.elements.length >= 5000) {
                 toast.error(
                     `Too many ${prettifyLocation(
                         location,
@@ -101,7 +100,6 @@ export const determineMatchingBoundary = _.memoize(
             case "library":
             case "golf_course":
             case "consulate":
-            case "park":
             case "same-first-letter-station":
             case "same-length-station":
             case "same-train-line": {
@@ -197,8 +195,7 @@ export const determineMatchingBoundary = _.memoize(
             case "cinema-full":
             case "library-full":
             case "golf_course-full":
-            case "consulate-full":
-            case "park-full": {
+            case "consulate-full": {
                 const data = await findMatchingPlaces(question);
 
                 const voronoi = geoSpatialVoronoi(data);
@@ -259,7 +256,6 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
             "library",
             "golf_course",
             "consulate",
-            "park",
         ].includes(question.type)
     ) {
         const questionNearest = await nearestToQuestion(

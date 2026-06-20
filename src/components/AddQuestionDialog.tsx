@@ -19,8 +19,6 @@ import {
     TrainFront,
     TrainTrack,
     TramFront,
-    TreeDeciduous,
-    TreePine,
     Waypoints,
 } from "lucide-react";
 import { useState } from "react";
@@ -142,17 +140,6 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect(
                                         "matching",
-                                        "park-full",
-                                    )
-                                }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <TreeDeciduous className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
                                         "museum-full",
                                     )
                                 }
@@ -223,17 +210,6 @@ export function AddQuestionDialog() {
                                 className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "measuring",
-                                        "park-full",
-                                    )
-                                }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <TreePine className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
                                 onClick={() =>
