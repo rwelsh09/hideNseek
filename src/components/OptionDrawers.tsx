@@ -19,7 +19,6 @@ import {
     customPresets,
     customStations,
     defaultCustomQuestions,
-    defaultUnit,
     disabledStations,
     displayHidingZonesOptions,
     followMe,
@@ -53,7 +52,6 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "./ui/sidebar-l";
-import { UnitSelect } from "./UnitSelect";
 
 const HIDING_ZONE_URL_PARAM = "hz";
 const HIDING_ZONE_COMPRESSED_URL_PARAM = "hzc";
@@ -62,7 +60,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     useStore(triggerLocalRefresh);
     const $defaultCustomQuestions = useStore(defaultCustomQuestions);
     const $allowGooglePlusCodes = useStore(allowGooglePlusCodes);
-    const $defaultUnit = useStore(defaultUnit);
     const $animateMapMovements = useStore(animateMapMovements);
     const $hiderMode = useStore(hiderMode);
     const $autoSave = useStore(autoSave);
@@ -71,24 +68,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
     const $customInitPref = useStore(customInitPreference);
-    const lastDefaultUnit = useRef($defaultUnit);
-    const hasSyncedInitialUnit = useRef(false);
     const [isOptionsOpen, setOptionsOpen] = useState(false);
-
-    useEffect(() => {
-        const currentDefault = $defaultUnit;
-
-        if (!hasSyncedInitialUnit.current) {
-            hasSyncedInitialUnit.current = true;
-            if (hidingRadiusUnits.get() !== currentDefault) {
-                hidingRadiusUnits.set(currentDefault);
-            }
-        } else if (lastDefaultUnit.current !== currentDefault) {
-            hidingRadiusUnits.set(currentDefault);
-        }
-
-        lastDefaultUnit.current = currentDefault;
-    }, [$defaultUnit]);
 
     useEffect(() => {
         const params = new URL(window.location.toString()).searchParams;
@@ -321,12 +301,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 </Button>
                             </div>
                             <Separator className="bg-slate-300 w-[280px]" />
-                            <Label>Default Unit</Label>
-                            <UnitSelect
-                                unit={$defaultUnit}
-                                onChange={defaultUnit.set}
-                            />
-                            <Separator className="bg-slate-300 w-[280px]" />
                             <Label>New Custom Question Defaults</Label>
                             <Select
                                 trigger="New custom default"
@@ -557,7 +531,10 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                         ) {
                                             localStorage.clear();
                                             sessionStorage.clear();
-                                            sessionStorage.setItem("resetEverything", "true");
+                                            sessionStorage.setItem(
+                                                "resetEverything",
+                                                "true",
+                                            );
                                             window.location.reload();
                                         }
                                     }}

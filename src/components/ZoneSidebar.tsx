@@ -534,7 +534,7 @@ export const ZoneSidebar = () => {
                         const distance = turf.distance(
                             turf.point([question.data.lng, question.data.lat]),
                             nearestPoint as any,
-                            { units: "miles" },
+                            { units: "kilometers" },
                         );
 
                         circles = circles.filter((circle) => {
@@ -547,11 +547,11 @@ export const ZoneSidebar = () => {
                             );
                             return question.data.hiderCloser
                                 ? turf.distance(point, nearest as any, {
-                                      units: "miles",
+                                      units: "kilometers",
                                   }) <
                                       distance + $hidingRadius
                                 : turf.distance(point, nearest as any, {
-                                      units: "miles",
+                                      units: "kilometers",
                                   }) >
                                       distance - $hidingRadius;
                         });
@@ -1157,7 +1157,7 @@ async function selectionProcess(
                         lat: station.properties.geometry.coordinates[1],
                         lng: station.properties.geometry.coordinates[0],
                         radius: radius,
-                        unit: "miles",
+                        unit: "kilometers",
                         location: false,
                         locationType: question.data.type,
                         drag: false,
@@ -1172,7 +1172,7 @@ async function selectionProcess(
                         distance: turf.distance(
                             turf.point(turf.getCoord(x)),
                             station.properties,
-                            { units: "miles" },
+                            { units: "kilometers" },
                         ),
                         point: x,
                     };
@@ -1320,17 +1320,17 @@ async function selectionProcess(
 
             const seeker = turf.point([question.data.lng, question.data.lat]);
             const nearest = turf.nearestPoint(seeker, points as any);
-            const distance = turf.distance(seeker, nearest, { units: "miles" });
+            const distance = turf.distance(seeker, nearest, { units: "kilometers" });
 
             const filtered = points.features.filter(
                 (x) =>
                     turf.distance(x as any, station.properties.geometry, {
-                        units: "miles",
+                        units: "kilometers",
                     }) <
                     distance + $hidingRadius,
             );
             const circles = filtered.map((x) =>
-                turf.circle(x as any, distance, { units: "miles" }),
+                turf.circle(x as any, distance, { units: "kilometers" }),
             );
 
             if (question.data.hiderCloser) {
