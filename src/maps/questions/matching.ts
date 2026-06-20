@@ -27,22 +27,6 @@ import type {
 
 export const findMatchingPlaces = async (question: MatchingQuestion) => {
     switch (question.type) {
-        case "airport": {
-            return _.uniqBy(
-                (
-                    await findPlacesInZone(
-                        '["aeroway"="aerodrome"]["iata"]', // Only commercial airports have IATA codes,
-                        "Finding airports...",
-                    )
-                ).elements,
-                (feature: any) => feature.tags.iata,
-            ).map((x) =>
-                turf.point([
-                    x.center ? x.center.lon : x.lon,
-                    x.center ? x.center.lat : x.lat,
-                ]),
-            );
-        }
         case "major-city": {
             return (
                 await findPlacesInZone(
@@ -56,9 +40,6 @@ export const findMatchingPlaces = async (question: MatchingQuestion) => {
                 ]),
             );
         }
-        case "aquarium-full":
-        case "zoo-full":
-        case "theme_park-full":
         case "peak-full":
         case "museum-full":
         case "hospital-full":
@@ -113,9 +94,6 @@ export const determineMatchingBoundary = _.memoize(
         let boundary;
 
         switch (question.type) {
-            case "aquarium":
-            case "zoo":
-            case "theme_park":
             case "peak":
             case "museum":
             case "hospital":
@@ -212,11 +190,7 @@ export const determineMatchingBoundary = _.memoize(
                 boundary = question.geo;
                 break;
             }
-            case "airport":
             case "major-city":
-            case "aquarium-full":
-            case "zoo-full":
-            case "theme_park-full":
             case "peak-full":
             case "museum-full":
             case "hospital-full":
@@ -278,9 +252,6 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
 
     if (
         [
-            "aquarium",
-            "zoo",
-            "theme_park",
             "peak",
             "museum",
             "hospital",

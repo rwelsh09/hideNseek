@@ -78,12 +78,9 @@ export const MeasuringQuestionComponent = ({
                 </span>
             );
             break;
-        case "aquarium":
         case "hospital":
         case "peak":
         case "museum":
-        case "theme_park":
-        case "zoo":
         case "cinema":
         case "library":
         case "golf_course":
