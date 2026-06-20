@@ -64,7 +64,7 @@ export const findMatchingPlaces = async (question: MatchingQuestion) => {
                     `Error finding ${prettifyLocation(
                         location,
                         true,
-                    ).toLowerCase()}. Please enable hiding zone mode and switch to the Large Game variation of this question.`,
+                    ).toLowerCase()}.`,
                 );
                 return [];
             }
@@ -74,7 +74,7 @@ export const findMatchingPlaces = async (question: MatchingQuestion) => {
                     `Too many ${prettifyLocation(
                         location,
                         true,
-                    ).toLowerCase()} found (${data.elements.length}). Please enable hiding zone mode and switch to the Large Game variation of this question.`,
+                    ).toLowerCase()} found (${data.elements.length}).`,
                 );
                 return [];
             }

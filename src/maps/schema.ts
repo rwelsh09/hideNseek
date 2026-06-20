@@ -195,28 +195,28 @@ const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
                 .describe("Major City (1,000,000+ people) In Zone Question"),
             z
                 .literal("peak-full")
-                .describe("Mountain Question (Small+Medium Games)"),
+                .describe("Mountain Question"),
             z
                 .literal("museum-full")
-                .describe("Museum Question (Small+Medium Games)"),
+                .describe("Museum Question"),
             z
                 .literal("hospital-full")
-                .describe("Hospital Question (Small+Medium Games)"),
+                .describe("Hospital Question"),
             z
                 .literal("cinema-full")
-                .describe("Cinema Question (Small+Medium Games)"),
+                .describe("Cinema Question"),
             z
                 .literal("library-full")
-                .describe("Library Question (Small+Medium Games)"),
+                .describe("Library Question"),
             z
                 .literal("golf_course-full")
-                .describe("Golf Course Question (Small+Medium Games)"),
+                .describe("Golf Course Question"),
             z
                 .literal("consulate-full")
-                .describe("Foreign Consulate Question (Small+Medium Games)"),
+                .describe("Foreign Consulate Question"),
             z
                 .literal("park-full")
-                .describe("Park Question (Small+Medium Games)"),
+                .describe("Park Question"),
             z
                 .literal("same-neighbourhood")
                 .describe("Neighbourhood (Same As Me) Question"),
@@ -282,28 +282,28 @@ const ordinaryMeasuringQuestionSchema = baseMeasuringQuestionSchema.extend({
                 .describe("High-Speed Rail Question"),
             z
                 .literal("peak-full")
-                .describe("Mountain Question (Small+Medium Games)"),
+                .describe("Mountain Question"),
             z
                 .literal("museum-full")
-                .describe("Museum Question (Small+Medium Games)"),
+                .describe("Museum Question"),
             z
                 .literal("hospital-full")
-                .describe("Hospital Question (Small+Medium Games)"),
+                .describe("Hospital Question"),
             z
                 .literal("cinema-full")
-                .describe("Cinema Question (Small+Medium Games)"),
+                .describe("Cinema Question"),
             z
                 .literal("library-full")
-                .describe("Library Question (Small+Medium Games)"),
+                .describe("Library Question"),
             z
                 .literal("golf_course-full")
-                .describe("Golf Course Question (Small+Medium Games)"),
+                .describe("Golf Course Question"),
             z
                 .literal("consulate-full")
-                .describe("Foreign Consulate Question (Small+Medium Games)"),
+                .describe("Foreign Consulate Question"),
             z
                 .literal("park-full")
-                .describe("Park Question (Small+Medium Games)"),
+                .describe("Park Question"),
         ])
         .default("coastline"),
 });
