@@ -304,43 +304,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 </SidebarMenu>
                             )}
                             <Separator className="bg-slate-300 w-[280px]" />
-                            <div className="flex flex-col sm:flex-row gap-4 mt-2 w-full max-w-[280px] sm:max-w-none">
-                                <Button
-                                    className="w-full sm:w-auto"
-                                    onClick={() => {
-                                        if (!navigator || !navigator.clipboard)
-                                            return toast.error(
-                                                "Clipboard not supported",
-                                            );
-                                        navigator.clipboard.writeText(
-                                            JSON.stringify($hidingZone),
-                                        );
-                                        toast.success(
-                                            "Hiding zone copied successfully",
-                                            {
-                                                autoClose: 2000,
-                                            },
-                                        );
-                                    }}
-                                >
-                                    Copy Hiding Zone
-                                </Button>
-                                <Button
-                                    className="w-full sm:w-auto"
-                                    onClick={() => {
-                                        if (!navigator || !navigator.clipboard)
-                                            return toast.error(
-                                                "Clipboard not supported",
-                                            );
-                                        navigator.clipboard
-                                            .readText()
-                                            .then(loadHidingZone);
-                                    }}
-                                >
-                                    Paste Hiding Zone
-                                </Button>
-                            </div>
-                            <Separator className="bg-slate-300 w-[280px]" />
                             <Label>Base map style</Label>
                             <Select
                                 trigger="Base map style"
@@ -419,6 +382,43 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                         followMe.set(!$followMe)
                                     }
                                 />
+                            </div>
+                            <Separator className="bg-slate-300 w-[280px]" />
+                            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-[280px] sm:max-w-none">
+                                <Button
+                                    className="w-full sm:w-auto"
+                                    onClick={() => {
+                                        if (!navigator || !navigator.clipboard)
+                                            return toast.error(
+                                                "Clipboard not supported",
+                                            );
+                                        navigator.clipboard.writeText(
+                                            JSON.stringify($hidingZone),
+                                        );
+                                        toast.success(
+                                            "Game state copied successfully",
+                                            {
+                                                autoClose: 2000,
+                                            },
+                                        );
+                                    }}
+                                >
+                                    Copy Game State
+                                </Button>
+                                <Button
+                                    className="w-full sm:w-auto"
+                                    onClick={() => {
+                                        if (!navigator || !navigator.clipboard)
+                                            return toast.error(
+                                                "Clipboard not supported",
+                                            );
+                                        navigator.clipboard
+                                            .readText()
+                                            .then(loadHidingZone);
+                                    }}
+                                >
+                                    Paste Game State
+                                </Button>
                             </div>
                             <Separator className="bg-slate-300 w-[280px]" />
                             <div className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-[280px] sm:max-w-none">
