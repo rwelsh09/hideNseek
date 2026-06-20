@@ -1134,8 +1134,7 @@ async function selectionProcess(
                 question.data.type === "cinema" ||
                 question.data.type === "library" ||
                 question.data.type === "golf_course" ||
-                question.data.type === "consulate" ||
-                question.data.type === "park")
+                question.data.type === "consulate")
         ) {
             const nearestQuestion = await nearestToQuestion(question.data);
             let radius = 30;

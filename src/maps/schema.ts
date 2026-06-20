@@ -124,7 +124,6 @@ const tentacleLocationsOne = z.union([
 const apiLocationSchema = z.union([
     z.literal("golf_course"),
     z.literal("consulate"),
-    z.literal("park"),
     z.literal("peak"),
     tentacleLocationsOne,
 ]);
@@ -215,9 +214,6 @@ const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
                 .literal("consulate-full")
                 .describe("Foreign Consulate Question"),
             z
-                .literal("park-full")
-                .describe("Park Question"),
-            z
                 .literal("same-neighbourhood")
                 .describe("Neighbourhood (Same As Me) Question"),
             z
@@ -236,7 +232,6 @@ const homeGameMatchingQuestionsSchema = baseMatchingQuestionSchema.extend({
         z.literal("library").describe("Library Question"),
         z.literal("golf_course").describe("Golf Course Question"),
         z.literal("consulate").describe("Foreign Consulate Question"),
-        z.literal("park").describe("Park Question"),
     ]),
 });
 
@@ -301,9 +296,6 @@ const ordinaryMeasuringQuestionSchema = baseMeasuringQuestionSchema.extend({
             z
                 .literal("consulate-full")
                 .describe("Foreign Consulate Question"),
-            z
-                .literal("park-full")
-                .describe("Park Question"),
         ])
         .default("coastline"),
 });
@@ -325,7 +317,6 @@ const homeGameMeasuringQuestionsSchema = baseMeasuringQuestionSchema.extend({
         z.literal("library").describe("Library Question"),
         z.literal("golf_course").describe("Golf Course Question"),
         z.literal("consulate").describe("Foreign Consulate Question"),
-        z.literal("park").describe("Park Question"),
     ]),
 });
 
