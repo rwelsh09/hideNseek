@@ -69,7 +69,7 @@ export const findMatchingPlaces = async (question: MatchingQuestion) => {
                 return [];
             }
 
-            if (data.elements.length >= 1000) {
+            if (data.elements.length >= 5000) {
                 toast.error(
                     `Too many ${prettifyLocation(
                         location,
