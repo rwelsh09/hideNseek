@@ -1,15 +1,12 @@
 import * as turf from "@turf/turf";
 import {
-    Building2,
     Camera,
     Car,
-    Flag,
     Landmark,
     Leaf,
     Map as MapIcon,
     MapPin,
     MapPinned,
-    Mountain,
     Network,
     Palette,
     Plus,
@@ -61,10 +58,10 @@ export function AddQuestionDialog() {
             qData.unit = "kilometers";
             qData.within = true;
         } else if (type === "matching") {
-            qData.type = detail || "major-city";
+            qData.type = detail || "museum-full";
             qData.same = true;
         } else if (type === "measuring") {
-            qData.type = detail || "coastline";
+            qData.type = detail || "museum-full";
             qData.hiderCloser = true;
         } else if (type === "thermometer") {
             const destination = turf.destination(
@@ -217,17 +214,6 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect(
                                         "measuring",
-                                        "coastline",
-                                    )
-                                }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "measuring",
                                         "park-full",
                                     )
                                 }
@@ -258,17 +244,7 @@ export function AddQuestionDialog() {
                             >
                                 <TramFront className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
-                            <button
-                                type="button"
-                                aria-label="Add measuring question for city"
-                                title="Add measuring question for city"
-                                onClick={() =>
-                                    handleQuestionSelect("measuring", "city")
-                                }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
+
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
@@ -464,17 +440,6 @@ export function AddQuestionDialog() {
                                 >
                                     <Waypoints className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
-                                <button
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "tentacles",
-                                            "consulate",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Flag className="w-5 h-5 sm:w-6 sm:h-6" />
-                                </button>
                             </div>
                         </div>
                     </div>
@@ -549,17 +514,6 @@ export function AddQuestionDialog() {
                                 className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-                            <button
-                                type="button"
-                                aria-label="Add photo question for landmark"
-                                title="Add photo question for landmark"
-                                onClick={() =>
-                                    handleQuestionSelect("photo", "landmark")
-                                }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Mountain className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                         </div>
                     </div>

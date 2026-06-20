@@ -79,12 +79,10 @@ export const MeasuringQuestionComponent = ({
             );
             break;
         case "hospital":
-        case "peak":
         case "museum":
         case "cinema":
         case "library":
         case "golf_course":
-        case "consulate":
         case "park":
             questionSpecific = (
                 <span className="px-2 text-center text-orange-500">

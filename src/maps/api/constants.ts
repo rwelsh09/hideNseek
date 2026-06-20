@@ -30,12 +30,10 @@ export const LOCATION_FIRST_TAG: {
         | "natural";
 } = {
     hospital: "amenity",
-    peak: "natural",
     museum: "tourism",
     cinema: "amenity",
     library: "amenity",
     golf_course: "leisure",
-    consulate: "diplomatic",
     park: "leisure",
 };
 

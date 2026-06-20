@@ -155,16 +155,6 @@ out geom;
     return geo.features?.[0];
 };
 
-export const fetchCoastline = async () => {
-    const response = await cacheFetch(
-        import.meta.env.BASE_URL + "/coastline50.geojson",
-        "Fetching coastline data...",
-        CacheType.PERMANENT_CACHE,
-    );
-    const data = await response.json();
-    return data;
-};
-
 export const trainLineNodeFinder = async (node: string): Promise<number[]> => {
     const nodeId = node.split("/")[1];
     const tagQuery = `
