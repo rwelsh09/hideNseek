@@ -58,7 +58,7 @@ export const ThermometerQuestionComponent = ({
           )
         : null;
 
-    const unitLabel = "KM";
+    const unitLabel = "km";
 
     return (
         <QuestionCard
