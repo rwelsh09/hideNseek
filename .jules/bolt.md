@@ -1,4 +1,3 @@
-## 2024-06-19 - [Leaflet properties caching]
-
-**Learning:** Leaflet Icons and dynamic properties like `eventHandlers` or `pathOptions` instantiated inside a React component's render method will pass a new object reference to the react-leaflet `Marker` or `Polygon` props on every render. This forces React-Leaflet to update the Leaflet icon using `setIcon()` or update handlers and layer styles on the underlying DOM element continuously, which can dramatically hurt performance, especially when there are many markers.
-**Action:** Extract the Leaflet `Icon` initialization and configuration objects like `pathOptions` to an external scope cache or use `useMemo()` to guarantee stable references are passed as props to the react-leaflet components.
+## YYYY-MM-DD - [Refactoring `useMemo` to `useRef`]
+**Learning:** `useMemo` is strictly for performance optimizations of computed values and should never be used as a replacement for `useRef` to hold mutable references (e.g., `useMemo(() => ({ current: null }), [])`). Doing so can lead to unexpected bugs since React may clear `useMemo` cache during rendering to free memory.
+**Action:** Always utilize `useRef` for maintaining state or mutable values (like Leaflet marker instances or watch IDs) that shouldn't trigger re-renders.
