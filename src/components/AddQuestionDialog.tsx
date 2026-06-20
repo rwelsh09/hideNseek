@@ -16,7 +16,6 @@ import {
     Palette,
     Plane,
     Plus,
-    Podium,
     Ruler,
     Target,
     Thermometer,
