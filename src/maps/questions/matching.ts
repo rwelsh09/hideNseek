@@ -56,9 +56,6 @@ export const findMatchingPlaces = async (question: MatchingQuestion) => {
                 ]),
             );
         }
-        case "custom-points": {
-            return question.geo!;
-        }
         case "aquarium-full":
         case "zoo-full":
         case "theme_park-full":
@@ -227,8 +224,7 @@ export const determineMatchingBoundary = _.memoize(
             case "library-full":
             case "golf_course-full":
             case "consulate-full":
-            case "park-full":
-            case "custom-points": {
+            case "park-full": {
                 const data = await findMatchingPlaces(question);
 
                 const voronoi = geoSpatialVoronoi(data);

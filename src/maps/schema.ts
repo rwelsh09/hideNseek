@@ -284,10 +284,7 @@ const hidingZoneMatchingQuestionsSchema = baseMatchingQuestionSchema.extend({
 });
 
 const customMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
-    type: z.union([
-        z.literal("custom-zone").describe("Custom Zone Question"),
-        z.literal("custom-points").describe("Custom Points Question"),
-    ]),
+    type: z.literal("custom-zone").describe("Custom Zone Question"),
     geo: z.any(),
 });
 
