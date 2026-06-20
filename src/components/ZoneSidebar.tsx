@@ -124,10 +124,22 @@ export const ZoneSidebar = () => {
         removeHidingZones();
 
         const geoJsonLayer = L.geoJSON(geoJSONData, {
-            style: {
-                color: "green",
-                fillColor: "green",
-                fillOpacity: 0.2,
+            style: (feature: any) => {
+                let color = "blue";
+                if (feature?.properties?.transit_type === "CTrain") {
+                    color = "red";
+                } else if (feature?.properties?.transit_type === "MAX") {
+                    color = "blue";
+                } else if (feature?.properties?.transit_type === "CTrain & MAX Hub") {
+                    color = "purple";
+                } else {
+                    color = "green";
+                }
+                return {
+                    color: color,
+                    fillColor: color,
+                    fillOpacity: 0.2,
+                };
             },
             onEachFeature: nonOverlappingStations
                 ? (feature, layer) => {
