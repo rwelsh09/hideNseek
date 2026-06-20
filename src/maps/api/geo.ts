@@ -38,8 +38,6 @@ export const prettifyLocation = (
             return "Golf Course";
         case "consulate":
             return "Foreign Consulate";
-        case "park":
-            return "Park";
     }
 };
 

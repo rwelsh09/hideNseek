@@ -88,7 +88,6 @@ export const MatchingQuestionComponent = ({
         case "library":
         case "golf_course":
         case "consulate":
-        case "park":
             questionSpecific = (
                 <span className="px-2 text-center text-orange-500">
                     This question will only influence the map when you click on
