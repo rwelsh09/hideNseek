@@ -125,7 +125,9 @@ export const ZoneSidebar = () => {
         const geoJsonLayer = L.geoJSON(geoJSONData, {
             style: (feature: any) => {
                 let color = "blue";
-                const transitType = feature?.properties?.properties?.transit_type || feature?.properties?.transit_type;
+                const transitType =
+                    feature?.properties?.properties?.transit_type ||
+                    feature?.properties?.transit_type;
                 if (transitType === "CTrain") {
                     color = "red";
                 } else if (transitType === "MAX") {
@@ -1126,10 +1128,7 @@ async function selectionProcess(
 
         if (
             (question.id === "measuring" || question.id === "matching") &&
-            (question.data.type === "aquarium" ||
-                question.data.type === "zoo" ||
-                question.data.type === "theme_park" ||
-                question.data.type === "peak" ||
+            (question.data.type === "peak" ||
                 question.data.type === "museum" ||
                 question.data.type === "hospital" ||
                 question.data.type === "cinema" ||

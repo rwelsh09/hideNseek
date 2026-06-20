@@ -138,27 +138,6 @@ export const determineMeasuringBoundary = async (
                 )!,
             ];
         }
-        case "airport":
-            return [
-                turf.combine(
-                    turf.featureCollection(
-                        _.uniqBy(
-                            (
-                                await findPlacesInZone(
-                                    '["aeroway"="aerodrome"]["iata"]', // Only commercial airports have IATA codes,
-                                    "Finding airports...",
-                                )
-                            ).elements,
-                            (feature: any) => feature.tags.iata,
-                        ).map((x: any) =>
-                            turf.point([
-                                x.center ? x.center.lon : x.lon,
-                                x.center ? x.center.lat : x.lat,
-                            ]),
-                        ),
-                    ),
-                ).features[0],
-            ];
         case "city":
             return [
                 turf.combine(
@@ -177,9 +156,6 @@ export const determineMeasuringBoundary = async (
                     ),
                 ).features[0],
             ];
-        case "aquarium-full":
-        case "zoo-full":
-        case "theme_park-full":
         case "peak-full":
         case "museum-full":
         case "hospital-full":
@@ -236,9 +212,6 @@ export const determineMeasuringBoundary = async (
             return turf.combine(
                 turf.featureCollection((question as any).geo.features),
             ).features;
-        case "aquarium":
-        case "zoo":
-        case "theme_park":
         case "peak":
         case "museum":
         case "hospital":
@@ -299,9 +272,6 @@ export const hiderifyMeasuring = async (question: MeasuringQuestion) => {
 
     if (
         [
-            "aquarium",
-            "zoo",
-            "theme_park",
             "peak",
             "museum",
             "hospital",
