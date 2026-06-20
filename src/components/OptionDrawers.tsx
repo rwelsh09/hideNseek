@@ -585,19 +585,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 >
                                     Clear Questions & Cache
                                 </Button>
-                                {useStore(polyGeoJSON) && (
-                                    <Button
-                                        variant="outline"
-                                        className="w-[280px] font-normal hover:bg-slate-200"
-                                        onClick={() => {
-                                            polyGeoJSON.set(null);
-                                            mapGeoJSON.set(null);
-                                            questions.set([...questions.get()]);
-                                        }}
-                                    >
-                                        Reuse Preset Locations
-                                    </Button>
-                                )}
                             </div>
                         </div>
                     </div>
