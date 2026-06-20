@@ -9,6 +9,7 @@ import {
     DrawerTitle,
     DrawerTrigger,
 } from "@/components/ui/drawer";
+import { polyGeoJSON } from "@/lib/context";
 import {
     additionalMapGeoLocations,
     allowGooglePlusCodes,
@@ -557,13 +558,47 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                         ) {
                                             localStorage.clear();
                                             sessionStorage.clear();
-                                            sessionStorage.setItem("resetEverything", "true");
+                                            sessionStorage.setItem(
+                                                "resetEverything",
+                                                "true",
+                                            );
                                             window.location.reload();
                                         }
                                     }}
                                 >
                                     Reset Everything
                                 </Button>
+                                <Button
+                                    variant="outline"
+                                    className="w-[280px] font-normal hover:bg-slate-200"
+                                    onClick={() => {
+                                        import("@/maps/api").then(
+                                            ({ clearCache, CacheType }) => {
+                                                mapGeoJSON.set(null);
+                                                polyGeoJSON.set(null);
+                                                questions.set([]);
+                                                clearCache(
+                                                    CacheType.ZONE_CACHE,
+                                                );
+                                            },
+                                        );
+                                    }}
+                                >
+                                    Clear Questions & Cache
+                                </Button>
+                                {useStore(polyGeoJSON) && (
+                                    <Button
+                                        variant="outline"
+                                        className="w-[280px] font-normal hover:bg-slate-200"
+                                        onClick={() => {
+                                            polyGeoJSON.set(null);
+                                            mapGeoJSON.set(null);
+                                            questions.set([...questions.get()]);
+                                        }}
+                                    >
+                                        Reuse Preset Locations
+                                    </Button>
+                                )}
                             </div>
                         </div>
                     </div>
