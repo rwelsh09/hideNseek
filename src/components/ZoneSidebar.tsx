@@ -125,7 +125,9 @@ export const ZoneSidebar = () => {
         const geoJsonLayer = L.geoJSON(geoJSONData, {
             style: (feature: any) => {
                 let color = "blue";
-                const transitType = feature?.properties?.properties?.transit_type || feature?.properties?.transit_type;
+                const transitType =
+                    feature?.properties?.properties?.transit_type ||
+                    feature?.properties?.transit_type;
                 if (transitType === "CTrain") {
                     color = "red";
                 } else if (transitType === "MAX") {

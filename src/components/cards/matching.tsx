@@ -294,7 +294,8 @@ export const MatchingQuestionComponent = ({
                         className={cn(
                             "font-semibold text-lg",
                             $isLoading && "text-muted-foreground",
-                            data.type === "same-length-station" && "text-center",
+                            data.type === "same-length-station" &&
+                                "text-center",
                         )}
                     >
                         Result
@@ -313,7 +314,11 @@ export const MatchingQuestionComponent = ({
                                         : "same"
                             }
                             onValueChange={(
-                                value: "shorter" | "same" | "longer" | "different",
+                                value:
+                                    | "shorter"
+                                    | "same"
+                                    | "longer"
+                                    | "different",
                             ) => {
                                 if (value === "shorter" || value === "longer") {
                                     questionModified(
@@ -334,7 +339,9 @@ export const MatchingQuestionComponent = ({
                                 Shorter
                             </ToggleGroupItem>
                             <ToggleGroupItem value="same">Same</ToggleGroupItem>
-                            <ToggleGroupItem value="longer">Longer</ToggleGroupItem>
+                            <ToggleGroupItem value="longer">
+                                Longer
+                            </ToggleGroupItem>
                         </ToggleGroup>
                     ) : (
                         <ToggleGroup

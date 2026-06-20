@@ -5,7 +5,7 @@ import "leaflet-contextmenu";
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
 import * as L from "leaflet";
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { MapContainer, ScaleControl, TileLayer } from "react-leaflet";
 import { toast } from "react-toastify";
 
@@ -122,14 +122,11 @@ export const Map = ({ className }: { className?: string }) => {
     const $followMe = useStore(followMe);
     const map = useStore(leafletMapContext);
 
-    const followMeMarkerRef = useMemo(
-        () => ({ current: null as L.Marker | null }),
-        [],
-    );
-    const geoWatchIdRef = useMemo(
-        () => ({ current: null as number | null }),
-        [],
-    );
+    // Refactored from useMemo to useRef to guarantee reference stability and slightly improve performance
+    // by removing the overhead of useMemo, resolving potential bugs where useMemo clears its cache.
+    // Impact: Avoids unnecessary re-evaluation and ensures state persists consistently across renders.
+    const followMeMarkerRef = useRef<L.Marker | null>(null);
+    const geoWatchIdRef = useRef<number | null>(null);
 
     const refreshQuestions = async () => {
         if (!map) return;
