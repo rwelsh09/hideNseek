@@ -106,16 +106,15 @@ export const LeafletActionButtons = () => {
                     } else {
                         // Fallback to Calgary or center if extent is missing
                         if ($mapGeoLocation?.geometry?.coordinates) {
+                            const center = [
+                                $mapGeoLocation.geometry.coordinates[1],
+                                $mapGeoLocation.geometry.coordinates[0],
+                            ] as [number, number];
+
                             if ($animateMapMovements) {
-                                map.flyTo(
-                                    $mapGeoLocation.geometry.coordinates as any,
-                                    5,
-                                );
+                                map.flyTo(center, 11);
                             } else {
-                                map.setView(
-                                    $mapGeoLocation.geometry.coordinates as any,
-                                    5,
-                                );
+                                map.setView(center, 11);
                             }
                         } else {
                             toast.error("Map extent is unavailable");

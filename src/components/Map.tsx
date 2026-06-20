@@ -216,8 +216,11 @@ export const Map = ({ className }: { className?: string }) => {
     const displayMap = useMemo(
         () => (
             <MapContainer
-                center={$mapGeoLocation.geometry.coordinates}
-                zoom={5}
+                center={[
+                    $mapGeoLocation.geometry.coordinates[1],
+                    $mapGeoLocation.geometry.coordinates[0],
+                ]}
+                zoom={11}
                 className={cn("w-[500px] h-[500px]", className)}
                 ref={leafletMapContext.set}
                 // @ts-expect-error Typing doesn't update from react-contextmenu
@@ -436,12 +439,14 @@ export const Map = ({ className }: { className?: string }) => {
         };
     }, [$followMe, map]);
 
+    const hasCenteredRef = useRef(false);
+
     useEffect(() => {
         if (!map) return;
-        if (sessionStorage.getItem("hasCenteredOnPlayer")) return;
+        if (hasCenteredRef.current) return;
+        hasCenteredRef.current = true;
 
         const fallbackToCalgary = () => {
-            sessionStorage.setItem("hasCenteredOnPlayer", "true");
             const extent = $mapGeoLocation?.properties?.extent;
             if (extent) {
                 map.fitBounds([
@@ -460,7 +465,6 @@ export const Map = ({ className }: { className?: string }) => {
             (pos) => {
                 const { latitude, longitude } = pos.coords;
                 map.setView([latitude, longitude], 12);
-                sessionStorage.setItem("hasCenteredOnPlayer", "true");
             },
             () => {
                 toast.error("Unable to center map on your location.");
