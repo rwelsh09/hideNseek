@@ -52,15 +52,6 @@ export const additionalMapGeoLocations = persistentAtom<
     encode: JSON.stringify,
     decode: JSON.parse,
 });
-export const permanentOverlay = persistentAtom<FeatureCollection | null>(
-    "permanentOverlay",
-    null,
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
-
 export const mapGeoJSON = atom<FeatureCollection<
     Polygon | MultiPolygon
 > | null>(null);
@@ -87,7 +78,6 @@ export const questionModified = (..._: any[]) => {
 };
 
 export const leafletMapContext = atom<Map | null>(null);
-
 
 export const hiderMode = persistentAtom<
     | false
@@ -140,16 +130,14 @@ export const useCustomStations = persistentAtom<boolean>(
 );
 export const customStations = persistentAtom<CustomStation[]>(
     "customStations",
-    calgaryTransitData.features.map(
-        (feature: any) => ({
-            type: "Feature",
-            geometry: feature.geometry,
-            properties: {
-                id: feature.properties?.["@id"] || feature.id,
-                name: feature.properties?.name,
-            },
-        }),
-    ) as any[],
+    calgaryTransitData.features.map((feature: any) => ({
+        type: "Feature",
+        geometry: feature.geometry,
+        properties: {
+            id: feature.properties?.["@id"] || feature.id,
+            name: feature.properties?.name,
+        },
+    })) as any[],
     {
         encode: JSON.stringify,
         decode: JSON.parse,
@@ -279,7 +267,6 @@ export const hidingZone = computed(
         customStations,
         includeDefaultStations,
         customPresets,
-        permanentOverlay,
     ],
     (
         q,
@@ -294,7 +281,6 @@ export const hidingZone = computed(
         $customStations,
         includeDefault,
         presets,
-        $permanentOverlay,
     ) => {
         if (geo !== null) {
             return {
@@ -308,7 +294,6 @@ export const hidingZone = computed(
                 customStations: $customStations,
                 includeDefaultStations: includeDefault,
                 presets: structuredClone(presets),
-                permanentOverlay: $permanentOverlay,
             };
         } else {
             const $loc = structuredClone(loc);
@@ -325,7 +310,6 @@ export const hidingZone = computed(
                 customStations: $customStations,
                 includeDefaultStations: includeDefault,
                 presets: structuredClone(presets),
-                permanentOverlay: $permanentOverlay,
             };
         }
     },
@@ -358,14 +342,6 @@ export const followMe = persistentAtom<boolean>("followMe", true, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
-export const defaultCustomQuestions = persistentAtom<boolean>(
-    "defaultCustomQuestions",
-    false,
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
 
 export const pastebinApiKey = persistentAtom<string>("pastebinApiKey", "");
 export const alwaysUsePastebin = persistentAtom<boolean>(
@@ -386,15 +362,6 @@ export const tutorialStep = atom<number>(0);
 export const customInitPreference = persistentAtom<"ask" | "blank" | "prefill">(
     "customInitPreference",
     "ask",
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
-
-export const allowGooglePlusCodes = persistentAtom<boolean>(
-    "allowGooglePlusCodes",
-    false,
     {
         encode: JSON.stringify,
         decode: JSON.parse,
