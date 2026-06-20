@@ -22,8 +22,7 @@ import {
     SidebarMenu,
     SidebarMenuItem,
 } from "@/components/ui/sidebar-r";
-import maxStationsData from "@/data/export-MAX.json";
-import defaultStationsData from "@/data/export-trains.json";
+import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
     customStations as customStationsAtom,
     disabledStations,
@@ -218,9 +217,9 @@ export const ZoneSidebar = () => {
                         places = [];
                     }
 
-                    if (specialOptions.includes("SPECIAL:MAX_STOPS")) {
-                        const maxFeatures = (
-                            maxStationsData as any
+                    if (specialOptions.includes("SPECIAL:CALGARY_TRANSIT")) {
+                        const transitFeatures = (
+                            calgaryTransitData as any
                         ).features.map((f: any) => ({
                             type: "Feature",
                             geometry: f.geometry,
@@ -232,24 +231,7 @@ export const ZoneSidebar = () => {
                                 name: f.properties?.name,
                             },
                         }));
-                        places.push(...maxFeatures);
-                    }
-
-                    if (specialOptions.includes("SPECIAL:TRAIN_STATIONS")) {
-                        const trainFeatures = (
-                            defaultStationsData as any
-                        ).features.map((f: any) => ({
-                            type: "Feature",
-                            geometry: f.geometry,
-                            properties: {
-                                id:
-                                    f.properties?.["@id"] ||
-                                    f.id ||
-                                    `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
-                                name: f.properties?.name,
-                            },
-                        }));
-                        places.push(...trainFeatures);
+                        places.push(...transitFeatures);
                     }
 
                     if (
@@ -735,12 +717,8 @@ export const ZoneSidebar = () => {
                                             value: "[highway=bus_stop]",
                                         },
                                         {
-                                            label: "MAX Stops",
-                                            value: "SPECIAL:MAX_STOPS",
-                                        },
-                                        {
-                                            label: "CTrain Stations",
-                                            value: "SPECIAL:TRAIN_STATIONS",
+                                            label: "Calgary Rapid Transit Network",
+                                            value: "SPECIAL:CALGARY_TRANSIT",
                                         },
                                         {
                                             label: "Ferry Terminals",

@@ -3,8 +3,7 @@ import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import type { Map } from "leaflet";
 import { atom, computed, onSet } from "nanostores";
 
-import maxStationsData from "@/data/export-MAX.json";
-import defaultStationsData from "@/data/export-trains.json";
+import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import type {
     AdditionalMapGeoLocations,
     CustomStation,
@@ -111,7 +110,7 @@ export const displayHidingZones = persistentAtom<boolean>(
 );
 export const displayHidingZonesOptions = persistentAtom<string[]>(
     "displayHidingZonesOptions",
-    ["SPECIAL:MAX_STOPS", "SPECIAL:TRAIN_STATIONS"],
+    ["SPECIAL:CALGARY_TRANSIT"],
     {
         encode: JSON.stringify,
         decode: JSON.parse,
@@ -141,7 +140,7 @@ export const useCustomStations = persistentAtom<boolean>(
 );
 export const customStations = persistentAtom<CustomStation[]>(
     "customStations",
-    [...defaultStationsData.features, ...maxStationsData.features].map(
+    calgaryTransitData.features.map(
         (feature: any) => ({
             type: "Feature",
             geometry: feature.geometry,
