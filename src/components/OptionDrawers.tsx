@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import {
@@ -11,30 +11,25 @@ import {
 } from "@/components/ui/drawer";
 import {
     additionalMapGeoLocations,
-    allowGooglePlusCodes,
     animateMapMovements,
     autoSave,
     baseTileLayer,
     customInitPreference,
     customPresets,
     customStations,
-    defaultCustomQuestions,
     disabledStations,
     displayHidingZonesOptions,
     followMe,
     hiderMode,
     hidingRadius,
-    hidingRadiusUnits,
     hidingZone,
     includeDefaultStations,
     leafletMapContext,
     mapGeoJSON,
     mapGeoLocation,
-    permanentOverlay,
     planningModeEnabled,
     polyGeoJSON,
     questions,
-    save,
     triggerLocalRefresh,
     useCustomStations,
 } from "@/lib/context";
@@ -47,19 +42,13 @@ import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { Select } from "./ui/select";
 import { Separator } from "./ui/separator";
-import {
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
-} from "./ui/sidebar-l";
+import { SidebarMenu } from "./ui/sidebar-l";
 
 const HIDING_ZONE_URL_PARAM = "hz";
 const HIDING_ZONE_COMPRESSED_URL_PARAM = "hzc";
 
 export const OptionDrawers = ({ className }: { className?: string }) => {
     useStore(triggerLocalRefresh);
-    const $defaultCustomQuestions = useStore(defaultCustomQuestions);
-    const $allowGooglePlusCodes = useStore(allowGooglePlusCodes);
     const $animateMapMovements = useStore(animateMapMovements);
     const $hiderMode = useStore(hiderMode);
     const $autoSave = useStore(autoSave);
@@ -195,12 +184,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                 includeDefaultStations.set(geojson.includeDefaultStations);
             }
 
-            if (geojson.permanentOverlay) {
-                permanentOverlay.set(geojson.permanentOverlay);
-            } else {
-                permanentOverlay.set(null);
-            }
-
             toast.success("Hiding zone loaded successfully", {
                 autoClose: 2000,
             });
@@ -266,6 +249,63 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             </DrawerTitle>
                         </DrawerHeader>
                         <div className="overflow-y-scroll max-h-[40vh] flex flex-col items-center gap-4 max-w-[1000px] px-12 pb-10">
+                            <div className="flex flex-row items-center gap-2 mt-2">
+                                <label className="text-2xl font-semibold font-poppins">
+                                    Hider mode?
+                                </label>
+                                <Checkbox
+                                    checked={!!$hiderMode}
+                                    onCheckedChange={() => {
+                                        if ($hiderMode === false) {
+                                            const $leafletMapContext =
+                                                leafletMapContext.get();
+
+                                            if ($leafletMapContext) {
+                                                const center =
+                                                    $leafletMapContext.getCenter();
+                                                hiderMode.set({
+                                                    latitude: center.lat,
+                                                    longitude: center.lng,
+                                                });
+                                            } else {
+                                                hiderMode.set({
+                                                    latitude: 0,
+                                                    longitude: 0,
+                                                });
+                                            }
+                                        } else {
+                                            hiderMode.set(false);
+                                        }
+                                    }}
+                                />
+                            </div>
+                            {$hiderMode !== false && (
+                                <SidebarMenu>
+                                    <LatitudeLongitude
+                                        latitude={$hiderMode.latitude}
+                                        longitude={$hiderMode.longitude}
+                                        inlineEdit
+                                        onChange={(latitude, longitude) => {
+                                            $hiderMode.latitude =
+                                                latitude ?? $hiderMode.latitude;
+                                            $hiderMode.longitude =
+                                                longitude ??
+                                                $hiderMode.longitude;
+
+                                            if (
+                                                $hiderMode.latitude !== 0 ||
+                                                $hiderMode.longitude !== 0
+                                            ) {
+                                                hiderMode.set({
+                                                    ...$hiderMode,
+                                                });
+                                            }
+                                        }}
+                                        label="Location"
+                                    />
+                                </SidebarMenu>
+                            )}
+                            <Separator className="bg-slate-300 w-[280px]" />
                             <div className="flex flex-row max-[330px]:flex-col gap-4 mt-2">
                                 <Button
                                     onClick={() => {
@@ -329,37 +369,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     baseTileLayer.set(v as any)
                                 }
                             />
-                            <Separator className="bg-slate-300 w-[280px]" />
-                            <Label>Permanent Map Overlay</Label>
-                            <div className="flex flex-row max-[330px]:flex-col gap-4">
-                                <Button
-                                    onClick={() => permanentOverlay.set(null)}
-                                >
-                                    Remove
-                                </Button>
-                                <Button
-                                    onClick={async () => {
-                                        if (!navigator || !navigator.clipboard)
-                                            return toast.error(
-                                                "Clipboard not supported",
-                                            );
-
-                                        try {
-                                            const clipboard =
-                                                await navigator.clipboard.readText();
-                                            const geojson =
-                                                JSON.parse(clipboard);
-                                            permanentOverlay.set(geojson);
-                                        } catch (e) {
-                                            toast.error(
-                                                `Invalid GeoJSON overlay: ${e}`,
-                                            );
-                                        }
-                                    }}
-                                >
-                                    Paste GeoJSON
-                                </Button>
-                            </div>
                             <Separator className="bg-slate-300 w-[280px]" />
                             <div className="flex flex-row items-center gap-2">
                                 <label className="text-2xl font-semibold font-poppins">
@@ -425,99 +434,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     }
                                 />
                             </div>
-                            <div className="flex flex-row items-center gap-2">
-                                <label className="text-2xl font-semibold font-poppins">
-                                    Default to custom questions?
-                                </label>
-                                <Checkbox
-                                    checked={$defaultCustomQuestions}
-                                    onCheckedChange={() =>
-                                        defaultCustomQuestions.set(
-                                            !$defaultCustomQuestions,
-                                        )
-                                    }
-                                />
-                            </div>
-                            <div className="flex flex-row items-center gap-2">
-                                <label className="text-2xl font-semibold font-poppins">
-                                    Allow Google Plus codes?
-                                </label>
-                                <Checkbox
-                                    checked={$allowGooglePlusCodes}
-                                    onCheckedChange={() =>
-                                        allowGooglePlusCodes.set(
-                                            !$allowGooglePlusCodes,
-                                        )
-                                    }
-                                />
-                            </div>
-                            <div className="flex flex-row items-center gap-2">
-                                <label className="text-2xl font-semibold font-poppins">
-                                    Hider mode?
-                                </label>
-                                <Checkbox
-                                    checked={!!$hiderMode}
-                                    onCheckedChange={() => {
-                                        if ($hiderMode === false) {
-                                            const $leafletMapContext =
-                                                leafletMapContext.get();
-
-                                            if ($leafletMapContext) {
-                                                const center =
-                                                    $leafletMapContext.getCenter();
-                                                hiderMode.set({
-                                                    latitude: center.lat,
-                                                    longitude: center.lng,
-                                                });
-                                            } else {
-                                                hiderMode.set({
-                                                    latitude: 0,
-                                                    longitude: 0,
-                                                });
-                                            }
-                                        } else {
-                                            hiderMode.set(false);
-                                        }
-                                    }}
-                                />
-                            </div>
-                            {$hiderMode !== false && (
-                                <SidebarMenu>
-                                    <LatitudeLongitude
-                                        latitude={$hiderMode.latitude}
-                                        longitude={$hiderMode.longitude}
-                                        inlineEdit
-                                        onChange={(latitude, longitude) => {
-                                            $hiderMode.latitude =
-                                                latitude ?? $hiderMode.latitude;
-                                            $hiderMode.longitude =
-                                                longitude ??
-                                                $hiderMode.longitude;
-
-                                            if ($autoSave) {
-                                                hiderMode.set({
-                                                    ...$hiderMode,
-                                                });
-                                            } else {
-                                                triggerLocalRefresh.set(
-                                                    Math.random(),
-                                                );
-                                            }
-                                        }}
-                                        label="Hider Location"
-                                    />
-                                    {!autoSave && (
-                                        <SidebarMenuItem>
-                                            <SidebarMenuButton
-                                                className="bg-blue-600 p-2 rounded-md font-semibold font-poppins transition-shadow duration-500 mt-2"
-                                                onClick={save}
-                                            >
-                                                Save
-                                            </SidebarMenuButton>
-                                        </SidebarMenuItem>
-                                    )}
-                                </SidebarMenu>
-                            )}
                             <Separator className="bg-slate-300 w-[280px]" />
                             <div className="flex flex-row items-center gap-2">
                                 <Button

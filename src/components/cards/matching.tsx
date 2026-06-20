@@ -26,10 +26,7 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
-import {
-    determineMatchingBoundary,
-    findMatchingPlaces,
-} from "@/maps/questions/matching";
+import { determineMatchingBoundary } from "@/maps/questions/matching";
 import {
     determineUnionizedStrings,
     type MatchingQuestion,
@@ -105,8 +102,7 @@ export const MatchingQuestionComponent = ({
                 questionSpecific = (
                     <>
                         <p className="px-2 mb-1 text-center text-orange-500">
-                            To modify the matching zones,
-                            enable it:
+                            To modify the matching zones, enable it:
                             <Checkbox
                                 className="mx-1 my-1"
                                 checked={$drawingQuestionKey === questionKey}
@@ -230,9 +226,7 @@ export const MatchingQuestionComponent = ({
                         )}
                     value={data.type}
                     onValueChange={async (value) => {
-                        if (
-                            value === "custom-zone"
-                        ) {
+                        if (value === "custom-zone") {
                             if ($customInitPref === "ask") {
                                 setPendingCustomType(value);
                                 setCustomDialogOpen(true);
@@ -241,11 +235,10 @@ export const MatchingQuestionComponent = ({
                             // Apply preference without dialog
                             if ($customInitPref === "blank") {
                                 (data as any).geo = undefined;
-                                toast.info(
-                                    "Please draw the zone on the map.",
-                                );
+                                toast.info("Please draw the zone on the map.");
                             } else if ($customInitPref === "prefill") {
-                                (data as any).geo = await determineMatchingBoundary(data);
+                                (data as any).geo =
+                                    await determineMatchingBoundary(data);
                             }
                             // The category should be defined such that no error is thrown if this is a zone question.
                             if (!(data as any).cat) {

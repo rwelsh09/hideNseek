@@ -1298,7 +1298,9 @@ async function selectionProcess(
 
             const seeker = turf.point([question.data.lng, question.data.lat]);
             const nearest = turf.nearestPoint(seeker, points as any);
-            const distance = turf.distance(seeker, nearest, { units: "kilometers" });
+            const distance = turf.distance(seeker, nearest, {
+                units: "kilometers",
+            });
 
             const filtered = points.features.filter(
                 (x) =>

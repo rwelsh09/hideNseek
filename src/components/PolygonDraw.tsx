@@ -17,7 +17,6 @@ import {
 } from "@/lib/context";
 import { lngLatToText } from "@/maps/geo-utils";
 import type {
-    CustomMatchingQuestion,
     CustomMeasuringQuestion,
     CustomTentacleQuestion,
     Question,
@@ -88,69 +87,6 @@ const TentacleMarker = ({
                             questionModified();
                         }}
                     />
-                    <SidebarMenu>
-                        <LatitudeLongitude
-                            latitude={point.geometry.coordinates[1]}
-                            longitude={point.geometry.coordinates[0]}
-                            inlineEdit
-                            onChange={(lat, lng) => {
-                                if (lat) {
-                                    point.geometry.coordinates[1] = lat;
-                                }
-                                if (lng) {
-                                    point.geometry.coordinates[0] = lng;
-                                }
-
-                                questionModified();
-                            }}
-                        />
-                        {!$autoSave && (
-                            <SidebarMenuItem>
-                                <SidebarMenuButton
-                                    className="bg-blue-600 p-2 rounded-md font-semibold font-poppins transition-shadow duration-500 mt-2"
-                                    onClick={save}
-                                >
-                                    Save
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                        )}
-                    </SidebarMenu>
-                </div>
-            </DialogContent>
-        </Dialog>
-    );
-};
-
-const MatchingPointMarker = ({
-    point,
-}: {
-    point: CustomMatchingQuestion["geo"][number];
-}) => {
-    const $autoSave = useStore(autoSave);
-    const [open, setOpen] = useState(false);
-
-    const eventHandlers = useMemo(
-        () => ({
-            click: () => {
-                setOpen(true);
-            },
-        }),
-        [],
-    );
-
-    return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <Marker
-                position={[
-                    point.geometry.coordinates[1],
-                    point.geometry.coordinates[0],
-                ]}
-                // @ts-expect-error This is passed to options, so it is not typed
-                isDialog={true}
-                eventHandlers={eventHandlers}
-            />
-            <DialogContent>
-                <div className="flex flex-col gap-2">
                     <SidebarMenu>
                         <LatitudeLongitude
                             latitude={point.geometry.coordinates[1]}
