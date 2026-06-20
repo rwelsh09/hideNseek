@@ -1,32 +1,31 @@
 import * as turf from "@turf/turf";
 import {
+    Building2,
     Camera,
+    Car,
+    FerrisWheel,
+    Fish,
+    Flag,
     Landmark,
+    Leaf,
     Map as MapIcon,
     MapPin,
     MapPinned,
+    Mountain,
     Network,
+    Palette,
     Plane,
     Plus,
-    Podium,
     Ruler,
     Target,
     Thermometer,
     TrainFront,
+    TrainTrack,
+    TramFront,
+    TreeDeciduous,
     TreePine,
     Waves,
-    TreeDeciduous,
-    TrainTrack,
-    Fish,
-    TramFront,
-    Building2,
-    Palette,
     Waypoints,
-    FerrisWheel,
-    Flag,
-    Leaf,
-    Car,
-    Mountain,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -144,6 +143,9 @@ export function AddQuestionDialog() {
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             <button
+                                type="button"
+                                aria-label="Add matching question for airport"
+                                title="Add matching question for airport"
                                 onClick={() =>
                                     handleQuestionSelect("matching", "airport")
                                 }
@@ -238,6 +240,9 @@ export function AddQuestionDialog() {
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             <button
+                                type="button"
+                                aria-label="Add measuring question for airport"
+                                title="Add measuring question for airport"
                                 onClick={() =>
                                     handleQuestionSelect("measuring", "airport")
                                 }
@@ -291,6 +296,9 @@ export function AddQuestionDialog() {
                                 <TramFront className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
+                                type="button"
+                                aria-label="Add measuring question for city"
+                                title="Add measuring question for city"
                                 onClick={() =>
                                     handleQuestionSelect("measuring", "city")
                                 }
@@ -340,6 +348,9 @@ export function AddQuestionDialog() {
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             <button
+                                type="button"
+                                aria-label="Add radar question for 0.5 km"
+                                title="Add radar question for 0.5 km"
                                 onClick={() =>
                                     handleQuestionSelect("radar", "0.5")
                                 }
@@ -348,6 +359,9 @@ export function AddQuestionDialog() {
                                 0.5 km
                             </button>
                             <button
+                                type="button"
+                                aria-label="Add radar question for 1 km"
+                                title="Add radar question for 1 km"
                                 onClick={() =>
                                     handleQuestionSelect("radar", "1")
                                 }
@@ -356,6 +370,9 @@ export function AddQuestionDialog() {
                                 1 km
                             </button>
                             <button
+                                type="button"
+                                aria-label="Add radar question for 2 km"
+                                title="Add radar question for 2 km"
                                 onClick={() =>
                                     handleQuestionSelect("radar", "2")
                                 }
@@ -364,6 +381,9 @@ export function AddQuestionDialog() {
                                 2 km
                             </button>
                             <button
+                                type="button"
+                                aria-label="Add radar question for 5 km"
+                                title="Add radar question for 5 km"
                                 onClick={() =>
                                     handleQuestionSelect("radar", "5")
                                 }
@@ -373,6 +393,9 @@ export function AddQuestionDialog() {
                             </button>
 
                             <button
+                                type="button"
+                                aria-label="Add radar question for 10 km"
+                                title="Add radar question for 10 km"
                                 onClick={() =>
                                     handleQuestionSelect("radar", "10")
                                 }
@@ -381,6 +404,9 @@ export function AddQuestionDialog() {
                                 10 km
                             </button>
                             <button
+                                type="button"
+                                aria-label="Add radar question for unknown size"
+                                title="Add radar question for unknown size"
                                 onClick={() =>
                                     handleQuestionSelect("radar", "unknown")
                                 }
@@ -410,6 +436,9 @@ export function AddQuestionDialog() {
                             </div>
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                                 <button
+                                    type="button"
+                                    aria-label="Add thermometer question for 1 km"
+                                    title="Add thermometer question for 1 km"
                                     onClick={() =>
                                         handleQuestionSelect("thermometer", "1")
                                     }
@@ -419,6 +448,9 @@ export function AddQuestionDialog() {
                                     1km
                                 </button>
                                 <button
+                                    type="button"
+                                    aria-label="Add thermometer question for 2 km"
+                                    title="Add thermometer question for 2 km"
                                     onClick={() =>
                                         handleQuestionSelect("thermometer", "2")
                                     }
@@ -428,6 +460,9 @@ export function AddQuestionDialog() {
                                     2km
                                 </button>
                                 <button
+                                    type="button"
+                                    aria-label="Add thermometer question for 5 km"
+                                    title="Add thermometer question for 5 km"
                                     onClick={() =>
                                         handleQuestionSelect("thermometer", "5")
                                     }
@@ -520,6 +555,9 @@ export function AddQuestionDialog() {
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             <button
+                                type="button"
+                                aria-label="Add photo question for camera"
+                                title="Add photo question for camera"
                                 onClick={() =>
                                     handleQuestionSelect("photo", "camera")
                                 }
@@ -528,6 +566,9 @@ export function AddQuestionDialog() {
                                 <Camera className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
+                                type="button"
+                                aria-label="Add photo question for tree"
+                                title="Add photo question for tree"
                                 onClick={() =>
                                     handleQuestionSelect("photo", "tree")
                                 }
@@ -536,6 +577,9 @@ export function AddQuestionDialog() {
                                 <Leaf className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
+                                type="button"
+                                aria-label="Add photo question for train"
+                                title="Add photo question for train"
                                 onClick={() =>
                                     handleQuestionSelect("photo", "train")
                                 }
@@ -544,6 +588,9 @@ export function AddQuestionDialog() {
                                 <TrainFront className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
+                                type="button"
+                                aria-label="Add photo question for car"
+                                title="Add photo question for car"
                                 onClick={() =>
                                     handleQuestionSelect("photo", "car")
                                 }
@@ -552,6 +599,9 @@ export function AddQuestionDialog() {
                                 <Car className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
+                                type="button"
+                                aria-label="Add photo question for map"
+                                title="Add photo question for map"
                                 onClick={() =>
                                     handleQuestionSelect("photo", "map")
                                 }
@@ -560,6 +610,9 @@ export function AddQuestionDialog() {
                                 <MapIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                             <button
+                                type="button"
+                                aria-label="Add photo question for landmark"
+                                title="Add photo question for landmark"
                                 onClick={() =>
                                     handleQuestionSelect("photo", "landmark")
                                 }
