@@ -255,23 +255,32 @@ export const DraggableMarkers = () => {
             {shouldShowPortal &&
                 typeof document !== "undefined" &&
                 createPortal(
-                    <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-[420px] z-[9999] bg-slate-900 text-white rounded-2xl shadow-2xl border border-slate-700 flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-8 fade-in duration-300">
-                        <div className="bg-slate-950 px-5 py-3 flex items-center justify-between shrink-0 shadow-sm border-b border-slate-800">
-                            <h2 className="text-white font-bold uppercase tracking-wider text-sm flex items-center gap-2">
-                                <Target className="w-4 h-4 text-sky-400" />
-                                {isHiderActive
-                                    ? "Hider Location"
-                                    : "Preview Settings"}
-                            </h2>
+                    <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-[420px] z-[1000] pointer-events-auto bg-slate-900 text-white rounded-2xl shadow-2xl border border-slate-700 flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-8 fade-in duration-300">
+                        {isHiderActive ? (
+                            <div className="bg-slate-950 px-5 py-3 flex items-center justify-between shrink-0 shadow-sm border-b border-slate-800">
+                                <h2 className="text-white font-bold uppercase tracking-wider text-sm flex items-center gap-2">
+                                    <Target className="w-4 h-4 text-sky-400" />
+                                    Hider Location
+                                </h2>
+                                <Button
+                                    variant="ghost"
+                                    size="sm"
+                                    onClick={closePanel}
+                                    className="text-slate-300 hover:bg-slate-800 hover:text-white h-8 w-8 p-0 rounded-full"
+                                >
+                                    <X className="w-4 h-4" />
+                                </Button>
+                            </div>
+                        ) : (
                             <Button
                                 variant="ghost"
                                 size="sm"
                                 onClick={closePanel}
-                                className="text-slate-300 hover:bg-slate-800 hover:text-white h-8 w-8 p-0 rounded-full"
+                                className="absolute right-2 top-2 z-10 text-slate-400 hover:bg-slate-800 hover:text-white h-8 w-8 p-0 rounded-full"
                             >
                                 <X className="w-4 h-4" />
                             </Button>
-                        </div>
+                        )}
 
                         <div className="p-4 overflow-y-auto flex-1 flex flex-col gap-4 text-white">
                             {isHiderActive && (
@@ -299,30 +308,35 @@ export const DraggableMarkers = () => {
                                 <Fragment>
                                     {activeQuestion.id === "radius" && (
                                         <RadiusQuestionComponent
+                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "tentacles" && (
                                         <TentacleQuestionComponent
+                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "thermometer" && (
                                         <ThermometerQuestionComponent
+                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "matching" && (
                                         <MatchingQuestionComponent
+                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "measuring" && (
                                         <MeasuringQuestionComponent
+                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />

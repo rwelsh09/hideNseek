@@ -44,11 +44,13 @@ export const MatchingQuestionComponent = ({
     questionKey,
     sub,
     className,
+    isPreview,
 }: {
     data: MatchingQuestion;
     questionKey: number;
     sub?: string;
     className?: string;
+    isPreview?: boolean;
 }) => {
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
@@ -354,79 +356,81 @@ export const MatchingQuestionComponent = ({
                     disabled={!data.drag || $isLoading}
                 />
             )}
-            <div
-                className={cn(
-                    "flex gap-2 items-center p-2",
-                    data.type === "same-length-station" && "flex-col",
-                )}
-            >
-                <Label
+            {!isPreview && (
+                <div
                     className={cn(
-                        "font-semibold text-lg",
-                        $isLoading && "text-muted-foreground",
-                        data.type === "same-length-station" && "text-center",
+                        "flex gap-2 items-center p-2",
+                        data.type === "same-length-station" && "flex-col",
                     )}
                 >
-                    Result
-                </Label>
-                {data.type === "same-length-station" ? (
-                    <ToggleGroup
-                        className="grow"
-                        type="single"
-                        value={
-                            data.lengthComparison
-                                ? data.lengthComparison
-                                : data.same === true
-                                  ? "same"
-                                  : data.same === false
-                                    ? "different"
-                                    : "same"
-                        }
-                        onValueChange={(
-                            value: "shorter" | "same" | "longer" | "different",
-                        ) => {
-                            if (value === "shorter" || value === "longer") {
-                                questionModified(
-                                    (data.lengthComparison = value),
-                                );
-                            } else if (value === "same") {
-                                questionModified(
-                                    (data.lengthComparison = "same"),
-                                );
-                                questionModified((data.same = true));
-                            } else if (value === "different") {
-                                questionModified((data.same = false));
-                            }
-                        }}
-                        disabled={!!$hiderMode || !data.drag || $isLoading}
+                    <Label
+                        className={cn(
+                            "font-semibold text-lg",
+                            $isLoading && "text-muted-foreground",
+                            data.type === "same-length-station" && "text-center",
+                        )}
                     >
-                        <ToggleGroupItem value="shorter">
-                            Shorter
-                        </ToggleGroupItem>
-                        <ToggleGroupItem value="same">Same</ToggleGroupItem>
-                        <ToggleGroupItem value="longer">Longer</ToggleGroupItem>
-                    </ToggleGroup>
-                ) : (
-                    <ToggleGroup
-                        className="grow"
-                        type="single"
-                        value={data.same ? "same" : "different"}
-                        onValueChange={(value) => {
-                            if (value === "same") {
-                                questionModified((data.same = true));
-                            } else if (value === "different") {
-                                questionModified((data.same = false));
+                        Result
+                    </Label>
+                    {data.type === "same-length-station" ? (
+                        <ToggleGroup
+                            className="grow"
+                            type="single"
+                            value={
+                                data.lengthComparison
+                                    ? data.lengthComparison
+                                    : data.same === true
+                                      ? "same"
+                                      : data.same === false
+                                        ? "different"
+                                        : "same"
                             }
-                        }}
-                        disabled={!!$hiderMode || !data.drag || $isLoading}
-                    >
-                        <ToggleGroupItem value="different">
-                            Different
-                        </ToggleGroupItem>
-                        <ToggleGroupItem value="same">Same</ToggleGroupItem>
-                    </ToggleGroup>
-                )}
-            </div>
+                            onValueChange={(
+                                value: "shorter" | "same" | "longer" | "different",
+                            ) => {
+                                if (value === "shorter" || value === "longer") {
+                                    questionModified(
+                                        (data.lengthComparison = value),
+                                    );
+                                } else if (value === "same") {
+                                    questionModified(
+                                        (data.lengthComparison = "same"),
+                                    );
+                                    questionModified((data.same = true));
+                                } else if (value === "different") {
+                                    questionModified((data.same = false));
+                                }
+                            }}
+                            disabled={!!$hiderMode || !data.drag || $isLoading}
+                        >
+                            <ToggleGroupItem value="shorter">
+                                Shorter
+                            </ToggleGroupItem>
+                            <ToggleGroupItem value="same">Same</ToggleGroupItem>
+                            <ToggleGroupItem value="longer">Longer</ToggleGroupItem>
+                        </ToggleGroup>
+                    ) : (
+                        <ToggleGroup
+                            className="grow"
+                            type="single"
+                            value={data.same ? "same" : "different"}
+                            onValueChange={(value) => {
+                                if (value === "same") {
+                                    questionModified((data.same = true));
+                                } else if (value === "different") {
+                                    questionModified((data.same = false));
+                                }
+                            }}
+                            disabled={!!$hiderMode || !data.drag || $isLoading}
+                        >
+                            <ToggleGroupItem value="different">
+                                Different
+                            </ToggleGroupItem>
+                            <ToggleGroupItem value="same">Same</ToggleGroupItem>
+                        </ToggleGroup>
+                    )}
+                </div>
+            )}
         </QuestionCard>
     );
 };

@@ -40,11 +40,13 @@ export const MeasuringQuestionComponent = ({
     questionKey,
     sub,
     className,
+    isPreview,
 }: {
     data: MeasuringQuestion;
     questionKey: number;
     sub?: string;
     className?: string;
+    isPreview?: boolean;
 }) => {
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
@@ -288,33 +290,35 @@ export const MeasuringQuestionComponent = ({
                 }}
                 disabled={!data.drag || $isLoading}
             />
-            <div className="flex gap-2 items-center p-2">
-                <Label
-                    className={cn(
-                        "font-semibold text-lg",
-                        $isLoading && "text-muted-foreground",
-                    )}
-                >
-                    Result
-                </Label>
-                <ToggleGroup
-                    className="grow"
-                    type="single"
-                    value={data.hiderCloser ? "closer" : "further"}
-                    onValueChange={(value: "closer" | "further") => {
-                        data.hiderCloser = value === "closer";
-                        questionModified();
-                    }}
-                    disabled={!!$hiderMode || !data.drag || $isLoading}
-                >
-                    <ToggleGroupItem value="further">
-                        Hider Further
-                    </ToggleGroupItem>
-                    <ToggleGroupItem value="closer">
-                        Hider Closer
-                    </ToggleGroupItem>
-                </ToggleGroup>
-            </div>
+            {!isPreview && (
+                <div className="flex gap-2 items-center p-2">
+                    <Label
+                        className={cn(
+                            "font-semibold text-lg",
+                            $isLoading && "text-muted-foreground",
+                        )}
+                    >
+                        Result
+                    </Label>
+                    <ToggleGroup
+                        className="grow"
+                        type="single"
+                        value={data.hiderCloser ? "closer" : "further"}
+                        onValueChange={(value: "closer" | "further") => {
+                            data.hiderCloser = value === "closer";
+                            questionModified();
+                        }}
+                        disabled={!!$hiderMode || !data.drag || $isLoading}
+                    >
+                        <ToggleGroupItem value="further">
+                            Hider Further
+                        </ToggleGroupItem>
+                        <ToggleGroupItem value="closer">
+                            Hider Closer
+                        </ToggleGroupItem>
+                    </ToggleGroup>
+                </div>
+            )}
         </QuestionCard>
     );
 };

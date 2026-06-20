@@ -28,11 +28,13 @@ export const RadiusQuestionComponent = ({
     questionKey,
     sub,
     className,
+    isPreview,
 }: {
     data: RadiusQuestion;
     questionKey: number;
     sub?: string;
     className?: string;
+    isPreview?: boolean;
 }) => {
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
@@ -110,28 +112,30 @@ export const RadiusQuestionComponent = ({
                 }}
                 disabled={!data.drag || $isLoading}
             />
-            <div className="flex gap-2 items-center p-2">
-                <Label
-                    className={cn(
-                        "font-semibold text-lg",
-                        $isLoading && "text-muted-foreground",
-                    )}
-                >
-                    Result
-                </Label>
-                <ToggleGroup
-                    className="grow"
-                    type="single"
-                    value={data.within ? "inside" : "outside"}
-                    onValueChange={(value: "inside" | "outside") =>
-                        questionModified((data.within = value === "inside"))
-                    }
-                    disabled={!!$hiderMode || !data.drag || $isLoading}
-                >
-                    <ToggleGroupItem value="outside">Outside</ToggleGroupItem>
-                    <ToggleGroupItem value="inside">Inside</ToggleGroupItem>
-                </ToggleGroup>
-            </div>
+            {!isPreview && (
+                <div className="flex gap-2 items-center p-2">
+                    <Label
+                        className={cn(
+                            "font-semibold text-lg",
+                            $isLoading && "text-muted-foreground",
+                        )}
+                    >
+                        Result
+                    </Label>
+                    <ToggleGroup
+                        className="grow"
+                        type="single"
+                        value={data.within ? "inside" : "outside"}
+                        onValueChange={(value: "inside" | "outside") =>
+                            questionModified((data.within = value === "inside"))
+                        }
+                        disabled={!!$hiderMode || !data.drag || $isLoading}
+                    >
+                        <ToggleGroupItem value="outside">Outside</ToggleGroupItem>
+                        <ToggleGroupItem value="inside">Inside</ToggleGroupItem>
+                    </ToggleGroup>
+                </div>
+            )}
         </QuestionCard>
     );
 };
