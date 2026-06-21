@@ -192,27 +192,13 @@ const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
             z
                 .literal("major-city")
                 .describe("Major City (1,000,000+ people) In Zone Question"),
-            z
-                .literal("peak-full")
-                .describe("Mountain Question"),
-            z
-                .literal("museum-full")
-                .describe("Museum Question"),
-            z
-                .literal("hospital-full")
-                .describe("Hospital Question"),
-            z
-                .literal("cinema-full")
-                .describe("Cinema Question"),
-            z
-                .literal("library-full")
-                .describe("Library Question"),
-            z
-                .literal("golf_course-full")
-                .describe("Golf Course Question"),
-            z
-                .literal("consulate-full")
-                .describe("Foreign Consulate Question"),
+            z.literal("peak-full").describe("Mountain Question"),
+            z.literal("museum-full").describe("Museum Question"),
+            z.literal("hospital-full").describe("Hospital Question"),
+            z.literal("cinema-full").describe("Cinema Question"),
+            z.literal("library-full").describe("Library Question"),
+            z.literal("golf_course-full").describe("Golf Course Question"),
+            z.literal("consulate-full").describe("Foreign Consulate Question"),
             z
                 .literal("same-neighbourhood")
                 .describe("Neighbourhood (Same As Me) Question"),
@@ -275,27 +261,13 @@ const ordinaryMeasuringQuestionSchema = baseMeasuringQuestionSchema.extend({
             z
                 .literal("highspeed-measure-shinkansen")
                 .describe("High-Speed Rail Question"),
-            z
-                .literal("peak-full")
-                .describe("Mountain Question"),
-            z
-                .literal("museum-full")
-                .describe("Museum Question"),
-            z
-                .literal("hospital-full")
-                .describe("Hospital Question"),
-            z
-                .literal("cinema-full")
-                .describe("Cinema Question"),
-            z
-                .literal("library-full")
-                .describe("Library Question"),
-            z
-                .literal("golf_course-full")
-                .describe("Golf Course Question"),
-            z
-                .literal("consulate-full")
-                .describe("Foreign Consulate Question"),
+            z.literal("peak-full").describe("Mountain Question"),
+            z.literal("museum-full").describe("Museum Question"),
+            z.literal("hospital-full").describe("Hospital Question"),
+            z.literal("cinema-full").describe("Cinema Question"),
+            z.literal("library-full").describe("Library Question"),
+            z.literal("golf_course-full").describe("Golf Course Question"),
+            z.literal("consulate-full").describe("Foreign Consulate Question"),
         ])
         .default("coastline"),
 });

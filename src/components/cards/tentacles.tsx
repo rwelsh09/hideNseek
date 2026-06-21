@@ -232,21 +232,30 @@ const TentacleLocationSelector = ({
             setLocations(turf.featureCollection(data.places || []));
             setLoading(false);
         } else {
-            findTentacleLocations(data).then((res) => {
-                if (isMounted) {
-                    setLocations(res);
-                    setLoading(false);
-                }
-            }).catch(() => {
-                if (isMounted) {
-                    setLoading(false);
-                }
-            });
+            findTentacleLocations(data)
+                .then((res) => {
+                    if (isMounted) {
+                        setLocations(res);
+                        setLoading(false);
+                    }
+                })
+                .catch(() => {
+                    if (isMounted) {
+                        setLoading(false);
+                    }
+                });
         }
         return () => {
             isMounted = false;
         };
-    }, [data.locationType, data.lat, data.lng, data.radius, data.unit, data.places]);
+    }, [
+        data.locationType,
+        data.lat,
+        data.lng,
+        data.radius,
+        data.unit,
+        data.places,
+    ]);
 
     if (loading) {
         return (
@@ -268,7 +277,6 @@ const TentacleLocationSelector = ({
             </div>
         );
     }
-
 
     // Filter locations to only those within the radius of the primary location
     const filteredFeatures = (() => {
