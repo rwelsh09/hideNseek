@@ -753,12 +753,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "17 Av Se & 84 St Se",
+        "name": "Walmart Pharmacy",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
         ],
-        "original_gtfs_name": "EB 17 AV SE @ 84 ST SE & WB 17th AV SE @ 84th ST SE"
+        "original_gtfs_name": "WB 17th AV SE @ 84th ST SE | EB 17 AV SE @ 84 ST SE"
       },
       "geometry": {
         "type": "Point",
@@ -771,12 +771,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "17Th Av Se & 70Th St Se",
+        "name": "17th AV SE & 70th ST SE",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
         ],
-        "original_gtfs_name": "WB 17th AV SE @ 70th ST SE & EB 17th AV SE @ 70th ST SE"
+        "original_gtfs_name": "WB 17th AV SE @ 70th ST SE | EB 17th AV SE @ 70th ST SE"
       },
       "geometry": {
         "type": "Point",
@@ -789,12 +789,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "31St Street Nw",
+        "name": "Varsity",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "31st Street NW Station (EB) & 31st Street NW Station (WB)"
+        "original_gtfs_name": "31st Street NW Station (EB) | 31st Street NW Station (WB)"
       },
       "geometry": {
         "type": "Point",
@@ -812,7 +812,7 @@
         "lines": [
           "MAX Teal"
         ],
-        "original_gtfs_name": "Quarry Park Station (NB) & Quarry Park Station (SB)"
+        "original_gtfs_name": "Quarry Park Station (NB) | Quarry Park Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -830,7 +830,7 @@
         "lines": [
           "MAX Teal"
         ],
-        "original_gtfs_name": "Riverbend Station (NB) & Riverbend Station (SB)"
+        "original_gtfs_name": "Riverbend Station (SB) | Riverbend Station (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -843,12 +843,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Deerfoot Meadows",
+        "name": "East Fairview Industrial",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Teal"
         ],
-        "original_gtfs_name": "Deerfoot Meadows Station (WB) & Deerfoot Meadows Station (EB)"
+        "original_gtfs_name": "Deerfoot Meadows Station (EB) | Deerfoot Meadows Station (WB)"
       },
       "geometry": {
         "type": "Point",
@@ -861,12 +861,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Fairmount Drive",
+        "name": "Canada Post",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Teal"
         ],
-        "original_gtfs_name": "Fairmount Drive Station (WB) & Fairmount Drive Station (EB)"
+        "original_gtfs_name": "Fairmount Drive Station (WB) | Fairmount Drive Station (EB)"
       },
       "geometry": {
         "type": "Point",
@@ -879,7 +879,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Chelsea Drive & South Of Merganser Drive West",
+        "name": "Chelsea",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -897,7 +897,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "W. Lakeview Dr & E. Of Chelsea Dr",
+        "name": "W. Lakeview DR & E. of Chelsea DR",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -915,7 +915,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "W. Lakeview Dr & W. Of Rainbow Rd",
+        "name": "Dawson'S Landing",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -933,7 +933,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "W. Creek Bv & E. Of Lavender Wy",
+        "name": "W. Creek BV & E. of Lavender WY",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -969,7 +969,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Merganser Dr W & W. Creek Bv",
+        "name": "West Creek",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -987,7 +987,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Merganser Dr W & Mcivor Tc",
+        "name": "Mcivor",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -1023,7 +1023,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Windermere Drive & Power Line Row",
+        "name": "Westmere Commercial",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -1059,7 +1059,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Invermere Drive & Springmere Drive",
+        "name": "Westmere",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -1077,7 +1077,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "East Hills Sq & East Hills Bv Se",
+        "name": "Belvedere",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -1095,12 +1095,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Foothills Medical Centre",
+        "name": "St. Andrews Heights",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "Foothills Medical Centre (WB) & Foothills Medical Centre (EB)"
+        "original_gtfs_name": "Foothills Medical Centre (WB) | Foothills Medical Centre (EB)"
       },
       "geometry": {
         "type": "Point",
@@ -1113,12 +1113,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "19Th Street Ne",
+        "name": "Mayland Heights",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "19th Street NE Station (EB) & 19th Street NE Station (WB)"
+        "original_gtfs_name": "19th Street NE Station (WB) | 19th Street NE Station (EB)"
       },
       "geometry": {
         "type": "Point",
@@ -1131,12 +1131,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Rundleside Drive",
+        "name": "Rundle",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "Rundleside Drive Station (EB) & Rundleside Drive Station (WB)"
+        "original_gtfs_name": "Rundleside Drive Station (WB) | Rundleside Drive Station (EB)"
       },
       "geometry": {
         "type": "Point",
@@ -1154,7 +1154,7 @@
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "Saddletowne Circle Station (NB) & Saddletowne Circle Station (SB)"
+        "original_gtfs_name": "Saddletowne Circle Station (NB) | Saddletowne Circle Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1167,12 +1167,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Castleridge Boulevard",
+        "name": "Falconridge",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "Castleridge Boulevard Station (NB) & Castleridge Boulevard Station (SB)"
+        "original_gtfs_name": "Castleridge Boulevard Station (SB) | Castleridge Boulevard Station (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -1185,12 +1185,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "32Nd Avenue Ne",
+        "name": "32nd Avenue NE",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "32nd Avenue NE Station (SB) & 32nd Avenue NE Station (NB)"
+        "original_gtfs_name": "32nd Avenue NE Station (NB) | 32nd Avenue NE Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1203,7 +1203,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "North Hill",
+        "name": "Real Equity Centre",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
@@ -1221,7 +1221,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "West Creek Dr & Lavender Link",
+        "name": "Rainbow Falls",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -1239,13 +1239,13 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Rockyview Hospital",
+        "name": "Eagle Ridge",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Teal",
           "MAX Yellow"
         ],
-        "original_gtfs_name": "Rockyview Hospital (NB) & Rockyview Hospital (SB)"
+        "original_gtfs_name": "Rockyview Hospital (SB) | Rockyview Hospital (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -1258,13 +1258,13 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Heritage Park",
+        "name": "Glenmore Park",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Teal",
           "MAX Yellow"
         ],
-        "original_gtfs_name": "Heritage Park (NB) & Heritage Park (SB)"
+        "original_gtfs_name": "Heritage Park (SB) | Heritage Park (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -1277,7 +1277,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Woodpark",
+        "name": "Woodlands",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Yellow"
@@ -1295,12 +1295,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "90 Avenue Sw",
+        "name": "Bayview",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Yellow"
         ],
-        "original_gtfs_name": "90 Avenue SW (SB) & 90 Avenue SW (NB)"
+        "original_gtfs_name": "90 Avenue SW (SB) | 90 Avenue SW (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -1313,12 +1313,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Marda",
+        "name": "Richmond",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Yellow"
         ],
-        "original_gtfs_name": "Marda Loop Station (NB) & SB Crowchild TR @ 33 AV SW"
+        "original_gtfs_name": "Marda Loop Station (NB) | SB Crowchild TR @ 33 AV SW"
       },
       "geometry": {
         "type": "Point",
@@ -1331,12 +1331,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Woodview",
+        "name": "Woodbine",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Yellow"
         ],
-        "original_gtfs_name": "Woodview Station (NB) & Woodview Station (SB)"
+        "original_gtfs_name": "Woodview Station (SB) | Woodview Station (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -1349,12 +1349,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "26Th Street Se",
+        "name": "26th Street SE",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
         ],
-        "original_gtfs_name": "26th Street SE Station (EB) & 26th Street SE Station (WB)"
+        "original_gtfs_name": "26th Street SE Station (EB) | 26th Street SE Station (WB)"
       },
       "geometry": {
         "type": "Point",
@@ -1367,12 +1367,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "9Th Avenue Se",
+        "name": "Inglewood",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
         ],
-        "original_gtfs_name": "9th Avenue SE Station (WB) & 9th Avenue SE Station (EB)"
+        "original_gtfs_name": "9th Avenue SE Station (WB) | 9th Avenue SE Station (EB)"
       },
       "geometry": {
         "type": "Point",
@@ -1385,12 +1385,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "28Th Avenue N",
+        "name": "Balmoral",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green"
         ],
-        "original_gtfs_name": "28th Avenue N Station (NB) & 28th Avenue N Station (SB)"
+        "original_gtfs_name": "28th Avenue N Station (NB) | 28th Avenue N Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1403,12 +1403,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Alberta Children'S Hospital",
+        "name": "University District",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "Alberta Children's Hospital Station (NB) & Alberta Children's Hospital Station (SB)"
+        "original_gtfs_name": "Alberta Children's Hospital Station (NB) | Alberta Children's Hospital Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1421,12 +1421,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "26Th Avenue Sw",
+        "name": "Sproutz & Uturn",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Teal"
         ],
-        "original_gtfs_name": "26th Avenue SW Station (SB) & 26th Avenue SW Station (NB)"
+        "original_gtfs_name": "26th Avenue SW Station (NB) | 26th Avenue SW Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1439,12 +1439,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Richmond Road",
+        "name": "Glenbrook",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Teal"
         ],
-        "original_gtfs_name": "Richmond Road Station (SB) & Richmond Road Station (NB)"
+        "original_gtfs_name": "Richmond Road Station (NB) | Richmond Road Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1457,12 +1457,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Sarcee Road",
+        "name": "Lincoln Park",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Teal"
         ],
-        "original_gtfs_name": "Sarcee Road Station (EB) & Sarcee Road Station (WB)"
+        "original_gtfs_name": "Sarcee Road Station (EB) | Sarcee Road Station (WB)"
       },
       "geometry": {
         "type": "Point",
@@ -1480,7 +1480,7 @@
         "lines": [
           "MAX Teal"
         ],
-        "original_gtfs_name": "Mt Royal University W Gate EB & Mt Royal University W Gate WB"
+        "original_gtfs_name": "Mt Royal University W Gate EB | Mt Royal University W Gate WB"
       },
       "geometry": {
         "type": "Point",
@@ -1493,13 +1493,13 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "54 Avenue Sw",
+        "name": "North Glenmore",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Teal",
           "MAX Yellow"
         ],
-        "original_gtfs_name": "54 Avenue SW Station (NB) & 54 Avenue SW Station (SB)"
+        "original_gtfs_name": "54 Avenue SW Station (NB) | 54 Avenue SW Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1512,12 +1512,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Elbow Drive",
+        "name": "Chinook Park",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Teal"
         ],
-        "original_gtfs_name": "Elbow Drive Station (WB) & Elbow Drive Station (EB)"
+        "original_gtfs_name": "Elbow Drive Station (EB) | Elbow Drive Station (WB)"
       },
       "geometry": {
         "type": "Point",
@@ -1530,7 +1530,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Douglas Glen",
+        "name": "Shepard Industrial",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Teal"
@@ -1548,7 +1548,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "9 Av Se & 6 St Se",
+        "name": "Downtown East Village",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -1566,12 +1566,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Country Hills Boulevard",
+        "name": "Harvest Hills",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green"
         ],
-        "original_gtfs_name": "Country Hills Boulevard Station (SB) & Country Hills Boulevard Station (NB)"
+        "original_gtfs_name": "Country Hills Boulevard Station (SB) | Country Hills Boulevard Station (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -1584,12 +1584,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Harvest Hills Bv & Harvest Oak Ga Ne",
+        "name": "Country Hills",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green"
         ],
-        "original_gtfs_name": "SB Harvest Hills BV @ Harvest Oak GA NE & NB Harvest Hills BV @ Harvest Oak GA NE"
+        "original_gtfs_name": "SB Harvest Hills BV @ Harvest Oak GA NE | NB Harvest Hills BV @ Harvest Oak GA NE"
       },
       "geometry": {
         "type": "Point",
@@ -1602,12 +1602,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "17Th Av Se & 61St St Se",
+        "name": "Red Carpet",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
         ],
-        "original_gtfs_name": "WB 17th AV SE @ 61st ST SE & EB 17th AV SE @ 61st ST SE"
+        "original_gtfs_name": "WB 17th AV SE @ 61st ST SE | EB 17th AV SE @ 61st ST SE"
       },
       "geometry": {
         "type": "Point",
@@ -1620,12 +1620,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "96Th Avenue N",
+        "name": "96th Avenue N",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green"
         ],
-        "original_gtfs_name": "96th Avenue N Station (SB) & 96th Avenue N Station (NB)"
+        "original_gtfs_name": "96th Avenue N Station (NB) | 96th Avenue N Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1638,12 +1638,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Beddington Towne Centre",
+        "name": "Beddington Heights",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green"
         ],
-        "original_gtfs_name": "Beddington Towne Centre Station (SB) & Beddington Towne Centre Station (NB)"
+        "original_gtfs_name": "Beddington Towne Centre Station (SB) | Beddington Towne Centre Station (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -1656,12 +1656,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "40Th Avenue N",
+        "name": "Highland Park",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green"
         ],
-        "original_gtfs_name": "40th Avenue N Station (NB) & 40th Avenue N Station (SB)"
+        "original_gtfs_name": "40th Avenue N Station (SB) | 40th Avenue N Station (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -1674,13 +1674,13 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Centre St N & 16 Av N",
+        "name": "Royal Tattoo",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green",
           "MAX Orange"
         ],
-        "original_gtfs_name": "SB Centre ST N @ 16 AV N & Centre Street N Station (WB) & NB Centre ST N @ 17 AV N & Centre Street N Station (EB)"
+        "original_gtfs_name": "NB Centre ST N @ 17 AV N | Centre Street N Station (WB) | SB Centre ST N @ 16 AV N | Centre Street N Station (EB)"
       },
       "geometry": {
         "type": "Point",
@@ -1693,7 +1693,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Centre St S & 4 Av S",
+        "name": "Impark Lot 236",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green"
@@ -1711,13 +1711,13 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "5 Av Sw & 1 St Sw",
+        "name": "Bow Valley Square 3",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green",
           "MAX Yellow"
         ],
-        "original_gtfs_name": "EB 5 AV SW @ 1 ST SW & EB 5 AV SW @ 2 ST SW & WB 6 AV SW @ 2 ST SW"
+        "original_gtfs_name": "EB 5 AV SW @ 2 ST SW | WB 6 AV SW @ 2 ST SW | EB 5 AV SW @ 1 ST SW"
       },
       "geometry": {
         "type": "Point",
@@ -1730,7 +1730,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "9 Av Sw & 9 St Sw",
+        "name": "Indigo Lot C420",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Yellow"
@@ -1748,12 +1748,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "78Th Avenue N",
+        "name": "Huntington Hills",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green"
         ],
-        "original_gtfs_name": "78th Avenue N Station (SB) & 78th Avenue N Station (NB)"
+        "original_gtfs_name": "78th Avenue N Station (NB) | 78th Avenue N Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1766,7 +1766,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "North Pointe A",
+        "name": "Country Hills Village",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green"
@@ -1784,12 +1784,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "9 Av & 8 St Se",
+        "name": "Worn Studio",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
         ],
-        "original_gtfs_name": "EB 9 AV @ 8 ST SE & WB 9 AV @ 9 ST SE"
+        "original_gtfs_name": "WB 9 AV @ 9 ST SE | EB 9 AV @ 8 ST SE"
       },
       "geometry": {
         "type": "Point",
@@ -1802,12 +1802,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "64Th Avenue N",
+        "name": "64th Avenue N",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green"
         ],
-        "original_gtfs_name": "64th Avenue N Station (NB) & 64th Avenue N Station (SB)"
+        "original_gtfs_name": "64th Avenue N Station (NB) | 64th Avenue N Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1820,12 +1820,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "56Th Avenue N",
+        "name": "Thorncliffe",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Green"
         ],
-        "original_gtfs_name": "56th Avenue N Station (SB) & 56th Avenue N Station (NB)"
+        "original_gtfs_name": "56th Avenue N Station (NB) | 56th Avenue N Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1843,7 +1843,7 @@
         "lines": [
           "MAX Yellow"
         ],
-        "original_gtfs_name": "Oakridge Station (EB) & Oakridge Station (SB)"
+        "original_gtfs_name": "Oakridge Station (EB) | Oakridge Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1856,12 +1856,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Sait",
+        "name": "Hillhurst",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "SAIT Station (WB) & SAIT Station (EB)"
+        "original_gtfs_name": "SAIT Station (WB) | SAIT Station (EB)"
       },
       "geometry": {
         "type": "Point",
@@ -1874,12 +1874,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Russet Road",
+        "name": "Renfrew",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "Russet Road Station (WB) & Russet Road Station (EB)"
+        "original_gtfs_name": "Russet Road Station (EB) | Russet Road Station (WB)"
       },
       "geometry": {
         "type": "Point",
@@ -1892,12 +1892,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Edmonton Trail",
+        "name": "Tuxedo Park",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "Edmonton Trail Station (WB) & Edmonton Trail Station (EB)"
+        "original_gtfs_name": "Edmonton Trail Station (EB) | Edmonton Trail Station (WB)"
       },
       "geometry": {
         "type": "Point",
@@ -1910,12 +1910,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Crowchild Tr & 26 Av Sw",
+        "name": "Crowchild TR& 26 AV SW Overpass",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Yellow"
         ],
-        "original_gtfs_name": "NB Crowchild TR @ 26 AV SW & SB Crowchild TR@ 26 AV SW Overpass"
+        "original_gtfs_name": "NB Crowchild TR @ 26 AV SW | SB Crowchild TR@ 26 AV SW Overpass"
       },
       "geometry": {
         "type": "Point",
@@ -1928,12 +1928,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Crowchild Tr & 17 Av Sw Overpass",
+        "name": "17 Avenue SW",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Yellow"
         ],
-        "original_gtfs_name": "SB Crowchild TR @ 17 AV SW Overpass & 17 Avenue SW Station (NB)"
+        "original_gtfs_name": "17 Avenue SW Station (NB) | SB Crowchild TR @ 17 AV SW Overpass"
       },
       "geometry": {
         "type": "Point",
@@ -1946,12 +1946,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "44Th Avenue Ne",
+        "name": "Temple",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "44th Avenue NE Station (NB) & 44th Avenue NE Station (SB)"
+        "original_gtfs_name": "44th Avenue NE Station (SB) | 44th Avenue NE Station (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -1969,7 +1969,7 @@
         "lines": [
           "MAX Yellow"
         ],
-        "original_gtfs_name": "Braeside Station (NB) & Cedarbrae Station (SB)"
+        "original_gtfs_name": "Braeside Station (NB) | Cedarbrae Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -1982,12 +1982,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "North Hill",
+        "name": "Hounsfield Heights/Briar Hill",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "North Hill Station (EB) & WB 16th AV NW @ 19th ST NW"
+        "original_gtfs_name": "WB 16th AV NW @ 19th ST NW | North Hill Station (EB)"
       },
       "geometry": {
         "type": "Point",
@@ -2006,7 +2006,7 @@
           "MAX Teal",
           "MAX Yellow"
         ],
-        "original_gtfs_name": "Mount Royal University Station (SB) & Mount Royal University Station (NB)"
+        "original_gtfs_name": "Mount Royal University Station (SB) | Mount Royal University Station (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -2024,7 +2024,7 @@
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "Falshire Drive Station (NB) & Falshire Drive Station (SB)"
+        "original_gtfs_name": "Falshire Drive Station (SB) | Falshire Drive Station (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -2037,7 +2037,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "9 Av S & Centre St S",
+        "name": "Downtown Commercial Core",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -2055,12 +2055,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Falconridge Bv & Falworth Rd Ne",
+        "name": "Falconridge BV & Falworth RD NE",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "NB Falconridge BV @ Falworth RD NE & SB Falconridge BV @ Castlebrook DR NE"
+        "original_gtfs_name": "SB Falconridge BV @ Castlebrook DR NE | NB Falconridge BV @ Falworth RD NE"
       },
       "geometry": {
         "type": "Point",
@@ -2073,12 +2073,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Martindale Boulevard",
+        "name": "Taradale",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "Martindale Boulevard Station (SB) & Martindale Boulevard Station (NB)"
+        "original_gtfs_name": "Martindale Boulevard Station (SB) | Martindale Boulevard Station (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -2091,12 +2091,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Whitehorn Drive",
+        "name": "Whitehorn",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "Whitehorn Drive Station (NB) & Whitehorn Drive Station (SB)"
+        "original_gtfs_name": "Whitehorn Drive Station (NB) | Whitehorn Drive Station (SB)"
       },
       "geometry": {
         "type": "Point",
@@ -2114,7 +2114,7 @@
         "lines": [
           "MAX Yellow"
         ],
-        "original_gtfs_name": "Southland Leisure Centre (WB) & Southland Leisure Centre (EB)"
+        "original_gtfs_name": "Southland Leisure Centre (WB) | Southland Leisure Centre (EB)"
       },
       "geometry": {
         "type": "Point",
@@ -2127,12 +2127,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "4Th Street Nw",
+        "name": "Rosedale",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Orange"
         ],
-        "original_gtfs_name": "4th Street NW Station (WB) & 4th Street NW Station (EB)"
+        "original_gtfs_name": "4th Street NW Station (WB) | 4th Street NW Station (EB)"
       },
       "geometry": {
         "type": "Point",
@@ -2145,12 +2145,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Douglas Glen Boulevard",
+        "name": "Douglas Glen",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Teal"
         ],
-        "original_gtfs_name": "Douglas Glen Boulevard Station (SB) & Douglas Glen Boulevard Station (NB)"
+        "original_gtfs_name": "Douglas Glen Boulevard Station (SB) | Douglas Glen Boulevard Station (NB)"
       },
       "geometry": {
         "type": "Point",
@@ -2163,7 +2163,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "9 Av & Macleod Tr Se",
+        "name": "City Hall Parkade",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
@@ -2181,12 +2181,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "9 Av & 12 St Se",
+        "name": "Borhot Law",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
         ],
-        "original_gtfs_name": "WB 9 AV @ 12 ST SE & EB 9 AV SE @ 12 ST SE"
+        "original_gtfs_name": "WB 9 AV @ 12 ST SE | EB 9 AV SE @ 12 ST SE"
       },
       "geometry": {
         "type": "Point",
@@ -2199,12 +2199,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "33Rd Street Se",
+        "name": "Southview",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
         ],
-        "original_gtfs_name": "33rd Street SE Station (EB) & 33rd Street SE Station (WB)"
+        "original_gtfs_name": "33rd Street SE Station (EB) | 33rd Street SE Station (WB)"
       },
       "geometry": {
         "type": "Point",
@@ -2217,12 +2217,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "36Th Street Se",
+        "name": "Forest Lawn",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
         ],
-        "original_gtfs_name": "36th Street SE Station (EB) & 36th Street SE Station (WB)"
+        "original_gtfs_name": "36th Street SE Station (WB) | 36th Street SE Station (EB)"
       },
       "geometry": {
         "type": "Point",
@@ -2235,12 +2235,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "44Th Street Se",
+        "name": "44th Street SE",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
         ],
-        "original_gtfs_name": "44th Street SE Station (EB) & 44th Street SE Station (WB)"
+        "original_gtfs_name": "44th Street SE Station (EB) | 44th Street SE Station (WB)"
       },
       "geometry": {
         "type": "Point",
@@ -2253,12 +2253,12 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "52Nd Street Se",
+        "name": "Penbrooke Meadows",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
         ],
-        "original_gtfs_name": "52nd Street SE Station (EB) & 52nd Street SE Station (WB)"
+        "original_gtfs_name": "52nd Street SE Station (WB) | 52nd Street SE Station (EB)"
       },
       "geometry": {
         "type": "Point",
@@ -2271,7 +2271,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "9 Av Se & The Confluence",
+        "name": "Colonel James F. Macleod Statue",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
