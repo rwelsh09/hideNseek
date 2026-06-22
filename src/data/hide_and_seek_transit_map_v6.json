@@ -879,24 +879,6 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Chelsea",
-        "transit_type": "MAX Station",
-        "lines": [
-          "MAX Purple"
-        ],
-        "original_gtfs_name": "SB Chelsea Drive @ south of Merganser Drive West"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.858921,
-          51.035537
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
         "name": "Belvedere",
         "transit_type": "MAX Station",
         "lines": [
@@ -1035,24 +1017,6 @@
         "coordinates": [
           -114.100885,
           51.067083
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "name": "Rainbow Falls",
-        "transit_type": "MAX Station",
-        "lines": [
-          "MAX Purple"
-        ],
-        "original_gtfs_name": "SB West Creek DR @ Lavender Link"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -113.840709,
-          51.028783
         ]
       }
     },
