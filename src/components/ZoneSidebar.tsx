@@ -513,7 +513,11 @@ export const ZoneSidebar = () => {
                 (x) => !$disabledStations.includes(x.properties.properties.id),
             );
             showGeoJSON(
-                styleStations(activeStations, $displayHidingZonesStyle),
+                styleStations(
+                    activeStations,
+                    $displayHidingZonesStyle,
+                    $questionFinishedMapData,
+                ),
                 $displayHidingZonesStyle === "zones",
             );
         } else {
@@ -958,14 +962,55 @@ export const ZoneSidebar = () => {
 function styleStations(
     circles: StationCircle[],
     style: string,
+    $questionFinishedMapData: any,
 ): FeatureCollection | Feature {
+    const applyMask = (
+        feature: FeatureCollection | Feature,
+    ): FeatureCollection | Feature => {
+        if (!$questionFinishedMapData) return feature;
+        try {
+            const unionized = safeUnion(
+                turf.simplify($questionFinishedMapData, {
+                    tolerance: 0.001,
+                }),
+            );
+            if (feature.type === "FeatureCollection") {
+                const intersectedFeatures = feature.features
+                    .map((f: any) => {
+                        const intersection = turf.intersect(
+                            turf.featureCollection([f, unionized]),
+                        );
+                        if (intersection) {
+                            intersection.properties = f.properties;
+                            return intersection;
+                        }
+                        return null;
+                    })
+                    .filter(Boolean);
+                return turf.featureCollection(intersectedFeatures as any);
+            } else {
+                const intersection = turf.intersect(
+                    turf.featureCollection([feature as any, unionized]),
+                );
+                if (intersection) {
+                    intersection.properties = feature.properties;
+                    return intersection;
+                }
+                return { type: "FeatureCollection", features: [] };
+            }
+        } catch (e) {
+            console.error("Error masking stations:", e);
+            return feature;
+        }
+    };
+
     switch (style) {
         case "no-display":
             return { type: "FeatureCollection", features: [] };
         case "no-overlap":
-            return safeUnion(turf.featureCollection(circles));
+            return applyMask(safeUnion(turf.featureCollection(circles)));
         case "stations":
-            return turf.featureCollection(circles);
+            return applyMask(turf.featureCollection(circles));
         case "zones":
         default:
             if (circles.length > 1) {
@@ -995,13 +1040,15 @@ function styleStations(
                             }
                             return circle;
                         });
-                        return turf.featureCollection(intersectedCircles);
+                        return applyMask(
+                            turf.featureCollection(intersectedCircles as any),
+                        );
                     }
                 } catch (e) {
                     console.error("Error generating voronoi for zones:", e);
                 }
             }
-            return turf.featureCollection(circles);
+            return applyMask(turf.featureCollection(circles));
     }
 }
 
