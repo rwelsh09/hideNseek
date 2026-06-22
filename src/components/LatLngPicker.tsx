@@ -262,7 +262,7 @@ export const LatitudeLongitude = ({
                     backgroundColor: color,
                 }}
                 className={cn(
-                    "p-2 rounded-md space-y-1 mt-2",
+                    "p-4 rounded-md space-y-4 mt-2",
                     $isLoading && "brightness-50",
                 )}
             >
