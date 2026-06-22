@@ -53,7 +53,6 @@ import {
     QuestionSpecificLocation,
     type StationCircle,
     type StationPlace,
-    trainLineNodeFinder,
 } from "@/maps/api";
 import {
     extractStationLabel,
@@ -448,24 +447,28 @@ export const ZoneSidebar = () => {
                                     "'Same train line' isn't supported with custom-only station lists.",
                                 );
                             } else {
-                                const nid = nearestTrainStation.properties
-                                    .id as string | undefined;
-                                if (!nid || !nid.includes("/")) {
-                                    continue;
-                                }
-                                const nodes = await trainLineNodeFinder(nid);
-                                if (nodes.length > 0) {
+                                const seekerLines: string[] =
+                                    nearestTrainStation.properties.properties
+                                        ?.lines ||
+                                    (nearestTrainStation.properties as any)
+                                        .lines ||
+                                    [];
+
+                                if (seekerLines.length > 0) {
                                     circles = circles.filter((circle) => {
-                                        const idProp =
-                                            circle.properties.properties.id;
-                                        if (!idProp || !idProp.includes("/"))
-                                            return false;
-                                        const id = parseInt(
-                                            idProp.split("/")[1],
+                                        const hiderLines: string[] =
+                                            circle.properties.properties
+                                                ?.lines ||
+                                            (circle.properties as any).lines ||
+                                            [];
+
+                                        const intersects = seekerLines.some(
+                                            (l) => hiderLines.includes(l),
                                         );
+
                                         return question.data.same
-                                            ? nodes.includes(id)
-                                            : !nodes.includes(id);
+                                            ? intersects
+                                            : !intersects;
                                     });
                                 }
                             }

@@ -64,11 +64,13 @@ export const MeasuringQuestionComponent = ({
     );
     React.useEffect(() => {
         let active = true;
-        calculateMeasuringDistance(data).then((dist) => {
-            if (active) setDistanceValue(dist);
-        }).catch(() => {
-            if (active) setDistanceValue(null);
-        });
+        calculateMeasuringDistance(data)
+            .then((dist) => {
+                if (active) setDistanceValue(dist);
+            })
+            .catch(() => {
+                if (active) setDistanceValue(null);
+            });
         return () => {
             active = false;
         };
