@@ -105,7 +105,11 @@ export const determineMeasuringBoundary = async (
                 await fetchCoastline(),
             ) as Feature<MultiPolygon>;
 
-            const distanceToCoastline = turf.pointToLineDistance(turf.point([question.lng, question.lat]), turf.polygonToLine(coastline as any) as any, { units: "kilometers", method: "geodesic" });
+            const distanceToCoastline = turf.pointToLineDistance(
+                turf.point([question.lng, question.lat]),
+                turf.polygonToLine(coastline as any) as any,
+                { units: "kilometers", method: "geodesic" },
+            );
 
             return [
                 turf.difference(
@@ -397,11 +401,13 @@ export const calculateMeasuringDistance = async (
             if (stations.length === 0) return null;
             const nearestTrainStation = turf.nearestPoint(
                 seeker,
-                turf.featureCollection(stations.map((x) => ({
-                    type: "Feature",
-                    properties: x.properties,
-                    geometry: x.properties.geometry
-                })) as any),
+                turf.featureCollection(
+                    stations.map((x) => ({
+                        type: "Feature",
+                        properties: x.properties,
+                        geometry: x.properties.geometry,
+                    })) as any,
+                ),
             );
             return turf.distance(seeker, nearestTrainStation, {
                 units: "kilometers",
@@ -442,7 +448,11 @@ export const calculateMeasuringDistance = async (
                 await fetchCoastline(),
             ) as Feature<MultiPolygon>;
 
-            return turf.pointToLineDistance(turf.point([question.lng, question.lat]), turf.polygonToLine(coastline as any) as any, { units: "kilometers", method: "geodesic" });
+            return turf.pointToLineDistance(
+                turf.point([question.lng, question.lat]),
+                turf.polygonToLine(coastline as any) as any,
+                { units: "kilometers", method: "geodesic" },
+            );
         }
         case "highspeed-measure-shinkansen":
         case "city":
@@ -490,10 +500,14 @@ export const calculateMeasuringDistance = async (
                     feature.geometry.type === "Polygon" ||
                     feature.geometry.type === "MultiPolygon"
                 ) {
-                    dist = turf.pointToLineDistance(seeker, turf.polygonToLine(feature as any) as any, {
-                        units: "kilometers",
-                        method: "geodesic",
-                    });
+                    dist = turf.pointToLineDistance(
+                        seeker,
+                        turf.polygonToLine(feature as any) as any,
+                        {
+                            units: "kilometers",
+                            method: "geodesic",
+                        },
+                    );
                 } else if (
                     feature.geometry.type === "LineString" ||
                     feature.geometry.type === "MultiLineString"
