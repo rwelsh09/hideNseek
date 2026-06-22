@@ -128,9 +128,9 @@ export const ZoneSidebar = () => {
                 const transitType =
                     feature?.properties?.properties?.transit_type ||
                     feature?.properties?.transit_type;
-                if (transitType === "CTrain") {
+                if (transitType === "CTrain Station") {
                     color = "red";
-                } else if (transitType === "MAX") {
+                } else if (transitType === "MAX Station") {
                     color = "blue";
                 } else if (transitType === "CTrain & MAX Hub") {
                     color = "purple";
