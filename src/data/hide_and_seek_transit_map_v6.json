@@ -4,7 +4,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 69 Street CTrain",
+        "name": "69 Street",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -21,7 +21,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB Sirocco CTrain",
+        "name": "Sirocco",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -38,7 +38,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 45 Street CTrain",
+        "name": "45 Street",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -55,7 +55,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB Westbrook CTrain",
+        "name": "Westbrook",
         "transit_type": "CTrain & MAX Hub",
         "lines": [
           "Blue Line",
@@ -73,7 +73,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB Shaganappi Point CTrain",
+        "name": "Shaganappi Point",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -90,7 +90,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB Sunalta CTrain",
+        "name": "Sunalta",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -107,7 +107,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB Downtown-West Kerby  (Free Fare Zone)",
+        "name": "Downtown-West Kerby",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -124,7 +124,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Tuscany CTrain",
+        "name": "Tuscany",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -141,7 +141,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Crowfoot CTrain",
+        "name": "Crowfoot",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -158,7 +158,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Dalhousie CTrain",
+        "name": "Dalhousie",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -175,7 +175,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Brentwood CTrain",
+        "name": "Brentwood",
         "transit_type": "CTrain & MAX Hub",
         "lines": [
           "MAX Orange",
@@ -193,7 +193,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Martindale CTrain",
+        "name": "Martindale",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -210,7 +210,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Anderson CTrain",
+        "name": "Anderson",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -227,7 +227,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Southland CTrain",
+        "name": "Southland",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -244,7 +244,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Heritage CTrain",
+        "name": "Heritage",
         "transit_type": "CTrain & MAX Hub",
         "lines": [
           "MAX Teal",
@@ -262,7 +262,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Chinook CTrain",
+        "name": "Chinook",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -279,7 +279,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB 39 Avenue CTrain",
+        "name": "39 Avenue",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -296,7 +296,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Erlton / Stampede CTrain Staion",
+        "name": "Erlton",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -313,7 +313,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Victoria Park / Stampede CTrain",
+        "name": "Victoria Park",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -330,7 +330,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Whitehorn CTrain",
+        "name": "Whitehorn",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -347,7 +347,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Rundle CTrain",
+        "name": "Rundle",
         "transit_type": "CTrain & MAX Hub",
         "lines": [
           "Blue Line",
@@ -365,7 +365,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Marlborough CTrain",
+        "name": "Marlborough",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -382,7 +382,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Franklin CTrain",
+        "name": "Franklin",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -399,7 +399,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB Barlow - Max Bell CTrain",
+        "name": "Barlow - Max Bell",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -416,7 +416,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB Zoo CTrain",
+        "name": "Zoo",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -433,7 +433,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB Bridgeland - Memorial CTrain",
+        "name": "Bridgeland - Memorial",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -450,7 +450,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB University CTrain",
+        "name": "University",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -467,7 +467,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Banff Trail CTrain",
+        "name": "Banff Trail",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -484,7 +484,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Lions Park CTrain",
+        "name": "Lions Park",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -501,7 +501,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB SAIT / AUArts / Jubilee CTrain Stn",
+        "name": "SAIT",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -518,7 +518,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Sunnyside CTrain",
+        "name": "Sunnyside",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -535,7 +535,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB City Hall/Bow Valley College (Free Fare Zone)",
+        "name": "City Hall",
         "transit_type": "CTrain & MAX Hub",
         "lines": [
           "Blue Line",
@@ -554,7 +554,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 1 Street SW  (Free Fare Zone)",
+        "name": "1 Street SW",
         "transit_type": "CTrain & MAX Hub",
         "lines": [
           "Blue Line",
@@ -574,7 +574,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 4 Street SW  (Free Fare Zone)",
+        "name": "4 Street SW",
         "transit_type": "CTrain & MAX Hub",
         "lines": [
           "Blue Line",
@@ -594,7 +594,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "WB 7 Street SW  (Free Fare Zone)",
+        "name": "7 Street SW",
         "transit_type": "CTrain & MAX Hub",
         "lines": [
           "Blue Line",
@@ -614,7 +614,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB 3 Street SW  (Free Fare Zone)",
+        "name": "3 Street SW",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line",
@@ -632,7 +632,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "EB Centre Street  (Free Fare Zone)",
+        "name": "Centre Street",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line",
@@ -650,7 +650,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Fish Creek - Lacombe CTrain",
+        "name": "Fish Creek - Lacombe",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -667,7 +667,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Canyon Meadows CTrain",
+        "name": "Canyon Meadows",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -684,7 +684,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "SB Somerset - Bridlewood CTrain",
+        "name": "Somerset - Bridlewood",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -701,7 +701,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Shawnessy CTrain",
+        "name": "Shawnessy",
         "transit_type": "CTrain Station",
         "lines": [
           "Red Line"
@@ -718,7 +718,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB Saddletowne CTrain",
+        "name": "Saddletowne",
         "transit_type": "CTrain & MAX Hub",
         "lines": [
           "Blue Line",
@@ -736,7 +736,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "NB McKnight - Westwinds CTrain",
+        "name": "McKnight - Westwinds",
         "transit_type": "CTrain Station",
         "lines": [
           "Blue Line"
@@ -753,7 +753,7 @@
     {
       "type": "Feature",
       "properties": {
-        "name": "Walmart Pharmacy",
+        "name": "East Hills",
         "transit_type": "MAX Station",
         "lines": [
           "MAX Purple"
