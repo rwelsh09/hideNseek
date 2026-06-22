@@ -977,7 +977,7 @@ function styleStations(
             if (feature.type === "FeatureCollection") {
                 const intersectedFeatures = feature.features
                     .map((f: any) => {
-                        const intersection = turf.intersect(
+                        const intersection = turf.difference(
                             turf.featureCollection([f, unionized]),
                         );
                         if (intersection) {
@@ -989,7 +989,7 @@ function styleStations(
                     .filter(Boolean);
                 return turf.featureCollection(intersectedFeatures as any);
             } else {
-                const intersection = turf.intersect(
+                const intersection = turf.difference(
                     turf.featureCollection([feature as any, unionized]),
                 );
                 if (intersection) {
