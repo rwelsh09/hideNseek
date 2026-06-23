@@ -5,7 +5,7 @@ export default {
     theme: {
     	extend: {
     		colors: {
-    			jetlag: '#1F2F3F',
+    			main: '#1F2F3F',
     			background: 'hsl(var(--background))',
     			foreground: 'hsl(var(--foreground))',
     			card: {
