@@ -43,17 +43,13 @@ import {
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import {
-    BLANK_GEOJSON,
     findPlacesInZone,
     findPlacesSpecificInZone,
-    findTentacleLocations,
-    nearestToQuestion,
     normalizeToStationFeatures,
     parseCustomStationsFromText,
     QuestionSpecificLocation,
     type StationCircle,
     type StationPlace,
-    trainLineNodeFinder,
 } from "@/maps/api";
 import {
     extractStationLabel,
@@ -125,17 +121,23 @@ export const ZoneSidebar = () => {
         const geoJsonLayer = L.geoJSON(geoJSONData, {
             style: (feature: any) => {
                 let color = "blue";
-                const transitType =
-                    feature?.properties?.properties?.transit_type ||
-                    feature?.properties?.transit_type;
-                if (transitType === "CTrain Station") {
-                    color = "red";
-                } else if (transitType === "MAX Station") {
-                    color = "blue";
-                } else if (transitType === "CTrain & MAX Hub") {
-                    color = "purple";
+                const isSelected = feature?.properties?.id === hidingZoneModeStationID || feature?.properties?.properties?.id === hidingZoneModeStationID;
+
+                if (isSelected) {
+                    color = "yellow";
                 } else {
-                    color = "green";
+                    const transitType =
+                        feature?.properties?.properties?.transit_type ||
+                        feature?.properties?.transit_type;
+                    if (transitType === "CTrain Station") {
+                        color = "red";
+                    } else if (transitType === "MAX Station") {
+                        color = "blue";
+                    } else if (transitType === "CTrain & MAX Hub") {
+                        color = "purple";
+                    } else {
+                        color = "green";
+                    }
                 }
                 return {
                     color: color,
@@ -145,10 +147,19 @@ export const ZoneSidebar = () => {
             },
             onEachFeature: nonOverlappingStations
                 ? (feature, layer) => {
+                      const id = feature?.properties?.id || feature?.properties?.properties?.id;
+                      const isSelected = id && id === hidingZoneModeStationID;
+
+                      if (isSelected) {
+                          const name = extractStationLabel(feature?.properties) || "Selected Zone";
+                          layer.bindTooltip(name, { permanent: true, direction: "center", className: "bg-black text-white px-2 py-1 rounded" });
+                      }
+
                       layer.on("click", async () => {
                           if (!map) return;
-                          setHidingZoneModeStationID(
-                              feature.properties.properties.id,
+
+                          setHidingZoneModeStationID((prev) =>
+                              prev === id ? "" : id
                           );
                       });
                   }
@@ -326,107 +337,6 @@ export const ZoneSidebar = () => {
 
                     if (
                         question.id === "matching" &&
-                        (question.data.type === "same-neighbourhood" ||
-                            question.data.type ===
-                                "same-first-letter-neighbourhood")
-                    ) {
-                        const location = turf.point([
-                            question.data.lng,
-                            question.data.lat,
-                        ]);
-
-                        const data = osmtogeojson(
-                            await findPlacesInZone(
-                                '["admin_level"="10"]',
-                                "Finding neighbourhoods. This may take a while. Do not press any buttons while this is processing. Don't worry, it will be cached.",
-                                "nwr",
-                                "geom",
-                            ),
-                        ) as FeatureCollection<Polygon | MultiPolygon>;
-
-                        if (!data.features || data.features.length === 0)
-                            continue;
-
-                        const findNearest = (pt: any) => {
-                            let nearest: any = null;
-                            for (const feature of data.features) {
-                                if (
-                                    feature.geometry.type !== "Polygon" &&
-                                    feature.geometry.type !== "MultiPolygon"
-                                )
-                                    continue;
-                                if (turf.booleanPointInPolygon(pt, feature)) {
-                                    nearest = feature;
-                                    break;
-                                }
-                            }
-                            if (!nearest) {
-                                let minDistance = Infinity;
-                                for (const feature of data.features) {
-                                    if (
-                                        feature.geometry.type !== "Polygon" &&
-                                        feature.geometry.type !== "MultiPolygon"
-                                    )
-                                        continue;
-                                    const d = turf.distance(
-                                        pt,
-                                        turf.center(feature),
-                                    );
-                                    if (d < minDistance) {
-                                        minDistance = d;
-                                        nearest = feature;
-                                    }
-                                }
-                            }
-                            return nearest;
-                        };
-
-                        const nearestSeekerNeighbourhood =
-                            findNearest(location);
-
-                        circles = circles.filter((circle) => {
-                            const nearestHiderNeighbourhood = findNearest(
-                                turf.center(circle as any),
-                            );
-
-                            if (
-                                !nearestHiderNeighbourhood ||
-                                !nearestSeekerNeighbourhood
-                            ) {
-                                return question.data.same ? false : true;
-                            }
-
-                            if (question.data.type === "same-neighbourhood") {
-                                const same =
-                                    nearestHiderNeighbourhood.id ===
-                                    nearestSeekerNeighbourhood.id;
-                                return question.data.same ? same : !same;
-                            } else {
-                                const hiderEnglishName =
-                                    nearestHiderNeighbourhood.properties?.[
-                                        "name:en"
-                                    ] ||
-                                    nearestHiderNeighbourhood.properties?.name;
-                                const seekerEnglishName =
-                                    nearestSeekerNeighbourhood.properties?.[
-                                        "name:en"
-                                    ] ||
-                                    nearestSeekerNeighbourhood.properties?.name;
-
-                                if (!hiderEnglishName || !seekerEnglishName) {
-                                    return true;
-                                }
-
-                                const same =
-                                    hiderEnglishName[0].toUpperCase() ===
-                                    seekerEnglishName[0].toUpperCase();
-                                return question.data.same ? same : !same;
-                            }
-                        });
-                    }
-
-                    if (
-                        question.id === "matching" &&
                         (question.data.type === "same-first-letter-station" ||
                             question.data.type === "same-length-station" ||
                             question.data.type === "same-train-line")
@@ -448,24 +358,28 @@ export const ZoneSidebar = () => {
                                     "'Same train line' isn't supported with custom-only station lists.",
                                 );
                             } else {
-                                const nid = nearestTrainStation.properties
-                                    .id as string | undefined;
-                                if (!nid || !nid.includes("/")) {
-                                    continue;
-                                }
-                                const nodes = await trainLineNodeFinder(nid);
-                                if (nodes.length > 0) {
+                                const seekerLines: string[] =
+                                    nearestTrainStation.properties.properties
+                                        ?.lines ||
+                                    (nearestTrainStation.properties as any)
+                                        .lines ||
+                                    [];
+
+                                if (seekerLines.length > 0) {
                                     circles = circles.filter((circle) => {
-                                        const idProp =
-                                            circle.properties.properties.id;
-                                        if (!idProp || !idProp.includes("/"))
-                                            return false;
-                                        const id = parseInt(
-                                            idProp.split("/")[1],
+                                        const hiderLines: string[] =
+                                            circle.properties.properties
+                                                ?.lines ||
+                                            (circle.properties as any).lines ||
+                                            [];
+
+                                        const intersects = seekerLines.some(
+                                            (l) => hiderLines.includes(l),
                                         );
+
                                         return question.data.same
-                                            ? nodes.includes(id)
-                                            : !nodes.includes(id);
+                                            ? intersects
+                                            : !intersects;
                                     });
                                 }
                             }
@@ -585,38 +499,31 @@ export const ZoneSidebar = () => {
     useEffect(() => {
         if (!map || isLoading.get()) return;
 
-        if ($displayHidingZones && hidingZoneModeStationID) {
-            const hiderStation = _.find(
-                stations,
-                (c) => c.properties.properties.id === hidingZoneModeStationID,
-            );
-            if (hiderStation !== undefined) {
-                selectionProcess(
-                    hiderStation,
-                    map,
-                    stations,
-                    showGeoJSON,
-                    $questionFinishedMapData,
-                    $hidingRadius,
-                ).catch(() => {
-                    toast.error(
-                        "An error occurred during hiding zone selection",
-                        { toastId: "hiding-zone-selection-error" },
-                    );
-                });
-            } else {
-                toast.error("Invalid hiding zone selected", {
-                    toastId: "hiding-zone-selection-error",
-                });
-            }
-        } else if ($displayHidingZones) {
+        if ($displayHidingZones) {
             const activeStations = stations.filter(
                 (x) => !$disabledStations.includes(x.properties.properties.id),
             );
             showGeoJSON(
-                styleStations(activeStations, $displayHidingZonesStyle),
+                styleStations(
+                    activeStations,
+                    $displayHidingZonesStyle,
+                    $questionFinishedMapData,
+                ),
                 $displayHidingZonesStyle === "zones",
             );
+
+            if (hidingZoneModeStationID) {
+                const element: HTMLDivElement | null = document.querySelector(
+                    `[data-station-id="${hidingZoneModeStationID}"]`,
+                );
+                if (element) {
+                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                    element.classList.add("selected-card-background-temporary");
+                    setTimeout(() => {
+                        element.classList.remove("selected-card-background-temporary");
+                    }, 5000);
+                }
+            }
         } else {
             removeHidingZones();
         }
@@ -1059,14 +966,55 @@ export const ZoneSidebar = () => {
 function styleStations(
     circles: StationCircle[],
     style: string,
+    $questionFinishedMapData: any,
 ): FeatureCollection | Feature {
+    const applyMask = (
+        feature: FeatureCollection | Feature,
+    ): FeatureCollection | Feature => {
+        if (!$questionFinishedMapData) return feature;
+        try {
+            const unionized = safeUnion(
+                turf.simplify($questionFinishedMapData, {
+                    tolerance: 0.001,
+                }),
+            );
+            if (feature.type === "FeatureCollection") {
+                const intersectedFeatures = feature.features
+                    .map((f: any) => {
+                        const intersection = turf.difference(
+                            turf.featureCollection([f, unionized]),
+                        );
+                        if (intersection) {
+                            intersection.properties = f.properties;
+                            return intersection;
+                        }
+                        return null;
+                    })
+                    .filter(Boolean);
+                return turf.featureCollection(intersectedFeatures as any);
+            } else {
+                const intersection = turf.difference(
+                    turf.featureCollection([feature as any, unionized]),
+                );
+                if (intersection) {
+                    intersection.properties = feature.properties;
+                    return intersection;
+                }
+                return { type: "FeatureCollection", features: [] };
+            }
+        } catch (e) {
+            console.error("Error masking stations:", e);
+            return feature;
+        }
+    };
+
     switch (style) {
         case "no-display":
             return { type: "FeatureCollection", features: [] };
         case "no-overlap":
-            return safeUnion(turf.featureCollection(circles));
+            return applyMask(safeUnion(turf.featureCollection(circles)));
         case "stations":
-            return turf.featureCollection(circles);
+            return applyMask(turf.featureCollection(circles));
         case "zones":
         default:
             if (circles.length > 1) {
@@ -1096,13 +1044,15 @@ function styleStations(
                             }
                             return circle;
                         });
-                        return turf.featureCollection(intersectedCircles);
+                        return applyMask(
+                            turf.featureCollection(intersectedCircles as any),
+                        );
                     }
                 } catch (e) {
                     console.error("Error generating voronoi for zones:", e);
                 }
             }
-            return turf.featureCollection(circles);
+            return applyMask(turf.featureCollection(circles));
     }
 }
 

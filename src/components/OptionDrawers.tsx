@@ -18,6 +18,8 @@ import {
     customStations,
     disabledStations,
     displayHidingZonesOptions,
+    displayStationConnections,
+    displayTransitLines,
     followMe,
     hiderMode,
     hidingRadius,
@@ -55,6 +57,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $planningMode = useStore(planningModeEnabled);
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
+    const $displayTransitLines = useStore(displayTransitLines);
+    const $displayStationConnections = useStore(displayStationConnections);
     const [isOptionsOpen, setOptionsOpen] = useState(false);
 
     useEffect(() => {
@@ -328,6 +332,32 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     onCheckedChange={() => {
                                         animateMapMovements.set(
                                             !$animateMapMovements,
+                                        );
+                                    }}
+                                />
+                            </div>
+                            <div className="flex flex-row items-center gap-2 text-center">
+                                <label className="text-xl sm:text-2xl font-semibold font-poppins text-center">
+                                    Show station connections overlay?
+                                </label>
+                                <Checkbox
+                                    checked={$displayStationConnections}
+                                    onCheckedChange={() => {
+                                        displayStationConnections.set(
+                                            !$displayStationConnections,
+                                        );
+                                    }}
+                                />
+                            </div>
+                            <div className="flex flex-row items-center gap-2 text-center">
+                                <label className="text-xl sm:text-2xl font-semibold font-poppins text-center">
+                                    Show transit lines overlay?
+                                </label>
+                                <Checkbox
+                                    checked={$displayTransitLines}
+                                    onCheckedChange={() => {
+                                        displayTransitLines.set(
+                                            !$displayTransitLines,
                                         );
                                     }}
                                 />

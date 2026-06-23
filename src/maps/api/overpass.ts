@@ -1,6 +1,5 @@
 import * as turf from "@turf/turf";
 import type { FeatureCollection, MultiPolygon } from "geojson";
-import _ from "lodash";
 import osmtogeojson from "osmtogeojson";
 import { toast } from "react-toastify";
 
@@ -366,6 +365,7 @@ export const nearestToQuestion = async (
                 drag: false,
                 color: "black",
                 collapsed: false,
+                showLabels: false,
             },
             "Finding matching locations...",
         );
@@ -407,6 +407,7 @@ export const cacheAllPlaces = async () => {
                     drag: false,
                     color: "black",
                     collapsed: false,
+                    showLabels: false,
                 },
                 undefined,
             ),

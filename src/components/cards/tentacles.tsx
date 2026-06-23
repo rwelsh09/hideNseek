@@ -107,6 +107,25 @@ export const TentacleQuestionComponent = ({
                     />
                 </div>
             </SidebarMenuItem>
+            <SidebarMenuItem>
+                <div className="flex flex-row items-center px-4 py-2 hover:bg-slate-100 hover:dark:bg-zinc-800 transition-colors">
+                    <Checkbox
+                        id={`show-labels-${questionKey}`}
+                        checked={data.showLabels}
+                        onCheckedChange={(checked) => {
+                            questionModified((data.showLabels = !!checked));
+                        }}
+                        disabled={!data.drag || $isLoading}
+                        className="mr-2"
+                    />
+                    <label
+                        htmlFor={`show-labels-${questionKey}`}
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                    >
+                        Show Name Labels on Map
+                    </label>
+                </div>
+            </SidebarMenuItem>
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                 <Select
                     trigger="Location Type"

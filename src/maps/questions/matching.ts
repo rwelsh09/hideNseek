@@ -4,6 +4,7 @@ import _ from "lodash";
 import osmtogeojson from "osmtogeojson";
 import { toast } from "react-toastify";
 
+import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
     hiderMode,
     mapGeoJSON,
@@ -15,7 +16,6 @@ import {
     LOCATION_FIRST_TAG,
     nearestToQuestion,
     prettifyLocation,
-    trainLineNodeFinder,
 } from "@/maps/api";
 import { holedMask, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils";
@@ -354,13 +354,8 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
         ]);
         const seekerPoint = turf.point([question.lng, question.lat]);
 
-        const places = osmtogeojson(
-            await findPlacesInZone(
-                "[railway=station]",
-                "Finding train stations. This may take a while. Do not press any buttons while this is processing. Don't worry, it will be cached.",
-                "node",
-            ),
-        ) as FeatureCollection<Point>;
+        const places =
+            calgaryTransitData as unknown as FeatureCollection<Point>;
 
         const nearestHiderTrainStation = turf.nearestPoint(hiderPoint, places);
         const nearestSeekerTrainStation = turf.nearestPoint(
@@ -369,15 +364,12 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
         );
 
         if (question.type === "same-train-line") {
-            const nodes = await trainLineNodeFinder(
-                nearestSeekerTrainStation.properties.id,
-            );
+            const seekerLines: string[] =
+                (nearestSeekerTrainStation.properties as any).lines || [];
+            const hiderLines: string[] =
+                (nearestHiderTrainStation.properties as any).lines || [];
 
-            const hiderId = parseInt(
-                nearestHiderTrainStation.properties.id.split("/")[1],
-            );
-
-            if (nodes.includes(hiderId)) {
+            if (seekerLines.some((l) => hiderLines.includes(l))) {
                 question.same = true;
             } else {
                 question.same = false;
@@ -385,10 +377,10 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
         }
 
         const hiderEnglishName =
-            nearestHiderTrainStation.properties["name:en"] ||
+            (nearestHiderTrainStation.properties as any)["name:en"] ||
             nearestHiderTrainStation.properties.name;
         const seekerEnglishName =
-            nearestSeekerTrainStation.properties["name:en"] ||
+            (nearestSeekerTrainStation.properties as any)["name:en"] ||
             nearestSeekerTrainStation.properties.name;
 
         if (!hiderEnglishName || !seekerEnglishName) {
