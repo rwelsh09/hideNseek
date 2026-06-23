@@ -1,11 +1,23 @@
 import * as turf from "@turf/turf";
 import { describe, expect, test } from "vitest";
 
-import { geoSpatialVoronoi, safeUnion, modifyMapData } from "@/maps/geo-utils/operators";
+import {
+    geoSpatialVoronoi,
+    safeUnion,
+    modifyMapData,
+} from "@/maps/geo-utils/operators";
 
 test("safeUnion handles single feature", () => {
     const singleFeature = turf.featureCollection([
-        turf.polygon([[[0, 0], [0, 1], [1, 1], [1, 0], [0, 0]]])
+        turf.polygon([
+            [
+                [0, 0],
+                [0, 1],
+                [1, 1],
+                [1, 0],
+                [0, 0],
+            ],
+        ]),
     ]);
     const result = safeUnion(singleFeature);
     expect(result).toEqual(singleFeature.features[0]);
@@ -13,8 +25,24 @@ test("safeUnion handles single feature", () => {
 
 test("safeUnion handles multiple features", () => {
     const multiFeature = turf.featureCollection([
-        turf.polygon([[[0, 0], [0, 1], [1, 1], [1, 0], [0, 0]]]),
-        turf.polygon([[[1, 0], [1, 1], [2, 1], [2, 0], [1, 0]]])
+        turf.polygon([
+            [
+                [0, 0],
+                [0, 1],
+                [1, 1],
+                [1, 0],
+                [0, 0],
+            ],
+        ]),
+        turf.polygon([
+            [
+                [1, 0],
+                [1, 1],
+                [2, 1],
+                [2, 0],
+                [1, 0],
+            ],
+        ]),
     ]);
     const result = safeUnion(multiFeature);
     expect(result.geometry.type).toBe("Polygon");

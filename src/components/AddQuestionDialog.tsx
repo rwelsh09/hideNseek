@@ -80,9 +80,9 @@ export function AddQuestionDialog() {
             qData.radius = 15;
             qData.unit = "kilometers";
         } else if (type === "photo") {
-            qId = "radius";
-            qData.radius = 0;
-            qData.unit = "kilometers";
+            qId = "photo";
+            qData.notes = "";
+            qData.type = detail || "camera";
         }
 
         // Add to map immediately

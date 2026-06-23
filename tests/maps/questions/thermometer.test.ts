@@ -1,7 +1,11 @@
 import * as turf from "@turf/turf";
 import { expect, test, describe, vi, beforeEach } from "vitest";
 
-import { adjustPerThermometer, hiderifyThermometer, thermometerPlanningPolygon } from "@/maps/questions/thermometer";
+import {
+    adjustPerThermometer,
+    hiderifyThermometer,
+    thermometerPlanningPolygon,
+} from "@/maps/questions/thermometer";
 import type { ThermometerQuestion } from "@/maps/schema";
 
 vi.mock("@/lib/context", () => ({
@@ -36,34 +40,44 @@ describe("thermometer", () => {
         });
 
         test("should intersect mapData with warmer voronoi polygon", () => {
-            const mapData = turf.featureCollection([turf.polygon([
-                [
-                    [-115.0, 50.0],
-                    [-115.0, 52.0],
-                    [-113.0, 52.0],
-                    [-113.0, 50.0],
-                    [-115.0, 50.0],
-                ]
-            ])]);
+            const mapData = turf.featureCollection([
+                turf.polygon([
+                    [
+                        [-115.0, 50.0],
+                        [-115.0, 52.0],
+                        [-113.0, 52.0],
+                        [-113.0, 50.0],
+                        [-115.0, 50.0],
+                    ],
+                ]),
+            ]);
 
-            const result = adjustPerThermometer({ ...questionTemplate, warmer: true }, mapData);
+            const result = adjustPerThermometer(
+                { ...questionTemplate, warmer: true },
+                mapData,
+            );
             expect(result).toBeDefined();
             expect(result?.type).toBe("Feature");
             // voronoi.features[1] is point B, so this should intersect with that half
         });
 
         test("should intersect mapData with colder voronoi polygon", () => {
-            const mapData = turf.featureCollection([turf.polygon([
-                [
-                    [-115.0, 50.0],
-                    [-115.0, 52.0],
-                    [-113.0, 52.0],
-                    [-113.0, 50.0],
-                    [-115.0, 50.0],
-                ]
-            ])]);
+            const mapData = turf.featureCollection([
+                turf.polygon([
+                    [
+                        [-115.0, 50.0],
+                        [-115.0, 52.0],
+                        [-113.0, 52.0],
+                        [-113.0, 50.0],
+                        [-115.0, 50.0],
+                    ],
+                ]),
+            ]);
 
-            const result = adjustPerThermometer({ ...questionTemplate, warmer: false }, mapData);
+            const result = adjustPerThermometer(
+                { ...questionTemplate, warmer: false },
+                mapData,
+            );
             expect(result).toBeDefined();
             expect(result?.type).toBe("Feature");
         });
@@ -84,10 +98,13 @@ describe("thermometer", () => {
             // Put hider right next to point B
             (hiderMode.get as any).mockReturnValue({
                 latitude: 51.09,
-                longitude: -114.09
+                longitude: -114.09,
             });
 
-            const result = hiderifyThermometer({ ...questionTemplate, warmer: false });
+            const result = hiderifyThermometer({
+                ...questionTemplate,
+                warmer: false,
+            });
 
             expect(result.warmer).toBe(true);
         });
@@ -98,10 +115,13 @@ describe("thermometer", () => {
             // Put hider right next to point A
             (hiderMode.get as any).mockReturnValue({
                 latitude: 51.01,
-                longitude: -114.01
+                longitude: -114.01,
             });
 
-            const result = hiderifyThermometer({ ...questionTemplate, warmer: true });
+            const result = hiderifyThermometer({
+                ...questionTemplate,
+                warmer: true,
+            });
 
             expect(result.warmer).toBe(false);
         });
