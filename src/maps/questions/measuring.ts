@@ -45,9 +45,12 @@ export const determineMeasuringBoundary = async (
                         id: (x.properties as any).id,
                         lat: x.geometry.coordinates[1],
                         lon: x.geometry.coordinates[0],
-                    }))
+                    })),
                 };
-            } else if (question.type === "mcdonalds" || question.type === "seven11") {
+            } else if (
+                question.type === "mcdonalds" ||
+                question.type === "seven11"
+            ) {
                 const pointsData = await findPlacesSpecificInZone(
                     question.type === "mcdonalds"
                         ? QuestionSpecificLocation.McDonalds
@@ -60,10 +63,12 @@ export const determineMeasuringBoundary = async (
                         id: x.properties?.id,
                         lat: x.geometry.coordinates[1],
                         lon: x.geometry.coordinates[0],
-                    }))
+                    })),
                 };
             } else {
-                const location = question.type.split("-full")[0] as APILocations;
+                const location = question.type.split(
+                    "-full",
+                )[0] as APILocations;
                 data = await findPlacesInZone(
                     `[${LOCATION_FIRST_TAG[location]}=${location}]`,
                     `Finding ${prettifyLocation(location, true).toLowerCase()}...`,

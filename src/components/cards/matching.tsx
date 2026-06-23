@@ -15,7 +15,6 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
     customInitPreference,
-    displayHidingZones,
     drawingQuestionKey,
     hiderMode,
     isLoading,
@@ -31,7 +30,6 @@ import {
     determineUnionizedStrings,
     type MatchingQuestion,
     matchingQuestionSchema,
-    NO_GROUP,
 } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
@@ -52,7 +50,6 @@ export const MatchingQuestionComponent = ({
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
     const $questions = useStore(questions);
-    const $displayHidingZones = useStore(displayHidingZones);
     const $drawingQuestionKey = useStore(drawingQuestionKey);
     const $isLoading = useStore(isLoading);
     const $customInitPref = useStore(customInitPreference);
@@ -173,7 +170,6 @@ export const MatchingQuestionComponent = ({
                             )
                             .map((x) => [(x._def as any).value, x.description]),
                     )}
-
                     value={data.type}
                     onValueChange={async (value) => {
                         if (value === "custom-zone") {
