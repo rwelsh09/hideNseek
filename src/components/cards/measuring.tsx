@@ -2,10 +2,7 @@ import { useStore } from "@nanostores/react";
 import { Label } from "@radix-ui/react-label";
 import * as React from "react";
 
-import CustomInitDialog from "@/components/CustomInitDialog";
 import { LatitudeLongitude } from "@/components/LatLngPicker";
-import PresetsDialog from "@/components/PresetsDialog";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Select } from "@/components/ui/select";
 import {
     MENU_ITEM_CLASSNAME,
@@ -13,9 +10,7 @@ import {
 } from "@/components/ui/sidebar-l";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
-    customInitPreference,
     displayHidingZones,
-    drawingQuestionKey,
     hiderMode,
     isLoading,
     penaltyMinutes,
@@ -25,10 +20,7 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
-import {
-    calculateMeasuringDistance,
-    determineMeasuringBoundary,
-} from "@/maps/questions/measuring";
+import { calculateMeasuringDistance } from "@/maps/questions/measuring";
 import {
     determineUnionizedStrings,
     type MeasuringQuestion,
@@ -55,10 +47,7 @@ export const MeasuringQuestionComponent = ({
     const $hiderMode = useStore(hiderMode);
     const $questions = useStore(questions);
     const $displayHidingZones = useStore(displayHidingZones);
-    const $drawingQuestionKey = useStore(drawingQuestionKey);
     const $isLoading = useStore(isLoading);
-    const $customInitPref = useStore(customInitPreference);
-    const [customDialogOpen, setCustomDialogOpen] = React.useState(false);
     const [distanceValue, setDistanceValue] = React.useState<number | null>(
         null,
     );
@@ -74,7 +63,7 @@ export const MeasuringQuestionComponent = ({
         return () => {
             active = false;
         };
-    }, [data.lat, data.lng, data.type, (data as any).geo]);
+    }, [data.lat, data.lng, data.type]);
 
     const label = `Measuring
     ${
@@ -110,36 +99,6 @@ export const MeasuringQuestionComponent = ({
                 </span>
             );
             break;
-        case "custom-measure":
-            if (data.drag) {
-                questionSpecific = (
-                    <>
-                        <p className="px-2 mb-1 text-center text-orange-500">
-                            To modify the measuring question, enable it:
-                            <Checkbox
-                                className="mx-1 my-1"
-                                checked={$drawingQuestionKey === questionKey}
-                                onCheckedChange={(checked) => {
-                                    if (checked) {
-                                        drawingQuestionKey.set(questionKey);
-                                    } else {
-                                        drawingQuestionKey.set(-1);
-                                    }
-                                }}
-                                disabled={!data.drag || $isLoading}
-                            />
-                            and use the buttons at the bottom left of the map.
-                        </p>
-                        <div className="flex justify-center mb-2">
-                            <PresetsDialog
-                                data={data}
-                                presetTypeHint={data.type}
-                            />
-                        </div>
-                    </>
-                );
-            }
-            break;
     }
 
     return (
@@ -169,36 +128,6 @@ export const MeasuringQuestionComponent = ({
                 }
             }}
         >
-            <CustomInitDialog
-                open={customDialogOpen}
-                onOpenChange={setCustomDialogOpen}
-                onBlank={async () => {
-                    if (!(data as any).geo) {
-                        (data as any).geo = {
-                            type: "FeatureCollection",
-                            features: [],
-                        };
-                    } else {
-                        (data as any).geo.features = [];
-                    }
-                    data.type = "custom-measure";
-                    questionModified();
-                    setCustomDialogOpen(false);
-                }}
-                onPrefill={async () => {
-                    const boundary = await determineMeasuringBoundary(data);
-                    if (!(data as any).geo) {
-                        (data as any).geo = {
-                            type: "FeatureCollection",
-                            features: [],
-                        };
-                    }
-                    (data as any).geo.features = boundary ? boundary : [];
-                    data.type = "custom-measure";
-                    questionModified();
-                    setCustomDialogOpen(false);
-                }}
-            />
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                 <Select
                     trigger="Measuring Type"
@@ -251,37 +180,6 @@ export const MeasuringQuestionComponent = ({
                         )}
                     value={data.type}
                     onValueChange={async (value) => {
-                        if (value === "custom-measure") {
-                            if ($customInitPref === "ask") {
-                                setCustomDialogOpen(true);
-                                return;
-                            }
-                            if ($customInitPref === "blank") {
-                                if (!(data as any).geo) {
-                                    (data as any).geo = {
-                                        type: "FeatureCollection",
-                                        features: [],
-                                    };
-                                } else {
-                                    (data as any).geo.features = [];
-                                }
-                            } else if ($customInitPref === "prefill") {
-                                const boundary =
-                                    await determineMeasuringBoundary(data);
-                                if (!(data as any).geo) {
-                                    (data as any).geo = {
-                                        type: "FeatureCollection",
-                                        features: [],
-                                    };
-                                }
-                                (data as any).geo.features = boundary
-                                    ? boundary
-                                    : [];
-                            }
-                            data.type = value;
-                            questionModified();
-                            return;
-                        }
                         data.type = value;
                         questionModified();
                     }}
