@@ -56,16 +56,21 @@ jobs:
                   echo "<h1>Hide and Seek - Deployed Branches</h1><ul>" >> ./root-dist/branches.html
                   echo "<li><a href='./'>master (Root)</a></li>" >> ./root-dist/branches.html
 
+                  git ls-remote --heads origin | awk -F'refs/heads/' '{print $2}' > active_branches.txt
+
                   if [ -d "gh-pages-dir" ]; then
-                      for dir in gh-pages-dir/*/; do
-                          if [ -d "$dir" ]; then
-                              dirname=$(basename "$dir")
-                              # Ignore master and any directory starting with _ or ~
-                              if [ "$dirname" != "master" ] && [[ ! "$dirname" == _* ]] && [[ ! "$dirname" == ~* ]]; then
-                                  echo "<li><a href='./$dirname/'>$dirname</a></li>" >> ./root-dist/branches.html
+                      while IFS= read -r branch; do
+                          # Ignore master and gh-pages
+                          if [ "$branch" != "master" ] && [ "$branch" != "gh-pages" ]; then
+                              # Check if directory exists for this active branch
+                              if [ -d "gh-pages-dir/$branch" ]; then
+                                  # Also ignore if branch name starts with _ or ~
+                                  if [[ ! "$branch" == _* ]] && [[ ! "$branch" == ~* ]]; then
+                                      echo "<li><a href='./$branch/'>$branch</a></li>" >> ./root-dist/branches.html
+                                  fi
                               fi
                           fi
-                      done
+                      done < active_branches.txt
                   fi
 
                   echo "</ul></body></html>" >> ./root-dist/branches.html
