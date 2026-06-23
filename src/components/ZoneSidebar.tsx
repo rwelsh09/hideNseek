@@ -1128,13 +1128,12 @@ async function selectionProcess(
 
         if (
             (question.id === "measuring" || question.id === "matching") &&
-            (question.data.type === "peak" ||
-                question.data.type === "museum" ||
+            (question.data.type === "museum" ||
                 question.data.type === "hospital" ||
                 question.data.type === "cinema" ||
                 question.data.type === "library" ||
                 question.data.type === "golf_course" ||
-                question.data.type === "consulate")
+                false)
         ) {
             const nearestQuestion = await nearestToQuestion(question.data);
             let radius = 30;
@@ -1149,7 +1148,7 @@ async function selectionProcess(
                         radius: radius,
                         unit: "kilometers",
                         location: false,
-                        locationType: question.data.type,
+                        locationType: question.data.type as any,
                         drag: false,
                         color: "black",
                         collapsed: false,

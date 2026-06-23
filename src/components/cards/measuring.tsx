@@ -64,11 +64,13 @@ export const MeasuringQuestionComponent = ({
     );
     React.useEffect(() => {
         let active = true;
-        calculateMeasuringDistance(data).then((dist) => {
-            if (active) setDistanceValue(dist);
-        }).catch(() => {
-            if (active) setDistanceValue(null);
-        });
+        calculateMeasuringDistance(data)
+            .then((dist) => {
+                if (active) setDistanceValue(dist);
+            })
+            .catch(() => {
+                if (active) setDistanceValue(null);
+            });
         return () => {
             active = false;
         };
@@ -97,12 +99,10 @@ export const MeasuringQuestionComponent = ({
             );
             break;
         case "hospital":
-        case "peak":
         case "museum":
         case "cinema":
         case "library":
         case "golf_course":
-        case "consulate":
             questionSpecific = (
                 <span className="px-2 text-center text-orange-500">
                     This question will only influence the map when you click on
