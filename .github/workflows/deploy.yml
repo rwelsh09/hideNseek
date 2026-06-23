@@ -58,6 +58,9 @@ jobs:
 
                   git ls-remote --heads origin | awk -F'refs/heads/' '{print $2}' > active_branches.txt
 
+                  # Clean carriage returns just in case
+                  sed -i 's/\r$//' active_branches.txt
+
                   if [ -d "gh-pages-dir" ]; then
                       while IFS= read -r branch; do
                           # Ignore master and gh-pages
