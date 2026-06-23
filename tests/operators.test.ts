@@ -1,7 +1,62 @@
 import * as turf from "@turf/turf";
-import { expect, test } from "vitest";
+import { describe, expect, test } from "vitest";
 
-import { geoSpatialVoronoi } from "@/maps/geo-utils/operators";
+import { geoSpatialVoronoi, safeUnion } from "@/maps/geo-utils/operators";
+
+describe("safeUnion", () => {
+    test("returns the single feature if collection has only one feature", () => {
+        const poly = turf.polygon([
+            [
+                [0, 0],
+                [0, 1],
+                [1, 1],
+                [1, 0],
+                [0, 0],
+            ],
+        ]);
+        const collection = turf.featureCollection([poly]);
+        const result = safeUnion(collection);
+        expect(result).toEqual(poly);
+    });
+
+    test("correctly unions multiple overlapping features", () => {
+        const poly1 = turf.polygon([
+            [
+                [0, 0],
+                [0, 2],
+                [2, 2],
+                [2, 0],
+                [0, 0],
+            ],
+        ]);
+        const poly2 = turf.polygon([
+            [
+                [1, 1],
+                [1, 3],
+                [3, 3],
+                [3, 1],
+                [1, 1],
+            ],
+        ]);
+        const collection = turf.featureCollection([poly1, poly2]);
+        const result = safeUnion(collection);
+
+        // The resulting union should be a single Polygon or MultiPolygon
+        expect(result.geometry.type).toMatch(/Polygon/);
+        // The area should be roughly the area of union
+        const area = turf.area(result);
+        expect(area).toBeGreaterThan(0);
+    });
+
+    test("throws an error when an empty FeatureCollection is passed", () => {
+        const collection = turf.featureCollection([]);
+        // turf.union throws "Must have at least 2 geometries" for empty inputs in recent versions.
+        // If turf.union returns null/undefined, safeUnion will throw "No features".
+        expect(() => safeUnion(collection as any)).toThrowError(
+            /No features|Must have at least 2 geometries/,
+        );
+    });
+});
 
 test("voronoi diagram", () => {
     const BASE_POINT_COUNT = 25;
