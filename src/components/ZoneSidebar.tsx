@@ -1,14 +1,9 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
-import type {
-    Feature,
-    FeatureCollection,
-    MultiPolygon,
-    Polygon,
-} from "geojson";
+import type { Feature, FeatureCollection } from "geojson";
 import * as L from "leaflet";
 import _ from "lodash";
-import { SidebarCloseIcon } from "lucide-react";
+import { AlertTriangle, SidebarCloseIcon } from "lucide-react";
 import osmtogeojson from "osmtogeojson";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -43,8 +38,11 @@ import {
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import {
+    BLANK_GEOJSON,
     findPlacesInZone,
     findPlacesSpecificInZone,
+    findTentacleLocations,
+    nearestToQuestion,
     normalizeToStationFeatures,
     parseCustomStationsFromText,
     QuestionSpecificLocation,
@@ -121,7 +119,10 @@ export const ZoneSidebar = () => {
         const geoJsonLayer = L.geoJSON(geoJSONData, {
             style: (feature: any) => {
                 let color = "blue";
-                const isSelected = feature?.properties?.id === hidingZoneModeStationID || feature?.properties?.properties?.id === hidingZoneModeStationID;
+                const isSelected =
+                    feature?.properties?.id === hidingZoneModeStationID ||
+                    feature?.properties?.properties?.id ===
+                        hidingZoneModeStationID;
 
                 if (isSelected) {
                     color = "yellow";
@@ -147,19 +148,28 @@ export const ZoneSidebar = () => {
             },
             onEachFeature: nonOverlappingStations
                 ? (feature, layer) => {
-                      const id = feature?.properties?.id || feature?.properties?.properties?.id;
+                      const id =
+                          feature?.properties?.id ||
+                          feature?.properties?.properties?.id;
                       const isSelected = id && id === hidingZoneModeStationID;
 
                       if (isSelected) {
-                          const name = extractStationLabel(feature?.properties) || "Selected Zone";
-                          layer.bindTooltip(name, { permanent: true, direction: "center", className: "bg-black text-white px-2 py-1 rounded" });
+                          const name =
+                              extractStationLabel(feature?.properties) ||
+                              "Selected Zone";
+                          layer.bindTooltip(name, {
+                              permanent: true,
+                              direction: "center",
+                              className:
+                                  "bg-black text-white px-2 py-1 rounded",
+                          });
                       }
 
                       layer.on("click", async () => {
                           if (!map) return;
 
                           setHidingZoneModeStationID((prev) =>
-                              prev === id ? "" : id
+                              prev === id ? "" : id,
                           );
                       });
                   }
@@ -517,10 +527,15 @@ export const ZoneSidebar = () => {
                     `[data-station-id="${hidingZoneModeStationID}"]`,
                 );
                 if (element) {
-                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                    element.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                    });
                     element.classList.add("selected-card-background-temporary");
                     setTimeout(() => {
-                        element.classList.remove("selected-card-background-temporary");
+                        element.classList.remove(
+                            "selected-card-background-temporary",
+                        );
                     }, 5000);
                 }
             }
@@ -570,6 +585,7 @@ export const ZoneSidebar = () => {
                                     "text-orange-500",
                                 )}
                             >
+                                <AlertTriangle className="inline-block w-4 h-4 mr-2" />
                                 Warning: This feature can drastically slow down
                                 your device.
                             </SidebarMenuItem>
@@ -1056,6 +1072,7 @@ function styleStations(
     }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function selectionProcess(
     station: any,
     map: L.Map,
@@ -1102,6 +1119,7 @@ async function selectionProcess(
                         drag: false,
                         color: "black",
                         collapsed: false,
+                        showLabels: false,
                     },
                     "Finding matching locations to hiding zone...",
                 );
