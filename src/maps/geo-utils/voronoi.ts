@@ -24,5 +24,7 @@ export const geoSpatialVoronoi = (
         coord[1] = coord[1] * -ratio; // y-coordinates are flipped
     });
 
-    return turf.toWgs84(projected);
+    return turf.rewind(turf.toWgs84(projected), {
+        mutate: true,
+    }) as any;
 };
