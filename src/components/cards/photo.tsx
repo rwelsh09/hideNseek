@@ -1,4 +1,5 @@
 import { useStore } from "@nanostores/react";
+import { useEffect, useState } from "react";
 
 import { LatitudeLongitude } from "@/components/LatLngPicker";
 import { Input } from "@/components/ui/input";
@@ -34,6 +35,10 @@ export const PhotoQuestionComponent = ({
     useStore(triggerLocalRefresh);
     const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
+    const [localNotes, setLocalNotes] = useState(data.notes);
+    useEffect(() => {
+        setLocalNotes(data.notes);
+    }, [data.notes]);
     const label = `Photo
     ${
         $questions
@@ -75,11 +80,14 @@ export const PhotoQuestionComponent = ({
                         type="text"
                         placeholder="Enter information about the photo..."
                         className="rounded-md p-2 w-full"
-                        value={data.notes}
+                        value={localNotes}
                         disabled={!data.drag || $isLoading}
-                        onChange={(e) =>
-                            questionModified((data.notes = e.target.value))
-                        }
+                        onChange={(e) => setLocalNotes(e.target.value)}
+                        onBlur={() => {
+                            if (data.notes !== localNotes) {
+                                questionModified((data.notes = localNotes));
+                            }
+                        }}
                     />
                 </div>
             </SidebarMenuItem>
