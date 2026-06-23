@@ -77,10 +77,6 @@ export const determineMeasuringBoundary = async (
                 ).features[0],
             ];
         }
-        case "custom-measure":
-            return turf.combine(
-                turf.featureCollection((question as any).geo.features),
-            ).features;
         case "museum":
         case "hospital":
         case "cinema":
@@ -113,7 +109,6 @@ const bufferedDeterminer = _.memoize(
             entirety: polyGeoJSON.get()
                 ? polyGeoJSON.get()
                 : mapGeoLocation.get(),
-            geo: (question as any).geo,
         }),
 );
 
@@ -311,8 +306,7 @@ export const calculateMeasuringDistance = async (
         case "hospital-full":
         case "cinema-full":
         case "library-full":
-        case "golf_course-full":
-        case "custom-measure": {
+        case "golf_course-full": {
             const boundaryData = await determineMeasuringBoundary(question);
             if (
                 !boundaryData ||
