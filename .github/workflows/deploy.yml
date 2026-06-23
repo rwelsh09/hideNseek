@@ -2,11 +2,13 @@ name: Deploy to GitHub Pages
 
 on:
     push:
-        branches: [master]
+        branches:
+            - master
+            - "**"
     workflow_dispatch:
 
 permissions:
-    contents: read
+    contents: write
     pages: write
     id-token: write
 
@@ -15,21 +17,26 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout your repository using git
-              uses: actions/checkout@v7
+              uses: actions/checkout@v4
+
+            - name: Extract branch name
+              shell: bash
+              run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+              id: extract_branch
+
             - name: Install, build, and upload your site
-              uses: withastro/action@v6.1.1
+              uses: withastro/action@v3
+              env:
+                  BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
               with:
                   path: .
                   node-version: 22
                   package-manager: pnpm@latest
 
-    deploy:
-        needs: build
-        runs-on: ubuntu-latest
-        environment:
-            name: github-pages
-            url: ${{ steps.deployment.outputs.page_url }}
-        steps:
-            - name: Deploy to GitHub Pages
-              id: deployment
-              uses: actions/deploy-pages@v5
+            - name: Deploy
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./dist
+                  keep_files: true
+                  destination_dir: ${{ steps.extract_branch.outputs.branch == 'master' && '.' || steps.extract_branch.outputs.branch }}
