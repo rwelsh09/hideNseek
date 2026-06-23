@@ -77,7 +77,7 @@ export function AddQuestionDialog() {
             };
         } else if (type === "tentacles") {
             qData.locationType = detail || "museum";
-            qData.radius = 15;
+            qData.radius = 2;
             qData.unit = "kilometers";
         } else if (type === "photo") {
             qId = "radius";

@@ -12,13 +12,16 @@ describe("geocode", () => {
             features: [
                 {
                     type: "Feature",
-                    geometry: { type: "Point", coordinates: [-114.0708, 51.0447] },
+                    geometry: {
+                        type: "Point",
+                        coordinates: [-114.0708, 51.0447],
+                    },
                     properties: {
                         osm_type: "R",
                         osm_id: 1,
                         name: "Calgary",
-                        extent: [1, 2, 3, 4]
-                    }
+                        extent: [1, 2, 3, 4],
+                    },
                 },
                 {
                     type: "Feature",
@@ -27,27 +30,34 @@ describe("geocode", () => {
                         osm_type: "N",
                         osm_id: 2,
                         name: "Calgary Something",
-                        extent: [1, 2, 3, 4]
-                    }
+                        extent: [1, 2, 3, 4],
+                    },
                 },
                 {
                     type: "Feature",
-                    geometry: { type: "Point", coordinates: [-114.0708, 51.0447] },
+                    geometry: {
+                        type: "Point",
+                        coordinates: [-114.0708, 51.0447],
+                    },
                     properties: {
                         osm_type: "R",
                         osm_id: 1,
                         name: "Calgary Duplicate",
-                        extent: [5, 6, 7, 8]
-                    }
-                }
-            ]
+                        extent: [5, 6, 7, 8],
+                    },
+                },
+            ],
         };
 
-        const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue(new Response(JSON.stringify(mockResponse)));
+        const fetchSpy = vi
+            .spyOn(global, "fetch")
+            .mockResolvedValue(new Response(JSON.stringify(mockResponse)));
 
         const result = await geocode("Calgary", "en");
 
-        expect(fetchSpy).toHaveBeenCalledWith(`${GEOCODER_API}?lang=en&q=Calgary`);
+        expect(fetchSpy).toHaveBeenCalledWith(
+            `${GEOCODER_API}?lang=en&q=Calgary`,
+        );
 
         // It should filter by osm_type R (removing N), and be unique by osm_id (removing duplicate id 1)
         expect(result.length).toBe(1);
@@ -65,17 +75,22 @@ describe("geocode", () => {
             features: [
                 {
                     type: "Feature",
-                    geometry: { type: "Point", coordinates: [-114.0708, 51.0447] },
+                    geometry: {
+                        type: "Point",
+                        coordinates: [-114.0708, 51.0447],
+                    },
                     properties: {
                         osm_type: "R",
                         osm_id: 1,
-                        name: "Calgary"
-                    }
-                }
-            ]
+                        name: "Calgary",
+                    },
+                },
+            ],
         };
 
-        vi.spyOn(global, 'fetch').mockResolvedValue(new Response(JSON.stringify(mockResponse)));
+        vi.spyOn(global, "fetch").mockResolvedValue(
+            new Response(JSON.stringify(mockResponse)),
+        );
 
         const result = await geocode("Calgary", "en");
         expect(result.length).toBe(1);
@@ -88,17 +103,23 @@ describe("geocode", () => {
                 {
                     type: "Feature",
                     geometry: { type: "Point", coordinates: [-114.0, 51.0] },
-                    properties: { osm_type: "R", osm_id: 1, name: "Calgary" }
+                    properties: { osm_type: "R", osm_id: 1, name: "Calgary" },
                 },
                 {
                     type: "Feature",
                     geometry: { type: "Point", coordinates: [-113.0, 52.0] },
-                    properties: { osm_type: "N", osm_id: 2, name: "Calgary Node" }
-                }
-            ]
+                    properties: {
+                        osm_type: "N",
+                        osm_id: 2,
+                        name: "Calgary Node",
+                    },
+                },
+            ],
         };
 
-        vi.spyOn(global, 'fetch').mockResolvedValue(new Response(JSON.stringify(mockResponse)));
+        vi.spyOn(global, "fetch").mockResolvedValue(
+            new Response(JSON.stringify(mockResponse)),
+        );
 
         const result = await geocode("Calgary", "en", false);
         expect(result.length).toBe(2);
