@@ -33,10 +33,48 @@ jobs:
                   node-version: 22
                   package-manager: pnpm@latest
 
-            - name: Deploy
+            - name: Deploy branch content
               uses: peaceiris/actions-gh-pages@v3
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   publish_dir: ./dist
                   keep_files: true
                   destination_dir: ${{ steps.extract_branch.outputs.branch == 'master' && '.' || steps.extract_branch.outputs.branch }}
+
+            - name: Checkout gh-pages to generate index
+              uses: actions/checkout@v4
+              with:
+                  ref: gh-pages
+                  path: gh-pages-dir
+              continue-on-error: true
+
+            - name: Generate branches.html
+              if: always()
+              run: |
+                  mkdir -p ./root-dist
+                  echo "<!DOCTYPE html><html><head><title>Deployed Branches</title><style>body{font-family:sans-serif;margin:2rem;background:#1F2F3F;color:#fff;}a{color:#4da6ff;text-decoration:none;}a:hover{text-decoration:underline;}ul{list-style-type:none;padding:0;}li{margin:0.5rem 0;padding:1rem;background:#2a3f54;border-radius:8px;}</style></head><body>" > ./root-dist/branches.html
+                  echo "<h1>Hide and Seek - Deployed Branches</h1><ul>" >> ./root-dist/branches.html
+                  echo "<li><a href='./'>master (Root)</a></li>" >> ./root-dist/branches.html
+
+                  if [ -d "gh-pages-dir" ]; then
+                      for dir in gh-pages-dir/*/; do
+                          if [ -d "$dir" ]; then
+                              dirname=$(basename "$dir")
+                              # Ignore master and any directory starting with _ or ~
+                              if [ "$dirname" != "master" ] && [[ ! "$dirname" == _* ]] && [[ ! "$dirname" == ~* ]]; then
+                                  echo "<li><a href='./$dirname/'>$dirname</a></li>" >> ./root-dist/branches.html
+                              fi
+                          fi
+                      done
+                  fi
+
+                  echo "</ul></body></html>" >> ./root-dist/branches.html
+
+            - name: Deploy branches.html to root
+              if: always()
+              uses: peaceiris/actions-gh-pages@v3
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  publish_dir: ./root-dist
+                  keep_files: true
+                  destination_dir: .
