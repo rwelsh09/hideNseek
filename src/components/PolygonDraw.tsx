@@ -2,9 +2,10 @@ import "leaflet-draw/dist/leaflet.draw.css";
 
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
+import * as L from "leaflet";
 import _ from "lodash";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { FeatureGroup, Marker } from "react-leaflet";
+import { FeatureGroup, Marker, Polygon, Polyline } from "react-leaflet";
 import { EditControl } from "react-leaflet-draw";
 
 import {
@@ -15,7 +16,11 @@ import {
     save,
 } from "@/lib/context";
 import { lngLatToText } from "@/maps/geo-utils";
-import type { CustomTentacleQuestion, Question } from "@/maps/schema";
+import type {
+    CustomMeasuringQuestion,
+    CustomTentacleQuestion,
+    Question,
+} from "@/maps/schema";
 
 import { LatitudeLongitude } from "./LatLngPicker";
 import { Dialog, DialogContent } from "./ui/dialog";
@@ -25,6 +30,24 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "./ui/sidebar-l";
+
+// Cache static styles to prevent react-leaflet from re-rendering layers unnecessarily via setStyle()
+const RED_PATH_OPTIONS = { color: "red" };
+const INVISIBLE_SHAPE_OPTIONS = { shapeOptions: { fillOpacity: 0 } };
+
+const swapCoordinates = (geojson: any) => {
+    return JSON.parse(JSON.stringify(geojson), (key, value) => {
+        if (
+            Array.isArray(value) &&
+            value.length >= 2 &&
+            typeof value[0] === "number" &&
+            typeof value[1] === "number"
+        ) {
+            return [value[1], value[0], ...value.slice(2)];
+        }
+        return value;
+    });
+};
 
 const TentacleMarker = ({
     point,
@@ -97,6 +120,69 @@ const TentacleMarker = ({
     );
 };
 
+const MeasuringPointMarker = ({
+    point,
+}: {
+    point: CustomMeasuringQuestion["geo"]["features"][number];
+}) => {
+    const $autoSave = useStore(autoSave);
+    const [open, setOpen] = useState(false);
+
+    const eventHandlers = useMemo(
+        () => ({
+            click: () => {
+                setOpen(true);
+            },
+        }),
+        [],
+    );
+
+    return (
+        <Dialog open={open} onOpenChange={setOpen}>
+            <Marker
+                position={[
+                    point.geometry.coordinates[1],
+                    point.geometry.coordinates[0],
+                ]}
+                // @ts-expect-error This is passed to options, so it is not typed
+                isDialog={true}
+                eventHandlers={eventHandlers}
+            />
+            <DialogContent>
+                <div className="flex flex-col gap-2">
+                    <SidebarMenu>
+                        <LatitudeLongitude
+                            latitude={point.geometry.coordinates[1]}
+                            longitude={point.geometry.coordinates[0]}
+                            inlineEdit
+                            onChange={(lat, lng) => {
+                                if (lat) {
+                                    point.geometry.coordinates[1] = lat;
+                                }
+                                if (lng) {
+                                    point.geometry.coordinates[0] = lng;
+                                }
+
+                                questionModified();
+                            }}
+                        />
+                        {!$autoSave && (
+                            <SidebarMenuItem>
+                                <SidebarMenuButton
+                                    className="bg-blue-600 p-2 rounded-md font-semibold font-poppins transition-shadow duration-500 mt-2"
+                                    onClick={save}
+                                >
+                                    Save
+                                </SidebarMenuButton>
+                            </SidebarMenuItem>
+                        )}
+                    </SidebarMenu>
+                </div>
+            </DialogContent>
+        </Dialog>
+    );
+};
+
 export const PolygonDraw = () => {
     const $drawingQuestionKey = useStore(drawingQuestionKey);
     const $questions = useStore(questions);
@@ -110,6 +196,14 @@ export const PolygonDraw = () => {
 
         if (question?.data.drag === false) {
             drawingQuestionKey.set(-1);
+        }
+        if (question?.id === "matching") {
+            L.drawLocal.draw.toolbar.buttons.polygon =
+                "Draw the matching zone(s)!";
+        }
+        if (question?.id === "measuring") {
+            L.drawLocal.draw.toolbar.buttons.polygon =
+                "Draw the measuring zone(s)!";
         }
     }
 
@@ -147,6 +241,54 @@ export const PolygonDraw = () => {
                 });
             }
             questionModified();
+        } else if (
+            question?.id === "matching" &&
+            question.data.type === "custom-zone"
+        ) {
+            if (!featureRef.current?._layers) return;
+
+            const layers = featureRef.current._layers;
+            const geoJSONs = Object.values(layers).map((layer: any) =>
+                layer.toGeoJSON(),
+            );
+            const geoJSON = turf.combine(turf.featureCollection(geoJSONs))
+                .features[0];
+
+            question.data.geo = geoJSON;
+            if (featureRef.current) {
+                Object.values(featureRef.current._layers).map((layer: any) => {
+                    if (!layer.options.isSpecial) {
+                        featureRef.current.removeLayer(layer);
+                    }
+                });
+            }
+            questionModified();
+        } else if (
+            question?.id === "measuring" &&
+            question.data.type === "custom-measure"
+        ) {
+            if (!featureRef.current?._layers) return;
+
+            const layers = featureRef.current._layers;
+            const geoJSONs = Object.values(layers).map((layer: any) =>
+                layer.toGeoJSON(),
+            );
+            const geoJSON = turf.featureCollection(geoJSONs);
+
+            question.data.geo = turf.featureCollection(
+                _.uniqBy(
+                    geoJSON.features as CustomTentacleQuestion["places"],
+                    (x) => x.geometry.coordinates.join(","),
+                ),
+            ); // Sometimes keys are duplicated
+            if (featureRef.current) {
+                Object.values(featureRef.current._layers).map((layer: any) => {
+                    if (!layer.options.isSpecial && !layer.options.isDialog) {
+                        featureRef.current.removeLayer(layer);
+                    }
+                });
+            }
+            questionModified();
         }
     };
 
@@ -167,6 +309,72 @@ export const PolygonDraw = () => {
                         point={x}
                     />
                 ))}
+            {question &&
+                question.id === "measuring" &&
+                question.data.type === "custom-measure" &&
+                turf
+                    .flatten(question.data.geo)
+                    .features.filter((x: any) => turf.getType(x) === "Point")
+                    .map((x: any) => (
+                        <MeasuringPointMarker
+                            key={x.geometry.coordinates.join(",")}
+                            point={x}
+                        />
+                    ))}
+            {question &&
+                question.id === "measuring" &&
+                question.data.type === "custom-measure" &&
+                turf
+                    .flatten(question.data.geo)
+                    .features.filter((x: any) => turf.getType(x) === "Polygon")
+                    .map((x: any) => (
+                        <Polygon
+                            key={x.geometry.coordinates.join(",")}
+                            positions={swapCoordinates(x.geometry.coordinates)}
+                            // @ts-expect-error This is passed to options, so it is not typed
+                            isSpecial={true}
+                            stroke
+                            pathOptions={RED_PATH_OPTIONS}
+                            fill={false}
+                        />
+                    ))}
+            {question &&
+                question.id === "measuring" &&
+                question.data.type === "custom-measure" &&
+                turf
+                    .flatten(question.data.geo)
+                    .features.filter(
+                        (x: any) => turf.getType(x) === "LineString",
+                    )
+                    .map((x: any) => (
+                        <Polyline
+                            key={x.geometry.coordinates.join(",")}
+                            positions={swapCoordinates(x.geometry.coordinates)}
+                            // @ts-expect-error This is passed to options, so it is not typed
+                            isSpecial={true}
+                            stroke
+                            pathOptions={RED_PATH_OPTIONS}
+                            fill={false}
+                        />
+                    ))}
+            {question &&
+                question.id === "matching" &&
+                question.data.type === "custom-zone" &&
+                question.data.geo &&
+                (question.data.geo.type === "FeatureCollection"
+                    ? turf.flatten(question.data.geo)
+                    : turf.flatten(turf.featureCollection([question.data.geo]))
+                ).features.map((x: any) => (
+                    <Polygon
+                        key={JSON.stringify(x)}
+                        positions={swapCoordinates(x.geometry.coordinates)}
+                        // @ts-expect-error This is passed to options, so it is not typed
+                        isSpecial={true}
+                        stroke
+                        pathOptions={RED_PATH_OPTIONS}
+                        fill={false}
+                    />
+                ))}
             <EditControl
                 position="bottomleft"
                 edit={{ edit: false, remove: false }}
@@ -174,9 +382,17 @@ export const PolygonDraw = () => {
                     rectangle: false,
                     circle: false,
                     circlemarker: false,
-                    marker: question?.id === "tentacles" ? true : false,
-                    polyline: false,
-                    polygon: false,
+                    marker:
+                        question?.id === "tentacles" ||
+                        question?.id === "measuring"
+                            ? true
+                            : false,
+                    polyline: question?.id === "measuring",
+                    polygon: question
+                        ? question.id === "tentacles"
+                            ? false
+                            : INVISIBLE_SHAPE_OPTIONS
+                        : false,
                 }}
                 onCreated={onChange}
                 onEdited={onChange}

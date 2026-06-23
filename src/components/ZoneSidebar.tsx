@@ -2,6 +2,7 @@ import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
 import type { Feature, FeatureCollection } from "geojson";
 import * as L from "leaflet";
+import _ from "lodash";
 import { AlertTriangle, SidebarCloseIcon } from "lucide-react";
 import osmtogeojson from "osmtogeojson";
 import { useEffect, useRef, useState } from "react";
@@ -37,11 +38,8 @@ import {
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import {
-    BLANK_GEOJSON,
     findPlacesInZone,
     findPlacesSpecificInZone,
-    findTentacleLocations,
-    nearestToQuestion,
     normalizeToStationFeatures,
     parseCustomStationsFromText,
     QuestionSpecificLocation,
@@ -52,6 +50,7 @@ import {
     extractStationLabel,
     extractStationName,
     geoSpatialVoronoi,
+    holedMask,
     lngLatToText,
     mergeDuplicateStation,
     safeUnion,
@@ -583,11 +582,9 @@ export const ZoneSidebar = () => {
                                     "text-orange-500",
                                 )}
                             >
-                                <AlertTriangle className="w-4 h-4 mr-2 inline" />
-                                <span>
-                                    Warning: This feature can drastically slow
-                                    down your device.
-                                </span>
+                                <AlertTriangle className="inline-block w-4 h-4 mr-2" />
+                                Warning: This feature can drastically slow down
+                                your device.
                             </SidebarMenuItem>
                             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                                 <Label className="font-semibold font-poppins">
@@ -1119,7 +1116,6 @@ async function selectionProcess(
                         drag: false,
                         color: "black",
                         collapsed: false,
-                        showLabels: false,
                     },
                     "Finding matching locations to hiding zone...",
                 );

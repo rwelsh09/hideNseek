@@ -1,7 +1,11 @@
 import { useStore } from "@nanostores/react";
 import * as React from "react";
+import { toast } from "react-toastify";
 
+import CustomInitDialog from "@/components/CustomInitDialog";
 import { LatitudeLongitude } from "@/components/LatLngPicker";
+import PresetsDialog from "@/components/PresetsDialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import {
@@ -10,7 +14,9 @@ import {
 } from "@/components/ui/sidebar-l";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
+    customInitPreference,
     displayHidingZones,
+    drawingQuestionKey,
     hiderMode,
     isLoading,
     penaltyMinutes,
@@ -20,6 +26,7 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
+import { determineMatchingBoundary } from "@/maps/questions/matching";
 import {
     determineUnionizedStrings,
     type MatchingQuestion,
@@ -46,7 +53,13 @@ export const MatchingQuestionComponent = ({
     const $hiderMode = useStore(hiderMode);
     const $questions = useStore(questions);
     const $displayHidingZones = useStore(displayHidingZones);
+    const $drawingQuestionKey = useStore(drawingQuestionKey);
     const $isLoading = useStore(isLoading);
+    const $customInitPref = useStore(customInitPreference);
+    const [customDialogOpen, setCustomDialogOpen] = React.useState(false);
+    const [pendingCustomType, setPendingCustomType] = React.useState<
+        "custom-zone" | null
+    >(null);
     const label = `Matching
     ${
         $questions
@@ -72,6 +85,35 @@ export const MatchingQuestionComponent = ({
                 </span>
             );
             break;
+        case "custom-zone":
+            if (data.drag) {
+                questionSpecific = (
+                    <>
+                        <p className="px-2 mb-1 text-center text-orange-500">
+                            To modify the matching zones, enable it:
+                            <Checkbox
+                                className="mx-1 my-1"
+                                checked={$drawingQuestionKey === questionKey}
+                                onCheckedChange={(checked) => {
+                                    if (checked) {
+                                        drawingQuestionKey.set(questionKey);
+                                    } else {
+                                        drawingQuestionKey.set(-1);
+                                    }
+                                }}
+                                disabled={$isLoading}
+                            />
+                            and use the buttons at the bottom left of the map.
+                        </p>
+                        <div className="flex justify-center mb-2">
+                            <PresetsDialog
+                                data={data}
+                                presetTypeHint={data.type}
+                            />
+                        </div>
+                    </>
+                );
+            }
     }
 
     return (
@@ -101,6 +143,25 @@ export const MatchingQuestionComponent = ({
                 }
             }}
         >
+            <CustomInitDialog
+                open={customDialogOpen}
+                onOpenChange={setCustomDialogOpen}
+                onBlank={async () => {
+                    if (!pendingCustomType) return;
+                    (data as any).geo = undefined;
+                    toast.info("Please draw the zone on the map.");
+                    data.type = pendingCustomType;
+                    questionModified();
+                    setCustomDialogOpen(false);
+                }}
+                onPrefill={async () => {
+                    if (!pendingCustomType) return;
+                    (data as any).geo = await determineMatchingBoundary(data);
+                    data.type = pendingCustomType;
+                    questionModified();
+                    setCustomDialogOpen(false);
+                }}
+            />
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                 <Select
                     trigger="Matching Type"
@@ -153,6 +214,28 @@ export const MatchingQuestionComponent = ({
                         )}
                     value={data.type}
                     onValueChange={async (value) => {
+                        if (value === "custom-zone") {
+                            if ($customInitPref === "ask") {
+                                setPendingCustomType(value);
+                                setCustomDialogOpen(true);
+                                return;
+                            }
+                            // Apply preference without dialog
+                            if ($customInitPref === "blank") {
+                                (data as any).geo = undefined;
+                                toast.info("Please draw the zone on the map.");
+                            } else if ($customInitPref === "prefill") {
+                                (data as any).geo =
+                                    await determineMatchingBoundary(data);
+                            }
+                            // The category should be defined such that no error is thrown if this is a zone question.
+                            if (!(data as any).cat) {
+                                (data as any).cat = { adminLevel: 3 };
+                            }
+                            questionModified((data.type = value));
+                            return;
+                        }
+
                         if (value === "same-length-station") {
                             data.lengthComparison = "same";
                             data.same = true;
@@ -169,21 +252,23 @@ export const MatchingQuestionComponent = ({
             </SidebarMenuItem>
             {questionSpecific}
 
-            <LatitudeLongitude
-                latitude={data.lat}
-                longitude={data.lng}
-                colorName={data.color}
-                onChange={(lat, lng) => {
-                    if (lat !== null) {
-                        data.lat = lat;
-                    }
-                    if (lng !== null) {
-                        data.lng = lng;
-                    }
-                    questionModified();
-                }}
-                disabled={!data.drag || $isLoading}
-            />
+            {data.type !== "custom-zone" && (
+                <LatitudeLongitude
+                    latitude={data.lat}
+                    longitude={data.lng}
+                    colorName={data.color}
+                    onChange={(lat, lng) => {
+                        if (lat !== null) {
+                            data.lat = lat;
+                        }
+                        if (lng !== null) {
+                            data.lng = lng;
+                        }
+                        questionModified();
+                    }}
+                    disabled={!data.drag || $isLoading}
+                />
+            )}
             {!isPreview && (
                 <div
                     className={cn(

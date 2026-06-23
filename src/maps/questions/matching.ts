@@ -167,6 +167,10 @@ export const determineMatchingBoundary = _.memoize(
                 }
                 break;
             }
+            case "custom-zone": {
+                boundary = question.geo;
+                break;
+            }
             case "museum-full":
             case "hospital-full":
             case "cinema-full":
@@ -189,12 +193,13 @@ export const determineMatchingBoundary = _.memoize(
 
         return boundary;
     },
-    (question: MatchingQuestion & { cat?: unknown }) =>
+    (question: MatchingQuestion & { geo?: unknown; cat?: unknown }) =>
         JSON.stringify({
             type: question.type,
             lat: question.lat,
             lng: question.lng,
             cat: question.cat,
+            geo: question.geo,
             entirety: polyGeoJSON.get()
                 ? polyGeoJSON.get()
                 : mapGeoLocation.get(),

@@ -227,8 +227,14 @@ const hidingZoneMatchingQuestionsSchema = baseMatchingQuestionSchema.extend({
     ]),
 });
 
+const customMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
+    type: z.literal("custom-zone").describe("Custom Zone Question"),
+    geo: z.any(),
+});
+
 export const matchingQuestionSchema = z.union([
     ordinaryMatchingQuestionSchema.describe(NO_GROUP),
+    customMatchingQuestionSchema.describe(NO_GROUP),
     hidingZoneMatchingQuestionsSchema.describe("Hiding Zone Mode"),
     homeGameMatchingQuestionsSchema.describe("Hiding Zone Mode"),
 ]);
@@ -267,8 +273,14 @@ const homeGameMeasuringQuestionsSchema = baseMeasuringQuestionSchema.extend({
     ]),
 });
 
+const customMeasuringQuestionSchema = baseMeasuringQuestionSchema.extend({
+    type: z.literal("custom-measure").describe("Custom Measuring Question"),
+    geo: z.any(),
+});
+
 export const measuringQuestionSchema = z.union([
     ordinaryMeasuringQuestionSchema.describe(NO_GROUP),
+    customMeasuringQuestionSchema.describe(NO_GROUP),
     hidingZoneMeasuringQuestionsSchema.describe("Hiding Zone Mode"),
     homeGameMeasuringQuestionsSchema.describe("Hiding Zone Mode"),
 ]);
@@ -311,6 +323,12 @@ export type APILocations = z.infer<typeof apiLocationSchema>;
 export type MatchingQuestion = z.infer<typeof matchingQuestionSchema>;
 export type HomeGameMatchingQuestions = z.infer<
     typeof homeGameMatchingQuestionsSchema
+>;
+export type CustomMatchingQuestion = z.infer<
+    typeof customMatchingQuestionSchema
+>;
+export type CustomMeasuringQuestion = z.infer<
+    typeof customMeasuringQuestionSchema
 >;
 export type MeasuringQuestion = z.infer<typeof measuringQuestionSchema>;
 export type HomeGameMeasuringQuestions = z.infer<
