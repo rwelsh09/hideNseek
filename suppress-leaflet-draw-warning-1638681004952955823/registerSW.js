@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/suppress-leaflet-draw-warning-1638681004952955823/sw.js', { scope: '/HideAndSeek/suppress-leaflet-draw-warning-1638681004952955823/' })})}
