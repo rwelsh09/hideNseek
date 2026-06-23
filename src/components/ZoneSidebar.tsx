@@ -43,11 +43,8 @@ import {
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import {
-    BLANK_GEOJSON,
     findPlacesInZone,
     findPlacesSpecificInZone,
-    findTentacleLocations,
-    nearestToQuestion,
     normalizeToStationFeatures,
     parseCustomStationsFromText,
     QuestionSpecificLocation,
@@ -124,17 +121,23 @@ export const ZoneSidebar = () => {
         const geoJsonLayer = L.geoJSON(geoJSONData, {
             style: (feature: any) => {
                 let color = "blue";
-                const transitType =
-                    feature?.properties?.properties?.transit_type ||
-                    feature?.properties?.transit_type;
-                if (transitType === "CTrain Station") {
-                    color = "red";
-                } else if (transitType === "MAX Station") {
-                    color = "blue";
-                } else if (transitType === "CTrain & MAX Hub") {
-                    color = "purple";
+                const isSelected = feature?.properties?.id === hidingZoneModeStationID || feature?.properties?.properties?.id === hidingZoneModeStationID;
+
+                if (isSelected) {
+                    color = "yellow";
                 } else {
-                    color = "green";
+                    const transitType =
+                        feature?.properties?.properties?.transit_type ||
+                        feature?.properties?.transit_type;
+                    if (transitType === "CTrain Station") {
+                        color = "red";
+                    } else if (transitType === "MAX Station") {
+                        color = "blue";
+                    } else if (transitType === "CTrain & MAX Hub") {
+                        color = "purple";
+                    } else {
+                        color = "green";
+                    }
                 }
                 return {
                     color: color,
@@ -144,10 +147,19 @@ export const ZoneSidebar = () => {
             },
             onEachFeature: nonOverlappingStations
                 ? (feature, layer) => {
+                      const id = feature?.properties?.id || feature?.properties?.properties?.id;
+                      const isSelected = id && id === hidingZoneModeStationID;
+
+                      if (isSelected) {
+                          const name = extractStationLabel(feature?.properties) || "Selected Zone";
+                          layer.bindTooltip(name, { permanent: true, direction: "center", className: "bg-black text-white px-2 py-1 rounded" });
+                      }
+
                       layer.on("click", async () => {
                           if (!map) return;
-                          setHidingZoneModeStationID(
-                              feature.properties.properties.id,
+
+                          setHidingZoneModeStationID((prev) =>
+                              prev === id ? "" : id
                           );
                       });
                   }
@@ -487,31 +499,7 @@ export const ZoneSidebar = () => {
     useEffect(() => {
         if (!map || isLoading.get()) return;
 
-        if ($displayHidingZones && hidingZoneModeStationID) {
-            const hiderStation = _.find(
-                stations,
-                (c) => c.properties.properties.id === hidingZoneModeStationID,
-            );
-            if (hiderStation !== undefined) {
-                selectionProcess(
-                    hiderStation,
-                    map,
-                    stations,
-                    showGeoJSON,
-                    $questionFinishedMapData,
-                    $hidingRadius,
-                ).catch(() => {
-                    toast.error(
-                        "An error occurred during hiding zone selection",
-                        { toastId: "hiding-zone-selection-error" },
-                    );
-                });
-            } else {
-                toast.error("Invalid hiding zone selected", {
-                    toastId: "hiding-zone-selection-error",
-                });
-            }
-        } else if ($displayHidingZones) {
+        if ($displayHidingZones) {
             const activeStations = stations.filter(
                 (x) => !$disabledStations.includes(x.properties.properties.id),
             );
@@ -523,6 +511,19 @@ export const ZoneSidebar = () => {
                 ),
                 $displayHidingZonesStyle === "zones",
             );
+
+            if (hidingZoneModeStationID) {
+                const element: HTMLDivElement | null = document.querySelector(
+                    `[data-station-id="${hidingZoneModeStationID}"]`,
+                );
+                if (element) {
+                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                    element.classList.add("selected-card-background-temporary");
+                    setTimeout(() => {
+                        element.classList.remove("selected-card-background-temporary");
+                    }, 5000);
+                }
+            }
         } else {
             removeHidingZones();
         }
@@ -1055,260 +1056,3 @@ function styleStations(
     }
 }
 
-async function selectionProcess(
-    station: any,
-    map: L.Map,
-    stations: any[],
-    showGeoJSON: (geoJSONData: any) => void,
-    $questionFinishedMapData: any,
-    $hidingRadius: number,
-) {
-    let mapData: any = turf.featureCollection([
-        safeUnion(
-            turf.featureCollection([
-                ...$questionFinishedMapData.features,
-                turf.mask(station),
-            ]),
-        ),
-    ]);
-
-    for (const question of questions.get()) {
-        if (planningModeEnabled.get() && question.data.drag) continue;
-
-        if (
-            (question.id === "measuring" || question.id === "matching") &&
-            (question.data.type === "peak" ||
-                question.data.type === "museum" ||
-                question.data.type === "hospital" ||
-                question.data.type === "cinema" ||
-                question.data.type === "library" ||
-                question.data.type === "golf_course" ||
-                question.data.type === "consulate")
-        ) {
-            const nearestQuestion = await nearestToQuestion(question.data);
-            let radius = 30;
-            let instances: any = { features: [] };
-            const nearestPoints = [];
-
-            while (instances.features.length === 0) {
-                instances = await findTentacleLocations(
-                    {
-                        lat: station.properties.geometry.coordinates[1],
-                        lng: station.properties.geometry.coordinates[0],
-                        radius: radius,
-                        unit: "kilometers",
-                        location: false,
-                        locationType: question.data.type,
-                        drag: false,
-                        color: "black",
-                        collapsed: false,
-                    },
-                    "Finding matching locations to hiding zone...",
-                );
-
-                const distances: any[] = instances.features.map((x: any) => {
-                    return {
-                        distance: turf.distance(
-                            turf.point(turf.getCoord(x)),
-                            station.properties,
-                            { units: "kilometers" },
-                        ),
-                        point: x,
-                    };
-                });
-
-                if (distances.length === 0) {
-                    radius += 30;
-                    continue;
-                }
-
-                const minimumPoint = _.minBy(distances, "distance")!;
-                if (minimumPoint.distance + $hidingRadius * 2 > radius) {
-                    radius = minimumPoint.distance + $hidingRadius * 2;
-                    continue;
-                }
-
-                nearestPoints.push(
-                    ...distances
-                        .filter(
-                            (x) =>
-                                x.distance <
-                                    minimumPoint.distance + $hidingRadius * 2 &&
-                                x.point.properties.name,
-                        )
-                        .map((x) => x.point),
-                );
-            }
-
-            if (question.id === "matching") {
-                const voronoi = geoSpatialVoronoi(
-                    turf.featureCollection(nearestPoints),
-                );
-                const correctPolygon = voronoi.features.find((feature: any) => {
-                    return (
-                        feature.properties.site.properties.name ===
-                        nearestQuestion.properties.name
-                    );
-                });
-
-                if (!correctPolygon) {
-                    if (question.data.same) mapData = BLANK_GEOJSON;
-                    continue;
-                }
-
-                if (question.data.same) {
-                    mapData = safeUnion(
-                        turf.featureCollection([
-                            ...mapData.features,
-                            turf.mask(correctPolygon),
-                        ]),
-                    );
-                } else {
-                    mapData = safeUnion(
-                        turf.featureCollection([
-                            ...mapData.features,
-                            correctPolygon,
-                        ]),
-                    );
-                }
-            } else {
-                const circles = nearestPoints.map((x) =>
-                    turf.circle(
-                        turf.getCoord(x),
-                        nearestQuestion.properties.distanceToPoint,
-                    ),
-                );
-                if (question.data.hiderCloser) {
-                    mapData = safeUnion(
-                        turf.featureCollection([
-                            ...mapData.features,
-                            holedMask(turf.featureCollection(circles)),
-                        ]),
-                    );
-                } else {
-                    mapData = safeUnion(
-                        turf.featureCollection([
-                            ...mapData.features,
-                            ...circles,
-                        ]),
-                    );
-                }
-            }
-        }
-        if (
-            question.id === "measuring" &&
-            question.data.type === "rail-measure"
-        ) {
-            if (stations.length === 0) {
-                if (question.data.hiderCloser) {
-                    mapData = BLANK_GEOJSON;
-                }
-                continue;
-            }
-
-            const location = turf.point([question.data.lng, question.data.lat]);
-            const nearestTrainStation = turf.nearestPoint(
-                location,
-                turf.featureCollection(
-                    stations.map((x) => x.properties.geometry),
-                ),
-            );
-            const distance = turf.distance(location, nearestTrainStation);
-
-            const circles = stations
-                .filter(
-                    (x) =>
-                        turf.distance(
-                            station.properties.geometry,
-                            x.properties.geometry,
-                        ) <
-                        distance + 1.61 * $hidingRadius,
-                )
-                .map((x) => turf.circle(x.properties.geometry, distance));
-
-            if (question.data.hiderCloser) {
-                mapData = safeUnion(
-                    turf.featureCollection([
-                        ...mapData.features,
-                        holedMask(turf.featureCollection(circles)),
-                    ]),
-                );
-            } else {
-                mapData = safeUnion(
-                    turf.featureCollection([...mapData.features, ...circles]),
-                );
-            }
-        }
-        if (
-            question.id === "measuring" &&
-            (question.data.type === "mcdonalds" ||
-                question.data.type === "seven11")
-        ) {
-            const points = await findPlacesSpecificInZone(
-                question.data.type === "mcdonalds"
-                    ? QuestionSpecificLocation.McDonalds
-                    : QuestionSpecificLocation.Seven11,
-            );
-
-            if (points.features.length === 0) {
-                if (question.data.hiderCloser) {
-                    mapData = BLANK_GEOJSON;
-                }
-                continue;
-            }
-
-            const seeker = turf.point([question.data.lng, question.data.lat]);
-            const nearest = turf.nearestPoint(seeker, points as any);
-            const distance = turf.distance(seeker, nearest, {
-                units: "kilometers",
-            });
-
-            const filtered = points.features.filter(
-                (x) =>
-                    turf.distance(x as any, station.properties.geometry, {
-                        units: "kilometers",
-                    }) <
-                    distance + $hidingRadius,
-            );
-            const circles = filtered.map((x) =>
-                turf.circle(x as any, distance, { units: "kilometers" }),
-            );
-
-            if (question.data.hiderCloser) {
-                mapData = safeUnion(
-                    turf.featureCollection([
-                        ...mapData.features,
-                        holedMask(turf.featureCollection(circles)),
-                    ]),
-                );
-            } else {
-                mapData = safeUnion(
-                    turf.featureCollection([...mapData.features, ...circles]),
-                );
-            }
-        }
-
-        if (mapData.type !== "FeatureCollection") {
-            mapData = { type: "FeatureCollection", features: [mapData] };
-        }
-    }
-
-    if (_.isEqual(mapData, BLANK_GEOJSON)) {
-        toast.warning(
-            "The hider cannot be in this hiding zone. This wasn't eliminated on the sidebar as its absence was caused by multiple criteria.",
-        );
-    }
-
-    showGeoJSON(mapData);
-
-    const element: HTMLDivElement | null = document.querySelector(
-        `[data-station-id="${station.properties.properties.id}"]`,
-    );
-    if (element) {
-        element.scrollIntoView({ behavior: "smooth", block: "center" });
-        element.classList.add("selected-card-background-temporary");
-        setTimeout(() => {
-            element.classList.remove("selected-card-background-temporary");
-        }, 5000);
-    }
-}
