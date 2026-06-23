@@ -28,36 +28,66 @@ export const determineMeasuringBoundary = async (
     question: MeasuringQuestion,
 ) => {
     switch (question.type) {
+        case "mcdonalds":
+        case "seven11":
+        case "rail-measure":
         case "museum-full":
         case "hospital-full":
         case "cinema-full":
         case "library-full":
         case "golf_course-full": {
-            const location = question.type.split("-full")[0] as APILocations;
-
-            const data = await findPlacesInZone(
-                `[${LOCATION_FIRST_TAG[location]}=${location}]`,
-                `Finding ${prettifyLocation(location, true).toLowerCase()}...`,
-                "nwr",
-                "center",
-                [],
-                60,
-            );
-
-            if (data.remark && data.remark.startsWith("runtime error")) {
-                toast.error(
-                    `Error finding ${prettifyLocation(
-                        location,
-                        true,
-                    ).toLowerCase()}.`,
+            let data: any;
+            if (question.type === "rail-measure") {
+                const stations = trainStations.get();
+                data = {
+                    elements: stations.map((x) => ({
+                        type: "node",
+                        id: (x.properties as any).id,
+                        lat: x.geometry.coordinates[1],
+                        lon: x.geometry.coordinates[0],
+                    }))
+                };
+            } else if (question.type === "mcdonalds" || question.type === "seven11") {
+                const pointsData = await findPlacesSpecificInZone(
+                    question.type === "mcdonalds"
+                        ? QuestionSpecificLocation.McDonalds
+                        : QuestionSpecificLocation.Seven11,
                 );
-                return [turf.multiPolygon([])];
+
+                data = {
+                    elements: pointsData.features.map((x: any) => ({
+                        type: "node",
+                        id: x.properties?.id,
+                        lat: x.geometry.coordinates[1],
+                        lon: x.geometry.coordinates[0],
+                    }))
+                };
+            } else {
+                const location = question.type.split("-full")[0] as APILocations;
+                data = await findPlacesInZone(
+                    `[${LOCATION_FIRST_TAG[location]}=${location}]`,
+                    `Finding ${prettifyLocation(location, true).toLowerCase()}...`,
+                    "nwr",
+                    "center",
+                    [],
+                    60,
+                );
+
+                if (data.remark && data.remark.startsWith("runtime error")) {
+                    toast.error(
+                        `Error finding ${prettifyLocation(
+                            location,
+                            true,
+                        ).toLowerCase()}.`,
+                    );
+                    return [turf.multiPolygon([])];
+                }
             }
 
             if (data.elements.length >= 5000) {
                 toast.error(
                     `Too many ${prettifyLocation(
-                        location,
+                        location as unknown as APILocations,
                         true,
                     ).toLowerCase()} found (${data.elements.length}).`,
                 );
@@ -86,9 +116,6 @@ export const determineMeasuringBoundary = async (
         case "cinema":
         case "library":
         case "golf_course":
-        case "mcdonalds":
-        case "seven11":
-        case "rail-measure":
             return false;
     }
 };

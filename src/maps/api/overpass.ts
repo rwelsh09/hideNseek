@@ -1,3 +1,4 @@
+import _ from "lodash";
 import * as turf from "@turf/turf";
 import type { FeatureCollection, MultiPolygon } from "geojson";
 import osmtogeojson from "osmtogeojson";

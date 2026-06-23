@@ -83,11 +83,6 @@ export const determineMatchingBoundary = _.memoize(
             case "cinema":
             case "library":
             case "golf_course":
-            case "same-first-letter-station":
-            case "same-length-station":
-            case "same-train-line": {
-                return false;
-            }
             case "same-neighbourhood":
             case "same-first-letter-neighbourhood": {
                 const data = osmtogeojson(
@@ -171,12 +166,20 @@ export const determineMatchingBoundary = _.memoize(
                 boundary = question.geo;
                 break;
             }
+            case "same-first-letter-station":
+            case "same-length-station":
+            case "same-train-line":
             case "museum-full":
             case "hospital-full":
             case "cinema-full":
             case "library-full":
             case "golf_course-full": {
-                const data = await findMatchingPlaces(question);
+                const data =
+                    question.type === "same-first-letter-station" ||
+                    question.type === "same-length-station" ||
+                    question.type === "same-train-line"
+                        ? (calgaryTransitData as unknown as FeatureCollection<Point>)
+                        : await findMatchingPlaces(question);
 
                 const voronoi = geoSpatialVoronoi(data);
                 const point = turf.point([question.lng, question.lat]);

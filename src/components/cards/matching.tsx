@@ -167,51 +167,13 @@ export const MatchingQuestionComponent = ({
                     trigger="Matching Type"
                     options={Object.fromEntries(
                         matchingQuestionSchema.options
-                            .filter((x) => x.description === NO_GROUP)
+
                             .flatMap((x) =>
                                 determineUnionizedStrings(x.shape.type),
                             )
                             .map((x) => [(x._def as any).value, x.description]),
                     )}
-                    groups={matchingQuestionSchema.options
-                        .filter((x) => x.description !== NO_GROUP)
-                        .map((x) => [
-                            x.description,
-                            Object.fromEntries(
-                                determineUnionizedStrings(x.shape.type).map(
-                                    (x) => [
-                                        (x._def as any).value,
-                                        x.description,
-                                    ],
-                                ),
-                            ),
-                        ])
-                        .reduce(
-                            (acc, [key, value]) => {
-                                const values = {
-                                    disabled: !$displayHidingZones,
-                                    options: value,
-                                };
 
-                                if (acc[key]) {
-                                    acc[key].options = {
-                                        ...acc[key].options,
-                                        ...value,
-                                    };
-                                } else {
-                                    acc[key] = values;
-                                }
-
-                                return acc;
-                            },
-                            {} as Record<
-                                string,
-                                {
-                                    disabled: boolean;
-                                    options: Record<string, string>;
-                                }
-                            >,
-                        )}
                     value={data.type}
                     onValueChange={async (value) => {
                         if (value === "custom-zone") {

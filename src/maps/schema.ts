@@ -235,8 +235,8 @@ const customMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
 export const matchingQuestionSchema = z.union([
     ordinaryMatchingQuestionSchema.describe(NO_GROUP),
     customMatchingQuestionSchema.describe(NO_GROUP),
-    hidingZoneMatchingQuestionsSchema.describe("Hiding Zone Mode"),
-    homeGameMatchingQuestionsSchema.describe("Hiding Zone Mode"),
+    hidingZoneMatchingQuestionsSchema.describe(NO_GROUP),
+    homeGameMatchingQuestionsSchema.describe(NO_GROUP),
 ]);
 
 const baseMeasuringQuestionSchema = ordinaryBaseQuestionSchema.extend({
@@ -281,8 +281,8 @@ const customMeasuringQuestionSchema = baseMeasuringQuestionSchema.extend({
 export const measuringQuestionSchema = z.union([
     ordinaryMeasuringQuestionSchema.describe(NO_GROUP),
     customMeasuringQuestionSchema.describe(NO_GROUP),
-    hidingZoneMeasuringQuestionsSchema.describe("Hiding Zone Mode"),
-    homeGameMeasuringQuestionsSchema.describe("Hiding Zone Mode"),
+    hidingZoneMeasuringQuestionsSchema.describe(NO_GROUP),
+    homeGameMeasuringQuestionsSchema.describe(NO_GROUP),
 ]);
 
 export const questionSchema = z.union([

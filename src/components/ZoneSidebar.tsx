@@ -1,3 +1,6 @@
+import { findTentacleLocations } from "@/maps/api/overpass";
+import { nearestToQuestion } from "@/maps/api/overpass";
+import { BLANK_GEOJSON } from "@/maps/api";
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
 import type {
@@ -1102,6 +1105,7 @@ async function selectionProcess(
                         drag: false,
                         color: "black",
                         collapsed: false,
+                        showLabels: false,
                     },
                     "Finding matching locations to hiding zone...",
                 );
