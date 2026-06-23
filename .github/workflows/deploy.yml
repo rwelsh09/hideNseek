@@ -60,7 +60,8 @@ jobs:
                       for dir in gh-pages-dir/*/; do
                           if [ -d "$dir" ]; then
                               dirname=$(basename "$dir")
-                              if [ "$dirname" != "master" ]; then
+                              # Ignore master and any directory starting with _ or ~
+                              if [ "$dirname" != "master" ] && [[ ! "$dirname" == _* ]] && [[ ! "$dirname" == ~* ]]; then
                                   echo "<li><a href='./$dirname/'>$dirname</a></li>" >> ./root-dist/branches.html
                               fi
                           fi
