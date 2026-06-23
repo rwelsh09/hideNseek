@@ -1,7 +1,7 @@
+import { geoSpatialVoronoi, safeUnion, holedMask } from "@/maps/geo-utils/operators";
 import * as turf from "@turf/turf";
 import { expect, test } from "vitest";
 
-import { geoSpatialVoronoi, holedMask } from "@/maps/geo-utils/operators";
 
 test("holedMask with a single Polygon feature", () => {
     const inputPoly = turf.polygon([
