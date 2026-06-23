@@ -316,6 +316,7 @@ export const LatitudeLongitude = ({
                                     disabled={disabled}
                                     variant="outline"
                                     title="Edit coordinates"
+                                    aria-label="Edit coordinates"
                                 >
                                     <EditIcon />
                                 </Button>
@@ -389,6 +390,7 @@ export const LatitudeLongitude = ({
                             }}
                             disabled={disabled}
                             title="Set to current location"
+                            aria-label="Set to current location"
                         >
                             <LocateIcon />
                         </Button>
@@ -440,6 +442,7 @@ export const LatitudeLongitude = ({
                             }}
                             disabled={disabled}
                             title="Paste coordinates from clipboard"
+                            aria-label="Paste coordinates from clipboard"
                         >
                             <ClipboardPasteIcon />
                         </Button>
@@ -468,6 +471,7 @@ export const LatitudeLongitude = ({
                                 );
                             }}
                             title="Copy coordinates to clipboard"
+                            aria-label="Copy coordinates to clipboard"
                         >
                             <ClipboardCopyIcon />
                         </Button>
