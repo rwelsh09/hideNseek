@@ -324,6 +324,7 @@ export const nearestToQuestion = async (
                 drag: false,
                 color: "black",
                 collapsed: false,
+                showLabels: false,
             },
             "Finding matching locations...",
         );
@@ -365,6 +366,7 @@ export const cacheAllPlaces = async () => {
                     drag: false,
                     color: "black",
                     collapsed: false,
+                    showLabels: false,
                 },
                 undefined,
             ),

@@ -144,9 +144,16 @@ const TentaclePlaceMarker = ({
             }
             eventHandlers={eventHandlers}
         >
-            <Tooltip direction="top" offset={[0, -10]}>
-                {f.properties?.name || "Unknown Location"}
-            </Tooltip>
+            {question.data.showLabels && (
+                <Tooltip direction="top" offset={[0, -10]} permanent>
+                    {f.properties?.name || "Unknown Location"}
+                </Tooltip>
+            )}
+            {!question.data.showLabels && (
+                <Tooltip direction="top" offset={[0, -10]}>
+                    {f.properties?.name || "Unknown Location"}
+                </Tooltip>
+            )}
             <Popup>
                 <div className="flex flex-col gap-2">
                     <span className="font-semibold text-sm">
