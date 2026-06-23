@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/deploy-script-carriage-returns-9384946327385718123/sw.js', { scope: '/HideAndSeek/fix/deploy-script-carriage-returns-9384946327385718123/' })})}
