@@ -29,7 +29,6 @@ import {
     includeDefaultStations as includeDefaultStationsAtom,
     isLoading,
     leafletMapContext,
-    mergeDuplicates as mergeDuplicatesAtom,
     planningModeEnabled,
     questionFinishedMapData,
     questions,
@@ -55,7 +54,6 @@ import {
     geoSpatialVoronoi,
     holedMask,
     lngLatToText,
-    mergeDuplicateStation,
     safeUnion,
 } from "@/maps/geo-utils";
 
@@ -89,7 +87,6 @@ export const ZoneSidebar = () => {
     const stations = useStore(trainStations);
     const $disabledStations = useStore(disabledStations);
     const useCustomStations = useStore(useCustomStationsAtom);
-    const mergeDuplicates = useStore(mergeDuplicatesAtom);
     const includeDefaultStations = useStore(includeDefaultStationsAtom);
     const $customStations = useStore(customStationsAtom);
     const [hidingZoneModeStationID, setHidingZoneModeStationID] =
@@ -310,14 +307,6 @@ export const ZoneSidebar = () => {
                     }
                 }
 
-                if (mergeDuplicates) {
-                    places = mergeDuplicateStation(
-                        places,
-                        $hidingRadius,
-                        $hidingRadiusUnits,
-                    );
-                }
-
                 const unionized = safeUnion(
                     turf.simplify($questionFinishedMapData, {
                         tolerance: 0.001,
@@ -503,7 +492,6 @@ export const ZoneSidebar = () => {
         useCustomStations,
         includeDefaultStations,
         $customStations,
-        mergeDuplicates,
     ]);
 
     useEffect(() => {
