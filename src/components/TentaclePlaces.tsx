@@ -144,7 +144,7 @@ const TentaclePlaceMarker = ({
             }
             eventHandlers={eventHandlers}
         >
-            <Tooltip direction="top" offset={[0, -10]}>
+            <Tooltip direction="top" offset={[0, -10]} permanent>
                 {f.properties?.name || "Unknown Location"}
             </Tooltip>
             <Popup>
