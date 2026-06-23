@@ -46,6 +46,15 @@ export const mapGeoLocation = persistentAtom<OpenStreetMap>(
     },
 );
 
+export const displayStationConnections = persistentAtom<boolean>(
+    "displayStationConnections",
+    false,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+
 export const additionalMapGeoLocations = persistentAtom<
     AdditionalMapGeoLocations[]
 >("additionalMapGeoLocations", [], {
@@ -109,6 +118,16 @@ export const displayHidingZonesOptions = persistentAtom<string[]>(
 export const displayHidingZonesStyle = persistentAtom<
     "zones" | "stations" | "no-overlap" | "no-display"
 >("displayHidingZonesStyle", "zones");
+
+export const displayTransitLines = persistentAtom<boolean>(
+    "displayTransitLines",
+    false,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+
 export const questionFinishedMapData = atom<any>(null);
 
 export const trainStations = atom<StationCircle[]>([]);

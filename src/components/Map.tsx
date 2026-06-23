@@ -34,7 +34,9 @@ import { clearCache, determineMapBoundaries } from "@/maps/api";
 import { DraggableMarkers } from "./DraggableMarkers";
 import { LeafletActionButtons } from "./LeafletActionButtons";
 import { PolygonDraw } from "./PolygonDraw";
+import { StationConnectionsOverlay } from "./StationConnectionsOverlay";
 import { TentaclePlaces } from "./TentaclePlaces";
+import { TransitLinesOverlay } from "./TransitLinesOverlay";
 
 const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
     switch (tileLayer) {
@@ -329,6 +331,8 @@ export const Map = ({ className }: { className?: string }) => {
                 ]}
             >
                 {getTileLayer($baseTileLayer, $thunderforestApiKey)}
+                <TransitLinesOverlay />
+                <StationConnectionsOverlay />
                 <DraggableMarkers />
                 <TentaclePlaces />
                 <div className="leaflet-top leaflet-right">
