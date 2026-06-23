@@ -86,25 +86,47 @@ export const TentacleQuestionComponent = ({
             }}
         >
             <SidebarMenuItem>
-                <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-row")}>
-                    <Input
-                        type="number"
-                        className="rounded-md p-2 w-16"
-                        value={data.radius}
-                        onChange={(e) =>
-                            questionModified(
-                                (data.radius = parseFloat(e.target.value)),
-                            )
-                        }
-                        disabled={!data.drag || $isLoading}
-                    />
-                    <UnitSelect
-                        unit={data.unit}
-                        onChange={(unit) =>
-                            questionModified((data.unit = unit))
-                        }
-                        disabled={!data.drag || $isLoading}
-                    />
+                <div
+                    className={cn(
+                        MENU_ITEM_CLASSNAME,
+                        "gap-2 flex flex-col items-start",
+                    )}
+                >
+                    <div className="flex flex-row gap-2">
+                        <Input
+                            type="number"
+                            max={data.unit === "kilometers" ? 2 : 2000}
+                            className="rounded-md p-2 w-16"
+                            value={data.radius}
+                            onChange={(e) => {
+                                let val = parseFloat(e.target.value);
+                                const maxVal =
+                                    data.unit === "kilometers" ? 2 : 2000;
+                                if (val > maxVal) {
+                                    val = maxVal;
+                                }
+                                questionModified((data.radius = val));
+                            }}
+                            disabled={!data.drag || $isLoading}
+                        />
+                        <UnitSelect
+                            unit={data.unit}
+                            onChange={(unit) => {
+                                const maxVal = unit === "kilometers" ? 2 : 2000;
+                                let val = data.radius;
+                                if (val > maxVal) {
+                                    val = maxVal;
+                                }
+                                data.unit = unit;
+                                data.radius = val;
+                                questionModified();
+                            }}
+                            disabled={!data.drag || $isLoading}
+                        />
+                    </div>
+                    <span className="text-xs text-muted-foreground opacity-75">
+                        Maximum 2 kilometers
+                    </span>
                 </div>
             </SidebarMenuItem>
             <SidebarMenuItem>

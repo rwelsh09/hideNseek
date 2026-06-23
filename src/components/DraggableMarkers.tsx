@@ -21,6 +21,7 @@ import { LatitudeLongitude } from "./LatLngPicker";
 import {
     MatchingQuestionComponent,
     MeasuringQuestionComponent,
+    PhotoQuestionComponent,
     RadiusQuestionComponent,
     TentacleQuestionComponent,
     ThermometerQuestionComponent,
@@ -185,6 +186,7 @@ export const DraggableMarkers = () => {
                     case "radius":
                     case "tentacles":
                     case "matching":
+                    case "photo":
                     case "measuring":
                         return (
                             <ColoredMarker
@@ -331,6 +333,13 @@ export const DraggableMarkers = () => {
                                     )}
                                     {activeQuestion.id === "measuring" && (
                                         <MeasuringQuestionComponent
+                                            isPreview={true}
+                                            data={activeQuestion.data as any}
+                                            questionKey={activeQuestion.key}
+                                        />
+                                    )}
+                                    {activeQuestion.id === "photo" && (
+                                        <PhotoQuestionComponent
                                             isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}

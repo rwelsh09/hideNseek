@@ -2,8 +2,12 @@ import * as turf from "@turf/turf";
 import {
     Camera,
     Car,
+    Film,
+    Flag,
+    Hospital,
     Landmark,
     Leaf,
+    Library,
     Map as MapIcon,
     MapPin,
     MapPinned,
@@ -77,12 +81,12 @@ export function AddQuestionDialog() {
             };
         } else if (type === "tentacles") {
             qData.locationType = detail || "museum";
-            qData.radius = 15;
+            qData.radius = 2;
             qData.unit = "kilometers";
         } else if (type === "photo") {
-            qId = "radius";
-            qData.radius = 0;
-            qData.unit = "kilometers";
+            qId = "photo";
+            qData.notes = "";
+            qData.type = detail || "camera";
         }
 
         // Add to map immediately
@@ -135,6 +139,60 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
+                                        "tentacles",
+                                        "hospital",
+                                    )
+                                }
+                                className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Hospital className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect("tentacles", "cinema")
+                                }
+                                className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Film className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect("tentacles", "library")
+                                }
+                                className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Library className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect(
+                                        "tentacles",
+                                        "hospital",
+                                    )
+                                }
+                                className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Hospital className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect("tentacles", "cinema")
+                                }
+                                className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Film className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect("tentacles", "library")
+                                }
+                                className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Library className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect(
                                         "matching",
                                         "museum-full",
                                     )
@@ -142,6 +200,50 @@ export function AddQuestionDialog() {
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect(
+                                        "matching",
+                                        "hospital-full",
+                                    )
+                                }
+                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Hospital className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect(
+                                        "matching",
+                                        "cinema-full",
+                                    )
+                                }
+                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Film className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect(
+                                        "matching",
+                                        "library-full",
+                                    )
+                                }
+                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Library className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect(
+                                        "matching",
+                                        "golf_course-full",
+                                    )
+                                }
+                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Flag className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
 
                             <button
@@ -206,6 +308,50 @@ export function AddQuestionDialog() {
                                 className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect(
+                                        "measuring",
+                                        "hospital-full",
+                                    )
+                                }
+                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Hospital className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect(
+                                        "measuring",
+                                        "cinema-full",
+                                    )
+                                }
+                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Film className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect(
+                                        "measuring",
+                                        "library-full",
+                                    )
+                                }
+                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Library className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect(
+                                        "measuring",
+                                        "golf_course-full",
+                                    )
+                                }
+                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Flag className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
 
                             <button
@@ -381,6 +527,39 @@ export function AddQuestionDialog() {
                                 </div>
                             </div>
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
+                                <button
+                                    onClick={() =>
+                                        handleQuestionSelect(
+                                            "tentacles",
+                                            "hospital",
+                                        )
+                                    }
+                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                >
+                                    <Hospital className="w-5 h-5 sm:w-6 sm:h-6" />
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        handleQuestionSelect(
+                                            "tentacles",
+                                            "cinema",
+                                        )
+                                    }
+                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                >
+                                    <Film className="w-5 h-5 sm:w-6 sm:h-6" />
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        handleQuestionSelect(
+                                            "tentacles",
+                                            "library",
+                                        )
+                                    }
+                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                >
+                                    <Library className="w-5 h-5 sm:w-6 sm:h-6" />
+                                </button>
                                 <button
                                     onClick={() =>
                                         handleQuestionSelect(

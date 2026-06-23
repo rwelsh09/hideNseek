@@ -24,6 +24,7 @@ import { AddQuestionDialog } from "./AddQuestionDialog";
 import {
     MatchingQuestionComponent,
     MeasuringQuestionComponent,
+    PhotoQuestionComponent,
     RadiusQuestionComponent,
     TentacleQuestionComponent,
     ThermometerQuestionComponent,
@@ -155,6 +156,14 @@ export const QuestionSidebar = () => {
                             return (
                                 <MeasuringQuestionComponent
                                     data={question.data}
+                                    key={question.key}
+                                    questionKey={question.key}
+                                />
+                            );
+                        case "photo":
+                            return (
+                                <PhotoQuestionComponent
+                                    data={question.data as any}
                                     key={question.key}
                                     questionKey={question.key}
                                 />

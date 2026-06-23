@@ -108,6 +108,11 @@ const getDefaultUnit = () => {
     return "kilometers";
 };
 
+const photoQuestionSchema = ordinaryBaseQuestionSchema.extend({
+    notes: z.string().default(""),
+    type: z.string().default("camera"),
+});
+
 const radiusQuestionSchema = ordinaryBaseQuestionSchema.extend({
     radius: z.number().min(0, "You cannot have a negative radius").default(50),
     unit: unitsSchema.default(getDefaultUnit),
@@ -128,7 +133,7 @@ const apiLocationSchema = z.union([
 
 const baseTentacleQuestionSchema = ordinaryBaseQuestionSchema.extend({
     showLabels: z.boolean().default(false),
-    radius: z.number().min(0, "You cannot have a negative radius").default(5),
+    radius: z.number().min(0, "You cannot have a negative radius").default(2),
     unit: unitsSchema.default(getDefaultUnit),
     location: z
         .union([
@@ -275,6 +280,12 @@ export const measuringQuestionSchema = z.union([
 
 export const questionSchema = z.union([
     z.object({
+        id: z.literal("photo"),
+        key: z.number().default(Math.random),
+        data: photoQuestionSchema,
+    }),
+
+    z.object({
         id: z.literal("radius"),
         key: z.number().default(Math.random),
         data: radiusQuestionSchema,
@@ -316,6 +327,7 @@ export type MeasuringQuestion = z.infer<typeof measuringQuestionSchema>;
 export type HomeGameMeasuringQuestions = z.infer<
     typeof homeGameMeasuringQuestionsSchema
 >;
+export type PhotoQuestion = z.infer<typeof photoQuestionSchema>;
 export type Question = z.infer<typeof questionSchema>;
 export type Questions = z.infer<typeof questionsSchema>;
 export type DeepPartial<T> = {

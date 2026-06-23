@@ -1,6 +1,8 @@
 import "leaflet/dist/leaflet.css";
 import "leaflet-contextmenu/dist/leaflet.contextmenu.css";
 import "leaflet-contextmenu";
+import "leaflet-doubletapdrag";
+import "leaflet-doubletapdragzoom";
 
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
