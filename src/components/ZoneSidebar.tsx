@@ -3,7 +3,7 @@ import * as turf from "@turf/turf";
 import type { Feature, FeatureCollection } from "geojson";
 import * as L from "leaflet";
 import _ from "lodash";
-import { SidebarCloseIcon } from "lucide-react";
+import { AlertTriangle, SidebarCloseIcon } from "lucide-react";
 import osmtogeojson from "osmtogeojson";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -585,6 +585,7 @@ export const ZoneSidebar = () => {
                                     "text-orange-500",
                                 )}
                             >
+                                <AlertTriangle className="inline-block w-4 h-4 mr-2" />
                                 Warning: This feature can drastically slow down
                                 your device.
                             </SidebarMenuItem>
