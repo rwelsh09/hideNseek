@@ -3,7 +3,7 @@ import * as turf from "@turf/turf";
 import type { Feature, FeatureCollection } from "geojson";
 import * as L from "leaflet";
 import _ from "lodash";
-import { SidebarCloseIcon } from "lucide-react";
+import { AlertTriangle, SidebarCloseIcon } from "lucide-react";
 import osmtogeojson from "osmtogeojson";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
@@ -38,12 +38,10 @@ import {
 import { cn } from "@/lib/utils";
 import {
     BLANK_GEOJSON,
-    findTentacleLocations,
-    nearestToQuestion,
-} from "@/maps/api";
-import {
     findPlacesInZone,
     findPlacesSpecificInZone,
+    findTentacleLocations,
+    nearestToQuestion,
     normalizeToStationFeatures,
     parseCustomStationsFromText,
     QuestionSpecificLocation,
@@ -575,6 +573,7 @@ export const ZoneSidebar = () => {
                                     "text-orange-500",
                                 )}
                             >
+                                <AlertTriangle className="inline-block w-4 h-4 mr-2" />
                                 Warning: This feature can drastically slow down
                                 your device.
                             </SidebarMenuItem>
@@ -1108,7 +1107,7 @@ async function selectionProcess(
                         drag: false,
                         color: "black",
                         collapsed: false,
-                        showLabels: true,
+                        showLabels: false,
                     },
                     "Finding matching locations to hiding zone...",
                 );

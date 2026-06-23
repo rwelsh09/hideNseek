@@ -219,18 +219,6 @@ export function AddQuestionDialog() {
                             >
                                 <TramFront className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
-
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "measuring",
-                                        "custom-measure",
-                                    )
-                                }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Ruler className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
                         </div>
                     </div>
 
