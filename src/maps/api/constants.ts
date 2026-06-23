@@ -22,20 +22,13 @@ export const ICON_COLORS = {
 };
 
 export const LOCATION_FIRST_TAG: {
-    [key in APILocations]:
-        | "amenity"
-        | "tourism"
-        | "leisure"
-        | "diplomatic"
-        | "natural";
+    [key in APILocations]: "amenity" | "tourism" | "leisure";
 } = {
     hospital: "amenity",
-    peak: "natural",
     museum: "tourism",
     cinema: "amenity",
     library: "amenity",
     golf_course: "leisure",
-    consulate: "diplomatic",
 };
 
 export const BLANK_GEOJSON = {

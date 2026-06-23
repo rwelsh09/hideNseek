@@ -27,26 +27,11 @@ import type {
 
 export const findMatchingPlaces = async (question: MatchingQuestion) => {
     switch (question.type) {
-        case "major-city": {
-            return (
-                await findPlacesInZone(
-                    '[place=city]["population"~"^[1-9]+[0-9]{6}$"]', // The regex is faster than (if:number(t["population"])>1000000)
-                    "Finding cities...",
-                )
-            ).elements.map((x: any) =>
-                turf.point([
-                    x.center ? x.center.lon : x.lon,
-                    x.center ? x.center.lat : x.lat,
-                ]),
-            );
-        }
-        case "peak-full":
         case "museum-full":
         case "hospital-full":
         case "cinema-full":
         case "library-full":
-        case "golf_course-full":
-        case "consulate-full": {
+        case "golf_course-full": {
             const location = question.type.split("-full")[0] as APILocations;
 
             const data = await findPlacesInZone(
@@ -93,13 +78,11 @@ export const determineMatchingBoundary = _.memoize(
         let boundary;
 
         switch (question.type) {
-            case "peak":
             case "museum":
             case "hospital":
             case "cinema":
             case "library":
             case "golf_course":
-            case "consulate":
             case "same-first-letter-station":
             case "same-length-station":
             case "same-train-line": {
@@ -188,14 +171,11 @@ export const determineMatchingBoundary = _.memoize(
                 boundary = question.geo;
                 break;
             }
-            case "major-city":
-            case "peak-full":
             case "museum-full":
             case "hospital-full":
             case "cinema-full":
             case "library-full":
-            case "golf_course-full":
-            case "consulate-full": {
+            case "golf_course-full": {
                 const data = await findMatchingPlaces(question);
 
                 const voronoi = geoSpatialVoronoi(data);
@@ -248,15 +228,9 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
     }
 
     if (
-        [
-            "peak",
-            "museum",
-            "hospital",
-            "cinema",
-            "library",
-            "golf_course",
-            "consulate",
-        ].includes(question.type)
+        ["museum", "hospital", "cinema", "library", "golf_course"].includes(
+            question.type,
+        )
     ) {
         const questionNearest = await nearestToQuestion(
             question as HomeGameMatchingQuestions,
