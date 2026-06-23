@@ -46,6 +46,15 @@ export const mapGeoLocation = persistentAtom<OpenStreetMap>(
     },
 );
 
+export const displayStationConnections = persistentAtom<boolean>(
+    "displayStationConnections",
+    false,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+
 export const additionalMapGeoLocations = persistentAtom<
     AdditionalMapGeoLocations[]
 >("additionalMapGeoLocations", [], {
