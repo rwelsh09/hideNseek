@@ -1,0 +1,1 @@
+sed -i 's/git ls-remote --heads origin | awk -F'"'"'refs\/heads\/'"'"' '"'"'{print \$2}'"'"' > active_branches.txt/git ls-remote --heads origin | awk -F'"'"'refs\/heads\/'"'"' '"'"'{print \$2}'"'"' > active_branches.txt\n\n                  # Clean carriage returns just in case\n                  sed -i '"'"'s\/\\r$\/\/'"'"' active_branches.txt/' .github/workflows/deploy.yml
