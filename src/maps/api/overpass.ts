@@ -99,32 +99,52 @@ export const findTentacleLocations = async (
     question: EncompassingTentacleQuestionSchema,
     text: string = "Determining tentacle locations...",
 ) => {
-    const playtestMode = playtestModeEnabled.get();
-    let query = "";
-
-    if (playtestMode) {
-        query = `
-[out:json][timeout:25];
-nwr["${LOCATION_FIRST_TAG[question.locationType]}"="${question.locationType}"](around:50000, ${question.lat}, ${question.lng});
-out center;
-        `;
-    } else {
-        query = `
-[out:json][timeout:25];
-nwr["${LOCATION_FIRST_TAG[question.locationType]}"="${question.locationType}"](around:${turf.convertLength(
-            question.radius,
-            question.unit,
-            "meters",
-        )}, ${question.lat}, ${question.lng});
-out center;
-        `;
-    }
-    const data = await getOverpassData(query, text);
-    const elements = data.elements;
+    const data = await findPlacesInZone(
+        `[${LOCATION_FIRST_TAG[question.locationType]}=${question.locationType}]`,
+        text,
+        "nwr",
+        "center",
+    );
+    const elements = data.elements || [];
     const response = turf.points([]);
+    const centerPoint = turf.point([question.lng, question.lat]);
+
+    const playtestMode = playtestModeEnabled.get();
+    const radiusInMeters = playtestMode
+        ? 50000
+        : turf.convertLength(question.radius, question.unit, "meters");
+
     elements.forEach((element: any) => {
-        if (!element.tags["name"] && !element.tags["name:en"]) return;
+        if (
+            !element.tags ||
+            (!element.tags["name"] && !element.tags["name:en"])
+        )
+            return;
         if (element.lat && element.lon) {
+            const pt = turf.point([element.lon, element.lat]);
+            const distance = turf.distance(centerPoint, pt, {
+                units: "meters",
+            });
+            if (distance <= radiusInMeters) {
+                const name = element.tags["name:en"] ?? element.tags["name"];
+                if (
+                    response.features.find(
+                        (feature: any) => feature.properties.name === name,
+                    )
+                )
+                    return;
+                response.features.push(
+                    turf.point([element.lon, element.lat], { name }),
+                );
+            }
+        }
+        if (!element.center || !element.center.lon || !element.center.lat)
+            return;
+        const centerPt = turf.point([element.center.lon, element.center.lat]);
+        const centerDistance = turf.distance(centerPoint, centerPt, {
+            units: "meters",
+        });
+        if (centerDistance <= radiusInMeters) {
             const name = element.tags["name:en"] ?? element.tags["name"];
             if (
                 response.features.find(
@@ -133,21 +153,9 @@ out center;
             )
                 return;
             response.features.push(
-                turf.point([element.lon, element.lat], { name }),
+                turf.point([element.center.lon, element.center.lat], { name }),
             );
         }
-        if (!element.center || !element.center.lon || !element.center.lat)
-            return;
-        const name = element.tags["name:en"] ?? element.tags["name"];
-        if (
-            response.features.find(
-                (feature: any) => feature.properties.name === name,
-            )
-        )
-            return;
-        response.features.push(
-            turf.point([element.center.lon, element.center.lat], { name }),
-        );
     });
     return response;
 };
