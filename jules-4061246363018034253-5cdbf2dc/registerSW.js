@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/jules-4061246363018034253-5cdbf2dc/sw.js', { scope: '/HideAndSeek/jules-4061246363018034253-5cdbf2dc/' })})}
