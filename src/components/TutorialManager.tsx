@@ -38,7 +38,7 @@ export const TutorialManager = () => {
                         popover: {
                             title: "Game State",
                             description:
-                                "Open the right sidebar to configure the game area, rules, and boundaries.",
+                                "Open the right sidebar to toggle Hiding Zones.",
                             side: "left",
                             align: "start",
                         },
