@@ -38,5 +38,27 @@ export const geoSpatialVoronoi = (
         }
     });
 
+    wgs84.features = wgs84.features.map((feature) => {
+        if (turf.area(feature) > 255000000000000) {
+            const whole_world = turf.polygon([
+                [
+                    [-180, 90],
+                    [180, 90],
+                    [180, -90],
+                    [-180, -90],
+                    [-180, 90],
+                ],
+            ]);
+            const diff = turf.difference(
+                turf.featureCollection([whole_world, feature]),
+            );
+            if (diff) {
+                diff.properties = feature.properties;
+                return diff as typeof feature;
+            }
+        }
+        return feature;
+    });
+
     return wgs84;
 };

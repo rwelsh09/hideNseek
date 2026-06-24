@@ -17,7 +17,9 @@ describe("geoSpatialVoronoi edge cases", () => {
         expect(voronoi.features).toHaveLength(1);
 
         // A single point covers the entire earth, which is a polygon
-        expect(voronoi.features[0]?.geometry.type).toBe("Polygon");
+        expect(voronoi.features[0]?.geometry.type).toMatch(
+            /Polygon|MultiPolygon/,
+        );
     });
 
     test("2 points should return 2 polygons", () => {
