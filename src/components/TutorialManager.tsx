@@ -54,6 +54,67 @@ export const TutorialManager = () => {
                         },
                     },
                     {
+                        element: '[data-tutorial-id="left-sidebar-trigger"]',
+                        popover: {
+                            title: "Open the Sidebar",
+                            description:
+                                "Click here to open the sidebar so we can add a question.",
+                            side: "right",
+                            align: "start",
+                            showButtons: ["previous"], // Hide Next button to force interaction
+                            onPopoverRender: () => {
+                                const sidebarL = document.querySelector(
+                                    '.peer[data-side="left"]',
+                                );
+                                // If the sidebar is already expanded (desktop), immediately skip this interaction step
+                                if (
+                                    sidebarL &&
+                                    sidebarL.getAttribute("data-state") ===
+                                        "expanded"
+                                ) {
+                                    setTimeout(() => driverObj.moveNext(), 100);
+                                    return;
+                                }
+
+                                const trigger =
+                                    document.querySelector<HTMLElement>(
+                                        '[data-tutorial-id="left-sidebar-trigger"] button',
+                                    ) ||
+                                    document.querySelector<HTMLElement>(
+                                        '[data-sidebar="trigger"]',
+                                    );
+
+                                if (trigger) {
+                                    trigger.addEventListener(
+                                        "click",
+                                        () => {
+                                            const checkInterval = setInterval(
+                                                () => {
+                                                    const addBtn =
+                                                        document.querySelector(
+                                                            '[data-tutorial-id="add-question-btn"]',
+                                                        );
+                                                    if (addBtn) {
+                                                        clearInterval(
+                                                            checkInterval,
+                                                        );
+                                                        setTimeout(
+                                                            () =>
+                                                                driverObj.moveNext(),
+                                                            300,
+                                                        );
+                                                    }
+                                                },
+                                                100,
+                                            );
+                                        },
+                                        { once: true },
+                                    );
+                                }
+                            },
+                        },
+                    },
+                    {
                         element: '[data-tutorial-id="add-question-btn"]',
                         popover: {
                             title: "Ask a Question",
@@ -63,28 +124,6 @@ export const TutorialManager = () => {
                             align: "start",
                             showButtons: ["previous"], // Hide Next button to force interaction
                             onPopoverRender: () => {
-                                // Attempt to open left sidebar before showing this step
-                                const trigger =
-                                    document.querySelector<HTMLElement>(
-                                        '[data-tutorial-id="left-sidebar-trigger"] button',
-                                    ) ||
-                                    document.querySelector<HTMLElement>(
-                                        '[data-sidebar="trigger"]',
-                                    );
-
-                                // Only click if it's currently collapsed
-                                const sidebarL = document.querySelector(
-                                    '.peer[data-side="left"]',
-                                );
-                                if (
-                                    trigger &&
-                                    sidebarL &&
-                                    sidebarL.getAttribute("data-state") ===
-                                        "collapsed"
-                                ) {
-                                    trigger.click();
-                                }
-
                                 const btn = document.querySelector(
                                     '[data-tutorial-id="add-question-btn"]',
                                 );
@@ -92,9 +131,25 @@ export const TutorialManager = () => {
                                     btn.addEventListener(
                                         "click",
                                         () => {
-                                            setTimeout(
-                                                () => driverObj.moveNext(),
-                                                400,
+                                            const checkInterval = setInterval(
+                                                () => {
+                                                    const radarBtn =
+                                                        document.querySelector(
+                                                            '[data-tutorial-id="tutorial-add-radar-5"]',
+                                                        );
+                                                    if (radarBtn) {
+                                                        clearInterval(
+                                                            checkInterval,
+                                                        );
+                                                        // Adding slight timeout for overlay animation
+                                                        setTimeout(
+                                                            () =>
+                                                                driverObj.moveNext(),
+                                                            300,
+                                                        );
+                                                    }
+                                                },
+                                                100,
                                             );
                                         },
                                         { once: true },
@@ -130,7 +185,12 @@ export const TutorialManager = () => {
                                                         clearInterval(
                                                             checkInterval,
                                                         );
-                                                        driverObj.moveNext();
+                                                        // A small delay lets the question accordion fully render before driving
+                                                        setTimeout(
+                                                            () =>
+                                                                driverObj.moveNext(),
+                                                            300,
+                                                        );
                                                     }
                                                 },
                                                 100,
@@ -162,12 +222,11 @@ export const TutorialManager = () => {
                                     const lockBtn = document.querySelector(
                                         '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
                                     );
-                                    // if it's no longer rendering an unlock icon (it has a lock icon now), advance
+                                    // The aria-label changes to "Unlock Question" when the question is currently locked
                                     if (
                                         lockBtn &&
-                                        lockBtn.innerHTML.includes(
-                                            "lucide-lock",
-                                        )
+                                        lockBtn.getAttribute("aria-label") ===
+                                            "Unlock Question"
                                     ) {
                                         clearInterval(checkInterval);
                                         // A slight delay to let the animation play before moving
