@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/cleanup/sw.js', { scope: '/HideAndSeek/cleanup/' })})}
