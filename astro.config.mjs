@@ -19,7 +19,7 @@ export default defineConfig({
                     "Automatically generate maps for Hide and Seek with ease! Simply name the questions and watch the map eliminate hundreds of possibilities in seconds.",
                 icons: [
                     {
-                        src: "JLIcon.png",
+                        src: "icon.png",
                         sizes: "1080x1080",
                         type: "image/png",
                     },
