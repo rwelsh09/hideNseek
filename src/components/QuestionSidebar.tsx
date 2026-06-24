@@ -59,7 +59,10 @@ export const QuestionSidebar = () => {
 
             <SidebarContent className="px-4 pt-4 pb-2 flex flex-col gap-5 overflow-y-auto">
                 {/* --- TIME PENALTY TRACKER --- */}
-                <div className="bg-slate-800 rounded-xl p-3 shadow-md border border-slate-700 flex flex-col gap-3">
+                <div
+                    className="bg-slate-800 rounded-xl p-3 shadow-md border border-slate-700 flex flex-col gap-3"
+                    data-tutorial-id="time-penalty-tracker"
+                >
                     <div className="flex justify-between items-center px-1">
                         <h3 className="text-slate-300 font-bold uppercase tracking-wider text-xs flex items-center gap-1.5">
                             <Clock className="w-4 h-4 text-red-400" />
