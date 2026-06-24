@@ -3,7 +3,6 @@ import * as turf from "@turf/turf";
 import { useEffect, useState } from "react";
 
 import { LatitudeLongitude } from "@/components/LatLngPicker";
-import PresetsDialog from "@/components/PresetsDialog";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
@@ -219,12 +218,6 @@ export const TentacleQuestionComponent = ({
                         />
                         and use the buttons at the bottom left of the map.
                     </p>
-                    <div className="flex justify-center mb-2">
-                        <PresetsDialog
-                            data={data}
-                            presetTypeHint="custom-tentacles"
-                        />
-                    </div>
                 </>
             )}
             <LatitudeLongitude
