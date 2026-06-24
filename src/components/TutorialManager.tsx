@@ -53,6 +53,60 @@ export const TutorialManager = () => {
                             align: "end",
                         },
                     },
+                    {
+                        element: '[data-tutorial-id="left-sidebar-trigger"]',
+                        popover: {
+                            title: "Open the Sidebar",
+                            description:
+                                "Click here to open the sidebar so we can add a question.",
+                            side: "right",
+                            align: "start",
+                        },
+                    },
+                    {
+                        element: '[data-tutorial-id="add-question-btn"]',
+                        popover: {
+                            title: "Ask a Question",
+                            description:
+                                "Click here to ask a question. Once you are ready, you can lock it to record your answer.",
+                            side: "right",
+                            align: "start",
+                            onPopoverRender: () => {
+                                // Attempt to open left sidebar before showing this step
+                                const trigger =
+                                    document.querySelector<HTMLElement>(
+                                        '[data-tutorial-id="left-sidebar-trigger"] button',
+                                    ) ||
+                                    document.querySelector<HTMLElement>(
+                                        '[data-sidebar="trigger"]',
+                                    );
+
+                                // Only click if it's currently collapsed
+                                // Need to check data-state on the sidebar parent
+                                const sidebarL = document.querySelector(
+                                    '.peer[data-side="left"]',
+                                );
+                                if (
+                                    trigger &&
+                                    sidebarL &&
+                                    sidebarL.getAttribute("data-state") ===
+                                        "collapsed"
+                                ) {
+                                    trigger.click();
+                                }
+                            },
+                        },
+                    },
+                    {
+                        element: '[data-tutorial-id="time-penalty-tracker"]',
+                        popover: {
+                            title: "Time Penalty",
+                            description:
+                                "Locking a question will automatically add to your Time Penalty here. Keep an eye on it!",
+                            side: "right",
+                            align: "start",
+                        },
+                    },
                 ],
             });
 

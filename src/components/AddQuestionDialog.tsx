@@ -114,7 +114,10 @@ export function AddQuestionDialog() {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <Button className="w-full flex items-center justify-center gap-2 py-6 text-lg rounded-none border-b border-border">
+                <Button
+                    className="w-full flex items-center justify-center gap-2 py-6 text-lg rounded-none border-b border-border"
+                    data-tutorial-id="add-question-btn"
+                >
                     <Plus className="w-6 h-6" /> Add Question
                 </Button>
             </DialogTrigger>
