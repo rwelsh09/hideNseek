@@ -1,11 +1,8 @@
-import "leaflet-draw/dist/leaflet.draw.css";
-
 import { useStore } from "@nanostores/react";
-import * as turf from "@turf/turf";
 import _ from "lodash";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { FeatureGroup, Marker } from "react-leaflet";
-import { EditControl } from "react-leaflet-draw";
+import { Trash2 } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import { Marker, useMapEvents } from "react-leaflet";
 
 import {
     autoSave,
@@ -18,6 +15,7 @@ import { lngLatToText } from "@/maps/geo-utils";
 import type { CustomTentacleQuestion, Question } from "@/maps/schema";
 
 import { LatitudeLongitude } from "./LatLngPicker";
+import { Button } from "./ui/button";
 import { Dialog, DialogContent } from "./ui/dialog";
 import { Input } from "./ui/input";
 import {
@@ -28,24 +26,38 @@ import {
 
 const TentacleMarker = ({
     point,
+    onDelete,
+    onDragEnd,
 }: {
     point: CustomTentacleQuestion["places"][number];
+    onDelete: () => void;
+    onDragEnd: (lat: number, lng: number) => void;
 }) => {
     const $autoSave = useStore(autoSave);
     const [open, setOpen] = useState(false);
+    const markerRef = useRef<any>(null);
 
     const eventHandlers = useMemo(
         () => ({
             click: () => {
                 setOpen(true);
             },
+            dragend: () => {
+                const marker = markerRef.current;
+                if (marker) {
+                    const { lat, lng } = marker.getLatLng();
+                    onDragEnd(lat, lng);
+                }
+            },
         }),
-        [],
+        [onDragEnd],
     );
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <Marker
+                ref={markerRef}
+                draggable={true}
                 // @ts-expect-error This is passed to options, so it is not typed
                 properties={point.properties}
                 position={[
@@ -80,16 +92,26 @@ const TentacleMarker = ({
                                 questionModified();
                             }}
                         />
-                        {!$autoSave && (
-                            <SidebarMenuItem>
+                        <SidebarMenuItem className="mt-2 flex gap-2">
+                            {!$autoSave && (
                                 <SidebarMenuButton
-                                    className="bg-blue-600 p-2 rounded-md font-semibold font-poppins transition-shadow duration-500 mt-2"
+                                    className="bg-blue-600 p-2 rounded-md font-semibold font-poppins transition-shadow duration-500"
                                     onClick={save}
                                 >
                                     Save
                                 </SidebarMenuButton>
-                            </SidebarMenuItem>
-                        )}
+                            )}
+                            <Button
+                                variant="destructive"
+                                className="w-full flex items-center justify-center gap-2"
+                                onClick={() => {
+                                    setOpen(false);
+                                    onDelete();
+                                }}
+                            >
+                                <Trash2 size={16} /> Delete Marker
+                            </Button>
+                        </SidebarMenuItem>
                     </SidebarMenu>
                 </div>
             </DialogContent>
@@ -101,8 +123,6 @@ export const PolygonDraw = () => {
     const $drawingQuestionKey = useStore(drawingQuestionKey);
     const $questions = useStore(questions);
 
-    const featureRef = useRef<any | null>(null);
-
     let question: Question | undefined;
 
     if ($drawingQuestionKey !== -1) {
@@ -113,75 +133,69 @@ export const PolygonDraw = () => {
         }
     }
 
-    const onChange = () => {
+    useMapEvents({
+        click(e) {
+            if (
+                question &&
+                question.id === "tentacles" &&
+                question.data.locationType === "custom"
+            ) {
+                const newPlace = {
+                    type: "Feature" as const,
+                    geometry: {
+                        type: "Point" as const,
+                        coordinates: [e.latlng.lng, e.latlng.lat],
+                    },
+                    properties: {
+                        name: lngLatToText([e.latlng.lng, e.latlng.lat]),
+                    },
+                };
+
+                question.data.places.push(newPlace);
+                question.data.places = _.uniqBy(question.data.places, (x) =>
+                    x.geometry.coordinates.join(","),
+                );
+
+                questionModified();
+            }
+        },
+    });
+
+    const handleDelete = (index: number) => {
         if (
-            question?.id === "tentacles" &&
+            question &&
+            question.id === "tentacles" &&
             question.data.locationType === "custom"
         ) {
-            if (!featureRef.current?._layers) return;
-
-            const layers = featureRef.current._layers;
-            const geoJSONs = Object.values(layers).map((layer: any) => {
-                const geoJSON = layer.toGeoJSON();
-                geoJSON.properties = layer.options.properties;
-
-                if (!geoJSON.properties) {
-                    geoJSON.properties = {
-                        name: lngLatToText(geoJSON.geometry.coordinates),
-                    };
-                }
-
-                return geoJSON;
-            });
-            const geoJSON = turf.featureCollection(geoJSONs);
-
-            question.data.places = _.uniqBy(
-                geoJSON.features as CustomTentacleQuestion["places"],
-                (x) => x.geometry.coordinates.join(","),
-            ); // Sometimes keys are duplicated
-            if (featureRef.current) {
-                Object.values(featureRef.current._layers).map((layer: any) => {
-                    if (!layer.options.properties) {
-                        featureRef.current.removeLayer(layer);
-                    }
-                });
-            }
+            question.data.places.splice(index, 1);
             questionModified();
         }
     };
 
-    useEffect(() => {
-        if (featureRef.current && $drawingQuestionKey === -1) {
-            featureRef.current.clearLayers();
+    const handleDragEnd = (index: number, lat: number, lng: number) => {
+        if (
+            question &&
+            question.id === "tentacles" &&
+            question.data.locationType === "custom"
+        ) {
+            question.data.places[index].geometry.coordinates = [lng, lat];
+            questionModified();
         }
-    }, [$drawingQuestionKey]);
+    };
 
     return (
-        <FeatureGroup ref={featureRef}>
+        <>
             {question &&
                 question.id === "tentacles" &&
                 question.data.locationType === "custom" &&
-                question.data.places.map((x) => (
+                question.data.places.map((x, i) => (
                     <TentacleMarker
                         key={x.geometry.coordinates.join(",")}
                         point={x}
+                        onDelete={() => handleDelete(i)}
+                        onDragEnd={(lat, lng) => handleDragEnd(i, lat, lng)}
                     />
                 ))}
-            <EditControl
-                position="bottomleft"
-                edit={{ edit: false, remove: false }}
-                draw={{
-                    rectangle: false,
-                    circle: false,
-                    circlemarker: false,
-                    marker: question?.id === "tentacles" ? true : false,
-                    polyline: false,
-                    polygon: false,
-                }}
-                onCreated={onChange}
-                onEdited={onChange}
-                onDeleted={onChange}
-            />
-        </FeatureGroup>
+        </>
     );
 };

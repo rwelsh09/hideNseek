@@ -7,22 +7,6 @@ import { defineConfig } from "astro/config";
 
 // https://astro.build/config
 export default defineConfig({
-    vite: {
-        build: {
-            rollupOptions: {
-                onwarn(warning, warn) {
-                    if (
-                        warning.code === "MISSING_EXPORT" &&
-                        warning.id &&
-                        warning.id.includes("react-leaflet-draw")
-                    ) {
-                        return;
-                    }
-                    warn(warning);
-                },
-            },
-        },
-    },
     integrations: [
         react(),
         tailwind({
