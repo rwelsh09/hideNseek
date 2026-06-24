@@ -31,6 +31,7 @@ import {
     planningModeEnabled,
     polyGeoJSON,
     questions,
+    showTutorial,
     triggerLocalRefresh,
     useCustomStations,
 } from "@/lib/context";
@@ -245,6 +246,19 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                 </DrawerTrigger>
                 <DrawerContent>
                     <div className="flex flex-col items-center gap-4 mb-4">
+                        <div className="w-full max-w-[280px] sm:max-w-none flex justify-center mb-2 mt-4">
+                            <Button
+                                onClick={() => {
+                                    setOptionsOpen(false);
+                                    setTimeout(() => {
+                                        showTutorial.set(true);
+                                    }, 300);
+                                }}
+                                className="w-full sm:w-[280px]"
+                            >
+                                Start Tutorial
+                            </Button>
+                        </div>
                         <DrawerHeader>
                             <DrawerTitle className="text-4xl font-semibold font-poppins">
                                 Options

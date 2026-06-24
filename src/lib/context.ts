@@ -364,11 +364,10 @@ export const alwaysUsePastebin = persistentAtom<boolean>(
     },
 );
 
-export const showTutorial = persistentAtom<boolean>("showTutorials", false, {
+export const showTutorial = persistentAtom<boolean>("showTutorials", true, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
-export const tutorialStep = atom<number>(0);
 
 export const customInitPreference = persistentAtom<"ask" | "blank" | "prefill">(
     "customInitPreference",
