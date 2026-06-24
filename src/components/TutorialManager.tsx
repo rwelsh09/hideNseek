@@ -54,16 +54,6 @@ export const TutorialManager = () => {
                         },
                     },
                     {
-                        element: '[data-tutorial-id="left-sidebar-trigger"]',
-                        popover: {
-                            title: "Open the Sidebar",
-                            description:
-                                "Click here to open the sidebar so we can add a question.",
-                            side: "right",
-                            align: "start",
-                        },
-                    },
-                    {
                         element: '[data-tutorial-id="add-question-btn"]',
                         popover: {
                             title: "Ask a Question",
@@ -71,6 +61,7 @@ export const TutorialManager = () => {
                                 "Click here to ask a question. Once you are ready, you can lock it to record your answer.",
                             side: "right",
                             align: "start",
+                            showButtons: ["previous"], // Hide Next button to force interaction
                             onPopoverRender: () => {
                                 // Attempt to open left sidebar before showing this step
                                 const trigger =
@@ -82,7 +73,6 @@ export const TutorialManager = () => {
                                     );
 
                                 // Only click if it's currently collapsed
-                                // Need to check data-state on the sidebar parent
                                 const sidebarL = document.querySelector(
                                     '.peer[data-side="left"]',
                                 );
@@ -94,6 +84,99 @@ export const TutorialManager = () => {
                                 ) {
                                     trigger.click();
                                 }
+
+                                const btn = document.querySelector(
+                                    '[data-tutorial-id="add-question-btn"]',
+                                );
+                                if (btn) {
+                                    btn.addEventListener(
+                                        "click",
+                                        () => {
+                                            setTimeout(
+                                                () => driverObj.moveNext(),
+                                                400,
+                                            );
+                                        },
+                                        { once: true },
+                                    );
+                                }
+                            },
+                        },
+                    },
+                    {
+                        element: '[data-tutorial-id="tutorial-add-radar-5"]',
+                        popover: {
+                            title: "Choose a Question Type",
+                            description:
+                                "Let's ask a 5 km Radar question. Click here to add it to the map.",
+                            side: "right",
+                            align: "start",
+                            showButtons: ["previous"], // Hide Next button
+                            onPopoverRender: () => {
+                                const btn = document.querySelector(
+                                    '[data-tutorial-id="tutorial-add-radar-5"]',
+                                );
+                                if (btn) {
+                                    btn.addEventListener(
+                                        "click",
+                                        () => {
+                                            const checkInterval = setInterval(
+                                                () => {
+                                                    const lockBtn =
+                                                        document.querySelector(
+                                                            '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
+                                                        );
+                                                    if (lockBtn) {
+                                                        clearInterval(
+                                                            checkInterval,
+                                                        );
+                                                        driverObj.moveNext();
+                                                    }
+                                                },
+                                                100,
+                                            );
+                                        },
+                                        { once: true },
+                                    );
+                                }
+                            },
+                        },
+                    },
+                    {
+                        element:
+                            '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
+                        popover: {
+                            title: "Lock Your Answer",
+                            description:
+                                "Move the map around to reposition your question. Once you are satisfied with your answer, lock the question using this button to record it.",
+                            side: "bottom",
+                            align: "end",
+                            onPopoverRender: () => {
+                                // Let the user interact with the map
+                                driverObj.setConfig({
+                                    ...driverObj.getConfig(),
+                                    allowActiveInteraction: true,
+                                } as any);
+
+                                const checkInterval = setInterval(() => {
+                                    const lockBtn = document.querySelector(
+                                        '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
+                                    );
+                                    // if it's no longer rendering an unlock icon (it has a lock icon now), advance
+                                    if (
+                                        lockBtn &&
+                                        lockBtn.innerHTML.includes(
+                                            "lucide-lock",
+                                        )
+                                    ) {
+                                        clearInterval(checkInterval);
+                                        // A slight delay to let the animation play before moving
+                                        setTimeout(
+                                            () => driverObj.moveNext(),
+                                            300,
+                                        );
+                                    }
+                                }, 100);
                             },
                         },
                     },
@@ -102,9 +185,16 @@ export const TutorialManager = () => {
                         popover: {
                             title: "Time Penalty",
                             description:
-                                "Locking a question will automatically add to your Time Penalty here. Keep an eye on it!",
+                                "Locking a question automatically increases your Time Penalty, which you can see tracked here. Keep an eye on it!",
                             side: "right",
                             align: "start",
+                            onPopoverRender: () => {
+                                // Restore original config
+                                driverObj.setConfig({
+                                    ...driverObj.getConfig(),
+                                    allowActiveInteraction: false,
+                                } as any);
+                            },
                         },
                     },
                 ],

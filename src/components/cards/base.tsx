@@ -254,6 +254,7 @@ export const QuestionCard = ({
                                 <Button
                                     variant="outline"
                                     size="sm"
+                                    data-tutorial-id="tutorial-lock-btn"
                                     aria-label={
                                         locked
                                             ? "Unlock Question"
