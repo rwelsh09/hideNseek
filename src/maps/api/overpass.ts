@@ -108,15 +108,6 @@ export const findTentacleLocations = async (
     const elements = data.elements || [];
     const response = turf.points([]);
     const centerPoint = turf.point([question.lng, question.lat]);
-    
-    const playtestMode = playtestModeEnabled.get();
-    const radiusInMeters = playtestMode ? 50000 : turf.convertLength(
-        question.radius,
-        question.unit,
-        "meters",
-    );
-    const response = turf.points([]);
-    const centerPoint = turf.point([question.lng, question.lat]);
 
     const playtestMode = playtestModeEnabled.get();
     const radiusInMeters = playtestMode
