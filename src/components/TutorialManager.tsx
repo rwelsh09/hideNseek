@@ -72,7 +72,7 @@ export const TutorialManager = () => {
                                     sidebarL.getAttribute("data-state") ===
                                         "expanded"
                                 ) {
-                                    setTimeout(() => driverObj.moveNext(), 100);
+                                    setTimeout(() => driverObj.moveNext(), 10);
                                     return;
                                 }
 
@@ -119,7 +119,7 @@ export const TutorialManager = () => {
                         popover: {
                             title: "Ask a Question",
                             description:
-                                "Click here to ask a question. Once you are ready, you can lock it to record your answer.",
+                                "Click here to add a question.",
                             side: "right",
                             align: "start",
                             showButtons: ["previous"], // Hide Next button to force interaction
@@ -208,7 +208,7 @@ export const TutorialManager = () => {
                         popover: {
                             title: "Lock Your Answer",
                             description:
-                                "Move the map around to reposition your question. Once you are satisfied with your answer, lock the question using this button to record it.",
+                                "Once you receive your answer from the Hider, lock the question using this button.",
                             side: "bottom",
                             align: "end",
                             onPopoverRender: () => {
@@ -244,7 +244,7 @@ export const TutorialManager = () => {
                         popover: {
                             title: "Time Penalty",
                             description:
-                                "Locking a question automatically increases your Time Penalty, which you can see tracked here. Keep an eye on it!",
+                                "Locking a question automatically increases the Time Penalty. Keep an eye on it!",
                             side: "right",
                             align: "start",
                             onPopoverRender: () => {
