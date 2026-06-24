@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/photo-labels-1285646428324376677/sw.js', { scope: '/HideAndSeek/photo-labels-1285646428324376677/' })})}
