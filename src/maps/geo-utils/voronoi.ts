@@ -24,5 +24,41 @@ export const geoSpatialVoronoi = (
         coord[1] = coord[1] * -ratio; // y-coordinates are flipped
     });
 
-    return turf.toWgs84(projected);
+    const wgs84 = turf.toWgs84(projected) as FeatureCollection<
+        Polygon | MultiPolygon
+    >;
+
+    wgs84.features.forEach((feature) => {
+        if (feature.geometry.type === "Polygon") {
+            feature.geometry.coordinates.forEach((ring) => ring.reverse());
+        } else if (feature.geometry.type === "MultiPolygon") {
+            feature.geometry.coordinates.forEach((polygon) => {
+                polygon.forEach((ring) => ring.reverse());
+            });
+        }
+    });
+
+    wgs84.features = wgs84.features.map((feature) => {
+        if (turf.area(feature) > 255000000000000) {
+            const whole_world = turf.polygon([
+                [
+                    [-180, 90],
+                    [180, 90],
+                    [180, -90],
+                    [-180, -90],
+                    [-180, 90],
+                ],
+            ]);
+            const diff = turf.difference(
+                turf.featureCollection([whole_world, feature]),
+            );
+            if (diff) {
+                diff.properties = feature.properties;
+                return diff as typeof feature;
+            }
+        }
+        return feature;
+    });
+
+    return wgs84;
 };
