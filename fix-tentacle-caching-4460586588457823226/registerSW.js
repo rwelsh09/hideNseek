@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-tentacle-caching-4460586588457823226/sw.js', { scope: '/HideAndSeek/fix-tentacle-caching-4460586588457823226/' })})}
