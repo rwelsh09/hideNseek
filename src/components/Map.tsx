@@ -35,6 +35,7 @@ import { clearCache, determineMapBoundaries } from "@/maps/api";
 
 import { DraggableMarkers } from "./DraggableMarkers";
 import { LeafletActionButtons } from "./LeafletActionButtons";
+import { PlaytestPlaces } from "./PlaytestPlaces";
 import { PolygonDraw } from "./PolygonDraw";
 import { StationConnectionsOverlay } from "./StationConnectionsOverlay";
 import { TentaclePlaces } from "./TentaclePlaces";
@@ -337,6 +338,7 @@ export const Map = ({ className }: { className?: string }) => {
                 <StationConnectionsOverlay />
                 <DraggableMarkers />
                 <TentaclePlaces />
+                <PlaytestPlaces />
                 <div className="leaflet-top leaflet-right">
                     <div className="leaflet-control flex-col flex gap-2">
                         <LeafletActionButtons />

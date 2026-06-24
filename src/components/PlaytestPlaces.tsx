@@ -1,0 +1,169 @@
+import { useStore } from "@nanostores/react";
+import React, { useEffect, useState } from "react";
+import { CircleMarker, Tooltip } from "react-leaflet";
+
+import { playtestModeEnabled, questions } from "@/lib/context";
+import { findPlacesInZone, findPlacesSpecificInZone } from "@/maps/api";
+import { LOCATION_FIRST_TAG } from "@/maps/api/constants";
+
+export const PlaytestPlaces = () => {
+    const $playtestMode = useStore(playtestModeEnabled);
+    const $questions = useStore(questions);
+
+    const [places, setPlaces] = useState<any[]>([]);
+
+    useEffect(() => {
+        if (!$playtestMode) return;
+
+        let isMounted = true;
+
+        const loadPlaces = async () => {
+            const allPlaces: any[] = [];
+            const typesSet = new Set<string>();
+            const specificTypesSet = new Set<string>();
+
+            // Collect required location types from questions
+            $questions.forEach((q) => {
+                if (q.id === "tentacles" && q.data.locationType) {
+                    if (q.data.locationType === "custom") {
+                        // Custom places are literal arrays of features
+                        if (q.data.places && q.data.places.length > 0) {
+                            q.data.places.forEach((p: any) => {
+                                allPlaces.push({
+                                    ...p,
+                                    customColor: q.data.color || "orange",
+                                });
+                            });
+                        }
+                    } else {
+                        typesSet.add(q.data.locationType);
+                    }
+                } else if (q.id === "measuring" || q.id === "matching") {
+                    const type = (q.data as any).type;
+                    if (type) {
+                        if (type === "mcdonalds")
+                            specificTypesSet.add('["brand:wikidata"="Q38076"]');
+                        else if (type === "seven11")
+                            specificTypesSet.add(
+                                '["brand:wikidata"="Q259340"]',
+                            );
+                        else if (type.endsWith("-full")) {
+                            typesSet.add(type.replace("-full", ""));
+                        } else if (
+                            type === "museum" ||
+                            type === "hospital" ||
+                            type === "cinema" ||
+                            type === "library" ||
+                            type === "golf_course"
+                        ) {
+                            typesSet.add(type);
+                        }
+                    }
+                }
+            });
+
+            // Fetch standard location types
+            for (const type of Array.from(typesSet)) {
+                if ((LOCATION_FIRST_TAG as any)[type]) {
+                    const tag = (LOCATION_FIRST_TAG as any)[type];
+                    try {
+                        const features = await findPlacesInZone(
+                            `[${tag}=${type}]`,
+                            undefined,
+                            "nwr",
+                            "center",
+                            [],
+                            0,
+                        );
+                        if (features && features.features) {
+                            features.features.forEach((f: any) => {
+                                allPlaces.push({
+                                    ...f,
+                                    customColor: "purple", // distinct color for playtest
+                                });
+                            });
+                        }
+                    } catch (e) {
+                        console.error(
+                            "Failed to load playtest places for",
+                            type,
+                            e,
+                        );
+                    }
+                }
+            }
+
+            // Fetch specific types
+            for (const specificType of Array.from(specificTypesSet)) {
+                try {
+                    const features = await findPlacesSpecificInZone(
+                        specificType as any,
+                    );
+                    if (features && features.features) {
+                        features.features.forEach((f: any) => {
+                            allPlaces.push({
+                                ...f,
+                                customColor: "green",
+                            });
+                        });
+                    }
+                } catch (e) {
+                    console.error(
+                        "Failed to load specific playtest places for",
+                        specificType,
+                        e,
+                    );
+                }
+            }
+
+            if (isMounted) {
+                setPlaces(allPlaces);
+            }
+        };
+
+        loadPlaces();
+
+        return () => {
+            isMounted = false;
+        };
+    }, [$playtestMode, $questions]);
+
+    if (!$playtestMode) return null;
+
+    return (
+        <>
+            {places.map((place, i) => {
+                const coords =
+                    place?.geometry?.coordinates ??
+                    (place?.properties?.lon && place?.properties?.lat
+                        ? [place.properties.lon, place.properties.lat]
+                        : null);
+
+                if (!coords) return null;
+
+                const name =
+                    place?.properties?.name ??
+                    place?.properties?.["name:en"] ??
+                    "Unknown Place";
+                const color = place?.customColor ?? "orange";
+
+                return (
+                    <CircleMarker
+                        key={i}
+                        center={[coords[1], coords[0]]}
+                        radius={5}
+                        pathOptions={{
+                            color: color,
+                            fillColor: color,
+                            fillOpacity: 0.8,
+                        }}
+                    >
+                        <Tooltip direction="top" offset={[0, -10]}>
+                            {name}
+                        </Tooltip>
+                    </CircleMarker>
+                );
+            })}
+        </>
+    );
+};
