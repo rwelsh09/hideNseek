@@ -394,15 +394,20 @@ out ${outType};
         const result: any[] = [];
 
         for (const e of data.elements) {
-            if (e.tags && e.tags.leisure === "golf_course" && e.tags.name) {
-                const name = e.tags.name;
-                if (!byName[name]) {
-                    byName[name] = [];
+            if (e.tags && e.tags.leisure === "golf_course") {
+                if (e.tags.indoor === "yes") {
+                    continue; // Skip indoor golf locations entirely
                 }
-                byName[name].push(e);
-            } else {
-                result.push(e);
+                if (e.tags.name) {
+                    const name = e.tags.name;
+                    if (!byName[name]) {
+                        byName[name] = [];
+                    }
+                    byName[name].push(e);
+                    continue;
+                }
             }
+            result.push(e);
         }
 
         for (const items of Object.values(byName)) {
