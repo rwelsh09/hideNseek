@@ -231,6 +231,9 @@ export const TentacleQuestionComponent = ({
                 latitude={data.lat}
                 longitude={data.lng}
                 colorName={data.color}
+                onChangeColor={(color: any) => {
+                    questionModified((data.color = color));
+                }}
                 onChange={(lat, lng) => {
                     if (lat !== null) {
                         data.lat = lat;

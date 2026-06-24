@@ -94,6 +94,9 @@ export const ThermometerQuestionComponent = ({
                 longitude={data.lngA}
                 label="Start"
                 colorName={data.colorA}
+                onChangeColor={(color: any) => {
+                    questionModified((data.colorA = color));
+                }}
                 onChange={(lat, lng) => {
                     if (lat !== null) data.latA = lat;
                     if (lng !== null) data.lngA = lng;
@@ -107,6 +110,9 @@ export const ThermometerQuestionComponent = ({
                 longitude={data.lngB}
                 label="End"
                 colorName={data.colorB}
+                onChangeColor={(color: any) => {
+                    questionModified((data.colorA = color));
+                }}
                 onChange={(lat, lng) => {
                     if (lat !== null) data.latB = lat;
                     if (lng !== null) data.lngB = lng;
