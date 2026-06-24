@@ -97,21 +97,52 @@ export const findTentacleLocations = async (
     question: EncompassingTentacleQuestionSchema,
     text: string = "Determining tentacle locations...",
 ) => {
-    const query = `
-[out:json][timeout:25];
-nwr["${LOCATION_FIRST_TAG[question.locationType]}"="${question.locationType}"](around:${turf.convertLength(
+    const data = await findPlacesInZone(
+        `[${LOCATION_FIRST_TAG[question.locationType]}=${question.locationType}]`,
+        text,
+        "nwr",
+        "center",
+    );
+    const elements = data.elements || [];
+    const response = turf.points([]);
+    const centerPoint = turf.point([question.lng, question.lat]);
+    const radiusInMeters = turf.convertLength(
         question.radius,
         question.unit,
         "meters",
-    )}, ${question.lat}, ${question.lng});
-out center;
-    `;
-    const data = await getOverpassData(query, text);
-    const elements = data.elements;
-    const response = turf.points([]);
+    );
+
     elements.forEach((element: any) => {
-        if (!element.tags["name"] && !element.tags["name:en"]) return;
+        if (
+            !element.tags ||
+            (!element.tags["name"] && !element.tags["name:en"])
+        )
+            return;
         if (element.lat && element.lon) {
+            const pt = turf.point([element.lon, element.lat]);
+            const distance = turf.distance(centerPoint, pt, {
+                units: "meters",
+            });
+            if (distance <= radiusInMeters) {
+                const name = element.tags["name:en"] ?? element.tags["name"];
+                if (
+                    response.features.find(
+                        (feature: any) => feature.properties.name === name,
+                    )
+                )
+                    return;
+                response.features.push(
+                    turf.point([element.lon, element.lat], { name }),
+                );
+            }
+        }
+        if (!element.center || !element.center.lon || !element.center.lat)
+            return;
+        const centerPt = turf.point([element.center.lon, element.center.lat]);
+        const centerDistance = turf.distance(centerPoint, centerPt, {
+            units: "meters",
+        });
+        if (centerDistance <= radiusInMeters) {
             const name = element.tags["name:en"] ?? element.tags["name"];
             if (
                 response.features.find(
@@ -120,21 +151,9 @@ out center;
             )
                 return;
             response.features.push(
-                turf.point([element.lon, element.lat], { name }),
+                turf.point([element.center.lon, element.center.lat], { name }),
             );
         }
-        if (!element.center || !element.center.lon || !element.center.lat)
-            return;
-        const name = element.tags["name:en"] ?? element.tags["name"];
-        if (
-            response.features.find(
-                (feature: any) => feature.properties.name === name,
-            )
-        )
-            return;
-        response.features.push(
-            turf.point([element.center.lon, element.center.lat], { name }),
-        );
     });
     return response;
 };
@@ -379,8 +398,6 @@ export const nearestToQuestion = async (
 export const cacheAllPlaces = async () => {
     const tasks: (() => Promise<any>)[] = [];
 
-    const coordinates = mapGeoLocation.get().geometry.coordinates;
-
     // Standard Locations (from LOCATION_FIRST_TAG)
     Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
         const location = locationStr as APILocations;
@@ -393,24 +410,6 @@ export const cacheAllPlaces = async () => {
                 "center",
                 [],
                 0,
-            ),
-        );
-
-        tasks.push(() =>
-            findTentacleLocations(
-                {
-                    locationType: location,
-                    radius: 10,
-                    unit: "kilometers",
-                    lat: coordinates[1],
-                    lng: coordinates[0],
-                    location: false,
-                    drag: false,
-                    color: "black",
-                    collapsed: false,
-                    showLabels: false,
-                },
-                undefined,
             ),
         );
     });
