@@ -20,8 +20,8 @@ import type { PhotoQuestion } from "@/maps/schema";
 import { QuestionCard } from "./base";
 
 const PHOTO_LABELS: Record<string, string> = {
-    camera: "You",
-    tree: "A Tree",
+    camera: "Hider Selfie",
+    tree: "Unique Tree",
     car: "Widest Street",
     building: "Tallest Structure",
     restaurant: "Restaurant Interior",
@@ -29,7 +29,7 @@ const PHOTO_LABELS: Record<string, string> = {
     store: "Grocery Store Aisle",
     worship: "Place of Worship",
     train: "Train Platform",
-    route: "Trace Nearest Street",
+    route: "Nearest Intersection",
 };
 
 export const PhotoQuestionComponent = ({
