@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/jules/combine-planning-and-playtest-mode-2329898142745073862/sw.js', { scope: '/HideAndSeek/jules/combine-planning-and-playtest-mode-2329898142745073862/' })})}
