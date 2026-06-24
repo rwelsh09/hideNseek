@@ -4,7 +4,7 @@ export const QUESTION_RULES: Record<string, string> = {
     thermometer:
         "The Seeker places one marker where they currently are then travels to where they want the second marker (at least the number of kilometers on the chosen thermometer). The Hider must reveal which if the Seeker is now Warmer (closer) or Colder (further0 from them.",
     tentacles:
-        "Creates circles ('tentacles') around all locations of a specific category (e.g., all hospitals) within 2km. The Hider reveals if they are inside the 2km area and whcih place they are closest to.",
+        "Creates circles ('tentacles') around all locations of a specific category (e.g., all hospitals) within a set radius. The Hider reveals if they are inside the area and which place they are closest to.",
     measuring:
         "The Hider compares their distance to a specific type of feature (e.g., nearest library) against the Seeker location, answering if they are 'Closer' or 'Further'.",
     matching:

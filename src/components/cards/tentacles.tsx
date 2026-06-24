@@ -94,15 +94,12 @@ export const TentacleQuestionComponent = ({
                     <div className="flex flex-row gap-2">
                         <Input
                             type="number"
-                            max={data.unit === "kilometers" ? 2 : 2000}
                             className="rounded-md p-2 w-16"
                             value={data.radius}
                             onChange={(e) => {
                                 let val = parseFloat(e.target.value);
-                                const maxVal =
-                                    data.unit === "kilometers" ? 2 : 2000;
-                                if (val > maxVal) {
-                                    val = maxVal;
+                                if (val < 0) {
+                                    val = 0;
                                 }
                                 questionModified((data.radius = val));
                             }}
@@ -111,21 +108,12 @@ export const TentacleQuestionComponent = ({
                         <UnitSelect
                             unit={data.unit}
                             onChange={(unit) => {
-                                const maxVal = unit === "kilometers" ? 2 : 2000;
-                                let val = data.radius;
-                                if (val > maxVal) {
-                                    val = maxVal;
-                                }
                                 data.unit = unit;
-                                data.radius = val;
                                 questionModified();
                             }}
                             disabled={!data.drag || $isLoading}
                         />
                     </div>
-                    <span className="text-xs text-muted-foreground opacity-75">
-                        Maximum 2 kilometers
-                    </span>
                 </div>
             </SidebarMenuItem>
             <SidebarMenuItem>

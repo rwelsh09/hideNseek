@@ -124,6 +124,8 @@ const tentacleLocationsOne = z.union([
     z.literal("hospital").describe("Hospitals"),
     z.literal("cinema").describe("Movie Theaters"),
     z.literal("library").describe("Libraries"),
+    z.literal("mcdonalds").describe("McDonald's"),
+    z.literal("seven11").describe("7-Eleven"),
 ]);
 
 const apiLocationSchema = z.union([
@@ -182,7 +184,7 @@ const customTentacleQuestionSchema = baseTentacleQuestionSchema.extend({
 
 export const tentacleQuestionSchema = z.union([
     customTentacleQuestionSchema.describe(NO_GROUP),
-    tentacleQuestionSpecificSchemaOne.describe("2 Kilometer"),
+    tentacleQuestionSpecificSchemaOne.describe("Standard Locations"),
 ]);
 
 const baseMatchingQuestionSchema = ordinaryBaseQuestionSchema.extend({

@@ -54,16 +54,13 @@ export const adjustPerTentacle = async (
             ? turf.featureCollection(question.places)
             : await findTentacleLocations(question);
 
-    const points =
-        question.locationType === "custom"
-            ? filterPointsWithinRadius(
-                  rawPoints,
-                  question.lng,
-                  question.lat,
-                  question.radius,
-                  question.unit,
-              )
-            : rawPoints;
+    const points = filterPointsWithinRadius(
+        rawPoints,
+        question.lng,
+        question.lat,
+        question.radius,
+        question.unit,
+    );
 
     const voronoi = geoSpatialVoronoi(points);
 
@@ -100,16 +97,13 @@ export const hiderifyTentacles = async (question: TentacleQuestion) => {
             ? turf.featureCollection(question.places)
             : await findTentacleLocations(question);
 
-    const points =
-        question.locationType === "custom"
-            ? filterPointsWithinRadius(
-                  rawPoints,
-                  question.lng,
-                  question.lat,
-                  question.radius,
-                  question.unit,
-              )
-            : rawPoints;
+    const points = filterPointsWithinRadius(
+        rawPoints,
+        question.lng,
+        question.lat,
+        question.radius,
+        question.unit,
+    );
 
     const voronoi = geoSpatialVoronoi(points);
 
@@ -152,16 +146,13 @@ export const tentaclesPlanningPolygon = async (question: TentacleQuestion) => {
             ? turf.featureCollection(question.places)
             : await findTentacleLocations(question);
 
-    const points =
-        question.locationType === "custom"
-            ? filterPointsWithinRadius(
-                  rawPoints,
-                  question.lng,
-                  question.lat,
-                  question.radius,
-                  question.unit,
-              )
-            : rawPoints;
+    const points = filterPointsWithinRadius(
+        rawPoints,
+        question.lng,
+        question.lat,
+        question.radius,
+        question.unit,
+    );
 
     const voronoi = geoSpatialVoronoi(points);
     const circle = await arcBuffer(

@@ -99,12 +99,27 @@ export const findTentacleLocations = async (
     question: EncompassingTentacleQuestionSchema,
     text: string = "Determining tentacle locations...",
 ) => {
-    const data = await findPlacesInZone(
-        `[${LOCATION_FIRST_TAG[question.locationType]}=${question.locationType}]`,
-        text,
-        "nwr",
-        "center",
-    );
+    let data;
+    if (
+        question.locationType === "mcdonalds" ||
+        question.locationType === "seven11"
+    ) {
+        data = await findPlacesInZone(
+            question.locationType === "mcdonalds"
+                ? QuestionSpecificLocation.McDonalds
+                : QuestionSpecificLocation.Seven11,
+            text,
+            "nwr",
+            "center",
+        );
+    } else {
+        data = await findPlacesInZone(
+            `[${LOCATION_FIRST_TAG[question.locationType]}=${question.locationType}]`,
+            text,
+            "nwr",
+            "center",
+        );
+    }
     const elements = data.elements || [];
     const response = turf.points([]);
     const centerPoint = turf.point([question.lng, question.lat]);
