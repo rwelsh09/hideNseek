@@ -28,7 +28,6 @@ import {
     leafletMapContext,
     mapGeoJSON,
     mapGeoLocation,
-    planningModeEnabled,
     playtestModeEnabled,
     polyGeoJSON,
     questions,
@@ -56,7 +55,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $hiderMode = useStore(hiderMode);
     const $autoSave = useStore(autoSave);
     const $hidingZone = useStore(hidingZone);
-    const $planningMode = useStore(planningModeEnabled);
     const $playtestMode = useStore(playtestModeEnabled);
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
@@ -380,12 +378,12 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             </div>
                             <div className="flex flex-row items-center gap-2 text-center">
                                 <label className="text-xl sm:text-2xl font-semibold font-poppins">
-                                    Enable planning mode?
+                                    Playtest Mode?
                                 </label>
                                 <Checkbox
-                                    checked={$planningMode}
+                                    checked={$playtestMode}
                                     onCheckedChange={() => {
-                                        if ($planningMode === true) {
+                                        if ($playtestMode === true) {
                                             const map = leafletMapContext.get();
 
                                             if (map) {
@@ -402,25 +400,12 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                             questions.set([...questions.get()]);
                                         }
 
-                                        planningModeEnabled.set(!$planningMode);
+                                        playtestModeEnabled.set(!$playtestMode);
                                     }}
                                 />
                             </div>
                             <div className="flex flex-row items-center gap-2 text-center">
                                 <label className="text-xl sm:text-2xl font-semibold font-poppins">
-                                    <div className="flex flex-row items-center gap-2 text-center">
-                                        <label className="text-xl sm:text-2xl font-semibold font-poppins">
-                                            Playtest Mode?
-                                        </label>
-                                        <Checkbox
-                                            checked={$playtestMode}
-                                            onCheckedChange={() => {
-                                                playtestModeEnabled.set(
-                                                    !$playtestMode,
-                                                );
-                                            }}
-                                        />
-                                    </div>
                                     Auto save?
                                 </label>
                                 <Checkbox

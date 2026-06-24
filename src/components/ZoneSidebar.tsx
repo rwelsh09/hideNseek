@@ -29,7 +29,7 @@ import {
     includeDefaultStations as includeDefaultStationsAtom,
     isLoading,
     leafletMapContext,
-    planningModeEnabled,
+    playtestModeEnabled,
     questionFinishedMapData,
     questions,
     trainStations,
@@ -330,7 +330,7 @@ export const ZoneSidebar = () => {
                 for (const question of questions.get()) {
                     if (circles.length === 0) break;
 
-                    if (planningModeEnabled.get() && question.data.drag) {
+                    if (playtestModeEnabled.get() && question.data.drag) {
                         continue;
                     }
 
@@ -1079,7 +1079,7 @@ async function selectionProcess(
     ]);
 
     for (const question of questions.get()) {
-        if (planningModeEnabled.get() && question.data.drag) continue;
+        if (playtestModeEnabled.get() && question.data.drag) continue;
 
         if (
             (question.id === "measuring" || question.id === "matching") &&
