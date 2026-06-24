@@ -93,6 +93,8 @@ export const determineGeoJSON = async (
     };
 };
 
+import { playtestModeEnabled } from "@/lib/context";
+
 export const findTentacleLocations = async (
     question: EncompassingTentacleQuestionSchema,
     text: string = "Determining tentacle locations...",
@@ -106,11 +108,11 @@ export const findTentacleLocations = async (
     const elements = data.elements || [];
     const response = turf.points([]);
     const centerPoint = turf.point([question.lng, question.lat]);
-    const radiusInMeters = turf.convertLength(
-        question.radius,
-        question.unit,
-        "meters",
-    );
+
+    const playtestMode = playtestModeEnabled.get();
+    const radiusInMeters = playtestMode
+        ? 50000
+        : turf.convertLength(question.radius, question.unit, "meters");
 
     elements.forEach((element: any) => {
         if (
@@ -398,6 +400,8 @@ export const nearestToQuestion = async (
 export const cacheAllPlaces = async () => {
     const tasks: (() => Promise<any>)[] = [];
 
+    const coordinates = mapGeoLocation.get().geometry.coordinates;
+
     // Standard Locations (from LOCATION_FIRST_TAG)
     Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
         const location = locationStr as APILocations;
@@ -410,6 +414,24 @@ export const cacheAllPlaces = async () => {
                 "center",
                 [],
                 0,
+            ),
+        );
+
+        tasks.push(() =>
+            findTentacleLocations(
+                {
+                    locationType: location,
+                    radius: 10,
+                    unit: "kilometers",
+                    lat: coordinates[1],
+                    lng: coordinates[0],
+                    location: false,
+                    drag: false,
+                    color: "black",
+                    collapsed: false,
+                    showLabels: false,
+                },
+                undefined,
             ),
         );
     });

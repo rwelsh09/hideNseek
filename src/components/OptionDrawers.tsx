@@ -29,6 +29,7 @@ import {
     mapGeoJSON,
     mapGeoLocation,
     planningModeEnabled,
+    playtestModeEnabled,
     polyGeoJSON,
     questions,
     showTutorial,
@@ -56,6 +57,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $autoSave = useStore(autoSave);
     const $hidingZone = useStore(hidingZone);
     const $planningMode = useStore(planningModeEnabled);
+    const $playtestMode = useStore(playtestModeEnabled);
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
     const $displayTransitLines = useStore(displayTransitLines);
@@ -406,6 +408,19 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             </div>
                             <div className="flex flex-row items-center gap-2 text-center">
                                 <label className="text-xl sm:text-2xl font-semibold font-poppins">
+                                    <div className="flex flex-row items-center gap-2 text-center">
+                                        <label className="text-xl sm:text-2xl font-semibold font-poppins">
+                                            Playtest Mode?
+                                        </label>
+                                        <Checkbox
+                                            checked={$playtestMode}
+                                            onCheckedChange={() => {
+                                                playtestModeEnabled.set(
+                                                    !$playtestMode,
+                                                );
+                                            }}
+                                        />
+                                    </div>
                                     Auto save?
                                 </label>
                                 <Checkbox

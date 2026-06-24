@@ -377,6 +377,7 @@ export function AddQuestionDialog() {
                                 type="button"
                                 aria-label="Add radar question for 5 km"
                                 title="Add radar question for 5 km"
+                                data-tutorial-id="tutorial-add-radar-5"
                                 onClick={() =>
                                     handleQuestionSelect("radar", "5")
                                 }

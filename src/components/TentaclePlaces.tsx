@@ -4,7 +4,12 @@ import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 import { Popup } from "react-leaflet";
 
-import { hiderMode, questionModified, questions } from "@/lib/context";
+import {
+    hiderMode,
+    playtestModeEnabled,
+    questionModified,
+    questions,
+} from "@/lib/context";
 import { findTentacleLocations } from "@/maps/api";
 
 import { Button } from "./ui/button";
@@ -52,7 +57,9 @@ const TentaclePlacesForQuestion = ({ question }: { question: any }) => {
         question.data.places,
     ]);
 
-    if ($hiderMode) return null;
+    const $playtestMode = useStore(playtestModeEnabled);
+
+    if ($hiderMode && !$playtestMode) return null;
 
     const center = turf.point([question.data.lng, question.data.lat]);
     const filteredPlaces = places.filter((f) => {
@@ -62,6 +69,7 @@ const TentaclePlacesForQuestion = ({ question }: { question: any }) => {
                 ? [f.properties.lon, f.properties.lat]
                 : null);
         if (!coords) return false;
+        if ($playtestMode) return true; // Show all places in playtest mode
         return (
             turf.distance(center, turf.point(coords), {
                 units: question.data.unit,
