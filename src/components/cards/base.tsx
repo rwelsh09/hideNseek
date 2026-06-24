@@ -135,7 +135,6 @@ export const QuestionCard = ({
                                         </PopoverContent>
                                     </Popover>
                                 )}
-                                \n{" "}
                                 <DialogTrigger asChild>
                                     <Button
                                         variant="outline"
