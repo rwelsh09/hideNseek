@@ -21,7 +21,7 @@ import {
     leafletMapContext,
     mapGeoJSON,
     mapGeoLocation,
-    planningModeEnabled,
+    playtestModeEnabled,
     polyGeoJSON,
     questionFinishedMapData,
     questions,
@@ -182,7 +182,7 @@ export const Map = ({ className }: { className?: string }) => {
             mapGeoData = await applyQuestionsToMapGeoData(
                 $questions,
                 mapGeoData,
-                planningModeEnabled.get(),
+                playtestModeEnabled.get(),
                 (geoJSONObj, question) => {
                     const geoJSONPlane = L.geoJSON(geoJSONObj);
                     // @ts-expect-error This is a check such that only this type of layer is removed

@@ -333,15 +333,6 @@ export const playtestModeEnabled = persistentAtom<boolean>(
     { encode: JSON.stringify, decode: JSON.parse },
 );
 
-export const planningModeEnabled = persistentAtom<boolean>(
-    "planningModeEnabled",
-    false,
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
-
 export const isLoading = atom<boolean>(false);
 
 export const baseTileLayer = persistentAtom<
