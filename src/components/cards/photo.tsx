@@ -11,7 +11,6 @@ import {
     isLoading,
     penaltyMinutes,
     questionModified,
-    questions,
     TIME_PENALTIES,
     triggerLocalRefresh,
 } from "@/lib/context";
@@ -19,6 +18,19 @@ import { cn } from "@/lib/utils";
 import type { PhotoQuestion } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
+
+const PHOTO_LABELS: Record<string, string> = {
+    camera: "Hider Selfie",
+    tree: "Unique Tree",
+    car: "Widest Street",
+    building: "Tallest Structure",
+    restaurant: "Restaurant Interior",
+    park: "Park",
+    store: "Grocery Store Aisle",
+    worship: "Place of Worship",
+    train: "Train Platform",
+    route: "Nearest Intersection",
+};
 
 export const PhotoQuestionComponent = ({
     data,
@@ -33,19 +45,12 @@ export const PhotoQuestionComponent = ({
     isPreview?: boolean;
 }) => {
     useStore(triggerLocalRefresh);
-    const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
     const [localNotes, setLocalNotes] = useState(data.notes);
     useEffect(() => {
         setLocalNotes(data.notes);
     }, [data.notes]);
-    const label = `Photo
-    ${
-        $questions
-            .filter((q) => q.id === "photo")
-            .map((q) => q.key)
-            .indexOf(questionKey) + 1
-    }`;
+    const label = PHOTO_LABELS[data.type] || "Photo";
 
     return (
         <QuestionCard
