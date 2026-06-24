@@ -29,12 +29,16 @@ export const holedMask = (
         | Feature<Polygon | MultiPolygon>
         | FeatureCollection<Polygon | MultiPolygon>,
 ) => {
-    return turf.difference(
+    const diff = turf.difference(
         turf.featureCollection([
             BLANK_GEOJSON.features[0] as Feature<Polygon>,
             "features" in input ? safeUnion(input) : input,
         ]),
     );
+    if (!diff) return null;
+    return turf.rewind(diff, { mutate: true }) as Feature<
+        Polygon | MultiPolygon
+    >;
 };
 
 export const modifyMapData = (
