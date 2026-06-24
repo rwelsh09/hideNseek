@@ -4,6 +4,7 @@ import {
     ClipboardPasteIcon,
     EditIcon,
     LocateIcon,
+    PaletteIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -237,6 +238,7 @@ export const LatitudeLongitude = ({
     onChange,
     label = "Location",
     colorName,
+    onChangeColor,
     children,
     disabled,
     inlineEdit = false,
@@ -246,6 +248,7 @@ export const LatitudeLongitude = ({
     onChange: (lat: number | null, lng: number | null) => void;
     label?: string;
     colorName?: keyof typeof ICON_COLORS;
+    onChangeColor?: (color: keyof typeof ICON_COLORS) => void;
     className?: string;
     children?: React.ReactNode;
     disabled?: boolean;
@@ -296,8 +299,7 @@ export const LatitudeLongitude = ({
 
                 <div
                     className={cn(
-                        !inlineEdit &&
-                            "flex justify-center gap-2 *:max-w-12 *:w-[20%]",
+                        !inlineEdit && "flex justify-center gap-2 *:max-w-12",
                     )}
                 >
                     {inlineEdit ? (
@@ -333,6 +335,59 @@ export const LatitudeLongitude = ({
                                     onChange={onChange}
                                     disabled={disabled}
                                 />
+                                <DialogFooter>
+                                    <DialogClose asChild>
+                                        <Button>Done</Button>
+                                    </DialogClose>
+                                </DialogFooter>
+                            </DialogContent>
+                        </Dialog>
+                    )}
+                    {!inlineEdit && onChangeColor && (
+                        <Dialog>
+                            <DialogTrigger asChild>
+                                <Button
+                                    disabled={disabled}
+                                    variant="outline"
+                                    title="Change marker color"
+                                    aria-label="Change marker color"
+                                >
+                                    <PaletteIcon />
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle className="text-2xl">
+                                        Change {label} Color
+                                    </DialogTitle>
+                                </DialogHeader>
+                                <div className="grid grid-cols-4 gap-4 py-4">
+                                    {(
+                                        Object.entries(ICON_COLORS) as [
+                                            keyof typeof ICON_COLORS,
+                                            string,
+                                        ][]
+                                    ).map(([colorKey, hexCode]) => (
+                                        <Button
+                                            key={colorKey}
+                                            variant="outline"
+                                            className={cn(
+                                                "h-16 w-full rounded-md border-2",
+                                                colorName === colorKey
+                                                    ? "border-primary"
+                                                    : "border-transparent",
+                                            )}
+                                            style={{ backgroundColor: hexCode }}
+                                            onClick={() =>
+                                                onChangeColor(
+                                                    colorKey as keyof typeof ICON_COLORS,
+                                                )
+                                            }
+                                            title={`Set color to ${colorKey}`}
+                                            aria-label={`Set color to ${colorKey}`}
+                                        />
+                                    ))}
+                                </div>
                                 <DialogFooter>
                                     <DialogClose asChild>
                                         <Button>Done</Button>
