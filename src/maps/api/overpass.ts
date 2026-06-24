@@ -93,19 +93,32 @@ export const determineGeoJSON = async (
     };
 };
 
+import { playtestModeEnabled } from "@/lib/context";
+
 export const findTentacleLocations = async (
     question: EncompassingTentacleQuestionSchema,
     text: string = "Determining tentacle locations...",
 ) => {
-    const query = `
+    const playtestMode = playtestModeEnabled.get();
+    let query = "";
+
+    if (playtestMode) {
+        query = `
+[out:json][timeout:25];
+nwr["${LOCATION_FIRST_TAG[question.locationType]}"="${question.locationType}"](around:50000, ${question.lat}, ${question.lng});
+out center;
+        `;
+    } else {
+        query = `
 [out:json][timeout:25];
 nwr["${LOCATION_FIRST_TAG[question.locationType]}"="${question.locationType}"](around:${turf.convertLength(
-        question.radius,
-        question.unit,
-        "meters",
-    )}, ${question.lat}, ${question.lng});
+            question.radius,
+            question.unit,
+            "meters",
+        )}, ${question.lat}, ${question.lng});
 out center;
-    `;
+        `;
+    }
     const data = await getOverpassData(query, text);
     const elements = data.elements;
     const response = turf.points([]);
