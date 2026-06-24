@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feature/marker-color-selector-1725015315181716748/sw.js', { scope: '/HideAndSeek/feature/marker-color-selector-1725015315181716748/' })})}
