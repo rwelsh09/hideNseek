@@ -16,6 +16,8 @@ const { className } = Astro.props;
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width" />
+        <title>Map Generator for Hide and Seek</title>
+        
         <link
             rel="icon"
             type="image/x-icon"
@@ -43,6 +45,7 @@ const { className } = Astro.props;
             sizes="16x16"
             href={`${import.meta.env.BASE_URL}favicon-16x16.png`}
         />
+        
         <script is:inline>
             // Run before anything else
             if (sessionStorage.getItem("resetEverything") === "true") {
@@ -50,89 +53,14 @@ const { className } = Astro.props;
                 sessionStorage.removeItem("resetEverything");
             }
         </script>
+        
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
         <link
             href="https://fonts.googleapis.com/css2?family=Oxygen:wght@300;400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
             rel="stylesheet"
         />
-        <script
-            type="text/partytown"
-            async
-            src="https://www.googletagmanager.com/gtag/js?id=G-RKJ9G6CNC2"
-        ></script>
-        <script type="text/partytown">
-            window.dataLayer = window.dataLayer || [];
-            function gtag() {
-                dataLayer.push(arguments);
-            }
-            gtag("js", new Date());
-
-            gtag("config", "G-RKJ9G6CNC2");
-        </script>
-        <script type="text/javascript">
-            if (!window.location.host.includes("localhost")) {
-                (function (c, l, a, r, i, t, y) {
-                    c[a] =
-                        c[a] ||
-                        function () {
-                            (c[a].q = c[a].q || []).push(arguments);
-                        };
-                    t = l.createElement(r);
-                    t.async = 1;
-                    t.src = "https://www.clarity.ms/tag/" + i;
-                    y = l.getElementsByTagName(r)[0];
-                    y.parentNode.insertBefore(t, y);
-                })(window, document, "clarity", "script", "sus45mfdvm");
-            }
-        </script>
-        <meta name="generator" content={Astro.generator} />
-        <!-- HTML Meta Tags -->
-        <title>Map Generator for Hide and Seek</title>
-        <meta
-            name="description"
-            content="Automatically generate maps for Hide and Seek with ease! Simply name the questions and watch the map eliminate hundreds of possibilities in seconds."
-        />
-
-        <!-- Facebook Meta Tags -->
-        <meta
-            property="og:url"
-            content={`https://rwelsh09.github.io${import.meta.env.BASE_URL}`}
-        />
-        <meta property="og:type" content="website" />
-        <meta
-            property="og:title"
-            content="Map Generator for Hide and Seek"
-        />
-        <meta
-            property="og:description"
-            content="Automatically generate maps for Hide and Seek with ease! Simply name the questions and watch the map eliminate hundreds of possibilities in seconds."
-        />
-        <meta
-            property="og:image"
-            content={`https://rwelsh09.github.io${import.meta.env.BASE_URL}JLIcon.png`}
-        />
-
-        <!-- Twitter Meta Tags -->
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta property="twitter:domain" content="rwelsh09.github.io" />
-        <meta
-            property="twitter:url"
-            content={`https://rwelsh09.github.io${import.meta.env.BASE_URL}`}
-        />
-        <meta
-            name="twitter:title"
-            content="Map Generator for Hide and Seek"
-        />
-        <meta
-            name="twitter:description"
-            content="Automatically generate maps for Hide and Seek with ease! Simply name the questions and watch the map eliminate hundreds of possibilities in seconds."
-        />
-        <meta
-            name="twitter:image"
-            content={`https://rwelsh09.github.io${import.meta.env.BASE_URL}JLIcon.png`}
-        />
-
+        
         {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
     </head>
     <body class:list={[className, "dark"]}>
