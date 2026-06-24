@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/revert-125-fix/dedupe-golf-courses-2714779980620536811/sw.js', { scope: '/HideAndSeek/revert-125-fix/dedupe-golf-courses-2714779980620536811/' })})}
