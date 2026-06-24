@@ -24,5 +24,19 @@ export const geoSpatialVoronoi = (
         coord[1] = coord[1] * -ratio; // y-coordinates are flipped
     });
 
-    return turf.rewind(turf.toWgs84(projected), { mutate: true });
+    const wgs84 = turf.toWgs84(projected) as FeatureCollection<
+        Polygon | MultiPolygon
+    >;
+
+    wgs84.features.forEach((feature) => {
+        if (feature.geometry.type === "Polygon") {
+            feature.geometry.coordinates.forEach((ring) => ring.reverse());
+        } else if (feature.geometry.type === "MultiPolygon") {
+            feature.geometry.coordinates.forEach((polygon) => {
+                polygon.forEach((ring) => ring.reverse());
+            });
+        }
+    });
+
+    return wgs84;
 };
