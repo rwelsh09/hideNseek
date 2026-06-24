@@ -1,7 +1,9 @@
 import * as turf from "@turf/turf";
 import {
+    Building2,
     Camera,
     Car,
+    Church,
     Film,
     Flag,
     Hospital,
@@ -14,11 +16,16 @@ import {
     Network,
     Palette,
     Plus,
+    Route,
     Ruler,
+    ShoppingCart,
     Target,
     Thermometer,
+    Train,
     TrainTrack,
     TramFront,
+    Trees,
+    Utensils,
     Waypoints,
 } from "lucide-react";
 import { useState } from "react";
@@ -581,6 +588,90 @@ export function AddQuestionDialog() {
                                 className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Car className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+
+                            <button
+                                type="button"
+                                aria-label="Add photo question for building"
+                                title="Add photo question for building"
+                                onClick={() =>
+                                    handleQuestionSelect("photo", "building")
+                                }
+                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+
+                            <button
+                                type="button"
+                                aria-label="Add photo question for restaurant"
+                                title="Add photo question for restaurant"
+                                onClick={() =>
+                                    handleQuestionSelect("photo", "restaurant")
+                                }
+                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Utensils className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+
+                            <button
+                                type="button"
+                                aria-label="Add photo question for park"
+                                title="Add photo question for park"
+                                onClick={() =>
+                                    handleQuestionSelect("photo", "park")
+                                }
+                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Trees className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+
+                            <button
+                                type="button"
+                                aria-label="Add photo question for store"
+                                title="Add photo question for store"
+                                onClick={() =>
+                                    handleQuestionSelect("photo", "store")
+                                }
+                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+
+                            <button
+                                type="button"
+                                aria-label="Add photo question for place of worship"
+                                title="Add photo question for place of worship"
+                                onClick={() =>
+                                    handleQuestionSelect("photo", "worship")
+                                }
+                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Church className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+
+                            <button
+                                type="button"
+                                aria-label="Add photo question for train platform"
+                                title="Add photo question for train platform"
+                                onClick={() =>
+                                    handleQuestionSelect("photo", "train")
+                                }
+                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Train className="w-5 h-5 sm:w-6 sm:h-6" />
+                            </button>
+
+                            <button
+                                type="button"
+                                aria-label="Add photo question for route"
+                                title="Add photo question for route"
+                                onClick={() =>
+                                    handleQuestionSelect("photo", "route")
+                                }
+                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Route className="w-5 h-5 sm:w-6 sm:h-6" />
                             </button>
                         </div>
                     </div>
