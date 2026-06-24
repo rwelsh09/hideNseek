@@ -1,7 +1,12 @@
 import { useStore } from "@nanostores/react";
 import { LockIcon, UnlockIcon } from "lucide-react";
 import { useRef, useState } from "react";
-import { VscChevronDown, VscShare, VscTrash } from "react-icons/vsc";
+import {
+    VscChevronDown,
+    VscQuestion,
+    VscShare,
+    VscTrash,
+} from "react-icons/vsc";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -12,6 +17,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import {
     SidebarGroup,
@@ -20,6 +30,7 @@ import {
     SidebarMenu,
 } from "@/components/ui/sidebar-l";
 import { isLoading, questions } from "@/lib/context";
+import { QUESTION_RULES } from "@/lib/rules";
 import { cn } from "@/lib/utils";
 
 export const QuestionCard = ({
@@ -90,6 +101,40 @@ export const QuestionCard = ({
                         <SidebarMenu>{children}</SidebarMenu>
                         <div className="flex gap-2 pt-2 px-2 justify-center">
                             <Dialog>
+                                {QUESTION_RULES[
+                                    $questions.find(
+                                        (q) => q.key === questionKey,
+                                    )?.id as keyof typeof QUESTION_RULES
+                                ] && (
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                size="sm"
+                                                aria-label="Question Rules"
+                                            >
+                                                <VscQuestion />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80 p-4">
+                                            <h4 className="font-semibold mb-2">
+                                                How it works
+                                            </h4>
+                                            <p className="text-sm text-muted-foreground">
+                                                {
+                                                    QUESTION_RULES[
+                                                        $questions.find(
+                                                            (q) =>
+                                                                q.key ===
+                                                                questionKey,
+                                                        )
+                                                            ?.id as keyof typeof QUESTION_RULES
+                                                    ]
+                                                }
+                                            </p>
+                                        </PopoverContent>
+                                    </Popover>
+                                )}
                                 <DialogTrigger asChild>
                                     <Button
                                         variant="outline"
