@@ -25,7 +25,7 @@ jobs:
               id: extract_branch
 
             - name: Install, build, and upload your site
-              uses: withastro/action@v3
+              uses: withastro/action@v6
               env:
                   BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
               with:
@@ -34,7 +34,7 @@ jobs:
                   package-manager: pnpm@latest
 
             - name: Deploy branch content
-              uses: peaceiris/actions-gh-pages@v3
+              uses: peaceiris/actions-gh-pages@v4
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   publish_dir: ./dist
@@ -80,7 +80,7 @@ jobs:
 
             - name: Deploy branches.html to root
               if: always()
-              uses: peaceiris/actions-gh-pages@v3
+              uses: peaceiris/actions-gh-pages@v4
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
                   publish_dir: ./root-dist
