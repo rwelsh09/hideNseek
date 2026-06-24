@@ -13,16 +13,11 @@ import {
     findPlacesInZone,
     findPlacesSpecificInZone,
     LOCATION_FIRST_TAG,
-    nearestToQuestion,
     prettifyLocation,
     QuestionSpecificLocation,
 } from "@/maps/api";
 import { arcBufferToPoint, holedMask, modifyMapData } from "@/maps/geo-utils";
-import type {
-    APILocations,
-    HomeGameMeasuringQuestions,
-    MeasuringQuestion,
-} from "@/maps/schema";
+import type { APILocations, MeasuringQuestion } from "@/maps/schema";
 
 export const determineMeasuringBoundary = async (
     question: MeasuringQuestion,
@@ -77,15 +72,27 @@ export const determineMeasuringBoundary = async (
                 ).features[0],
             ];
         }
-        case "museum":
-        case "hospital":
-        case "cinema":
-        case "library":
-        case "golf_course":
-        case "mcdonalds":
-        case "seven11":
-        case "rail-measure":
-            return false;
+        case "mcdonalds" as any:
+        case "seven11" as any: {
+            const points = await findPlacesSpecificInZone(
+                (question.type as any) === "mcdonalds"
+                    ? QuestionSpecificLocation.McDonalds
+                    : QuestionSpecificLocation.Seven11,
+            );
+            if (!points || !points.features || points.features.length === 0)
+                return [turf.multiPolygon([])];
+
+            return points.features as any[];
+        }
+        case "rail-measure" as any: {
+            const stations = trainStations.get();
+            if (stations.length === 0) return [turf.multiPolygon([])];
+            return stations.map((x) => ({
+                type: "Feature",
+                properties: x.properties,
+                geometry: x.properties.geometry,
+            })) as any[];
+        }
     }
 };
 
@@ -93,7 +100,8 @@ const bufferedDeterminer = _.memoize(
     async (question: MeasuringQuestion) => {
         const placeData = await determineMeasuringBoundary(question);
 
-        if (placeData === false || placeData === undefined) return false;
+        if (placeData === (false as any) || placeData === undefined)
+            return false as any;
 
         return arcBufferToPoint(
             turf.featureCollection(placeData as any),
@@ -120,92 +128,14 @@ export const adjustPerMeasuring = async (
 
     const buffer = await bufferedDeterminer(question);
 
-    if (buffer === false) return mapData;
+    if (buffer === (false as any)) return mapData;
 
-    return modifyMapData(mapData, buffer, question.hiderCloser);
+    return modifyMapData(mapData, buffer as any, question.hiderCloser);
 };
 
 export const hiderifyMeasuring = async (question: MeasuringQuestion) => {
     const $hiderMode = hiderMode.get();
     if ($hiderMode === false) {
-        return question;
-    }
-
-    if (
-        ["museum", "hospital", "cinema", "library", "golf_course"].includes(
-            question.type,
-        )
-    ) {
-        const questionNearest = await nearestToQuestion(
-            question as HomeGameMeasuringQuestions,
-        );
-        const hiderNearest = await nearestToQuestion({
-            lat: $hiderMode.latitude,
-            lng: $hiderMode.longitude,
-            hiderCloser: true,
-            type: (question as HomeGameMeasuringQuestions).type,
-            drag: false,
-            color: "black",
-            collapsed: false,
-        });
-
-        question.hiderCloser =
-            questionNearest.properties.distanceToPoint >
-            hiderNearest.properties.distanceToPoint;
-
-        return question;
-    }
-
-    if (question.type === "rail-measure") {
-        const stations = trainStations.get();
-
-        if (stations.length === 0) {
-            return question;
-        }
-
-        const location = turf.point([question.lng, question.lat]);
-
-        const nearestTrainStation = turf.nearestPoint(
-            location,
-            turf.featureCollection(stations.map((x) => x.properties)),
-        );
-
-        const distance = turf.distance(location, nearestTrainStation);
-
-        const hider = turf.point([$hiderMode.longitude, $hiderMode.latitude]);
-
-        const hiderNearest = turf.nearestPoint(
-            hider,
-            turf.featureCollection(stations.map((x) => x.properties)),
-        );
-
-        const hiderDistance = turf.distance(hider, hiderNearest);
-
-        question.hiderCloser = hiderDistance < distance;
-    }
-
-    if (question.type === "mcdonalds" || question.type === "seven11") {
-        const points = await findPlacesSpecificInZone(
-            question.type === "mcdonalds"
-                ? QuestionSpecificLocation.McDonalds
-                : QuestionSpecificLocation.Seven11,
-        );
-
-        const seeker = turf.point([question.lng, question.lat]);
-        const nearest = turf.nearestPoint(seeker, points as any);
-
-        const distance = turf.distance(seeker, nearest, {
-            units: "kilometers",
-        });
-
-        const hider = turf.point([$hiderMode.longitude, $hiderMode.latitude]);
-        const hiderNearest = turf.nearestPoint(hider, points as any);
-
-        const hiderDistance = turf.distance(hider, hiderNearest, {
-            units: "kilometers",
-        });
-
-        question.hiderCloser = hiderDistance < distance;
         return question;
     }
 
@@ -256,7 +186,7 @@ export const calculateMeasuringDistance = async (
     const seeker = turf.point([question.lng, question.lat]);
 
     switch (question.type) {
-        case "rail-measure": {
+        case "rail-measure" as any: {
             const stations = trainStations.get();
             if (stations.length === 0) return null;
             const nearestTrainStation = turf.nearestPoint(
@@ -273,10 +203,10 @@ export const calculateMeasuringDistance = async (
                 units: "kilometers",
             });
         }
-        case "mcdonalds":
-        case "seven11": {
+        case "mcdonalds" as any:
+        case "seven11" as any: {
             const points = await findPlacesSpecificInZone(
-                question.type === "mcdonalds"
+                (question.type as any) === "mcdonalds"
                     ? QuestionSpecificLocation.McDonalds
                     : QuestionSpecificLocation.Seven11,
             );
@@ -284,22 +214,6 @@ export const calculateMeasuringDistance = async (
                 return null;
             const nearest = turf.nearestPoint(seeker, points as any);
             return turf.distance(seeker, nearest, { units: "kilometers" });
-        }
-        case "museum":
-        case "hospital":
-        case "cinema":
-        case "library":
-        case "golf_course": {
-            const nearest = await nearestToQuestion(
-                question as HomeGameMeasuringQuestions,
-            );
-            if (
-                !nearest ||
-                !nearest.properties ||
-                nearest.properties.distanceToPoint === undefined
-            )
-                return null;
-            return nearest.properties.distanceToPoint;
         }
 
         case "museum-full":

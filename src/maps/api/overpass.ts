@@ -18,11 +18,7 @@ import {
     OVERPASS_API_FALLBACK,
 } from "./constants";
 import type { APILocations } from "./types";
-import type {
-    EncompassingTentacleQuestionSchema,
-    HomeGameMatchingQuestions,
-    HomeGameMeasuringQuestions,
-} from "./types";
+import type { EncompassingTentacleQuestionSchema } from "./types";
 import { CacheType, QuestionSpecificLocation } from "./types";
 
 export const getOverpassData = async (
@@ -370,9 +366,7 @@ export const findPlacesSpecificInZone = async (
     );
 };
 
-export const nearestToQuestion = async (
-    question: HomeGameMatchingQuestions | HomeGameMeasuringQuestions,
-) => {
+export const nearestToQuestion = async (question: any) => {
     let radius = 30;
     let instances: any = { features: [] };
     while (instances.features.length === 0) {

@@ -14,16 +14,11 @@ import {
 import {
     findPlacesInZone,
     LOCATION_FIRST_TAG,
-    nearestToQuestion,
     prettifyLocation,
 } from "@/maps/api";
 import { holedMask, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils";
-import type {
-    APILocations,
-    HomeGameMatchingQuestions,
-    MatchingQuestion,
-} from "@/maps/schema";
+import type { APILocations, MatchingQuestion } from "@/maps/schema";
 
 export const findMatchingPlaces = async (question: MatchingQuestion) => {
     switch (question.type) {
@@ -78,16 +73,6 @@ export const determineMatchingBoundary = _.memoize(
         let boundary;
 
         switch (question.type) {
-            case "museum":
-            case "hospital":
-            case "cinema":
-            case "library":
-            case "golf_course":
-            case "same-first-letter-station":
-            case "same-length-station":
-            case "same-train-line": {
-                return false;
-            }
             case "same-neighbourhood":
             case "same-first-letter-neighbourhood": {
                 const data = osmtogeojson(
@@ -167,6 +152,92 @@ export const determineMatchingBoundary = _.memoize(
                 }
                 break;
             }
+
+            case "same-first-letter-station":
+            case "same-length-station":
+            case "same-train-line": {
+                const places =
+                    calgaryTransitData as unknown as FeatureCollection<Point>;
+
+                const point = turf.point([question.lng, question.lat]);
+                const nearest = turf.nearestPoint(point, places);
+
+                const seekerEnglishName =
+                    (nearest.properties as any)["name:en"] ||
+                    nearest.properties.name;
+
+                if (!seekerEnglishName) {
+                    throw new Error("No English name found");
+                }
+
+                const voronoi = geoSpatialVoronoi(places.features as any);
+
+                const matchingCells = [];
+
+                if (question.type === "same-train-line") {
+                    const seekerLines: string[] =
+                        (nearest.properties as any).lines || [];
+                    for (const feature of voronoi.features) {
+                        const station =
+                            places.features[feature.properties!.site.index];
+                        const stationLines: string[] =
+                            (station.properties as any).lines || [];
+                        if (seekerLines.some((l) => stationLines.includes(l))) {
+                            matchingCells.push(feature);
+                        }
+                    }
+                } else if (question.type === "same-first-letter-station") {
+                    const letter = seekerEnglishName[0].toUpperCase();
+                    for (const feature of voronoi.features) {
+                        const station =
+                            places.features[feature.properties!.site.index];
+                        const stationEnglishName =
+                            (station.properties as any)["name:en"] ||
+                            (station.properties as any).name;
+                        if (
+                            stationEnglishName &&
+                            stationEnglishName[0].toUpperCase() === letter
+                        ) {
+                            matchingCells.push(feature);
+                        }
+                    }
+                } else if (question.type === "same-length-station") {
+                    const length = seekerEnglishName.length;
+                    for (const feature of voronoi.features) {
+                        const station =
+                            places.features[feature.properties!.site.index];
+                        const stationEnglishName =
+                            (station.properties as any)["name:en"] ||
+                            (station.properties as any).name;
+                        if (stationEnglishName) {
+                            if (
+                                question.lengthComparison === "shorter" &&
+                                stationEnglishName.length < length
+                            ) {
+                                matchingCells.push(feature);
+                            } else if (
+                                question.lengthComparison === "longer" &&
+                                stationEnglishName.length > length
+                            ) {
+                                matchingCells.push(feature);
+                            } else if (
+                                (question.lengthComparison === "same" ||
+                                    !question.lengthComparison) &&
+                                stationEnglishName.length === length
+                            ) {
+                                matchingCells.push(feature);
+                            }
+                        }
+                    }
+                }
+
+                if (matchingCells.length > 0) {
+                    boundary = safeUnion(
+                        turf.featureCollection(matchingCells as any),
+                    );
+                }
+                break;
+            }
             case "museum-full":
             case "hospital-full":
             case "cinema-full":
@@ -219,188 +290,6 @@ export const adjustPerMatching = async (
 export const hiderifyMatching = async (question: MatchingQuestion) => {
     const $hiderMode = hiderMode.get();
     if ($hiderMode === false) {
-        return question;
-    }
-
-    if (
-        ["museum", "hospital", "cinema", "library", "golf_course"].includes(
-            question.type,
-        )
-    ) {
-        const questionNearest = await nearestToQuestion(
-            question as HomeGameMatchingQuestions,
-        );
-        const hiderNearest = await nearestToQuestion({
-            lat: $hiderMode.latitude,
-            lng: $hiderMode.longitude,
-            same: true,
-            type: (question as HomeGameMatchingQuestions).type,
-            drag: false,
-            color: "black",
-            collapsed: false,
-        });
-
-        question.same =
-            questionNearest.properties.name === hiderNearest.properties.name;
-
-        return question;
-    }
-
-    if (
-        question.type === "same-neighbourhood" ||
-        question.type === "same-first-letter-neighbourhood"
-    ) {
-        const hiderPoint = turf.point([
-            $hiderMode.longitude,
-            $hiderMode.latitude,
-        ]);
-        const seekerPoint = turf.point([question.lng, question.lat]);
-
-        const data = osmtogeojson(
-            await findPlacesInZone(
-                '["admin_level"="10"]',
-                "Finding neighbourhoods...",
-                "nwr",
-                "geom",
-            ),
-        ) as FeatureCollection<Polygon | MultiPolygon>;
-
-        if (!data.features || data.features.length === 0) return question;
-
-        const findNearest = (pt: any) => {
-            let nearest: any = null;
-            for (const feature of data.features) {
-                if (
-                    feature.geometry.type !== "Polygon" &&
-                    feature.geometry.type !== "MultiPolygon"
-                )
-                    continue;
-                if (turf.booleanPointInPolygon(pt, feature)) {
-                    nearest = feature;
-                    break;
-                }
-            }
-            if (!nearest) {
-                let minDistance = Infinity;
-                for (const feature of data.features) {
-                    if (
-                        feature.geometry.type !== "Polygon" &&
-                        feature.geometry.type !== "MultiPolygon"
-                    )
-                        continue;
-                    const d = turf.distance(pt, turf.center(feature));
-                    if (d < minDistance) {
-                        minDistance = d;
-                        nearest = feature;
-                    }
-                }
-            }
-            return nearest;
-        };
-
-        const nearestHiderNeighbourhood = findNearest(hiderPoint);
-        const nearestSeekerNeighbourhood = findNearest(seekerPoint);
-
-        if (!nearestHiderNeighbourhood || !nearestSeekerNeighbourhood) {
-            return question;
-        }
-
-        if (question.type === "same-neighbourhood") {
-            if (
-                nearestHiderNeighbourhood.id === nearestSeekerNeighbourhood.id
-            ) {
-                question.same = true;
-            } else {
-                question.same = false;
-            }
-        } else {
-            const hiderEnglishName =
-                nearestHiderNeighbourhood.properties?.["name:en"] ||
-                nearestHiderNeighbourhood.properties?.name;
-            const seekerEnglishName =
-                nearestSeekerNeighbourhood.properties?.["name:en"] ||
-                nearestSeekerNeighbourhood.properties?.name;
-
-            if (!hiderEnglishName || !seekerEnglishName) {
-                return question;
-            }
-
-            if (
-                hiderEnglishName[0].toUpperCase() ===
-                seekerEnglishName[0].toUpperCase()
-            ) {
-                question.same = true;
-            } else {
-                question.same = false;
-            }
-        }
-
-        return question;
-    }
-
-    if (
-        question.type === "same-first-letter-station" ||
-        question.type === "same-length-station" ||
-        question.type === "same-train-line"
-    ) {
-        const hiderPoint = turf.point([
-            $hiderMode.longitude,
-            $hiderMode.latitude,
-        ]);
-        const seekerPoint = turf.point([question.lng, question.lat]);
-
-        const places =
-            calgaryTransitData as unknown as FeatureCollection<Point>;
-
-        const nearestHiderTrainStation = turf.nearestPoint(hiderPoint, places);
-        const nearestSeekerTrainStation = turf.nearestPoint(
-            seekerPoint,
-            places,
-        );
-
-        if (question.type === "same-train-line") {
-            const seekerLines: string[] =
-                (nearestSeekerTrainStation.properties as any).lines || [];
-            const hiderLines: string[] =
-                (nearestHiderTrainStation.properties as any).lines || [];
-
-            if (seekerLines.some((l) => hiderLines.includes(l))) {
-                question.same = true;
-            } else {
-                question.same = false;
-            }
-        }
-
-        const hiderEnglishName =
-            (nearestHiderTrainStation.properties as any)["name:en"] ||
-            nearestHiderTrainStation.properties.name;
-        const seekerEnglishName =
-            (nearestSeekerTrainStation.properties as any)["name:en"] ||
-            nearestSeekerTrainStation.properties.name;
-
-        if (!hiderEnglishName || !seekerEnglishName) {
-            return question;
-        }
-
-        if (question.type === "same-first-letter-station") {
-            if (
-                hiderEnglishName[0].toUpperCase() ===
-                seekerEnglishName[0].toUpperCase()
-            ) {
-                question.same = true;
-            } else {
-                question.same = false;
-            }
-        } else if (question.type === "same-length-station") {
-            if (hiderEnglishName.length === seekerEnglishName.length) {
-                question.lengthComparison = "same";
-            } else if (hiderEnglishName.length < seekerEnglishName.length) {
-                question.lengthComparison = "shorter";
-            } else {
-                question.lengthComparison = "longer";
-            }
-        }
-
         return question;
     }
 
