@@ -7,6 +7,8 @@
 
 **Learning:** `react-leaflet` instances like `CircleMarker` internally track object references for `pathOptions` and `eventHandlers`. When inline arrow functions or literal objects are passed in `map` loops, they create new object references on every render, causing slow underlying Leaflet method calls (like layer restyling and rebinding events).
 **Action:** Always extract items rendered within loops (like maps returning Leaflet layers) into separate components, and memoize `eventHandlers` or `pathOptions` as static constants or with `useMemo` so their references remain stable across re-renders.
+
 ## 2026-06-24 - Remove unused map grouping and routing functions
+
 **Learning:** Periodic codebase auditing using tools like `grep` or IDE references is essential. Complex algorithms (like grouping map objects or calculating line distances) may become orphaned when application architecture evolves, negatively impacting compilation times and theoretical bundle sizes without offering any runtime value.
 **Action:** Safely remove unused exported functions to eliminate dead code and keep the codebase clean.
