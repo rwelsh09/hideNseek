@@ -34,6 +34,10 @@ export const prettifyLocation = (
             return "Library";
         case "golf_course":
             return "Golf Course";
+        case "mcdonalds":
+            return "McDonald's";
+        case "seven11":
+            return "7-Eleven";
     }
 };
 

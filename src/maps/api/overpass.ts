@@ -99,12 +99,27 @@ export const findTentacleLocations = async (
     question: EncompassingTentacleQuestionSchema,
     text: string = "Determining tentacle locations...",
 ) => {
-    const data = await findPlacesInZone(
-        `[${LOCATION_FIRST_TAG[question.locationType]}=${question.locationType}]`,
-        text,
-        "nwr",
-        "center",
-    );
+    let data;
+    if (
+        question.locationType === "mcdonalds" ||
+        question.locationType === "seven11"
+    ) {
+        data = await findPlacesInZone(
+            question.locationType === "mcdonalds"
+                ? QuestionSpecificLocation.McDonalds
+                : QuestionSpecificLocation.Seven11,
+            text,
+            "nwr",
+            "center",
+        );
+    } else {
+        data = await findPlacesInZone(
+            `[${LOCATION_FIRST_TAG[question.locationType]}=${question.locationType}]`,
+            text,
+            "nwr",
+            "center",
+        );
+    }
     const elements = data.elements || [];
     const response = turf.points([]);
     const centerPoint = turf.point([question.lng, question.lat]);
@@ -115,26 +130,49 @@ export const findTentacleLocations = async (
         : turf.convertLength(question.radius, question.unit, "meters");
 
     elements.forEach((element: any) => {
+        if (!element.tags) return;
+        const fallbackName =
+            question.locationType === "mcdonalds"
+                ? "McDonald's"
+                : question.locationType === "seven11"
+                  ? "7-Eleven"
+                  : null;
+
         if (
-            !element.tags ||
-            (!element.tags["name"] && !element.tags["name:en"])
-        )
+            !element.tags["name"] &&
+            !element.tags["name:en"] &&
+            !fallbackName
+        ) {
             return;
+        }
+
         if (element.lat && element.lon) {
             const pt = turf.point([element.lon, element.lat]);
             const distance = turf.distance(centerPoint, pt, {
                 units: "meters",
             });
             if (distance <= radiusInMeters) {
-                const name = element.tags["name:en"] ?? element.tags["name"];
+                const name =
+                    element.tags["name:en"] ??
+                    element.tags["name"] ??
+                    fallbackName;
+                const isChain = fallbackName !== null;
                 if (
+                    !isChain &&
                     response.features.find(
                         (feature: any) => feature.properties.name === name,
                     )
                 )
                     return;
+
+                // Add a unique identifier for chain restaurants so they can be distinguished visually if needed,
+                // or at least not be identical in properties if standard logic expects it.
+                // However, the find check above is the main culprit.
                 response.features.push(
-                    turf.point([element.lon, element.lat], { name }),
+                    turf.point([element.lon, element.lat], {
+                        name: isChain ? `${name} (${element.id})` : name,
+                        id: element.id,
+                    }),
                 );
             }
         }
@@ -145,15 +183,21 @@ export const findTentacleLocations = async (
             units: "meters",
         });
         if (centerDistance <= radiusInMeters) {
-            const name = element.tags["name:en"] ?? element.tags["name"];
+            const name =
+                element.tags["name:en"] ?? element.tags["name"] ?? fallbackName;
+            const isChain = fallbackName !== null;
             if (
+                !isChain &&
                 response.features.find(
                     (feature: any) => feature.properties.name === name,
                 )
             )
                 return;
             response.features.push(
-                turf.point([element.center.lon, element.center.lat], { name }),
+                turf.point([element.center.lon, element.center.lat], {
+                    name: isChain ? `${name} (${element.id})` : name,
+                    id: element.id,
+                }),
             );
         }
     });
