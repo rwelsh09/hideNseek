@@ -174,17 +174,67 @@ export const TutorialManager = () => {
                                     btn.addEventListener(
                                         "click",
                                         () => {
+                                            setTimeout(
+                                                () => driverObj.moveNext(),
+                                                500,
+                                            );
+                                        },
+                                        { once: true },
+                                    );
+                                }
+                            },
+                        },
+                    },
+                    {
+                        element: '[data-tutorial-id="left-sidebar-trigger"]',
+                        popover: {
+                            title: "Open the Sidebar",
+                            description:
+                                "Drag the question on the map to your desired location, then open the sidebar to lock it.",
+                            side: "right",
+                            align: "start",
+                            showButtons: ["previous"],
+                            onPopoverRender: () => {
+                                driverObj.setConfig({
+                                    ...driverObj.getConfig(),
+                                    allowActiveInteraction: true,
+                                } as any);
+
+                                const sidebarL = document.querySelector(
+                                    '.peer[data-side="left"]',
+                                );
+                                // If the sidebar is already expanded (desktop), immediately skip this interaction step
+                                if (
+                                    sidebarL &&
+                                    sidebarL.getAttribute("data-state") ===
+                                        "expanded"
+                                ) {
+                                    setTimeout(() => driverObj.moveNext(), 10);
+                                    return;
+                                }
+
+                                const trigger =
+                                    document.querySelector<HTMLElement>(
+                                        '[data-tutorial-id="left-sidebar-trigger"] button',
+                                    ) ||
+                                    document.querySelector<HTMLElement>(
+                                        '[data-sidebar="trigger"]',
+                                    );
+
+                                if (trigger) {
+                                    trigger.addEventListener(
+                                        "click",
+                                        () => {
                                             const checkInterval = setInterval(
                                                 () => {
                                                     const lockBtn =
                                                         document.querySelector(
-                                                            '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
+                                                            '[data-tutorial-id="tutorial-lock-btn"]',
                                                         );
                                                     if (lockBtn) {
                                                         clearInterval(
                                                             checkInterval,
                                                         );
-                                                        // A small delay lets the question accordion fully render before driving
                                                         setTimeout(
                                                             () =>
                                                                 driverObj.moveNext(),
@@ -202,14 +252,14 @@ export const TutorialManager = () => {
                         },
                     },
                     {
-                        element:
-                            '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
+                        element: '[data-tutorial-id="tutorial-lock-btn"]',
                         popover: {
                             title: "Lock Your Answer",
                             description:
                                 "Once you receive your answer from the Hider, lock the question using this button.",
                             side: "bottom",
                             align: "end",
+                            showButtons: ["previous"],
                             onPopoverRender: () => {
                                 // Let the user interact with the map
                                 driverObj.setConfig({
@@ -219,7 +269,7 @@ export const TutorialManager = () => {
 
                                 const checkInterval = setInterval(() => {
                                     const lockBtn = document.querySelector(
-                                        '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
+                                        '[data-tutorial-id="tutorial-lock-btn"]',
                                     );
                                     // The aria-label changes to "Unlock Question" when the question is currently locked
                                     if (
