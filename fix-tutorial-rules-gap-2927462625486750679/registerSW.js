@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-tutorial-rules-gap-2927462625486750679/sw.js', { scope: '/HideAndSeek/fix-tutorial-rules-gap-2927462625486750679/' })})}
