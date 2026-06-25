@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/broken-rules-page-link-8995955969126407508/sw.js', { scope: '/HideAndSeek/fix/broken-rules-page-link-8995955969126407508/' })})}
