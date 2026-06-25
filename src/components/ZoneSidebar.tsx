@@ -424,11 +424,11 @@ export const ZoneSidebar = () => {
                     }
                     if (
                         question.id === "measuring" &&
-                        (question.data.type === "mcdonalds" ||
-                            question.data.type === "seven11")
+                        ((question.data as any).type === "mcdonalds" ||
+                            (question.data as any).type === "seven11")
                     ) {
                         const points = await findPlacesSpecificInZone(
-                            question.data.type === "mcdonalds"
+                            (question.data as any).type === "mcdonalds"
                                 ? QuestionSpecificLocation.McDonalds
                                 : QuestionSpecificLocation.Seven11,
                         );
@@ -1083,11 +1083,11 @@ async function selectionProcess(
 
         if (
             (question.id === "measuring" || question.id === "matching") &&
-            (question.data.type === "museum" ||
-                question.data.type === "hospital" ||
-                question.data.type === "cinema" ||
-                question.data.type === "library" ||
-                question.data.type === "golf_course" ||
+            ((question.data.type as any) === "museum" ||
+                (question.data.type as any) === "hospital" ||
+                (question.data.type as any) === "cinema" ||
+                (question.data.type as any) === "library" ||
+                (question.data.type as any) === "golf_course" ||
                 false)
         ) {
             const nearestQuestion = await nearestToQuestion(question.data);
@@ -1203,7 +1203,7 @@ async function selectionProcess(
         }
         if (
             question.id === "measuring" &&
-            question.data.type === "rail-measure"
+            (question.data as any).type === "rail-measure"
         ) {
             if (stations.length === 0) {
                 if (question.data.hiderCloser) {
@@ -1247,11 +1247,11 @@ async function selectionProcess(
         }
         if (
             question.id === "measuring" &&
-            (question.data.type === "mcdonalds" ||
-                question.data.type === "seven11")
+            ((question.data as any).type === "mcdonalds" ||
+                (question.data as any).type === "seven11")
         ) {
             const points = await findPlacesSpecificInZone(
-                question.data.type === "mcdonalds"
+                (question.data as any).type === "mcdonalds"
                     ? QuestionSpecificLocation.McDonalds
                     : QuestionSpecificLocation.Seven11,
             );

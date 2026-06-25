@@ -206,39 +206,20 @@ const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
             z
                 .literal("same-first-letter-neighbourhood")
                 .describe("Neighbourhood (Same First Letter) Question"),
+            z
+                .literal("same-first-letter-station")
+                .describe("Station Starts With Same Letter Question"),
+            z
+                .literal("same-length-station")
+                .describe("Station Has Same Length Question"),
+            z
+                .literal("same-train-line")
+                .describe("Station On Same Train Line Question"),
         ])
         .default("museum-full"),
 });
 
-const homeGameMatchingQuestionsSchema = baseMatchingQuestionSchema.extend({
-    type: z.union([
-        z.literal("museum").describe("Museum Question"),
-        z.literal("hospital").describe("Hospital Question"),
-        z.literal("cinema").describe("Cinema Question"),
-        z.literal("library").describe("Library Question"),
-        z.literal("golf_course").describe("Golf Course Question"),
-    ]),
-});
-
-const hidingZoneMatchingQuestionsSchema = baseMatchingQuestionSchema.extend({
-    type: z.union([
-        z
-            .literal("same-first-letter-station")
-            .describe("Station Starts With Same Letter Question"),
-        z
-            .literal("same-length-station")
-            .describe("Station Has Same Length Question"),
-        z
-            .literal("same-train-line")
-            .describe("Station On Same Train Line Question"),
-    ]),
-});
-
-export const matchingQuestionSchema = z.union([
-    ordinaryMatchingQuestionSchema.describe(NO_GROUP),
-    hidingZoneMatchingQuestionsSchema.describe("Hiding Zone Mode"),
-    homeGameMatchingQuestionsSchema.describe("Hiding Zone Mode"),
-]);
+export const matchingQuestionSchema = ordinaryMatchingQuestionSchema;
 
 const baseMeasuringQuestionSchema = ordinaryBaseQuestionSchema.extend({
     hiderCloser: z.boolean().default(true),
@@ -252,33 +233,14 @@ const ordinaryMeasuringQuestionSchema = baseMeasuringQuestionSchema.extend({
             z.literal("cinema-full").describe("Cinema Question"),
             z.literal("library-full").describe("Library Question"),
             z.literal("golf_course-full").describe("Golf Course Question"),
+            z.literal("mcdonalds").describe("McDonald's Question"),
+            z.literal("seven11").describe("7-Eleven Question"),
+            z.literal("rail-measure").describe("Train Station Question"),
         ])
         .default("museum-full"),
 });
 
-const hidingZoneMeasuringQuestionsSchema = baseMeasuringQuestionSchema.extend({
-    type: z.union([
-        z.literal("mcdonalds").describe("McDonald's Question"),
-        z.literal("seven11").describe("7-Eleven Question"),
-        z.literal("rail-measure").describe("Train Station Question"),
-    ]),
-});
-
-const homeGameMeasuringQuestionsSchema = baseMeasuringQuestionSchema.extend({
-    type: z.union([
-        z.literal("museum").describe("Museum Question"),
-        z.literal("hospital").describe("Hospital Question"),
-        z.literal("cinema").describe("Cinema Question"),
-        z.literal("library").describe("Library Question"),
-        z.literal("golf_course").describe("Golf Course Question"),
-    ]),
-});
-
-export const measuringQuestionSchema = z.union([
-    ordinaryMeasuringQuestionSchema.describe(NO_GROUP),
-    hidingZoneMeasuringQuestionsSchema.describe("Hiding Zone Mode"),
-    homeGameMeasuringQuestionsSchema.describe("Hiding Zone Mode"),
-]);
+export const measuringQuestionSchema = ordinaryMeasuringQuestionSchema;
 
 export const questionSchema = z.union([
     z.object({
@@ -322,13 +284,7 @@ export type ThermometerQuestion = z.infer<typeof thermometerQuestionSchema>;
 export type TentacleQuestion = z.infer<typeof tentacleQuestionSchema>;
 export type APILocations = z.infer<typeof apiLocationSchema>;
 export type MatchingQuestion = z.infer<typeof matchingQuestionSchema>;
-export type HomeGameMatchingQuestions = z.infer<
-    typeof homeGameMatchingQuestionsSchema
->;
 export type MeasuringQuestion = z.infer<typeof measuringQuestionSchema>;
-export type HomeGameMeasuringQuestions = z.infer<
-    typeof homeGameMeasuringQuestionsSchema
->;
 export type PhotoQuestion = z.infer<typeof photoQuestionSchema>;
 export type Question = z.infer<typeof questionSchema>;
 export type Questions = z.infer<typeof questionsSchema>;
