@@ -7,6 +7,25 @@ import { liveUpdateMapEnabled, questions } from "@/lib/context";
 import { findPlacesInZone, findPlacesSpecificInZone } from "@/maps/api";
 import { LOCATION_FIRST_TAG } from "@/maps/api/constants";
 
+// Performance Optimization: Cache path options for different colors to prevent react-leaflet
+// from re-triggering layer styling methods due to unstable object references on every render.
+const getPathOptions = (() => {
+    const cache: Record<
+        string,
+        { color: string; fillColor: string; fillOpacity: number }
+    > = {};
+    return (color: string) => {
+        if (!cache[color]) {
+            cache[color] = {
+                color: color,
+                fillColor: color,
+                fillOpacity: 0.8,
+            };
+        }
+        return cache[color];
+    };
+})();
+
 export const PlaytestPlaces = () => {
     const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
     const $questions = useStore(questions);
@@ -161,11 +180,7 @@ export const PlaytestPlaces = () => {
                         key={i}
                         center={[coords[1], coords[0]]}
                         radius={5}
-                        pathOptions={{
-                            color: color,
-                            fillColor: color,
-                            fillOpacity: 0.8,
-                        }}
+                        pathOptions={getPathOptions(color)}
                     >
                         <Tooltip direction="top" offset={[0, -10]}>
                             {name}
