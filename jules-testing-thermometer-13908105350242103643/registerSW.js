@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/jules-testing-thermometer-13908105350242103643/sw.js', { scope: '/HideAndSeek/jules-testing-thermometer-13908105350242103643/' })})}
