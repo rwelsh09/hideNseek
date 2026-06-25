@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feature/timer-function-3113762299285350642/sw.js', { scope: '/HideAndSeek/feature/timer-function-3113762299285350642/' })})}
