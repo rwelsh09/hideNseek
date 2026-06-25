@@ -1,4 +1,5 @@
 import { useStore } from "@nanostores/react";
+import osmtogeojson from "osmtogeojson";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 
@@ -67,7 +68,7 @@ export const PlaytestPlaces = () => {
                 if ((LOCATION_FIRST_TAG as any)[type]) {
                     const tag = (LOCATION_FIRST_TAG as any)[type];
                     try {
-                        const features = await findPlacesInZone(
+                        const rawData = await findPlacesInZone(
                             `[${tag}=${type}]`,
                             undefined,
                             "nwr",
@@ -75,6 +76,9 @@ export const PlaytestPlaces = () => {
                             [],
                             0,
                         );
+
+                        const features = osmtogeojson(rawData);
+
                         if (features && features.features) {
                             features.features.forEach((f: any) => {
                                 allPlaces.push({
