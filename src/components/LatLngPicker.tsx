@@ -446,6 +446,7 @@ export const LatitudeLongitude = ({
                             disabled={disabled}
                             title="Set to current location"
                             aria-label="Set to current location"
+                            data-tutorial-id="tutorial-gps-btn"
                         >
                             <LocateIcon />
                         </Button>
@@ -498,6 +499,7 @@ export const LatitudeLongitude = ({
                             disabled={disabled}
                             title="Paste coordinates from clipboard"
                             aria-label="Paste coordinates from clipboard"
+                            data-tutorial-id="tutorial-clipboard-paste-btn"
                         >
                             <ClipboardPasteIcon />
                         </Button>
@@ -527,6 +529,7 @@ export const LatitudeLongitude = ({
                             }}
                             title="Copy coordinates to clipboard"
                             aria-label="Copy coordinates to clipboard"
+                            data-tutorial-id="tutorial-clipboard-copy-btn"
                         >
                             <ClipboardCopyIcon />
                         </Button>

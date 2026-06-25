@@ -112,6 +112,7 @@ export const QuestionCard = ({
                                                 variant="outline"
                                                 size="sm"
                                                 aria-label="Question Rules"
+                                                data-tutorial-id="tutorial-question-rules-btn"
                                             >
                                                 <VscQuestion />
                                             </Button>
@@ -140,6 +141,7 @@ export const QuestionCard = ({
                                         variant="outline"
                                         size="sm"
                                         aria-label="Share Question"
+                                        data-tutorial-id="tutorial-share-question-btn"
                                     >
                                         <VscShare />
                                     </Button>
@@ -237,6 +239,7 @@ export const QuestionCard = ({
                                 variant="outline"
                                 size="sm"
                                 aria-label="Delete Question"
+                                data-tutorial-id="tutorial-delete-question-btn"
                                 disabled={$isLoading}
                                 onClick={() => {
                                     if (!locked) {
