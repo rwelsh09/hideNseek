@@ -1,5 +1,6 @@
 import { useStore } from "@nanostores/react";
-import { Clock, SidebarCloseIcon } from "lucide-react";
+import { ClipboardPasteIcon, Clock, SidebarCloseIcon } from "lucide-react";
+import { toast } from "react-toastify";
 
 import {
     Sidebar,
@@ -12,6 +13,7 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar-l";
 import {
+    addQuestion,
     autoSave,
     isLoading,
     penaltyMinutes,
@@ -19,6 +21,7 @@ import {
     save,
     triggerLocalRefresh,
 } from "@/lib/context";
+import { questionSchema } from "@/maps/schema";
 
 import { AddQuestionDialog } from "./AddQuestionDialog";
 import {
@@ -182,6 +185,42 @@ export const QuestionSidebar = () => {
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <AddQuestionDialog />
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton
+                                className="bg-slate-700 hover:bg-slate-600 p-2 rounded-md font-semibold font-poppins transition-colors duration-200 text-white flex items-center justify-center gap-2"
+                                onClick={() => {
+                                    navigator.clipboard
+                                        .readText()
+                                        .then((text) => {
+                                            try {
+                                                const parsed = JSON.parse(text);
+                                                delete parsed.key; // Ensure a new key is generated
+                                                const validated =
+                                                    questionSchema.parse(
+                                                        parsed,
+                                                    );
+                                                addQuestion(validated);
+                                                toast.success(
+                                                    "Question pasted successfully!",
+                                                );
+                                            } catch {
+                                                toast.error(
+                                                    "Failed to parse question from clipboard",
+                                                );
+                                            }
+                                        })
+                                        .catch(() => {
+                                            toast.error(
+                                                "Failed to read from clipboard",
+                                            );
+                                        });
+                                }}
+                                disabled={$isLoading}
+                            >
+                                <ClipboardPasteIcon className="w-4 h-4" />
+                                Paste Question
+                            </SidebarMenuButton>
                         </SidebarMenuItem>
                         {!$autoSave && (
                             <SidebarMenuItem>
