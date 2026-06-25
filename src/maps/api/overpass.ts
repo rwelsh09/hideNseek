@@ -125,6 +125,8 @@ export const findTentacleLocations = async (
         ? 50000
         : turf.convertLength(question.radius, question.unit, "meters");
 
+    const seenNames = new Set<string>();
+
     elements.forEach((element: any) => {
         if (!element.tags) return;
         const fallbackName =
@@ -153,13 +155,11 @@ export const findTentacleLocations = async (
                     element.tags["name"] ??
                     fallbackName;
                 const isChain = fallbackName !== null;
-                if (
-                    !isChain &&
-                    response.features.find(
-                        (feature: any) => feature.properties.name === name,
-                    )
-                )
-                    return;
+                if (!isChain && seenNames.has(name)) return;
+
+                if (!isChain) {
+                    seenNames.add(name);
+                }
 
                 // Add a unique identifier for chain restaurants so they can be distinguished visually if needed,
                 // or at least not be identical in properties if standard logic expects it.
@@ -182,13 +182,12 @@ export const findTentacleLocations = async (
             const name =
                 element.tags["name:en"] ?? element.tags["name"] ?? fallbackName;
             const isChain = fallbackName !== null;
-            if (
-                !isChain &&
-                response.features.find(
-                    (feature: any) => feature.properties.name === name,
-                )
-            )
-                return;
+            if (!isChain && seenNames.has(name)) return;
+
+            if (!isChain) {
+                seenNames.add(name);
+            }
+
             response.features.push(
                 turf.point([element.center.lon, element.center.lat], {
                     name: isChain ? `${name} (${element.id})` : name,
