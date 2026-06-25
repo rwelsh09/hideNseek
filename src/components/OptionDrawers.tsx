@@ -244,7 +244,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                 </DrawerTrigger>
                 <DrawerContent>
                     <div className="flex flex-col items-center gap-4 mb-4">
-                        <div className="w-full max-w-[280px] sm:max-w-none flex justify-center mb-2 mt-4">
+                        <div className="w-full max-w-[280px] sm:max-w-none flex flex-col sm:flex-row gap-4 justify-center mb-2 mt-4">
                             <Button
                                 onClick={() => {
                                     setOptionsOpen(false);
