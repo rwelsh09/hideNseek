@@ -14,7 +14,6 @@ import {
     animateMapMovements,
     autoSave,
     baseTileLayer,
-    customPresets,
     customStations,
     disabledStations,
     displayHidingZonesOptions,
@@ -121,37 +120,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                     questions.set([]);
                     mapGeoJSON.set(geojson);
                     polyGeoJSON.set(geojson);
-                }
-            }
-
-            const incomingPresets =
-                geojson.presets ?? geojson.properties?.presets;
-            if (incomingPresets && Array.isArray(incomingPresets)) {
-                try {
-                    const normalized = (incomingPresets as any[])
-                        .filter((p) => p && p.data)
-                        .map((p) => {
-                            return {
-                                id:
-                                    p.id ??
-                                    (typeof crypto !== "undefined" &&
-                                    typeof (crypto as any).randomUUID ===
-                                        "function"
-                                        ? (crypto as any).randomUUID()
-                                        : String(Date.now()) + Math.random()),
-                                name: p.name ?? "Imported preset",
-                                type: p.type ?? "custom",
-                                data: p.data,
-                                createdAt:
-                                    p.createdAt ?? new Date().toISOString(),
-                            };
-                        });
-                    if (normalized.length > 0) {
-                        customPresets.set(normalized);
-                        toast.info(`Imported ${normalized.length} preset(s)`);
-                    }
-                } catch (err) {
-                    console.warn("Failed to import presets", err);
                 }
             }
 
