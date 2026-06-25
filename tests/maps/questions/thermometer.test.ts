@@ -14,7 +14,16 @@ vi.mock("@/lib/context", () => ({
     },
 }));
 
+vi.mock("@/maps/geo-utils/voronoi", async (importOriginal) => {
+    const actual = await importOriginal<typeof import("@/maps/geo-utils/voronoi")>();
+    return {
+        ...actual,
+        geoSpatialVoronoi: vi.fn(actual.geoSpatialVoronoi),
+    };
+});
+
 import { hiderMode } from "@/lib/context";
+import { geoSpatialVoronoi } from "@/maps/geo-utils/voronoi";
 
 describe("thermometer", () => {
     const questionTemplate: ThermometerQuestion = {
@@ -37,6 +46,12 @@ describe("thermometer", () => {
         test("should return early if mapData is null", () => {
             const result = adjustPerThermometer(questionTemplate, null);
             expect(result).toBeUndefined();
+        });
+
+        test("should return null or throw if mapData is empty FeatureCollection", () => {
+            // safeUnion throws if features are empty, let's test that adjustPerThermometer handles or bubbles it
+            const emptyMapData = turf.featureCollection([]);
+            expect(() => adjustPerThermometer(questionTemplate, emptyMapData)).toThrow();
         });
 
         test("should intersect mapData with warmer voronoi polygon", () => {
@@ -135,6 +150,42 @@ describe("thermometer", () => {
             expect(result.type).toBe("FeatureCollection");
             expect(result.features.length).toBeGreaterThan(0);
             expect(result.features[0].geometry.type).toBe("LineString");
+        });
+
+        test("should handle MultiPolygon features from voronoi by flattening the FeatureCollection", () => {
+            // Mock geoSpatialVoronoi to return a MultiPolygon to trigger the FeatureCollection branch in polygonToLine
+            (geoSpatialVoronoi as any).mockReturnValueOnce(
+                turf.featureCollection([
+                    turf.multiPolygon([
+                        [
+                            [
+                                [0, 0],
+                                [1, 0],
+                                [1, 1],
+                                [0, 1],
+                                [0, 0],
+                            ],
+                        ],
+                        [
+                            [
+                                [2, 2],
+                                [3, 2],
+                                [3, 3],
+                                [2, 3],
+                                [2, 2],
+                            ],
+                        ],
+                    ]),
+                ]),
+            );
+
+            const result = thermometerPlanningPolygon(questionTemplate);
+
+            expect(result).toBeDefined();
+            expect(result.type).toBe("FeatureCollection");
+            expect(result.features.length).toBe(2);
+            expect(result.features[0].geometry.type).toBe("LineString");
+            expect(result.features[1].geometry.type).toBe("LineString");
         });
     });
 });
