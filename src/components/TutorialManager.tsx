@@ -203,6 +203,72 @@ export const TutorialManager = () => {
                     },
                     {
                         element:
+                            '.peer[data-side="left"] [data-tutorial-id="tutorial-question-rules-btn"]',
+                        popover: {
+                            title: "How it works",
+                            description:
+                                "Click here to see the specific rules for the question you are currently asking.",
+                            side: "bottom",
+                            align: "end",
+                        },
+                    },
+                    {
+                        element:
+                            '.peer[data-side="left"] [data-tutorial-id="tutorial-share-question-btn"]',
+                        popover: {
+                            title: "Share Question",
+                            description:
+                                "Need to send the question details to another player? You can copy and share it from here.",
+                            side: "bottom",
+                            align: "end",
+                        },
+                    },
+                    {
+                        element:
+                            '.peer[data-side="left"] [data-tutorial-id="tutorial-delete-question-btn"]',
+                        popover: {
+                            title: "Delete Question",
+                            description:
+                                "Made a mistake? Use this to remove the question.",
+                            side: "bottom",
+                            align: "end",
+                        },
+                    },
+                    {
+                        element:
+                            '.peer[data-side="left"] [data-tutorial-id="tutorial-gps-btn"]',
+                        popover: {
+                            title: "Set to Current Location",
+                            description:
+                                "Automatically set the marker's coordinates using your device's GPS.",
+                            side: "bottom",
+                            align: "center",
+                        },
+                    },
+                    {
+                        element:
+                            '.peer[data-side="left"] [data-tutorial-id="tutorial-clipboard-paste-btn"]',
+                        popover: {
+                            title: "Paste Coordinates",
+                            description:
+                                "Paste coordinates you copied previously directly into the question.",
+                            side: "bottom",
+                            align: "center",
+                        },
+                    },
+                    {
+                        element:
+                            '.peer[data-side="left"] [data-tutorial-id="tutorial-clipboard-copy-btn"]',
+                        popover: {
+                            title: "Copy Coordinates",
+                            description:
+                                "Quickly copy the current coordinates to your clipboard.",
+                            side: "bottom",
+                            align: "center",
+                        },
+                    },
+                    {
+                        element:
                             '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
                         popover: {
                             title: "Lock Your Answer",
