@@ -46,15 +46,6 @@ export const mapGeoLocation = persistentAtom<OpenStreetMap>(
     },
 );
 
-export const displayStationConnections = persistentAtom<boolean>(
-    "displayStationConnections",
-    false,
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
-
 export const additionalMapGeoLocations = persistentAtom<
     AdditionalMapGeoLocations[]
 >("additionalMapGeoLocations", [], {
@@ -121,7 +112,7 @@ export const displayHidingZonesStyle = persistentAtom<
 
 export const displayTransitLines = persistentAtom<boolean>(
     "displayTransitLines",
-    false,
+    true,
     {
         encode: JSON.stringify,
         decode: JSON.parse,
@@ -327,8 +318,8 @@ export const hidingZone = computed(
 );
 
 export const drawingQuestionKey = atom<number>(-1);
-export const playtestModeEnabled = persistentAtom<boolean>(
-    "playtestModeEnabled",
+export const liveUpdateMapEnabled = persistentAtom<boolean>(
+    "liveUpdateMapEnabled",
     false,
     { encode: JSON.stringify, decode: JSON.parse },
 );

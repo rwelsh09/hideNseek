@@ -29,7 +29,7 @@ import {
     includeDefaultStations as includeDefaultStationsAtom,
     isLoading,
     leafletMapContext,
-    playtestModeEnabled,
+    liveUpdateMapEnabled,
     questionFinishedMapData,
     questions,
     trainStations,
@@ -114,6 +114,7 @@ export const ZoneSidebar = () => {
         removeHidingZones();
 
         const geoJsonLayer = L.geoJSON(geoJSONData, {
+            interactive: nonOverlappingStations,
             style: (feature: any) => {
                 let color = "blue";
                 const isSelected =
@@ -195,6 +196,7 @@ export const ZoneSidebar = () => {
         // @ts-expect-error This is intentionally added as a check
         geoJsonLayer.hidingZones = true;
         geoJsonLayer.addTo(map);
+        geoJsonLayer.bringToBack();
     };
 
     useEffect(() => {
@@ -330,7 +332,7 @@ export const ZoneSidebar = () => {
                 for (const question of questions.get()) {
                     if (circles.length === 0) break;
 
-                    if (playtestModeEnabled.get() && question.data.drag) {
+                    if (!liveUpdateMapEnabled.get() && question.data.drag) {
                         continue;
                     }
 
@@ -346,9 +348,7 @@ export const ZoneSidebar = () => {
                         ]);
                         const nearestTrainStation = turf.nearestPoint(
                             location,
-                            turf.featureCollection(
-                                circles.map((x) => x.properties),
-                            ) as any,
+                            turf.featureCollection(places) as any,
                         );
 
                         if (question.data.type === "same-train-line") {
@@ -1079,7 +1079,7 @@ async function selectionProcess(
     ]);
 
     for (const question of questions.get()) {
-        if (playtestModeEnabled.get() && question.data.drag) continue;
+        if (!liveUpdateMapEnabled.get() && question.data.drag) continue;
 
         if (
             (question.id === "measuring" || question.id === "matching") &&

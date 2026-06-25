@@ -24,6 +24,16 @@ export const TutorialManager = () => {
                 },
                 steps: [
                     {
+                        element: '[data-tutorial-id="map-action-buttons"]',
+                        popover: {
+                            title: "Map Controls",
+                            description:
+                                "Use these buttons to re-center the map on your location, zoom to the potential hiding areas, or view the entire map.",
+                            side: "left",
+                            align: "start",
+                        },
+                    },
+                    {
                         element: '[data-tutorial-id="left-sidebar-trigger"]',
                         popover: {
                             title: "Questions",
@@ -48,7 +58,7 @@ export const TutorialManager = () => {
                         popover: {
                             title: "Settings & Options",
                             description:
-                                "Access map settings, save states, sharing options, and extra tools.",
+                                "Access map settings, transit lines overlays, save states, sharing options, and extra tools.",
                             side: "top",
                             align: "end",
                         },

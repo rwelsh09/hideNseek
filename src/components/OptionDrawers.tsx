@@ -18,7 +18,6 @@ import {
     customStations,
     disabledStations,
     displayHidingZonesOptions,
-    displayStationConnections,
     displayTransitLines,
     followMe,
     hiderMode,
@@ -26,9 +25,9 @@ import {
     hidingZone,
     includeDefaultStations,
     leafletMapContext,
+    liveUpdateMapEnabled,
     mapGeoJSON,
     mapGeoLocation,
-    playtestModeEnabled,
     polyGeoJSON,
     questions,
     showTutorial,
@@ -55,11 +54,10 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $hiderMode = useStore(hiderMode);
     const $autoSave = useStore(autoSave);
     const $hidingZone = useStore(hidingZone);
-    const $playtestMode = useStore(playtestModeEnabled);
+    const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
     const $displayTransitLines = useStore(displayTransitLines);
-    const $displayStationConnections = useStore(displayStationConnections);
     const [isOptionsOpen, setOptionsOpen] = useState(false);
 
     useEffect(() => {
@@ -258,6 +256,12 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             >
                                 Start Tutorial
                             </Button>
+                            <a
+                                href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/rules`}
+                                className="w-full sm:w-[280px]"
+                            >
+                                <Button className="w-full">Rules & Tips</Button>
+                            </a>
                         </div>
                         <DrawerHeader>
                             <DrawerTitle className="text-4xl font-semibold font-poppins">
@@ -352,19 +356,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             </div>
                             <div className="flex flex-row items-center gap-2 text-center">
                                 <label className="text-xl sm:text-2xl font-semibold font-poppins text-center">
-                                    Show station connections overlay?
-                                </label>
-                                <Checkbox
-                                    checked={$displayStationConnections}
-                                    onCheckedChange={() => {
-                                        displayStationConnections.set(
-                                            !$displayStationConnections,
-                                        );
-                                    }}
-                                />
-                            </div>
-                            <div className="flex flex-row items-center gap-2 text-center">
-                                <label className="text-xl sm:text-2xl font-semibold font-poppins text-center">
                                     Show transit lines overlay?
                                 </label>
                                 <Checkbox
@@ -378,12 +369,12 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             </div>
                             <div className="flex flex-row items-center gap-2 text-center">
                                 <label className="text-xl sm:text-2xl font-semibold font-poppins">
-                                    Playtest Mode?
+                                    Live update map?
                                 </label>
                                 <Checkbox
-                                    checked={$playtestMode}
+                                    checked={$liveUpdateMapEnabled}
                                     onCheckedChange={() => {
-                                        if ($playtestMode === true) {
+                                        if ($liveUpdateMapEnabled === false) {
                                             const map = leafletMapContext.get();
 
                                             if (map) {
@@ -400,7 +391,9 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                             questions.set([...questions.get()]);
                                         }
 
-                                        playtestModeEnabled.set(!$playtestMode);
+                                        liveUpdateMapEnabled.set(
+                                            !$liveUpdateMapEnabled,
+                                        );
                                     }}
                                 />
                             </div>
