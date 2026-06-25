@@ -1,0 +1,1 @@
+import{g as a,h as d}from"./sidebar-r.DgFf_VDd.js";import"./use-mobile.y2gi1qSn.js";import"./index.CTzypqlY.js";import"./clsx.B-dksMZM.js";import"./index.COiZ6Q9j.js";import"./index.Cty1fNot.js";export{a as SidebarProvider,d as SidebarTrigger};
