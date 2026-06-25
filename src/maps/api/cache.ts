@@ -59,16 +59,20 @@ export const cacheFetch = async (
         const fetchPromise = fetchAndMaybeCache();
         inFlightFetches.set(inflightKey, fetchPromise);
 
+        let toastId: import("react-toastify").Id | undefined;
+        if (loadingText) {
+            toastId = toast.loading(loadingText);
+        }
+
         try {
-            const response = await (loadingText
-                ? toast.promise(fetchPromise, {
-                      pending: loadingText,
-                  })
-                : fetchPromise);
+            const response = await fetchPromise;
 
             return response.clone();
         } finally {
             inFlightFetches.delete(inflightKey);
+            if (toastId) {
+                toast.dismiss(toastId);
+            }
         }
     } catch {
         return fetch(url);
