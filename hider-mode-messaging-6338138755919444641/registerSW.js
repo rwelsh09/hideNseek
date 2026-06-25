@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/hider-mode-messaging-6338138755919444641/sw.js', { scope: '/HideAndSeek/hider-mode-messaging-6338138755919444641/' })})}
