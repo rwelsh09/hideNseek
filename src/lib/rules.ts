@@ -1,6 +1,6 @@
 export const QUESTION_RULES: Record<string, string> = {
     photo: "The Hider send a photo, chosen by the Seeker.",
-    radius: "The Seeker places a circle on the map. The Hider must answer whether their actual location is inside or outside of this circle.",
+    radius: "The Seeker places a circle on their location with a predefined radius. The Hider must answer whether their actual location is inside or outside of this circle.",
     thermometer:
         "The Seeker places one marker where they currently are then travels to where they want the second marker (at least the number of kilometers on the chosen thermometer). The Hider must reveal which if the Seeker is now Warmer (closer) or Colder (further0 from them.",
     tentacles:
