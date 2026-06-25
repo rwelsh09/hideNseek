@@ -292,6 +292,7 @@ export const findPlacesInZone = async (
     const finalAlternatives = [...alternatives];
     if (filter === "[leisure=golf_course]") {
         finalAlternatives.push("[golf=driving_range]");
+        finalAlternatives.push("[golf=clubhouse]");
     }
 
     const $polyGeoJSON = polyGeoJSON.get();
@@ -403,7 +404,8 @@ out ${outType};
             if (
                 e.tags &&
                 (e.tags.leisure === "golf_course" ||
-                    e.tags.golf === "driving_range")
+                    e.tags.golf === "driving_range" ||
+                    e.tags.golf === "clubhouse")
             ) {
                 if (e.tags.indoor === "yes") {
                     continue; // Skip indoor golf locations entirely
@@ -430,15 +432,26 @@ out ${outType};
                     break;
                 }
 
-                // Check if one is a golf_course and another is a driving_range, and within 1.2km
+                // Check if the group has a golf_course, and we are trying to add a driving_range or clubhouse
+                // (or vice versa), and they are within 1.2km. We do NOT merge two golf_courses unless they had the same name.
                 const hasGolfCourse =
                     group.some((g: any) => g.tags.leisure === "golf_course") ||
                     e.tags.leisure === "golf_course";
-                const hasDrivingRange =
-                    group.some((g: any) => g.tags.golf === "driving_range") ||
-                    e.tags.golf === "driving_range";
+                const hasSubordinate =
+                    group.some(
+                        (g: any) =>
+                            g.tags.golf === "driving_range" ||
+                            g.tags.golf === "clubhouse",
+                    ) ||
+                    e.tags.golf === "driving_range" ||
+                    e.tags.golf === "clubhouse";
 
-                if (hasGolfCourse && hasDrivingRange) {
+                // Ensure we aren't just merging two golf_courses that failed the name check
+                const isTwoGolfCourses =
+                    group.some((g: any) => g.tags.leisure === "golf_course") &&
+                    e.tags.leisure === "golf_course";
+
+                if (hasGolfCourse && hasSubordinate && !isTwoGolfCourses) {
                     const eLat = e.center ? e.center.lat : e.lat;
                     const eLon = e.center ? e.center.lon : e.lon;
                     if (typeof eLat === "number" && typeof eLon === "number") {
