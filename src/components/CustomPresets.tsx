@@ -45,6 +45,7 @@ const CustomPresets: React.FC<Props> = ({ data, presetTypeHint }) => {
         // copy fields from preset.data into the question data so user can deviate
         const src = safeClone(preset.data);
         Object.keys(src).forEach((k) => {
+            if (["__proto__", "constructor", "prototype"].includes(k)) return;
             (data as any)[k] = src[k];
         });
         // ensure nested objects replaced where appropriate (geo etc)
@@ -93,6 +94,8 @@ const CustomPresets: React.FC<Props> = ({ data, presetTypeHint }) => {
             }
             const src = safeClone(payload.data);
             Object.keys(src).forEach((k) => {
+                if (["__proto__", "constructor", "prototype"].includes(k))
+                    return;
                 (data as any)[k] = src[k];
             });
             questionModified();
