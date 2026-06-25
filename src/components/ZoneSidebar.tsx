@@ -196,6 +196,7 @@ export const ZoneSidebar = () => {
         // @ts-expect-error This is intentionally added as a check
         geoJsonLayer.hidingZones = true;
         geoJsonLayer.addTo(map);
+        geoJsonLayer.bringToBack();
     };
 
     useEffect(() => {
