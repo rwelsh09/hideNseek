@@ -3,37 +3,18 @@ import osmtogeojson from "osmtogeojson";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 
-import { liveUpdateMapEnabled, questions } from "@/lib/context";
+import { playtestModeEnabled, questions } from "@/lib/context";
 import { findPlacesInZone, findPlacesSpecificInZone } from "@/maps/api";
 import { LOCATION_FIRST_TAG } from "@/maps/api/constants";
 
-// Performance Optimization: Cache path options for different colors to prevent react-leaflet
-// from re-triggering layer styling methods due to unstable object references on every render.
-const getPathOptions = (() => {
-    const cache: Record<
-        string,
-        { color: string; fillColor: string; fillOpacity: number }
-    > = {};
-    return (color: string) => {
-        if (!cache[color]) {
-            cache[color] = {
-                color: color,
-                fillColor: color,
-                fillOpacity: 0.8,
-            };
-        }
-        return cache[color];
-    };
-})();
-
 export const PlaytestPlaces = () => {
-    const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
+    const $playtestMode = useStore(playtestModeEnabled);
     const $questions = useStore(questions);
 
     const [places, setPlaces] = useState<any[]>([]);
 
     useEffect(() => {
-        if ($liveUpdateMapEnabled) return;
+        if (!$playtestMode) return;
 
         let isMounted = true;
 
@@ -45,11 +26,6 @@ export const PlaytestPlaces = () => {
             // Collect required location types from questions
             $questions.forEach((q) => {
                 const data = q.data as any;
-
-                // Note: According to src/maps/schema.ts, `drag` is synonymous with `unlocked`.
-                // Therefore, data.drag === false means the question is currently locked.
-                const isLocked = data.drag === false;
-                if (isLocked) return;
 
                 if (data.locationType) {
                     if (data.locationType === "custom") {
@@ -154,9 +130,9 @@ export const PlaytestPlaces = () => {
         return () => {
             isMounted = false;
         };
-    }, [$liveUpdateMapEnabled, $questions]);
+    }, [$playtestMode, $questions]);
 
-    if ($liveUpdateMapEnabled) return null;
+    if (!$playtestMode) return null;
 
     return (
         <>
@@ -180,7 +156,11 @@ export const PlaytestPlaces = () => {
                         key={i}
                         center={[coords[1], coords[0]]}
                         radius={5}
-                        pathOptions={getPathOptions(color)}
+                        pathOptions={{
+                            color: color,
+                            fillColor: color,
+                            fillOpacity: 0.8,
+                        }}
                     >
                         <Tooltip direction="top" offset={[0, -10]}>
                             {name}

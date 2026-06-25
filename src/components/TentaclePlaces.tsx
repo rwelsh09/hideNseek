@@ -6,7 +6,7 @@ import { Popup } from "react-leaflet";
 
 import {
     hiderMode,
-    liveUpdateMapEnabled,
+    playtestModeEnabled,
     questionModified,
     questions,
 } from "@/lib/context";
@@ -57,9 +57,9 @@ const TentaclePlacesForQuestion = ({ question }: { question: any }) => {
         question.data.places,
     ]);
 
-    const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
+    const $playtestMode = useStore(playtestModeEnabled);
 
-    if ($hiderMode && $liveUpdateMapEnabled) return null;
+    if ($hiderMode && !$playtestMode) return null;
 
     const center = turf.point([question.data.lng, question.data.lat]);
     const filteredPlaces = places.filter((f) => {
@@ -69,7 +69,7 @@ const TentaclePlacesForQuestion = ({ question }: { question: any }) => {
                 ? [f.properties.lon, f.properties.lat]
                 : null);
         if (!coords) return false;
-        if (!$liveUpdateMapEnabled) return true; // Show all places in playtest mode
+        if ($playtestMode) return true; // Show all places in playtest mode
         return (
             turf.distance(center, turf.point(coords), {
                 units: question.data.unit,

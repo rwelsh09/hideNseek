@@ -55,9 +55,9 @@ export const hiderifyQuestion = async (question: Question) => {
 
 export const determinePlanningPolygon = async (
     question: Question,
-    liveUpdateMapEnabled: boolean,
+    playtestModeEnabled: boolean,
 ) => {
-    if (!liveUpdateMapEnabled && question.data.drag) {
+    if (playtestModeEnabled && question.data.drag) {
         switch (question.id) {
             case "radius":
                 return radiusPlanningPolygon(question.data);
@@ -106,7 +106,7 @@ export async function adjustMapGeoDataForQuestion(
 export async function applyQuestionsToMapGeoData(
     questions: Questions,
     mapGeoData: any,
-    liveUpdateMapEnabled: boolean,
+    playtestModeEnabled: boolean,
     planningModeCallback?: (
         polygon: FeatureCollection | Feature,
         question: any,
@@ -115,7 +115,7 @@ export async function applyQuestionsToMapGeoData(
     if (planningModeCallback) {
         const planningPolygons = await Promise.all(
             questions.map((question) =>
-                determinePlanningPolygon(question, liveUpdateMapEnabled),
+                determinePlanningPolygon(question, playtestModeEnabled),
             ),
         );
 
@@ -128,7 +128,7 @@ export async function applyQuestionsToMapGeoData(
     }
 
     for (const question of questions) {
-        if (!liveUpdateMapEnabled && question.data.drag) {
+        if (playtestModeEnabled && question.data.drag) {
             continue;
         }
 

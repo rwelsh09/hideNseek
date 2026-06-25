@@ -19,9 +19,9 @@ import {
     hiderMode,
     isLoading,
     leafletMapContext,
-    liveUpdateMapEnabled,
     mapGeoJSON,
     mapGeoLocation,
+    playtestModeEnabled,
     polyGeoJSON,
     questionFinishedMapData,
     questions,
@@ -183,11 +183,9 @@ export const Map = ({ className }: { className?: string }) => {
             mapGeoData = await applyQuestionsToMapGeoData(
                 $questions,
                 mapGeoData,
-                liveUpdateMapEnabled.get(),
+                playtestModeEnabled.get(),
                 (geoJSONObj, question) => {
-                    const geoJSONPlane = L.geoJSON(geoJSONObj, {
-                        interactive: false,
-                    });
+                    const geoJSONPlane = L.geoJSON(geoJSONObj);
                     // @ts-expect-error This is a check such that only this type of layer is removed
                     geoJSONPlane.questionKey = question.key;
                     geoJSONPlane.addTo(map);
@@ -206,7 +204,7 @@ export const Map = ({ className }: { className?: string }) => {
                 }
             });
 
-            const g = L.geoJSON(mapGeoData, { interactive: false });
+            const g = L.geoJSON(mapGeoData);
             // @ts-expect-error This is a check such that only this type of layer is removed
             g.eliminationGeoJSON = true;
             g.addTo(map);
@@ -344,10 +342,7 @@ export const Map = ({ className }: { className?: string }) => {
                 <TentaclePlaces />
                 <PlaytestPlaces />
                 <div className="leaflet-top leaflet-right">
-                    <div
-                        className="leaflet-control flex-col flex gap-2"
-                        data-tutorial-id="map-action-buttons"
-                    >
+                    <div className="leaflet-control flex-col flex gap-2">
                         <LeafletActionButtons />
                     </div>
                 </div>

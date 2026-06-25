@@ -14,11 +14,16 @@ export const StationPlaces = () => {
         if (!stations || stations.length === 0) return null;
 
         return stations.map((station, i) => {
-            const coords = station.geometry.coordinates as [number, number];
+            const coords = (station.properties as any).geometry.coordinates as [
+                number,
+                number,
+            ];
             const name =
                 extractStationLabel(station.properties) || "Unknown Station";
 
-            const transitType = station.properties?.transit_type;
+            const transitType =
+                (station.properties?.properties as any)?.transit_type ||
+                (station.properties as any)?.transit_type;
 
             let color = "blue";
             if (transitType === "CTrain Station") {
