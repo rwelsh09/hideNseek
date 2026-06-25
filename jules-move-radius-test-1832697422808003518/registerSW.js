@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/jules-move-radius-test-1832697422808003518/sw.js', { scope: '/HideAndSeek/jules-move-radius-test-1832697422808003518/' })})}
