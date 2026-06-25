@@ -36,7 +36,7 @@ export const hiderifyQuestion = async (question: Question) => {
                 question.data = hiderifyRadius(question.data);
                 break;
             case "thermometer":
-                question.data = await hiderifyThermometer(question.data);
+                question.data = hiderifyThermometer(question.data);
                 break;
             case "tentacles":
                 question.data = await hiderifyTentacles(question.data);
@@ -82,7 +82,7 @@ export async function adjustMapGeoDataForQuestion(
             case "radius":
                 return await adjustPerRadius(question.data, mapGeoData);
             case "thermometer":
-                return await adjustPerThermometer(question.data, mapGeoData);
+                return adjustPerThermometer(question.data, mapGeoData);
             case "tentacles":
                 if (question.data.location === false) {
                     return adjustPerRadius(

@@ -38,6 +38,7 @@ import { LeafletActionButtons } from "./LeafletActionButtons";
 import { PlaytestPlaces } from "./PlaytestPlaces";
 import { PolygonDraw } from "./PolygonDraw";
 import { StationConnectionsOverlay } from "./StationConnectionsOverlay";
+import { StationPlaces } from "./StationPlaces";
 import { TentaclePlaces } from "./TentaclePlaces";
 import { TransitLinesOverlay } from "./TransitLinesOverlay";
 
@@ -336,6 +337,7 @@ export const Map = ({ className }: { className?: string }) => {
                 {getTileLayer($baseTileLayer, $thunderforestApiKey)}
                 <TransitLinesOverlay />
                 <StationConnectionsOverlay />
+                <StationPlaces />
                 <DraggableMarkers />
                 <TentaclePlaces />
                 <PlaytestPlaces />
