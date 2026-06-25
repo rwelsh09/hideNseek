@@ -1,4 +1,4 @@
-// Used for `How it works` on the Question card
+// Used in the `Rules` page & for `How it works` on the Question card
 export const QUESTION_RULES: Record<string, string> = {
     photo: "Seekers request a photograph from the Hider's current perspective. The photo must accurately represent their location without being intentionally misleading. The Hider may edit the photo to blackout words.",
     radius: "Seekers select a specific distance (e.g., 5km) to project a Radar from their current location. The Hider must answer 'Yes' or 'No' to whether their location falls within that Radar.",
