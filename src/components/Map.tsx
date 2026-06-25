@@ -38,6 +38,7 @@ import { LeafletActionButtons } from "./LeafletActionButtons";
 import { PlaytestPlaces } from "./PlaytestPlaces";
 import { PolygonDraw } from "./PolygonDraw";
 import { TentaclePlaces } from "./TentaclePlaces";
+import { TimerDrawer } from "./TimerDrawer";
 import { TransitLinesOverlay } from "./TransitLinesOverlay";
 
 const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
@@ -339,6 +340,12 @@ export const Map = ({ className }: { className?: string }) => {
                 <DraggableMarkers />
                 <TentaclePlaces />
                 <PlaytestPlaces />
+
+                <div className="leaflet-top leaflet-left mt-[120px] ml-2">
+                    <div className="leaflet-control flex-col flex gap-2">
+                        <TimerDrawer />
+                    </div>
+                </div>
                 <div className="leaflet-top leaflet-right">
                     <div
                         className="leaflet-control flex-col flex gap-2"

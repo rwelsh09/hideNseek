@@ -59,6 +59,33 @@ const DrawerContent = React.forwardRef<
 ));
 DrawerContent.displayName = "DrawerContent";
 
+const TopDrawerContent = React.forwardRef<
+    React.ElementRef<typeof DrawerPrimitive.Content>,
+    React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+    <DrawerPortal
+        container={
+            typeof document !== "undefined"
+                ? document.querySelector("#map-modal-dialog-container-leaflet")
+                : null
+        }
+    >
+        <DrawerOverlay />
+        <DrawerPrimitive.Content
+            ref={ref}
+            className={cn(
+                "fixed inset-x-0 top-0 z-[1040] mb-24 flex h-auto flex-col rounded-b-[10px] border bg-background",
+                className,
+            )}
+            {...props}
+        >
+            {children}
+            <div className="mx-auto mb-4 mt-2 h-2 w-[100px] rounded-full bg-muted" />
+        </DrawerPrimitive.Content>
+    </DrawerPortal>
+));
+TopDrawerContent.displayName = "TopDrawerContent";
+
 const DrawerHeader = ({
     className,
     ...props
@@ -119,4 +146,5 @@ export {
     DrawerPortal,
     DrawerTitle,
     DrawerTrigger,
+    TopDrawerContent,
 };
