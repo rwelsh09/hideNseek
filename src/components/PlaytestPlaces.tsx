@@ -3,18 +3,18 @@ import osmtogeojson from "osmtogeojson";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 
-import { playtestModeEnabled, questions } from "@/lib/context";
+import { liveUpdateMapEnabled, questions } from "@/lib/context";
 import { findPlacesInZone, findPlacesSpecificInZone } from "@/maps/api";
 import { LOCATION_FIRST_TAG } from "@/maps/api/constants";
 
 export const PlaytestPlaces = () => {
-    const $playtestMode = useStore(playtestModeEnabled);
+    const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
     const $questions = useStore(questions);
 
     const [places, setPlaces] = useState<any[]>([]);
 
     useEffect(() => {
-        if (!$playtestMode) return;
+        if ($liveUpdateMapEnabled) return;
 
         let isMounted = true;
 
@@ -135,9 +135,9 @@ export const PlaytestPlaces = () => {
         return () => {
             isMounted = false;
         };
-    }, [$playtestMode, $questions]);
+    }, [$liveUpdateMapEnabled, $questions]);
 
-    if (!$playtestMode) return null;
+    if ($liveUpdateMapEnabled) return null;
 
     return (
         <>
