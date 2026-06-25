@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-voronoi-tests-12076970876072114644/sw.js', { scope: '/HideAndSeek/fix-voronoi-tests-12076970876072114644/' })})}
