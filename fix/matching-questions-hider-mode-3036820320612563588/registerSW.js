@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/matching-questions-hider-mode-3036820320612563588/sw.js', { scope: '/HideAndSeek/fix/matching-questions-hider-mode-3036820320612563588/' })})}
