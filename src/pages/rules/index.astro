@@ -6,16 +6,44 @@ import { QUESTION_RULES } from "@/lib/rules";
 <Layout className="bg-main text-white p-8">
   <div class="max-w-4xl mx-auto space-y-8 mt-12">
     <div class="flex items-center justify-between">
-      <h1 class="text-4xl font-bold font-poppins">Rules & Tips</h1>
-      <a href={`${import.meta.env.BASE_URL}`} class="text-blue-400 hover:text-blue-300">Back to Map</a>
+      <h1 class="text-4xl font-bold font-poppins">Hide & Seek – Rules</h1>
+      <a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/`} class="text-blue-400 hover:text-blue-300">Back to Map</a>
     </div>
 
     <section class="space-y-4">
-      <h2 class="text-2xl font-semibold border-b border-slate-700 pb-2">Question Rules</h2>
+      <h2 class="text-2xl font-semibold border-b border-slate-700 pb-2">1. Game Overview</h2>
+      <p class="mb-4 text-slate-300"><strong>Hide & Seek</strong> is a continuous game of cat-and-mouse played across a designated local transit system. One player (the <strong>Hider</strong>) uses public transit to travel to a secret location and establish a Hiding Zone. The remaining players (the <strong>Seekers</strong>) work cooperatively to track down the Hider by asking strategic questions.</p>
+      <p class="text-slate-300">The game operates in rounds. Once the Seekers physically tag the Hider, the round ends, and a new player becomes the Hider. The player who remains hidden for the longest total time wins the game.</p>
+    </section>
+
+    <section class="space-y-4">
+      <h2 class="text-2xl font-semibold border-b border-slate-700 pb-2">2. Setting Up the Game</h2>
+      <ul class="list-disc pl-6 space-y-2 text-slate-300">
+        <li><strong>The Map:</strong> The game map is strictly defined by the local public transit network (e.g., the Calgary Rapid Transit Network). All gameplay and movement must occur within the bounds of this network.</li>
+        <li><strong>The Head Start:</strong> Before the Seekers can begin their pursuit, the Hider is granted a designated head start period (e.g., 45 to 60 minutes, depending on the agreed-upon game size).</li>
+        <li><strong>Transit Only:</strong> During the head start, the Hider may only travel using approved public transit (trains, buses) and walking. No private vehicles or ride-shares are allowed.</li>
+      </ul>
+    </section>
+
+    <section class="space-y-4">
+      <h2 class="text-2xl font-semibold border-b border-slate-700 pb-2">3. The Hiding Zone</h2>
+      <p class="mb-4 text-slate-300">Once the head start concludes, the Hider must permanently lock in their final location.</p>
+      <ul class="list-disc pl-6 space-y-2 text-slate-300">
+        <li><strong>The Anchor Station:</strong> The Hider must choose a valid transit station to act as the anchor for their location.</li>
+        <li><strong>Zone Radius:</strong> The Hider must remain within a specific radius (typically 500m to 1km) of their Anchor Station for the remainder of the round.</li>
+        <li><strong>Stationary Rule:</strong> Once the Hiding Zone is locked in on the webapp, the Hider cannot leave this radius until they are caught.</li>
+      </ul>
+    </section>
+
+    <section class="space-y-4">
+      <h2 class="text-2xl font-semibold border-b border-slate-700 pb-2">4. The Seeking Phase & Questions</h2>
+      <p class="mb-4 text-slate-300">To locate the Hider, Seekers use the webapp to ask specific types of questions. The Hider must answer truthfully.</p>
+
+      <h3 class="text-xl font-medium mb-3 mt-6 text-slate-200">Question Categories</h3>
       <div class="grid gap-4 md:grid-cols-2">
         {Object.entries(QUESTION_RULES).map(([key, rule]) => (
           <div class="bg-slate-800 p-4 rounded-xl border border-slate-700">
-            <h3 class="text-xl font-bold capitalize text-blue-400 mb-2">{key}</h3>
+            <h3 class="text-xl font-bold capitalize text-blue-400 mb-2">{key === "radius" ? "Radar (Radius)" : key}</h3>
             <p class="text-slate-300">{rule}</p>
           </div>
         ))}
@@ -23,13 +51,22 @@ import { QUESTION_RULES } from "@/lib/rules";
     </section>
 
     <section class="space-y-4">
-      <h2 class="text-2xl font-semibold border-b border-slate-700 pb-2">General Tips</h2>
+      <h2 class="text-2xl font-semibold border-b border-slate-700 pb-2">5. Time Penalties</h2>
+      <p class="mb-4 text-slate-300">To balance the flow of information, the game utilizes a <strong>Time Penalty</strong> system.</p>
       <ul class="list-disc pl-6 space-y-2 text-slate-300">
-        <li>The Time Penalty tracks how much extra time the Hider has to hide based on the questions you've locked.</li>
-        <li>Use Playtest Mode to practice and refine your map layout.</li>
-        <li>You can use the 'Follow Me' option to use your device's GPS for questions requiring your location.</li>
-        <li>Make sure to use the correct question types to gather enough information about the Hider's location.</li>
-        <li>Remember to 'Lock' a question once you've received your answer to calculate time penalties and finalize the map area!</li>
+        <li><strong>Cost of Information:</strong> Every time the Seekers ask a question to narrow down the Hider's location, a Time Penalty is incurred.</li>
+        <li><strong>How it Works:</strong> This penalty compensates the Hider for revealing clues about their location. Each question type carries a specific time cost that is applied to the game clock.</li>
+        <li><strong>Strategic Seeking:</strong> Because asking questions carries a time cost, Seekers must work together to ask the most efficient and strategic questions possible.</li>
+      </ul>
+      <p class="italic mt-4 text-sm text-slate-400">(Note: The webapp automatically calculates, tracks, and applies all Time Penalties as questions are logged).</p>
+    </section>
+
+    <section class="space-y-4">
+      <h2 class="text-2xl font-semibold border-b border-slate-700 pb-2">6. Ending the Round</h2>
+      <ul class="list-disc pl-6 space-y-2 text-slate-300">
+        <li><strong>The Catch:</strong> Seekers must physically locate the Hider. Once a Seeker spots the Hider and makes physical contact (or gets within a predetermined visual tagging distance), the round immediately ends.</li>
+        <li><strong>Logging the Time:</strong> The webapp calculates the total time the Hider survived, factoring in their baseline hidden time plus any accumulated Time Penalties from the Seekers' questions.</li>
+        <li><strong>Next Round:</strong> The players reset, a new Hider is chosen, and the next head start begins.</li>
       </ul>
     </section>
   </div>

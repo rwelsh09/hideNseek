@@ -1,12 +1,12 @@
 export const QUESTION_RULES: Record<string, string> = {
-    photo: "The Hider send a photo, chosen by the Seeker.",
-    radius: "The Seeker places a circle on their location with a predefined radius. The Hider must answer whether their actual location is inside or outside of this circle.",
+    photo: "Seekers request a photograph from the Hider's current perspective. The photo must accurately represent their location without being intentionally misleading.",
+    radius: "Seekers select a transit station and a specific distance (e.g., 3km). The Hider must answer 'Yes' or 'No' to whether their Anchor Station falls within that radius.",
     thermometer:
-        "The Seeker places one marker where they currently are then travels to where they want the second marker (at least the number of kilometers on the chosen thermometer). The Hider must reveal which if the Seeker is now Warmer (closer) or Colder (further0 from them.",
+        "Seekers select two different transit stations. The Hider must reveal which of the two stations is geographically closer to their Anchor Station.",
     tentacles:
-        "Creates circles ('tentacles') around all locations of a specific category (e.g., all hospitals) within a set radius. The Hider reveals if they are inside the area and which place they are closest to.",
+        "Seekers select multiple transit stations. The webapp mathematically divides the entire game map into distinct regions (Voronoi polygons) originating from those stations. The Hider must reveal which 'tentacle' (region) contains their Anchor Station.",
     measuring:
-        "The Hider compares their distance to a specific type of feature (e.g., nearest library) against the Seeker location, answering if they are 'Closer' or 'Further'.",
+        "Seekers ask for the exact distance between a specific transit station and the Hider's Anchor Station.",
     matching:
-        "The Seeker and Hider compare a specific attribute of their locations (e.g., same neighbourhood, same train line). The Hider reveals if the attributes match ('Same') or not ('Different').",
+        "Seekers ask an attribute-based question about the Hider's Anchor Station (e.g., 'Does your station's name start with a vowel?', 'Is your station on the Red Line?').",
 };
