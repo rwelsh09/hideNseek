@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/tutorial-mobile-sidebar-lock-683490912556171696/sw.js', { scope: '/HideAndSeek/fix/tutorial-mobile-sidebar-lock-683490912556171696/' })})}
