@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/update-rules-layout-11292914413394401937/sw.js', { scope: '/HideAndSeek/update-rules-layout-11292914413394401937/' })})}
