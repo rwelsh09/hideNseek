@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/cleanup/remove-custompresets-8354845839415637718/sw.js', { scope: '/HideAndSeek/cleanup/remove-custompresets-8354845839415637718/' })})}
