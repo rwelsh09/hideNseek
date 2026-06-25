@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/code-health-remove-console-error-mask-3874619224478672842/sw.js', { scope: '/HideAndSeek/fix/code-health-remove-console-error-mask-3874619224478672842/' })})}
