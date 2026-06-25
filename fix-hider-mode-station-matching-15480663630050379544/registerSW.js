@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-hider-mode-station-matching-15480663630050379544/sw.js', { scope: '/HideAndSeek/fix-hider-mode-station-matching-15480663630050379544/' })})}
