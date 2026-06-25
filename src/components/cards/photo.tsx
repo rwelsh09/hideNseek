@@ -8,6 +8,7 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar-l";
 import {
+    hiderMode,
     isLoading,
     penaltyMinutes,
     questionModified,
@@ -45,6 +46,7 @@ export const PhotoQuestionComponent = ({
     isPreview?: boolean;
 }) => {
     useStore(triggerLocalRefresh);
+    const $hiderMode = useStore(hiderMode);
     const $isLoading = useStore(isLoading);
     const [localNotes, setLocalNotes] = useState(data.notes);
     useEffect(() => {
@@ -114,6 +116,17 @@ export const PhotoQuestionComponent = ({
                 }}
                 disabled={!data.drag || $isLoading}
             />
+            {!!$hiderMode && (
+                <div
+                    className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md mx-2 mb-2"
+                    style={{ width: "calc(100% - 1rem)" }}
+                >
+                    Tell the Seekers:{" "}
+                    <span className="text-primary">
+                        Send a photo matching this request
+                    </span>
+                </div>
+            )}
         </QuestionCard>
     );
 };

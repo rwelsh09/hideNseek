@@ -143,7 +143,7 @@ export const MeasuringQuestionComponent = ({
             )}
 
             {!isPreview && (
-                <div className="flex gap-2 items-center p-2">
+                <div className="flex gap-2 items-center p-2 flex-wrap">
                     <Label
                         className={cn(
                             "font-semibold text-lg",
@@ -169,6 +169,16 @@ export const MeasuringQuestionComponent = ({
                             Hider Closer
                         </ToggleGroupItem>
                     </ToggleGroup>
+                    {!!$hiderMode && (
+                        <div className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md">
+                            Tell the Seekers:{" "}
+                            <span className="text-primary">
+                                {data.hiderCloser
+                                    ? "Hider Closer"
+                                    : "Hider Further"}
+                            </span>
+                        </div>
+                    )}
                 </div>
             )}
         </QuestionCard>

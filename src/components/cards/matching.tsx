@@ -126,7 +126,7 @@ export const MatchingQuestionComponent = ({
             {!isPreview && (
                 <div
                     className={cn(
-                        "flex gap-2 items-center p-2",
+                        "flex gap-2 items-center p-2 flex-wrap",
                         data.type === "same-length-station" && "flex-col",
                     )}
                 >
@@ -202,6 +202,22 @@ export const MatchingQuestionComponent = ({
                             </ToggleGroupItem>
                             <ToggleGroupItem value="same">Same</ToggleGroupItem>
                         </ToggleGroup>
+                    )}
+                    {!!$hiderMode && (
+                        <div className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md">
+                            Tell the Seekers:{" "}
+                            <span className="text-primary">
+                                {data.type === "same-length-station"
+                                    ? data.lengthComparison === "shorter"
+                                        ? "Shorter"
+                                        : data.lengthComparison === "longer"
+                                          ? "Longer"
+                                          : "Same"
+                                    : data.same
+                                      ? "Same"
+                                      : "Different"}
+                            </span>
+                        </div>
                     )}
                 </div>
             )}
