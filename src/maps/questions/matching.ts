@@ -148,88 +148,6 @@ export const determineMatchingBoundary = _.memoize(
                 break;
             }
 
-            case "same-first-letter-station":
-            case "same-length-station":
-            case "same-train-line": {
-                const places =
-                    calgaryTransitData as unknown as FeatureCollection<Point>;
-
-                const point = turf.point([question.lng, question.lat]);
-                const nearest = turf.nearestPoint(point, places);
-
-                const seekerEnglishName =
-                    (nearest.properties as any)["name:en"] ||
-                    nearest.properties.name;
-
-                if (!seekerEnglishName) {
-                    throw new Error("No English name found");
-                }
-
-                const voronoi = geoSpatialVoronoi(places.features as any);
-
-                const matchingCells = [];
-
-                if (question.type === "same-train-line") {
-                    const seekerLines: string[] =
-                        (nearest.properties as any).lines || [];
-                    for (const feature of voronoi.features) {
-                        const station = feature.properties!.site;
-                        const stationLines: string[] =
-                            (station.properties as any).lines || [];
-                        if (seekerLines.some((l) => stationLines.includes(l))) {
-                            matchingCells.push(feature);
-                        }
-                    }
-                } else if (question.type === "same-first-letter-station") {
-                    const letter = seekerEnglishName[0].toUpperCase();
-                    for (const feature of voronoi.features) {
-                        const station = feature.properties!.site;
-                        const stationEnglishName =
-                            (station.properties as any)["name:en"] ||
-                            (station.properties as any).name;
-                        if (
-                            stationEnglishName &&
-                            stationEnglishName[0].toUpperCase() === letter
-                        ) {
-                            matchingCells.push(feature);
-                        }
-                    }
-                } else if (question.type === "same-length-station") {
-                    const length = seekerEnglishName.length;
-                    for (const feature of voronoi.features) {
-                        const station = feature.properties!.site;
-                        const stationEnglishName =
-                            (station.properties as any)["name:en"] ||
-                            (station.properties as any).name;
-                        if (stationEnglishName) {
-                            if (
-                                question.lengthComparison === "shorter" &&
-                                stationEnglishName.length < length
-                            ) {
-                                matchingCells.push(feature);
-                            } else if (
-                                question.lengthComparison === "longer" &&
-                                stationEnglishName.length > length
-                            ) {
-                                matchingCells.push(feature);
-                            } else if (
-                                (question.lengthComparison === "same" ||
-                                    !question.lengthComparison) &&
-                                stationEnglishName.length === length
-                            ) {
-                                matchingCells.push(feature);
-                            }
-                        }
-                    }
-                }
-
-                if (matchingCells.length > 0) {
-                    boundary = safeUnion(
-                        turf.featureCollection(matchingCells as any),
-                    );
-                }
-                break;
-            }
             case "museum-full":
             case "hospital-full":
             case "cinema-full":
@@ -295,6 +213,63 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
 
     const hiderPoint = turf.point([$hiderMode.longitude, $hiderMode.latitude]);
 
+    if (
+        question.type === "same-first-letter-station" ||
+        question.type === "same-length-station" ||
+        question.type === "same-train-line"
+    ) {
+        const places =
+            calgaryTransitData as unknown as FeatureCollection<Point>;
+
+        const seekerPoint = turf.point([question.lng, question.lat]);
+        const nearestSeekerStation = turf.nearestPoint(seekerPoint, places);
+        const nearestHiderStation = turf.nearestPoint(hiderPoint, places);
+
+        const seekerEnglishName =
+            (nearestSeekerStation.properties as any)["name:en"] ||
+            nearestSeekerStation.properties.name;
+
+        const hiderEnglishName =
+            (nearestHiderStation.properties as any)["name:en"] ||
+            nearestHiderStation.properties.name;
+
+        if (!seekerEnglishName || !hiderEnglishName) {
+            return question;
+        }
+
+        let isMatch = false;
+
+        if (question.type === "same-train-line") {
+            const seekerLines: string[] =
+                (nearestSeekerStation.properties as any).lines || [];
+            const hiderLines: string[] =
+                (nearestHiderStation.properties as any).lines || [];
+
+            isMatch = seekerLines.some((l) => hiderLines.includes(l));
+        } else if (question.type === "same-first-letter-station") {
+            isMatch =
+                seekerEnglishName[0].toUpperCase() ===
+                hiderEnglishName[0].toUpperCase();
+        } else if (question.type === "same-length-station") {
+            const seekerLength = seekerEnglishName.length;
+            const hiderLength = hiderEnglishName.length;
+
+            if (question.lengthComparison === "shorter") {
+                isMatch = hiderLength < seekerLength;
+            } else if (question.lengthComparison === "longer") {
+                isMatch = hiderLength > seekerLength;
+            } else {
+                isMatch = hiderLength === seekerLength;
+            }
+        }
+
+        if (!isMatch) {
+            question.same = !question.same;
+        }
+
+        return question;
+    }
+
     const feature = await determineMatchingBoundary(question);
 
     if (feature === null || feature === undefined || feature === false)
@@ -308,6 +283,14 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
 };
 
 export const matchingPlanningPolygon = async (question: MatchingQuestion) => {
+    if (
+        question.type === "same-first-letter-station" ||
+        question.type === "same-length-station" ||
+        question.type === "same-train-line"
+    ) {
+        return false;
+    }
+
     try {
         const boundary = await determineMatchingBoundary(question);
 
