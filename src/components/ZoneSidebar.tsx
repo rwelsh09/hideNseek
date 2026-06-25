@@ -114,6 +114,7 @@ export const ZoneSidebar = () => {
         removeHidingZones();
 
         const geoJsonLayer = L.geoJSON(geoJSONData, {
+            interactive: nonOverlappingStations,
             style: (feature: any) => {
                 let color = "blue";
                 const isSelected =
