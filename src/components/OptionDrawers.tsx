@@ -258,6 +258,12 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             >
                                 Start Tutorial
                             </Button>
+                            <a
+                                href={`${import.meta.env.BASE_URL}rules`}
+                                className="w-full sm:w-[280px]"
+                            >
+                                <Button className="w-full">Rules & Tips</Button>
+                            </a>
                         </div>
                         <DrawerHeader>
                             <DrawerTitle className="text-4xl font-semibold font-poppins">
