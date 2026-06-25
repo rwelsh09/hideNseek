@@ -1,5 +1,13 @@
 import * as turf from "@turf/turf";
-import { describe, expect, test } from "vitest";
+import { describe, expect, test, vi } from "vitest";
+
+vi.mock("@turf/turf", async (importOriginal) => {
+    const actual = await importOriginal() as any;
+    return {
+        ...actual,
+        union: vi.fn(actual.union)
+    };
+});
 
 import {
     geoSpatialVoronoi,
@@ -48,6 +56,36 @@ test("safeUnion handles multiple features", () => {
     expect(result.geometry.type).toBe("Polygon");
     // Union of the two adjacent 1x1 squares should be a 2x1 rectangle, checking bounds area
     expect(turf.area(result)).toBeCloseTo(turf.area(multiFeature), 0);
+});
+
+
+test("safeUnion throws 'No features' when turf.union returns falsy", () => {
+    const multiFeature = turf.featureCollection([
+        turf.polygon([
+            [
+                [0, 0],
+                [0, 1],
+                [1, 1],
+                [1, 0],
+                [0, 0],
+            ],
+        ]),
+        turf.polygon([
+            [
+                [1, 0],
+                [1, 1],
+                [2, 1],
+                [2, 0],
+                [1, 0],
+            ],
+        ]),
+    ]);
+
+    vi.mocked(turf.union).mockReturnValueOnce(null as any);
+
+    expect(() => safeUnion(multiFeature)).toThrowError("No features");
+
+    vi.mocked(turf.union).mockClear();
 });
 
 test("safeUnion handles empty feature collection by throwing error", () => {
