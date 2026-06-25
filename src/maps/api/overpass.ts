@@ -288,6 +288,12 @@ export const findPlacesInZone = async (
     timeoutDuration: number = 0,
 ) => {
     let query = "";
+
+    const finalAlternatives = [...alternatives];
+    if (filter === "[leisure=golf_course]") {
+        finalAlternatives.push("[golf=driving_range]");
+    }
+
     const $polyGeoJSON = polyGeoJSON.get();
     if ($polyGeoJSON) {
         query = `
@@ -300,8 +306,8 @@ ${searchType}${filter}(poly:"${turf
             .map((coord) => [coord[1], coord[0]].join(" "))
             .join(" ")}");
 ${
-    alternatives.length > 0
-        ? alternatives
+    finalAlternatives.length > 0
+        ? finalAlternatives
               .map(
                   (alternative) =>
                       `${searchType}${alternative}(poly:"${turf
@@ -334,8 +340,8 @@ out ${outType};
             .map((_, idx) => {
                 const regionVar = `area.region${idx}`;
                 const altQueries =
-                    alternatives.length > 0
-                        ? alternatives
+                    finalAlternatives.length > 0
+                        ? finalAlternatives
                               .map(
                                   (alt) => `${searchType}${alt}(${regionVar});`,
                               )
@@ -390,27 +396,82 @@ out ${outType};
     }
 
     if (data && data.elements) {
-        const byName: Record<string, any[]> = {};
         const result: any[] = [];
+        const golfElements: any[] = [];
 
         for (const e of data.elements) {
-            if (e.tags && e.tags.leisure === "golf_course") {
+            if (
+                e.tags &&
+                (e.tags.leisure === "golf_course" ||
+                    e.tags.golf === "driving_range")
+            ) {
                 if (e.tags.indoor === "yes") {
                     continue; // Skip indoor golf locations entirely
                 }
-                if (e.tags.name) {
-                    const name = e.tags.name;
-                    if (!byName[name]) {
-                        byName[name] = [];
-                    }
-                    byName[name].push(e);
-                    continue;
-                }
+                golfElements.push(e);
+            } else {
+                result.push(e);
             }
-            result.push(e);
         }
 
-        for (const items of Object.values(byName)) {
+        // Group golf elements
+        const golfGroups: any[][] = [];
+        for (const e of golfElements) {
+            let matched = false;
+            for (const group of golfGroups) {
+                // Check if they share an exact (non-empty) name
+                if (
+                    e.tags.name &&
+                    group[0].tags.name &&
+                    e.tags.name === group[0].tags.name
+                ) {
+                    group.push(e);
+                    matched = true;
+                    break;
+                }
+
+                // Check if one is a golf_course and another is a driving_range, and within 1.2km
+                const hasGolfCourse =
+                    group.some((g: any) => g.tags.leisure === "golf_course") ||
+                    e.tags.leisure === "golf_course";
+                const hasDrivingRange =
+                    group.some((g: any) => g.tags.golf === "driving_range") ||
+                    e.tags.golf === "driving_range";
+
+                if (hasGolfCourse && hasDrivingRange) {
+                    const eLat = e.center ? e.center.lat : e.lat;
+                    const eLon = e.center ? e.center.lon : e.lon;
+                    if (typeof eLat === "number" && typeof eLon === "number") {
+                        const ePt = turf.point([eLon, eLat]);
+                        const isClose = group.some((g: any) => {
+                            const gLat = g.center ? g.center.lat : g.lat;
+                            const gLon = g.center ? g.center.lon : g.lon;
+                            if (
+                                typeof gLat !== "number" ||
+                                typeof gLon !== "number"
+                            )
+                                return false;
+                            const gPt = turf.point([gLon, gLat]);
+                            return (
+                                turf.distance(ePt, gPt, {
+                                    units: "kilometers",
+                                }) <= 1.2
+                            );
+                        });
+                        if (isClose) {
+                            group.push(e);
+                            matched = true;
+                            break;
+                        }
+                    }
+                }
+            }
+            if (!matched) {
+                golfGroups.push([e]);
+            }
+        }
+
+        for (const items of golfGroups) {
             if (items.length === 1) {
                 result.push(items[0]);
             } else {
