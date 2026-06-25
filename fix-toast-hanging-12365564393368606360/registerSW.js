@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-toast-hanging-12365564393368606360/sw.js', { scope: '/HideAndSeek/fix-toast-hanging-12365564393368606360/' })})}
