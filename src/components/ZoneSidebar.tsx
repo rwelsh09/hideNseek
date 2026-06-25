@@ -1006,8 +1006,7 @@ function styleStations(
                 }
                 return { type: "FeatureCollection", features: [] };
             }
-        } catch (e) {
-            console.error("Error masking stations:", e);
+        } catch {
             return feature;
         }
     };
