@@ -1,12 +1,13 @@
+// Used for `How it works` on the Question card
 export const QUESTION_RULES: Record<string, string> = {
-    photo: "Seekers request a photograph from the Hider's current perspective. The photo must accurately represent their location without being intentionally misleading.",
-    radius: "Seekers select a transit station and a specific distance (e.g., 3km). The Hider must answer 'Yes' or 'No' to whether their Anchor Station falls within that radius.",
+    photo: "Seekers request a photograph from the Hider's current perspective. The photo must accurately represent their location without being intentionally misleading. The Hider may edit the photo to blackout words.",
+    radius: "Seekers select a specific distance (e.g., 5km) to project a Radar from their current location. The Hider must answer 'Yes' or 'No' to whether their location falls within that Radar.",
     thermometer:
-        "Seekers select two different transit stations. The Hider must reveal which of the two stations is geographically closer to their Anchor Station.",
+        "Seekers travel a specific distance (e.g., 2km) providing the Hider with their starting and end point. The Hider must reveal if the Seekers are now Warmer (closer) or Colder (further) to the Hider's position.",
     tentacles:
-        "Seekers select multiple transit stations. The webapp mathematically divides the entire game map into distinct regions (Voronoi polygons) originating from those stations. The Hider must reveal which 'tentacle' (region) contains their Anchor Station.",
+        "Seekers select a category. The webapp mathematically divides the entire map into distinct regions originating from the chosen category. The Hider must reveal which 'tentacle' (region) contains their location.",
     measuring:
-        "Seekers ask for the exact distance between a specific transit station and the Hider's Anchor Station.",
+        "Seekers ask for if the Hider is closer or further to a specific type of place (e.g. Hospitals) than they are.",
     matching:
-        "Seekers ask an attribute-based question about the Hider's Anchor Station (e.g., 'Does your station's name start with a vowel?', 'Is your station on the Red Line?').",
+        "Seekers ask if the Hider 's location shares a specific attrtibute with them (e.g., 'Does your station's name start with the same letter as ours?', 'If your nearest Library the same as ours?').",
 };
