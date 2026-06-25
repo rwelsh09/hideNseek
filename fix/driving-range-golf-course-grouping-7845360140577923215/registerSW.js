@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/driving-range-golf-course-grouping-7845360140577923215/sw.js', { scope: '/HideAndSeek/fix/driving-range-golf-course-grouping-7845360140577923215/' })})}
