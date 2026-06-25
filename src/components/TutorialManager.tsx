@@ -24,6 +24,16 @@ export const TutorialManager = () => {
                 },
                 steps: [
                     {
+                        element: '[data-tutorial-id="map-action-buttons"]',
+                        popover: {
+                            title: "Map Controls",
+                            description:
+                                "Use these buttons to re-center the map on your location, zoom to the hider's area, or view the entire map.",
+                            side: "left",
+                            align: "start",
+                        },
+                    },
+                    {
                         element: '[data-tutorial-id="left-sidebar-trigger"]',
                         popover: {
                             title: "Questions",
