@@ -296,6 +296,66 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
     const $mapGeoJSON = mapGeoJSON.get();
     if ($mapGeoJSON === null) return question;
 
+    const hiderPoint = turf.point([$hiderMode.longitude, $hiderMode.latitude]);
+
+    if (
+        question.type === "same-first-letter-station" ||
+        question.type === "same-length-station" ||
+        question.type === "same-train-line"
+    ) {
+        const places =
+            calgaryTransitData as unknown as FeatureCollection<Point>;
+
+        const seekerPoint = turf.point([question.lng, question.lat]);
+        const nearestSeekerStation = turf.nearestPoint(seekerPoint, places);
+
+        const seekerEnglishName =
+            (nearestSeekerStation.properties as any)["name:en"] ||
+            nearestSeekerStation.properties.name;
+
+        if (!seekerEnglishName) {
+            return question;
+        }
+
+        const nearestHiderStation = turf.nearestPoint(hiderPoint, places);
+        const hiderEnglishName =
+            (nearestHiderStation.properties as any)["name:en"] ||
+            nearestHiderStation.properties.name;
+
+        if (!hiderEnglishName) {
+            return question;
+        }
+
+        if (question.type === "same-train-line") {
+            const seekerLines: string[] =
+                (nearestSeekerStation.properties as any).lines || [];
+            const hiderLines: string[] =
+                (nearestHiderStation.properties as any).lines || [];
+            if (seekerLines.some((l) => hiderLines.includes(l))) {
+                question.same = true;
+            } else {
+                question.same = false;
+            }
+        } else if (question.type === "same-first-letter-station") {
+            const seekerLetter = seekerEnglishName[0].toUpperCase();
+            const hiderLetter = hiderEnglishName[0].toUpperCase();
+            question.same = seekerLetter === hiderLetter;
+        } else if (question.type === "same-length-station") {
+            const seekerLength = seekerEnglishName.length;
+            const hiderLength = hiderEnglishName.length;
+
+            if (question.lengthComparison === "shorter") {
+                question.same = hiderLength < seekerLength;
+            } else if (question.lengthComparison === "longer") {
+                question.same = hiderLength > seekerLength;
+            } else {
+                question.same = hiderLength === seekerLength;
+            }
+        }
+
+        return question;
+    }
+
     let feature = null;
 
     try {
@@ -312,8 +372,6 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
     }
 
     if (feature === null || feature === undefined) return question;
-
-    const hiderPoint = turf.point([$hiderMode.longitude, $hiderMode.latitude]);
 
     if (turf.booleanPointInPolygon(hiderPoint, feature)) {
         question.same = !question.same;

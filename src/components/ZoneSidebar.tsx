@@ -1006,8 +1006,7 @@ function styleStations(
                 }
                 return { type: "FeatureCollection", features: [] };
             }
-        } catch (e) {
-            console.error("Error masking stations:", e);
+        } catch {
             return feature;
         }
     };
@@ -1124,7 +1123,7 @@ async function selectionProcess(
                 });
 
                 if (distances.length === 0) {
-                    radius += 30;
+                    radius *= 2;
                     continue;
                 }
 

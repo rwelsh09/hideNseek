@@ -61,7 +61,13 @@ const { className } = Astro.props;
             rel="stylesheet"
         />
         
-        {pwaInfo && <Fragment set:html={pwaInfo.webManifest.linkTag} />}
+        {pwaInfo && (
+            <link
+                rel="manifest"
+                href={pwaInfo.webManifest.href}
+                crossorigin={pwaInfo.webManifest.useCredentials ? "use-credentials" : undefined}
+            />
+        )}
     </head>
     <body class:list={[className, "dark"]}>
         <slot />
