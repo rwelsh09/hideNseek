@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/remove-station-connections-overlay-2473191526736054480/sw.js', { scope: '/HideAndSeek/remove-station-connections-overlay-2473191526736054480/' })})}
