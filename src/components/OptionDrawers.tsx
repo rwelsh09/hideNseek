@@ -257,7 +257,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 Start Tutorial
                             </Button>
                             <a
-                                href={`${import.meta.env.BASE_URL}rules`}
+                                href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/rules`}
                                 className="w-full sm:w-[280px]"
                             >
                                 <Button className="w-full">Rules & Tips</Button>
