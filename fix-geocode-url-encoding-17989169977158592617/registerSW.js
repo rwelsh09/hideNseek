@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-geocode-url-encoding-17989169977158592617/sw.js', { scope: '/HideAndSeek/fix-geocode-url-encoding-17989169977158592617/' })})}
