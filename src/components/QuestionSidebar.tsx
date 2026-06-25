@@ -1,5 +1,10 @@
 import { useStore } from "@nanostores/react";
-import { ClipboardPasteIcon, Clock, SidebarCloseIcon } from "lucide-react";
+import {
+    ClipboardPasteIcon,
+    Clock,
+    SidebarCloseIcon,
+    Trash2,
+} from "lucide-react";
 import { toast } from "react-toastify";
 
 import {
@@ -220,6 +225,28 @@ export const QuestionSidebar = () => {
                             >
                                 <ClipboardPasteIcon className="w-4 h-4" />
                                 Paste Question
+                            </SidebarMenuButton>
+                        </SidebarMenuItem>
+                        <SidebarMenuItem>
+                            <SidebarMenuButton
+                                className="bg-red-900/50 hover:bg-red-800/80 p-2 rounded-md font-semibold font-poppins transition-colors duration-200 text-red-200 hover:text-white flex items-center justify-center gap-2 mt-2"
+                                onClick={() => {
+                                    if (
+                                        window.confirm(
+                                            "Are you sure you want to unlock and delete ALL questions? This will also reset your time penalty to 0.",
+                                        )
+                                    ) {
+                                        questions.set([]);
+                                        penaltyMinutes.set(0);
+                                        toast.success(
+                                            "Cleared all questions and time penalty.",
+                                        );
+                                    }
+                                }}
+                                disabled={$isLoading || $questions.length === 0}
+                            >
+                                <Trash2 className="w-4 h-4" />
+                                Unlock & Delete All
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                         {!$autoSave && (
