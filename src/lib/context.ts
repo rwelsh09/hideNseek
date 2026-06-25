@@ -327,8 +327,8 @@ export const hidingZone = computed(
 );
 
 export const drawingQuestionKey = atom<number>(-1);
-export const playtestModeEnabled = persistentAtom<boolean>(
-    "playtestModeEnabled",
+export const liveUpdateMapEnabled = persistentAtom<boolean>(
+    "liveUpdateMapEnabled",
     false,
     { encode: JSON.stringify, decode: JSON.parse },
 );

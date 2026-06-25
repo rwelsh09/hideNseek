@@ -89,7 +89,7 @@ export const determineGeoJSON = async (
     };
 };
 
-import { playtestModeEnabled } from "@/lib/context";
+import { liveUpdateMapEnabled } from "@/lib/context";
 
 export const findTentacleLocations = async (
     question: EncompassingTentacleQuestionSchema,
@@ -120,7 +120,7 @@ export const findTentacleLocations = async (
     const response = turf.points([]);
     const centerPoint = turf.point([question.lng, question.lat]);
 
-    const playtestMode = playtestModeEnabled.get();
+    const playtestMode = !liveUpdateMapEnabled.get();
     const radiusInMeters = playtestMode
         ? 50000
         : turf.convertLength(question.radius, question.unit, "meters");

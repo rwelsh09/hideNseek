@@ -26,9 +26,9 @@ import {
     hidingZone,
     includeDefaultStations,
     leafletMapContext,
+    liveUpdateMapEnabled,
     mapGeoJSON,
     mapGeoLocation,
-    playtestModeEnabled,
     polyGeoJSON,
     questions,
     showTutorial,
@@ -55,7 +55,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $hiderMode = useStore(hiderMode);
     const $autoSave = useStore(autoSave);
     const $hidingZone = useStore(hidingZone);
-    const $playtestMode = useStore(playtestModeEnabled);
+    const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
     const $displayTransitLines = useStore(displayTransitLines);
@@ -378,12 +378,12 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             </div>
                             <div className="flex flex-row items-center gap-2 text-center">
                                 <label className="text-xl sm:text-2xl font-semibold font-poppins">
-                                    Playtest Mode?
+                                    Live update map?
                                 </label>
                                 <Checkbox
-                                    checked={$playtestMode}
+                                    checked={$liveUpdateMapEnabled}
                                     onCheckedChange={() => {
-                                        if ($playtestMode === true) {
+                                        if ($liveUpdateMapEnabled === false) {
                                             const map = leafletMapContext.get();
 
                                             if (map) {
@@ -400,7 +400,9 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                             questions.set([...questions.get()]);
                                         }
 
-                                        playtestModeEnabled.set(!$playtestMode);
+                                        liveUpdateMapEnabled.set(
+                                            !$liveUpdateMapEnabled,
+                                        );
                                     }}
                                 />
                             </div>
