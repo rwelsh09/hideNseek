@@ -27,6 +27,11 @@ export const PlaytestPlaces = () => {
             $questions.forEach((q) => {
                 const data = q.data as any;
 
+                // Note: According to src/maps/schema.ts, `drag` is synonymous with `unlocked`.
+                // Therefore, data.drag === false means the question is currently locked.
+                const isLocked = data.drag === false;
+                if (isLocked) return;
+
                 if (data.locationType) {
                     if (data.locationType === "custom") {
                         // Custom places are literal arrays of features
