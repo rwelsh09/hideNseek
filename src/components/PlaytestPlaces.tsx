@@ -1,4 +1,5 @@
 import { useStore } from "@nanostores/react";
+import osmtogeojson from "osmtogeojson";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 
@@ -24,40 +25,40 @@ export const PlaytestPlaces = () => {
 
             // Collect required location types from questions
             $questions.forEach((q) => {
-                if (q.id === "tentacles" && q.data.locationType) {
-                    if (q.data.locationType === "custom") {
+                const data = q.data as any;
+
+                if (data.locationType) {
+                    if (data.locationType === "custom") {
                         // Custom places are literal arrays of features
-                        if (q.data.places && q.data.places.length > 0) {
-                            q.data.places.forEach((p: any) => {
+                        if (data.places && data.places.length > 0) {
+                            data.places.forEach((p: any) => {
                                 allPlaces.push({
                                     ...p,
-                                    customColor: q.data.color || "orange",
+                                    customColor: data.color || "orange",
                                 });
                             });
                         }
                     } else {
-                        typesSet.add(q.data.locationType);
+                        typesSet.add(data.locationType);
                     }
-                } else if (q.id === "measuring" || q.id === "matching") {
-                    const type = (q.data as any).type;
-                    if (type) {
-                        if (type === "mcdonalds")
-                            specificTypesSet.add('["brand:wikidata"="Q38076"]');
-                        else if (type === "seven11")
-                            specificTypesSet.add(
-                                '["brand:wikidata"="Q259340"]',
-                            );
-                        else if (type.endsWith("-full")) {
-                            typesSet.add(type.replace("-full", ""));
-                        } else if (
-                            type === "museum" ||
-                            type === "hospital" ||
-                            type === "cinema" ||
-                            type === "library" ||
-                            type === "golf_course"
-                        ) {
-                            typesSet.add(type);
-                        }
+                }
+
+                if (data.type) {
+                    const type = data.type;
+                    if (type === "mcdonalds")
+                        specificTypesSet.add('["brand:wikidata"="Q38076"]');
+                    else if (type === "seven11")
+                        specificTypesSet.add('["brand:wikidata"="Q259340"]');
+                    else if (type.endsWith("-full")) {
+                        typesSet.add(type.replace("-full", ""));
+                    } else if (
+                        type === "museum" ||
+                        type === "hospital" ||
+                        type === "cinema" ||
+                        type === "library" ||
+                        type === "golf_course"
+                    ) {
+                        typesSet.add(type);
                     }
                 }
             });
@@ -67,7 +68,7 @@ export const PlaytestPlaces = () => {
                 if ((LOCATION_FIRST_TAG as any)[type]) {
                     const tag = (LOCATION_FIRST_TAG as any)[type];
                     try {
-                        const features = await findPlacesInZone(
+                        const rawData = await findPlacesInZone(
                             `[${tag}=${type}]`,
                             undefined,
                             "nwr",
@@ -75,6 +76,9 @@ export const PlaytestPlaces = () => {
                             [],
                             0,
                         );
+
+                        const features = osmtogeojson(rawData);
+
                         if (features && features.features) {
                             features.features.forEach((f: any) => {
                                 allPlaces.push({
