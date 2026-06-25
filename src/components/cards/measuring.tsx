@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/sidebar-l";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
-    displayHidingZones,
     hiderMode,
     isLoading,
     penaltyMinutes,
@@ -21,12 +20,7 @@ import {
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import { calculateMeasuringDistance } from "@/maps/questions/measuring";
-import {
-    determineUnionizedStrings,
-    type MeasuringQuestion,
-    measuringQuestionSchema,
-    NO_GROUP,
-} from "@/maps/schema";
+import { type MeasuringQuestion, measuringQuestionSchema } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
@@ -46,7 +40,6 @@ export const MeasuringQuestionComponent = ({
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
     const $questions = useStore(questions);
-    const $displayHidingZones = useStore(displayHidingZones);
     const $isLoading = useStore(isLoading);
     const [distanceValue, setDistanceValue] = React.useState<number | null>(
         null,
@@ -72,34 +65,6 @@ export const MeasuringQuestionComponent = ({
             .map((q) => q.key)
             .indexOf(questionKey) + 1
     }`;
-
-    let questionSpecific = <></>;
-
-    switch (data.type) {
-        case "mcdonalds":
-        case "seven11":
-            questionSpecific = (
-                <span className="px-2 text-center text-orange-500">
-                    This question will eliminate hiding zones that don&apos;t
-                    fit the criteria. When you click on a zone, the parts of
-                    that zone that don&apos;t satisfy the criteria will be
-                    eliminated.
-                </span>
-            );
-            break;
-        case "hospital":
-        case "museum":
-        case "cinema":
-        case "library":
-        case "golf_course":
-            questionSpecific = (
-                <span className="px-2 text-center text-orange-500">
-                    This question will only influence the map when you click on
-                    a hiding zone in the hiding zone sidebar.
-                </span>
-            );
-            break;
-    }
 
     return (
         <QuestionCard
@@ -132,52 +97,15 @@ export const MeasuringQuestionComponent = ({
                 <Select
                     trigger="Measuring Type"
                     options={Object.fromEntries(
-                        measuringQuestionSchema.options
-                            .filter((x) => x.description === NO_GROUP)
-                            .flatMap((x) =>
-                                determineUnionizedStrings(x.shape.type),
-                            )
-                            .map((x) => [(x._def as any).value, x.description]),
-                    )}
-                    groups={measuringQuestionSchema.options
-                        .filter((x) => x.description !== NO_GROUP)
-                        .map((x) => [
+                        (
+                            ((measuringQuestionSchema.shape.type as any)._def
+                                .innerType ||
+                                measuringQuestionSchema.shape.type) as any
+                        ).options.map((x: any) => [
+                            (x._def as any).value,
                             x.description,
-                            Object.fromEntries(
-                                determineUnionizedStrings(x.shape.type).map(
-                                    (x) => [
-                                        (x._def as any).value,
-                                        x.description,
-                                    ],
-                                ),
-                            ),
-                        ])
-                        .reduce(
-                            (acc, [key, value]) => {
-                                const values = {
-                                    disabled: !$displayHidingZones,
-                                    options: value,
-                                };
-
-                                if (acc[key]) {
-                                    acc[key].options = {
-                                        ...acc[key].options,
-                                        ...value,
-                                    };
-                                } else {
-                                    acc[key] = values;
-                                }
-
-                                return acc;
-                            },
-                            {} as Record<
-                                string,
-                                {
-                                    disabled: boolean;
-                                    options: Record<string, string>;
-                                }
-                            >,
-                        )}
+                        ]),
+                    )}
                     value={data.type}
                     onValueChange={async (value) => {
                         data.type = value;
@@ -186,7 +114,7 @@ export const MeasuringQuestionComponent = ({
                     disabled={!data.drag || $isLoading}
                 />
             </SidebarMenuItem>
-            {questionSpecific}
+
             <LatitudeLongitude
                 latitude={data.lat}
                 longitude={data.lng}

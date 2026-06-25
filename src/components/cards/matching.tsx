@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/sidebar-l";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
-    displayHidingZones,
     hiderMode,
     isLoading,
     penaltyMinutes,
@@ -20,12 +19,7 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
-import {
-    determineUnionizedStrings,
-    type MatchingQuestion,
-    matchingQuestionSchema,
-    NO_GROUP,
-} from "@/maps/schema";
+import { type MatchingQuestion, matchingQuestionSchema } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
@@ -45,7 +39,6 @@ export const MatchingQuestionComponent = ({
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
     const $questions = useStore(questions);
-    const $displayHidingZones = useStore(displayHidingZones);
     const $isLoading = useStore(isLoading);
     const label = `Matching
     ${
@@ -54,25 +47,6 @@ export const MatchingQuestionComponent = ({
             .map((q) => q.key)
             .indexOf(questionKey) + 1
     }`;
-
-    let questionSpecific = <></>;
-
-    switch (data.type) {
-        case "same-train-line":
-            break;
-        case "hospital":
-        case "museum":
-        case "cinema":
-        case "library":
-        case "golf_course":
-            questionSpecific = (
-                <span className="px-2 text-center text-orange-500">
-                    This question will only influence the map when you click on
-                    a hiding zone in the hiding zone sidebar.
-                </span>
-            );
-            break;
-    }
 
     return (
         <QuestionCard
@@ -105,52 +79,15 @@ export const MatchingQuestionComponent = ({
                 <Select
                     trigger="Matching Type"
                     options={Object.fromEntries(
-                        matchingQuestionSchema.options
-                            .filter((x) => x.description === NO_GROUP)
-                            .flatMap((x) =>
-                                determineUnionizedStrings(x.shape.type),
-                            )
-                            .map((x) => [(x._def as any).value, x.description]),
-                    )}
-                    groups={matchingQuestionSchema.options
-                        .filter((x) => x.description !== NO_GROUP)
-                        .map((x) => [
+                        (
+                            ((matchingQuestionSchema.shape.type as any)._def
+                                .innerType ||
+                                matchingQuestionSchema.shape.type) as any
+                        ).options.map((x: any) => [
+                            (x._def as any).value,
                             x.description,
-                            Object.fromEntries(
-                                determineUnionizedStrings(x.shape.type).map(
-                                    (x) => [
-                                        (x._def as any).value,
-                                        x.description,
-                                    ],
-                                ),
-                            ),
-                        ])
-                        .reduce(
-                            (acc, [key, value]) => {
-                                const values = {
-                                    disabled: !$displayHidingZones,
-                                    options: value,
-                                };
-
-                                if (acc[key]) {
-                                    acc[key].options = {
-                                        ...acc[key].options,
-                                        ...value,
-                                    };
-                                } else {
-                                    acc[key] = values;
-                                }
-
-                                return acc;
-                            },
-                            {} as Record<
-                                string,
-                                {
-                                    disabled: boolean;
-                                    options: Record<string, string>;
-                                }
-                            >,
-                        )}
+                        ]),
+                    )}
                     value={data.type}
                     onValueChange={async (value) => {
                         if (value === "same-length-station") {
@@ -167,7 +104,6 @@ export const MatchingQuestionComponent = ({
                     disabled={!data.drag || $isLoading}
                 />
             </SidebarMenuItem>
-            {questionSpecific}
 
             <LatitudeLongitude
                 latitude={data.lat}
