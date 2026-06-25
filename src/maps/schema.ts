@@ -198,9 +198,6 @@ const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
             z.literal("cinema-full").describe("Cinema Question"),
             z.literal("library-full").describe("Library Question"),
             z.literal("golf_course-full").describe("Golf Course Question"),
-            z.literal("mcdonalds").describe("McDonald's Question"),
-            z.literal("seven11").describe("7-Eleven Question"),
-            z.literal("rail-measure").describe("Train Station Question"),
             z
                 .literal("same-neighbourhood")
                 .describe("Neighbourhood (Same As Me) Question"),
@@ -234,6 +231,9 @@ const ordinaryMeasuringQuestionSchema = baseMeasuringQuestionSchema.extend({
             z.literal("cinema-full").describe("Cinema Question"),
             z.literal("library-full").describe("Library Question"),
             z.literal("golf_course-full").describe("Golf Course Question"),
+            z.literal("mcdonalds").describe("McDonald's Question"),
+            z.literal("seven11").describe("7-Eleven Question"),
+            z.literal("rail-measure").describe("Train Station Question"),
         ])
         .default("museum-full"),
 });

@@ -82,16 +82,19 @@ export const determineMeasuringBoundary = async (
             if (!points || !points.features || points.features.length === 0)
                 return [turf.multiPolygon([])];
 
-            return points.features as any[];
+            return points.features as any;
         }
         case "rail-measure" as any: {
             const stations = trainStations.get();
             if (stations.length === 0) return [turf.multiPolygon([])];
-            return stations.map((x) => ({
-                type: "Feature",
-                properties: x.properties,
-                geometry: x.properties.geometry,
-            })) as any[];
+            const fc = turf.featureCollection(
+                stations.map((x) => ({
+                    type: "Feature",
+                    properties: x.properties,
+                    geometry: x.properties.geometry,
+                })) as any[],
+            );
+            return fc.features as any;
         }
     }
 };
