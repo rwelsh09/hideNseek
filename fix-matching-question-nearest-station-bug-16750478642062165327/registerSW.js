@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-matching-question-nearest-station-bug-16750478642062165327/sw.js', { scope: '/HideAndSeek/fix-matching-question-nearest-station-bug-16750478642062165327/' })})}
