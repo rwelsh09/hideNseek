@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feature/live-update-map-default-16737286310824199031/sw.js', { scope: '/HideAndSeek/feature/live-update-map-default-16737286310824199031/' })})}
