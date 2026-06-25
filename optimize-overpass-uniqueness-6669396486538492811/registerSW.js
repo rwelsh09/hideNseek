@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/optimize-overpass-uniqueness-6669396486538492811/sw.js', { scope: '/HideAndSeek/optimize-overpass-uniqueness-6669396486538492811/' })})}
