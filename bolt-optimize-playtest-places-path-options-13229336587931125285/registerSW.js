@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/bolt-optimize-playtest-places-path-options-13229336587931125285/sw.js', { scope: '/HideAndSeek/bolt-optimize-playtest-places-path-options-13229336587931125285/' })})}
