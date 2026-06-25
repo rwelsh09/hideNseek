@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/security/fix-xss-pwa-manifest-10606757448870614216/sw.js', { scope: '/HideAndSeek/security/fix-xss-pwa-manifest-10606757448870614216/' })})}
