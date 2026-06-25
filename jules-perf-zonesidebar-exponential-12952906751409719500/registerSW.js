@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/jules-perf-zonesidebar-exponential-12952906751409719500/sw.js', { scope: '/HideAndSeek/jules-perf-zonesidebar-exponential-12952906751409719500/' })})}
