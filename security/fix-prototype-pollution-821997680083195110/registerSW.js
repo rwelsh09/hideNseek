@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/security/fix-prototype-pollution-821997680083195110/sw.js', { scope: '/HideAndSeek/security/fix-prototype-pollution-821997680083195110/' })})}
