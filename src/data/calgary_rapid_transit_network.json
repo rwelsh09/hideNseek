@@ -585,7 +585,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "East Fairview Industrial",
+                "name": "IKEA",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Teal"],
                 "original_gtfs_name": "Deerfoot Meadows Station (WB) | Deerfoot Meadows Station (EB)"
@@ -598,7 +598,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Canada Post",
+                "name": "Fairview",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Teal"],
                 "original_gtfs_name": "Fairmount Drive Station (EB) | Fairmount Drive Station (WB)"
@@ -663,7 +663,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Saddletowne Circle",
+                "name": "Genesis Centre",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Orange"],
                 "original_gtfs_name": "Saddletowne Circle Station (SB) | Saddletowne Circle Station (NB)"
@@ -702,7 +702,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Real Equity Centre",
+                "name": "Capitol Hill",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Orange"],
                 "original_gtfs_name": "North Hill Station (WB)"
@@ -832,7 +832,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "University District",
+                "name": "Children's Hospital",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Orange"],
                 "original_gtfs_name": "Alberta Children's Hospital Station (NB) | Alberta Children's Hospital Station (SB)"
@@ -845,7 +845,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Sproutz & Uturn",
+                "name": "Timothy Dawson",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Teal"],
                 "original_gtfs_name": "26th Avenue SW Station (SB) | 26th Avenue SW Station (NB)"
@@ -871,7 +871,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Lincoln Park",
+                "name": "Glamorgan",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Teal"],
                 "original_gtfs_name": "Sarcee Road Station (WB) | Sarcee Road Station (EB)"
@@ -910,7 +910,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Chinook Park",
+                "name": "Haysboro",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Teal"],
                 "original_gtfs_name": "Elbow Drive Station (WB) | Elbow Drive Station (EB)"
@@ -923,7 +923,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Shepard Industrial",
+                "name": "Douglas Glen Terminal",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Teal"],
                 "original_gtfs_name": "Douglas Glen Terminal"
@@ -1040,7 +1040,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Impark Lot 236",
+                "name": "Harmony Park",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Green"],
                 "original_gtfs_name": "NB Centre ST S @ 4 AV S"
@@ -1053,7 +1053,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Bow Valley Square 3",
+                "name": "Bow Valley Square",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Green", "MAX Yellow"],
                 "original_gtfs_name": "WB 6 AV SW @ 2 ST SW | EB 5 AV SW @ 2 ST SW | EB 5 AV SW @ 1 ST SW"
@@ -1066,7 +1066,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Indigo Lot C420",
+                "name": "Dickens",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Yellow"],
                 "original_gtfs_name": "EB 9 AV SW @ 9 ST SW"
@@ -1157,7 +1157,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Hillhurst",
+                "name": "SAIT Bus",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Orange"],
                 "original_gtfs_name": "SAIT Station (EB) | SAIT Station (WB)"
@@ -1326,7 +1326,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Whitehorn",
+                "name": "Whitehorn Bus",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Orange"],
                 "original_gtfs_name": "Whitehorn Drive Station (SB) | Whitehorn Drive Station (NB)"
@@ -1456,7 +1456,7 @@
         {
             "type": "Feature",
             "properties": {
-                "name": "Colonel James F. Macleod Statue",
+                "name": "Confluence",
                 "transit_type": "MAX Station",
                 "lines": ["MAX Purple"],
                 "original_gtfs_name": "WB 9 AV SE @ The Confluence"
