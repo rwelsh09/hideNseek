@@ -28,7 +28,7 @@ export const TutorialManager = () => {
                         popover: {
                             title: "Map Controls",
                             description:
-                                "Use these buttons to re-center the map on your location, zoom to the hider's area, or view the entire map.",
+                                "Use these buttons to re-center the map on your location, zoom to the potential hiding areas, or view the entire map.",
                             side: "left",
                             align: "start",
                         },
