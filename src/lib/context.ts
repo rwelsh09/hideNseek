@@ -389,3 +389,40 @@ export const softQuestionsChecked = persistentAtom<string[]>(
         decode: JSON.parse,
     },
 );
+
+export const timerStartTimestamp = persistentAtom<number | null>(
+    "timerStartTimestamp",
+    null,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+export const timerElapsedSeconds = persistentAtom<number>(
+    "timerElapsedSeconds",
+    0,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+export const isTimerRunning = persistentAtom<boolean>("isTimerRunning", false, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
+
+export type LeaderboardEntry = {
+    id: string;
+    names: string;
+    totalSeconds: number;
+    penaltyMinutes: number;
+};
+
+export const leaderboard = persistentAtom<LeaderboardEntry[]>(
+    "leaderboard",
+    [],
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
