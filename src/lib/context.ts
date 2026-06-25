@@ -202,59 +202,6 @@ export const save = () => {
     }
 };
 
-/* Presets for custom questions (savable / sharable / editable) */
-export type CustomPreset = {
-    id: string;
-    name: string;
-    type: string;
-    data: any;
-    createdAt: string;
-};
-
-export const customPresets = persistentAtom<CustomPreset[]>(
-    "customPresets",
-    [],
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
-onSet(customPresets, ({ newValue }) => {
-    newValue.sort((a, b) => a.name.localeCompare(b.name));
-});
-
-export const saveCustomPreset = (
-    preset: Omit<CustomPreset, "id" | "createdAt">,
-) => {
-    const id =
-        typeof crypto !== "undefined" &&
-        typeof (crypto as any).randomUUID === "function"
-            ? (crypto as any).randomUUID()
-            : String(Date.now());
-    const p: CustomPreset = {
-        ...preset,
-        id,
-        createdAt: new Date().toISOString(),
-    };
-    customPresets.set([...customPresets.get(), p]);
-    return p;
-};
-
-export const updateCustomPreset = (
-    id: string,
-    updates: Partial<CustomPreset>,
-) => {
-    customPresets.set(
-        customPresets
-            .get()
-            .map((p) => (p.id === id ? { ...p, ...updates } : p)),
-    );
-};
-
-export const deleteCustomPreset = (id: string) => {
-    customPresets.set(customPresets.get().filter((p) => p.id !== id));
-};
-
 export const hidingZone = computed(
     [
         questions,
@@ -268,7 +215,6 @@ export const hidingZone = computed(
         useCustomStations,
         customStations,
         includeDefaultStations,
-        customPresets,
     ],
     (
         q,
@@ -282,7 +228,6 @@ export const hidingZone = computed(
         useCustom,
         $customStations,
         includeDefault,
-        presets,
     ) => {
         if (geo !== null) {
             return {
@@ -295,7 +240,6 @@ export const hidingZone = computed(
                 useCustomStations: useCustom,
                 customStations: $customStations,
                 includeDefaultStations: includeDefault,
-                presets: structuredClone(presets),
             };
         } else {
             const $loc = structuredClone(loc);
@@ -311,7 +255,6 @@ export const hidingZone = computed(
                 useCustomStations: useCustom,
                 customStations: $customStations,
                 includeDefaultStations: includeDefault,
-                presets: structuredClone(presets),
             };
         }
     },
