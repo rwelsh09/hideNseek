@@ -72,6 +72,13 @@ describe("radius", () => {
             expect(result).toBeDefined();
             expect(result?.type).toBe("Feature");
             expect(result?.geometry.type).toMatch(/Polygon/);
+
+            // Assert modified geometry is bounded by the original mapData and circle
+            const bbox = turf.bbox(result!);
+            expect(bbox[0]).toBeGreaterThanOrEqual(-114.2);
+            expect(bbox[1]).toBeGreaterThanOrEqual(50.9);
+            expect(bbox[2]).toBeLessThanOrEqual(-113.9);
+            expect(bbox[3]).toBeLessThanOrEqual(51.2);
         });
 
         it("should return difference geometry when within is false", async () => {
@@ -96,6 +103,12 @@ describe("radius", () => {
             expect(result).toBeDefined();
             expect(result?.type).toBe("Feature");
             expect(result?.geometry.type).toMatch(/Polygon/);
+
+            // The original area should be larger than the subtracted area
+            const originalArea = turf.area(mapData);
+            const newArea = turf.area(result!);
+            expect(newArea).toBeLessThan(originalArea);
+            expect(newArea).toBeGreaterThan(0);
         });
 
         it("should return undefined if mapData is null", async () => {
