@@ -347,28 +347,40 @@ const TentacleLocationSelector = ({
     }
 
     return (
-        <Select
-            trigger="Location"
-            options={{
-                false: "Not Within",
-                ...mapToObj(filteredFeatures, (feature: any) => [
-                    feature.properties.name,
-                    feature.properties.name,
-                ]),
-            }}
-            value={data.location ? data.location.properties.name : "false"}
-            onValueChange={(value) => {
-                if (value === "false") {
-                    data.location = false;
-                } else {
-                    data.location = filteredFeatures.find(
-                        (feature: any) => feature.properties.name === value,
-                    );
-                }
+        <div className="flex flex-col w-full">
+            <Select
+                trigger="Location"
+                options={{
+                    false: "Not Within",
+                    ...mapToObj(filteredFeatures, (feature: any) => [
+                        feature.properties.name,
+                        feature.properties.name,
+                    ]),
+                }}
+                value={data.location ? data.location.properties.name : "false"}
+                onValueChange={(value) => {
+                    if (value === "false") {
+                        data.location = false;
+                    } else {
+                        data.location = filteredFeatures.find(
+                            (feature: any) => feature.properties.name === value,
+                        );
+                    }
 
-                questionModified();
-            }}
-            disabled={!!$hiderMode || disabled}
-        />
+                    questionModified();
+                }}
+                disabled={!!$hiderMode || disabled}
+            />
+            {!!$hiderMode && (
+                <div className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md">
+                    Tell the Seekers:{" "}
+                    <span className="text-primary">
+                        {data.location
+                            ? data.location.properties.name
+                            : "Not Within"}
+                    </span>
+                </div>
+            )}
+        </div>
     );
 };
