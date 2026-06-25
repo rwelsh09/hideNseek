@@ -348,9 +348,7 @@ export const ZoneSidebar = () => {
                         ]);
                         const nearestTrainStation = turf.nearestPoint(
                             location,
-                            turf.featureCollection(
-                                circles.map((x) => x.properties),
-                            ) as any,
+                            turf.featureCollection(places) as any,
                         );
 
                         if (question.data.type === "same-train-line") {
