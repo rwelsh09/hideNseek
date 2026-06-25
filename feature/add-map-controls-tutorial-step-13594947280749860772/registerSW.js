@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feature/add-map-controls-tutorial-step-13594947280749860772/sw.js', { scope: '/HideAndSeek/feature/add-map-controls-tutorial-step-13594947280749860772/' })})}
