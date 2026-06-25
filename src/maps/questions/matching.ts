@@ -5,18 +5,13 @@ import osmtogeojson from "osmtogeojson";
 import { toast } from "react-toastify";
 
 import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
-import {
-    hiderMode,
-    mapGeoJSON,
-    mapGeoLocation,
-    polyGeoJSON,
-} from "@/lib/context";
+import { hiderMode, mapGeoLocation, polyGeoJSON } from "@/lib/context";
 import {
     findPlacesInZone,
     LOCATION_FIRST_TAG,
     prettifyLocation,
 } from "@/maps/api";
-import { holedMask, modifyMapData, safeUnion } from "@/maps/geo-utils";
+import { modifyMapData, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils";
 import type { APILocations, MatchingQuestion } from "@/maps/schema";
 
@@ -275,6 +270,14 @@ export const adjustPerMatching = async (
 ) => {
     if (mapData === null) return;
 
+    if (
+        question.type === "same-first-letter-station" ||
+        question.type === "same-length-station" ||
+        question.type === "same-train-line"
+    ) {
+        return mapData;
+    }
+
     const boundary = await determineMatchingBoundary(question);
 
     if (boundary === false) {
@@ -290,29 +293,14 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
         return question;
     }
 
-    const $mapGeoJSON = mapGeoJSON.get();
-    if ($mapGeoJSON === null) return question;
-
-    let feature = null;
-
-    try {
-        feature = holedMask((await adjustPerMatching(question, $mapGeoJSON))!);
-    } catch {
-        try {
-            feature = await adjustPerMatching(question, {
-                type: "FeatureCollection",
-                features: [holedMask($mapGeoJSON)],
-            });
-        } catch {
-            return question;
-        }
-    }
-
-    if (feature === null || feature === undefined) return question;
-
     const hiderPoint = turf.point([$hiderMode.longitude, $hiderMode.latitude]);
 
-    if (turf.booleanPointInPolygon(hiderPoint, feature)) {
+    const feature = await determineMatchingBoundary(question);
+
+    if (feature === null || feature === undefined || feature === false)
+        return question;
+
+    if (!turf.booleanPointInPolygon(hiderPoint, feature)) {
         question.same = !question.same;
     }
 
