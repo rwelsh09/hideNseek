@@ -340,7 +340,10 @@ export const Map = ({ className }: { className?: string }) => {
                 <TentaclePlaces />
                 <PlaytestPlaces />
                 <div className="leaflet-top leaflet-right">
-                    <div className="leaflet-control flex-col flex gap-2">
+                    <div
+                        className="leaflet-control flex-col flex gap-2"
+                        data-tutorial-id="map-action-buttons"
+                    >
                         <LeafletActionButtons />
                     </div>
                 </div>
