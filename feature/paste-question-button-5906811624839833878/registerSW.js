@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feature/paste-question-button-5906811624839833878/sw.js', { scope: '/HideAndSeek/feature/paste-question-button-5906811624839833878/' })})}
