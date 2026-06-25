@@ -58,7 +58,7 @@ export const TutorialManager = () => {
                         popover: {
                             title: "Settings & Options",
                             description:
-                                "Access map settings, save states, sharing options, and extra tools.",
+                                "Access map settings, transit lines overlays, save states, sharing options, and extra tools.",
                             side: "top",
                             align: "end",
                         },
