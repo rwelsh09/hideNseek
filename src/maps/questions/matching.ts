@@ -178,8 +178,7 @@ export const determineMatchingBoundary = _.memoize(
                     const seekerLines: string[] =
                         (nearest.properties as any).lines || [];
                     for (const feature of voronoi.features) {
-                        const station =
-                            places.features[feature.properties!.site.index];
+                        const station = feature.properties!.site;
                         const stationLines: string[] =
                             (station.properties as any).lines || [];
                         if (seekerLines.some((l) => stationLines.includes(l))) {
@@ -189,8 +188,7 @@ export const determineMatchingBoundary = _.memoize(
                 } else if (question.type === "same-first-letter-station") {
                     const letter = seekerEnglishName[0].toUpperCase();
                     for (const feature of voronoi.features) {
-                        const station =
-                            places.features[feature.properties!.site.index];
+                        const station = feature.properties!.site;
                         const stationEnglishName =
                             (station.properties as any)["name:en"] ||
                             (station.properties as any).name;
@@ -204,8 +202,7 @@ export const determineMatchingBoundary = _.memoize(
                 } else if (question.type === "same-length-station") {
                     const length = seekerEnglishName.length;
                     for (const feature of voronoi.features) {
-                        const station =
-                            places.features[feature.properties!.site.index];
+                        const station = feature.properties!.site;
                         const stationEnglishName =
                             (station.properties as any)["name:en"] ||
                             (station.properties as any).name;
