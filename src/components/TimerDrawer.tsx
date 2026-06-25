@@ -1,7 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { Clock, Play, Square, Timer, Trash2, Trophy } from "lucide-react";
 import * as React from "react";
-import { useMap } from "react-leaflet";
 import { toast } from "react-toastify";
 
 import {
@@ -21,7 +20,6 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
 export const TimerDrawer = () => {
-    const map = useMap();
     const $penaltyMinutes = useStore(penaltyMinutes);
     const $isTimerRunning = useStore(isTimerRunning);
     const $timerElapsedSeconds = useStore(timerElapsedSeconds);
@@ -83,7 +81,6 @@ export const TimerDrawer = () => {
             isTimerRunning.set(false);
             timerStartTimestamp.set(null);
             timerElapsedSeconds.set(0);
-            penaltyMinutes.set(0);
         }
     };
 
@@ -122,7 +119,6 @@ export const TimerDrawer = () => {
         isTimerRunning.set(false);
         timerStartTimestamp.set(null);
         timerElapsedSeconds.set(0);
-        penaltyMinutes.set(0);
         (e.target as HTMLFormElement).reset();
 
         toast.success("Added to leaderboard!");
@@ -150,12 +146,12 @@ export const TimerDrawer = () => {
             <DrawerTrigger asChild>
                 <button
                     type="button"
-                    className="leaflet-full-screen-specific-name bg-white hover:bg-[#f4f4f4] w-[30px] h-[30px] rounded-sm leading-[30px] text-[22px] flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer relative"
+                    className="bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer relative"
                     title="Timer & Leaderboard"
                     aria-label="Timer & Leaderboard"
                 >
                     <Clock className="w-5 h-5 text-black" />
-                    {($penaltyMinutes > 0 || $timerElapsedSeconds > 0) && (
+                    {$penaltyMinutes > 0 && (
                         <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1 rounded-full leading-tight">
                             +{$penaltyMinutes}
                         </div>
