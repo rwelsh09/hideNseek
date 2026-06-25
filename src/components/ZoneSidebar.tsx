@@ -1124,7 +1124,7 @@ async function selectionProcess(
                 });
 
                 if (distances.length === 0) {
-                    radius += 30;
+                    radius *= 2;
                     continue;
                 }
 
