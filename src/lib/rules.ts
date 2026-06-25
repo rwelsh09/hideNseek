@@ -1,12 +1,13 @@
+// Used in the `Rules` page & for `How it works` on the Question card
 export const QUESTION_RULES: Record<string, string> = {
-    photo: "The Hider send a photo, chosen by the Seeker.",
-    radius: "The Seeker places a circle on their location with a predefined radius. The Hider must answer whether their actual location is inside or outside of this circle.",
+    photo: "Seekers request a photograph from the Hider's current perspective. The photo must accurately represent their location without being intentionally misleading. The Hider may edit the photo to blackout words.",
+    radius: "Seekers select a specific distance (e.g., 5km) to project a Radar from their current location. The Hider must answer 'Yes' or 'No' to whether their location falls within that Radar.",
     thermometer:
-        "The Seeker places one marker where they currently are then travels to where they want the second marker (at least the number of kilometers on the chosen thermometer). The Hider must reveal which if the Seeker is now Warmer (closer) or Colder (further0 from them.",
+        "Seekers travel a specific distance (e.g., 2km) providing the Hider with their starting and end point. The Hider must reveal if the Seekers are now Warmer (closer) or Colder (further) to the Hider's position.",
     tentacles:
-        "Creates circles ('tentacles') around all locations of a specific category (e.g., all hospitals) within a set radius. The Hider reveals if they are inside the area and which place they are closest to.",
+        "Seekers select a category. The webapp mathematically divides the entire map into distinct regions originating from the chosen category. The Hider must reveal which 'tentacle' (region) contains their location.",
     measuring:
-        "The Hider compares their distance to a specific type of feature (e.g., nearest library) against the Seeker location, answering if they are 'Closer' or 'Further'.",
+        "Seekers ask for if the Hider is closer or further to a specific type of place (e.g. Hospitals) than they are.",
     matching:
-        "The Seeker and Hider compare a specific attribute of their locations (e.g., same neighbourhood, same train line). The Hider reveals if the attributes match ('Same') or not ('Different').",
+        "Seekers ask if the Hider 's location shares a specific attrtibute with them (e.g., 'Does your station's name start with the same letter as ours?', 'If your nearest Library the same as ours?').",
 };
