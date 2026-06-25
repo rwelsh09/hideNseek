@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-hiding-zone-pointer-events-14465003683029430099/sw.js', { scope: '/HideAndSeek/fix-hiding-zone-pointer-events-14465003683029430099/' })})}
