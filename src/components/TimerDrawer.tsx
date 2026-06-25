@@ -131,18 +131,7 @@ export const TimerDrawer = () => {
     };
 
     return (
-        <Drawer
-            direction="top"
-            onOpenChange={(open) => {
-                if (open) {
-                    map.dragging.disable();
-                    map.scrollWheelZoom.disable();
-                } else {
-                    map.dragging.enable();
-                    map.scrollWheelZoom.enable();
-                }
-            }}
-        >
+        <Drawer direction="top">
             <DrawerTrigger asChild>
                 <button
                     type="button"
