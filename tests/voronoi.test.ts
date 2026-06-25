@@ -53,4 +53,20 @@ describe("geoSpatialVoronoi edge cases", () => {
         // We just ensure it doesn't crash and returns the same number of features as input.
         expect(voronoi.features).toHaveLength(2);
     });
+
+    test("points near dateline should yield MultiPolygons and trigger massive polygon logic", () => {
+        const points = turf.featureCollection([
+            turf.point([179, 0]),
+            turf.point([-179, 0]),
+            turf.point([0, 89]),
+            turf.point([0, -89]),
+        ]);
+        const voronoi = geoSpatialVoronoi(points);
+        expect(voronoi.features.length).toBeGreaterThan(0);
+
+        const hasMultiPolygon = voronoi.features.some(
+            (f) => f.geometry.type === "MultiPolygon"
+        );
+        expect(hasMultiPolygon).toBe(true);
+    });
 });

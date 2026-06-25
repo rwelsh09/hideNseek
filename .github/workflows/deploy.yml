@@ -72,7 +72,7 @@ jobs:
                               # Check if directory exists for this active branch
                               if [ -d "gh-pages-dir/$branch" ]; then
                                   # Also ignore if branch name starts with _ or ~
-                                  if [[ ! "$branch" == _* ]] && [[ ! "$branch" == ~* ]]; then
+                                  if [[ ! "$branch" == _* && ! "$branch" == ~* ]]; then
                                       echo "<li><a href='./$branch/'>$branch</a></li>" >> ./root-dist/branches.html
                                   fi
                               fi
