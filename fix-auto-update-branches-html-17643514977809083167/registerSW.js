@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-auto-update-branches-html-17643514977809083167/sw.js', { scope: '/HideAndSeek/fix-auto-update-branches-html-17643514977809083167/' })})}
