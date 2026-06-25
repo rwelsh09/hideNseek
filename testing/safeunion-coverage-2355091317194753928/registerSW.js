@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/testing/safeunion-coverage-2355091317194753928/sw.js', { scope: '/HideAndSeek/testing/safeunion-coverage-2355091317194753928/' })})}
