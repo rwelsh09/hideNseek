@@ -18,6 +18,8 @@ export const prettifyLocation = (
         switch (location) {
             case "library":
                 return "Libraries";
+            case "pub":
+                return "Pubs / Bars";
             default:
                 return prettifyLocation(location) + "s";
         }
@@ -38,6 +40,10 @@ export const prettifyLocation = (
             return "McDonald's";
         case "seven11":
             return "7-Eleven";
+        case "timhortons":
+            return "Tim Hortons";
+        case "pub":
+            return "Pub / Bar";
     }
 };
 

@@ -31,6 +31,8 @@ export const LOCATION_FIRST_TAG: {
     golf_course: "leisure",
     mcdonalds: "amenity", // Not used for querying but satisfies APILocations mapping
     seven11: "amenity", // Not used for querying but satisfies APILocations mapping
+    timhortons: "amenity", // Not used for querying but satisfies APILocations mapping
+    pub: "amenity", // Not used for querying but satisfies APILocations mapping
 };
 
 export const BLANK_GEOJSON = {

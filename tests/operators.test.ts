@@ -2,10 +2,10 @@ import * as turf from "@turf/turf";
 import { describe, expect, test, vi } from "vitest";
 
 vi.mock("@turf/turf", async (importOriginal) => {
-    const actual = await importOriginal() as any;
+    const actual = (await importOriginal()) as any;
     return {
         ...actual,
-        union: vi.fn(actual.union)
+        union: vi.fn(actual.union),
     };
 });
 
@@ -57,7 +57,6 @@ test("safeUnion handles multiple features", () => {
     // Union of the two adjacent 1x1 squares should be a 2x1 rectangle, checking bounds area
     expect(turf.area(result)).toBeCloseTo(turf.area(multiFeature), 0);
 });
-
 
 test("safeUnion throws 'No features' when turf.union returns falsy", () => {
     const multiFeature = turf.featureCollection([
