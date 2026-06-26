@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-iife-cache-playtest-places-17247957439097924624/sw.js', { scope: '/HideAndSeek/fix-iife-cache-playtest-places-17247957439097924624/' })})}
