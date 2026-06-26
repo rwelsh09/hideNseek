@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/perf/overpass-cache-concurrency-4523930829182381947/sw.js', { scope: '/HideAndSeek/perf/overpass-cache-concurrency-4523930829182381947/' })})}
