@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 import {
@@ -20,10 +20,12 @@ import {
     displayTransitLines,
     followMe,
     headStartMinutes,
+    hasSeenRules,
     hiderMode,
     hidingRadius,
     hidingZone,
     includeDefaultStations,
+    isOptionsOpenStore,
     leafletMapContext,
     liveUpdateMapEnabled,
     mapGeoJSON,
@@ -58,7 +60,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
     const $displayTransitLines = useStore(displayTransitLines);
-    const [isOptionsOpen, setOptionsOpen] = useState(false);
+    const $isOptionsOpenStore = useStore(isOptionsOpenStore);
 
     useEffect(() => {
         const params = new URL(window.location.toString()).searchParams;
@@ -211,16 +213,19 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
             >
                 Share
             </Button>
-            <Drawer open={isOptionsOpen} onOpenChange={setOptionsOpen}>
+            <Drawer
+                open={$isOptionsOpenStore}
+                onOpenChange={isOptionsOpenStore.set}
+            >
                 <DrawerTrigger className="w-24" asChild>
                     <Button className="w-24 shadow-md">Options</Button>
                 </DrawerTrigger>
-                <DrawerContent>
+                <DrawerContent onPointerDown={(e) => e.stopPropagation()}>
                     <div className="flex flex-col items-center gap-4 mb-4">
                         <div className="w-full max-w-[280px] sm:max-w-none flex flex-col sm:flex-row gap-4 justify-center mb-2 mt-4">
                             <Button
                                 onClick={() => {
-                                    setOptionsOpen(false);
+                                    isOptionsOpenStore.set(false);
                                     setTimeout(() => {
                                         showTutorial.set(true);
                                     }, 300);
@@ -232,6 +237,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             <a
                                 href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/rules`}
                                 className="w-full sm:w-[280px]"
+                                onClick={() => hasSeenRules.set(true)}
+                                data-tutorial-id="tutorial-rules-btn"
                             >
                                 <Button className="w-full">Rules & Tips</Button>
                             </a>

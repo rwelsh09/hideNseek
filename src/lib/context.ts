@@ -278,6 +278,8 @@ export const liveUpdateMapEnabled = persistentAtom<boolean>(
 
 export const isLoading = atom<boolean>(false);
 
+export const isOptionsOpenStore = atom<boolean>(false);
+
 export const baseTileLayer = persistentAtom<
     "voyager" | "light" | "dark" | "transport" | "neighbourhood" | "osmcarto"
 >("baseTileLayer", "voyager");
@@ -295,6 +297,11 @@ export const followMe = persistentAtom<boolean>("followMe", true, {
 });
 
 export const showTutorial = persistentAtom<boolean>("showTutorials", true, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
+
+export const hasSeenRules = persistentAtom<boolean>("hasSeenRules", false, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
