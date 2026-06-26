@@ -15,7 +15,8 @@ vi.mock("@/lib/context", () => ({
 }));
 
 vi.mock("@/maps/geo-utils/voronoi", async (importOriginal) => {
-    const actual = await importOriginal<typeof import("@/maps/geo-utils/voronoi")>();
+    const actual =
+        await importOriginal<typeof import("@/maps/geo-utils/voronoi")>();
     return {
         ...actual,
         geoSpatialVoronoi: vi.fn(actual.geoSpatialVoronoi),
@@ -51,7 +52,9 @@ describe("thermometer", () => {
         test("should return null or throw if mapData is empty FeatureCollection", () => {
             // safeUnion throws if features are empty, let's test that adjustPerThermometer handles or bubbles it
             const emptyMapData = turf.featureCollection([]);
-            expect(() => adjustPerThermometer(questionTemplate, emptyMapData)).toThrow();
+            expect(() =>
+                adjustPerThermometer(questionTemplate, emptyMapData),
+            ).toThrow();
         });
 
         test("should intersect mapData with warmer voronoi polygon", () => {

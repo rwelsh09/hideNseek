@@ -98,12 +98,18 @@ export const findTentacleLocations = async (
     let data;
     if (
         question.locationType === "mcdonalds" ||
-        question.locationType === "seven11"
+        question.locationType === "seven11" ||
+        question.locationType === "timhortons" ||
+        question.locationType === "pub"
     ) {
         data = await findPlacesInZone(
             question.locationType === "mcdonalds"
                 ? QuestionSpecificLocation.McDonalds
-                : QuestionSpecificLocation.Seven11,
+                : question.locationType === "seven11"
+                  ? QuestionSpecificLocation.Seven11
+                  : question.locationType === "timhortons"
+                    ? QuestionSpecificLocation.TimHortons
+                    : QuestionSpecificLocation.Pub,
             text,
             "nwr",
             "center",
@@ -134,7 +140,11 @@ export const findTentacleLocations = async (
                 ? "McDonald's"
                 : question.locationType === "seven11"
                   ? "7-Eleven"
-                  : null;
+                  : question.locationType === "timhortons"
+                    ? "Tim Hortons"
+                    : question.locationType === "pub"
+                      ? "Pub / Bar"
+                      : null;
 
         if (
             !element.tags["name"] &&
@@ -444,7 +454,11 @@ export const findPlacesSpecificInZone = async (
             `Finding ${
                 location === '["brand:wikidata"="Q38076"]'
                     ? "McDonald's"
-                    : "7-Elevens"
+                    : location === '["brand:wikidata"="Q259340"]'
+                      ? "7-Elevens"
+                      : location === '["brand:wikidata"="Q175106"]'
+                        ? "Tim Hortons"
+                        : "Pubs/Bars"
             }...`,
         )
     ).elements;

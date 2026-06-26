@@ -1,9 +1,11 @@
 import * as turf from "@turf/turf";
 import {
+    Beer,
     Building2,
     Camera,
     Car,
     Church,
+    Coffee,
     Film,
     Flag,
     Hospital,
@@ -527,6 +529,25 @@ export function AddQuestionDialog() {
                                     className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
                                     <Palette className="w-5 h-5 sm:w-6 sm:h-6" />
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        handleQuestionSelect(
+                                            "tentacles",
+                                            "timhortons",
+                                        )
+                                    }
+                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                >
+                                    <Coffee className="w-5 h-5 sm:w-6 sm:h-6" />
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        handleQuestionSelect("tentacles", "pub")
+                                    }
+                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                >
+                                    <Beer className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
                                 <button
                                     onClick={() =>
