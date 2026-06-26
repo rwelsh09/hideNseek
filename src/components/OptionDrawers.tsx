@@ -214,7 +214,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                 <DrawerTrigger className="w-24" asChild>
                     <Button className="w-24 shadow-md">Options</Button>
                 </DrawerTrigger>
-                <DrawerContent>
+                <DrawerContent onPointerDown={(e) => e.stopPropagation()}>
                     <div className="flex flex-col items-center gap-4 mb-4">
                         <div className="w-full max-w-[280px] sm:max-w-none flex flex-col sm:flex-row gap-4 justify-center mb-2 mt-4">
                             <Button
