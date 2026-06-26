@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/chore/remove-image-metadata-9538211000183058975/sw.js', { scope: '/HideAndSeek/chore/remove-image-metadata-9538211000183058975/' })})}
