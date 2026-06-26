@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feat/add-donation-options-7396027360024538665/sw.js', { scope: '/HideAndSeek/feat/add-donation-options-7396027360024538665/' })})}
