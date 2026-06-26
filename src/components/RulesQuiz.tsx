@@ -61,14 +61,9 @@ const QUIZ_QUESTIONS = [
     },
     {
         question:
-            "According to the map, what are the names of the two primary CTrain lines?",
-        options: [
-            "Red Line & Blue Line.",
-            "Green Line & Yellow Line.",
-            "North Line & South Line.",
-            "Line 1 & Line 2.",
-        ],
-        correct: 0,
+            "According to the map, what color is the MAX Teal transit line?",
+        options: ["Red.", "Blue.", "Teal.", "Green."],
+        correct: 2,
     },
     {
         question: "What happens when Seekers ask a question?",
