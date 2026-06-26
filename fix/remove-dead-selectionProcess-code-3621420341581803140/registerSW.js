@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/remove-dead-selectionProcess-code-3621420341581803140/sw.js', { scope: '/HideAndSeek/fix/remove-dead-selectionProcess-code-3621420341581803140/' })})}
