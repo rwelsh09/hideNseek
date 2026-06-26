@@ -1,6 +1,31 @@
-import React, { useState } from "react";
+import { persistentAtom } from "@nanostores/persistent";
+import { useStore } from "@nanostores/react";
+import React, { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+
+const quizCurrentQuestionIndex = persistentAtom<number>(
+    "quizCurrentQuestionIndex",
+    0,
+    { encode: JSON.stringify, decode: JSON.parse },
+);
+const quizScore = persistentAtom<number>("quizScore", 0, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
+const quizShowResults = persistentAtom<boolean>("quizShowResults", false, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
+const quizSelectedOption = persistentAtom<number | null>(
+    "quizSelectedOption",
+    null,
+    { encode: JSON.stringify, decode: JSON.parse },
+);
+const quizIsAnswered = persistentAtom<boolean>("quizIsAnswered", false, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
 
 const QUIZ_QUESTIONS = [
     {
@@ -35,15 +60,14 @@ const QUIZ_QUESTIONS = [
         correct: 2,
     },
     {
-        question:
-            "According to the map, which transit lines go through Westbrook station?",
+        question: "Where can you see the Hider's exact head start time?",
         options: [
-            "Blue Line and Red Line.",
-            "Red Line and MAX Teal.",
-            "Blue Line and MAX Teal.",
-            "Red Line only.",
+            "It is not on the map.",
+            "In the settings panel.",
+            "It's printed on the map.",
+            "In the Timer sidebar, by expanding the left drawer.",
         ],
-        correct: 2,
+        correct: 3,
     },
     {
         question: "What happens when Seekers ask a question?",
@@ -68,40 +92,48 @@ const QUIZ_QUESTIONS = [
 ];
 
 export const RulesQuiz = () => {
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-    const [score, setScore] = useState(0);
-    const [showResults, setShowResults] = useState(false);
-    const [selectedOption, setSelectedOption] = useState<number | null>(null);
-    const [isAnswered, setIsAnswered] = useState(false);
+    const currentQuestionIndex = useStore(quizCurrentQuestionIndex);
+    const score = useStore(quizScore);
+    const showResults = useStore(quizShowResults);
+    const selectedOption = useStore(quizSelectedOption);
+    const isAnswered = useStore(quizIsAnswered);
+
+    // Prevent hydration mismatch between server-rendered Astro state and client nanostore state
+    const [isMounted, setIsMounted] = useState(false);
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
 
     const handleOptionClick = (index: number) => {
         if (isAnswered) return;
 
-        setSelectedOption(index);
-        setIsAnswered(true);
+        quizSelectedOption.set(index);
+        quizIsAnswered.set(true);
 
         if (index === QUIZ_QUESTIONS[currentQuestionIndex].correct) {
-            setScore(score + 1);
+            quizScore.set(score + 1);
         }
     };
 
     const handleNextQuestion = () => {
         if (currentQuestionIndex + 1 < QUIZ_QUESTIONS.length) {
-            setCurrentQuestionIndex(currentQuestionIndex + 1);
-            setSelectedOption(null);
-            setIsAnswered(false);
+            quizCurrentQuestionIndex.set(currentQuestionIndex + 1);
+            quizSelectedOption.set(null);
+            quizIsAnswered.set(false);
         } else {
-            setShowResults(true);
+            quizShowResults.set(true);
         }
     };
 
     const resetQuiz = () => {
-        setCurrentQuestionIndex(0);
-        setScore(0);
-        setShowResults(false);
-        setSelectedOption(null);
-        setIsAnswered(false);
+        quizCurrentQuestionIndex.set(0);
+        quizScore.set(0);
+        quizShowResults.set(false);
+        quizSelectedOption.set(null);
+        quizIsAnswered.set(false);
     };
+
+    if (!isMounted) return null;
 
     if (showResults) {
         return (
