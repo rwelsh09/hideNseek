@@ -129,8 +129,10 @@ export const TimerDrawer = () => {
                     I hope you enjoyed your game, please consider supporting the
                     app with a donation in the{" "}
                     <button
-                        className="underline hover:text-blue-500 transition-colors"
-                        onClick={() => {
+                        className="underline hover:text-blue-500 transition-colors pointer-events-auto relative z-50"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
                             toast.dismiss();
                             isOptionsOpenStore.set(true);
                         }}
