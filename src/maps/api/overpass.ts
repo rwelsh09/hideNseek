@@ -132,6 +132,7 @@ export const findTentacleLocations = async (
         : turf.convertLength(question.radius, question.unit, "meters");
 
     const seenNames = new Set<string>();
+    const seenCoords = new Set<string>();
 
     elements.forEach((element: any) => {
         if (!element.tags) return;
@@ -154,41 +155,30 @@ export const findTentacleLocations = async (
             return;
         }
 
-        if (element.lat && element.lon) {
-            const pt = turf.point([element.lon, element.lat]);
-            const distance = turf.distance(centerPoint, pt, {
-                units: "meters",
-            });
-            if (distance <= radiusInMeters) {
-                const name =
-                    element.tags["name:en"] ??
-                    element.tags["name"] ??
-                    fallbackName;
-                const isChain = fallbackName !== null;
-                if (!isChain && seenNames.has(name)) return;
+        const hasCenter = element.center && element.center.lon && element.center.lat;
+        const hasLatLon = element.lat && element.lon;
 
-                if (!isChain) {
-                    seenNames.add(name);
-                }
-
-                // Add a unique identifier for chain restaurants so they can be distinguished visually if needed,
-                // or at least not be identical in properties if standard logic expects it.
-                // However, the find check above is the main culprit.
-                response.features.push(
-                    turf.point([element.lon, element.lat], {
-                        name: isChain ? `${name} (${element.id})` : name,
-                        id: element.id,
-                    }),
-                );
-            }
-        }
-        if (!element.center || !element.center.lon || !element.center.lat)
+        let ptLon: number, ptLat: number;
+        if (hasCenter) {
+            ptLon = element.center.lon;
+            ptLat = element.center.lat;
+        } else if (hasLatLon) {
+            ptLon = element.lon;
+            ptLat = element.lat;
+        } else {
             return;
-        const centerPt = turf.point([element.center.lon, element.center.lat]);
-        const centerDistance = turf.distance(centerPoint, centerPt, {
+        }
+
+        const pt = turf.point([ptLon, ptLat]);
+        const distance = turf.distance(centerPoint, pt, {
             units: "meters",
         });
-        if (centerDistance <= radiusInMeters) {
+
+        const coordKey = `${ptLon.toFixed(4)},${ptLat.toFixed(4)}`;
+        if (seenCoords.has(coordKey)) return;
+
+        if (distance <= radiusInMeters) {
+            seenCoords.add(coordKey);
             const name =
                 element.tags["name:en"] ?? element.tags["name"] ?? fallbackName;
             const isChain = fallbackName !== null;
@@ -198,8 +188,11 @@ export const findTentacleLocations = async (
                 seenNames.add(name);
             }
 
+            // Add a unique identifier for chain restaurants so they can be distinguished visually if needed,
+            // or at least not be identical in properties if standard logic expects it.
+            // However, the find check above is the main culprit.
             response.features.push(
-                turf.point([element.center.lon, element.center.lat], {
+                turf.point([ptLon, ptLat], {
                     name: isChain ? `${name} (${element.id})` : name,
                     id: element.id,
                 }),
