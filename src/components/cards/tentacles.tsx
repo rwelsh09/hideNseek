@@ -212,6 +212,7 @@ const TentacleLocationSelector = ({
     useEffect(() => {
         let isMounted = true;
         setLoading(true);
+        console.log("Fetching", data);
         findTentacleLocations(data)
             .then((res) => {
                 if (isMounted) {
