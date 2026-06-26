@@ -112,7 +112,17 @@ export const determineMatchingBoundary = _.memoize(
                             feature.geometry.type !== "MultiPolygon"
                         )
                             continue;
-                        const d = turf.distance(point, turf.center(feature));
+
+                        let center = feature.properties?.center;
+                        if (!center) {
+                            center = turf.center(feature);
+                            if (!feature.properties) {
+                                feature.properties = {};
+                            }
+                            feature.properties.center = center;
+                        }
+
+                        const d = turf.distance(point, center);
                         if (d < minDistance) {
                             minDistance = d;
                             nearest = feature;
