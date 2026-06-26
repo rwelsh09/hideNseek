@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/remove-custom-locations-1386172159979962411/sw.js', { scope: '/HideAndSeek/remove-custom-locations-1386172159979962411/' })})}
