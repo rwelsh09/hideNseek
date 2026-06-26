@@ -2,6 +2,7 @@ import * as turf from "@turf/turf";
 import type { FeatureCollection, MultiPolygon } from "geojson";
 import _ from "lodash";
 import osmtogeojson from "osmtogeojson";
+import pLimit from "p-limit";
 import { toast } from "react-toastify";
 
 import {
@@ -573,24 +574,27 @@ export const cacheAllPlaces = async () => {
 
     const toastId = toast.loading(`Caching places... (0/${total})`);
 
-    // Run sequentially to avoid 504 Gateway Timeouts from Overpass
-    for (const task of tasks) {
-        try {
-            await task();
-        } catch (e) {
-            console.error("Cache task failed", e);
-            failed++;
-        } finally {
-            completed++;
-            const progress = completed / total;
-            toast.update(toastId, {
-                render: `Caching places... (${completed}/${total})`,
-                progress: progress,
-            });
-            // Add a small delay between requests to be nice to Overpass
-            await new Promise((resolve) => setTimeout(resolve, 500));
-        }
-    }
+    // Run concurrently with a bound to avoid 504 Gateway Timeouts from Overpass
+    const limit = pLimit(3);
+    const limitedTasks = tasks.map((task) =>
+        limit(async () => {
+            try {
+                await task();
+            } catch (e) {
+                console.error("Cache task failed", e);
+                failed++;
+            } finally {
+                completed++;
+                const progress = completed / total;
+                toast.update(toastId, {
+                    render: `Caching places... (${completed}/${total})`,
+                    progress: progress,
+                });
+            }
+        }),
+    );
+
+    await Promise.all(limitedTasks);
 
     if (failed > 0) {
         toast.update(toastId, {
