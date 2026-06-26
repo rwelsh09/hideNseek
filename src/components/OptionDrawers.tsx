@@ -1,7 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
-
 import {
     Drawer,
     DrawerContent,
@@ -19,8 +18,8 @@ import {
     displayHidingZonesOptions,
     displayTransitLines,
     followMe,
-    headStartMinutes,
     hasSeenRules,
+    headStartMinutes,
     hiderMode,
     hidingRadius,
     hidingZone,

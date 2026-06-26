@@ -1,5 +1,6 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
+import type { Feature, Point } from "geojson";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 import { Popup } from "react-leaflet";
@@ -10,7 +11,12 @@ import {
     questionModified,
     questions,
 } from "@/lib/context";
+<<<<<<< HEAD:src/components/TentaclePlaces.tsx
+import { findTentacleLocations } from "@/maps/api";
+import type { Question } from "@/maps/schema";
+=======
 import { findClosestLocations } from "@/maps/api";
+>>>>>>> 98f43a9 (Rename matching to match, measuring to measure, photo to photos, and tentacles to closest):src/components/ClosestPlaces.tsx
 
 import { Button } from "./ui/button";
 
@@ -30,8 +36,17 @@ export const ClosestPlaces = () => {
     );
 };
 
+<<<<<<< HEAD:src/components/TentaclePlaces.tsx
+const TentaclePlacesForQuestion = ({
+    question,
+}: {
+    question: Extract<Question, { id: "tentacles" }>;
+}) => {
+    const [places, setPlaces] = useState<Feature<Point, any>[]>([]);
+=======
 const ClosestPlacesForQuestion = ({ question }: { question: any }) => {
     const [places, setPlaces] = useState<any[]>([]);
+>>>>>>> 98f43a9 (Rename matching to match, measuring to measure, photo to photos, and tentacles to closest):src/components/ClosestPlaces.tsx
     const $hiderMode = useStore(hiderMode);
 
     useEffect(() => {
@@ -124,10 +139,10 @@ const TentaclePlaceMarker = ({
     isSelected,
     question,
 }: {
-    f: any;
+    f: Feature<Point, any>;
     coords: number[];
     isSelected: boolean | "" | 0 | null | undefined;
-    question: any;
+    question: Extract<Question, { id: "tentacles" }>;
 }) => {
     // Performance Optimization: Memoize eventHandlers so the object reference remains stable.
     // react-leaflet checks object equality for eventHandlers, and re-binds DOM events

@@ -2,7 +2,6 @@ import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
 import type { Feature, FeatureCollection } from "geojson";
 import * as L from "leaflet";
-import _ from "lodash";
 import { AlertTriangle, SidebarCloseIcon } from "lucide-react";
 import osmtogeojson from "osmtogeojson";
 import { useEffect, useRef, useState } from "react";
@@ -38,11 +37,13 @@ import {
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import {
-    BLANK_GEOJSON,
     findPlacesInZone,
     findPlacesSpecificInZone,
+<<<<<<< HEAD
+=======
     findClosestLocations,
     nearestToQuestion,
+>>>>>>> 98f43a9 (Rename matching to match, measuring to measure, photo to photos, and tentacles to closest)
     normalizeToStationFeatures,
     parseCustomStationsFromText,
     QuestionSpecificLocation,
@@ -53,7 +54,6 @@ import {
     extractStationLabel,
     extractStationName,
     geoSpatialVoronoi,
-    holedMask,
     lngLatToText,
     safeUnion,
 } from "@/maps/geo-utils";
@@ -1083,6 +1083,8 @@ function styleStations(
             return applyMask(turf.featureCollection(circles));
     }
 }
+<<<<<<< HEAD
+=======
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 async function selectionProcess(
@@ -1364,3 +1366,4 @@ async function selectionProcess(
         }, 5000);
     }
 }
+>>>>>>> 98f43a9 (Rename matching to match, measuring to measure, photo to photos, and tentacles to closest)

@@ -9,22 +9,21 @@ import { LOCATION_FIRST_TAG } from "@/maps/api/constants";
 
 // Performance Optimization: Cache path options for different colors to prevent react-leaflet
 // from re-triggering layer styling methods due to unstable object references on every render.
-const getPathOptions = (() => {
-    const cache: Record<
-        string,
-        { color: string; fillColor: string; fillOpacity: number }
-    > = {};
-    return (color: string) => {
-        if (!cache[color]) {
-            cache[color] = {
-                color: color,
-                fillColor: color,
-                fillOpacity: 0.8,
-            };
-        }
-        return cache[color];
-    };
-})();
+const pathOptionsCache: Record<
+    string,
+    { color: string; fillColor: string; fillOpacity: number }
+> = {};
+
+const getPathOptions = (color: string) => {
+    if (!pathOptionsCache[color]) {
+        pathOptionsCache[color] = {
+            color: color,
+            fillColor: color,
+            fillOpacity: 0.8,
+        };
+    }
+    return pathOptionsCache[color];
+};
 
 export const PlaytestPlaces = () => {
     const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);

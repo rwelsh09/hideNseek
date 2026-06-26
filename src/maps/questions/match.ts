@@ -112,7 +112,17 @@ export const determineMatchingBoundary = _.memoize(
                             feature.geometry.type !== "MultiPolygon"
                         )
                             continue;
-                        const d = turf.distance(point, turf.center(feature));
+
+                        let center = feature.properties?.center;
+                        if (!center) {
+                            center = turf.center(feature);
+                            if (!feature.properties) {
+                                feature.properties = {};
+                            }
+                            feature.properties.center = center;
+                        }
+
+                        const d = turf.distance(point, center);
                         if (d < minDistance) {
                             minDistance = d;
                             nearest = feature;
@@ -174,26 +184,32 @@ export const determineMatchingBoundary = _.memoize(
 
                 const matchingCells = [];
 
+                const mappedFeatures = voronoi.features.map((feature) => {
+                    const station = feature.properties!.site;
+                    return {
+                        feature,
+                        stationLines: ((station.properties as any).lines ||
+                            []) as string[],
+                        stationEnglishName: ((station.properties as any)[
+                            "name:en"
+                        ] || (station.properties as any).name) as string,
+                    };
+                });
+
                 if (question.type === "same-train-line") {
                     const seekerLines: string[] =
                         (nearest.properties as any).lines || [];
-                    for (const feature of voronoi.features) {
-                        const station =
-                            places.features[feature.properties!.site.index];
-                        const stationLines: string[] =
-                            (station.properties as any).lines || [];
+                    for (const { feature, stationLines } of mappedFeatures) {
                         if (seekerLines.some((l) => stationLines.includes(l))) {
                             matchingCells.push(feature);
                         }
                     }
                 } else if (question.type === "same-first-letter-station") {
                     const letter = seekerEnglishName[0].toUpperCase();
-                    for (const feature of voronoi.features) {
-                        const station =
-                            places.features[feature.properties!.site.index];
-                        const stationEnglishName =
-                            (station.properties as any)["name:en"] ||
-                            (station.properties as any).name;
+                    for (const {
+                        feature,
+                        stationEnglishName,
+                    } of mappedFeatures) {
                         if (
                             stationEnglishName &&
                             stationEnglishName[0].toUpperCase() === letter
@@ -203,12 +219,10 @@ export const determineMatchingBoundary = _.memoize(
                     }
                 } else if (question.type === "same-length-station") {
                     const length = seekerEnglishName.length;
-                    for (const feature of voronoi.features) {
-                        const station =
-                            places.features[feature.properties!.site.index];
-                        const stationEnglishName =
-                            (station.properties as any)["name:en"] ||
-                            (station.properties as any).name;
+                    for (const {
+                        feature,
+                        stationEnglishName,
+                    } of mappedFeatures) {
                         if (stationEnglishName) {
                             if (
                                 question.lengthComparison === "shorter" &&
