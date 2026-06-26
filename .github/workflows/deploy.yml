@@ -32,6 +32,7 @@ jobs:
               uses: withastro/action@v6
               env:
                   BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
+                  npm_config_minimum_release_age: "0"
               with:
                   path: .
                   node-version: 22
