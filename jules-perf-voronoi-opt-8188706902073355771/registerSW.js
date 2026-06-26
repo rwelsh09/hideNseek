@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/jules-perf-voronoi-opt-8188706902073355771/sw.js', { scope: '/HideAndSeek/jules-perf-voronoi-opt-8188706902073355771/' })})}
