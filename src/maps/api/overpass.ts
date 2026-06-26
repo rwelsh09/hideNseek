@@ -132,6 +132,7 @@ export const findTentacleLocations = async (
         : turf.convertLength(question.radius, question.unit, "meters");
 
     const seenNames = new Set<string>();
+    const seenCoords = new Set<string>();
 
     elements.forEach((element: any) => {
         if (!element.tags) return;
@@ -173,7 +174,11 @@ export const findTentacleLocations = async (
             units: "meters",
         });
 
+        const coordKey = `${ptLon.toFixed(4)},${ptLat.toFixed(4)}`;
+        if (seenCoords.has(coordKey)) return;
+
         if (distance <= radiusInMeters) {
+            seenCoords.add(coordKey);
             const name =
                 element.tags["name:en"] ?? element.tags["name"] ?? fallbackName;
             const isChain = fallbackName !== null;
