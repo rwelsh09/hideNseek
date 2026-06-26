@@ -232,57 +232,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             </a>
                         </div>
 
-                        <div className="flex flex-col items-center gap-2 mt-2 w-full max-w-[280px] sm:max-w-[576px]">
-                            <p className="text-sm font-semibold text-gray-500 font-poppins text-center">
-                                Support the project via PayPal:
-                            </p>
-                            <a
-                                href="https://paypal.me/hideNseekApp/4.03"
-                                target="_blank"
-                                rel="noreferrer"
-                                className="w-full sm:w-[280px]"
-                            >
-                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
-                                    <span className="whitespace-normal">
-                                        $4.03 &mdash; &quot;Hiding in the
-                                        403&quot;
-                                    </span>
-                                </Button>
-                            </a>
-                            <a
-                                href="https://paypal.me/hideNseekApp/7"
-                                target="_blank"
-                                rel="noreferrer"
-                                className="w-full sm:w-[280px]"
-                            >
-                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
-                                    <span className="whitespace-normal">
-                                        $7.00 &mdash; &quot;7th Ave Free
-                                        Zone&quot;
-                                    </span>
-                                </Button>
-                            </a>
-                            <a
-                                href="https://paypal.me/hideNseekApp/15"
-                                target="_blank"
-                                rel="noreferrer"
-                                className="w-full sm:w-[280px]"
-                            >
-                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
-                                    <span className="whitespace-normal">
-                                        $15.00 &mdash; &quot;Lost in the
-                                        +15s&quot;
-                                    </span>
-                                </Button>
-                            </a>
-                            <p className="text-sm text-gray-500 font-poppins text-center mt-1">
-                                Or e-transfer to: <br />
-                                <span className="font-semibold select-all">
-                                    hideNseekAppDonation@gmail.com
-                                </span>
-                            </p>
-                        </div>
-
                         <DrawerHeader>
                             <DrawerTitle className="text-4xl font-semibold font-poppins">
                                 Options
@@ -531,6 +480,57 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 >
                                     Clear Questions & Cache
                                 </Button>
+                            </div>
+                            <Separator className="bg-slate-300 w-[280px]" />
+                            <div className="flex flex-col items-center gap-2 mt-2 w-full max-w-[280px] sm:max-w-[576px]">
+                                <p className="text-sm font-semibold text-gray-500 font-poppins text-center">
+                                    Support the project via PayPal:
+                                </p>
+                                <a
+                                    href="https://paypal.me/hideNseekApp/4.03"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="w-full sm:w-[280px]"
+                                >
+                                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
+                                        <span className="whitespace-normal">
+                                            &quot;Hiding in the 403&quot;
+                                            &mdash; $4.03
+                                        </span>
+                                    </Button>
+                                </a>
+                                <a
+                                    href="https://paypal.me/hideNseekApp/7"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="w-full sm:w-[280px]"
+                                >
+                                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
+                                        <span className="whitespace-normal">
+                                            &quot;7th Ave Free Zone&quot;
+                                            &mdash; $7.00
+                                        </span>
+                                    </Button>
+                                </a>
+                                <a
+                                    href="https://paypal.me/hideNseekApp/15"
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="w-full sm:w-[280px]"
+                                >
+                                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
+                                        <span className="whitespace-normal">
+                                            &quot;Lost in the +15s&quot; &mdash;
+                                            $15.00
+                                        </span>
+                                    </Button>
+                                </a>
+                                <p className="text-sm text-gray-500 font-poppins text-center mt-1">
+                                    Or e-transfer to: <br />
+                                    <span className="font-semibold select-all">
+                                        hideNseekAppDonation@gmail.com
+                                    </span>
+                                </p>
                             </div>
                         </div>
                     </div>
