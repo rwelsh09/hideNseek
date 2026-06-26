@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/perf-optimize-turf-center-matching-2989984030223736188/sw.js', { scope: '/HideAndSeek/perf-optimize-turf-center-matching-2989984030223736188/' })})}
