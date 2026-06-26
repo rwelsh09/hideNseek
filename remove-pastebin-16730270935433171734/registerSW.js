@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/remove-pastebin-16730270935433171734/sw.js', { scope: '/HideAndSeek/remove-pastebin-16730270935433171734/' })})}
