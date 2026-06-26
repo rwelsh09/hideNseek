@@ -148,9 +148,12 @@ const baseTentacleQuestionSchema = ordinaryBaseQuestionSchema.extend({
                     coordinates: z.array(z.number()),
                 }),
                 id: z.union([z.string(), z.number(), z.undefined()]).optional(),
-                properties: z.object({
-                    name: z.any(),
-                }),
+                properties: z
+                    .object({
+                        name: z.any(),
+                        osm_id: z.any().optional(),
+                    })
+                    .catchall(z.any()),
             }),
             z.literal(false),
         ])
