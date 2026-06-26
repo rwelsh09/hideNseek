@@ -24,7 +24,6 @@ import { cn, mapToObj } from "@/lib/utils";
 import { findTentacleLocations } from "@/maps/api";
 import {
     determineUnionizedStrings,
-    NO_GROUP,
     TentacleQuestion,
     tentacleQuestionSchema,
 } from "@/maps/schema";
@@ -136,27 +135,9 @@ export const TentacleQuestionComponent = ({
                 <Select
                     trigger="Location Type"
                     options={Object.fromEntries(
-                        [tentacleQuestionSchema]
-                            .filter((x) => x.description === NO_GROUP)
-                            .flatMap((x) =>
-                                determineUnionizedStrings(x.shape.locationType),
-                            )
-                            .map((x) => [(x._def as any).value, x.description]),
-                    )}
-                    groups={Object.fromEntries(
-                        [tentacleQuestionSchema]
-                            .filter((x) => x.description !== NO_GROUP)
-                            .map((x) => [
-                                x.description,
-                                Object.fromEntries(
-                                    determineUnionizedStrings(
-                                        x.shape.locationType,
-                                    ).map((x) => [
-                                        (x._def as any).value,
-                                        x.description,
-                                    ]),
-                                ),
-                            ]),
+                        determineUnionizedStrings(
+                            tentacleQuestionSchema.shape.locationType,
+                        ).map((x) => [(x._def as any).value, x.description]),
                     )}
                     value={data.locationType}
                     onValueChange={async (value) => {

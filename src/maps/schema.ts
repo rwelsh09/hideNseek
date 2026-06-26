@@ -165,8 +165,7 @@ const encompassingTentacleQuestionSchema = baseTentacleQuestionSchema.extend({
     places: z.array(z.any()).optional(),
 });
 
-export const tentacleQuestionSchema =
-    tentacleQuestionSpecificSchemaOne.describe("Standard Locations");
+export const tentacleQuestionSchema = tentacleQuestionSpecificSchemaOne;
 
 const baseMatchingQuestionSchema = ordinaryBaseQuestionSchema.extend({
     same: z.boolean().default(true),
