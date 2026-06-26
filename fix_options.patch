@@ -1,0 +1,38 @@
+--- src/components/OptionDrawers.tsx
++++ src/components/OptionDrawers.tsx
+@@ -23,6 +23,7 @@
+     hidingRadius,
+     hidingZone,
+     includeDefaultStations,
++    isOptionsOpenStore,
+     leafletMapContext,
+     liveUpdateMapEnabled,
+     mapGeoJSON,
+@@ -58,7 +59,7 @@
+     const $baseTileLayer = useStore(baseTileLayer);
+     const $followMe = useStore(followMe);
+     const $displayTransitLines = useStore(displayTransitLines);
+-    const [isOptionsOpen, setOptionsOpen] = useState(false);
++    const $isOptionsOpenStore = useStore(isOptionsOpenStore);
+
+     useEffect(() => {
+         const params = new URL(window.location.toString()).searchParams;
+@@ -207,7 +208,7 @@
+                 }}
+             >
+                 Share
+             </Button>
+-            <Drawer open={isOptionsOpen} onOpenChange={setOptionsOpen}>
++            <Drawer open={$isOptionsOpenStore} onOpenChange={isOptionsOpenStore.set}>
+                 <DrawerTrigger className="w-24" asChild>
+                     <Button className="w-24 shadow-md">Options</Button>
+                 </DrawerTrigger>
+@@ -217,7 +218,7 @@
+                         <div className="w-full max-w-[280px] sm:max-w-none flex flex-col sm:flex-row gap-4 justify-center mb-2 mt-4">
+                             <Button
+                                 onClick={() => {
+-                                    setOptionsOpen(false);
++                                    isOptionsOpenStore.set(false);
+                                     setTimeout(() => {
+                                         showTutorial.set(true);
+                                     }, 300);

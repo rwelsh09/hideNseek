@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import {
@@ -23,7 +23,6 @@ import {
     hidingRadius,
     hidingZone,
     includeDefaultStations,
-    isOptionsOpenStore,
     leafletMapContext,
     liveUpdateMapEnabled,
     mapGeoJSON,
@@ -58,7 +57,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
     const $displayTransitLines = useStore(displayTransitLines);
-    const $isOptionsOpenStore = useStore(isOptionsOpenStore);
+    const [isOptionsOpen, setOptionsOpen] = useState(false);
 
     useEffect(() => {
         const params = new URL(window.location.toString()).searchParams;
@@ -207,10 +206,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
             >
                 Share
             </Button>
-            <Drawer
-                open={$isOptionsOpenStore}
-                onOpenChange={isOptionsOpenStore.set}
-            >
+            <Drawer open={isOptionsOpen} onOpenChange={setOptionsOpen}>
                 <DrawerTrigger className="w-24" asChild>
                     <Button className="w-24 shadow-md">Options</Button>
                 </DrawerTrigger>
@@ -219,7 +215,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                         <div className="w-full max-w-[280px] sm:max-w-none flex flex-col sm:flex-row gap-4 justify-center mb-2 mt-4">
                             <Button
                                 onClick={() => {
-                                    isOptionsOpenStore.set(false);
+                                    setOptionsOpen(false);
                                     setTimeout(() => {
                                         showTutorial.set(true);
                                     }, 300);

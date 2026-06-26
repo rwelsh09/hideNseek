@@ -1,0 +1,18 @@
+--- src/components/OptionDrawers.tsx
++++ src/components/OptionDrawers.tsx
+@@ -23,7 +23,6 @@
+     useCustomStations,
+ } from "@/lib/context";
+ import { clearStorage } from "@/lib/storage";
+-import { isOptionsOpenStore } from "@/lib/context";
+
+ import { loadHidingZone } from "./Map";
+ import { Button } from "./ui/button";
+@@ -40,7 +39,6 @@
+     leafletMapContext,
+     liveUpdateMapEnabled,
+     mapGeoJSON,
+     mapGeoLocation,
+-    isOptionsOpenStore,
+     polyGeoJSON,
+     questions,
