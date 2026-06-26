@@ -231,6 +231,26 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 <Button className="w-full">Rules & Tips</Button>
                             </a>
                         </div>
+
+                        <div className="flex flex-col items-center gap-2 mt-2 w-full max-w-[280px] sm:max-w-[576px]">
+                            <a
+                                href="https://paypal.me/hideNseekApp/5"
+                                target="_blank"
+                                rel="noreferrer"
+                                className="w-full sm:w-[280px]"
+                            >
+                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                                    Donate via PayPal
+                                </Button>
+                            </a>
+                            <p className="text-sm text-gray-500 font-poppins text-center mt-1">
+                                Or e-transfer to: <br />
+                                <span className="font-semibold select-all">
+                                    hideNseekAppDonation@gmail.com
+                                </span>
+                            </p>
+                        </div>
+
                         <DrawerHeader>
                             <DrawerTitle className="text-4xl font-semibold font-poppins">
                                 Options
