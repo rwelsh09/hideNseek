@@ -60,14 +60,15 @@ const QUIZ_QUESTIONS = [
         correct: 2,
     },
     {
-        question: "Where can you see the Hider's exact head start time?",
+        question:
+            "According to the map, what are the names of the two primary CTrain lines?",
         options: [
-            "It is not on the map.",
-            "In the settings panel.",
-            "It's printed on the map.",
-            "In the Timer sidebar, by expanding the left drawer.",
+            "Red Line & Blue Line.",
+            "Green Line & Yellow Line.",
+            "North Line & South Line.",
+            "Line 1 & Line 2.",
         ],
-        correct: 3,
+        correct: 0,
     },
     {
         question: "What happens when Seekers ask a question?",
