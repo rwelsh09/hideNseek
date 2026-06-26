@@ -257,8 +257,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             >
                                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
                                     <span className="whitespace-normal">
-                                        $7.00 &mdash; &quot;Hiding in the 7th
-                                        Ave Free Zone&quot;
+                                        $7.00 &mdash; &quot;7th Ave Free
+                                        Zone&quot;
                                     </span>
                                 </Button>
                             </a>
