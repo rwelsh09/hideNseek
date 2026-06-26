@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/code-health/tentacle-places-types-11055971862111992671/sw.js', { scope: '/HideAndSeek/code-health/tentacle-places-types-11055971862111992671/' })})}
