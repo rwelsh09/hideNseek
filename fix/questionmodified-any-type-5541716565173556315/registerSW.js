@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/questionmodified-any-type-5541716565173556315/sw.js', { scope: '/HideAndSeek/fix/questionmodified-any-type-5541716565173556315/' })})}
