@@ -475,7 +475,9 @@ export const findPlacesSpecificInZone = async (
 export const nearestToQuestion = async (question: any) => {
     let radius = 30;
     let instances: any = { features: [] };
-    while (instances.features.length === 0) {
+    let iterations = 0;
+    const MAX_ITERATIONS = 10;
+    while (instances.features.length === 0 && iterations < MAX_ITERATIONS) {
         instances = await findTentacleLocations(
             {
                 lat: question.lat,
@@ -492,7 +494,13 @@ export const nearestToQuestion = async (question: any) => {
             "Finding matching locations...",
         );
         radius += 30;
+        iterations++;
     }
+
+    if (instances.features.length === 0) {
+        return null;
+    }
+
     const questionPoint = turf.point([question.lng, question.lat]);
     return turf.nearestPoint(questionPoint, instances as any);
 };
