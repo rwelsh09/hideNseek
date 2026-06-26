@@ -41,9 +41,9 @@ export default defineConfig({
     devToolbar: {
         enabled: false,
     },
-    site: "https://rwelsh09.github.io",
+    site: process.env.SITE_URL || "https://rwelsh09.github.io",
     base:
         process.env.BRANCH_NAME && process.env.BRANCH_NAME !== "master"
-            ? `/HideAndSeek/${process.env.BRANCH_NAME}`
-            : "/HideAndSeek",
+            ? `/${process.env.BASE_PATH || "HideAndSeek"}/${process.env.BRANCH_NAME}`
+            : `/${process.env.BASE_PATH || "HideAndSeek"}`,
 });
