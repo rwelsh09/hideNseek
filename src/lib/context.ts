@@ -52,6 +52,10 @@ export const additionalMapGeoLocations = persistentAtom<
     encode: JSON.stringify,
     decode: JSON.parse,
 });
+export const headStartMinutes = persistentAtom<number>("headStartMinutes", 0, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
 export const mapGeoJSON = atom<FeatureCollection<
     Polygon | MultiPolygon
 > | null>(null);
@@ -217,6 +221,7 @@ export const hidingZone = computed(
         useCustomStations,
         customStations,
         includeDefaultStations,
+        headStartMinutes,
     ],
     (
         q,
@@ -230,6 +235,7 @@ export const hidingZone = computed(
         useCustom,
         $customStations,
         includeDefault,
+        $headStartMinutes,
     ) => {
         if (geo !== null) {
             return {
@@ -238,6 +244,7 @@ export const hidingZone = computed(
                 disabledStations: disabledStations,
                 hidingRadius: radius,
                 hidingRadiusUnits,
+                headStartMinutes: $headStartMinutes,
                 zoneOptions: zoneOptions,
                 useCustomStations: useCustom,
                 customStations: $customStations,
@@ -252,6 +259,7 @@ export const hidingZone = computed(
                 disabledStations: disabledStations,
                 hidingRadius: radius,
                 hidingRadiusUnits,
+                headStartMinutes: $headStartMinutes,
                 alternateLocations: structuredClone(altLoc),
                 zoneOptions: zoneOptions,
                 useCustomStations: useCustom,

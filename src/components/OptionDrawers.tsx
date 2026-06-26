@@ -19,6 +19,7 @@ import {
     displayHidingZonesOptions,
     displayTransitLines,
     followMe,
+    headStartMinutes,
     hiderMode,
     hidingRadius,
     hidingZone,
@@ -132,6 +133,10 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
 
             if (geojson.hidingRadius !== null) {
                 hidingRadius.set(geojson.hidingRadius);
+            }
+
+            if (typeof geojson.headStartMinutes === "number") {
+                headStartMinutes.set(geojson.headStartMinutes);
             }
 
             if (geojson.zoneOptions) {

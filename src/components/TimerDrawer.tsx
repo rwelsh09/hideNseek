@@ -9,6 +9,7 @@ import {
     TopDrawerContent,
 } from "@/components/ui/drawer";
 import {
+    headStartMinutes,
     isTimerRunning,
     leaderboard,
     penaltyMinutes,
@@ -25,22 +26,30 @@ export const TimerDrawer = () => {
     const $timerElapsedSeconds = useStore(timerElapsedSeconds);
     const $timerStartTimestamp = useStore(timerStartTimestamp);
     const $leaderboard = useStore(leaderboard);
+    const $headStartMinutes = useStore(headStartMinutes);
 
     // Format seconds into MM:SS
     const formatTime = (totalSecs: number) => {
-        const h = Math.floor(totalSecs / 3600);
-        const m = Math.floor((totalSecs % 3600) / 60);
-        const s = totalSecs % 60;
+        const isNegative = totalSecs < 0;
+        const absSecs = Math.abs(totalSecs);
+
+        const h = Math.floor(absSecs / 3600);
+        const m = Math.floor((absSecs % 3600) / 60);
+        const s = absSecs % 60;
+
+        const sign = isNegative ? "-" : "";
 
         if (h > 0) {
-            return `${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+            return `${sign}${h}:${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
         }
-        return `${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
+        return `${sign}${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
     };
 
     // Calculate total seconds including penalty
     const getTotalSeconds = () => {
-        return $timerElapsedSeconds + $penaltyMinutes * 60;
+        return (
+            $timerElapsedSeconds - $headStartMinutes * 60 + $penaltyMinutes * 60
+        );
     };
 
     React.useEffect(() => {
@@ -85,10 +94,7 @@ export const TimerDrawer = () => {
     };
 
     const manipulateTimer = (minutes: number) => {
-        const newSeconds = Math.max(
-            0,
-            timerElapsedSeconds.get() + minutes * 60,
-        );
+        const newSeconds = timerElapsedSeconds.get() + minutes * 60;
         timerElapsedSeconds.set(newSeconds);
         // Adjust the timestamp to reflect the new elapsed time
         if (timerStartTimestamp.get()) {
@@ -162,7 +168,10 @@ export const TimerDrawer = () => {
 
                             <div className="bg-slate-800 rounded-xl p-4 shadow-md border border-slate-700 flex flex-col items-center justify-center gap-2 py-8">
                                 <div className="text-5xl font-mono font-bold text-white">
-                                    {formatTime($timerElapsedSeconds)}
+                                    {formatTime(
+                                        $timerElapsedSeconds -
+                                            $headStartMinutes * 60,
+                                    )}
                                 </div>
                                 <div className="text-slate-400 text-sm mt-2">
                                     Total with{" "}
@@ -247,31 +256,33 @@ export const TimerDrawer = () => {
                                 </div>
                             </div>
 
-                            {!$isTimerRunning && $timerElapsedSeconds > 0 && (
-                                <form
-                                    onSubmit={addLeaderboardEntry}
-                                    className="flex flex-col gap-3 mt-auto border-t border-slate-700 pt-4"
-                                >
-                                    <div className="text-sm text-slate-300 font-semibold">
-                                        Save Record to Leaderboard
-                                    </div>
-                                    <div className="flex gap-2">
-                                        <Input
-                                            name="names"
-                                            placeholder="Hider Name"
-                                            className="h-10 bg-slate-800 border-slate-600 text-white"
-                                            required
-                                        />
-                                        <Button
-                                            type="submit"
-                                            size="default"
-                                            className="h-10 px-4"
-                                        >
-                                            Save
-                                        </Button>
-                                    </div>
-                                </form>
-                            )}
+                            {!$isTimerRunning &&
+                                $timerElapsedSeconds - $headStartMinutes * 60 >
+                                    0 && (
+                                    <form
+                                        onSubmit={addLeaderboardEntry}
+                                        className="flex flex-col gap-3 mt-auto border-t border-slate-700 pt-4"
+                                    >
+                                        <div className="text-sm text-slate-300 font-semibold">
+                                            Save Record to Leaderboard
+                                        </div>
+                                        <div className="flex gap-2">
+                                            <Input
+                                                name="names"
+                                                placeholder="Hider Name"
+                                                className="h-10 bg-slate-800 border-slate-600 text-white"
+                                                required
+                                            />
+                                            <Button
+                                                type="submit"
+                                                size="default"
+                                                className="h-10 px-4"
+                                            >
+                                                Save
+                                            </Button>
+                                        </div>
+                                    </form>
+                                )}
                         </div>
 
                         {/* --- RIGHT SIDE: LEADERBOARD --- */}
