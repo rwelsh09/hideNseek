@@ -312,7 +312,7 @@ const TentacleLocationSelector = ({
                         feature.properties.name,
                     ]),
                 }}
-                value={data.location ? data.location.properties?.name : 'false'}
+                value={data.location ? data.location.properties?.name : "false"}
                 onValueChange={(value) => {
                     if (value === "false") {
                         data.location = false;
@@ -331,7 +331,7 @@ const TentacleLocationSelector = ({
                     Tell the Seekers:{" "}
                     <span className="text-primary">
                         {data.location
-                            ? data.location.properties.name
+                            ? data.location.properties?.name
                             : "Not Within"}
                     </span>
                 </div>
