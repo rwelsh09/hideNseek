@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-cache-all-places-13118206380180491184/sw.js', { scope: '/HideAndSeek/fix-cache-all-places-13118206380180491184/' })})}
