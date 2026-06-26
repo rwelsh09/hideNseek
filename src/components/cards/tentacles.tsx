@@ -136,7 +136,7 @@ export const TentacleQuestionComponent = ({
                 <Select
                     trigger="Location Type"
                     options={Object.fromEntries(
-                        tentacleQuestionSchema.options
+                        [tentacleQuestionSchema]
                             .filter((x) => x.description === NO_GROUP)
                             .flatMap((x) =>
                                 determineUnionizedStrings(x.shape.locationType),
@@ -144,7 +144,7 @@ export const TentacleQuestionComponent = ({
                             .map((x) => [(x._def as any).value, x.description]),
                     )}
                     groups={Object.fromEntries(
-                        tentacleQuestionSchema.options
+                        [tentacleQuestionSchema]
                             .filter((x) => x.description !== NO_GROUP)
                             .map((x) => [
                                 x.description,
