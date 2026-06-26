@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-hot-cold-text-11636904376959802786/sw.js', { scope: '/HideAndSeek/fix-hot-cold-text-11636904376959802786/' })})}
