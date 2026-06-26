@@ -87,8 +87,8 @@ const TentaclePlacesForQuestion = ({ question }: { question: any }) => {
 
                 const isSelected =
                     question.data.location &&
-                    question.data.location.properties?.osm_id ===
-                        f.properties?.osm_id;
+                    question.data.location.properties?.id ===
+                        f.properties?.id;
 
                 return (
                     <TentaclePlaceMarker
