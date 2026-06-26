@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-tutorial-timer-step-714532327462039759/sw.js', { scope: '/HideAndSeek/fix-tutorial-timer-step-714532327462039759/' })})}
