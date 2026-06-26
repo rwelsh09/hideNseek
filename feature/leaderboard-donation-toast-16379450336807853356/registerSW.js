@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feature/leaderboard-donation-toast-16379450336807853356/sw.js', { scope: '/HideAndSeek/feature/leaderboard-donation-toast-16379450336807853356/' })})}
