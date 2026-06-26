@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feat/add-timhortons-pub-tentacles-8654998455362706957/sw.js', { scope: '/HideAndSeek/feat/add-timhortons-pub-tentacles-8654998455362706957/' })})}
