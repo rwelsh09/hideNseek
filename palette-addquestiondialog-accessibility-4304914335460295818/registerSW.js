@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/palette-addquestiondialog-accessibility-4304914335460295818/sw.js', { scope: '/HideAndSeek/palette-addquestiondialog-accessibility-4304914335460295818/' })})}
