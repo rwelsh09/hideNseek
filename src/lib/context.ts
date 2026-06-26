@@ -284,16 +284,6 @@ export const followMe = persistentAtom<boolean>("followMe", true, {
     decode: JSON.parse,
 });
 
-export const pastebinApiKey = persistentAtom<string>("pastebinApiKey", "");
-export const alwaysUsePastebin = persistentAtom<boolean>(
-    "alwaysUsePastebin",
-    false,
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
-
 export const showTutorial = persistentAtom<boolean>("showTutorials", true, {
     encode: JSON.stringify,
     decode: JSON.parse,
