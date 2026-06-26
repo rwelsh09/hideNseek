@@ -15,13 +15,22 @@ export const TutorialManager = () => {
             const driverObj = driver({
                 showProgress: true,
                 onDestroyStarted: () => {
-                    // Check if it's a natural completion or explicit end/skip
-                    const isNaturalCompletion = !driverObj.hasNextStep() && driverObj.hasPreviousStep() && hasSeenRules.get();
-                    const isNavigationSkip = !driverObj.hasNextStep() && !hasSeenRules.get() && driverObj.hasPreviousStep();
+                    const isRulesPhase =
+                        driverObj.getConfig().steps?.length === 2;
 
-                    if (isNaturalCompletion || isNavigationSkip || confirm("Are you sure you want to end the tutorial?")) {
+                    if (isRulesPhase) {
+                        // In the first phase, they clicked the link (or skipped naturally)
+                        // Do NOT prompt and do NOT disable the tutorial globally. Let them return.
                         driverObj.destroy();
-                        if (isNaturalCompletion || !isNavigationSkip) {
+                    } else {
+                        // Main phase. Prompt if they are skipping early.
+                        if (
+                            !driverObj.hasNextStep() ||
+                            confirm(
+                                "Are you sure you want to end the tutorial?",
+                            )
+                        ) {
+                            driverObj.destroy();
                             showTutorial.set(false);
                         }
                     }
@@ -45,9 +54,6 @@ export const TutorialManager = () => {
                                       } as any);
 
                                       const trigger =
-                                          document.querySelector<HTMLElement>(
-                                              '[data-tutorial-id="option-drawers-trigger"] button',
-                                          ) ||
                                           document.querySelector<HTMLElement>(
                                               '[data-tutorial-id="option-drawers-trigger"]',
                                           );
