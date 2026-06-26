@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-pnpm-minimum-release-age-14156858133949058778/sw.js', { scope: '/HideAndSeek/fix-pnpm-minimum-release-age-14156858133949058778/' })})}
