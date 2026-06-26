@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/bolt/memoize-contextmenu-items-14607936178503106742/sw.js', { scope: '/HideAndSeek/bolt/memoize-contextmenu-items-14607936178503106742/' })})}
