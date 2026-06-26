@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/add-no-street-view-rule-17747152032634653178/sw.js', { scope: '/HideAndSeek/fix/add-no-street-view-rule-17747152032634653178/' })})}
