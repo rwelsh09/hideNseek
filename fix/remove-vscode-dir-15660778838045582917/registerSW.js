@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/remove-vscode-dir-15660778838045582917/sw.js', { scope: '/HideAndSeek/fix/remove-vscode-dir-15660778838045582917/' })})}
