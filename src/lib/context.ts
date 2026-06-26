@@ -75,7 +75,7 @@ export const addQuestion = (question: DeepPartial<Question>) => {
     questionModified();
 };
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const questionModified = (..._: any[]) => {
+export const questionModified = (..._: unknown[]) => {
     if (autoSave.get()) {
         questions.set([...questions.get()]);
     } else {
