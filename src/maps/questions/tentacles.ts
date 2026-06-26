@@ -49,10 +49,7 @@ export const adjustPerTentacle = async (
         throw new Error("Must have a location");
     }
 
-    const rawPoints =
-        question.locationType === "custom"
-            ? turf.featureCollection(question.places)
-            : await findTentacleLocations(question);
+    const rawPoints = await findTentacleLocations(question);
 
     const points = filterPointsWithinRadius(
         rawPoints,
@@ -92,10 +89,7 @@ export const hiderifyTentacles = async (question: TentacleQuestion) => {
         return question;
     }
 
-    const rawPoints =
-        question.locationType === "custom"
-            ? turf.featureCollection(question.places)
-            : await findTentacleLocations(question);
+    const rawPoints = await findTentacleLocations(question);
 
     const points = filterPointsWithinRadius(
         rawPoints,
@@ -141,10 +135,7 @@ export const hiderifyTentacles = async (question: TentacleQuestion) => {
 };
 
 export const tentaclesPlanningPolygon = async (question: TentacleQuestion) => {
-    const rawPoints =
-        question.locationType === "custom"
-            ? turf.featureCollection(question.places)
-            : await findTentacleLocations(question);
+    const rawPoints = await findTentacleLocations(question);
 
     const points = filterPointsWithinRadius(
         rawPoints,

@@ -260,7 +260,6 @@ export const hidingZone = computed(
     },
 );
 
-export const drawingQuestionKey = atom<number>(-1);
 export const liveUpdateMapEnabled = persistentAtom<boolean>(
     "liveUpdateMapEnabled",
     false,

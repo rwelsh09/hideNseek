@@ -36,15 +36,13 @@ const TentaclePlacesForQuestion = ({ question }: { question: any }) => {
 
     useEffect(() => {
         let isMounted = true;
-        if (question.data.locationType === "custom") {
-            setPlaces(question.data.places || []);
-        } else {
-            findTentacleLocations(question.data).then((res) => {
+        findTentacleLocations(question.data)
+            .then((res) => {
                 if (isMounted) {
                     setPlaces(res.features);
                 }
-            });
-        }
+            })
+            .catch(() => {});
         return () => {
             isMounted = false;
         };
@@ -66,7 +64,7 @@ const TentaclePlacesForQuestion = ({ question }: { question: any }) => {
         const coords =
             f?.geometry?.coordinates ??
             (f?.properties?.lon && f?.properties?.lat
-                ? [f.properties.lon, f.properties.lat]
+                ? [f.properties?.lon, f.properties?.lat]
                 : null);
         if (!coords) return false;
         if (!$liveUpdateMapEnabled) return true; // Show all places in playtest mode
@@ -83,13 +81,14 @@ const TentaclePlacesForQuestion = ({ question }: { question: any }) => {
                 const coords =
                     f?.geometry?.coordinates ??
                     (f?.properties?.lon && f?.properties?.lat
-                        ? [f.properties.lon, f.properties.lat]
+                        ? [f.properties?.lon, f.properties?.lat]
                         : null);
                 if (!coords) return null;
 
                 const isSelected =
                     question.data.location &&
-                    question.data.location.properties?.id === f.properties?.id;
+                    question.data.location.properties?.osm_id ===
+                        f.properties?.osm_id;
 
                 return (
                     <TentaclePlaceMarker
