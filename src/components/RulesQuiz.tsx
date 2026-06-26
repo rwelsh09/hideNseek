@@ -61,8 +61,8 @@ const QUIZ_QUESTIONS = [
     },
     {
         question:
-            "According to the map, what color is the MAX Teal transit line?",
-        options: ["Red.", "Blue.", "Teal.", "Green."],
+            "According to the 'Add Question' menu on the map, which question type carries the highest time penalty?",
+        options: ["Matching.", "Radar.", "Tentacles.", "Photo."],
         correct: 2,
     },
     {
