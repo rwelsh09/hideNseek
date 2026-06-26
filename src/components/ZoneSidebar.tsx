@@ -1090,11 +1090,22 @@ async function selectionProcess(
                 false)
         ) {
             const nearestQuestion = await nearestToQuestion(question.data);
+
+            if (!nearestQuestion) {
+                toast.warning(`Could not find nearest locations for question.`);
+                continue;
+            }
+
             let radius = 30;
             let instances: any = { features: [] };
             const nearestPoints = [];
+            let iterations = 0;
+            const MAX_ITERATIONS = 10;
 
-            while (instances.features.length === 0) {
+            while (
+                instances.features.length === 0 &&
+                iterations < MAX_ITERATIONS
+            ) {
                 instances = await findTentacleLocations(
                     {
                         lat: station.properties.geometry.coordinates[1],
@@ -1124,12 +1135,15 @@ async function selectionProcess(
 
                 if (distances.length === 0) {
                     radius *= 2;
+                    iterations++;
                     continue;
                 }
 
                 const minimumPoint = _.minBy(distances, "distance")!;
                 if (minimumPoint.distance + $hidingRadius * 2 > radius) {
                     radius = minimumPoint.distance + $hidingRadius * 2;
+                    iterations++;
+                    instances = { features: [] }; // Reset to continue the loop as we didn't find enough points
                     continue;
                 }
 
@@ -1143,6 +1157,14 @@ async function selectionProcess(
                         )
                         .map((x) => x.point),
                 );
+                iterations++;
+            }
+
+            if (instances.features.length === 0) {
+                toast.warning(
+                    `Could not find enough matching locations nearby after ${MAX_ITERATIONS} attempts.`,
+                );
+                continue;
             }
 
             if (question.id === "matching") {
