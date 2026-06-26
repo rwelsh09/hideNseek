@@ -1,7 +1,7 @@
 // Used in the `Rules` page & for `How it works` on the Question card
 export const QUESTION_RULES: Record<string, string> = {
     matching:
-        "Seekers ask if the Hider 's location shares a specific attrtibute with them (e.g., 'Does your station's name start with the same letter as ours?', 'If your nearest Library the same as ours?').",
+        "Seekers ask if the Hider's location shares a specific attribute with them (e.g., 'Does your station's name start with the same letter as ours?', 'Is your nearest Library the same as ours?').",
     measuring:
         "Seekers ask for if the Hider is closer or further to a specific type of place (e.g. Hospitals) than they are.",
     radius: "Seekers select a specific distance (e.g., 5km) to project a Radar from their current location. The Hider must answer 'Yes' or 'No' to whether their location falls within that Radar.",
