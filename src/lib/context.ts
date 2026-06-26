@@ -270,6 +270,8 @@ export const liveUpdateMapEnabled = persistentAtom<boolean>(
 
 export const isLoading = atom<boolean>(false);
 
+export const isOptionsOpenStore = atom<boolean>(false);
+
 export const baseTileLayer = persistentAtom<
     "voyager" | "light" | "dark" | "transport" | "neighbourhood" | "osmcarto"
 >("baseTileLayer", "voyager");
