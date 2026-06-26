@@ -129,6 +129,17 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
+                                  '[data-tutorial-id="timer-drawer-trigger"]',
+                              popover: {
+                                  title: "Timer & Leaderboard",
+                                  description:
+                                      "Click here to access the timer and leaderboard to track your game time.",
+                                  side: "right",
+                                  align: "start",
+                              },
+                          },
+                          {
+                              element:
                                   '[data-tutorial-id="right-sidebar-trigger"]',
                               popover: {
                                   title: "Game State",

@@ -158,6 +158,7 @@ export const TimerDrawer = () => {
                     className="bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer relative"
                     title="Timer & Leaderboard"
                     aria-label="Timer & Leaderboard"
+                    data-tutorial-id="timer-drawer-trigger"
                 >
                     <Clock className="w-5 h-5 text-black" />
                     {$penaltyMinutes > 0 && (
