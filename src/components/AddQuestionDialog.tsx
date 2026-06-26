@@ -349,7 +349,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "0.5")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex flex-col justify-center items-center gap-1 hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 0.5 km
                             </button>
@@ -360,7 +360,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "1")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex flex-col justify-center items-center gap-1 hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 1 km
                             </button>
@@ -371,7 +371,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "2")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex flex-col justify-center items-center gap-1 hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 2 km
                             </button>
@@ -383,7 +383,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "5")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex flex-col justify-center items-center gap-1 hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 5 km
                             </button>
@@ -395,7 +395,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "10")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex flex-col justify-center items-center gap-1 hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 10 km
                             </button>
@@ -406,7 +406,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "unknown")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex flex-col justify-center items-center gap-1 hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 ????
                             </button>
@@ -442,6 +442,12 @@ export function AddQuestionDialog() {
                                 >
                                     <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                     1km
+                                    <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                        1
+                                    </span>
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                        1
+                                    </span>
                                 </button>
                                 <button
                                     type="button"
@@ -454,6 +460,12 @@ export function AddQuestionDialog() {
                                 >
                                     <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                     2km
+                                    <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                        2
+                                    </span>
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                        2
+                                    </span>
                                 </button>
                                 <button
                                     type="button"
@@ -466,6 +478,12 @@ export function AddQuestionDialog() {
                                 >
                                     <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                     5km
+                                    <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                        5
+                                    </span>
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                        5
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -542,12 +560,21 @@ export function AddQuestionDialog() {
                                     <Coffee className="w-5 h-5 sm:w-6 sm:h-6" />
                                 </button>
                                 <button
+                                    type="button"
+                                    aria-label="Add tentacles question for pub"
+                                    title="Add tentacles question for pub"
                                     onClick={() =>
                                         handleQuestionSelect("tentacles", "pub")
                                     }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    className="bg-purple-600 text-white flex flex-col justify-center items-center gap-1 hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
                                     <Beer className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                        Pub
+                                    </span>
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                        Pub
+                                    </span>
                                 </button>
                                 <button
                                     onClick={() =>
@@ -587,9 +614,15 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "camera")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col justify-center items-center gap-1 hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Camera className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                    Camera
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                    Camera
+                                </span>
                             </button>
                             <button
                                 type="button"
@@ -598,9 +631,15 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "tree")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col justify-center items-center gap-1 hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Leaf className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                    Tree
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                    Tree
+                                </span>
                             </button>
 
                             <button
@@ -610,9 +649,15 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "car")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col justify-center items-center gap-1 hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Car className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                    Car
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                    Car
+                                </span>
                             </button>
 
                             <button
@@ -622,9 +667,12 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "building")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col justify-center items-center gap-1 hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                    Building
+                                </span>
                             </button>
 
                             <button
@@ -634,9 +682,15 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "restaurant")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col justify-center items-center gap-1 hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Utensils className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                    Restaurant
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                    Food
+                                </span>
                             </button>
 
                             <button
@@ -646,9 +700,15 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "park")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col justify-center items-center gap-1 hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Trees className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                    Park
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                    Park
+                                </span>
                             </button>
 
                             <button
@@ -658,9 +718,15 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "store")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col justify-center items-center gap-1 hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                    Store
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                    Store
+                                </span>
                             </button>
 
                             <button
@@ -670,9 +736,15 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "worship")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col justify-center items-center gap-1 hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Church className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                    Worship
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                    Worship
+                                </span>
                             </button>
 
                             <button
@@ -682,9 +754,15 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "train")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col justify-center items-center gap-1 hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Train className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                    Train
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                    Train
+                                </span>
                             </button>
 
                             <button
@@ -694,9 +772,15 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "route")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col justify-center items-center gap-1 hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Route className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <span className="text-[10px] leading-tight text-center truncate w-full px-1">
+                                    Route
+                                </span>
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center truncate w-full px-0.5">
+                                    Route
+                                </span>
                             </button>
                         </div>
                     </div>
