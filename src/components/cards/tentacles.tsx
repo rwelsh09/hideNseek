@@ -312,7 +312,7 @@ const TentacleLocationSelector = ({
                         feature.properties.name,
                     ]),
                 }}
-                value={data.location ? data.location.properties.name : "false"}
+                value={data.location ? data.location.properties?.name : 'false'}
                 onValueChange={(value) => {
                     if (value === "false") {
                         data.location = false;
