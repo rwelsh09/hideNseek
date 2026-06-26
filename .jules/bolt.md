@@ -12,3 +12,7 @@
 
 **Learning:** Periodic codebase auditing using tools like `grep` or IDE references is essential. Complex algorithms (like grouping map objects or calculating line distances) may become orphaned when application architecture evolves, negatively impacting compilation times and theoretical bundle sizes without offering any runtime value.
 **Action:** Safely remove unused exported functions to eliminate dead code and keep the codebase clean.
+## 2026-06-26 - [Extract Inline Object Arrays in React-Leaflet Props]
+
+**Learning:** Passing inline arrays or objects to `react-leaflet` components (such as `contextmenuItems={[...]}` on `MapContainer`) creates new array references on every single render. This forces React Leaflet and its underlying plugins to re-evaluate or re-bind event listeners, significantly increasing memory allocation overhead and rendering time.
+**Action:** Extract inline arrays and large configuration objects into `useMemo` hooks or static constants outside of the render cycle. This provides stable object references, preventing unnecessary Leaflet DOM manipulations.

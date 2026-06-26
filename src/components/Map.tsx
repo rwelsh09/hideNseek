@@ -219,6 +219,110 @@ export const Map = ({ className }: { className?: string }) => {
         }
     };
 
+    const contextmenuItems = useMemo(
+        () => [
+            {
+                text: "Add Radius",
+                callback: (e: any) =>
+                    addQuestion({
+                        id: "radius",
+                        data: {
+                            lat: e.latlng.lat,
+                            lng: e.latlng.lng,
+                        },
+                    }),
+            },
+            {
+                text: "Add Thermometer",
+                callback: (e: any) => {
+                    const destination = turf.destination(
+                        [e.latlng.lng, e.latlng.lat],
+                        5,
+                        90,
+                        {
+                            units: "kilometers",
+                        },
+                    );
+
+                    addQuestion({
+                        id: "thermometer",
+                        data: {
+                            latA: e.latlng.lat,
+                            lngA: e.latlng.lng,
+                            latB: destination.geometry.coordinates[1],
+                            lngB: destination.geometry.coordinates[0],
+                        },
+                    });
+                },
+            },
+            {
+                text: "Add Tentacles",
+                callback: (e: any) => {
+                    addQuestion({
+                        id: "tentacles",
+                        data: {
+                            lat: e.latlng.lat,
+                            lng: e.latlng.lng,
+                        },
+                    });
+                },
+            },
+            {
+                text: "Add Matching",
+                callback: (e: any) => {
+                    addQuestion({
+                        id: "matching",
+                        data: {
+                            lat: e.latlng.lat,
+                            lng: e.latlng.lng,
+                        },
+                    });
+                },
+            },
+            {
+                text: "Add Measuring",
+                callback: (e: any) => {
+                    addQuestion({
+                        id: "measuring",
+                        data: {
+                            lat: e.latlng.lat,
+                            lng: e.latlng.lng,
+                        },
+                    });
+                },
+            },
+            {
+                text: "Copy Coordinates",
+                callback: (e: any) => {
+                    if (!navigator || !navigator.clipboard) {
+                        toast.error(
+                            "Clipboard API not supported in your browser",
+                        );
+                        return;
+                    }
+
+                    const latitude = e.latlng.lat;
+                    const longitude = e.latlng.lng;
+
+                    toast.promise(
+                        navigator.clipboard.writeText(
+                            `${Math.abs(latitude)}°${latitude > 0 ? "N" : "S"}, ${Math.abs(
+                                longitude,
+                            )}°${longitude > 0 ? "E" : "W"}`,
+                        ),
+                        {
+                            pending: "Writing to clipboard...",
+                            success: "Coordinates copied!",
+                            error: "An error occurred while copying",
+                        },
+                        { autoClose: 1000 },
+                    );
+                },
+            },
+        ],
+        [],
+    );
+
     const displayMap = useMemo(
         () => (
             <MapContainer
@@ -232,106 +336,7 @@ export const Map = ({ className }: { className?: string }) => {
                 // @ts-expect-error Typing doesn't update from react-contextmenu
                 contextmenu={true}
                 contextmenuWidth={140}
-                contextmenuItems={[
-                    {
-                        text: "Add Radius",
-                        callback: (e: any) =>
-                            addQuestion({
-                                id: "radius",
-                                data: {
-                                    lat: e.latlng.lat,
-                                    lng: e.latlng.lng,
-                                },
-                            }),
-                    },
-                    {
-                        text: "Add Thermometer",
-                        callback: (e: any) => {
-                            const destination = turf.destination(
-                                [e.latlng.lng, e.latlng.lat],
-                                5,
-                                90,
-                                {
-                                    units: "kilometers",
-                                },
-                            );
-
-                            addQuestion({
-                                id: "thermometer",
-                                data: {
-                                    latA: e.latlng.lat,
-                                    lngA: e.latlng.lng,
-                                    latB: destination.geometry.coordinates[1],
-                                    lngB: destination.geometry.coordinates[0],
-                                },
-                            });
-                        },
-                    },
-                    {
-                        text: "Add Tentacles",
-                        callback: (e: any) => {
-                            addQuestion({
-                                id: "tentacles",
-                                data: {
-                                    lat: e.latlng.lat,
-                                    lng: e.latlng.lng,
-                                },
-                            });
-                        },
-                    },
-                    {
-                        text: "Add Matching",
-                        callback: (e: any) => {
-                            addQuestion({
-                                id: "matching",
-                                data: {
-                                    lat: e.latlng.lat,
-                                    lng: e.latlng.lng,
-                                },
-                            });
-                        },
-                    },
-                    {
-                        text: "Add Measuring",
-                        callback: (e: any) => {
-                            addQuestion({
-                                id: "measuring",
-                                data: {
-                                    lat: e.latlng.lat,
-                                    lng: e.latlng.lng,
-                                },
-                            });
-                        },
-                    },
-                    {
-                        text: "Copy Coordinates",
-                        callback: (e: any) => {
-                            if (!navigator || !navigator.clipboard) {
-                                toast.error(
-                                    "Clipboard API not supported in your browser",
-                                );
-                                return;
-                            }
-
-                            const latitude = e.latlng.lat;
-                            const longitude = e.latlng.lng;
-
-                            toast.promise(
-                                navigator.clipboard.writeText(
-                                    `${Math.abs(latitude)}°${latitude > 0 ? "N" : "S"}, ${Math.abs(
-                                        longitude,
-                                    )}°${longitude > 0 ? "E" : "W"}`,
-                                ),
-                                {
-                                    pending: "Writing to clipboard...",
-                                    success: "Coordinates copied!",
-                                    error: "An error occurred while copying",
-                                },
-                                { autoClose: 1000 },
-                            );
-                        },
-                    },
-                ]}
+                contextmenuItems={contextmenuItems}
             >
                 {getTileLayer($baseTileLayer, $thunderforestApiKey)}
                 <TransitLinesOverlay />
