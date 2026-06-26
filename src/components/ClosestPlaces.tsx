@@ -10,33 +10,33 @@ import {
     questionModified,
     questions,
 } from "@/lib/context";
-import { findTentacleLocations } from "@/maps/api";
+import { findClosestLocations } from "@/maps/api";
 
 import { Button } from "./ui/button";
 
-export const TentaclePlaces = () => {
+export const ClosestPlaces = () => {
     const $questions = useStore(questions);
 
     const draggingTentacles = $questions.filter(
-        (q) => q.id === "tentacles" && q.data.drag,
+        (q) => q.id === "closest" && q.data.drag,
     );
 
     return (
         <>
             {draggingTentacles.map((q) => (
-                <TentaclePlacesForQuestion key={q.key} question={q as any} />
+                <ClosestPlacesForQuestion key={q.key} question={q as any} />
             ))}
         </>
     );
 };
 
-const TentaclePlacesForQuestion = ({ question }: { question: any }) => {
+const ClosestPlacesForQuestion = ({ question }: { question: any }) => {
     const [places, setPlaces] = useState<any[]>([]);
     const $hiderMode = useStore(hiderMode);
 
     useEffect(() => {
         let isMounted = true;
-        findTentacleLocations(question.data)
+        findClosestLocations(question.data)
             .then((res) => {
                 if (isMounted) {
                     setPlaces(res.features);

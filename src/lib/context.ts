@@ -317,12 +317,12 @@ export const customInitPreference = persistentAtom<"ask" | "blank" | "prefill">(
 
 // --- TIME PENALTY & INFO BOARD STATE ---
 export const TIME_PENALTIES: Record<string, number> = {
-    matching: 15,
-    measuring: 15,
+    match: 15,
+    measure: 15,
     radar: 10,
-    tentacles: 20,
-    thermometer: 10,
-    photo: 5,
+    closest: 20,
+    "hot-cold": 10,
+    photos: 5,
 };
 
 export const penaltyMinutes = persistentAtom<number>("penaltyMinutes", 0, {

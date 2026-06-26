@@ -18,9 +18,9 @@ import {
 } from "@/maps/api";
 import { holedMask, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils";
-import type { APILocations, MatchingQuestion } from "@/maps/schema";
+import type { APILocations, MatchQuestion } from "@/maps/schema";
 
-export const findMatchingPlaces = async (question: MatchingQuestion) => {
+export const findMatchingPlaces = async (question: MatchQuestion) => {
     switch (question.type) {
         case "museum-full":
         case "hospital-full":
@@ -69,7 +69,7 @@ export const findMatchingPlaces = async (question: MatchingQuestion) => {
 };
 
 export const determineMatchingBoundary = _.memoize(
-    async (question: MatchingQuestion) => {
+    async (question: MatchQuestion) => {
         let boundary;
 
         switch (question.type) {
@@ -260,7 +260,7 @@ export const determineMatchingBoundary = _.memoize(
 
         return boundary;
     },
-    (question: MatchingQuestion & { cat?: unknown }) =>
+    (question: MatchQuestion & { cat?: unknown }) =>
         JSON.stringify({
             type: question.type,
             lat: question.lat,
@@ -272,8 +272,8 @@ export const determineMatchingBoundary = _.memoize(
         }),
 );
 
-export const adjustPerMatching = async (
-    question: MatchingQuestion,
+export const adjustPerMatch = async (
+    question: MatchQuestion,
     mapData: any,
 ) => {
     if (mapData === null) return;
@@ -287,7 +287,7 @@ export const adjustPerMatching = async (
     return modifyMapData(mapData, boundary, question.same);
 };
 
-export const hiderifyMatching = async (question: MatchingQuestion) => {
+export const hiderifyMatch = async (question: MatchQuestion) => {
     const $hiderMode = hiderMode.get();
     if ($hiderMode === false) {
         return question;
@@ -359,10 +359,10 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
     let feature = null;
 
     try {
-        feature = holedMask((await adjustPerMatching(question, $mapGeoJSON))!);
+        feature = holedMask((await adjustPerMatch(question, $mapGeoJSON))!);
     } catch {
         try {
-            feature = await adjustPerMatching(question, {
+            feature = await adjustPerMatch(question, {
                 type: "FeatureCollection",
                 features: [holedMask($mapGeoJSON)],
             });
@@ -380,7 +380,7 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
     return question;
 };
 
-export const matchingPlanningPolygon = async (question: MatchingQuestion) => {
+export const matchPlanningPolygon = async (question: MatchQuestion) => {
     try {
         const boundary = await determineMatchingBoundary(question);
 

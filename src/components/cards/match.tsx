@@ -19,18 +19,18 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
-import { type MatchingQuestion, matchingQuestionSchema } from "@/maps/schema";
+import { type MatchQuestion, matchingQuestionSchema } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
-export const MatchingQuestionComponent = ({
+export const MatchQuestionComponent = ({
     data,
     questionKey,
     sub,
     className,
     isPreview,
 }: {
-    data: MatchingQuestion;
+    data: MatchQuestion;
     questionKey: number;
     sub?: string;
     className?: string;
@@ -40,10 +40,10 @@ export const MatchingQuestionComponent = ({
     const $hiderMode = useStore(hiderMode);
     const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
-    const label = `Matching
+    const label = `Match
     ${
         $questions
-            .filter((q) => q.id === "matching")
+            .filter((q) => q.id === "match")
             .map((q) => q.key)
             .indexOf(questionKey) + 1
     }`;
@@ -63,13 +63,13 @@ export const MatchingQuestionComponent = ({
                 questionModified((data.drag = !locked));
                 if (locked) {
                     penaltyMinutes.set(
-                        penaltyMinutes.get() + TIME_PENALTIES.matching,
+                        penaltyMinutes.get() + TIME_PENALTIES.match,
                     );
                 } else {
                     penaltyMinutes.set(
                         Math.max(
                             0,
-                            penaltyMinutes.get() - TIME_PENALTIES.matching,
+                            penaltyMinutes.get() - TIME_PENALTIES.match,
                         ),
                     );
                 }
@@ -77,7 +77,7 @@ export const MatchingQuestionComponent = ({
         >
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                 <Select
-                    trigger="Matching Type"
+                    trigger="Match Type"
                     options={Object.fromEntries(
                         (
                             ((matchingQuestionSchema.shape.type as any)._def

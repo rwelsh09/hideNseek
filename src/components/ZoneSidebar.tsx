@@ -41,7 +41,7 @@ import {
     BLANK_GEOJSON,
     findPlacesInZone,
     findPlacesSpecificInZone,
-    findTentacleLocations,
+    findClosestLocations,
     nearestToQuestion,
     normalizeToStationFeatures,
     parseCustomStationsFromText,
@@ -339,7 +339,7 @@ export const ZoneSidebar = () => {
                     }
 
                     if (
-                        question.id === "matching" &&
+                        question.id === "match" &&
                         (question.data.type === "same-first-letter-station" ||
                             question.data.type === "same-length-station" ||
                             question.data.type === "same-train-line")
@@ -425,7 +425,7 @@ export const ZoneSidebar = () => {
                         }
                     }
                     if (
-                        question.id === "measuring" &&
+                        question.id === "measure" &&
                         ((question.data as any).type === "mcdonalds" ||
                             (question.data as any).type === "seven11")
                     ) {
@@ -1106,7 +1106,7 @@ async function selectionProcess(
         if (!liveUpdateMapEnabled.get() && question.data.drag) continue;
 
         if (
-            (question.id === "measuring" || question.id === "matching") &&
+            (question.id === "measure" || question.id === "match") &&
             ((question.data.type as any) === "museum" ||
                 (question.data.type as any) === "hospital" ||
                 (question.data.type as any) === "cinema" ||
@@ -1131,7 +1131,7 @@ async function selectionProcess(
                 instances.features.length === 0 &&
                 iterations < MAX_ITERATIONS
             ) {
-                instances = await findTentacleLocations(
+                instances = await findClosestLocations(
                     {
                         lat: station.properties.geometry.coordinates[1],
                         lng: station.properties.geometry.coordinates[0],
@@ -1144,7 +1144,7 @@ async function selectionProcess(
                         collapsed: false,
                         showLabels: false,
                     },
-                    "Finding matching locations to hiding zone...",
+                    "Finding match locations to hiding zone...",
                 );
 
                 const distances: any[] = instances.features.map((x: any) => {
@@ -1187,12 +1187,12 @@ async function selectionProcess(
 
             if (instances.features.length === 0) {
                 toast.warning(
-                    `Could not find enough matching locations nearby after ${MAX_ITERATIONS} attempts.`,
+                    `Could not find enough match locations nearby after ${MAX_ITERATIONS} attempts.`,
                 );
                 continue;
             }
 
-            if (question.id === "matching") {
+            if (question.id === "match") {
                 const voronoi = geoSpatialVoronoi(
                     turf.featureCollection(nearestPoints),
                 );
@@ -1248,7 +1248,7 @@ async function selectionProcess(
             }
         }
         if (
-            question.id === "measuring" &&
+            question.id === "measure" &&
             (question.data as any).type === "rail-measure"
         ) {
             if (stations.length === 0) {
@@ -1292,7 +1292,7 @@ async function selectionProcess(
             }
         }
         if (
-            question.id === "measuring" &&
+            question.id === "measure" &&
             ((question.data as any).type === "mcdonalds" ||
                 (question.data as any).type === "seven11")
         ) {

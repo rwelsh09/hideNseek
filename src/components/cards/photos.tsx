@@ -16,7 +16,7 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
-import type { PhotoQuestion } from "@/maps/schema";
+import type { PhotosQuestion } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
@@ -33,13 +33,13 @@ const PHOTO_LABELS: Record<string, string> = {
     route: "Nearest Intersection",
 };
 
-export const PhotoQuestionComponent = ({
+export const PhotosQuestionComponent = ({
     data,
     questionKey,
     sub,
     className,
 }: {
-    data: PhotoQuestion;
+    data: PhotosQuestion;
     questionKey: number;
     sub?: string;
     className?: string;
@@ -52,7 +52,7 @@ export const PhotoQuestionComponent = ({
     useEffect(() => {
         setLocalNotes(data.notes);
     }, [data.notes]);
-    const label = PHOTO_LABELS[data.type] || "Photo";
+    const label = PHOTO_LABELS[data.type] || "Photos";
 
     return (
         <QuestionCard
@@ -69,13 +69,13 @@ export const PhotoQuestionComponent = ({
                 questionModified((data.drag = !locked));
                 if (locked) {
                     penaltyMinutes.set(
-                        penaltyMinutes.get() + TIME_PENALTIES.photo,
+                        penaltyMinutes.get() + TIME_PENALTIES.photos,
                     );
                 } else {
                     penaltyMinutes.set(
                         Math.max(
                             0,
-                            penaltyMinutes.get() - TIME_PENALTIES.photo,
+                            penaltyMinutes.get() - TIME_PENALTIES.photos,
                         ),
                     );
                 }
@@ -85,7 +85,7 @@ export const PhotoQuestionComponent = ({
                 <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-col")}>
                     <Input
                         type="text"
-                        placeholder="Enter information about the photo..."
+                        placeholder="Enter information about the photos..."
                         className="rounded-md p-2 w-full"
                         value={localNotes}
                         disabled={!data.drag || $isLoading}

@@ -1,30 +1,30 @@
 import type { Feature, FeatureCollection } from "geojson";
 
 import {
-    adjustPerMatching,
-    hiderifyMatching,
-    matchingPlanningPolygon,
-} from "./questions/matching";
+    adjustPerMatch,
+    hiderifyMatch,
+    matchPlanningPolygon,
+} from "./questions/match";
 import {
-    adjustPerMeasuring,
-    hiderifyMeasuring,
-    measuringPlanningPolygon,
-} from "./questions/measuring";
+    adjustPerMeasure,
+    hiderifyMeasure,
+    measurePlanningPolygon,
+} from "./questions/measure";
 import {
     adjustPerRadius,
     hiderifyRadius,
     radiusPlanningPolygon,
 } from "./questions/radius";
 import {
-    adjustPerTentacle,
-    hiderifyTentacles,
-    tentaclesPlanningPolygon,
-} from "./questions/tentacles";
+    adjustPerClosest,
+    hiderifyClosest,
+    closestPlanningPolygon,
+} from "./questions/closest";
 import {
-    adjustPerThermometer,
-    hiderifyThermometer,
-    thermometerPlanningPolygon,
-} from "./questions/thermometer";
+    adjustPerHotCold,
+    hiderifyHotCold,
+    hotColdPlanningPolygon,
+} from "./questions/hot-cold";
 import type { Question, Questions } from "./schema";
 
 export * from "./geo-utils";
@@ -35,17 +35,17 @@ export const hiderifyQuestion = async (question: Question) => {
             case "radius":
                 question.data = hiderifyRadius(question.data);
                 break;
-            case "thermometer":
-                question.data = await hiderifyThermometer(question.data);
+            case "hot-cold":
+                question.data = await hiderifyHotCold(question.data);
                 break;
-            case "tentacles":
-                question.data = await hiderifyTentacles(question.data);
+            case "closest":
+                question.data = await hiderifyClosest(question.data);
                 break;
-            case "matching":
-                question.data = await hiderifyMatching(question.data);
+            case "match":
+                question.data = await hiderifyMatch(question.data);
                 break;
-            case "measuring":
-                question.data = await hiderifyMeasuring(question.data);
+            case "measure":
+                question.data = await hiderifyMeasure(question.data);
                 break;
         }
     }
@@ -61,14 +61,14 @@ export const determinePlanningPolygon = async (
         switch (question.id) {
             case "radius":
                 return radiusPlanningPolygon(question.data);
-            case "thermometer":
-                return thermometerPlanningPolygon(question.data);
-            case "tentacles":
-                return tentaclesPlanningPolygon(question.data);
-            case "matching":
-                return matchingPlanningPolygon(question.data);
-            case "measuring":
-                return measuringPlanningPolygon(question.data);
+            case "hot-cold":
+                return hotColdPlanningPolygon(question.data);
+            case "closest":
+                return closestPlanningPolygon(question.data);
+            case "match":
+                return matchPlanningPolygon(question.data);
+            case "measure":
+                return measurePlanningPolygon(question.data);
         }
     }
 };
@@ -81,20 +81,20 @@ export async function adjustMapGeoDataForQuestion(
         switch (question?.id) {
             case "radius":
                 return await adjustPerRadius(question.data, mapGeoData);
-            case "thermometer":
-                return await adjustPerThermometer(question.data, mapGeoData);
-            case "tentacles":
+            case "hot-cold":
+                return await adjustPerHotCold(question.data, mapGeoData);
+            case "closest":
                 if (question.data.location === false) {
                     return adjustPerRadius(
                         { ...question.data, within: false },
                         mapGeoData,
                     );
                 }
-                return await adjustPerTentacle(question.data, mapGeoData);
-            case "matching":
-                return await adjustPerMatching(question.data, mapGeoData);
-            case "measuring":
-                return await adjustPerMeasuring(question.data, mapGeoData);
+                return await adjustPerClosest(question.data, mapGeoData);
+            case "match":
+                return await adjustPerMatch(question.data, mapGeoData);
+            case "measure":
+                return await adjustPerMeasure(question.data, mapGeoData);
             default:
                 return mapGeoData;
         }

@@ -30,12 +30,12 @@ import { questionSchema } from "@/maps/schema";
 
 import { AddQuestionDialog } from "./AddQuestionDialog";
 import {
-    MatchingQuestionComponent,
-    MeasuringQuestionComponent,
-    PhotoQuestionComponent,
+    MatchQuestionComponent,
+    MeasureQuestionComponent,
+    PhotosQuestionComponent,
     RadiusQuestionComponent,
-    TentacleQuestionComponent,
-    ThermometerQuestionComponent,
+    ClosestQuestionComponent,
+    HotColdQuestionComponent,
 } from "./QuestionCards";
 import { Button } from "./ui/button";
 
@@ -139,41 +139,41 @@ export const QuestionSidebar = () => {
                                     questionKey={question.key}
                                 />
                             );
-                        case "thermometer":
+                        case "hot-cold":
                             return (
-                                <ThermometerQuestionComponent
+                                <HotColdQuestionComponent
                                     data={question.data}
                                     key={question.key}
                                     questionKey={question.key}
                                 />
                             );
-                        case "tentacles":
+                        case "closest":
                             return (
-                                <TentacleQuestionComponent
+                                <ClosestQuestionComponent
                                     data={question.data}
                                     key={question.key}
                                     questionKey={question.key}
                                 />
                             );
-                        case "matching":
+                        case "match":
                             return (
-                                <MatchingQuestionComponent
+                                <MatchQuestionComponent
                                     data={question.data}
                                     key={question.key}
                                     questionKey={question.key}
                                 />
                             );
-                        case "measuring":
+                        case "measure":
                             return (
-                                <MeasuringQuestionComponent
+                                <MeasureQuestionComponent
                                     data={question.data}
                                     key={question.key}
                                     questionKey={question.key}
                                 />
                             );
-                        case "photo":
+                        case "photos":
                             return (
-                                <PhotoQuestionComponent
+                                <PhotosQuestionComponent
                                     data={question.data as any}
                                     key={question.key}
                                     questionKey={question.key}

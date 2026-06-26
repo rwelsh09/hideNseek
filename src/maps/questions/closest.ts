@@ -1,10 +1,10 @@
 import * as turf from "@turf/turf";
 
 import { hiderMode } from "@/lib/context";
-import { findTentacleLocations } from "@/maps/api";
+import { findClosestLocations } from "@/maps/api";
 import { arcBuffer, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils";
-import type { TentacleQuestion, Units } from "@/maps/schema";
+import type { ClosestQuestion, Units } from "@/maps/schema";
 
 const filterPointsWithinRadius = (
     points: any,
@@ -40,8 +40,8 @@ const filterPointsWithinRadius = (
     );
 };
 
-export const adjustPerTentacle = async (
-    question: TentacleQuestion,
+export const adjustPerClosest = async (
+    question: ClosestQuestion,
     mapData: any,
 ) => {
     if (mapData === null) return;
@@ -49,7 +49,7 @@ export const adjustPerTentacle = async (
         throw new Error("Must have a location");
     }
 
-    const rawPoints = await findTentacleLocations(question);
+    const rawPoints = await findClosestLocations(question);
 
     const points = filterPointsWithinRadius(
         rawPoints,
@@ -83,13 +83,13 @@ export const adjustPerTentacle = async (
     );
 };
 
-export const hiderifyTentacles = async (question: TentacleQuestion) => {
+export const hiderifyClosest = async (question: ClosestQuestion) => {
     const $hiderMode = hiderMode.get();
     if ($hiderMode === false) {
         return question;
     }
 
-    const rawPoints = await findTentacleLocations(question);
+    const rawPoints = await findClosestLocations(question);
 
     const points = filterPointsWithinRadius(
         rawPoints,
@@ -134,8 +134,8 @@ export const hiderifyTentacles = async (question: TentacleQuestion) => {
     return question;
 };
 
-export const tentaclesPlanningPolygon = async (question: TentacleQuestion) => {
-    const rawPoints = await findTentacleLocations(question);
+export const closestPlanningPolygon = async (question: ClosestQuestion) => {
+    const rawPoints = await findClosestLocations(question);
 
     const points = filterPointsWithinRadius(
         rawPoints,
