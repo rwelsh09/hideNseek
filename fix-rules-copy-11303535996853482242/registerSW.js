@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-rules-copy-11303535996853482242/sw.js', { scope: '/HideAndSeek/fix-rules-copy-11303535996853482242/' })})}
