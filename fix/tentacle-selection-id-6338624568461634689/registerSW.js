@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/tentacle-selection-id-6338624568461634689/sw.js', { scope: '/HideAndSeek/fix/tentacle-selection-id-6338624568461634689/' })})}
