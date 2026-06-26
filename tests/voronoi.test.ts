@@ -65,7 +65,7 @@ describe("geoSpatialVoronoi edge cases", () => {
         expect(voronoi.features.length).toBeGreaterThan(0);
 
         const hasMultiPolygon = voronoi.features.some(
-            (f) => f.geometry.type === "MultiPolygon"
+            (f) => f.geometry.type === "MultiPolygon",
         );
         expect(hasMultiPolygon).toBe(true);
     });

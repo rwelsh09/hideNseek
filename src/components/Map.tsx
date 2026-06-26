@@ -36,7 +36,6 @@ import { clearCache, determineMapBoundaries } from "@/maps/api";
 import { DraggableMarkers } from "./DraggableMarkers";
 import { LeafletActionButtons } from "./LeafletActionButtons";
 import { PlaytestPlaces } from "./PlaytestPlaces";
-import { PolygonDraw } from "./PolygonDraw";
 import { TentaclePlaces } from "./TentaclePlaces";
 import { TransitLinesOverlay } from "./TransitLinesOverlay";
 
@@ -347,7 +346,6 @@ export const Map = ({ className }: { className?: string }) => {
                         <LeafletActionButtons />
                     </div>
                 </div>
-                <PolygonDraw />
                 <ScaleControl position="bottomleft" />
             </MapContainer>
         ),

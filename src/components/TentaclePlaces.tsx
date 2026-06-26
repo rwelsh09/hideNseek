@@ -36,15 +36,11 @@ const TentaclePlacesForQuestion = ({ question }: { question: any }) => {
 
     useEffect(() => {
         let isMounted = true;
-        if (question.data.locationType === "custom") {
-            setPlaces(question.data.places || []);
-        } else {
-            findTentacleLocations(question.data).then((res) => {
-                if (isMounted) {
-                    setPlaces(res.features);
-                }
-            });
-        }
+        findTentacleLocations(question.data).then((res) => {
+            if (isMounted) {
+                setPlaces(res.features);
+            }
+        });
         return () => {
             isMounted = false;
         };

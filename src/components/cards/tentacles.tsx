@@ -12,7 +12,6 @@ import {
 } from "@/components/ui/sidebar-l";
 import { UnitSelect } from "@/components/UnitSelect";
 import {
-    drawingQuestionKey,
     hiderMode,
     isLoading,
     penaltyMinutes,
@@ -26,9 +25,8 @@ import { findTentacleLocations } from "@/maps/api";
 import {
     determineUnionizedStrings,
     NO_GROUP,
-    type TentacleQuestion,
+    TentacleQuestion,
     tentacleQuestionSchema,
-    type TraditionalTentacleQuestion,
 } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
@@ -47,7 +45,6 @@ export const TentacleQuestionComponent = ({
     isPreview?: boolean;
 }) => {
     const $questions = useStore(questions);
-    const $drawingQuestionKey = useStore(drawingQuestionKey);
     const $isLoading = useStore(isLoading);
     const label = `Tentacles
     ${
@@ -163,51 +160,13 @@ export const TentacleQuestionComponent = ({
                     )}
                     value={data.locationType}
                     onValueChange={async (value) => {
-                        if (value === "custom") {
-                            const priorLocations = await findTentacleLocations(
-                                data as TraditionalTentacleQuestion,
-                            );
-
-                            data.locationType = "custom";
-                            data.places = priorLocations.features.map((x) => ({
-                                ...x,
-                                properties: {
-                                    ...x.properties,
-                                    name:
-                                        x.properties?.["name:en"] ??
-                                        x.properties?.name,
-                                },
-                            }));
-                            data.location = false;
-                        } else {
-                            data.location = false;
-                            data.locationType = value;
-                        }
+                        data.location = false;
+                        data.locationType = value;
                         questionModified();
                     }}
                     disabled={!data.drag || $isLoading}
                 />
             </SidebarMenuItem>
-            {data.locationType === "custom" && data.drag && (
-                <>
-                    <p className="px-2 mb-1 text-center text-orange-500">
-                        To modify tentacle locations, enable it:
-                        <Checkbox
-                            className="mx-1 my-1"
-                            checked={$drawingQuestionKey === questionKey}
-                            onCheckedChange={(checked) => {
-                                if (checked) {
-                                    drawingQuestionKey.set(questionKey);
-                                } else {
-                                    drawingQuestionKey.set(-1);
-                                }
-                            }}
-                            disabled={!data.drag || $isLoading}
-                        />
-                        and use the buttons at the bottom left of the map.
-                    </p>
-                </>
-            )}
             <LatitudeLongitude
                 latitude={data.lat}
                 longitude={data.lng}
@@ -253,23 +212,18 @@ const TentacleLocationSelector = ({
     useEffect(() => {
         let isMounted = true;
         setLoading(true);
-        if (data.locationType === "custom") {
-            setLocations(turf.featureCollection(data.places || []));
-            setLoading(false);
-        } else {
-            findTentacleLocations(data)
-                .then((res) => {
-                    if (isMounted) {
-                        setLocations(res);
-                        setLoading(false);
-                    }
-                })
-                .catch(() => {
-                    if (isMounted) {
-                        setLoading(false);
-                    }
-                });
-        }
+        findTentacleLocations(data)
+            .then((res) => {
+                if (isMounted) {
+                    setLocations(res);
+                    setLoading(false);
+                }
+            })
+            .catch(() => {
+                if (isMounted) {
+                    setLoading(false);
+                }
+            });
         return () => {
             isMounted = false;
         };

@@ -52,19 +52,7 @@ export const PlaytestPlaces = () => {
                 if (isLocked) return;
 
                 if (data.locationType) {
-                    if (data.locationType === "custom") {
-                        // Custom places are literal arrays of features
-                        if (data.places && data.places.length > 0) {
-                            data.places.forEach((p: any) => {
-                                allPlaces.push({
-                                    ...p,
-                                    customColor: data.color || "orange",
-                                });
-                            });
-                        }
-                    } else {
-                        typesSet.add(data.locationType);
-                    }
+                    typesSet.add(data.locationType);
                 }
 
                 if (data.type) {

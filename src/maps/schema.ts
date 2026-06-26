@@ -165,27 +165,8 @@ const encompassingTentacleQuestionSchema = baseTentacleQuestionSchema.extend({
     places: z.array(z.any()).optional(),
 });
 
-const customTentacleQuestionSchema = baseTentacleQuestionSchema.extend({
-    locationType: z.literal("custom").describe("Custom Locations"),
-    places: z.array(
-        z.object({
-            type: z.literal("Feature"),
-            geometry: z.object({
-                type: z.literal("Point"),
-                coordinates: z.array(z.number()),
-            }),
-            id: z.union([z.string(), z.number(), z.undefined()]).optional(),
-            properties: z.object({
-                name: z.any(),
-            }),
-        }),
-    ),
-});
-
-export const tentacleQuestionSchema = z.union([
-    customTentacleQuestionSchema.describe(NO_GROUP),
-    tentacleQuestionSpecificSchemaOne.describe("Standard Locations"),
-]);
+export const tentacleQuestionSchema =
+    tentacleQuestionSpecificSchemaOne.describe("Standard Locations");
 
 const baseMatchingQuestionSchema = ordinaryBaseQuestionSchema.extend({
     same: z.boolean().default(true),
@@ -296,7 +277,4 @@ export type TraditionalTentacleQuestion = z.infer<
 >;
 export type EncompassingTentacleQuestionSchema = z.infer<
     typeof encompassingTentacleQuestionSchema
->;
-export type CustomTentacleQuestion = z.infer<
-    typeof customTentacleQuestionSchema
 >;
