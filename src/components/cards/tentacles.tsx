@@ -24,7 +24,7 @@ import { cn, mapToObj } from "@/lib/utils";
 import { findTentacleLocations } from "@/maps/api";
 import {
     determineUnionizedStrings,
-    TentacleQuestion,
+    type TentacleQuestion,
     tentacleQuestionSchema,
 } from "@/maps/schema";
 

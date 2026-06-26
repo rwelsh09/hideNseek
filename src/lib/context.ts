@@ -291,6 +291,11 @@ export const showTutorial = persistentAtom<boolean>("showTutorials", true, {
     decode: JSON.parse,
 });
 
+export const hasSeenRules = persistentAtom<boolean>("hasSeenRules", false, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
+
 export const customInitPreference = persistentAtom<"ask" | "blank" | "prefill">(
     "customInitPreference",
     "ask",
