@@ -19,6 +19,7 @@ import {
     displayHidingZonesOptions,
     displayTransitLines,
     followMe,
+    hasSeenRules,
     hiderMode,
     hidingRadius,
     hidingZone,
@@ -227,6 +228,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             <a
                                 href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/rules`}
                                 className="w-full sm:w-[280px]"
+                                onClick={() => hasSeenRules.set(true)}
+                                data-tutorial-id="tutorial-rules-btn"
                             >
                                 <Button className="w-full">Rules & Tips</Button>
                             </a>
