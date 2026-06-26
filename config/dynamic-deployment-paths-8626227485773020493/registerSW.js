@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/config/dynamic-deployment-paths-8626227485773020493/sw.js', { scope: '/HideAndSeek/config/dynamic-deployment-paths-8626227485773020493/' })})}
