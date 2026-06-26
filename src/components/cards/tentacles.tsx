@@ -212,7 +212,6 @@ const TentacleLocationSelector = ({
     useEffect(() => {
         let isMounted = true;
         setLoading(true);
-        console.log("Fetching", data);
         findTentacleLocations(data)
             .then((res) => {
                 if (isMounted) {
@@ -275,7 +274,7 @@ const TentacleLocationSelector = ({
             const coords =
                 feature?.geometry?.coordinates ??
                 (feature?.properties?.lon && feature?.properties?.lat
-                    ? [feature.properties.lon, feature.properties.lat]
+                    ? [feature.properties?.lon, feature.properties?.lat]
                     : null);
 
             if (!coords) return false;
@@ -294,7 +293,7 @@ const TentacleLocationSelector = ({
     if (
         _selectedLocationName &&
         !filteredFeatures.find(
-            (f: any) => f.properties.name === _selectedLocationName,
+            (f: any) => f.properties?.name === _selectedLocationName,
         )
     ) {
         data.location = false;
@@ -308,8 +307,8 @@ const TentacleLocationSelector = ({
                 options={{
                     false: "Not Within",
                     ...mapToObj(filteredFeatures, (feature: any) => [
-                        feature.properties.name,
-                        feature.properties.name,
+                        feature.properties?.name,
+                        feature.properties?.name,
                     ]),
                 }}
                 value={data.location ? data.location.properties?.name : "false"}
@@ -318,7 +317,8 @@ const TentacleLocationSelector = ({
                         data.location = false;
                     } else {
                         data.location = filteredFeatures.find(
-                            (feature: any) => feature.properties.name === value,
+                            (feature: any) =>
+                                feature.properties?.name === value,
                         );
                     }
 
