@@ -66,8 +66,10 @@ export const questions = persistentAtom<Questions>("questions", [], {
     encode: JSON.stringify,
     decode: (x) => questionsSchema.parse(JSON.parse(x)),
 });
-export const addQuestion = (question: DeepPartial<Question>) =>
-    questionModified(questions.get().push(questionSchema.parse(question)));
+export const addQuestion = (question: DeepPartial<Question>) => {
+    questions.get().push(questionSchema.parse(question));
+    questionModified();
+};
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const questionModified = (..._: any[]) => {
     if (autoSave.get()) {
