@@ -564,6 +564,29 @@ export const ZoneSidebar = () => {
                 <SidebarGroup>
                     <SidebarGroupContent>
                         <SidebarMenu>
+                            <SidebarMenuItem>
+                                <Label className="font-semibold font-poppins ml-2">
+                                    Head Start (Minutes)
+                                </Label>
+                                <div
+                                    className={cn(
+                                        MENU_ITEM_CLASSNAME,
+                                        "gap-2 flex flex-row",
+                                    )}
+                                >
+                                    <Input
+                                        type="number"
+                                        className="rounded-md p-2 w-full"
+                                        value={$headStartMinutes}
+                                        onChange={(e) => {
+                                            headStartMinutes.set(
+                                                parseInt(e.target.value) || 0,
+                                            );
+                                        }}
+                                        disabled={$isLoading}
+                                    />
+                                </div>
+                            </SidebarMenuItem>
                             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                                 <Label className="font-semibold font-poppins">
                                     Display hiding zones?
@@ -766,29 +789,6 @@ export const ZoneSidebar = () => {
                                         onChange={(unit) => {
                                             hidingRadiusUnits.set(unit);
                                         }}
-                                    />
-                                </div>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem>
-                                <Label className="font-semibold font-poppins ml-2">
-                                    Head Start (Minutes)
-                                </Label>
-                                <div
-                                    className={cn(
-                                        MENU_ITEM_CLASSNAME,
-                                        "gap-2 flex flex-row",
-                                    )}
-                                >
-                                    <Input
-                                        type="number"
-                                        className="rounded-md p-2 w-full"
-                                        value={$headStartMinutes}
-                                        onChange={(e) => {
-                                            headStartMinutes.set(
-                                                parseInt(e.target.value) || 0,
-                                            );
-                                        }}
-                                        disabled={$isLoading}
                                     />
                                 </div>
                             </SidebarMenuItem>
