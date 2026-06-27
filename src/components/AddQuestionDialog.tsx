@@ -1,3 +1,4 @@
+import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
 import {
     Beer,
@@ -26,7 +27,7 @@ import {
     Trees,
     Utensils,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { SidebarContext } from "@/components/ui/sidebar-l";
 import { addQuestion, leafletMapContext, TIME_PENALTIES } from "@/lib/context";
@@ -47,6 +48,13 @@ import {
 
 export function AddQuestionDialog() {
     const [open, setOpen] = useState(false);
+    const { openMobile } = useStore(SidebarContext);
+
+    useEffect(() => {
+        if (openMobile) {
+            setOpen(false);
+        }
+    }, [openMobile]);
 
     const handleQuestionSelect = (type: string, detail?: string) => {
         const map = leafletMapContext.get();
