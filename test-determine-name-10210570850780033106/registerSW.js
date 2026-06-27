@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/test-determine-name-10210570850780033106/sw.js', { scope: '/HideAndSeek/test-determine-name-10210570850780033106/' })})}
