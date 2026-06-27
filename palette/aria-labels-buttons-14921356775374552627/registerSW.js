@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/palette/aria-labels-buttons-14921356775374552627/sw.js', { scope: '/HideAndSeek/palette/aria-labels-buttons-14921356775374552627/' })})}
