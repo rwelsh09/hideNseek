@@ -59,6 +59,7 @@ export function ScrollToTop({
                         }
                     }}
                     variant="ghost"
+                    aria-label="Scroll to top"
                     className="fixed rounded-full right-2 w-12 h-12 z-[1050] hover:bg-slate-500 p-1"
                     {...props}
                 >
