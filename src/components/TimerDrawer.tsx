@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/drawer";
 import {
     headStartMinutes,
-    isOptionsOpenStore,
     isTimerRunning,
     leaderboard,
     penaltyMinutes,
