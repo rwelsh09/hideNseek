@@ -122,7 +122,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Questions",
                                   description:
-                                      "Open the left sidebar to add and manage questions for the game.",
+                                      "This opens the left sidebar, where you add and manage questions for the game.",
                                   side: "right",
                                   align: "start",
                               },
@@ -133,7 +133,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Timer & Leaderboard",
                                   description:
-                                      "Click here to access the timer and leaderboard to track your game time.",
+                                      "Clicking here opens your timer and leaderboard.",
                                   side: "right",
                                   align: "start",
                               },
@@ -144,7 +144,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Game State",
                                   description:
-                                      "Open the right sidebar to toggle Hiding Zones.",
+                                      "This opens the right sidebar, where you can set the Hiders head start time and toggle Hiding Zones.",
                                   side: "left",
                                   align: "start",
                               },
@@ -153,9 +153,9 @@ export const TutorialManager = () => {
                               element:
                                   '[data-tutorial-id="option-drawers-trigger"]',
                               popover: {
-                                  title: "Settings & Options",
+                                  title: "Options",
                                   description:
-                                      "Access map settings, transit lines overlays, save states, sharing options, and extra tools.",
+                                      "Access map settings, transit lines overlays, save states, sharing options, and more.",
                                   side: "top",
                                   align: "end",
                               },
@@ -370,7 +370,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "How it works",
                                   description:
-                                      "Click here to see the specific rules for the question you are currently asking.",
+                                      "Clicking here brings up the specific rules for the question you are currently asking. (Try it later!)",
                                   side: "bottom",
                                   align: "end",
                               },
@@ -381,7 +381,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Share Question",
                                   description:
-                                      "Need to send the question details to another player? You can copy and share it from here.",
+                                      "Need to send the question details to the Hider? You can copy and share it from here.",
                                   side: "bottom",
                                   align: "end",
                               },
@@ -392,7 +392,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Delete Question",
                                   description:
-                                      "Made a mistake? Use this to remove the question.",
+                                      "Feel free to test out questions during the game to see how they will affect things. Use this to remove a question you no longer want.",
                                   side: "bottom",
                                   align: "end",
                               },
@@ -410,22 +410,22 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-clipboard-paste-btn"]',
+                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-clipboard-copy-btn"]',
                               popover: {
-                                  title: "Paste Coordinates",
+                                  title: "Copy Coordinates",
                                   description:
-                                      "Paste coordinates you copied previously directly into the question.",
+                                      "Quickly copy the current coordinates to your clipboard. For easy sharing with the Hider.",
                                   side: "bottom",
                                   align: "center",
                               },
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-clipboard-copy-btn"]',
+                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-clipboard-paste-btn"]',
                               popover: {
-                                  title: "Copy Coordinates",
+                                  title: "Paste Coordinates",
                                   description:
-                                      "Quickly copy the current coordinates to your clipboard.",
+                                      "Paste coordinates you copied from the Seekers directly into the question.",
                                   side: "bottom",
                                   align: "center",
                               },
@@ -436,7 +436,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Lock Your Answer",
                                   description:
-                                      "Once you receive your answer from the Hider, lock the question using this button.",
+                                      "Once you receive your answer from the Hider, lock the question using this button. (Try it now!)",
                                   side: "bottom",
                                   align: "end",
                                   showButtons: ["previous"],
@@ -476,7 +476,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Time Penalty",
                                   description:
-                                      "Locking a question automatically increases the Time Penalty. Keep an eye on it!",
+                                      "Locking a question automatically increases the Time Penalty!",
                                   side: "right",
                                   align: "start",
                                   onPopoverRender: () => {
