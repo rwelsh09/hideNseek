@@ -54,14 +54,14 @@ export const NextStepsChecklist = () => {
                     <span>
                         <strong>Define Zones:</strong> In the right sidebar you
                         can adjust the Hiding Zone Radius and disable specific
-                        stations/zones on the map. (optional)
+                        stations/zones. (optional)
                     </span>
                 </li>
                 <li className="flex gap-2 items-start">
                     <span className="font-bold text-blue-400 w-5 shrink-0">3.</span>
                     <span>
-                        <strong>Sync State:</strong> Open the Options menu to
-                        Share the game state with the other players.
+                        <strong>Sync Game:</strong> Click Share and
+                        send the game link to the other players.
                     </span>
                 </li>
                 <li className="flex gap-2 items-start">
