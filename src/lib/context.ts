@@ -176,7 +176,6 @@ export const hidingZone = computed(
         disabledStations,
         hidingRadius,
         hidingRadiusUnits,
-        displayHidingZonesOptions,
         headStartMinutes,
     ],
     (
@@ -187,7 +186,6 @@ export const hidingZone = computed(
         disabledStations,
         radius,
         hidingRadiusUnits,
-        zoneOptions,
         $headStartMinutes,
     ) => {
         if (geo !== null) {
@@ -198,7 +196,6 @@ export const hidingZone = computed(
                 hidingRadius: radius,
                 hidingRadiusUnits,
                 headStartMinutes: $headStartMinutes,
-                zoneOptions: zoneOptions,
             };
         } else {
             const $loc = structuredClone(loc);
@@ -211,7 +208,6 @@ export const hidingZone = computed(
                 hidingRadiusUnits,
                 headStartMinutes: $headStartMinutes,
                 alternateLocations: structuredClone(altLoc),
-                zoneOptions: zoneOptions,
             };
         }
     },

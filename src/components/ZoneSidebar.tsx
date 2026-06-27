@@ -201,53 +201,23 @@ export const ZoneSidebar = () => {
             isLoading.set(true);
 
             try {
-                if ($displayHidingZonesOptions.length === 0) {
-                    toast.error("At least one place type must be selected");
-                    return;
-                }
-
                 let places: StationPlace[] = [];
 
-                const overpassOptions = $displayHidingZonesOptions.filter(
-                    (o) => !o.startsWith("SPECIAL:"),
-                );
-                const specialOptions = $displayHidingZonesOptions.filter((o) =>
-                    o.startsWith("SPECIAL:"),
-                );
-
-                if (overpassOptions.length > 0) {
-                    // @ts-expect-error osmtogeojson always defines properties with an "id" string
-                    places =
-                        osmtogeojson(
-                            await findPlacesInZone(
-                                overpassOptions[0],
-                                "Finding stations. This may take a while...",
-                                "nwr",
-                                "center",
-                                overpassOptions.slice(1),
-                            ),
-                        ).features || [];
-                } else {
-                    places = [];
-                }
-
-                if (specialOptions.includes("SPECIAL:CALGARY_TRANSIT")) {
-                    const transitFeatures = (
-                        calgaryTransitData as any
-                    ).features.map((f: any) => ({
-                        type: "Feature",
-                        geometry: f.geometry,
-                        properties: {
-                            ...f.properties,
-                            id:
-                                f.properties?.["@id"] ||
-                                f.id ||
-                                `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
-                            name: f.properties?.name,
-                        },
-                    }));
-                    places.push(...transitFeatures);
-                }
+                const transitFeatures = (
+                    calgaryTransitData as any
+                ).features.map((f: any) => ({
+                    type: "Feature",
+                    geometry: f.geometry,
+                    properties: {
+                        ...f.properties,
+                        id:
+                            f.properties?.["@id"] ||
+                            f.id ||
+                            `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
+                        name: f.properties?.name,
+                    },
+                }));
+                places.push(...transitFeatures);
 
                 const unionized = safeUnion(
                     turf.simplify($questionFinishedMapData, {
@@ -563,78 +533,6 @@ export const ZoneSidebar = () => {
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
                                 </AlertDialog>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                                <MultiSelect
-                                    options={[
-                                        {
-                                            label: "Railway Stations",
-                                            value: "[railway=station]",
-                                        },
-                                        {
-                                            label: "Railway Halts",
-                                            value: "[railway=halt]",
-                                        },
-                                        {
-                                            label: "Railway Stops",
-                                            value: "[railway=stop]",
-                                        },
-                                        {
-                                            label: "Tram Stops",
-                                            value: "[railway=tram_stop]",
-                                        },
-                                        {
-                                            label: "Bus Stops",
-                                            value: "[highway=bus_stop]",
-                                        },
-                                        {
-                                            label: "Calgary Rapid Transit Network",
-                                            value: "SPECIAL:CALGARY_TRANSIT",
-                                        },
-                                        {
-                                            label: "Ferry Terminals",
-                                            value: "[amenity=ferry_terminal]",
-                                        },
-                                        {
-                                            label: "Ferry Platforms (public transport)",
-                                            value: "[public_transport=platform][platform=ferry]",
-                                        },
-                                        {
-                                            label: "Funicular Stations",
-                                            value: "[railway=funicular]",
-                                        },
-                                        {
-                                            label: "Aerialway Stations",
-                                            value: "[aerialway=station]",
-                                        },
-                                        {
-                                            label: "Railway Stations Excluding Subways",
-                                            value: "[railway=station][subway!=yes]",
-                                        },
-                                        {
-                                            label: "Subway Stations",
-                                            value: "[railway=station][subway=yes]",
-                                        },
-                                        {
-                                            label: "Light Rail Stations",
-                                            value: "[railway=station][light_rail=yes]",
-                                        },
-                                        {
-                                            label: "Light Rail Halts",
-                                            value: "[railway=halt][light_rail=yes]",
-                                        },
-                                    ]}
-                                    onValueChange={
-                                        displayHidingZonesOptions.set
-                                    }
-                                    defaultValue={$displayHidingZonesOptions}
-                                    placeholder="Select allowed places"
-                                    animation={2}
-                                    maxCount={3}
-                                    modalPopover
-                                    className="!bg-popover bg-opacity-100"
-                                    disabled={$isLoading}
-                                />
                             </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <Label className="font-semibold font-poppins ml-2">
