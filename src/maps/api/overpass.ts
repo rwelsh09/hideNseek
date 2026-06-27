@@ -19,7 +19,7 @@ import {
     OVERPASS_API_FALLBACK,
 } from "./constants";
 import type { APILocations } from "./types";
-import type { EncompassingTentacleQuestionSchema } from "./types";
+import type { EncompassingClosestQuestionSchema } from "./types";
 import { CacheType, QuestionSpecificLocation } from "./types";
 
 export const getOverpassData = async (
@@ -92,9 +92,9 @@ export const determineGeoJSON = async (
 
 import { liveUpdateMapEnabled } from "@/lib/context";
 
-export const findTentacleLocations = async (
-    question: EncompassingTentacleQuestionSchema,
-    text: string = "Determining tentacle locations...",
+export const findClosestLocations = async (
+    question: EncompassingClosestQuestionSchema,
+    text: string = "Determining closest locations...",
 ) => {
     let data;
     if (
@@ -156,7 +156,8 @@ export const findTentacleLocations = async (
             return;
         }
 
-        const hasCenter = element.center && element.center.lon && element.center.lat;
+        const hasCenter =
+            element.center && element.center.lon && element.center.lat;
         const hasLatLon = element.lat && element.lon;
 
         let ptLon: number, ptLat: number;
@@ -214,7 +215,7 @@ is_in(${latitude}, ${longitude})->.a;
 rel(pivot.a)["admin_level"="${adminLevel}"];
 out geom;
     `;
-    const data = await getOverpassData(query, "Determining matching zone...");
+    const data = await getOverpassData(query, "Determining match zone...");
     const geo = osmtogeojson(data);
     return geo.features?.[0];
 };
@@ -472,7 +473,7 @@ export const nearestToQuestion = async (question: any) => {
     let iterations = 0;
     const MAX_ITERATIONS = 10;
     while (instances.features.length === 0 && iterations < MAX_ITERATIONS) {
-        instances = await findTentacleLocations(
+        instances = await findClosestLocations(
             {
                 lat: question.lat,
                 lng: question.lng,
@@ -485,7 +486,7 @@ export const nearestToQuestion = async (question: any) => {
                 collapsed: false,
                 showLabels: false,
             },
-            "Finding matching locations...",
+            "Finding match locations...",
         );
         radius += 30;
         iterations++;

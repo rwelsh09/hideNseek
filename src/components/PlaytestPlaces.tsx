@@ -48,7 +48,7 @@ export const PlaytestPlaces = () => {
                 // Note: According to src/maps/schema.ts, `drag` is synonymous with `unlocked`.
                 // Therefore, data.drag === false means the question is currently locked.
                 const isLocked = data.drag === false;
-                if (isLocked || q.id === "tentacles") return;
+                if (isLocked || q.id === "closest") return;
 
                 if (data.locationType) {
                     typesSet.add(data.locationType);

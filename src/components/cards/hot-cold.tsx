@@ -14,18 +14,18 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
-import type { ThermometerQuestion } from "@/maps/schema";
+import type { HotColdQuestion } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
-export const ThermometerQuestionComponent = ({
+export const HotColdQuestionComponent = ({
     data,
     questionKey,
     sub,
     className,
     isPreview,
 }: {
-    data: ThermometerQuestion;
+    data: HotColdQuestion;
     questionKey: number;
     sub?: string;
     className?: string;
@@ -38,10 +38,10 @@ export const ThermometerQuestionComponent = ({
 
     const DISTANCE_UNIT = "kilometers";
 
-    const label = `Thermometer
+    const label = `HotCold
     ${
         $questions
-            .filter((q) => q.id === "thermometer")
+            .filter((q) => q.id === "hot/cold")
             .map((q) => q.key)
             .indexOf(questionKey) + 1
     }`;
@@ -77,13 +77,13 @@ export const ThermometerQuestionComponent = ({
                 questionModified((data.drag = !locked));
                 if (locked) {
                     penaltyMinutes.set(
-                        penaltyMinutes.get() + TIME_PENALTIES.thermometer,
+                        penaltyMinutes.get() + TIME_PENALTIES["hot/cold"],
                     );
                 } else {
                     penaltyMinutes.set(
                         Math.max(
                             0,
-                            penaltyMinutes.get() - TIME_PENALTIES.thermometer,
+                            penaltyMinutes.get() - TIME_PENALTIES["hot/cold"],
                         ),
                     );
                 }

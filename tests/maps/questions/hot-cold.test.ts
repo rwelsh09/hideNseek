@@ -2,11 +2,11 @@ import * as turf from "@turf/turf";
 import { expect, test, describe, vi, beforeEach } from "vitest";
 
 import {
-    adjustPerThermometer,
-    hiderifyThermometer,
-    thermometerPlanningPolygon,
-} from "@/maps/questions/thermometer";
-import type { ThermometerQuestion } from "@/maps/schema";
+    adjustPerHotCold,
+    hiderifyHotCold,
+    hotColdPlanningPolygon,
+} from "@/maps/questions/hot-cold";
+import type { HotColdQuestion } from "@/maps/schema";
 
 vi.mock("@/lib/context", () => ({
     hiderMode: {
@@ -26,8 +26,8 @@ vi.mock("@/maps/geo-utils/voronoi", async (importOriginal) => {
 import { hiderMode } from "@/lib/context";
 import { geoSpatialVoronoi } from "@/maps/geo-utils/voronoi";
 
-describe("thermometer", () => {
-    const questionTemplate: ThermometerQuestion = {
+describe("hot-cold", () => {
+    const questionTemplate: HotColdQuestion = {
         latA: 51.0,
         lngA: -114.0,
         latB: 51.1,
@@ -43,17 +43,17 @@ describe("thermometer", () => {
         vi.resetAllMocks();
     });
 
-    describe("adjustPerThermometer", () => {
+    describe("adjustPerHotCold", () => {
         test("should return early if mapData is null", () => {
-            const result = adjustPerThermometer(questionTemplate, null);
+            const result = adjustPerHotCold(questionTemplate, null);
             expect(result).toBeUndefined();
         });
 
         test("should return null or throw if mapData is empty FeatureCollection", () => {
-            // safeUnion throws if features are empty, let's test that adjustPerThermometer handles or bubbles it
+            // safeUnion throws if features are empty, let's test that adjustPerHotCold handles or bubbles it
             const emptyMapData = turf.featureCollection([]);
             expect(() =>
-                adjustPerThermometer(questionTemplate, emptyMapData),
+                adjustPerHotCold(questionTemplate, emptyMapData),
             ).toThrow();
         });
 
@@ -70,7 +70,7 @@ describe("thermometer", () => {
                 ]),
             ]);
 
-            const result = adjustPerThermometer(
+            const result = adjustPerHotCold(
                 { ...questionTemplate, warmer: true },
                 mapData,
             );
@@ -92,7 +92,7 @@ describe("thermometer", () => {
                 ]),
             ]);
 
-            const result = adjustPerThermometer(
+            const result = adjustPerHotCold(
                 { ...questionTemplate, warmer: false },
                 mapData,
             );
@@ -101,11 +101,11 @@ describe("thermometer", () => {
         });
     });
 
-    describe("hiderifyThermometer", () => {
+    describe("hiderifyHotCold", () => {
         test("should return unchanged question if hiderMode is false", () => {
             (hiderMode.get as any).mockReturnValue(false);
 
-            const result = hiderifyThermometer(questionTemplate);
+            const result = hiderifyHotCold(questionTemplate);
 
             expect(result).toEqual(questionTemplate);
         });
@@ -119,7 +119,7 @@ describe("thermometer", () => {
                 longitude: -114.09,
             });
 
-            const result = hiderifyThermometer({
+            const result = hiderifyHotCold({
                 ...questionTemplate,
                 warmer: false,
             });
@@ -136,7 +136,7 @@ describe("thermometer", () => {
                 longitude: -114.01,
             });
 
-            const result = hiderifyThermometer({
+            const result = hiderifyHotCold({
                 ...questionTemplate,
                 warmer: true,
             });
@@ -145,9 +145,9 @@ describe("thermometer", () => {
         });
     });
 
-    describe("thermometerPlanningPolygon", () => {
+    describe("hotColdPlanningPolygon", () => {
         test("should return a FeatureCollection of LineStrings", () => {
-            const result = thermometerPlanningPolygon(questionTemplate);
+            const result = hotColdPlanningPolygon(questionTemplate);
 
             expect(result).toBeDefined();
             expect(result.type).toBe("FeatureCollection");
@@ -182,7 +182,7 @@ describe("thermometer", () => {
                 ]),
             );
 
-            const result = thermometerPlanningPolygon(questionTemplate);
+            const result = hotColdPlanningPolygon(questionTemplate);
 
             expect(result).toBeDefined();
             expect(result.type).toBe("FeatureCollection");

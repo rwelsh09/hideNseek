@@ -65,5 +65,5 @@ export type StationCircle = Feature<Polygon, StationPlace>;
 
 export type {
     APILocations,
-    EncompassingTentacleQuestionSchema,
+    EncompassingClosestQuestionSchema,
 } from "@/maps/schema";

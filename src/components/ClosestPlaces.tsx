@@ -11,38 +11,38 @@ import {
     questionModified,
     questions,
 } from "@/lib/context";
-import { findTentacleLocations } from "@/maps/api";
+import { findClosestLocations } from "@/maps/api";
 import type { Question } from "@/maps/schema";
 
 import { Button } from "./ui/button";
 
-export const TentaclePlaces = () => {
+export const ClosestPlaces = () => {
     const $questions = useStore(questions);
 
-    const draggingTentacles = $questions.filter(
-        (q) => q.id === "tentacles" && q.data.drag,
+    const draggingClosest = $questions.filter(
+        (q) => q.id === "closest" && q.data.drag,
     );
 
     return (
         <>
-            {draggingTentacles.map((q) => (
-                <TentaclePlacesForQuestion key={q.key} question={q as any} />
+            {draggingClosest.map((q) => (
+                <ClosestPlacesForQuestion key={q.key} question={q as any} />
             ))}
         </>
     );
 };
 
-const TentaclePlacesForQuestion = ({
+const ClosestPlacesForQuestion = ({
     question,
 }: {
-    question: Extract<Question, { id: "tentacles" }>;
+    question: Extract<Question, { id: "closest" }>;
 }) => {
     const [places, setPlaces] = useState<Feature<Point, any>[]>([]);
     const $hiderMode = useStore(hiderMode);
 
     useEffect(() => {
         let isMounted = true;
-        findTentacleLocations(question.data)
+        findClosestLocations(question.data)
             .then((res) => {
                 if (isMounted) {
                     setPlaces(res.features);
@@ -93,11 +93,10 @@ const TentaclePlacesForQuestion = ({
 
                 const isSelected =
                     question.data.location &&
-                    question.data.location.properties?.id ===
-                        f.properties?.id;
+                    question.data.location.properties?.id === f.properties?.id;
 
                 return (
-                    <TentaclePlaceMarker
+                    <ClosestPlaceMarker
                         key={i}
                         f={f}
                         coords={coords}
@@ -124,7 +123,7 @@ const PATH_OPTIONS_UNSELECTED = {
     fillOpacity: 0.7,
 };
 
-const TentaclePlaceMarker = ({
+const ClosestPlaceMarker = ({
     f,
     coords,
     isSelected,
@@ -133,7 +132,7 @@ const TentaclePlaceMarker = ({
     f: Feature<Point, any>;
     coords: number[];
     isSelected: boolean | "" | 0 | null | undefined;
-    question: Extract<Question, { id: "tentacles" }>;
+    question: Extract<Question, { id: "closest" }>;
 }) => {
     // Performance Optimization: Memoize eventHandlers so the object reference remains stable.
     // react-leaflet checks object equality for eventHandlers, and re-binds DOM events

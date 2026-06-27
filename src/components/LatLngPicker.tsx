@@ -196,7 +196,8 @@ const LatLngEditForm = ({
                     disabled={disabled}
                 />
                 <Button
-                    variant="outline" size="icon"
+                    variant="outline"
+                    size="icon"
                     onClick={() => onChange(-latitude, null)}
                     disabled={disabled}
                 >
@@ -221,7 +222,8 @@ const LatLngEditForm = ({
                     disabled={disabled}
                 />
                 <Button
-                    variant="outline" size="icon"
+                    variant="outline"
+                    size="icon"
                     onClick={() => onChange(null, -longitude)}
                     disabled={disabled}
                 >
@@ -298,9 +300,7 @@ export const LatitudeLongitude = ({
                 )}
 
                 <div
-                    className={cn(
-                        !inlineEdit && "flex justify-between gap-1",
-                    )}
+                    className={cn(!inlineEdit && "flex justify-between gap-1")}
                 >
                     {inlineEdit ? (
                         <div className="flex flex-col gap-2 w-full mb-2">
@@ -316,7 +316,8 @@ export const LatitudeLongitude = ({
                             <DialogTrigger asChild>
                                 <Button
                                     disabled={disabled}
-                                    variant="outline" size="icon"
+                                    variant="outline"
+                                    size="icon"
                                     title="Edit coordinates"
                                     aria-label="Edit coordinates"
                                 >
@@ -348,7 +349,8 @@ export const LatitudeLongitude = ({
                             <DialogTrigger asChild>
                                 <Button
                                     disabled={disabled}
-                                    variant="outline" size="icon"
+                                    variant="outline"
+                                    size="icon"
                                     title="Change marker color"
                                     aria-label="Change marker color"
                                 >
@@ -370,7 +372,8 @@ export const LatitudeLongitude = ({
                                     ).map(([colorKey, hexCode]) => (
                                         <Button
                                             key={colorKey}
-                                            variant="outline" size="icon"
+                                            variant="outline"
+                                            size="icon"
                                             className={cn(
                                                 "h-16 w-full rounded-md border-2",
                                                 colorName === colorKey
@@ -404,7 +407,8 @@ export const LatitudeLongitude = ({
                         }
                     >
                         <Button
-                            variant="outline" size="icon"
+                            variant="outline"
+                            size="icon"
                             onClick={() => {
                                 if (!navigator || !navigator.geolocation)
                                     return alert("Geolocation not supported");
@@ -451,7 +455,8 @@ export const LatitudeLongitude = ({
                             <LocateIcon />
                         </Button>
                         <Button
-                            variant="outline" size="icon"
+                            variant="outline"
+                            size="icon"
                             onClick={() => {
                                 if (!navigator || !navigator.clipboard) {
                                     toast.error(
@@ -504,7 +509,8 @@ export const LatitudeLongitude = ({
                             <ClipboardPasteIcon />
                         </Button>
                         <Button
-                            variant="outline" size="icon"
+                            variant="outline"
+                            size="icon"
                             onClick={() => {
                                 if (!navigator || !navigator.clipboard) {
                                     toast.error(

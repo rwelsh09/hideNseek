@@ -17,11 +17,9 @@ import {
     QuestionSpecificLocation,
 } from "@/maps/api";
 import { arcBufferToPoint, holedMask, modifyMapData } from "@/maps/geo-utils";
-import type { APILocations, MeasuringQuestion } from "@/maps/schema";
+import type { APILocations, MeasureQuestion } from "@/maps/schema";
 
-export const determineMeasuringBoundary = async (
-    question: MeasuringQuestion,
-) => {
+export const determineMeasureBoundary = async (question: MeasureQuestion) => {
     switch (question.type) {
         case "museum-full":
         case "hospital-full":
@@ -100,8 +98,8 @@ export const determineMeasuringBoundary = async (
 };
 
 const bufferedDeterminer = _.memoize(
-    async (question: MeasuringQuestion) => {
-        const placeData = await determineMeasuringBoundary(question);
+    async (question: MeasureQuestion) => {
+        const placeData = await determineMeasureBoundary(question);
 
         if (placeData === (false as any) || placeData === undefined)
             return false as any;
@@ -123,8 +121,8 @@ const bufferedDeterminer = _.memoize(
         }),
 );
 
-export const adjustPerMeasuring = async (
-    question: MeasuringQuestion,
+export const adjustPerMeasure = async (
+    question: MeasureQuestion,
     mapData: any,
 ) => {
     if (mapData === null) return;
@@ -136,7 +134,7 @@ export const adjustPerMeasuring = async (
     return modifyMapData(mapData, buffer as any, question.hiderCloser);
 };
 
-export const hiderifyMeasuring = async (question: MeasuringQuestion) => {
+export const hiderifyMeasure = async (question: MeasureQuestion) => {
     const $hiderMode = hiderMode.get();
     if ($hiderMode === false) {
         return question;
@@ -148,10 +146,10 @@ export const hiderifyMeasuring = async (question: MeasuringQuestion) => {
     let feature = null;
 
     try {
-        feature = holedMask((await adjustPerMeasuring(question, $mapGeoJSON))!);
+        feature = holedMask((await adjustPerMeasure(question, $mapGeoJSON))!);
     } catch {
         try {
-            feature = await adjustPerMeasuring(question, {
+            feature = await adjustPerMeasure(question, {
                 type: "FeatureCollection",
                 features: [holedMask($mapGeoJSON)],
             });
@@ -171,7 +169,7 @@ export const hiderifyMeasuring = async (question: MeasuringQuestion) => {
     return question;
 };
 
-export const measuringPlanningPolygon = async (question: MeasuringQuestion) => {
+export const measurePlanningPolygon = async (question: MeasureQuestion) => {
     try {
         const buffered = await bufferedDeterminer(question);
 
@@ -183,8 +181,8 @@ export const measuringPlanningPolygon = async (question: MeasuringQuestion) => {
     }
 };
 
-export const calculateMeasuringDistance = async (
-    question: MeasuringQuestion,
+export const calculateMeasureDistance = async (
+    question: MeasureQuestion,
 ): Promise<number | null> => {
     const seeker = turf.point([question.lng, question.lat]);
 
@@ -224,7 +222,7 @@ export const calculateMeasuringDistance = async (
         case "cinema-full":
         case "library-full":
         case "golf_course-full": {
-            const boundaryData = await determineMeasuringBoundary(question);
+            const boundaryData = await determineMeasureBoundary(question);
             if (
                 !boundaryData ||
                 (Array.isArray(boundaryData) && boundaryData.length === 0)

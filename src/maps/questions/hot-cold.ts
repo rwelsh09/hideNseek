@@ -3,12 +3,9 @@ import * as turf from "@turf/turf";
 import { hiderMode } from "@/lib/context";
 import { safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils/voronoi";
-import type { ThermometerQuestion } from "@/maps/schema";
+import type { HotColdQuestion } from "@/maps/schema";
 
-export const adjustPerThermometer = (
-    question: ThermometerQuestion,
-    mapData: any,
-) => {
+export const adjustPerHotCold = (question: HotColdQuestion, mapData: any) => {
     if (mapData === null) return;
 
     const pointA = turf.point([question.lngA, question.latA]);
@@ -27,7 +24,7 @@ export const adjustPerThermometer = (
     }
 };
 
-export const hiderifyThermometer = (question: ThermometerQuestion) => {
+export const hiderifyHotCold = (question: HotColdQuestion) => {
     const $hiderMode = hiderMode.get();
     if ($hiderMode === false) {
         return question;
@@ -55,7 +52,7 @@ export const hiderifyThermometer = (question: ThermometerQuestion) => {
     return question;
 };
 
-export const thermometerPlanningPolygon = (question: ThermometerQuestion) => {
+export const hotColdPlanningPolygon = (question: HotColdQuestion) => {
     const pointA = turf.point([question.lngA, question.latA]);
     const pointB = turf.point([question.lngB, question.latB]);
 
