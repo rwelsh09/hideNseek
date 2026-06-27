@@ -24,7 +24,6 @@ import {
     Target,
     Thermometer,
     Train,
-    TrainTrack,
     TramFront,
     Trees,
     Utensils,
@@ -157,7 +156,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Landmark className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <Palette className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
                                     Museum
                                 </span>
@@ -215,22 +214,7 @@ export function AddQuestionDialog() {
                             >
                                 <Flag className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Golf Course
-                                </span>
-                            </button>
-
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "same-train-line",
-                                    )
-                                }
-                                className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <TrainTrack className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Transit
+                                    Golf
                                 </span>
                             </button>
                             <button
@@ -244,21 +228,21 @@ export function AddQuestionDialog() {
                             >
                                 <MapPinned className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Neighborhood
+                                    Community
                                 </span>
                             </button>
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
                                         "matching",
-                                        "same-first-letter-neighbourhood",
+                                        "same-train-line",
                                     )
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <MapPin className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <TramFront className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Neighborhood
+                                    Transit
                                 </span>
                             </button>
                         </div>
@@ -289,7 +273,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Landmark className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <Palette className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
                                     Museum
                                 </span>
@@ -347,10 +331,9 @@ export function AddQuestionDialog() {
                             >
                                 <Flag className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Golf Course
+                                    Golf
                                 </span>
                             </button>
-
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
@@ -362,7 +345,7 @@ export function AddQuestionDialog() {
                             >
                                 <TramFront className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Station
+                                    Transit
                                 </span>
                             </button>
                         </div>
@@ -532,6 +515,20 @@ export function AddQuestionDialog() {
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "tentacles",
+                                            "museum",
+                                        )
+                                    }
+                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                >
+                                    <Palette className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                        Museum
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        handleQuestionSelect(
+                                            "tentacles",
                                             "hospital",
                                         )
                                     }
@@ -574,20 +571,6 @@ export function AddQuestionDialog() {
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "tentacles",
-                                            "museum",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Palette className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                        Museum
-                                    </span>
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "tentacles",
                                             "timhortons",
                                         )
                                     }
@@ -607,20 +590,6 @@ export function AddQuestionDialog() {
                                     <Beer className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                     <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
                                         Pub
-                                    </span>
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "tentacles",
-                                            "custom",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Waypoints className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                        Custom
                                     </span>
                                 </button>
                             </div>
