@@ -24,7 +24,6 @@ import {
     Target,
     Thermometer,
     Train,
-    TrainTrack,
     TramFront,
     Trees,
     Utensils,
@@ -155,9 +154,12 @@ export function AddQuestionDialog() {
                                         "museum-full",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Palette className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Museum
+                                </span>
                             </button>
                             <button
                                 onClick={() =>
@@ -166,9 +168,12 @@ export function AddQuestionDialog() {
                                         "hospital-full",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Hospital className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Hospital className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Hospital
+                                </span>
                             </button>
                             <button
                                 onClick={() =>
@@ -177,9 +182,12 @@ export function AddQuestionDialog() {
                                         "cinema-full",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Film className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Film className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Cinema
+                                </span>
                             </button>
                             <button
                                 onClick={() =>
@@ -188,9 +196,12 @@ export function AddQuestionDialog() {
                                         "library-full",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Library className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Library className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Library
+                                </span>
                             </button>
                             <button
                                 onClick={() =>
@@ -199,21 +210,12 @@ export function AddQuestionDialog() {
                                         "golf_course-full",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Flag className="w-5 h-5 sm:w-6 sm:h-6" />
-                            </button>
-
-                            <button
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "same-train-line",
-                                    )
-                                }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <TrainTrack className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Flag className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Golf
+                                </span>
                             </button>
                             <button
                                 onClick={() =>
@@ -222,20 +224,26 @@ export function AddQuestionDialog() {
                                         "same-neighbourhood",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <MapPinned className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <MapPinned className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Community
+                                </span>
                             </button>
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
                                         "matching",
-                                        "same-first-letter-neighbourhood",
+                                        "same-train-line",
                                     )
                                 }
-                                className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <MapPin className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <TramFront className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Transit
+                                </span>
                             </button>
                         </div>
                     </div>
@@ -263,9 +271,12 @@ export function AddQuestionDialog() {
                                         "museum-full",
                                     )
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Landmark className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Palette className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Museum
+                                </span>
                             </button>
                             <button
                                 onClick={() =>
@@ -274,9 +285,12 @@ export function AddQuestionDialog() {
                                         "hospital-full",
                                     )
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Hospital className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Hospital className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Hospital
+                                </span>
                             </button>
                             <button
                                 onClick={() =>
@@ -285,9 +299,12 @@ export function AddQuestionDialog() {
                                         "cinema-full",
                                     )
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Film className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Film className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Cinema
+                                </span>
                             </button>
                             <button
                                 onClick={() =>
@@ -296,9 +313,12 @@ export function AddQuestionDialog() {
                                         "library-full",
                                     )
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Library className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Library className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Library
+                                </span>
                             </button>
                             <button
                                 onClick={() =>
@@ -307,11 +327,13 @@ export function AddQuestionDialog() {
                                         "golf_course-full",
                                     )
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Flag className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Flag className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Golf
+                                </span>
                             </button>
-
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
@@ -319,9 +341,12 @@ export function AddQuestionDialog() {
                                         "rail-measure",
                                     )
                                 }
-                                className="bg-green-600 text-white flex justify-center items-center hover:bg-green-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <TramFront className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <TramFront className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Transit
+                                </span>
                             </button>
                         </div>
                     </div>
@@ -349,7 +374,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "0.5")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 0.5 km
                             </button>
@@ -360,7 +385,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "1")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 1 km
                             </button>
@@ -371,7 +396,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "2")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 2 km
                             </button>
@@ -383,7 +408,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "5")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 5 km
                             </button>
@@ -395,7 +420,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "10")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 10 km
                             </button>
@@ -406,7 +431,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "unknown")
                                 }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 ????
                             </button>
@@ -438,7 +463,7 @@ export function AddQuestionDialog() {
                                     onClick={() =>
                                         handleQuestionSelect("thermometer", "1")
                                     }
-                                    className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
                                     <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                     1km
@@ -450,7 +475,7 @@ export function AddQuestionDialog() {
                                     onClick={() =>
                                         handleQuestionSelect("thermometer", "2")
                                     }
-                                    className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
                                     <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                     2km
@@ -462,7 +487,7 @@ export function AddQuestionDialog() {
                                     onClick={() =>
                                         handleQuestionSelect("thermometer", "5")
                                     }
-                                    className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
                                     <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                     5km
@@ -490,12 +515,29 @@ export function AddQuestionDialog() {
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "tentacles",
+                                            "museum",
+                                        )
+                                    }
+                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                >
+                                    <Palette className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                        Museum
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        handleQuestionSelect(
+                                            "tentacles",
                                             "hospital",
                                         )
                                     }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
-                                    <Hospital className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    <Hospital className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                        Hospital
+                                    </span>
                                 </button>
                                 <button
                                     onClick={() =>
@@ -504,9 +546,12 @@ export function AddQuestionDialog() {
                                             "cinema",
                                         )
                                     }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
-                                    <Film className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    <Film className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                        Cinema
+                                    </span>
                                 </button>
                                 <button
                                     onClick={() =>
@@ -515,20 +560,12 @@ export function AddQuestionDialog() {
                                             "library",
                                         )
                                     }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
-                                    <Library className="w-5 h-5 sm:w-6 sm:h-6" />
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "tentacles",
-                                            "museum",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Palette className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    <Library className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                        Library
+                                    </span>
                                 </button>
                                 <button
                                     onClick={() =>
@@ -537,28 +574,23 @@ export function AddQuestionDialog() {
                                             "timhortons",
                                         )
                                     }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
-                                    <Coffee className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    <Coffee className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                        Tim&apos;s
+                                    </span>
                                 </button>
                                 <button
                                     onClick={() =>
                                         handleQuestionSelect("tentacles", "pub")
                                     }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
-                                    <Beer className="w-5 h-5 sm:w-6 sm:h-6" />
-                                </button>
-                                <button
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "tentacles",
-                                            "custom",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Waypoints className="w-5 h-5 sm:w-6 sm:h-6" />
+                                    <Beer className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                        Pub
+                                    </span>
                                 </button>
                             </div>
                         </div>
@@ -587,9 +619,12 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "camera")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Camera className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Camera className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Selfie
+                                </span>
                             </button>
                             <button
                                 type="button"
@@ -598,9 +633,12 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "tree")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Leaf className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Leaf className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Unique Tree
+                                </span>
                             </button>
 
                             <button
@@ -610,9 +648,12 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "car")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Car className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Car className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Widest Street
+                                </span>
                             </button>
 
                             <button
@@ -622,9 +663,12 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "building")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Building2 className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Building2 className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Tallest Structure
+                                </span>
                             </button>
 
                             <button
@@ -634,9 +678,12 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "restaurant")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Utensils className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Utensils className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Restaurant
+                                </span>
                             </button>
 
                             <button
@@ -646,9 +693,12 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "park")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Trees className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Trees className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Park
+                                </span>
                             </button>
 
                             <button
@@ -658,9 +708,12 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "store")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <ShoppingCart className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <ShoppingCart className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Store Aisle
+                                </span>
                             </button>
 
                             <button
@@ -670,9 +723,12 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "worship")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Church className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Church className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Worship
+                                </span>
                             </button>
 
                             <button
@@ -682,9 +738,12 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "train")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Train className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Train className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Train Platform
+                                </span>
                             </button>
 
                             <button
@@ -694,9 +753,12 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "route")
                                 }
-                                className="bg-sky-400 text-white flex justify-center items-center hover:bg-sky-500 aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                <Route className="w-5 h-5 sm:w-6 sm:h-6" />
+                                <Route className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Intersection
+                                </span>
                             </button>
                         </div>
                     </div>
