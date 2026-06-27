@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/remove-custom-stations-11346466878374697007/sw.js', { scope: '/HideAndSeek/remove-custom-stations-11346466878374697007/' })})}
