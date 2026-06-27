@@ -56,7 +56,7 @@ const randomColorExcluding = (excluded: IconColor[] = []) => {
     return options[Math.floor(Math.random() * options.length)];
 };
 
-const thermometerQuestionSchema = z
+const hotColdQuestionSchema = z
     .object({
         latA: z
             .number()
@@ -119,7 +119,7 @@ const radiusQuestionSchema = ordinaryBaseQuestionSchema.extend({
     within: z.boolean().default(true),
 });
 
-const tentacleLocationsOne = z.union([
+const closestLocationsOne = z.union([
     z.literal("museum").describe("Museums"),
     z.literal("hospital").describe("Hospitals"),
     z.literal("cinema").describe("Movie Theaters"),
@@ -132,10 +132,10 @@ const tentacleLocationsOne = z.union([
 
 const apiLocationSchema = z.union([
     z.literal("golf_course"),
-    tentacleLocationsOne,
+    closestLocationsOne,
 ]);
 
-const baseTentacleQuestionSchema = ordinaryBaseQuestionSchema.extend({
+const baseClosestQuestionSchema = ordinaryBaseQuestionSchema.extend({
     showLabels: z.boolean().default(false),
     radius: z.number().min(0, "You cannot have a negative radius").default(2),
     unit: unitsSchema.default(getDefaultUnit),
@@ -159,25 +159,25 @@ const baseTentacleQuestionSchema = ordinaryBaseQuestionSchema.extend({
         ])
         .default(false),
 });
-const tentacleQuestionSpecificSchemaOne = baseTentacleQuestionSchema.extend({
-    locationType: tentacleLocationsOne,
+const closestQuestionSpecificSchemaOne = baseClosestQuestionSchema.extend({
+    locationType: closestLocationsOne,
     places: z.array(z.any()).optional(),
 });
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const encompassingTentacleQuestionSchema = baseTentacleQuestionSchema.extend({
+const encompassingClosestQuestionSchema = baseClosestQuestionSchema.extend({
     locationType: apiLocationSchema,
     places: z.array(z.any()).optional(),
 });
 
-export const tentacleQuestionSchema = tentacleQuestionSpecificSchemaOne;
+export const closestQuestionSchema = closestQuestionSpecificSchemaOne;
 
-const baseMatchingQuestionSchema = ordinaryBaseQuestionSchema.extend({
+const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
     same: z.boolean().default(true),
     lengthComparison: z.enum(["shorter", "longer", "same"]).optional(),
 });
 
-const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
+const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
     type: z
         .union([
             z.literal("museum-full").describe("Museum Question"),
@@ -204,13 +204,13 @@ const ordinaryMatchingQuestionSchema = baseMatchingQuestionSchema.extend({
         .default("museum-full"),
 });
 
-export const matchingQuestionSchema = ordinaryMatchingQuestionSchema;
+export const matchQuestionSchema = ordinaryMatchQuestionSchema;
 
-const baseMeasuringQuestionSchema = ordinaryBaseQuestionSchema.extend({
+const baseMeasureQuestionSchema = ordinaryBaseQuestionSchema.extend({
     hiderCloser: z.boolean().default(true),
 });
 
-const ordinaryMeasuringQuestionSchema = baseMeasuringQuestionSchema.extend({
+const ordinaryMeasureQuestionSchema = baseMeasureQuestionSchema.extend({
     type: z
         .union([
             z.literal("museum-full").describe("Museum Question"),
@@ -225,7 +225,7 @@ const ordinaryMeasuringQuestionSchema = baseMeasuringQuestionSchema.extend({
         .default("museum-full"),
 });
 
-export const measuringQuestionSchema = ordinaryMeasuringQuestionSchema;
+export const measureQuestionSchema = ordinaryMeasureQuestionSchema;
 
 export const questionSchema = z.union([
     z.object({
@@ -240,24 +240,24 @@ export const questionSchema = z.union([
         data: radiusQuestionSchema,
     }),
     z.object({
-        id: z.literal("thermometer"),
+        id: z.literal("hot/cold"),
         key: z.number().default(Math.random),
-        data: thermometerQuestionSchema,
+        data: hotColdQuestionSchema,
     }),
     z.object({
-        id: z.literal("tentacles"),
+        id: z.literal("closest"),
         key: z.number().default(Math.random),
-        data: tentacleQuestionSchema,
+        data: closestQuestionSchema,
     }),
     z.object({
-        id: z.literal("measuring"),
+        id: z.literal("measure"),
         key: z.number().default(Math.random),
-        data: measuringQuestionSchema,
+        data: measureQuestionSchema,
     }),
     z.object({
-        id: z.literal("matching"),
+        id: z.literal("match"),
         key: z.number().default(Math.random),
-        data: matchingQuestionSchema,
+        data: matchQuestionSchema,
     }),
 ]);
 
@@ -265,20 +265,20 @@ export const questionsSchema = z.array(questionSchema);
 
 export type Units = z.infer<typeof unitsSchema>;
 export type RadiusQuestion = z.infer<typeof radiusQuestionSchema>;
-export type ThermometerQuestion = z.infer<typeof thermometerQuestionSchema>;
-export type TentacleQuestion = z.infer<typeof tentacleQuestionSchema>;
+export type HotColdQuestion = z.infer<typeof hotColdQuestionSchema>;
+export type ClosestQuestion = z.infer<typeof closestQuestionSchema>;
 export type APILocations = z.infer<typeof apiLocationSchema>;
-export type MatchingQuestion = z.infer<typeof matchingQuestionSchema>;
-export type MeasuringQuestion = z.infer<typeof measuringQuestionSchema>;
+export type MatchQuestion = z.infer<typeof matchQuestionSchema>;
+export type MeasureQuestion = z.infer<typeof measureQuestionSchema>;
 export type PhotoQuestion = z.infer<typeof photoQuestionSchema>;
 export type Question = z.infer<typeof questionSchema>;
 export type Questions = z.infer<typeof questionsSchema>;
 export type DeepPartial<T> = {
     [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
-export type TraditionalTentacleQuestion = z.infer<
-    typeof tentacleQuestionSpecificSchemaOne
+export type TraditionalClosestQuestion = z.infer<
+    typeof closestQuestionSpecificSchemaOne
 >;
-export type EncompassingTentacleQuestionSchema = z.infer<
-    typeof encompassingTentacleQuestionSchema
+export type EncompassingClosestQuestionSchema = z.infer<
+    typeof encompassingClosestQuestionSchema
 >;

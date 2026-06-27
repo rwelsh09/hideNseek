@@ -19,19 +19,19 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
-import { calculateMeasuringDistance } from "@/maps/questions/measuring";
-import { type MeasuringQuestion, measuringQuestionSchema } from "@/maps/schema";
+import { calculateMeasureDistance } from "@/maps/questions/measure";
+import { type MeasureQuestion, measureQuestionSchema } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
-export const MeasuringQuestionComponent = ({
+export const MeasureQuestionComponent = ({
     data,
     questionKey,
     sub,
     className,
     isPreview,
 }: {
-    data: MeasuringQuestion;
+    data: MeasureQuestion;
     questionKey: number;
     sub?: string;
     className?: string;
@@ -46,7 +46,7 @@ export const MeasuringQuestionComponent = ({
     );
     React.useEffect(() => {
         let active = true;
-        calculateMeasuringDistance(data)
+        calculateMeasureDistance(data)
             .then((dist) => {
                 if (active) setDistanceValue(dist);
             })
@@ -58,10 +58,10 @@ export const MeasuringQuestionComponent = ({
         };
     }, [data.lat, data.lng, data.type]);
 
-    const label = `Measuring
+    const label = `Measure
     ${
         $questions
-            .filter((q) => q.id === "measuring")
+            .filter((q) => q.id === "measure")
             .map((q) => q.key)
             .indexOf(questionKey) + 1
     }`;
@@ -81,13 +81,13 @@ export const MeasuringQuestionComponent = ({
                 questionModified((data.drag = !locked));
                 if (locked) {
                     penaltyMinutes.set(
-                        penaltyMinutes.get() + TIME_PENALTIES.measuring,
+                        penaltyMinutes.get() + TIME_PENALTIES.measure,
                     );
                 } else {
                     penaltyMinutes.set(
                         Math.max(
                             0,
-                            penaltyMinutes.get() - TIME_PENALTIES.measuring,
+                            penaltyMinutes.get() - TIME_PENALTIES.measure,
                         ),
                     );
                 }
@@ -95,12 +95,12 @@ export const MeasuringQuestionComponent = ({
         >
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                 <Select
-                    trigger="Measuring Type"
+                    trigger="Measure Type"
                     options={Object.fromEntries(
                         (
-                            ((measuringQuestionSchema.shape.type as any)._def
+                            ((measureQuestionSchema.shape.type as any)._def
                                 .innerType ||
-                                measuringQuestionSchema.shape.type) as any
+                                measureQuestionSchema.shape.type) as any
                         ).options.map((x: any) => [
                             (x._def as any).value,
                             x.description,

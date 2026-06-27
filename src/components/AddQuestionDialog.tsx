@@ -22,7 +22,7 @@ import {
     Ruler,
     ShoppingCart,
     Target,
-    Thermometer,
+    Thermometer as HotCold,
     Train,
     TrainTrack,
     TramFront,
@@ -67,13 +67,13 @@ export function AddQuestionDialog() {
             qData.radius = detail === "unknown" ? 5 : parseFloat(detail || "5");
             qData.unit = "kilometers";
             qData.within = true;
-        } else if (type === "matching") {
+        } else if (type === "match") {
             qData.type = detail || "museum-full";
             qData.same = true;
-        } else if (type === "measuring") {
+        } else if (type === "measure") {
             qData.type = detail || "museum-full";
             qData.hiderCloser = true;
-        } else if (type === "thermometer") {
+        } else if (type === "hot/cold") {
             const destination = turf.destination(
                 [center.lng, center.lat],
                 parseFloat(detail || "5"),
@@ -88,7 +88,7 @@ export function AddQuestionDialog() {
                 warmer: true,
                 drag: true,
             };
-        } else if (type === "tentacles") {
+        } else if (type === "closest") {
             qData.locationType = detail || "museum";
             qData.radius = 2;
             qData.unit = "kilometers";
@@ -132,7 +132,7 @@ export function AddQuestionDialog() {
                 </DialogHeader>
 
                 <div className="overflow-y-auto p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-6">
-                    {/* MATCHING */}
+                    {/* MATCH */}
                     <div className="flex flex-col border-t-4 border-slate-800 pt-3">
                         <div className="flex items-center gap-2 mb-1">
                             <div className="bg-slate-800 p-1.5 rounded text-white shrink-0">
@@ -140,9 +140,9 @@ export function AddQuestionDialog() {
                             </div>
                             <div>
                                 <h3 className="font-bold text-slate-800 uppercase leading-none text-sm sm:text-base flex items-center">
-                                    Matching{" "}
+                                    Match{" "}
                                     <span className="ml-2 bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES.matching}
+                                        +{TIME_PENALTIES.match}
                                     </span>
                                 </h3>
                             </div>
@@ -150,10 +150,7 @@ export function AddQuestionDialog() {
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "museum-full",
-                                    )
+                                    handleQuestionSelect("match", "museum-full")
                                 }
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -162,7 +159,7 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
-                                        "matching",
+                                        "match",
                                         "hospital-full",
                                     )
                                 }
@@ -172,10 +169,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "matching",
-                                        "cinema-full",
-                                    )
+                                    handleQuestionSelect("match", "cinema-full")
                                 }
                                 className="bg-slate-800 text-white flex justify-center items-center hover:bg-slate-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -184,7 +178,7 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
-                                        "matching",
+                                        "match",
                                         "library-full",
                                     )
                                 }
@@ -195,7 +189,7 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
-                                        "matching",
+                                        "match",
                                         "golf_course-full",
                                     )
                                 }
@@ -207,7 +201,7 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
-                                        "matching",
+                                        "match",
                                         "same-train-line",
                                     )
                                 }
@@ -218,7 +212,7 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
-                                        "matching",
+                                        "match",
                                         "same-neighbourhood",
                                     )
                                 }
@@ -229,7 +223,7 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
-                                        "matching",
+                                        "match",
                                         "same-first-letter-neighbourhood",
                                     )
                                 }
@@ -240,7 +234,7 @@ export function AddQuestionDialog() {
                         </div>
                     </div>
 
-                    {/* MEASURING */}
+                    {/* MEASURE */}
                     <div className="flex flex-col border-t-4 border-green-600 pt-3">
                         <div className="flex items-center gap-2 mb-1">
                             <div className="bg-green-600 p-1.5 rounded text-white shrink-0">
@@ -248,9 +242,9 @@ export function AddQuestionDialog() {
                             </div>
                             <div>
                                 <h3 className="font-bold text-green-600 uppercase leading-none text-sm sm:text-base flex items-center">
-                                    Measuring{" "}
+                                    Measure{" "}
                                     <span className="ml-2 bg-green-100 text-green-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES.measuring}
+                                        +{TIME_PENALTIES.measure}
                                     </span>
                                 </h3>
                             </div>
@@ -259,7 +253,7 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
-                                        "measuring",
+                                        "measure",
                                         "museum-full",
                                     )
                                 }
@@ -270,7 +264,7 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
-                                        "measuring",
+                                        "measure",
                                         "hospital-full",
                                     )
                                 }
@@ -281,7 +275,7 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
-                                        "measuring",
+                                        "measure",
                                         "cinema-full",
                                     )
                                 }
@@ -292,7 +286,7 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
-                                        "measuring",
+                                        "measure",
                                         "library-full",
                                     )
                                 }
@@ -303,7 +297,7 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
-                                        "measuring",
+                                        "measure",
                                         "golf_course-full",
                                     )
                                 }
@@ -315,7 +309,7 @@ export function AddQuestionDialog() {
                             <button
                                 onClick={() =>
                                     handleQuestionSelect(
-                                        "measuring",
+                                        "measure",
                                         "rail-measure",
                                     )
                                 }
@@ -413,19 +407,19 @@ export function AddQuestionDialog() {
                         </div>
                     </div>
 
-                    {/* THERMOMETER & TENTACLES COLUMN */}
+                    {/* THERMOMETER & CLOSEST COLUMN */}
                     <div className="flex flex-col gap-6">
-                        {/* Thermometer - Updated buttons for Kilometers */}
+                        {/* HotCold - Updated buttons for Kilometers */}
                         <div className="flex flex-col border-t-4 border-yellow-400 pt-3">
                             <div className="flex items-center gap-2 mb-1">
                                 <div className="bg-yellow-400 p-1.5 rounded text-white shrink-0">
-                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />
+                                    <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base flex items-center">
-                                        Thermometer{" "}
+                                        HotCold{" "}
                                         <span className="ml-2 bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                            +{TIME_PENALTIES.thermometer}
+                                            +{TIME_PENALTIES["hot/cold"]}
                                         </span>
                                     </h3>
                                 </div>
@@ -433,44 +427,44 @@ export function AddQuestionDialog() {
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                                 <button
                                     type="button"
-                                    aria-label="Add thermometer question for 1 km"
-                                    title="Add thermometer question for 1 km"
+                                    aria-label="Add hotCold question for 1 km"
+                                    title="Add hotCold question for 1 km"
                                     onClick={() =>
-                                        handleQuestionSelect("thermometer", "1")
+                                        handleQuestionSelect("hot/cold", "1")
                                     }
                                     className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
-                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
+                                    <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                     1km
                                 </button>
                                 <button
                                     type="button"
-                                    aria-label="Add thermometer question for 2 km"
-                                    title="Add thermometer question for 2 km"
+                                    aria-label="Add hotCold question for 2 km"
+                                    title="Add hotCold question for 2 km"
                                     onClick={() =>
-                                        handleQuestionSelect("thermometer", "2")
+                                        handleQuestionSelect("hot/cold", "2")
                                     }
                                     className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
-                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
+                                    <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                     2km
                                 </button>
                                 <button
                                     type="button"
-                                    aria-label="Add thermometer question for 5 km"
-                                    title="Add thermometer question for 5 km"
+                                    aria-label="Add hotCold question for 5 km"
+                                    title="Add hotCold question for 5 km"
                                     onClick={() =>
-                                        handleQuestionSelect("thermometer", "5")
+                                        handleQuestionSelect("hot/cold", "5")
                                     }
                                     className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col justify-center items-center hover:bg-yellow-500 aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
-                                    <Thermometer className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
+                                    <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                     5km
                                 </button>
                             </div>
                         </div>
 
-                        {/* Tentacles */}
+                        {/* Closest */}
                         <div className="flex flex-col border-t-4 border-purple-600 pt-3">
                             <div className="flex items-center gap-2 mb-1">
                                 <div className="bg-purple-600 p-1.5 rounded text-white shrink-0">
@@ -478,9 +472,9 @@ export function AddQuestionDialog() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-purple-600 uppercase leading-none text-sm sm:text-base flex items-center">
-                                        Tentacles{" "}
+                                        Closest{" "}
                                         <span className="ml-2 bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                            +{TIME_PENALTIES.tentacles}
+                                            +{TIME_PENALTIES.closest}
                                         </span>
                                     </h3>
                                 </div>
@@ -489,7 +483,7 @@ export function AddQuestionDialog() {
                                 <button
                                     onClick={() =>
                                         handleQuestionSelect(
-                                            "tentacles",
+                                            "closest",
                                             "hospital",
                                         )
                                     }
@@ -500,7 +494,7 @@ export function AddQuestionDialog() {
                                 <button
                                     onClick={() =>
                                         handleQuestionSelect(
-                                            "tentacles",
+                                            "closest",
                                             "cinema",
                                         )
                                     }
@@ -511,7 +505,7 @@ export function AddQuestionDialog() {
                                 <button
                                     onClick={() =>
                                         handleQuestionSelect(
-                                            "tentacles",
+                                            "closest",
                                             "library",
                                         )
                                     }
@@ -522,7 +516,7 @@ export function AddQuestionDialog() {
                                 <button
                                     onClick={() =>
                                         handleQuestionSelect(
-                                            "tentacles",
+                                            "closest",
                                             "museum",
                                         )
                                     }
@@ -533,7 +527,7 @@ export function AddQuestionDialog() {
                                 <button
                                     onClick={() =>
                                         handleQuestionSelect(
-                                            "tentacles",
+                                            "closest",
                                             "timhortons",
                                         )
                                     }
@@ -543,7 +537,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect("tentacles", "pub")
+                                        handleQuestionSelect("closest", "pub")
                                     }
                                     className="bg-purple-600 text-white flex justify-center items-center hover:bg-purple-700 aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -552,7 +546,7 @@ export function AddQuestionDialog() {
                                 <button
                                     onClick={() =>
                                         handleQuestionSelect(
-                                            "tentacles",
+                                            "closest",
                                             "custom",
                                         )
                                     }

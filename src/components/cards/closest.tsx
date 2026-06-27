@@ -21,23 +21,23 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn, mapToObj } from "@/lib/utils";
-import { findTentacleLocations } from "@/maps/api";
+import { findClosestLocations } from "@/maps/api";
 import {
+    type ClosestQuestion,
+    closestQuestionSchema,
     determineUnionizedStrings,
-    type TentacleQuestion,
-    tentacleQuestionSchema,
 } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
-export const TentacleQuestionComponent = ({
+export const ClosestQuestionComponent = ({
     data,
     questionKey,
     sub,
     className,
     isPreview,
 }: {
-    data: TentacleQuestion;
+    data: ClosestQuestion;
     questionKey: number;
     sub?: string;
     className?: string;
@@ -45,10 +45,10 @@ export const TentacleQuestionComponent = ({
 }) => {
     const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
-    const label = `Tentacles
+    const label = `Closest
     ${
         $questions
-            .filter((q) => q.id === "tentacles")
+            .filter((q) => q.id === "closest")
             .map((q) => q.key)
             .indexOf(questionKey) + 1
     }`;
@@ -68,13 +68,13 @@ export const TentacleQuestionComponent = ({
                 questionModified((data.drag = !locked));
                 if (locked) {
                     penaltyMinutes.set(
-                        penaltyMinutes.get() + TIME_PENALTIES.tentacles,
+                        penaltyMinutes.get() + TIME_PENALTIES.closest,
                     );
                 } else {
                     penaltyMinutes.set(
                         Math.max(
                             0,
-                            penaltyMinutes.get() - TIME_PENALTIES.tentacles,
+                            penaltyMinutes.get() - TIME_PENALTIES.closest,
                         ),
                     );
                 }
@@ -136,7 +136,7 @@ export const TentacleQuestionComponent = ({
                     trigger="Location Type"
                     options={Object.fromEntries(
                         determineUnionizedStrings(
-                            tentacleQuestionSchema.shape.locationType,
+                            closestQuestionSchema.shape.locationType,
                         ).map((x) => [(x._def as any).value, x.description]),
                     )}
                     value={data.locationType}
@@ -168,7 +168,7 @@ export const TentacleQuestionComponent = ({
             />
             {!isPreview && (
                 <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                    <TentacleLocationSelector
+                    <ClosestLocationSelector
                         data={data}
                         disabled={!data.drag || $isLoading}
                     />
@@ -178,11 +178,11 @@ export const TentacleQuestionComponent = ({
     );
 };
 
-const TentacleLocationSelector = ({
+const ClosestLocationSelector = ({
     data,
     disabled,
 }: {
-    data: TentacleQuestion;
+    data: ClosestQuestion;
     disabled: boolean;
 }) => {
     useStore(triggerLocalRefresh);
@@ -193,7 +193,7 @@ const TentacleLocationSelector = ({
     useEffect(() => {
         let isMounted = true;
         setLoading(true);
-        findTentacleLocations(data)
+        findClosestLocations(data)
             .then((res) => {
                 if (isMounted) {
                     setLocations(res);

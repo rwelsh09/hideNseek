@@ -19,12 +19,12 @@ import type { ICON_COLORS } from "@/maps/api";
 
 import { LatitudeLongitude } from "./LatLngPicker";
 import {
-    MatchingQuestionComponent,
-    MeasuringQuestionComponent,
+    ClosestQuestionComponent,
+    HotColdQuestionComponent,
+    MatchQuestionComponent,
+    MeasureQuestionComponent,
     PhotoQuestionComponent,
     RadiusQuestionComponent,
-    TentacleQuestionComponent,
-    ThermometerQuestionComponent,
 } from "./QuestionCards";
 import { Button } from "./ui/button";
 import { SidebarMenu } from "./ui/sidebar-l";
@@ -184,10 +184,10 @@ export const DraggableMarkers = () => {
 
                 switch (question.id) {
                     case "radius":
-                    case "tentacles":
-                    case "matching":
+                    case "closest":
+                    case "match":
                     case "photo":
-                    case "measuring":
+                    case "measure":
                         return (
                             <ColoredMarker
                                 color={question.data.color}
@@ -206,7 +206,7 @@ export const DraggableMarkers = () => {
                                 }}
                             />
                         );
-                    case "thermometer":
+                    case "hot/cold":
                         return (
                             <Fragment key={question.key}>
                                 <ColoredMarker
@@ -310,29 +310,29 @@ export const DraggableMarkers = () => {
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
-                                    {activeQuestion.id === "tentacles" && (
-                                        <TentacleQuestionComponent
+                                    {activeQuestion.id === "closest" && (
+                                        <ClosestQuestionComponent
                                             isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
-                                    {activeQuestion.id === "thermometer" && (
-                                        <ThermometerQuestionComponent
+                                    {activeQuestion.id === "hot/cold" && (
+                                        <HotColdQuestionComponent
                                             isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
-                                    {activeQuestion.id === "matching" && (
-                                        <MatchingQuestionComponent
+                                    {activeQuestion.id === "match" && (
+                                        <MatchQuestionComponent
                                             isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
-                                    {activeQuestion.id === "measuring" && (
-                                        <MeasuringQuestionComponent
+                                    {activeQuestion.id === "measure" && (
+                                        <MeasureQuestionComponent
                                             isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}

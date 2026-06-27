@@ -62,7 +62,7 @@ const QUIZ_QUESTIONS = [
     {
         question:
             "According to the 'Add Question' menu on the map, which question type carries the highest time penalty?",
-        options: ["Matching.", "Radar.", "Tentacles.", "Photo."],
+        options: ["Match.", "Radar.", "Closest.", "Photo."],
         correct: 2,
     },
     {

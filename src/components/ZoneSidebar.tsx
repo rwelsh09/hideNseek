@@ -334,7 +334,7 @@ export const ZoneSidebar = () => {
                     }
 
                     if (
-                        question.id === "matching" &&
+                        question.id === "match" &&
                         (question.data.type === "same-first-letter-station" ||
                             question.data.type === "same-length-station" ||
                             question.data.type === "same-train-line")
@@ -420,7 +420,7 @@ export const ZoneSidebar = () => {
                         }
                     }
                     if (
-                        question.id === "measuring" &&
+                        question.id === "measure" &&
                         ((question.data as any).type === "mcdonalds" ||
                             (question.data as any).type === "seven11")
                     ) {

@@ -18,9 +18,9 @@ import {
 } from "@/maps/api";
 import { holedMask, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils";
-import type { APILocations, MatchingQuestion } from "@/maps/schema";
+import type { APILocations, MatchQuestion } from "@/maps/schema";
 
-export const findMatchingPlaces = async (question: MatchingQuestion) => {
+export const findMatchPlaces = async (question: MatchQuestion) => {
     switch (question.type) {
         case "museum-full":
         case "hospital-full":
@@ -68,8 +68,8 @@ export const findMatchingPlaces = async (question: MatchingQuestion) => {
     }
 };
 
-export const determineMatchingBoundary = _.memoize(
-    async (question: MatchingQuestion) => {
+export const determineMatchBoundary = _.memoize(
+    async (question: MatchQuestion) => {
         let boundary;
 
         switch (question.type) {
@@ -148,15 +148,15 @@ export const determineMatchingBoundary = _.memoize(
                     }
                     const letter = hiderEnglishName[0].toUpperCase();
 
-                    const matchingPolygons = data.features.filter((p: any) => {
+                    const matchPolygons = data.features.filter((p: any) => {
                         const name =
                             p.properties?.["name:en"] || p.properties?.name;
                         return name && name[0].toUpperCase() === letter;
                     });
 
-                    if (matchingPolygons.length > 0) {
+                    if (matchPolygons.length > 0) {
                         boundary = safeUnion(
-                            turf.featureCollection(matchingPolygons as any),
+                            turf.featureCollection(matchPolygons as any),
                         );
                     }
                 }
@@ -182,7 +182,7 @@ export const determineMatchingBoundary = _.memoize(
 
                 const voronoi = geoSpatialVoronoi(places.features as any);
 
-                const matchingCells = [];
+                const matchCells = [];
 
                 const mappedFeatures = voronoi.features.map((feature) => {
                     const station = feature.properties!.site;
@@ -201,7 +201,7 @@ export const determineMatchingBoundary = _.memoize(
                         (nearest.properties as any).lines || [];
                     for (const { feature, stationLines } of mappedFeatures) {
                         if (seekerLines.some((l) => stationLines.includes(l))) {
-                            matchingCells.push(feature);
+                            matchCells.push(feature);
                         }
                     }
                 } else if (question.type === "same-first-letter-station") {
@@ -214,7 +214,7 @@ export const determineMatchingBoundary = _.memoize(
                             stationEnglishName &&
                             stationEnglishName[0].toUpperCase() === letter
                         ) {
-                            matchingCells.push(feature);
+                            matchCells.push(feature);
                         }
                     }
                 } else if (question.type === "same-length-station") {
@@ -228,26 +228,26 @@ export const determineMatchingBoundary = _.memoize(
                                 question.lengthComparison === "shorter" &&
                                 stationEnglishName.length < length
                             ) {
-                                matchingCells.push(feature);
+                                matchCells.push(feature);
                             } else if (
                                 question.lengthComparison === "longer" &&
                                 stationEnglishName.length > length
                             ) {
-                                matchingCells.push(feature);
+                                matchCells.push(feature);
                             } else if (
                                 (question.lengthComparison === "same" ||
                                     !question.lengthComparison) &&
                                 stationEnglishName.length === length
                             ) {
-                                matchingCells.push(feature);
+                                matchCells.push(feature);
                             }
                         }
                     }
                 }
 
-                if (matchingCells.length > 0) {
+                if (matchCells.length > 0) {
                     boundary = safeUnion(
-                        turf.featureCollection(matchingCells as any),
+                        turf.featureCollection(matchCells as any),
                     );
                 }
                 break;
@@ -257,7 +257,7 @@ export const determineMatchingBoundary = _.memoize(
             case "cinema-full":
             case "library-full":
             case "golf_course-full": {
-                const data = await findMatchingPlaces(question);
+                const data = await findMatchPlaces(question);
 
                 const voronoi = geoSpatialVoronoi(data);
                 const point = turf.point([question.lng, question.lat]);
@@ -274,7 +274,7 @@ export const determineMatchingBoundary = _.memoize(
 
         return boundary;
     },
-    (question: MatchingQuestion & { cat?: unknown }) =>
+    (question: MatchQuestion & { cat?: unknown }) =>
         JSON.stringify({
             type: question.type,
             lat: question.lat,
@@ -286,13 +286,10 @@ export const determineMatchingBoundary = _.memoize(
         }),
 );
 
-export const adjustPerMatching = async (
-    question: MatchingQuestion,
-    mapData: any,
-) => {
+export const adjustPerMatch = async (question: MatchQuestion, mapData: any) => {
     if (mapData === null) return;
 
-    const boundary = await determineMatchingBoundary(question);
+    const boundary = await determineMatchBoundary(question);
 
     if (boundary === false) {
         return mapData;
@@ -301,7 +298,7 @@ export const adjustPerMatching = async (
     return modifyMapData(mapData, boundary, question.same);
 };
 
-export const hiderifyMatching = async (question: MatchingQuestion) => {
+export const hiderifyMatch = async (question: MatchQuestion) => {
     const $hiderMode = hiderMode.get();
     if ($hiderMode === false) {
         return question;
@@ -373,10 +370,10 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
     let feature = null;
 
     try {
-        feature = holedMask((await adjustPerMatching(question, $mapGeoJSON))!);
+        feature = holedMask((await adjustPerMatch(question, $mapGeoJSON))!);
     } catch {
         try {
-            feature = await adjustPerMatching(question, {
+            feature = await adjustPerMatch(question, {
                 type: "FeatureCollection",
                 features: [holedMask($mapGeoJSON)],
             });
@@ -394,9 +391,9 @@ export const hiderifyMatching = async (question: MatchingQuestion) => {
     return question;
 };
 
-export const matchingPlanningPolygon = async (question: MatchingQuestion) => {
+export const matchPlanningPolygon = async (question: MatchQuestion) => {
     try {
-        const boundary = await determineMatchingBoundary(question);
+        const boundary = await determineMatchBoundary(question);
 
         if (boundary === false) {
             return false;

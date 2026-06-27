@@ -8,7 +8,6 @@ import {
     SidebarMenuItem,
 } from "@/components/ui/sidebar-l";
 import {
-    hiderMode,
     isLoading,
     penaltyMinutes,
     questionModified,
@@ -62,7 +61,7 @@ export const PhotoQuestionComponent = ({
     isPreview?: boolean;
 }) => {
     useStore(triggerLocalRefresh);
-    const $hiderMode = useStore(hiderMode);
+    // const $hiderMode = useStore(hiderMode);
     const $isLoading = useStore(isLoading);
     const [localNotes, setLocalNotes] = useState(data.notes);
     useEffect(() => {

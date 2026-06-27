@@ -1,6 +1,6 @@
-export { MatchingQuestionComponent } from "./cards/matching";
-export { MeasuringQuestionComponent } from "./cards/measuring";
+export { ClosestQuestionComponent } from "./cards/closest";
+export { HotColdQuestionComponent } from "./cards/hot-cold";
+export { MatchQuestionComponent } from "./cards/match";
+export { MeasureQuestionComponent } from "./cards/measure";
 export { PhotoQuestionComponent } from "./cards/photo";
 export { RadiusQuestionComponent } from "./cards/radius";
-export { TentacleQuestionComponent } from "./cards/tentacles";
-export { ThermometerQuestionComponent } from "./cards/thermometer";

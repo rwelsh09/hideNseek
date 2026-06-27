@@ -33,10 +33,10 @@ import { applyQuestionsToMapGeoData, holedMask } from "@/maps";
 import { hiderifyQuestion } from "@/maps";
 import { clearCache, determineMapBoundaries } from "@/maps/api";
 
+import { ClosestPlaces } from "./ClosestPlaces";
 import { DraggableMarkers } from "./DraggableMarkers";
 import { LeafletActionButtons } from "./LeafletActionButtons";
 import { PlaytestPlaces } from "./PlaytestPlaces";
-import { TentaclePlaces } from "./TentaclePlaces";
 import { TransitLinesOverlay } from "./TransitLinesOverlay";
 
 const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
@@ -233,7 +233,7 @@ export const Map = ({ className }: { className?: string }) => {
                     }),
             },
             {
-                text: "Add Thermometer",
+                text: "Add Hot/Cold",
                 callback: (e: any) => {
                     const destination = turf.destination(
                         [e.latlng.lng, e.latlng.lat],
@@ -245,7 +245,7 @@ export const Map = ({ className }: { className?: string }) => {
                     );
 
                     addQuestion({
-                        id: "thermometer",
+                        id: "hot/cold",
                         data: {
                             latA: e.latlng.lat,
                             lngA: e.latlng.lng,
@@ -256,10 +256,10 @@ export const Map = ({ className }: { className?: string }) => {
                 },
             },
             {
-                text: "Add Tentacles",
+                text: "Add Closest",
                 callback: (e: any) => {
                     addQuestion({
-                        id: "tentacles",
+                        id: "closest",
                         data: {
                             lat: e.latlng.lat,
                             lng: e.latlng.lng,
@@ -268,10 +268,10 @@ export const Map = ({ className }: { className?: string }) => {
                 },
             },
             {
-                text: "Add Matching",
+                text: "Add Match",
                 callback: (e: any) => {
                     addQuestion({
-                        id: "matching",
+                        id: "match",
                         data: {
                             lat: e.latlng.lat,
                             lng: e.latlng.lng,
@@ -280,10 +280,10 @@ export const Map = ({ className }: { className?: string }) => {
                 },
             },
             {
-                text: "Add Measuring",
+                text: "Add Measure",
                 callback: (e: any) => {
                     addQuestion({
-                        id: "measuring",
+                        id: "measure",
                         data: {
                             lat: e.latlng.lat,
                             lng: e.latlng.lng,
@@ -341,7 +341,7 @@ export const Map = ({ className }: { className?: string }) => {
                 {getTileLayer($baseTileLayer, $thunderforestApiKey)}
                 <TransitLinesOverlay />
                 <DraggableMarkers />
-                <TentaclePlaces />
+                <ClosestPlaces />
                 <PlaytestPlaces />
                 <div className="leaflet-top leaflet-right">
                     <div
