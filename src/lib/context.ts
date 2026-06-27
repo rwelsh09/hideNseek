@@ -176,7 +176,6 @@ export const hidingZone = computed(
         disabledStations,
         hidingRadius,
         hidingRadiusUnits,
-        displayHidingZonesOptions,
         headStartMinutes,
     ],
     (
@@ -187,7 +186,6 @@ export const hidingZone = computed(
         disabledStations,
         radius,
         hidingRadiusUnits,
-        zoneOptions,
         $headStartMinutes,
     ) => {
         if (geo !== null) {
