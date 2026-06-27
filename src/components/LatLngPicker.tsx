@@ -196,7 +196,7 @@ const LatLngEditForm = ({
                     disabled={disabled}
                 />
                 <Button
-                    variant="outline"
+                    variant="outline" size="icon"
                     onClick={() => onChange(-latitude, null)}
                     disabled={disabled}
                 >
@@ -221,7 +221,7 @@ const LatLngEditForm = ({
                     disabled={disabled}
                 />
                 <Button
-                    variant="outline"
+                    variant="outline" size="icon"
                     onClick={() => onChange(null, -longitude)}
                     disabled={disabled}
                 >
@@ -265,7 +265,7 @@ export const LatitudeLongitude = ({
                     backgroundColor: color,
                 }}
                 className={cn(
-                    "p-4 rounded-md space-y-4 mt-2",
+                    "p-3 rounded-md space-y-2 mt-2",
                     $isLoading && "brightness-50",
                 )}
             >
@@ -279,10 +279,10 @@ export const LatitudeLongitude = ({
                             color: colorName === "gold" ? "black" : undefined,
                         }}
                     >
-                        <div className="text-2xl font-semibold font-poppins">
+                        <div className="text-lg font-semibold font-poppins">
                             {label}
                         </div>
-                        <div className="tabular-nums text-right text-sm font-oxygen">
+                        <div className="tabular-nums text-right text-xs font-oxygen">
                             <div>
                                 {Math.abs(latitude).toFixed(5)}
                                 {"° "}
@@ -299,7 +299,7 @@ export const LatitudeLongitude = ({
 
                 <div
                     className={cn(
-                        !inlineEdit && "flex justify-center gap-2 *:max-w-12",
+                        !inlineEdit && "flex justify-between gap-1",
                     )}
                 >
                     {inlineEdit ? (
@@ -316,7 +316,7 @@ export const LatitudeLongitude = ({
                             <DialogTrigger asChild>
                                 <Button
                                     disabled={disabled}
-                                    variant="outline"
+                                    variant="outline" size="icon"
                                     title="Edit coordinates"
                                     aria-label="Edit coordinates"
                                 >
@@ -348,7 +348,7 @@ export const LatitudeLongitude = ({
                             <DialogTrigger asChild>
                                 <Button
                                     disabled={disabled}
-                                    variant="outline"
+                                    variant="outline" size="icon"
                                     title="Change marker color"
                                     aria-label="Change marker color"
                                 >
@@ -370,7 +370,7 @@ export const LatitudeLongitude = ({
                                     ).map(([colorKey, hexCode]) => (
                                         <Button
                                             key={colorKey}
-                                            variant="outline"
+                                            variant="outline" size="icon"
                                             className={cn(
                                                 "h-16 w-full rounded-md border-2",
                                                 colorName === colorKey
@@ -404,7 +404,7 @@ export const LatitudeLongitude = ({
                         }
                     >
                         <Button
-                            variant="outline"
+                            variant="outline" size="icon"
                             onClick={() => {
                                 if (!navigator || !navigator.geolocation)
                                     return alert("Geolocation not supported");
@@ -451,7 +451,7 @@ export const LatitudeLongitude = ({
                             <LocateIcon />
                         </Button>
                         <Button
-                            variant="outline"
+                            variant="outline" size="icon"
                             onClick={() => {
                                 if (!navigator || !navigator.clipboard) {
                                     toast.error(
@@ -504,7 +504,7 @@ export const LatitudeLongitude = ({
                             <ClipboardPasteIcon />
                         </Button>
                         <Button
-                            variant="outline"
+                            variant="outline" size="icon"
                             onClick={() => {
                                 if (!navigator || !navigator.clipboard) {
                                     toast.error(
