@@ -7,7 +7,7 @@ import { RulesQuiz } from "@/components/RulesQuiz";
 <Layout className="bg-main text-white p-8">
   <div class="max-w-4xl mx-auto space-y-8 mt-12">
     <div class="flex items-center justify-between">
-      <h1 class="text-4xl font-bold font-poppins">Rules</h1>
+      <h1 class="text-4xl font-bold font-poppins">Rules & Tips</h1>
       <a href={`${import.meta.env.BASE_URL.replace(/\/$/, '')}/`} class="text-blue-400 hover:text-blue-300">Back to Map</a>
     </div>
     <p class="text-slate-400 mt-2 italic">Be sure to read to the end for a fun rules check quiz!</p>
@@ -24,7 +24,6 @@ import { RulesQuiz } from "@/components/RulesQuiz";
         <li><strong>The Map:</strong> The game map is strictly defined by the \"Calgary Rapid Transit Network\". All gameplay and movement must occur within the bounds of this network.</li>
         <li><strong>The Head Start:</strong> Before the Seekers can begin their pursuit, the Hider is granted a designated head start period (e.g., 45 to 60 minutes, depending on the agreed-upon game size).</li>
         <li><strong>Transit Only:</strong> During the head start, the Hider may only travel using approved public transit (trains, buses) and walking. No private vehicles or ride-shares are allowed.</li>
-        <li><strong>Poor Cellular Reception?</strong> The game works offline as much as possible. If you expect poor internet access in certain areas, open the Options drawer and click <em>"Cache All Possible Places"</em> while you have a connection. This will download all map data needed for the game in advance.</li>
       </ul>
     </section>
 
@@ -90,7 +89,14 @@ import { RulesQuiz } from "@/components/RulesQuiz";
     </section>
 
     <section class="space-y-4">
-      <h2 class="text-2xl font-semibold border-b border-slate-700 pb-2">7. Rules Check: The Quiz!</h2>
+      <h2 class="text-2xl font-semibold border-b border-slate-700 pb-2">7. Tips for a Better Game</h2>
+      <ul class="list-disc pl-6 space-y-2 text-slate-300">
+        <li><strong>Poor Cellular Reception?</strong> Open the Options drawer, scroll to the bottom, and click <em>"Cache All Possible Places"</em>. This will download all map data needed for the game in advance. This has the added benefit of reducing the time needed to wait for the app to find places (neighbourhoods, libraries, etc.) when switching questions.</li>
+      </ul>
+    </section>
+
+    <section class="space-y-4">
+      <h2 class="text-2xl font-semibold border-b border-slate-700 pb-2">8. Rules Check: The Quiz!</h2>
       <RulesQuiz client:load />
     </section>
   </div>
