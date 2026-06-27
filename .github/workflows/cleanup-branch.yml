@@ -18,10 +18,10 @@ jobs:
               run: echo "branch=${{ github.event.ref }}" >> $GITHUB_OUTPUT
 
             - name: Checkout root repository (for git ls-remote)
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
 
             - name: Checkout gh-pages
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
               with:
                   ref: gh-pages
                   path: gh-pages-dir

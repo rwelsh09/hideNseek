@@ -21,7 +21,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout your repository using git
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
 
             - name: Extract branch name
               shell: bash
@@ -29,7 +29,7 @@ jobs:
               id: extract_branch
 
             - name: Install, build, and upload your site
-              uses: withastro/action@v6
+              uses: withastro/action@v6.1.1
               env:
                   BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
                   npm_config_minimum_release_age: "0"
@@ -47,7 +47,7 @@ jobs:
                   destination_dir: ${{ steps.extract_branch.outputs.branch == 'master' && '.' || steps.extract_branch.outputs.branch }}
 
             - name: Checkout gh-pages to generate index
-              uses: actions/checkout@v4
+              uses: actions/checkout@v7
               with:
                   ref: gh-pages
                   path: gh-pages-dir
