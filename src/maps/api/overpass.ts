@@ -2,6 +2,7 @@ import * as turf from "@turf/turf";
 import type { FeatureCollection, MultiPolygon } from "geojson";
 import _ from "lodash";
 import osmtogeojson from "osmtogeojson";
+import pLimit from "p-limit";
 import { toast } from "react-toastify";
 
 import {
@@ -501,8 +502,6 @@ export const nearestToQuestion = async (question: any) => {
 export const cacheAllPlaces = async () => {
     const tasks: (() => Promise<any>)[] = [];
 
-    const coordinates = mapGeoLocation.get().geometry.coordinates;
-
     // Standard Locations (from LOCATION_FIRST_TAG)
     Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
         const location = locationStr as APILocations;
@@ -515,24 +514,6 @@ export const cacheAllPlaces = async () => {
                 "center",
                 [],
                 0,
-            ),
-        );
-
-        tasks.push(() =>
-            findTentacleLocations(
-                {
-                    locationType: location,
-                    radius: 10,
-                    unit: "kilometers",
-                    lat: coordinates[1],
-                    lng: coordinates[0],
-                    location: false,
-                    drag: false,
-                    color: "black",
-                    collapsed: false,
-                    showLabels: false,
-                },
-                undefined,
             ),
         );
     });
@@ -566,11 +547,12 @@ export const cacheAllPlaces = async () => {
 
     const toastId = toast.loading(`Caching places... (0/${total})`);
 
-    // Run concurrently in chunks to avoid 504 Gateway Timeouts from Overpass, with a delay
-    const chunkedTasks = _.chunk(tasks, 3);
-    for (const chunk of chunkedTasks) {
-        await Promise.all(
-            chunk.map(async (task) => {
+    // Run concurrently to avoid 504 Gateway Timeouts from Overpass
+    const limit = pLimit(3);
+
+    await Promise.all(
+        tasks.map((task) =>
+            limit(async () => {
                 try {
                     await task();
                 } catch (e) {
@@ -585,10 +567,8 @@ export const cacheAllPlaces = async () => {
                     });
                 }
             }),
-        );
-        // Add a small delay between chunk batches to be nice to Overpass
-        await new Promise((resolve) => setTimeout(resolve, 500));
-    }
+        ),
+    );
 
     if (failed > 0) {
         toast.update(toastId, {
