@@ -43,14 +43,18 @@ export const NextStepsChecklist = () => {
             </div>
             <ul className="space-y-3 text-sm text-slate-300">
                 <li className="flex gap-2 items-start">
-                    <span className="font-bold text-blue-400 w-5 shrink-0">1.</span>
+                    <span className="font-bold text-blue-400 w-5 shrink-0">
+                        1.
+                    </span>
                     <span>
                         <strong>Set Head Start:</strong> Open the right sidebar
                         and define the Hider&apos;s head start time.
                     </span>
                 </li>
                 <li className="flex gap-2 items-start">
-                    <span className="font-bold text-blue-400 w-5 shrink-0">2.</span>
+                    <span className="font-bold text-blue-400 w-5 shrink-0">
+                        2.
+                    </span>
                     <span>
                         <strong>Define Zones:</strong> In the right sidebar you
                         can adjust the Hiding Zone Radius and disable specific
@@ -58,14 +62,18 @@ export const NextStepsChecklist = () => {
                     </span>
                 </li>
                 <li className="flex gap-2 items-start">
-                    <span className="font-bold text-blue-400 w-5 shrink-0">3.</span>
+                    <span className="font-bold text-blue-400 w-5 shrink-0">
+                        3.
+                    </span>
                     <span>
-                        <strong>Sync Game:</strong> Click Share and
-                        send the game link to the other players.
+                        <strong>Sync Game:</strong> Click Share and send the
+                        game link to the other players.
                     </span>
                 </li>
                 <li className="flex gap-2 items-start">
-                    <span className="font-bold text-blue-400 w-5 shrink-0">4.</span>
+                    <span className="font-bold text-blue-400 w-5 shrink-0">
+                        4.
+                    </span>
                     <span>
                         <strong>Start Timer:</strong> Click the clock icon.
                         Start the timer and (to the Hider) RUN RUN RUN!

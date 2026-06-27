@@ -3,10 +3,8 @@ import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import type { Map } from "leaflet";
 import { atom, computed, onSet } from "nanostores";
 
-import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import type {
     AdditionalMapGeoLocations,
-    CustomStation,
     OpenStreetMap,
     StationCircle,
 } from "@/maps/api";
@@ -136,37 +134,6 @@ onSet(trainStations, ({ newValue }) => {
     });
 });
 
-export const useCustomStations = persistentAtom<boolean>(
-    "useCustomStations",
-    false,
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
-export const customStations = persistentAtom<CustomStation[]>(
-    "customStations",
-    calgaryTransitData.features.map((feature: any) => ({
-        type: "Feature",
-        geometry: feature.geometry,
-        properties: {
-            id: feature.properties?.["@id"] || feature.id,
-            name: feature.properties?.name,
-        },
-    })) as any[],
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
-export const includeDefaultStations = persistentAtom<boolean>(
-    "includeDefaultStations",
-    false,
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
 export const animateMapMovements = persistentAtom<boolean>(
     "animateMapMovements",
     true,
@@ -218,9 +185,6 @@ export const hidingZone = computed(
         hidingRadius,
         hidingRadiusUnits,
         displayHidingZonesOptions,
-        useCustomStations,
-        customStations,
-        includeDefaultStations,
         headStartMinutes,
     ],
     (
@@ -232,9 +196,6 @@ export const hidingZone = computed(
         radius,
         hidingRadiusUnits,
         zoneOptions,
-        useCustom,
-        $customStations,
-        includeDefault,
         $headStartMinutes,
     ) => {
         if (geo !== null) {
@@ -246,9 +207,6 @@ export const hidingZone = computed(
                 hidingRadiusUnits,
                 headStartMinutes: $headStartMinutes,
                 zoneOptions: zoneOptions,
-                useCustomStations: useCustom,
-                customStations: $customStations,
-                includeDefaultStations: includeDefault,
             };
         } else {
             const $loc = structuredClone(loc);
@@ -262,9 +220,6 @@ export const hidingZone = computed(
                 headStartMinutes: $headStartMinutes,
                 alternateLocations: structuredClone(altLoc),
                 zoneOptions: zoneOptions,
-                useCustomStations: useCustom,
-                customStations: $customStations,
-                includeDefaultStations: includeDefault,
             };
         }
     },
