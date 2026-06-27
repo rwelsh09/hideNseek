@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/remove-select-allowed-places-9830347844643326448/sw.js', { scope: '/HideAndSeek/fix/remove-select-allowed-places-9830347844643326448/' })})}
