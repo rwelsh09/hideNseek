@@ -137,10 +137,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                 headStartMinutes.set(geojson.headStartMinutes);
             }
 
-            if (geojson.zoneOptions) {
-                displayHidingZonesOptions.set(geojson.zoneOptions ?? []);
-            }
-
             toast.success("Hiding zone loaded successfully", {
                 autoClose: 2000,
             });

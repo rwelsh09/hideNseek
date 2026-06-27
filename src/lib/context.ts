@@ -196,7 +196,6 @@ export const hidingZone = computed(
                 hidingRadius: radius,
                 hidingRadiusUnits,
                 headStartMinutes: $headStartMinutes,
-                zoneOptions: zoneOptions,
             };
         } else {
             const $loc = structuredClone(loc);
@@ -209,7 +208,6 @@ export const hidingZone = computed(
                 hidingRadiusUnits,
                 headStartMinutes: $headStartMinutes,
                 alternateLocations: structuredClone(altLoc),
-                zoneOptions: zoneOptions,
             };
         }
     },
