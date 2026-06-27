@@ -31,7 +31,7 @@ export const NextStepsChecklist = () => {
     }
 
     return (
-        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 sm:left-6 sm:translate-x-0 z-[2000] bg-slate-800 text-slate-200 p-6 rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-slate-600 w-80 sm:w-96 font-poppins">
+        <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 sm:left-6 sm:translate-x-0 z-[1020] bg-slate-800 text-slate-200 p-6 rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-slate-600 w-80 sm:w-96 font-poppins">
             <div className="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
                 <h3 className="font-bold text-xl text-white">Next Steps</h3>
                 <button
