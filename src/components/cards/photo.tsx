@@ -132,17 +132,15 @@ export const PhotoQuestionComponent = ({
                 }}
                 disabled={!data.drag || $isLoading}
             />
-            {!!$hiderMode && (
-                <div
-                    className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md mx-2 mb-2 flex flex-col gap-2"
-                    style={{ width: "calc(100% - 1rem)" }}
-                >
-                    <span className="italic opacity-80 border-b border-slate-700 pb-2">
-                        {PHOTO_DESCRIPTIONS[data.type] ||
-                            "Take a photograph based on the request."}
-                    </span>
-                </div>
-            )}
+            <div
+                className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md mx-2 mb-2 flex flex-col gap-2"
+                style={{ width: "calc(100% - 1rem)" }}
+            >
+                <span className="italic opacity-80 border-b border-slate-700 pb-2">
+                    {PHOTO_DESCRIPTIONS[data.type] ||
+                        "Take a photograph based on the request."}
+                </span>
+            </div>
         </QuestionCard>
     );
 };
