@@ -591,9 +591,7 @@ export const ZoneSidebar = () => {
                                                 Warning: Performance Impact
                                             </AlertDialogTitle>
                                             <AlertDialogDescription>
-                                                This feature can drastically
-                                                slow down your device. Are you
-                                                sure you want to enable it?
+                                                This feature may slow down your device.
                                             </AlertDialogDescription>
                                         </AlertDialogHeader>
                                         <AlertDialogFooter>
