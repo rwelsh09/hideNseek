@@ -25,12 +25,28 @@ const PHOTO_LABELS: Record<string, string> = {
     tree: "Unique Tree",
     car: "Widest Street",
     building: "Tallest Structure",
-    restaurant: "Restaurant Interior",
+    restaurant: "Restaurant",
     park: "Park",
-    store: "Grocery Store Aisle",
+    store: "Store",
     worship: "Place of Worship",
-    train: "Train Platform",
+    train: "Station",
     route: "Nearest Intersection",
+};
+
+const PHOTO_DESCRIPTIONS: Record<string, string> = {
+    camera: "Take a selfie at your current location with enough background visible to help Seekers identify where you are.",
+    tree: "Find and photograph the most unique or distinctive tree in your immediate vicinity.",
+    car: "Photograph the widest street or road that you can see from your location.",
+    building:
+        "Photograph the tallest building, tower, or structure visible from where you are.",
+    restaurant:
+        "Take a photo showing a nearby restaurant, cafe, or food establishment.",
+    park: "Take a photo that clearly shows a park, playground, or green space nearby.",
+    store: "Take a photo showing a nearby store.",
+    worship:
+        "Photograph the nearest church, mosque, temple, or other place of worship.",
+    train: "Take a picture showing your transit station or train platform.",
+    route: "Take a picture showing the nearest street intersection.",
 };
 
 export const PhotoQuestionComponent = ({
@@ -116,17 +132,15 @@ export const PhotoQuestionComponent = ({
                 }}
                 disabled={!data.drag || $isLoading}
             />
-            {!!$hiderMode && (
-                <div
-                    className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md mx-2 mb-2"
-                    style={{ width: "calc(100% - 1rem)" }}
-                >
-                    Tell the Seekers:{" "}
-                    <span className="text-primary">
-                        Send a photo matching this request
-                    </span>
-                </div>
-            )}
+            <div
+                className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md mx-2 mb-2 flex flex-col gap-2"
+                style={{ width: "calc(100% - 1rem)" }}
+            >
+                <span className="italic opacity-80 border-b border-slate-700 pb-2">
+                    {PHOTO_DESCRIPTIONS[data.type] ||
+                        "Take a photograph based on the request."}
+                </span>
+            </div>
         </QuestionCard>
     );
 };
