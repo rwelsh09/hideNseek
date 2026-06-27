@@ -17,3 +17,6 @@
 
 **Learning:** Passing inline arrays or objects to `react-leaflet` components (such as `contextmenuItems={[...]}` on `MapContainer`) creates new array references on every single render. This forces React Leaflet and its underlying plugins to re-evaluate or re-bind event listeners, significantly increasing memory allocation overhead and rendering time.
 **Action:** Extract inline arrays and large configuration objects into `useMemo` hooks or static constants outside of the render cycle. This provides stable object references, preventing unnecessary Leaflet DOM manipulations.
+## 2024-06-27 - [react-leaflet rendering optimization]
+**Learning:** React-Leaflet components like `Marker` and `CircleMarker` unnecessarily re-trigger Leaflet setter methods (`setLatLng`, `setStyle`) or event re-bindings if props like `position`, `center`, `pathOptions`, or `eventHandlers` receive unstable references (e.g. inline arrays `[lat, lng]` or inline objects). This is particularly impactful when rendering hundreds of markers in a loop, causing significant FPS drops and UI freezing on re-renders.
+**Action:** Always memoize arrays or objects passed as props to `react-leaflet` primitives. For arrays used inside a `.map` loop, consider extracting the marker into a memoized sub-component using `React.memo` to properly encapsulate and execute `useMemo` for props like `center`.

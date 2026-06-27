@@ -96,9 +96,16 @@ const ColoredMarker = ({
         [],
     );
 
+    // Performance Optimization: Memoize position array to prevent react-leaflet
+    // from calling setLatLng unnecessarily due to unstable array references
+    const position = useMemo(
+        () => [latitude, longitude] as [number, number],
+        [latitude, longitude],
+    );
+
     return (
         <Marker
-            position={[latitude, longitude]}
+            position={position}
             icon={color ? getIcon(color) : undefined}
             draggable={true}
             eventHandlers={eventHandlers}

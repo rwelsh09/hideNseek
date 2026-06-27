@@ -123,6 +123,8 @@ const PATH_OPTIONS_UNSELECTED = {
     fillOpacity: 0.7,
 };
 
+const TOOLTIP_OFFSET: [number, number] = [0, -10];
+
 const ClosestPlaceMarker = ({
     f,
     coords,
@@ -147,9 +149,16 @@ const ClosestPlaceMarker = ({
         [f, question],
     );
 
+    // Performance Optimization: Memoize center array to prevent react-leaflet
+    // from calling setLatLng unnecessarily due to unstable array references
+    const center = React.useMemo(
+        () => [coords[1], coords[0]] as [number, number],
+        [coords[0], coords[1]],
+    );
+
     return (
         <CircleMarker
-            center={[coords[1], coords[0]]}
+            center={center}
             radius={8}
             pathOptions={
                 isSelected ? PATH_OPTIONS_SELECTED : PATH_OPTIONS_UNSELECTED
@@ -157,12 +166,12 @@ const ClosestPlaceMarker = ({
             eventHandlers={eventHandlers}
         >
             {question.data.showLabels && (
-                <Tooltip direction="top" offset={[0, -10]} permanent>
+                <Tooltip direction="top" offset={TOOLTIP_OFFSET} permanent>
                     {f.properties?.name || "Unknown Location"}
                 </Tooltip>
             )}
             {!question.data.showLabels && (
-                <Tooltip direction="top" offset={[0, -10]}>
+                <Tooltip direction="top" offset={TOOLTIP_OFFSET}>
                     {f.properties?.name || "Unknown Location"}
                 </Tooltip>
             )}

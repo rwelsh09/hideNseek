@@ -25,6 +25,27 @@ const getPathOptions = (color: string) => {
     return pathOptionsCache[color];
 };
 
+const TOOLTIP_OFFSET: [number, number] = [0, -10];
+
+const PlaytestPlaceMarker = React.memo(({ coords, name, color }: { coords: number[], name: string, color: string }) => {
+    // Performance Optimization: Memoize center array to prevent react-leaflet
+    // from calling setLatLng unnecessarily due to unstable array references
+    const center = React.useMemo(() => [coords[1], coords[0]] as [number, number], [coords[0], coords[1]]);
+
+    return (
+        <CircleMarker
+            center={center}
+            radius={5}
+            pathOptions={getPathOptions(color)}
+        >
+            <Tooltip direction="top" offset={TOOLTIP_OFFSET}>
+                {name}
+            </Tooltip>
+        </CircleMarker>
+    );
+});
+PlaytestPlaceMarker.displayName = "PlaytestPlaceMarker";
+
 export const PlaytestPlaces = () => {
     const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
     const $questions = useStore(questions);
@@ -163,16 +184,12 @@ export const PlaytestPlaces = () => {
                 const color = place?.customColor ?? "orange";
 
                 return (
-                    <CircleMarker
+                    <PlaytestPlaceMarker
                         key={i}
-                        center={[coords[1], coords[0]]}
-                        radius={5}
-                        pathOptions={getPathOptions(color)}
-                    >
-                        <Tooltip direction="top" offset={[0, -10]}>
-                            {name}
-                        </Tooltip>
-                    </CircleMarker>
+                        coords={coords}
+                        name={name}
+                        color={color}
+                    />
                 );
             })}
         </>
