@@ -174,42 +174,6 @@ export const TutorialManager = () => {
                                       "Access map settings, transit lines overlays, manual save states, and more.",
                                   side: "top",
                                   align: "end",
-                                  onPopoverRender: () => {
-                                      // Allow interaction to click the options drawer
-                                      driverObj.setConfig({
-                                          ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
-                                      } as any);
-                                  },
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-copy-state-btn"]',
-                              popover: {
-                                  title: "Copy Game State",
-                                  description:
-                                      "If native URL sharing doesn't work, the Hider can manually copy the raw JSON data of their game state here.",
-                                  side: "top",
-                                  align: "center",
-                                  onPopoverRender: () => {
-                                      // Disable interaction again
-                                      driverObj.setConfig({
-                                          ...driverObj.getConfig(),
-                                          allowActiveInteraction: false,
-                                      } as any);
-                                  },
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-paste-state-btn"]',
-                              popover: {
-                                  title: "Paste Game State",
-                                  description:
-                                      "The Seekers can paste the Game State data they received from the Hider to load the game on their end.",
-                                  side: "top",
-                                  align: "center",
                               },
                           },
                           {

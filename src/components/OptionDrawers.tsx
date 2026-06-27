@@ -459,45 +459,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 />
                             </div>
                             <Separator className="bg-slate-300 w-[280px]" />
-                            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-[280px] sm:max-w-none">
-                                <Button
-                                    className="w-full sm:w-auto"
-                                    data-tutorial-id="tutorial-copy-state-btn"
-                                    onClick={() => {
-                                        if (!navigator || !navigator.clipboard)
-                                            return toast.error(
-                                                "Clipboard not supported",
-                                            );
-                                        navigator.clipboard.writeText(
-                                            JSON.stringify($hidingZone),
-                                        );
-                                        toast.success(
-                                            "Game state copied successfully",
-                                            {
-                                                autoClose: 2000,
-                                            },
-                                        );
-                                    }}
-                                >
-                                    Copy Game State
-                                </Button>
-                                <Button
-                                    className="w-full sm:w-auto"
-                                    data-tutorial-id="tutorial-paste-state-btn"
-                                    onClick={() => {
-                                        if (!navigator || !navigator.clipboard)
-                                            return toast.error(
-                                                "Clipboard not supported",
-                                            );
-                                        navigator.clipboard
-                                            .readText()
-                                            .then(loadHidingZone);
-                                    }}
-                                >
-                                    Paste Game State
-                                </Button>
-                            </div>
-                            <Separator className="bg-slate-300 w-[280px]" />
                             <div className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-[280px] sm:max-w-none">
                                 <Button
                                     variant="destructive"

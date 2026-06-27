@@ -31,9 +31,9 @@ export const NextStepsChecklist = () => {
     }
 
     return (
-        <div className="absolute top-24 left-4 z-[1000] bg-slate-800 text-slate-200 p-4 rounded-xl shadow-lg border border-slate-600 w-80 font-poppins">
-            <div className="flex justify-between items-center mb-3">
-                <h3 className="font-bold text-lg text-white">Next Steps</h3>
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[2000] bg-slate-800 text-slate-200 p-6 rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-slate-600 w-80 sm:w-96 font-poppins">
+            <div className="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
+                <h3 className="font-bold text-xl text-white">Next Steps</h3>
                 <button
                     onClick={() => hasDismissedNextStepsChecklist.set(true)}
                     className="text-slate-400 hover:text-white transition-colors"
@@ -60,7 +60,7 @@ export const NextStepsChecklist = () => {
                     <span className="font-bold text-blue-400">3.</span>
                     <span>
                         <strong>Sync State:</strong> Open the Options menu to
-                        Share or Copy/Paste the game state between players.
+                        Share the game state URL with the Seekers.
                     </span>
                 </li>
                 <li className="flex gap-2 items-start">
