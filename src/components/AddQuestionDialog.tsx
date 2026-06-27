@@ -9,11 +9,9 @@ import {
     Film,
     Flag,
     Hospital,
-    Landmark,
     Leaf,
     Library,
     Map as MapIcon,
-    MapPin,
     MapPinned,
     Network,
     Palette,
@@ -27,7 +25,6 @@ import {
     TramFront,
     Trees,
     Utensils,
-    Waypoints,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -577,10 +574,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "pub",
-                                        )
+                                        handleQuestionSelect("closest", "pub")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >

@@ -177,6 +177,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
         >
             <Button
                 className="shadow-md"
+                data-tutorial-id="tutorial-share-state-btn"
                 onClick={async () => {
                     const hidingZoneString = JSON.stringify($hidingZone);
                     let compressedData;
@@ -218,7 +219,12 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                 onOpenChange={isOptionsOpenStore.set}
             >
                 <DrawerTrigger className="w-24" asChild>
-                    <Button className="w-24 shadow-md">Options</Button>
+                    <Button
+                        className="w-24 shadow-md"
+                        data-tutorial-id="tutorial-options-btn"
+                    >
+                        Options
+                    </Button>
                 </DrawerTrigger>
                 <DrawerContent onPointerDown={(e) => e.stopPropagation()}>
                     <div className="flex flex-col items-center gap-4 mb-4">
@@ -456,6 +462,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             <div className="flex flex-col sm:flex-row gap-4 w-full max-w-[280px] sm:max-w-none">
                                 <Button
                                     className="w-full sm:w-auto"
+                                    data-tutorial-id="tutorial-copy-state-btn"
                                     onClick={() => {
                                         if (!navigator || !navigator.clipboard)
                                             return toast.error(
@@ -476,6 +483,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 </Button>
                                 <Button
                                     className="w-full sm:w-auto"
+                                    data-tutorial-id="tutorial-paste-state-btn"
                                     onClick={() => {
                                         if (!navigator || !navigator.clipboard)
                                             return toast.error(
@@ -524,24 +532,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     }}
                                 >
                                     Cache All Possible Places
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    className="w-full sm:w-[280px] font-normal hover:bg-slate-200"
-                                    onClick={() => {
-                                        import("@/maps/api").then(
-                                            ({ clearCache, CacheType }) => {
-                                                mapGeoJSON.set(null);
-                                                polyGeoJSON.set(null);
-                                                questions.set([]);
-                                                clearCache(
-                                                    CacheType.ZONE_CACHE,
-                                                );
-                                            },
-                                        );
-                                    }}
-                                >
-                                    Clear Questions & Cache
                                 </Button>
                             </div>
                         </div>
