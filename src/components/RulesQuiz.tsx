@@ -123,7 +123,7 @@ const QUIZ_QUESTIONS = [
         question: "Do you need cell reception to play?",
         options: [
             "Yes, continuous high-speed internet is required.",
-            "No, but you should click 'Cache All Possible Places' in the options drawer when you have a connection.",
+            "Yes, you need a way to communicate and sync the game, but you can save data by clicking 'Cache All Possible Places'.",
             "Only for the Seekers.",
             "No, the game runs completely without any data.",
         ],
