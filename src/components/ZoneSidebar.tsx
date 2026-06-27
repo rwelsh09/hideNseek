@@ -53,6 +53,16 @@ import {
     safeUnion,
 } from "@/maps/geo-utils";
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "./ui/alert-dialog";
 import { Checkbox } from "./ui/checkbox";
 import {
     Command,
@@ -92,6 +102,7 @@ export const ZoneSidebar = () => {
     const isStationSearchActive = stationSearch.trim().length > 0;
     const setStations = trainStations.set;
     const sidebarRef = useRef<HTMLDivElement>(null);
+    const [isWarningDialogOpen, setIsWarningDialogOpen] = useState(false);
 
     const removeHidingZones = () => {
         if (!map) return;
@@ -560,19 +571,54 @@ export const ZoneSidebar = () => {
                                 <Checkbox
                                     defaultChecked={$displayHidingZones}
                                     checked={$displayHidingZones}
-                                    onCheckedChange={displayHidingZones.set}
+                                    onCheckedChange={(checked) => {
+                                        if (checked === true) {
+                                            setIsWarningDialogOpen(true);
+                                        } else {
+                                            displayHidingZones.set(false);
+                                        }
+                                    }}
                                     disabled={$isLoading}
                                 />
-                            </SidebarMenuItem>
-                            <SidebarMenuItem
-                                className={cn(
-                                    MENU_ITEM_CLASSNAME,
-                                    "text-orange-500",
-                                )}
-                            >
-                                <AlertTriangle className="inline-block w-4 h-4 mr-2" />
-                                Warning: This feature can drastically slow down
-                                your device.
+                                <AlertDialog
+                                    open={isWarningDialogOpen}
+                                    onOpenChange={setIsWarningDialogOpen}
+                                >
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle className="flex items-center text-orange-500">
+                                                <AlertTriangle className="mr-2 inline-block h-5 w-5" />
+                                                Warning: Performance Impact
+                                            </AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This feature may slow down your device.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel
+                                                onClick={() => {
+                                                    setIsWarningDialogOpen(
+                                                        false,
+                                                    );
+                                                }}
+                                            >
+                                                Cancel
+                                            </AlertDialogCancel>
+                                            <AlertDialogAction
+                                                onClick={() => {
+                                                    displayHidingZones.set(
+                                                        true,
+                                                    );
+                                                    setIsWarningDialogOpen(
+                                                        false,
+                                                    );
+                                                }}
+                                            >
+                                                Enable
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             </SidebarMenuItem>
                             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                                 <Label className="font-semibold font-poppins">
