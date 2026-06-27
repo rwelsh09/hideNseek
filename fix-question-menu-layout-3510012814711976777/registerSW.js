@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-question-menu-layout-3510012814711976777/sw.js', { scope: '/HideAndSeek/fix-question-menu-layout-3510012814711976777/' })})}
