@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/github-actions-node-24-8000317698050962002/sw.js', { scope: '/HideAndSeek/fix/github-actions-node-24-8000317698050962002/' })})}
