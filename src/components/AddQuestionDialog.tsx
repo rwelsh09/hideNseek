@@ -434,7 +434,7 @@ export function AddQuestionDialog() {
 
                     {/* THERMOMETER & CLOSEST COLUMN */}
                     <div className="flex flex-col gap-6">
-                        {/* HotCold - Updated buttons for Kilometers */}
+                        {/* HotCold */}
                         <div className="flex flex-col border-t-4 border-yellow-400 pt-3">
                             <div className="flex items-center gap-2 mb-1">
                                 <div className="bg-yellow-400 p-1.5 rounded text-white shrink-0">
@@ -442,7 +442,7 @@ export function AddQuestionDialog() {
                                 </div>
                                 <div>
                                     <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base flex items-center">
-                                        HotCold{" "}
+                                        Hot/Cold{" "}
                                         <span className="ml-2 bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
                                             +{TIME_PENALTIES["hot/cold"]}
                                         </span>
