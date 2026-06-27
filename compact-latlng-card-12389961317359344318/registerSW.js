@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/compact-latlng-card-12389961317359344318/sw.js', { scope: '/HideAndSeek/compact-latlng-card-12389961317359344318/' })})}
