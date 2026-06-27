@@ -3,7 +3,6 @@ import * as turf from "@turf/turf";
 import type { Feature, FeatureCollection } from "geojson";
 import * as L from "leaflet";
 import { AlertTriangle, SidebarCloseIcon } from "lucide-react";
-import osmtogeojson from "osmtogeojson";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -21,7 +20,6 @@ import {
     customStations as customStationsAtom,
     disabledStations,
     displayHidingZones,
-    displayHidingZonesOptions,
     displayHidingZonesStyle,
     headStartMinutes,
     hidingRadius,
@@ -37,7 +35,6 @@ import {
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import {
-    findPlacesInZone,
     findPlacesSpecificInZone,
     normalizeToStationFeatures,
     parseCustomStationsFromText,
@@ -74,7 +71,6 @@ import {
 } from "./ui/command";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { MultiSelect } from "./ui/multi-select";
 import { ScrollToTop } from "./ui/scroll-to-top";
 import { MENU_ITEM_CLASSNAME } from "./ui/sidebar-l";
 import { UnitSelect } from "./UnitSelect";
@@ -84,7 +80,6 @@ let buttonJustClicked = false;
 export const ZoneSidebar = () => {
     const $displayHidingZones = useStore(displayHidingZones);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
-    const $displayHidingZonesOptions = useStore(displayHidingZonesOptions);
     const $displayHidingZonesStyle = useStore(displayHidingZonesStyle);
     const $hidingRadius = useStore(hidingRadius);
     const $hidingRadiusUnits = useStore(hidingRadiusUnits);
@@ -216,10 +211,6 @@ export const ZoneSidebar = () => {
             try {
                 const needsDefault =
                     !useCustomStations || includeDefaultStations;
-                if (needsDefault && $displayHidingZonesOptions.length === 0) {
-                    toast.error("At least one place type must be selected");
-                    return;
-                }
 
                 let places: StationPlace[] = [];
 
@@ -237,46 +228,21 @@ export const ZoneSidebar = () => {
                         },
                     }));
                 } else {
-                    const overpassOptions = $displayHidingZonesOptions.filter(
-                        (o) => !o.startsWith("SPECIAL:"),
-                    );
-                    const specialOptions = $displayHidingZonesOptions.filter(
-                        (o) => o.startsWith("SPECIAL:"),
-                    );
-
-                    if (overpassOptions.length > 0) {
-                        // @ts-expect-error osmtogeojson always defines properties with an "id" string
-                        places =
-                            osmtogeojson(
-                                await findPlacesInZone(
-                                    overpassOptions[0],
-                                    "Finding stations. This may take a while...",
-                                    "nwr",
-                                    "center",
-                                    overpassOptions.slice(1),
-                                ),
-                            ).features || [];
-                    } else {
-                        places = [];
-                    }
-
-                    if (specialOptions.includes("SPECIAL:CALGARY_TRANSIT")) {
-                        const transitFeatures = (
-                            calgaryTransitData as any
-                        ).features.map((f: any) => ({
-                            type: "Feature",
-                            geometry: f.geometry,
-                            properties: {
-                                ...f.properties,
-                                id:
-                                    f.properties?.["@id"] ||
-                                    f.id ||
-                                    `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
-                                name: f.properties?.name,
-                            },
-                        }));
-                        places.push(...transitFeatures);
-                    }
+                    const transitFeatures = (
+                        calgaryTransitData as any
+                    ).features.map((f: any) => ({
+                        type: "Feature",
+                        geometry: f.geometry,
+                        properties: {
+                            ...f.properties,
+                            id:
+                                f.properties?.["@id"] ||
+                                f.id ||
+                                `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
+                            name: f.properties?.name,
+                        },
+                    }));
+                    places.push(...transitFeatures);
 
                     if (
                         useCustomStations &&
@@ -495,7 +461,6 @@ export const ZoneSidebar = () => {
     }, [
         $questionFinishedMapData,
         $displayHidingZones,
-        $displayHidingZonesOptions,
         $hidingRadius,
         useCustomStations,
         includeDefaultStations,
@@ -614,7 +579,8 @@ export const ZoneSidebar = () => {
                                                 Warning: Performance Impact
                                             </AlertDialogTitle>
                                             <AlertDialogDescription>
-                                                This feature may slow down your device.
+                                                This feature may slow down your
+                                                device.
                                             </AlertDialogDescription>
                                         </AlertDialogHeader>
                                         <AlertDialogFooter>
@@ -686,82 +652,6 @@ export const ZoneSidebar = () => {
                                     />
                                 </SidebarMenuItem>
                             )}
-                            <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                                <MultiSelect
-                                    options={[
-                                        {
-                                            label: "Railway Stations",
-                                            value: "[railway=station]",
-                                        },
-                                        {
-                                            label: "Railway Halts",
-                                            value: "[railway=halt]",
-                                        },
-                                        {
-                                            label: "Railway Stops",
-                                            value: "[railway=stop]",
-                                        },
-                                        {
-                                            label: "Tram Stops",
-                                            value: "[railway=tram_stop]",
-                                        },
-                                        {
-                                            label: "Bus Stops",
-                                            value: "[highway=bus_stop]",
-                                        },
-                                        {
-                                            label: "Calgary Rapid Transit Network",
-                                            value: "SPECIAL:CALGARY_TRANSIT",
-                                        },
-                                        {
-                                            label: "Ferry Terminals",
-                                            value: "[amenity=ferry_terminal]",
-                                        },
-                                        {
-                                            label: "Ferry Platforms (public transport)",
-                                            value: "[public_transport=platform][platform=ferry]",
-                                        },
-                                        {
-                                            label: "Funicular Stations",
-                                            value: "[railway=funicular]",
-                                        },
-                                        {
-                                            label: "Aerialway Stations",
-                                            value: "[aerialway=station]",
-                                        },
-                                        {
-                                            label: "Railway Stations Excluding Subways",
-                                            value: "[railway=station][subway!=yes]",
-                                        },
-                                        {
-                                            label: "Subway Stations",
-                                            value: "[railway=station][subway=yes]",
-                                        },
-                                        {
-                                            label: "Light Rail Stations",
-                                            value: "[railway=station][light_rail=yes]",
-                                        },
-                                        {
-                                            label: "Light Rail Halts",
-                                            value: "[railway=halt][light_rail=yes]",
-                                        },
-                                    ]}
-                                    onValueChange={
-                                        displayHidingZonesOptions.set
-                                    }
-                                    defaultValue={$displayHidingZonesOptions}
-                                    placeholder="Select allowed places"
-                                    animation={2}
-                                    maxCount={3}
-                                    modalPopover
-                                    className="!bg-popover bg-opacity-100"
-                                    disabled={
-                                        $isLoading ||
-                                        (useCustomStations &&
-                                            !includeDefaultStations)
-                                    }
-                                />
-                            </SidebarMenuItem>
                             <SidebarMenuItem>
                                 <Label className="font-semibold font-poppins ml-2">
                                     Hiding Zone Radius

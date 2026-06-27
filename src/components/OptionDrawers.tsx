@@ -16,7 +16,6 @@ import {
     baseTileLayer,
     customStations,
     disabledStations,
-    displayHidingZonesOptions,
     displayTransitLines,
     followMe,
     hasSeenRules,
@@ -139,10 +138,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
 
             if (typeof geojson.headStartMinutes === "number") {
                 headStartMinutes.set(geojson.headStartMinutes);
-            }
-
-            if (geojson.zoneOptions) {
-                displayHidingZonesOptions.set(geojson.zoneOptions ?? []);
             }
 
             if (typeof geojson.useCustomStations === "boolean") {

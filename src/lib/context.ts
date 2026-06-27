@@ -104,14 +104,6 @@ export const displayHidingZones = persistentAtom<boolean>(
         decode: JSON.parse,
     },
 );
-export const displayHidingZonesOptions = persistentAtom<string[]>(
-    "displayHidingZonesOptions",
-    ["SPECIAL:CALGARY_TRANSIT"],
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
 export const displayHidingZonesStyle = persistentAtom<
     "zones" | "stations" | "no-overlap" | "no-display"
 >("displayHidingZonesStyle", "zones");
@@ -217,7 +209,6 @@ export const hidingZone = computed(
         disabledStations,
         hidingRadius,
         hidingRadiusUnits,
-        displayHidingZonesOptions,
         useCustomStations,
         customStations,
         includeDefaultStations,
@@ -231,7 +222,6 @@ export const hidingZone = computed(
         disabledStations,
         radius,
         hidingRadiusUnits,
-        zoneOptions,
         useCustom,
         $customStations,
         includeDefault,
@@ -245,7 +235,6 @@ export const hidingZone = computed(
                 hidingRadius: radius,
                 hidingRadiusUnits,
                 headStartMinutes: $headStartMinutes,
-                zoneOptions: zoneOptions,
                 useCustomStations: useCustom,
                 customStations: $customStations,
                 includeDefaultStations: includeDefault,
@@ -261,7 +250,6 @@ export const hidingZone = computed(
                 hidingRadiusUnits,
                 headStartMinutes: $headStartMinutes,
                 alternateLocations: structuredClone(altLoc),
-                zoneOptions: zoneOptions,
                 useCustomStations: useCustom,
                 customStations: $customStations,
                 includeDefaultStations: includeDefault,
