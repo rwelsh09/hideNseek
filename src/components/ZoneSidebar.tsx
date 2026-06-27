@@ -3,7 +3,6 @@ import * as turf from "@turf/turf";
 import type { Feature, FeatureCollection } from "geojson";
 import * as L from "leaflet";
 import { AlertTriangle, SidebarCloseIcon } from "lucide-react";
-import osmtogeojson from "osmtogeojson";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -20,7 +19,6 @@ import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
     disabledStations,
     displayHidingZones,
-    displayHidingZonesOptions,
     displayHidingZonesStyle,
     headStartMinutes,
     hidingRadius,
@@ -34,7 +32,6 @@ import {
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import {
-    findPlacesInZone,
     findPlacesSpecificInZone,
     QuestionSpecificLocation,
     type StationCircle,
@@ -69,7 +66,6 @@ import {
 } from "./ui/command";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-import { MultiSelect } from "./ui/multi-select";
 import { ScrollToTop } from "./ui/scroll-to-top";
 import { MENU_ITEM_CLASSNAME } from "./ui/sidebar-l";
 import { UnitSelect } from "./UnitSelect";
@@ -79,7 +75,6 @@ let buttonJustClicked = false;
 export const ZoneSidebar = () => {
     const $displayHidingZones = useStore(displayHidingZones);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
-    const $displayHidingZonesOptions = useStore(displayHidingZonesOptions);
     const $displayHidingZonesStyle = useStore(displayHidingZonesStyle);
     const $hidingRadius = useStore(hidingRadius);
     const $hidingRadiusUnits = useStore(hidingRadiusUnits);
@@ -424,7 +419,6 @@ export const ZoneSidebar = () => {
     }, [
         $questionFinishedMapData,
         $displayHidingZones,
-        $displayHidingZonesOptions,
         $hidingRadius,
     ]);
 

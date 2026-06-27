@@ -102,14 +102,6 @@ export const displayHidingZones = persistentAtom<boolean>(
         decode: JSON.parse,
     },
 );
-export const displayHidingZonesOptions = persistentAtom<string[]>(
-    "displayHidingZonesOptions",
-    ["SPECIAL:CALGARY_TRANSIT"],
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
 export const displayHidingZonesStyle = persistentAtom<
     "zones" | "stations" | "no-overlap" | "no-display"
 >("displayHidingZonesStyle", "zones");

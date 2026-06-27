@@ -15,7 +15,6 @@ import {
     autoSave,
     baseTileLayer,
     disabledStations,
-    displayHidingZonesOptions,
     displayTransitLines,
     followMe,
     hasSeenRules,
