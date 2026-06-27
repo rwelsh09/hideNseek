@@ -52,22 +52,23 @@ export const NextStepsChecklist = () => {
                 <li className="flex gap-2 items-start">
                     <span className="font-bold text-blue-400">2.</span>
                     <span>
-                        <strong>Define Zones:</strong> The Hider must lock in
-                        their starting station/zone on their map.
+                        <strong>Define Zones:</strong> In the right sidebar you
+                        can adjust the Hiding Zone Radius and disable specific
+                        stations/zones on the map. (optional)
                     </span>
                 </li>
                 <li className="flex gap-2 items-start">
                     <span className="font-bold text-blue-400">3.</span>
                     <span>
                         <strong>Sync State:</strong> Open the Options menu to
-                        Share the game state URL with the Seekers.
+                        Share the game state with the other players.
                     </span>
                 </li>
                 <li className="flex gap-2 items-start">
                     <span className="font-bold text-blue-400">4.</span>
                     <span>
-                        <strong>Start Seeking:</strong> Right-click or
-                        long-press on the map to ask your first question!
+                        <strong>Start Timer:</strong> Click the clock icon.
+                        Start the timer and (to the Hider) RUN RUN RUN!
                     </span>
                 </li>
             </ul>
