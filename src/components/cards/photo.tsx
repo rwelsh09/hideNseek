@@ -25,11 +25,11 @@ const PHOTO_LABELS: Record<string, string> = {
     tree: "Unique Tree",
     car: "Widest Street",
     building: "Tallest Structure",
-    restaurant: "Restaurant Interior",
+    restaurant: "Restaurant",
     park: "Park",
-    store: "Grocery Store Aisle",
+    store: "Store",
     worship: "Place of Worship",
-    train: "Train Platform",
+    train: "Station",
     route: "Nearest Intersection",
 };
 
@@ -38,14 +38,14 @@ const PHOTO_DESCRIPTIONS: Record<string, string> = {
     tree: "Find and photograph the most unique or distinctive tree in your immediate vicinity.",
     car: "Photograph the widest street or road that you can see from your location.",
     building:
-        "Photograph the tallest building, tower, or structure visible from where you are standing.",
+        "Photograph the tallest building, tower, or structure visible from where you are.",
     restaurant:
         "Take a photo showing a nearby restaurant, cafe, or food establishment.",
     park: "Take a photo that clearly shows a park, playground, or green space nearby.",
-    store: "Take a photograph inside or outside of a nearby store or shop.",
+    store: "Take a photo showing a nearby store.",
     worship:
         "Photograph the nearest church, mosque, temple, or other place of worship.",
-    train: "Take a picture showing a transit station or train platform.",
+    train: "Take a picture showing your transit station or train platform.",
     route: "Take a picture showing the nearest street intersection.",
 };
 
@@ -140,10 +140,6 @@ export const PhotoQuestionComponent = ({
                     <span className="italic opacity-80 border-b border-slate-700 pb-2">
                         {PHOTO_DESCRIPTIONS[data.type] ||
                             "Take a photograph based on the request."}
-                    </span>
-                    <span>
-                        Tell the Seekers:{" "}
-                        <span className="text-primary">[Send Photo]</span>
                     </span>
                 </div>
             )}
