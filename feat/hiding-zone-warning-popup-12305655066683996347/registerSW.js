@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feat/hiding-zone-warning-popup-12305655066683996347/sw.js', { scope: '/HideAndSeek/feat/hiding-zone-warning-popup-12305655066683996347/' })})}
