@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feature/photo-clarifications-4859682277399854963/sw.js', { scope: '/HideAndSeek/feature/photo-clarifications-4859682277399854963/' })})}
