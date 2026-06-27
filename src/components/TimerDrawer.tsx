@@ -133,18 +133,7 @@ export const TimerDrawer = () => {
                 <span>Added to leaderboard!</span>
                 <span className="text-sm">
                     I hope you enjoyed your game, please consider supporting the
-                    app with a donation in the{" "}
-                    <button
-                        className="underline hover:text-blue-500 transition-colors pointer-events-auto relative z-50"
-                        onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            toast.dismiss();
-                            isOptionsOpenStore.set(true);
-                        }}
-                    >
-                        Options
-                    </button>
+                    app with a donation (open Options).{" "}
                 </span>
             </div>,
         );
