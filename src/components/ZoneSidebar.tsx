@@ -17,27 +17,22 @@ import {
 } from "@/components/ui/sidebar-r";
 import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
-    customStations as customStationsAtom,
     disabledStations,
     displayHidingZones,
     displayHidingZonesStyle,
     headStartMinutes,
     hidingRadius,
     hidingRadiusUnits,
-    includeDefaultStations as includeDefaultStationsAtom,
     isLoading,
     leafletMapContext,
     liveUpdateMapEnabled,
     questionFinishedMapData,
     questions,
     trainStations,
-    useCustomStations as useCustomStationsAtom,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import {
     findPlacesSpecificInZone,
-    normalizeToStationFeatures,
-    parseCustomStationsFromText,
     QuestionSpecificLocation,
     type StationCircle,
     type StationPlace,
@@ -88,9 +83,6 @@ export const ZoneSidebar = () => {
     const map = useStore(leafletMapContext);
     const stations = useStore(trainStations);
     const $disabledStations = useStore(disabledStations);
-    const useCustomStations = useStore(useCustomStationsAtom);
-    const includeDefaultStations = useStore(includeDefaultStationsAtom);
-    const $customStations = useStore(customStationsAtom);
     const [hidingZoneModeStationID, setHidingZoneModeStationID] =
         useState<string>("");
     const [stationSearch, setStationSearch] = useState<string>("");
@@ -209,25 +201,37 @@ export const ZoneSidebar = () => {
             isLoading.set(true);
 
             try {
-                const needsDefault =
-                    !useCustomStations || includeDefaultStations;
+                if ($displayHidingZonesOptions.length === 0) {
+                    toast.error("At least one place type must be selected");
+                    return;
+                }
 
                 let places: StationPlace[] = [];
 
-                if (!needsDefault) {
-                    places = normalizeToStationFeatures(
-                        $customStations,
-                    ).features.map((f) => ({
-                        type: "Feature",
-                        geometry: f.geometry,
-                        properties: {
-                            id:
-                                f.properties?.id ||
-                                `${(f.geometry as any).coordinates[1]},${(f.geometry as any).coordinates[0]}`,
-                            name: f.properties?.name,
-                        },
-                    }));
+                const overpassOptions = $displayHidingZonesOptions.filter(
+                    (o) => !o.startsWith("SPECIAL:"),
+                );
+                const specialOptions = $displayHidingZonesOptions.filter((o) =>
+                    o.startsWith("SPECIAL:"),
+                );
+
+                if (overpassOptions.length > 0) {
+                    // @ts-expect-error osmtogeojson always defines properties with an "id" string
+                    places =
+                        osmtogeojson(
+                            await findPlacesInZone(
+                                overpassOptions[0],
+                                "Finding stations. This may take a while...",
+                                "nwr",
+                                "center",
+                                overpassOptions.slice(1),
+                            ),
+                        ).features || [];
                 } else {
+                    places = [];
+                }
+
+                if (specialOptions.includes("SPECIAL:CALGARY_TRANSIT")) {
                     const transitFeatures = (
                         calgaryTransitData as any
                     ).features.map((f: any) => ({
@@ -243,44 +247,6 @@ export const ZoneSidebar = () => {
                         },
                     }));
                     places.push(...transitFeatures);
-
-                    if (
-                        useCustomStations &&
-                        $customStations.length > 0 &&
-                        includeDefaultStations
-                    ) {
-                        const customFeatures = normalizeToStationFeatures(
-                            $customStations,
-                        ).features.map(
-                            (f) =>
-                                ({
-                                    type: "Feature",
-                                    geometry: f.geometry,
-                                    properties: {
-                                        id:
-                                            f.properties?.id ||
-                                            `${(f.geometry as any).coordinates[1]},${(f.geometry as any).coordinates[0]}`,
-                                        name: f.properties?.name,
-                                    },
-                                }) as StationPlace,
-                        );
-                        const seen = new Set<string>();
-                        const merged: StationPlace[] = [];
-                        const add = (feat: StationPlace) => {
-                            const id = feat.properties.id as string | undefined;
-                            const key =
-                                id && id.includes("/")
-                                    ? `id:${id}`
-                                    : `pt:${feat.geometry.coordinates[1]},${feat.geometry.coordinates[0]}`;
-                            if (!seen.has(key)) {
-                                seen.add(key);
-                                merged.push(feat);
-                            }
-                        };
-                        places.forEach(add);
-                        customFeatures.forEach(add);
-                        places = merged;
-                    }
                 }
 
                 const unionized = safeUnion(
@@ -326,35 +292,27 @@ export const ZoneSidebar = () => {
                         );
 
                         if (question.data.type === "same-train-line") {
-                            if (useCustomStations && !includeDefaultStations) {
-                                toast.warning(
-                                    "'Same train line' isn't supported with custom-only station lists.",
-                                );
-                            } else {
-                                const seekerLines: string[] =
-                                    nearestTrainStation.properties.properties
-                                        ?.lines ||
-                                    (nearestTrainStation.properties as any)
-                                        .lines ||
-                                    [];
+                            const seekerLines: string[] =
+                                nearestTrainStation.properties.properties
+                                    ?.lines ||
+                                (nearestTrainStation.properties as any).lines ||
+                                [];
 
-                                if (seekerLines.length > 0) {
-                                    circles = circles.filter((circle) => {
-                                        const hiderLines: string[] =
-                                            circle.properties.properties
-                                                ?.lines ||
-                                            (circle.properties as any).lines ||
-                                            [];
+                            if (seekerLines.length > 0) {
+                                circles = circles.filter((circle) => {
+                                    const hiderLines: string[] =
+                                        circle.properties.properties?.lines ||
+                                        (circle.properties as any).lines ||
+                                        [];
 
-                                        const intersects = seekerLines.some(
-                                            (l) => hiderLines.includes(l),
-                                        );
+                                    const intersects = seekerLines.some((l) =>
+                                        hiderLines.includes(l),
+                                    );
 
-                                        return question.data.same
-                                            ? intersects
-                                            : !intersects;
-                                    });
-                                }
+                                    return question.data.same
+                                        ? intersects
+                                        : !intersects;
+                                });
                             }
                         }
 
@@ -462,9 +420,6 @@ export const ZoneSidebar = () => {
         $questionFinishedMapData,
         $displayHidingZones,
         $hidingRadius,
-        useCustomStations,
-        includeDefaultStations,
-        $customStations,
     ]);
 
     useEffect(() => {
@@ -610,48 +565,77 @@ export const ZoneSidebar = () => {
                                 </AlertDialog>
                             </SidebarMenuItem>
                             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                                <Label className="font-semibold font-poppins">
-                                    Use Custom Stations
-                                </Label>
-                                <Checkbox
-                                    defaultChecked={useCustomStations}
-                                    checked={useCustomStations}
-                                    onCheckedChange={useCustomStationsAtom.set}
+                                <MultiSelect
+                                    options={[
+                                        {
+                                            label: "Railway Stations",
+                                            value: "[railway=station]",
+                                        },
+                                        {
+                                            label: "Railway Halts",
+                                            value: "[railway=halt]",
+                                        },
+                                        {
+                                            label: "Railway Stops",
+                                            value: "[railway=stop]",
+                                        },
+                                        {
+                                            label: "Tram Stops",
+                                            value: "[railway=tram_stop]",
+                                        },
+                                        {
+                                            label: "Bus Stops",
+                                            value: "[highway=bus_stop]",
+                                        },
+                                        {
+                                            label: "Calgary Rapid Transit Network",
+                                            value: "SPECIAL:CALGARY_TRANSIT",
+                                        },
+                                        {
+                                            label: "Ferry Terminals",
+                                            value: "[amenity=ferry_terminal]",
+                                        },
+                                        {
+                                            label: "Ferry Platforms (public transport)",
+                                            value: "[public_transport=platform][platform=ferry]",
+                                        },
+                                        {
+                                            label: "Funicular Stations",
+                                            value: "[railway=funicular]",
+                                        },
+                                        {
+                                            label: "Aerialway Stations",
+                                            value: "[aerialway=station]",
+                                        },
+                                        {
+                                            label: "Railway Stations Excluding Subways",
+                                            value: "[railway=station][subway!=yes]",
+                                        },
+                                        {
+                                            label: "Subway Stations",
+                                            value: "[railway=station][subway=yes]",
+                                        },
+                                        {
+                                            label: "Light Rail Stations",
+                                            value: "[railway=station][light_rail=yes]",
+                                        },
+                                        {
+                                            label: "Light Rail Halts",
+                                            value: "[railway=halt][light_rail=yes]",
+                                        },
+                                    ]}
+                                    onValueChange={
+                                        displayHidingZonesOptions.set
+                                    }
+                                    defaultValue={$displayHidingZonesOptions}
+                                    placeholder="Select allowed places"
+                                    animation={2}
+                                    maxCount={3}
+                                    modalPopover
+                                    className="!bg-popover bg-opacity-100"
                                     disabled={$isLoading}
                                 />
                             </SidebarMenuItem>
-                            {useCustomStations && (
-                                <SidebarMenuItem
-                                    className={MENU_ITEM_CLASSNAME}
-                                >
-                                    <Input
-                                        type="file"
-                                        accept=".json,.kml,.csv"
-                                        onChange={async (e) => {
-                                            const file = e.target.files?.[0];
-                                            if (file) {
-                                                try {
-                                                    const text =
-                                                        await file.text();
-                                                    const parsed =
-                                                        parseCustomStationsFromText(
-                                                            text,
-                                                            file.name,
-                                                        );
-                                                    customStationsAtom.set(
-                                                        parsed,
-                                                    );
-                                                } catch {
-                                                    toast.error(
-                                                        "Failed to parse custom stations file.",
-                                                    );
-                                                }
-                                            }
-                                        }}
-                                        disabled={$isLoading}
-                                    />
-                                </SidebarMenuItem>
-                            )}
                             <SidebarMenuItem>
                                 <Label className="font-semibold font-poppins ml-2">
                                     Hiding Zone Radius

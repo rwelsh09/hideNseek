@@ -14,7 +14,6 @@ import {
     animateMapMovements,
     autoSave,
     baseTileLayer,
-    customStations,
     disabledStations,
     displayTransitLines,
     followMe,
@@ -23,7 +22,6 @@ import {
     hiderMode,
     hidingRadius,
     hidingZone,
-    includeDefaultStations,
     isOptionsOpenStore,
     leafletMapContext,
     liveUpdateMapEnabled,
@@ -33,7 +31,6 @@ import {
     questions,
     showTutorial,
     triggerLocalRefresh,
-    useCustomStations,
 } from "@/lib/context";
 import { cn, compress, decompress, shareOrFallback } from "@/lib/utils";
 import { questionsSchema } from "@/maps/schema";
@@ -140,19 +137,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                 headStartMinutes.set(geojson.headStartMinutes);
             }
 
-            if (typeof geojson.useCustomStations === "boolean") {
-                useCustomStations.set(geojson.useCustomStations);
-            }
-
-            if (
-                geojson.customStations &&
-                geojson.customStations.constructor === Array
-            ) {
-                customStations.set(geojson.customStations);
-            }
-
-            if (typeof geojson.includeDefaultStations === "boolean") {
-                includeDefaultStations.set(geojson.includeDefaultStations);
+            if (geojson.zoneOptions) {
+                displayHidingZonesOptions.set(geojson.zoneOptions ?? []);
             }
 
             toast.success("Hiding zone loaded successfully", {
