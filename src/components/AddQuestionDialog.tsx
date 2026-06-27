@@ -667,7 +667,7 @@ export function AddQuestionDialog() {
                             >
                                 <Building2 className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Tallest Bldg
+                                    Tallest Structure
                                 </span>
                             </button>
 
@@ -742,7 +742,7 @@ export function AddQuestionDialog() {
                             >
                                 <Train className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Train Plat.
+                                    Train Platform
                                 </span>
                             </button>
 
