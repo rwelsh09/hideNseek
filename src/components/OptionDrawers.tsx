@@ -177,6 +177,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
         >
             <Button
                 className="shadow-md"
+                data-tutorial-id="tutorial-share-state-btn"
                 onClick={async () => {
                     const hidingZoneString = JSON.stringify($hidingZone);
                     let compressedData;
@@ -218,7 +219,12 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                 onOpenChange={isOptionsOpenStore.set}
             >
                 <DrawerTrigger className="w-24" asChild>
-                    <Button className="w-24 shadow-md">Options</Button>
+                    <Button
+                        className="w-24 shadow-md"
+                        data-tutorial-id="tutorial-options-btn"
+                    >
+                        Options
+                    </Button>
                 </DrawerTrigger>
                 <DrawerContent onPointerDown={(e) => e.stopPropagation()}>
                     <div className="flex flex-col items-center gap-4 mb-4">
@@ -453,43 +459,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 />
                             </div>
                             <Separator className="bg-slate-300 w-[280px]" />
-                            <div className="flex flex-col sm:flex-row gap-4 w-full max-w-[280px] sm:max-w-none">
-                                <Button
-                                    className="w-full sm:w-auto"
-                                    onClick={() => {
-                                        if (!navigator || !navigator.clipboard)
-                                            return toast.error(
-                                                "Clipboard not supported",
-                                            );
-                                        navigator.clipboard.writeText(
-                                            JSON.stringify($hidingZone),
-                                        );
-                                        toast.success(
-                                            "Game state copied successfully",
-                                            {
-                                                autoClose: 2000,
-                                            },
-                                        );
-                                    }}
-                                >
-                                    Copy Game State
-                                </Button>
-                                <Button
-                                    className="w-full sm:w-auto"
-                                    onClick={() => {
-                                        if (!navigator || !navigator.clipboard)
-                                            return toast.error(
-                                                "Clipboard not supported",
-                                            );
-                                        navigator.clipboard
-                                            .readText()
-                                            .then(loadHidingZone);
-                                    }}
-                                >
-                                    Paste Game State
-                                </Button>
-                            </div>
-                            <Separator className="bg-slate-300 w-[280px]" />
                             <div className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-[280px] sm:max-w-none">
                                 <Button
                                     variant="destructive"
@@ -524,24 +493,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     }}
                                 >
                                     Cache All Possible Places
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    className="w-full sm:w-[280px] font-normal hover:bg-slate-200"
-                                    onClick={() => {
-                                        import("@/maps/api").then(
-                                            ({ clearCache, CacheType }) => {
-                                                mapGeoJSON.set(null);
-                                                polyGeoJSON.set(null);
-                                                questions.set([]);
-                                                clearCache(
-                                                    CacheType.ZONE_CACHE,
-                                                );
-                                            },
-                                        );
-                                    }}
-                                >
-                                    Clear Questions & Cache
                                 </Button>
                             </div>
                         </div>

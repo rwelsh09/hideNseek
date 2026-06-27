@@ -60,22 +60,6 @@ const QUIZ_QUESTIONS = [
         correct: 2,
     },
     {
-        question:
-            "According to the 'Add Question' menu on the map, which question type carries the highest time penalty?",
-        options: ["Match.", "Radar.", "Closest.", "Photo."],
-        correct: 2,
-    },
-    {
-        question: "What happens when Seekers ask a question?",
-        options: [
-            "The Hider gives them $5.",
-            "A Time Penalty is incurred, added to the game clock to compensate the Hider.",
-            "The Seekers lose 5 minutes.",
-            "The Hider has to move.",
-        ],
-        correct: 1,
-    },
-    {
         question: "When does the game round end?",
         options: [
             "After exactly 2 hours.",
@@ -84,6 +68,26 @@ const QUIZ_QUESTIONS = [
             "When all questions have been asked.",
         ],
         correct: 2,
+    },
+    {
+        question: "Who calculates the time penalties?",
+        options: [
+            "The Seekers.",
+            "The Hider.",
+            "The webapp automatically calculates them.",
+            "An impartial referee.",
+        ],
+        correct: 2,
+    },
+    {
+        question: "If the seekers enter your hiding zone, what must you do?",
+        options: [
+            "Run away.",
+            "Stay put in a single publicly accessible spot.",
+            "Hide in a bathroom.",
+            "Take an Uber.",
+        ],
+        correct: 1,
     },
 ];
 
@@ -202,18 +206,21 @@ export const RulesQuiz = () => {
                 })}
             </div>
 
-            {isAnswered && (
-                <div className="flex justify-end mt-4">
-                    <Button
-                        onClick={handleNextQuestion}
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
-                    >
-                        {currentQuestionIndex + 1 === QUIZ_QUESTIONS.length
-                            ? "Show Results"
-                            : "Next Question"}
-                    </Button>
-                </div>
-            )}
+            <div className="flex justify-end mt-4 min-h-[40px]">
+                <Button
+                    onClick={handleNextQuestion}
+                    disabled={!isAnswered}
+                    className={`text-white transition-opacity duration-200 ${
+                        isAnswered
+                            ? "bg-blue-600 hover:bg-blue-700 opacity-100"
+                            : "bg-slate-600 opacity-50 cursor-not-allowed"
+                    }`}
+                >
+                    {currentQuestionIndex + 1 === QUIZ_QUESTIONS.length
+                        ? "Show Results"
+                        : "Next Question"}
+                </Button>
+            </div>
         </div>
     );
 };

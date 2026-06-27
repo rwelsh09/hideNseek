@@ -4,7 +4,11 @@ import { useStore } from "@nanostores/react";
 import { driver } from "driver.js";
 import { useEffect } from "react";
 
-import { hasSeenRules, showTutorial } from "@/lib/context";
+import {
+    hasSeenRules,
+    showNextStepsChecklist,
+    showTutorial,
+} from "@/lib/context";
 
 export const TutorialManager = () => {
     const $showTutorial = useStore(showTutorial);
@@ -32,6 +36,7 @@ export const TutorialManager = () => {
                         ) {
                             driverObj.destroy();
                             showTutorial.set(false);
+                            showNextStepsChecklist.set(true);
                         }
                     }
                 },
@@ -39,7 +44,7 @@ export const TutorialManager = () => {
                     ? [
                           {
                               element:
-                                  '[data-tutorial-id="option-drawers-trigger"]',
+                                  '[data-tutorial-id="tutorial-options-btn"]',
                               popover: {
                                   title: "Welcome to Hide & Seek",
                                   description:
@@ -55,7 +60,7 @@ export const TutorialManager = () => {
 
                                       const trigger =
                                           document.querySelector<HTMLElement>(
-                                              '[data-tutorial-id="option-drawers-trigger"]',
+                                              '[data-tutorial-id="tutorial-options-btn"]',
                                           );
 
                                       if (trigger) {
@@ -151,11 +156,22 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '[data-tutorial-id="option-drawers-trigger"]',
+                                  '[data-tutorial-id="tutorial-share-state-btn"]',
+                              popover: {
+                                  title: "Share Game State",
+                                  description:
+                                      "Once your head start and hiding zone are set, use this to share your exact Game State with the Seekers so they can load it on their devices.",
+                                  side: "top",
+                                  align: "end",
+                              },
+                          },
+                          {
+                              element:
+                                  '[data-tutorial-id="tutorial-options-btn"]',
                               popover: {
                                   title: "Options",
                                   description:
-                                      "Access map settings, transit lines overlays, save states, sharing options, and more.",
+                                      "Access map settings, transit lines overlays, manual save states, and more.",
                                   side: "top",
                                   align: "end",
                               },
@@ -384,6 +400,17 @@ export const TutorialManager = () => {
                                       "Need to send the question details to the Hider? You can copy and share it from here.",
                                   side: "bottom",
                                   align: "end",
+                              },
+                          },
+                          {
+                              element:
+                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-paste-question-btn"]',
+                              popover: {
+                                  title: "Paste Question",
+                                  description:
+                                      "If you are the Hider, you can paste the question you copied from the Seekers here to view it on your map.",
+                                  side: "bottom",
+                                  align: "center",
                               },
                           },
                           {

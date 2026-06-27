@@ -194,6 +194,7 @@ export const QuestionSidebar = () => {
                         <SidebarMenuItem>
                             <SidebarMenuButton
                                 className="bg-slate-700 hover:bg-slate-600 p-2 rounded-md font-semibold font-poppins transition-colors duration-200 text-white flex items-center justify-center gap-2"
+                                data-tutorial-id="tutorial-paste-question-btn"
                                 onClick={() => {
                                     navigator.clipboard
                                         .readText()
