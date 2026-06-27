@@ -89,6 +89,46 @@ const QUIZ_QUESTIONS = [
         ],
         correct: 1,
     },
+    {
+        question: "Is it okay to hide in a store that is open?",
+        options: [
+            "Yes, as long as it's publicly accessible.",
+            "No, avoid businesses so you don't raise suspicion or get kicked out.",
+            "Only if you buy something.",
+            "Only if it's a grocery store.",
+        ],
+        correct: 1,
+    },
+    {
+        question: "When does the end game start?",
+        options: [
+            "When the time runs out.",
+            "When you are found.",
+            "When the seekers enter the Hiding Zone.",
+            "After 3 questions are asked.",
+        ],
+        correct: 2,
+    },
+    {
+        question: "Does your final hiding spot need to be on a road?",
+        options: [
+            "Yes, exactly on a road.",
+            "No, but it must be within 3 meters of a marked path or road on Google Maps.",
+            "No, it can be anywhere.",
+            "Yes, or on a train track.",
+        ],
+        correct: 1,
+    },
+    {
+        question: "Do you need cell reception to play?",
+        options: [
+            "Yes, continuous high-speed internet is required.",
+            "No, but you should click 'Cache All Possible Places' in the options drawer when you have a connection.",
+            "Only for the Seekers.",
+            "No, the game runs completely without any data.",
+        ],
+        correct: 1,
+    },
 ];
 
 export const RulesQuiz = () => {
