@@ -9,6 +9,7 @@ import {
     TopDrawerContent,
 } from "@/components/ui/drawer";
 import {
+    anyDrawerOpenSignal,
     headStartMinutes,
     isTimerRunning,
     leaderboard,
@@ -153,6 +154,9 @@ export const TimerDrawer = () => {
                     title="Timer & Leaderboard"
                     aria-label="Timer & Leaderboard"
                     data-tutorial-id="timer-drawer-trigger"
+                    onClick={() =>
+                        anyDrawerOpenSignal.set(anyDrawerOpenSignal.get() + 1)
+                    }
                 >
                     <Clock className="w-5 h-5 text-black" />
                     {$penaltyMinutes > 0 && (

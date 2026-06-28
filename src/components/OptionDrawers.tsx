@@ -12,6 +12,7 @@ import {
 import {
     additionalMapGeoLocations,
     animateMapMovements,
+    anyDrawerOpenSignal,
     autoSave,
     baseTileLayer,
     customStations,
@@ -222,6 +223,11 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                     <Button
                         className="w-24 shadow-md"
                         data-tutorial-id="tutorial-options-btn"
+                        onClick={() =>
+                            anyDrawerOpenSignal.set(
+                                anyDrawerOpenSignal.get() + 1,
+                            )
+                        }
                     >
                         Options
                     </Button>

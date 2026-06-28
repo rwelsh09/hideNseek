@@ -17,6 +17,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { anyDrawerOpenSignal } from "@/lib/context";
 import { cn } from "@/lib/utils";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
@@ -93,6 +94,7 @@ const SidebarProvider = React.forwardRef<
 
         // Helper to toggle the sidebar.
         const toggleSidebar = React.useCallback(() => {
+            anyDrawerOpenSignal.set(anyDrawerOpenSignal.get() + 1);
             return isMobile
                 ? setOpenMobile((open) => !open)
                 : setOpen((open) => !open);

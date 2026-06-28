@@ -27,10 +27,16 @@ import {
     Trees,
     Utensils,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 
 import { SidebarContext } from "@/components/ui/sidebar-l";
-import { addQuestion, leafletMapContext, TIME_PENALTIES } from "@/lib/context";
+import {
+    addQuestion,
+    anyDrawerOpenSignal,
+    leafletMapContext,
+    TIME_PENALTIES,
+} from "@/lib/context";
 
 import {
     draftQuestionId,
@@ -48,13 +54,13 @@ import {
 
 export function AddQuestionDialog() {
     const [open, setOpen] = useState(false);
-    const { openMobile } = useStore(SidebarContext);
+    const $anyDrawerOpenSignal = useStore(anyDrawerOpenSignal);
 
     useEffect(() => {
-        if (openMobile) {
+        if ($anyDrawerOpenSignal > 0) {
             setOpen(false);
         }
-    }, [openMobile]);
+    }, [$anyDrawerOpenSignal]);
 
     const handleQuestionSelect = (type: string, detail?: string) => {
         const map = leafletMapContext.get();
