@@ -121,6 +121,9 @@ const SidebarProvider = React.forwardRef<
         const state = open ? "expanded" : "collapsed";
 
         React.useEffect(() => {
+            if (openMobile || open) {
+                anyDrawerOpenSignal.set(anyDrawerOpenSignal.get() + 1);
+            }
             SidebarContext.set({
                 state,
                 open,
