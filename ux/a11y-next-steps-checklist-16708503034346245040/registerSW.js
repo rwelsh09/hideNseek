@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/ux/a11y-next-steps-checklist-16708503034346245040/sw.js', { scope: '/HideAndSeek/ux/a11y-next-steps-checklist-16708503034346245040/' })})}
