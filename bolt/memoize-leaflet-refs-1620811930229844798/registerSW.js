@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/bolt/memoize-leaflet-refs-1620811930229844798/sw.js', { scope: '/HideAndSeek/bolt/memoize-leaflet-refs-1620811930229844798/' })})}
