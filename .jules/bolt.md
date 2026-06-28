@@ -17,3 +17,8 @@
 
 **Learning:** Passing inline arrays or objects to `react-leaflet` components (such as `contextmenuItems={[...]}` on `MapContainer`) creates new array references on every single render. This forces React Leaflet and its underlying plugins to re-evaluate or re-bind event listeners, significantly increasing memory allocation overhead and rendering time.
 **Action:** Extract inline arrays and large configuration objects into `useMemo` hooks or static constants outside of the render cycle. This provides stable object references, preventing unnecessary Leaflet DOM manipulations.
+
+## 2026-06-28 - [Memoizing Loop Callbacks and Rules of Hooks]
+
+**Learning:** When attempting to memoize props like inline arrays or style objects for items that are rendered inside a `.map()` loop (e.g., inside `LatLngPicker.tsx`), you cannot simply wrap the prop in `React.useMemo` directly within the loop callback. This strictly violates React's Rules of Hooks because hooks must be called at the top level of a component.
+**Action:** Always extract the looped item into a separate, dedicated React component. Then, use `React.useMemo` or `React.memo` safely inside that new component, or pass the memoized values down as props from the parent if the values are globally shared.

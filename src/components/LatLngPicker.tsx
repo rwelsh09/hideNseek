@@ -260,12 +260,24 @@ export const LatitudeLongitude = ({
 
     const color = colorName ? ICON_COLORS[colorName] : "transparent";
 
+    const sidebarMenuItemStyle = React.useMemo(
+        () => ({
+            backgroundColor: color,
+        }),
+        [color],
+    );
+
+    const labelStyle = React.useMemo(
+        () => ({
+            color: colorName === "gold" ? "black" : undefined,
+        }),
+        [colorName],
+    );
+
     return (
         <>
             <SidebarMenuItem
-                style={{
-                    backgroundColor: color,
-                }}
+                style={sidebarMenuItemStyle}
                 className={cn(
                     "p-3 rounded-md space-y-2 mt-2",
                     $isLoading && "brightness-50",
@@ -277,9 +289,7 @@ export const LatitudeLongitude = ({
                             "flex justify-between items-center",
                             $isLoading && "opacity-50",
                         )}
-                        style={{
-                            color: colorName === "gold" ? "black" : undefined,
-                        }}
+                        style={labelStyle}
                     >
                         <div className="text-lg font-semibold font-poppins">
                             {label}

@@ -96,9 +96,14 @@ const ColoredMarker = ({
         [],
     );
 
+    const position = useMemo<[number, number]>(
+        () => [latitude, longitude],
+        [latitude, longitude],
+    );
+
     return (
         <Marker
-            position={[latitude, longitude]}
+            position={position}
             icon={color ? getIcon(color) : undefined}
             draggable={true}
             eventHandlers={eventHandlers}

@@ -48,6 +48,8 @@ const PHOTO_DESCRIPTIONS: Record<string, string> = {
     route: "Take a picture showing the nearest street intersection.",
 };
 
+const MESSAGE_STYLE = { width: "calc(100% - 1rem)" };
+
 export const PhotoQuestionComponent = ({
     data,
     questionKey,
@@ -133,7 +135,7 @@ export const PhotoQuestionComponent = ({
             />
             <div
                 className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md mx-2 mb-2 flex flex-col gap-2"
-                style={{ width: "calc(100% - 1rem)" }}
+                style={MESSAGE_STYLE}
             >
                 <span className="italic opacity-80 border-b border-slate-700 pb-2">
                     {PHOTO_DESCRIPTIONS[data.type] ||

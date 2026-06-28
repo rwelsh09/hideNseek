@@ -1,6 +1,7 @@
 import { cva, type VariantProps } from "class-variance-authority";
 import { CheckIcon, ChevronDown, XCircle, XIcon } from "lucide-react";
 import * as React from "react";
+import { useMemo } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -141,8 +142,7 @@ export const MultiSelect = React.forwardRef<
         const [selectedValues, setSelectedValues] =
             React.useState<string[]>(defaultValue);
         const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const [isAnimating, setIsAnimating] = React.useState(false);
+        const [isAnimating] = React.useState(false);
 
         const debouncedSelectedValues = useDebounce(selectedValues, debounce);
         React.useEffect(() => {
@@ -206,6 +206,13 @@ export const MultiSelect = React.forwardRef<
                 _optCounts[o.label] > 1 ? `${o.label} (${idx})` : o.label;
         });
 
+        const animationStyle = useMemo(
+            () => ({
+                animationDuration: `${animation}s`,
+            }),
+            [animation],
+        );
+
         return (
             <Popover
                 open={isPopoverOpen}
@@ -243,9 +250,7 @@ export const MultiSelect = React.forwardRef<
                                                             variant,
                                                         }),
                                                     )}
-                                                    style={{
-                                                        animationDuration: `${animation}s`,
-                                                    }}
+                                                    style={animationStyle}
                                                 >
                                                     {IconComponent && (
                                                         <IconComponent className="h-4 w-4 mr-2" />
@@ -274,9 +279,7 @@ export const MultiSelect = React.forwardRef<
                                                     variant,
                                                 }),
                                             )}
-                                            style={{
-                                                animationDuration: `${animation}s`,
-                                            }}
+                                            style={animationStyle}
                                         >
                                             {`+ ${selectedValues.length - maxCount} more`}
                                             <XCircle

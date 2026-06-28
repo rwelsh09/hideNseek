@@ -163,18 +163,49 @@ export const PlaytestPlaces = () => {
                 const color = place?.customColor ?? "orange";
 
                 return (
-                    <CircleMarker
+                    <PlaytestPlaceMarker
                         key={i}
-                        center={[coords[1], coords[0]]}
-                        radius={5}
-                        pathOptions={getPathOptions(color)}
-                    >
-                        <Tooltip direction="top" offset={[0, -10]}>
-                            {name}
-                        </Tooltip>
-                    </CircleMarker>
+                        coords={coords}
+                        color={color}
+                        name={name}
+                    />
                 );
             })}
         </>
     );
 };
+
+const PlaytestPlaceMarker = React.memo(
+    ({
+        coords,
+        color,
+        name,
+    }: {
+        coords: number[];
+        color: string;
+        name: string;
+    }) => {
+        const center = React.useMemo<[number, number]>(
+            () => [coords[1], coords[0]],
+            [coords[1], coords[0]],
+        );
+        const tooltipOffset = React.useMemo<[number, number]>(
+            () => [0, -10],
+            [],
+        );
+
+        return (
+            <CircleMarker
+                center={center}
+                radius={5}
+                pathOptions={getPathOptions(color)}
+            >
+                <Tooltip direction="top" offset={tooltipOffset}>
+                    {name}
+                </Tooltip>
+            </CircleMarker>
+        );
+    },
+);
+
+PlaytestPlaceMarker.displayName = "PlaytestPlaceMarker";

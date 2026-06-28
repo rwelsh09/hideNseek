@@ -323,13 +323,21 @@ export const Map = ({ className }: { className?: string }) => {
         [],
     );
 
+    const center = useMemo<[number, number]>(
+        () => [
+            $mapGeoLocation.geometry.coordinates[1],
+            $mapGeoLocation.geometry.coordinates[0],
+        ],
+        [
+            $mapGeoLocation.geometry.coordinates[1],
+            $mapGeoLocation.geometry.coordinates[0],
+        ],
+    );
+
     const displayMap = useMemo(
         () => (
             <MapContainer
-                center={[
-                    $mapGeoLocation.geometry.coordinates[1],
-                    $mapGeoLocation.geometry.coordinates[0],
-                ]}
+                center={center}
                 zoom={10}
                 className={cn("w-[500px] h-[500px]", className)}
                 ref={leafletMapContext.set}

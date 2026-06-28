@@ -147,9 +147,15 @@ const ClosestPlaceMarker = ({
         [f, question],
     );
 
+    const center = React.useMemo<[number, number]>(
+        () => [coords[1], coords[0]],
+        [coords[1], coords[0]],
+    );
+    const tooltipOffset = React.useMemo<[number, number]>(() => [0, -10], []);
+
     return (
         <CircleMarker
-            center={[coords[1], coords[0]]}
+            center={center}
             radius={8}
             pathOptions={
                 isSelected ? PATH_OPTIONS_SELECTED : PATH_OPTIONS_UNSELECTED
@@ -157,12 +163,12 @@ const ClosestPlaceMarker = ({
             eventHandlers={eventHandlers}
         >
             {question.data.showLabels && (
-                <Tooltip direction="top" offset={[0, -10]} permanent>
+                <Tooltip direction="top" offset={tooltipOffset} permanent>
                     {f.properties?.name || "Unknown Location"}
                 </Tooltip>
             )}
             {!question.data.showLabels && (
-                <Tooltip direction="top" offset={[0, -10]}>
+                <Tooltip direction="top" offset={tooltipOffset}>
                     {f.properties?.name || "Unknown Location"}
                 </Tooltip>
             )}
