@@ -436,12 +436,16 @@ export const ZoneSidebar = () => {
         <Sidebar side="right">
             <div className="flex items-center justify-between">
                 <h2 className="ml-4 mt-4 font-poppins text-2xl">Hiding Zone</h2>
-                <SidebarCloseIcon
-                    className="mr-2 visible cursor-pointer scale-x-[-1]"
+                <button
+                    type="button"
+                    className="mr-2 visible cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-800 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                    aria-label="Close sidebar"
                     onClick={() => {
                         SidebarContext.get().toggleSidebar();
                     }}
-                />
+                >
+                    <SidebarCloseIcon className="scale-x-[-1]" />
+                </button>
             </div>
             <SidebarContent ref={sidebarRef}>
                 <ScrollToTop element={sidebarRef} minHeight={500} />
