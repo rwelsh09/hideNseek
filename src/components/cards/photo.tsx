@@ -81,7 +81,8 @@ export const PhotoQuestionComponent = ({
             }}
             locked={!data.drag}
             setLocked={(locked) => {
-                questionModified((data.drag = !locked));
+                data.drag = !locked;
+                questionModified();
                 if (locked) {
                     penaltyMinutes.set(
                         penaltyMinutes.get() + TIME_PENALTIES.photo,
@@ -107,7 +108,8 @@ export const PhotoQuestionComponent = ({
                         onChange={(e) => setLocalNotes(e.target.value)}
                         onBlur={() => {
                             if (data.notes !== localNotes) {
-                                questionModified((data.notes = localNotes));
+                                data.notes = localNotes;
+                                questionModified();
                             }
                         }}
                     />
@@ -118,7 +120,8 @@ export const PhotoQuestionComponent = ({
                 longitude={data.lng}
                 colorName={data.color}
                 onChangeColor={(color: any) => {
-                    questionModified((data.color = color));
+                    data.color = color;
+                    questionModified();
                 }}
                 onChange={(lat, lng) => {
                     if (lat !== null) {
