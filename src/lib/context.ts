@@ -258,15 +258,6 @@ export const hasSeenRules = persistentAtom<boolean>("hasSeenRules", false, {
     decode: JSON.parse,
 });
 
-export const customInitPreference = persistentAtom<"ask" | "blank" | "prefill">(
-    "customInitPreference",
-    "ask",
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
-
 // --- TIME PENALTY & INFO BOARD STATE ---
 export const TIME_PENALTIES: Record<string, number> = {
     match: 15,
@@ -281,15 +272,6 @@ export const penaltyMinutes = persistentAtom<number>("penaltyMinutes", 0, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
-
-export const softQuestionsChecked = persistentAtom<string[]>(
-    "softQuestionsChecked",
-    [],
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
 
 export const timerStartTimestamp = persistentAtom<number | null>(
     "timerStartTimestamp",

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 
 import { showNextStepsChecklist, showTutorial } from "@/lib/context";
 
-export const hasDismissedNextStepsChecklist = persistentAtom<boolean>(
+const hasDismissedNextStepsChecklist = persistentAtom<boolean>(
     "hasDismissedNextStepsChecklist",
     false,
     { encode: JSON.stringify, decode: JSON.parse },

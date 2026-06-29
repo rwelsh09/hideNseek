@@ -20,7 +20,7 @@ import { holedMask, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils";
 import type { APILocations, MatchQuestion } from "@/maps/schema";
 
-export const findMatchPlaces = async (question: MatchQuestion) => {
+const findMatchPlaces = async (question: MatchQuestion) => {
     switch (question.type) {
         case "museum-full":
         case "hospital-full":
@@ -68,7 +68,7 @@ export const findMatchPlaces = async (question: MatchQuestion) => {
     }
 };
 
-export const determineMatchBoundary = _.memoize(
+const determineMatchBoundary = _.memoize(
     async (question: MatchQuestion) => {
         let boundary;
 

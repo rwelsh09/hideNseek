@@ -19,7 +19,7 @@ import {
 import { arcBufferToPoint, holedMask, modifyMapData } from "@/maps/geo-utils";
 import type { APILocations, MeasureQuestion } from "@/maps/schema";
 
-export const determineMeasureBoundary = async (question: MeasureQuestion) => {
+const determineMeasureBoundary = async (question: MeasureQuestion) => {
     switch (question.type) {
         case "museum-full":
         case "hospital-full":
