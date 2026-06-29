@@ -7,8 +7,6 @@ import { liveUpdateMapEnabled, questions } from "@/lib/context";
 import { findPlacesInZone } from "@/maps/api";
 import { LOCATION_FIRST_TAG } from "@/maps/api/constants";
 
-// Performance Optimization: Cache path options for different colors to prevent react-leaflet
-// from re-triggering layer styling methods due to unstable object references on every render.
 const pathOptionsCache: Record<
     string,
     { color: string; fillColor: string; fillOpacity: number }
@@ -34,10 +32,6 @@ const PlaytestPlaceMarker = ({
     color: string;
     name: string;
 }) => {
-    // Performance Optimization: Memoize the array passed to the center prop.
-    // react-leaflet checks object equality for array references like position and center.
-    // If inline arrays are used, it repeatedly triggers internal layer updates (e.g., setLatLng)
-    // on every render, severely impacting performance when displaying multiple markers.
     const centerArray = React.useMemo(
         () => [coords[1], coords[0]] as [number, number],
         [coords[1], coords[0]],
