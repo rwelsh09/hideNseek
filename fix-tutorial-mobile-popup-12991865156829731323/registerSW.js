@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-tutorial-mobile-popup-12991865156829731323/sw.js', { scope: '/HideAndSeek/fix-tutorial-mobile-popup-12991865156829731323/' })})}
