@@ -69,13 +69,10 @@ const ColoredMarker = ({
 }) => {
     const handlersRef = useRef({ onChange, onClick });
 
-    // Update refs without causing re-renders
     useEffect(() => {
         handlersRef.current = { onChange, onClick };
     }, [onChange, onClick]);
 
-    // Memoize event handlers to prevent react-leaflet from constantly re-binding events
-    // which negatively impacts performance when many markers are rendered.
     const eventHandlers = useMemo(
         () => ({
             dragstart: () => {
@@ -96,10 +93,6 @@ const ColoredMarker = ({
         [],
     );
 
-    // Performance Optimization: Memoize the array passed to the position prop.
-    // react-leaflet checks object equality for array references like position and center.
-    // If inline arrays are used, it repeatedly triggers internal layer updates (e.g., setLatLng)
-    // on every render, severely impacting performance when displaying multiple markers.
     const positionArray = useMemo(
         () => [latitude, longitude] as [number, number],
         [latitude, longitude],
