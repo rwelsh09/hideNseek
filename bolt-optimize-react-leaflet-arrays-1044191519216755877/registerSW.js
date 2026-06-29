@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/bolt-optimize-react-leaflet-arrays-1044191519216755877/sw.js', { scope: '/HideAndSeek/bolt-optimize-react-leaflet-arrays-1044191519216755877/' })})}
