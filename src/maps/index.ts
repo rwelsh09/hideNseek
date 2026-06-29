@@ -36,7 +36,7 @@ export const hiderifyQuestion = async (question: Question) => {
                 question.data = hiderifyRadius(question.data);
                 break;
             case "hot/cold":
-                question.data = await hiderifyHotCold(question.data);
+                question.data = hiderifyHotCold(question.data);
                 break;
             case "closest":
                 question.data = await hiderifyClosest(question.data);
@@ -82,7 +82,7 @@ export async function adjustMapGeoDataForQuestion(
             case "radius":
                 return await adjustPerRadius(question.data, mapGeoData);
             case "hot/cold":
-                return await adjustPerHotCold(question.data, mapGeoData);
+                return adjustPerHotCold(question.data, mapGeoData);
             case "closest":
                 if (question.data.location === false) {
                     return adjustPerRadius(
