@@ -2,7 +2,7 @@ export const lngLatToText = (coordinates: [number, number]) => {
     /**
      * @param coordinates - Should be in longitude, latitude order
      */
-    return `${Math.abs(coordinates[1])}°${coordinates[1] >= 0 ? "N" : "S"}, ${Math.abs(coordinates[0])}°${coordinates[0] >= 0 ? "E" : "W"}`;
+    return `${Math.abs(coordinates[1])}°${coordinates[1] > 0 ? "N" : "S"}, ${Math.abs(coordinates[0])}°${coordinates[0] > 0 ? "E" : "W"}`;
 };
 
 export const extractStationName = (stationPlace: any) =>

@@ -234,7 +234,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             <a
                                 href="https://paypal.me/hideNseekApp/4.03"
                                 target="_blank"
-                                rel="noopener noreferrer"
+                                rel="noreferrer"
                                 className="w-full sm:w-[280px]"
                             >
                                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
@@ -247,7 +247,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             <a
                                 href="https://paypal.me/hideNseekApp/7"
                                 target="_blank"
-                                rel="noopener noreferrer"
+                                rel="noreferrer"
                                 className="w-full sm:w-[280px]"
                             >
                                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
@@ -260,7 +260,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             <a
                                 href="https://paypal.me/hideNseekApp/15"
                                 target="_blank"
-                                rel="noopener noreferrer"
+                                rel="noreferrer"
                                 className="w-full sm:w-[280px]"
                             >
                                 <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">

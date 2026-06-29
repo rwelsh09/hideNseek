@@ -78,8 +78,7 @@ export const MeasureQuestionComponent = ({
             }}
             locked={!data.drag}
             setLocked={(locked) => {
-                data.drag = !locked;
-                questionModified();
+                questionModified((data.drag = !locked));
                 if (locked) {
                     penaltyMinutes.set(
                         penaltyMinutes.get() + TIME_PENALTIES.measure,
@@ -121,8 +120,7 @@ export const MeasureQuestionComponent = ({
                 longitude={data.lng}
                 colorName={data.color}
                 onChangeColor={(color: any) => {
-                    data.color = color;
-                    questionModified();
+                    questionModified((data.color = color));
                 }}
                 onChange={(lat, lng) => {
                     if (lat !== null) {

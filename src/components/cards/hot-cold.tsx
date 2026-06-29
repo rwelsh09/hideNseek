@@ -74,8 +74,7 @@ export const HotColdQuestionComponent = ({
             }}
             locked={!data.drag}
             setLocked={(locked) => {
-                data.drag = !locked;
-                questionModified();
+                questionModified((data.drag = !locked));
                 if (locked) {
                     penaltyMinutes.set(
                         penaltyMinutes.get() + TIME_PENALTIES["hot/cold"],
@@ -96,8 +95,7 @@ export const HotColdQuestionComponent = ({
                 label="Start"
                 colorName={data.colorA}
                 onChangeColor={(color: any) => {
-                    data.colorA = color;
-                    questionModified();
+                    questionModified((data.colorA = color));
                 }}
                 onChange={(lat, lng) => {
                     if (lat !== null) data.latA = lat;
@@ -113,8 +111,7 @@ export const HotColdQuestionComponent = ({
                 label="End"
                 colorName={data.colorB}
                 onChangeColor={(color: any) => {
-                    data.colorA = color;
-                    questionModified();
+                    questionModified((data.colorA = color));
                 }}
                 onChange={(lat, lng) => {
                     if (lat !== null) data.latB = lat;
@@ -147,10 +144,9 @@ export const HotColdQuestionComponent = ({
                         className="grow"
                         type="single"
                         value={data.warmer ? "warmer" : "colder"}
-                        onValueChange={(value: "warmer" | "colder") => {
-                            data.warmer = value === "warmer";
-                            questionModified();
-                        }}
+                        onValueChange={(value: "warmer" | "colder") =>
+                            questionModified((data.warmer = value === "warmer"))
+                        }
                         disabled={!!$hiderMode || !data.drag || $isLoading}
                     >
                         <ToggleGroupItem color="red" value="colder">

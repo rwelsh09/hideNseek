@@ -60,8 +60,7 @@ export const RadiusQuestionComponent = ({
             }}
             locked={!data.drag}
             setLocked={(locked) => {
-                data.drag = !locked;
-                questionModified();
+                questionModified((data.drag = !locked));
                 if (locked) {
                     penaltyMinutes.set(
                         penaltyMinutes.get() + TIME_PENALTIES.radar,
@@ -83,18 +82,18 @@ export const RadiusQuestionComponent = ({
                         className="rounded-md p-2 w-16"
                         value={data.radius}
                         disabled={!data.drag || $isLoading}
-                        onChange={(e) => {
-                            data.radius = parseFloat(e.target.value);
-                            questionModified();
-                        }}
+                        onChange={(e) =>
+                            questionModified(
+                                (data.radius = parseFloat(e.target.value)),
+                            )
+                        }
                     />
                     <UnitSelect
                         unit={data.unit}
                         disabled={!data.drag || $isLoading}
-                        onChange={(unit) => {
-                            data.unit = unit;
-                            questionModified();
-                        }}
+                        onChange={(unit) =>
+                            questionModified((data.unit = unit))
+                        }
                     />
                 </div>
             </SidebarMenuItem>
@@ -103,8 +102,7 @@ export const RadiusQuestionComponent = ({
                 longitude={data.lng}
                 colorName={data.color}
                 onChangeColor={(color: any) => {
-                    data.color = color;
-                    questionModified();
+                    questionModified((data.color = color));
                 }}
                 onChange={(lat, lng) => {
                     if (lat !== null) {
@@ -131,10 +129,9 @@ export const RadiusQuestionComponent = ({
                         className="grow"
                         type="single"
                         value={data.within ? "inside" : "outside"}
-                        onValueChange={(value: "inside" | "outside") => {
-                            data.within = value === "inside";
-                            questionModified();
-                        }}
+                        onValueChange={(value: "inside" | "outside") =>
+                            questionModified((data.within = value === "inside"))
+                        }
                         disabled={!!$hiderMode || !data.drag || $isLoading}
                     >
                         <ToggleGroupItem value="outside">

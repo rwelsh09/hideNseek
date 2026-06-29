@@ -141,6 +141,7 @@ export const MultiSelect = React.forwardRef<
         const [selectedValues, setSelectedValues] =
             React.useState<string[]>(defaultValue);
         const [isPopoverOpen, setIsPopoverOpen] = React.useState(false);
+        const [isAnimating] = React.useState(false);
 
         const debouncedSelectedValues = useDebounce(selectedValues, debounce);
         React.useEffect(() => {
@@ -234,6 +235,9 @@ export const MultiSelect = React.forwardRef<
                                                 <Badge
                                                     key={value}
                                                     className={cn(
+                                                        isAnimating
+                                                            ? "animate-bounce"
+                                                            : "",
                                                         multiSelectVariants({
                                                             variant,
                                                         }),
@@ -262,6 +266,9 @@ export const MultiSelect = React.forwardRef<
                                         <Badge
                                             className={cn(
                                                 "bg-transparent text-foreground border-foreground/1 hover:bg-transparent",
+                                                isAnimating
+                                                    ? "animate-bounce"
+                                                    : "",
                                                 multiSelectVariants({
                                                     variant,
                                                 }),

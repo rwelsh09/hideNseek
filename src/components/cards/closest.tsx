@@ -65,8 +65,7 @@ export const ClosestQuestionComponent = ({
             }}
             locked={!data.drag}
             setLocked={(locked) => {
-                data.drag = !locked;
-                questionModified();
+                questionModified((data.drag = !locked));
                 if (locked) {
                     penaltyMinutes.set(
                         penaltyMinutes.get() + TIME_PENALTIES.closest,
@@ -98,8 +97,7 @@ export const ClosestQuestionComponent = ({
                                 if (val < 0) {
                                     val = 0;
                                 }
-                                data.radius = val;
-                                questionModified();
+                                questionModified((data.radius = val));
                             }}
                             disabled={!data.drag || $isLoading}
                         />
@@ -120,8 +118,7 @@ export const ClosestQuestionComponent = ({
                         id={`show-labels-${questionKey}`}
                         checked={data.showLabels}
                         onCheckedChange={(checked) => {
-                            data.showLabels = !!checked;
-                            questionModified();
+                            questionModified((data.showLabels = !!checked));
                         }}
                         disabled={!data.drag || $isLoading}
                         className="mr-2"
@@ -156,8 +153,7 @@ export const ClosestQuestionComponent = ({
                 longitude={data.lng}
                 colorName={data.color}
                 onChangeColor={(color: any) => {
-                    data.color = color;
-                    questionModified();
+                    questionModified((data.color = color));
                 }}
                 onChange={(lat, lng) => {
                     if (lat !== null) {
