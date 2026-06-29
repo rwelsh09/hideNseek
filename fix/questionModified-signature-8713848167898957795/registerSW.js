@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/questionModified-signature-8713848167898957795/sw.js', { scope: '/HideAndSeek/fix/questionModified-signature-8713848167898957795/' })})}
