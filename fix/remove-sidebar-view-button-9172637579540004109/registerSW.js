@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/remove-sidebar-view-button-9172637579540004109/sw.js', { scope: '/HideAndSeek/fix/remove-sidebar-view-button-9172637579540004109/' })})}
