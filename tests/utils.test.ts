@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { cn } from "../src/lib/utils";
+import { cn, mapToObj } from "../src/lib/utils";
 
 describe("cn", () => {
     it("merges basic classes", () => {
@@ -21,5 +21,41 @@ describe("cn", () => {
 
     it("handles nested arrays", () => {
         expect(cn(["a", ["b", "c"]])).toBe("a b c");
+    });
+});
+
+describe("mapToObj", () => {
+    it("returns an empty object for an empty array", () => {
+        expect(mapToObj([], (item) => [String(item), item])).toEqual({});
+    });
+
+    it("maps an array of primitives correctly", () => {
+        const arr = ["a", "b", "c"];
+        expect(mapToObj(arr, (item) => [item, item.toUpperCase()])).toEqual({
+            a: "A",
+            b: "B",
+            c: "C",
+        });
+    });
+
+    it("maps an array of objects correctly", () => {
+        const arr = [
+            { id: "1", name: "Alice" },
+            { id: "2", name: "Bob" },
+        ];
+        expect(mapToObj(arr, (item) => [item.id, item.name])).toEqual({
+            "1": "Alice",
+            "2": "Bob",
+        });
+    });
+
+    it("overwrites duplicate keys with the last mapped value", () => {
+        const arr = [
+            { id: "1", name: "Alice" },
+            { id: "1", name: "Alice Updated" },
+        ];
+        expect(mapToObj(arr, (item) => [item.id, item.name])).toEqual({
+            "1": "Alice Updated",
+        });
     });
 });
