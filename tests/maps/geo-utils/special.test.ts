@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { extractStationLabel, extractStationName, lngLatToText } from "./special";
+import { extractStationLabel, extractStationName, lngLatToText } from "@/maps/geo-utils/special";
 
 describe("lngLatToText", () => {
     it("should format positive coordinates as N/E", () => {
