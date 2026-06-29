@@ -1,7 +1,44 @@
 import { describe, expect, it } from "vitest";
 
-import { determineName } from "./geo";
+import { convertToLatLong, convertToLongLat, determineName, prettifyLocation } from "./geo";
 import type { OpenStreetMap } from "./types";
+
+describe("convertToLongLat", () => {
+    it("should convert [lat, long] to [long, lat]", () => {
+        expect(convertToLongLat([51.0, -114.0])).toEqual([-114.0, 51.0]);
+    });
+});
+
+describe("convertToLatLong", () => {
+    it("should convert [long, lat] to [lat, long]", () => {
+        expect(convertToLatLong([-114.0, 51.0])).toEqual([51.0, -114.0]);
+    });
+});
+
+describe("prettifyLocation", () => {
+    it("should prettify specific locations (singular)", () => {
+        expect(prettifyLocation("hospital" as any)).toBe("Hospital");
+        expect(prettifyLocation("museum" as any)).toBe("Museum");
+        expect(prettifyLocation("cinema" as any)).toBe("Cinema");
+        expect(prettifyLocation("library" as any)).toBe("Library");
+        expect(prettifyLocation("golf_course" as any)).toBe("Golf Course");
+        expect(prettifyLocation("mcdonalds" as any)).toBe("McDonald's");
+        expect(prettifyLocation("seven11" as any)).toBe("7-Eleven");
+        expect(prettifyLocation("timhortons" as any)).toBe("Tim Hortons");
+        expect(prettifyLocation("pub" as any)).toBe("Pub / Bar");
+    });
+
+    it("should prettify specific locations (plural)", () => {
+        expect(prettifyLocation("library" as any, true)).toBe("Libraries");
+        expect(prettifyLocation("pub" as any, true)).toBe("Pubs / Bars");
+    });
+
+    it("should fallback to singular + 's' for other locations (plural)", () => {
+        expect(prettifyLocation("hospital" as any, true)).toBe("Hospitals");
+        expect(prettifyLocation("cinema" as any, true)).toBe("Cinemas");
+        expect(prettifyLocation("mcdonalds" as any, true)).toBe("McDonald'ss");
+    });
+});
 
 describe("determineName", () => {
     describe("when osm_type is 'R'", () => {
@@ -130,6 +167,30 @@ describe("determineName", () => {
 
             expect(determineName(feature)).toBe(
                 "Main St, Springfield, IL, USA",
+            );
+        });
+
+        it("should format string correctly if housenumber is present but street is missing", () => {
+            const feature = {
+                type: "Feature",
+                geometry: { type: "Point", coordinates: [0, 0] },
+                properties: {
+                    osm_type: "W",
+                    housenumber: "123",
+                    city: "Springfield",
+                    state: "IL",
+                    country: "USA",
+                    osm_id: 1,
+                    osm_key: "highway",
+                    countrycode: "us",
+                    osm_value: "residential",
+                    name: "Main St",
+                    type: "road",
+                },
+            } as unknown as OpenStreetMap;
+
+            expect(determineName(feature)).toBe(
+                "123 undefined, Springfield, IL, USA",
             );
         });
 
