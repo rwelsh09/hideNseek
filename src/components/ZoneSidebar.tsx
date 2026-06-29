@@ -70,8 +70,6 @@ import { ScrollToTop } from "./ui/scroll-to-top";
 import { MENU_ITEM_CLASSNAME } from "./ui/sidebar-l";
 import { UnitSelect } from "./UnitSelect";
 
-let buttonJustClicked = false;
-
 export const ZoneSidebar = () => {
     const $displayHidingZones = useStore(displayHidingZones);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
@@ -721,13 +719,6 @@ export const ZoneSidebar = () => {
                                                         if (!map) return;
                                                         setTimeout(() => {
                                                             if (
-                                                                buttonJustClicked
-                                                            ) {
-                                                                buttonJustClicked =
-                                                                    false;
-                                                                return;
-                                                            }
-                                                            if (
                                                                 $disabledStations.includes(
                                                                     station
                                                                         .properties
@@ -770,23 +761,6 @@ export const ZoneSidebar = () => {
                                                     {extractStationLabel(
                                                         station.properties,
                                                     )}
-                                                    <button
-                                                        onClick={async () => {
-                                                            if (!map) return;
-                                                            buttonJustClicked =
-                                                                true;
-                                                            setHidingZoneModeStationID(
-                                                                station
-                                                                    .properties
-                                                                    .properties
-                                                                    .id,
-                                                            );
-                                                        }}
-                                                        className="bg-slate-600 p-0.5 rounded-md"
-                                                        disabled={$isLoading}
-                                                    >
-                                                        View
-                                                    </button>
                                                 </CommandItem>
                                             ))}
                                         </CommandGroup>
