@@ -440,12 +440,21 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 <Button
                                     variant="destructive"
                                     className="w-full sm:w-[280px]"
-                                    onClick={() => {
+                                    onClick={async () => {
                                         if (
                                             window.confirm(
                                                 "Are you sure you want to reset everything? This will delete all saved data and settings.",
                                             )
                                         ) {
+                                            if ("caches" in window) {
+                                                const keys =
+                                                    await caches.keys();
+                                                await Promise.all(
+                                                    keys.map((key) =>
+                                                        caches.delete(key),
+                                                    ),
+                                                );
+                                            }
                                             localStorage.clear();
                                             sessionStorage.clear();
                                             sessionStorage.setItem(
