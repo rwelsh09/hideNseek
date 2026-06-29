@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/rwelsh09-patch-1/sw.js', { scope: '/HideAndSeek/rwelsh09-patch-1/' })})}
