@@ -379,6 +379,7 @@ export const DraggableMarkers = () => {
                                 onClick={saveQuestion}
                                 size="lg"
                                 className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold text-base shadow-md hover:shadow-lg transition-all"
+                                data-tutorial-id="tutorial-store-question-btn"
                             >
                                 Store Question in Sidebar
                             </Button>
