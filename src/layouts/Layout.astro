@@ -49,6 +49,13 @@ const { className } = Astro.props;
         <script is:inline>
             // Run before anything else
             if (sessionStorage.getItem("resetEverything") === "true") {
+                if ('caches' in window) {
+                    caches.keys().then((keys) => {
+                        keys.forEach((key) => {
+                            caches.delete(key);
+                        });
+                    });
+                }
                 localStorage.clear();
                 sessionStorage.removeItem("resetEverything");
             }

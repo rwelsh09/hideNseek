@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { extractStationLabel, extractStationName, lngLatToText } from "@/maps/geo-utils/special";
+import {
+    extractStationLabel,
+    extractStationName,
+    lngLatToText,
+} from "@/maps/geo-utils/special";
 
 describe("lngLatToText", () => {
     it("should format positive coordinates as N/E", () => {
@@ -22,7 +26,9 @@ describe("lngLatToText", () => {
 
 describe("extractStationName", () => {
     it("should return name:en if present", () => {
-        const place = { properties: { "name:en": "English Name", name: "Local Name" } };
+        const place = {
+            properties: { "name:en": "English Name", name: "Local Name" },
+        };
         expect(extractStationName(place)).toBe("English Name");
     });
 
@@ -39,7 +45,10 @@ describe("extractStationName", () => {
 
 describe("extractStationLabel", () => {
     it("should return the station name if available", () => {
-        const place = { properties: { name: "Station Alpha" }, geometry: { coordinates: [10, 20] } };
+        const place = {
+            properties: { name: "Station Alpha" },
+            geometry: { coordinates: [10, 20] },
+        };
         expect(extractStationLabel(place)).toBe("Station Alpha");
     });
 
