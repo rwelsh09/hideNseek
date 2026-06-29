@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/security-fix-noopener-10411731004701880754/sw.js', { scope: '/HideAndSeek/security-fix-noopener-10411731004701880754/' })})}
