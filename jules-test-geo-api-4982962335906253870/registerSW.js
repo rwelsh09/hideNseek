@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/jules-test-geo-api-4982962335906253870/sw.js', { scope: '/HideAndSeek/jules-test-geo-api-4982962335906253870/' })})}
