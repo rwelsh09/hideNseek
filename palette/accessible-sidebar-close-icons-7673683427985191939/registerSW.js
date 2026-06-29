@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/palette/accessible-sidebar-close-icons-7673683427985191939/sw.js', { scope: '/HideAndSeek/palette/accessible-sidebar-close-icons-7673683427985191939/' })})}
