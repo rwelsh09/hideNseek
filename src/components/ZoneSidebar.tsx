@@ -644,7 +644,7 @@ export const ZoneSidebar = () => {
                                             <a
                                                 href={href}
                                                 target="_blank"
-                                                rel="noreferrer"
+                                                rel="noopener noreferrer"
                                                 className="text-blue-500"
                                             >
                                                 {displayName}
