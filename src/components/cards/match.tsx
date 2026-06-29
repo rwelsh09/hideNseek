@@ -60,7 +60,8 @@ export const MatchQuestionComponent = ({
             }}
             locked={!data.drag}
             setLocked={(locked) => {
-                questionModified((data.drag = !locked));
+                data.drag = !locked;
+                questionModified();
                 if (locked) {
                     penaltyMinutes.set(
                         penaltyMinutes.get() + TIME_PENALTIES.match,
@@ -99,7 +100,8 @@ export const MatchQuestionComponent = ({
                         if (!(data as any).cat) {
                             (data as any).cat = { adminLevel: 3 };
                         }
-                        questionModified((data.type = value));
+                        data.type = value;
+                        questionModified();
                     }}
                     disabled={!data.drag || $isLoading}
                 />
@@ -110,7 +112,8 @@ export const MatchQuestionComponent = ({
                 longitude={data.lng}
                 colorName={data.color}
                 onChangeColor={(color: any) => {
-                    questionModified((data.color = color));
+                    data.color = color;
+                    questionModified();
                 }}
                 onChange={(lat, lng) => {
                     if (lat !== null) {
@@ -161,16 +164,15 @@ export const MatchQuestionComponent = ({
                                     | "different",
                             ) => {
                                 if (value === "shorter" || value === "longer") {
-                                    questionModified(
-                                        (data.lengthComparison = value),
-                                    );
+                                    data.lengthComparison = value;
+                                    questionModified();
                                 } else if (value === "same") {
-                                    questionModified(
-                                        (data.lengthComparison = "same"),
-                                    );
-                                    questionModified((data.same = true));
+                                    data.lengthComparison = "same";
+                                    data.same = true;
+                                    questionModified();
                                 } else if (value === "different") {
-                                    questionModified((data.same = false));
+                                    data.same = false;
+                                    questionModified();
                                 }
                             }}
                             disabled={!!$hiderMode || !data.drag || $isLoading}
@@ -190,9 +192,11 @@ export const MatchQuestionComponent = ({
                             value={data.same ? "same" : "different"}
                             onValueChange={(value) => {
                                 if (value === "same") {
-                                    questionModified((data.same = true));
+                                    data.same = true;
+                                    questionModified();
                                 } else if (value === "different") {
-                                    questionModified((data.same = false));
+                                    data.same = false;
+                                    questionModified();
                                 }
                             }}
                             disabled={!!$hiderMode || !data.drag || $isLoading}
