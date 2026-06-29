@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 
-import { convertToLatLong, convertToLongLat, determineName, prettifyLocation } from "./geo";
-import type { OpenStreetMap } from "./types";
+import { convertToLatLong, convertToLongLat, determineName, prettifyLocation } from "../../../src/maps/api/geo";
+import type { OpenStreetMap } from "../../../src/maps/api/types";
 
 describe("convertToLongLat", () => {
     it("should convert [lat, long] to [long, lat]", () => {
