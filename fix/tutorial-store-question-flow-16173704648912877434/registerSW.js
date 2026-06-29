@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/tutorial-store-question-flow-16173704648912877434/sw.js', { scope: '/HideAndSeek/fix/tutorial-store-question-flow-16173704648912877434/' })})}
