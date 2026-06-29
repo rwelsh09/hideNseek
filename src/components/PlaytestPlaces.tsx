@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 
 import { liveUpdateMapEnabled, questions } from "@/lib/context";
-import { findPlacesInZone, findPlacesSpecificInZone } from "@/maps/api";
+import { findPlacesInZone } from "@/maps/api";
 import { LOCATION_FIRST_TAG } from "@/maps/api/constants";
 
 // Performance Optimization: Cache path options for different colors to prevent react-leaflet
@@ -75,45 +75,62 @@ export const PlaytestPlaces = () => {
             });
 
             // Fetch standard location types
-            for (const type of Array.from(typesSet)) {
-                if ((LOCATION_FIRST_TAG as any)[type]) {
+            const standardTypesArray = Array.from(typesSet).filter(
+                (type) => (LOCATION_FIRST_TAG as any)[type],
+            );
+
+            if (standardTypesArray.length > 0) {
+                const firstType = standardTypesArray[0];
+                const firstTag = (LOCATION_FIRST_TAG as any)[firstType];
+
+                const alternatives = standardTypesArray.slice(1).map((type) => {
                     const tag = (LOCATION_FIRST_TAG as any)[type];
-                    try {
-                        const rawData = await findPlacesInZone(
-                            `[${tag}=${type}]`,
-                            undefined,
-                            "nwr",
-                            "center",
-                            [],
-                            0,
-                        );
+                    return `[${tag}=${type}]`;
+                });
 
-                        const features = osmtogeojson(rawData);
+                try {
+                    const rawData = await findPlacesInZone(
+                        `[${firstTag}=${firstType}]`,
+                        undefined,
+                        "nwr",
+                        "center",
+                        alternatives,
+                        0,
+                    );
 
-                        if (features && features.features) {
-                            features.features.forEach((f: any) => {
-                                allPlaces.push({
-                                    ...f,
-                                    customColor: "purple", // distinct color for playtest
-                                });
+                    const features = osmtogeojson(rawData);
+
+                    if (features && features.features) {
+                        features.features.forEach((f: any) => {
+                            allPlaces.push({
+                                ...f,
+                                customColor: "purple", // distinct color for playtest
                             });
-                        }
-                    } catch (e) {
-                        console.error(
-                            "Failed to load playtest places for",
-                            type,
-                            e,
-                        );
+                        });
                     }
+                } catch (e) {
+                    console.error("Failed to load playtest places", e);
                 }
             }
 
             // Fetch specific types
-            for (const specificType of Array.from(specificTypesSet)) {
+            const specificTypesArray = Array.from(specificTypesSet);
+            if (specificTypesArray.length > 0) {
                 try {
-                    const features = await findPlacesSpecificInZone(
-                        specificType as any,
+                    const firstSpecific = specificTypesArray[0];
+                    const specificAlternatives = specificTypesArray.slice(1);
+
+                    const rawData = await findPlacesInZone(
+                        firstSpecific,
+                        undefined,
+                        "nwr",
+                        "center",
+                        specificAlternatives,
+                        0,
                     );
+
+                    const features = osmtogeojson(rawData);
+
                     if (features && features.features) {
                         features.features.forEach((f: any) => {
                             allPlaces.push({
@@ -123,11 +140,7 @@ export const PlaytestPlaces = () => {
                         });
                     }
                 } catch (e) {
-                    console.error(
-                        "Failed to load specific playtest places for",
-                        specificType,
-                        e,
-                    );
+                    console.error("Failed to load specific playtest places", e);
                 }
             }
 
