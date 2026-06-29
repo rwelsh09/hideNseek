@@ -550,6 +550,137 @@ export const TutorialManager = () => {
                                   },
                               },
                           },
+                          {
+                              element:
+                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
+                              popover: {
+                                  title: "Unlock Your Answer",
+                                  description:
+                                      "Oops, we made a mistake! Let's unlock the question so we can delete it. (Click it to unlock)",
+                                  side: "bottom",
+                                  align: "end",
+                                  showButtons: ["previous"],
+                                  onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          allowActiveInteraction: true,
+                                      } as any);
+
+                                      const checkInterval = setInterval(() => {
+                                          const lockBtn =
+                                              document.querySelector(
+                                                  '[data-tutorial-id="tutorial-lock-btn"]',
+                                              );
+                                          // The aria-label changes to "Lock Question" when the question is currently unlocked
+                                          if (
+                                              lockBtn &&
+                                              lockBtn.getAttribute(
+                                                  "aria-label",
+                                              ) === "Lock Question"
+                                          ) {
+                                              clearInterval(checkInterval);
+                                              setTimeout(
+                                                  () => driverObj.moveNext(),
+                                                  300,
+                                              );
+                                          }
+                                      }, 100);
+
+                                      // // @ts-ignore
+                                      driverObj._unlockCheckInterval =
+                                          checkInterval;
+                                  },
+                                  onDeselected: () => {
+                                      // // @ts-ignore
+                                      if (driverObj._unlockCheckInterval) {
+                                          // // @ts-ignore
+                                          clearInterval(
+                                              driverObj._unlockCheckInterval,
+                                          );
+                                      }
+                                  },
+                              },
+                          },
+                          {
+                              element:
+                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-delete-question-btn"]',
+                              popover: {
+                                  title: "Delete the Question",
+                                  description:
+                                      "Now click the delete button to remove this test question and finish the tutorial.",
+                                  side: "bottom",
+                                  align: "end",
+                                  showButtons: ["previous"],
+                                  onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          allowActiveInteraction: true,
+                                      } as any);
+
+                                      const checkInterval = setInterval(() => {
+                                          const btn = document.querySelector(
+                                              '[data-tutorial-id="tutorial-delete-question-btn"]',
+                                          );
+
+                                          if (
+                                              btn &&
+                                              !btn.hasAttribute(
+                                                  "data-listener-attached",
+                                              )
+                                          ) {
+                                              btn.setAttribute(
+                                                  "data-listener-attached",
+                                                  "true",
+                                              );
+
+                                              const onClick = () => {
+                                                  setTimeout(
+                                                      () =>
+                                                          driverObj.moveNext(),
+                                                      500,
+                                                  );
+                                              };
+
+                                              btn.addEventListener(
+                                                  "click",
+                                                  onClick,
+                                                  { once: true },
+                                              );
+
+                                              // // @ts-ignore
+                                              driverObj._deleteBtn = btn;
+                                              // // @ts-ignore
+                                              driverObj._deleteBtnOnClick =
+                                                  onClick;
+                                          }
+                                      }, 100);
+
+                                      // // @ts-ignore
+                                      driverObj._deleteBtnInterval =
+                                          checkInterval;
+                                  },
+                                  onDeselected: () => {
+                                      // // @ts-ignore
+                                      if (driverObj._deleteBtnInterval) {
+                                          // // @ts-ignore
+                                          clearInterval(
+                                              driverObj._deleteBtnInterval,
+                                          );
+                                      }
+                                      // // @ts-ignore
+                                      if (
+                                          driverObj._deleteBtn &&
+                                          driverObj._deleteBtnOnClick
+                                      ) {
+                                          // // @ts-ignore
+                                          driverObj._deleteBtn.removeEventListener(
+                                              "click",
+                                              driverObj._deleteBtnOnClick,
+                                          );
+                                      }
+                                  },
+                              },
+                          },
                       ],
             });
 
