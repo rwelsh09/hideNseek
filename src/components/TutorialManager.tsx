@@ -317,7 +317,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Store the Question",
                                   description:
-                                      "Drag the question on the map to your desired location, then click here to store it in your sidebar.",
+                                      "You can move the marker to see how it affects the map, but for now just click here to store it in your sidebar and continue.",
                                   side: "top",
                                   align: "center",
                                   showButtons: ["previous"],
