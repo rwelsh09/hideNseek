@@ -109,8 +109,6 @@ const ClosestPlacesForQuestion = ({
     );
 };
 
-// Performance Optimization: Cache path options to prevent react-leaflet
-// from re-triggering layer styling methods due to unstable object references on every render.
 const PATH_OPTIONS_SELECTED = {
     color: "red",
     fillColor: "red",
@@ -134,9 +132,6 @@ const ClosestPlaceMarker = ({
     isSelected: boolean | "" | 0 | null | undefined;
     question: Extract<Question, { id: "closest" }>;
 }) => {
-    // Performance Optimization: Memoize eventHandlers so the object reference remains stable.
-    // react-leaflet checks object equality for eventHandlers, and re-binds DOM events
-    // if the reference changes, causing massive slowdowns when rendering many markers.
     const eventHandlers = React.useMemo(
         () => ({
             click: () => {
@@ -147,10 +142,6 @@ const ClosestPlaceMarker = ({
         [f, question],
     );
 
-    // Performance Optimization: Memoize the array passed to the center prop.
-    // react-leaflet checks object equality for array references like position and center.
-    // If inline arrays are used, it repeatedly triggers internal layer updates (e.g., setLatLng)
-    // on every render, severely impacting performance when displaying multiple markers.
     const centerArray = React.useMemo(
         () => [coords[1], coords[0]] as [number, number],
         [coords[1], coords[0]],
