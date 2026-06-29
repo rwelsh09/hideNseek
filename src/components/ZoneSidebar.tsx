@@ -201,7 +201,7 @@ export const ZoneSidebar = () => {
             isLoading.set(true);
 
             try {
-                let places: StationPlace[] = [];
+                const places: StationPlace[] = [];
 
                 const transitFeatures = (
                     calgaryTransitData as any
@@ -386,11 +386,7 @@ export const ZoneSidebar = () => {
                 );
             });
         }
-    }, [
-        $questionFinishedMapData,
-        $displayHidingZones,
-        $hidingRadius,
-    ]);
+    }, [$questionFinishedMapData, $displayHidingZones, $hidingRadius]);
 
     useEffect(() => {
         if (!map || isLoading.get()) return;

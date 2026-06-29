@@ -313,11 +313,46 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
+                                  '[data-tutorial-id="tutorial-store-question-btn"]',
+                              popover: {
+                                  title: "Store the Question",
+                                  description:
+                                      "You can move the marker to see how it affects the map, but for now just click here to store it in your sidebar and continue.",
+                                  side: "top",
+                                  align: "center",
+                                  showButtons: ["previous"],
+                                  onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          allowActiveInteraction: true,
+                                      } as any);
+
+                                      const btn = document.querySelector(
+                                          '[data-tutorial-id="tutorial-store-question-btn"]',
+                                      );
+                                      if (btn) {
+                                          btn.addEventListener(
+                                              "click",
+                                              () => {
+                                                  setTimeout(
+                                                      () =>
+                                                          driverObj.moveNext(),
+                                                      500,
+                                                  );
+                                              },
+                                              { once: true },
+                                          );
+                                      }
+                                  },
+                              },
+                          },
+                          {
+                              element:
                                   '[data-tutorial-id="left-sidebar-trigger"]',
                               popover: {
                                   title: "Open the Sidebar",
                                   description:
-                                      "Drag the question on the map to your desired location, then open the sidebar to lock it.",
+                                      "Now open the sidebar to view and lock your question.",
                                   side: "right",
                                   align: "start",
                                   showButtons: ["previous"],
