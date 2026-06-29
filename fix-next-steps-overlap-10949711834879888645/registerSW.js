@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-next-steps-overlap-10949711834879888645/sw.js', { scope: '/HideAndSeek/fix-next-steps-overlap-10949711834879888645/' })})}
