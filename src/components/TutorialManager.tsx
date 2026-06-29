@@ -586,16 +586,24 @@ export const TutorialManager = () => {
                                           }
                                       }, 100);
 
-                                      // // @ts-ignore
-                                      driverObj._unlockCheckInterval =
+                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                      // @ts-ignore
+                                      (driverObj as any)._unlockCheckInterval =
                                           checkInterval;
                                   },
+                                  // @ts-expect-error Custom event for Driver.js
                                   onDeselected: () => {
-                                      // // @ts-ignore
-                                      if (driverObj._unlockCheckInterval) {
-                                          // // @ts-ignore
+                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                      // @ts-ignore
+                                      if (
+                                          (driverObj as any)
+                                              ._unlockCheckInterval
+                                      ) {
+                                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                          // @ts-ignore
                                           clearInterval(
-                                              driverObj._unlockCheckInterval,
+                                              (driverObj as any)
+                                                  ._unlockCheckInterval,
                                           );
                                       }
                                   },
@@ -647,35 +655,50 @@ export const TutorialManager = () => {
                                                   { once: true },
                                               );
 
-                                              // // @ts-ignore
-                                              driverObj._deleteBtn = btn;
-                                              // // @ts-ignore
-                                              driverObj._deleteBtnOnClick =
-                                                  onClick;
+                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                              // @ts-ignore
+                                              (driverObj as any)._deleteBtn =
+                                                  btn;
+                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                              // @ts-ignore
+                                              (
+                                                  driverObj as any
+                                              )._deleteBtnOnClick = onClick;
                                           }
                                       }, 100);
 
-                                      // // @ts-ignore
-                                      driverObj._deleteBtnInterval =
+                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                      // @ts-ignore
+                                      (driverObj as any)._deleteBtnInterval =
                                           checkInterval;
                                   },
                                   onDeselected: () => {
-                                      // // @ts-ignore
-                                      if (driverObj._deleteBtnInterval) {
-                                          // // @ts-ignore
+                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                      // @ts-ignore
+                                      if (
+                                          (driverObj as any)._deleteBtnInterval
+                                      ) {
+                                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                          // @ts-ignore
                                           clearInterval(
-                                              driverObj._deleteBtnInterval,
+                                              (driverObj as any)
+                                                  ._deleteBtnInterval,
                                           );
                                       }
-                                      // // @ts-ignore
+                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                      // @ts-ignore
                                       if (
-                                          driverObj._deleteBtn &&
-                                          driverObj._deleteBtnOnClick
+                                          (driverObj as any)._deleteBtn &&
+                                          (driverObj as any)._deleteBtnOnClick
                                       ) {
-                                          // // @ts-ignore
-                                          driverObj._deleteBtn.removeEventListener(
+                                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                                          // @ts-ignore
+                                          (
+                                              driverObj as any
+                                          )._deleteBtn.removeEventListener(
                                               "click",
-                                              driverObj._deleteBtnOnClick,
+                                              (driverObj as any)
+                                                  ._deleteBtnOnClick,
                                           );
                                       }
                                   },
