@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-eslint-disables-14760349638798213241/sw.js', { scope: '/HideAndSeek/fix-eslint-disables-14760349638798213241/' })})}
