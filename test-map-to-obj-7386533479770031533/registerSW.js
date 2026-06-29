@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/test-map-to-obj-7386533479770031533/sw.js', { scope: '/HideAndSeek/test-map-to-obj-7386533479770031533/' })})}
