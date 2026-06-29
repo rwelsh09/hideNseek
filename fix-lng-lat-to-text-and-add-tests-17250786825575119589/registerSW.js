@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-lng-lat-to-text-and-add-tests-17250786825575119589/sw.js', { scope: '/HideAndSeek/fix-lng-lat-to-text-and-add-tests-17250786825575119589/' })})}
