@@ -1,5 +1,6 @@
 import { useStore } from "@nanostores/react";
 import osmtogeojson from "osmtogeojson";
+import pLimit from "p-limit";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 
@@ -74,62 +75,75 @@ export const PlaytestPlaces = () => {
                 }
             });
 
+            const limit = pLimit(3);
+            const fetchPromises: Promise<void>[] = [];
+
             // Fetch standard location types
             for (const type of Array.from(typesSet)) {
                 if ((LOCATION_FIRST_TAG as any)[type]) {
-                    const tag = (LOCATION_FIRST_TAG as any)[type];
-                    try {
-                        const rawData = await findPlacesInZone(
-                            `[${tag}=${type}]`,
-                            undefined,
-                            "nwr",
-                            "center",
-                            [],
-                            0,
-                        );
+                    fetchPromises.push(
+                        limit(async () => {
+                            const tag = (LOCATION_FIRST_TAG as any)[type];
+                            try {
+                                const rawData = await findPlacesInZone(
+                                    `[${tag}=${type}]`,
+                                    undefined,
+                                    "nwr",
+                                    "center",
+                                    [],
+                                    0,
+                                );
 
-                        const features = osmtogeojson(rawData);
+                                const features = osmtogeojson(rawData);
 
-                        if (features && features.features) {
-                            features.features.forEach((f: any) => {
-                                allPlaces.push({
-                                    ...f,
-                                    customColor: "purple", // distinct color for playtest
-                                });
-                            });
-                        }
-                    } catch (e) {
-                        console.error(
-                            "Failed to load playtest places for",
-                            type,
-                            e,
-                        );
-                    }
+                                if (features && features.features) {
+                                    features.features.forEach((f: any) => {
+                                        allPlaces.push({
+                                            ...f,
+                                            customColor: "purple", // distinct color for playtest
+                                        });
+                                    });
+                                }
+                            } catch (e) {
+                                console.error(
+                                    "Failed to load playtest places for",
+                                    type,
+                                    e,
+                                );
+                            }
+                        }),
+                    );
                 }
             }
 
             // Fetch specific types
             for (const specificType of Array.from(specificTypesSet)) {
-                try {
-                    const features = await findPlacesSpecificInZone(
-                        specificType as any,
-                    );
-                    if (features && features.features) {
-                        features.features.forEach((f: any) => {
-                            allPlaces.push({
-                                ...f,
-                                customColor: "green",
-                            });
-                        });
-                    }
-                } catch (e) {
-                    console.error(
-                        "Failed to load specific playtest places for",
-                        specificType,
-                        e,
-                    );
-                }
+                fetchPromises.push(
+                    limit(async () => {
+                        try {
+                            const features = await findPlacesSpecificInZone(
+                                specificType as any,
+                            );
+                            if (features && features.features) {
+                                features.features.forEach((f: any) => {
+                                    allPlaces.push({
+                                        ...f,
+                                        customColor: "green",
+                                    });
+                                });
+                            }
+                        } catch (e) {
+                            console.error(
+                                "Failed to load specific playtest places for",
+                                specificType,
+                                e,
+                            );
+                        }
+                    }),
+                );
             }
+
+            await Promise.all(fetchPromises);
 
             if (isMounted) {
                 setPlaces(allPlaces);
