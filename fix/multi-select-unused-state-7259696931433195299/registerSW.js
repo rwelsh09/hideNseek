@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/multi-select-unused-state-7259696931433195299/sw.js', { scope: '/HideAndSeek/fix/multi-select-unused-state-7259696931433195299/' })})}
