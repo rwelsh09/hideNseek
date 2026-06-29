@@ -25,6 +25,37 @@ const getPathOptions = (color: string) => {
     return pathOptionsCache[color];
 };
 
+const PlaytestPlaceMarker = ({
+    coords,
+    color,
+    name,
+}: {
+    coords: number[];
+    color: string;
+    name: string;
+}) => {
+    // Performance Optimization: Memoize the array passed to the center prop.
+    // react-leaflet checks object equality for array references like position and center.
+    // If inline arrays are used, it repeatedly triggers internal layer updates (e.g., setLatLng)
+    // on every render, severely impacting performance when displaying multiple markers.
+    const centerArray = React.useMemo(
+        () => [coords[1], coords[0]] as [number, number],
+        [coords[1], coords[0]],
+    );
+
+    return (
+        <CircleMarker
+            center={centerArray}
+            radius={5}
+            pathOptions={getPathOptions(color)}
+        >
+            <Tooltip direction="top" offset={[0, -10]}>
+                {name}
+            </Tooltip>
+        </CircleMarker>
+    );
+};
+
 export const PlaytestPlaces = () => {
     const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
     const $questions = useStore(questions);
@@ -176,16 +207,12 @@ export const PlaytestPlaces = () => {
                 const color = place?.customColor ?? "orange";
 
                 return (
-                    <CircleMarker
+                    <PlaytestPlaceMarker
                         key={i}
-                        center={[coords[1], coords[0]]}
-                        radius={5}
-                        pathOptions={getPathOptions(color)}
-                    >
-                        <Tooltip direction="top" offset={[0, -10]}>
-                            {name}
-                        </Tooltip>
-                    </CircleMarker>
+                        coords={coords}
+                        color={color}
+                        name={name}
+                    />
                 );
             })}
         </>

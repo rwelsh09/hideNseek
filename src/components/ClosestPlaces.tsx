@@ -147,9 +147,18 @@ const ClosestPlaceMarker = ({
         [f, question],
     );
 
+    // Performance Optimization: Memoize the array passed to the center prop.
+    // react-leaflet checks object equality for array references like position and center.
+    // If inline arrays are used, it repeatedly triggers internal layer updates (e.g., setLatLng)
+    // on every render, severely impacting performance when displaying multiple markers.
+    const centerArray = React.useMemo(
+        () => [coords[1], coords[0]] as [number, number],
+        [coords[1], coords[0]],
+    );
+
     return (
         <CircleMarker
-            center={[coords[1], coords[0]]}
+            center={centerArray}
             radius={8}
             pathOptions={
                 isSelected ? PATH_OPTIONS_SELECTED : PATH_OPTIONS_UNSELECTED

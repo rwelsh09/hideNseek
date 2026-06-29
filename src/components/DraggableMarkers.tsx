@@ -96,9 +96,18 @@ const ColoredMarker = ({
         [],
     );
 
+    // Performance Optimization: Memoize the array passed to the position prop.
+    // react-leaflet checks object equality for array references like position and center.
+    // If inline arrays are used, it repeatedly triggers internal layer updates (e.g., setLatLng)
+    // on every render, severely impacting performance when displaying multiple markers.
+    const positionArray = useMemo(
+        () => [latitude, longitude] as [number, number],
+        [latitude, longitude],
+    );
+
     return (
         <Marker
-            position={[latitude, longitude]}
+            position={positionArray}
             icon={color ? getIcon(color) : undefined}
             draggable={true}
             eventHandlers={eventHandlers}
