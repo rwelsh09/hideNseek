@@ -23,6 +23,8 @@ const getPathOptions = (color: string) => {
     return pathOptionsCache[color];
 };
 
+const TOOLTIP_OFFSET: [number, number] = [0, -10];
+
 const PlaytestPlaceMarker = ({
     coords,
     color,
@@ -43,7 +45,7 @@ const PlaytestPlaceMarker = ({
             radius={5}
             pathOptions={getPathOptions(color)}
         >
-            <Tooltip direction="top" offset={[0, -10]}>
+            <Tooltip direction="top" offset={TOOLTIP_OFFSET}>
                 {name}
             </Tooltip>
         </CircleMarker>

@@ -121,6 +121,8 @@ const PATH_OPTIONS_UNSELECTED = {
     fillOpacity: 0.7,
 };
 
+const TOOLTIP_OFFSET: [number, number] = [0, -10];
+
 const ClosestPlaceMarker = ({
     f,
     coords,
@@ -157,12 +159,12 @@ const ClosestPlaceMarker = ({
             eventHandlers={eventHandlers}
         >
             {question.data.showLabels && (
-                <Tooltip direction="top" offset={[0, -10]} permanent>
+                <Tooltip direction="top" offset={TOOLTIP_OFFSET} permanent>
                     {f.properties?.name || "Unknown Location"}
                 </Tooltip>
             )}
             {!question.data.showLabels && (
-                <Tooltip direction="top" offset={[0, -10]}>
+                <Tooltip direction="top" offset={TOOLTIP_OFFSET}>
                     {f.properties?.name || "Unknown Location"}
                 </Tooltip>
             )}
