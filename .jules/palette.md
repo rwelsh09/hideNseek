@@ -18,3 +18,8 @@
 
 **Learning:** Found and fixed unlabelled "Close panel" icon buttons in `DraggableMarkers.tsx` and an unlabelled "Scroll to top" button in `scroll-to-top.tsx`. It's common to miss aria-labels on utility overlay components like these.
 **Action:** Next time I work on floating panels or sticky buttons, check for missing ARIA labels on the close/action triggers.
+
+## 2024-06-29 - Close Icon SVGs lacking accessible `<button>` wrappers
+
+**Learning:** Found instances where raw SVG icons (e.g., `SidebarCloseIcon` from `lucide-react`) were used directly as clickable interactive elements with `onClick` handlers but without semantic `<button>` wrappers. This prevents keyboard focus (Tab navigation) and lacks proper role and screen reader description (`aria-label`).
+**Action:** Always ensure that purely visual SVG icons with click handlers are wrapped in a semantic `<button type="button">` element with appropriate hover/focus styles, keyboard focus indicators (`focus:ring`), and an `aria-label` to provide an accessible and robust interaction pattern.

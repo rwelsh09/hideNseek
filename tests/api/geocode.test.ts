@@ -50,7 +50,7 @@ describe("geocode", () => {
         };
 
         const fetchSpy = vi
-            .spyOn(global, "fetch")
+            .spyOn(globalThis, "fetch")
             .mockResolvedValue(new Response(JSON.stringify(mockResponse)));
 
         const result = await geocode("Calgary", "en");
@@ -88,7 +88,7 @@ describe("geocode", () => {
             ],
         };
 
-        vi.spyOn(global, "fetch").mockResolvedValue(
+        vi.spyOn(globalThis, "fetch").mockResolvedValue(
             new Response(JSON.stringify(mockResponse)),
         );
 
@@ -117,7 +117,7 @@ describe("geocode", () => {
             ],
         };
 
-        vi.spyOn(global, "fetch").mockResolvedValue(
+        vi.spyOn(globalThis, "fetch").mockResolvedValue(
             new Response(JSON.stringify(mockResponse)),
         );
 

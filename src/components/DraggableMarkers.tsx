@@ -69,13 +69,10 @@ const ColoredMarker = ({
 }) => {
     const handlersRef = useRef({ onChange, onClick });
 
-    // Update refs without causing re-renders
     useEffect(() => {
         handlersRef.current = { onChange, onClick };
     }, [onChange, onClick]);
 
-    // Memoize event handlers to prevent react-leaflet from constantly re-binding events
-    // which negatively impacts performance when many markers are rendered.
     const eventHandlers = useMemo(
         () => ({
             dragstart: () => {
@@ -96,9 +93,14 @@ const ColoredMarker = ({
         [],
     );
 
+    const positionArray = useMemo(
+        () => [latitude, longitude] as [number, number],
+        [latitude, longitude],
+    );
+
     return (
         <Marker
-            position={[latitude, longitude]}
+            position={positionArray}
             icon={color ? getIcon(color) : undefined}
             draggable={true}
             eventHandlers={eventHandlers}

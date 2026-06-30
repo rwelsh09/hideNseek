@@ -57,12 +57,16 @@ export const QuestionSidebar = () => {
                 <h2 className="ml-4 mt-4 font-poppins text-2xl font-bold text-white">
                     Questions
                 </h2>
-                <SidebarCloseIcon
-                    className="mr-2 visible text-white cursor-pointer"
+                <button
+                    type="button"
+                    className="mr-2 visible text-white cursor-pointer hover:bg-slate-800 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-slate-400"
+                    aria-label="Close sidebar"
                     onClick={() => {
                         SidebarContext.get().toggleSidebar();
                     }}
-                />
+                >
+                    <SidebarCloseIcon />
+                </button>
             </div>
 
             <SidebarContent className="px-4 pt-4 pb-2 flex flex-col gap-5 overflow-y-auto">

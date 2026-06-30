@@ -7,8 +7,6 @@ import { liveUpdateMapEnabled, questions } from "@/lib/context";
 import { findPlacesInZone } from "@/maps/api";
 import { LOCATION_FIRST_TAG } from "@/maps/api/constants";
 
-// Performance Optimization: Cache path options for different colors to prevent react-leaflet
-// from re-triggering layer styling methods due to unstable object references on every render.
 const pathOptionsCache: Record<
     string,
     { color: string; fillColor: string; fillOpacity: number }
@@ -23,6 +21,33 @@ const getPathOptions = (color: string) => {
         };
     }
     return pathOptionsCache[color];
+};
+
+const PlaytestPlaceMarker = ({
+    coords,
+    color,
+    name,
+}: {
+    coords: number[];
+    color: string;
+    name: string;
+}) => {
+    const centerArray = React.useMemo(
+        () => [coords[1], coords[0]] as [number, number],
+        [coords[1], coords[0]],
+    );
+
+    return (
+        <CircleMarker
+            center={centerArray}
+            radius={5}
+            pathOptions={getPathOptions(color)}
+        >
+            <Tooltip direction="top" offset={[0, -10]}>
+                {name}
+            </Tooltip>
+        </CircleMarker>
+    );
 };
 
 export const PlaytestPlaces = () => {
@@ -176,16 +201,12 @@ export const PlaytestPlaces = () => {
                 const color = place?.customColor ?? "orange";
 
                 return (
-                    <CircleMarker
+                    <PlaytestPlaceMarker
                         key={i}
-                        center={[coords[1], coords[0]]}
-                        radius={5}
-                        pathOptions={getPathOptions(color)}
-                    >
-                        <Tooltip direction="top" offset={[0, -10]}>
-                            {name}
-                        </Tooltip>
-                    </CircleMarker>
+                        coords={coords}
+                        color={color}
+                        name={name}
+                    />
                 );
             })}
         </>
