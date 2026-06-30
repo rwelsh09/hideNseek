@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/sidebar-order-4886684393632377783/sw.js', { scope: '/HideAndSeek/fix/sidebar-order-4886684393632377783/' })})}
