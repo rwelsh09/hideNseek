@@ -333,13 +333,15 @@ export const TimerDrawer = () => {
                                                     penalty
                                                 </div>
                                                 <button
+                                                    type="button"
                                                     onClick={() =>
                                                         removeLeaderboardEntry(
                                                             entry.id,
                                                         )
                                                     }
-                                                    className="text-slate-500 hover:text-red-400 transition-colors p-1"
-                                                    title="Remove entry"
+                                                    className="text-slate-500 hover:text-red-400 transition-colors p-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-800"
+                                                    title={`Remove leaderboard entry for ${entry.names}`}
+                                                    aria-label={`Remove leaderboard entry for ${entry.names}`}
                                                 >
                                                     <Trash2 className="w-4 h-4" />
                                                 </button>
