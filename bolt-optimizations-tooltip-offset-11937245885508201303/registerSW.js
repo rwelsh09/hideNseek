@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/bolt-optimizations-tooltip-offset-11937245885508201303/sw.js', { scope: '/HideAndSeek/bolt-optimizations-tooltip-offset-11937245885508201303/' })})}
