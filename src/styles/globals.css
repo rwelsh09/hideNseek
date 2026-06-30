@@ -111,3 +111,13 @@ div.leaflet-control-attribution.leaflet-control {
         @apply bg-background text-foreground;
     }
 }
+
+/* Driver.js cursor overrides */
+.driver-overlay path {
+    cursor: not-allowed !important;
+}
+
+.driver-no-interaction,
+.driver-no-interaction * {
+    cursor: not-allowed !important;
+}

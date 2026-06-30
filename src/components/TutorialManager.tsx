@@ -55,7 +55,7 @@ export const TutorialManager = () => {
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
+                                          disableActiveInteraction: false,
                                       } as any);
 
                                       const trigger =
@@ -103,7 +103,7 @@ export const TutorialManager = () => {
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
+                                          disableActiveInteraction: false,
                                       } as any);
                                   },
                               },
@@ -324,7 +324,7 @@ export const TutorialManager = () => {
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
+                                          disableActiveInteraction: false,
                                       } as any);
 
                                       const btn = document.querySelector(
@@ -359,7 +359,7 @@ export const TutorialManager = () => {
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
+                                          disableActiveInteraction: false,
                                       } as any);
 
                                       const sidebarL = document.querySelector(
@@ -506,7 +506,7 @@ export const TutorialManager = () => {
                                       // Let the user interact with the map
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
+                                          disableActiveInteraction: false,
                                       } as any);
 
                                       const checkInterval = setInterval(() => {
@@ -545,7 +545,7 @@ export const TutorialManager = () => {
                                       // Restore original config
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: false,
+                                          disableActiveInteraction: true,
                                       } as any);
                                   },
                               },
@@ -563,7 +563,7 @@ export const TutorialManager = () => {
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
+                                          disableActiveInteraction: false,
                                       } as any);
 
                                       const checkInterval = setInterval(() => {
@@ -622,7 +622,7 @@ export const TutorialManager = () => {
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
+                                          disableActiveInteraction: false,
                                       } as any);
 
                                       const checkInterval = setInterval(() => {
