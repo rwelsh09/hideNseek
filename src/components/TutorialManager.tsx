@@ -219,6 +219,11 @@ export const TutorialManager = () => {
                                   align: "start",
                                   showButtons: ["previous"], // Hide Next button to force interaction
                                   onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: false,
+                                      } as any);
+
                                       const sidebarL = document.querySelector(
                                           '.peer[data-side="left"]',
                                       );
@@ -281,6 +286,11 @@ export const TutorialManager = () => {
                                   align: "start",
                                   showButtons: ["previous"], // Hide Next button to force interaction
                                   onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: false,
+                                      } as any);
+
                                       const btn = document.querySelector(
                                           '[data-tutorial-id="add-question-btn"]',
                                       );
@@ -324,6 +334,11 @@ export const TutorialManager = () => {
                                   align: "start",
                                   showButtons: ["previous"], // Hide Next button
                                   onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: false,
+                                      } as any);
+
                                       const btn = document.querySelector(
                                           '[data-tutorial-id="tutorial-add-radar-5"]',
                                       );
