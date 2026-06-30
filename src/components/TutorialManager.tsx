@@ -25,6 +25,23 @@ export const TutorialManager = () => {
                     if (isRulesPhase) {
                         // In the first phase, they clicked the link (or skipped naturally)
                         // Do NOT prompt and do NOT disable the tutorial globally. Let them return.
+                        if ((driverObj as any)._unlockCheckInterval)
+                            clearInterval(
+                                (driverObj as any)._unlockCheckInterval,
+                            );
+                        if ((driverObj as any)._deleteBtnInterval)
+                            clearInterval(
+                                (driverObj as any)._deleteBtnInterval,
+                            );
+                        if (
+                            (driverObj as any)._deleteBtn &&
+                            (driverObj as any)._deleteBtnOnClick
+                        ) {
+                            (driverObj as any)._deleteBtn.removeEventListener(
+                                "click",
+                                (driverObj as any)._deleteBtnOnClick,
+                            );
+                        }
                         driverObj.destroy();
                     } else {
                         // Main phase. Prompt if they are skipping early.
@@ -55,8 +72,8 @@ export const TutorialManager = () => {
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
-                                      } as any);
+                                          disableActiveInteraction: false,
+                                      });
 
                                       const trigger =
                                           document.querySelector<HTMLElement>(
@@ -103,8 +120,8 @@ export const TutorialManager = () => {
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
-                                      } as any);
+                                          disableActiveInteraction: false,
+                                      });
                                   },
                               },
                           },
@@ -324,8 +341,8 @@ export const TutorialManager = () => {
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
-                                      } as any);
+                                          disableActiveInteraction: false,
+                                      });
 
                                       const btn = document.querySelector(
                                           '[data-tutorial-id="tutorial-store-question-btn"]',
@@ -359,8 +376,8 @@ export const TutorialManager = () => {
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
-                                      } as any);
+                                          disableActiveInteraction: false,
+                                      });
 
                                       const sidebarL = document.querySelector(
                                           '.peer[data-side="left"]',
@@ -506,8 +523,8 @@ export const TutorialManager = () => {
                                       // Let the user interact with the map
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
-                                      } as any);
+                                          disableActiveInteraction: false,
+                                      });
 
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
@@ -545,8 +562,8 @@ export const TutorialManager = () => {
                                       // Restore original config
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: false,
-                                      } as any);
+                                          disableActiveInteraction: true,
+                                      });
                                   },
                               },
                           },
@@ -563,8 +580,8 @@ export const TutorialManager = () => {
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
-                                      } as any);
+                                          disableActiveInteraction: false,
+                                      });
 
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
@@ -586,18 +603,8 @@ export const TutorialManager = () => {
                                           }
                                       }, 100);
 
-                                      // // @ts-ignore
-                                      driverObj._unlockCheckInterval =
+                                      (driverObj as any)._unlockCheckInterval =
                                           checkInterval;
-                                  },
-                                  onDeselected: () => {
-                                      // // @ts-ignore
-                                      if (driverObj._unlockCheckInterval) {
-                                          // // @ts-ignore
-                                          clearInterval(
-                                              driverObj._unlockCheckInterval,
-                                          );
-                                      }
                                   },
                               },
                           },
@@ -614,8 +621,8 @@ export const TutorialManager = () => {
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          allowActiveInteraction: true,
-                                      } as any);
+                                          disableActiveInteraction: false,
+                                      });
 
                                       const checkInterval = setInterval(() => {
                                           const btn = document.querySelector(
@@ -647,37 +654,17 @@ export const TutorialManager = () => {
                                                   { once: true },
                                               );
 
-                                              // // @ts-ignore
-                                              driverObj._deleteBtn = btn;
-                                              // // @ts-ignore
-                                              driverObj._deleteBtnOnClick =
-                                                  onClick;
+                                              (driverObj as any)._deleteBtn =
+                                                  btn;
+
+                                              (
+                                                  driverObj as any
+                                              )._deleteBtnOnClick = onClick;
                                           }
                                       }, 100);
 
-                                      // // @ts-ignore
-                                      driverObj._deleteBtnInterval =
+                                      (driverObj as any)._deleteBtnInterval =
                                           checkInterval;
-                                  },
-                                  onDeselected: () => {
-                                      // // @ts-ignore
-                                      if (driverObj._deleteBtnInterval) {
-                                          // // @ts-ignore
-                                          clearInterval(
-                                              driverObj._deleteBtnInterval,
-                                          );
-                                      }
-                                      // // @ts-ignore
-                                      if (
-                                          driverObj._deleteBtn &&
-                                          driverObj._deleteBtnOnClick
-                                      ) {
-                                          // // @ts-ignore
-                                          driverObj._deleteBtn.removeEventListener(
-                                              "click",
-                                              driverObj._deleteBtnOnClick,
-                                          );
-                                      }
                                   },
                               },
                           },

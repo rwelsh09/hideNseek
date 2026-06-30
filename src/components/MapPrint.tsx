@@ -1,12 +1,15 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-nocheck This should not be edited
 import "leaflet-easyprint";
 
 import L from "leaflet";
 import { useEffect } from "react";
 import { useMap } from "react-leaflet";
 
-export const MapPrint = (props) => {
+// Add a generic type definition for easyPrint if it's missing from DefinitelyTyped
+declare module "leaflet" {
+    function easyPrint(options?: any): any;
+}
+
+export const MapPrint = (props: any) => {
     const map = useMap();
 
     useEffect(() => {
@@ -17,7 +20,7 @@ export const MapPrint = (props) => {
         return () => {
             map.removeControl(control);
         };
-    }, [map]);
+    }, [map, props]);
 
     return null;
 };

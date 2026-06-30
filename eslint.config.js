@@ -38,6 +38,10 @@ export default [
                 },
             ],
             "react/react-in-jsx-scope": "off",
+            "react/no-unknown-property": [
+                "error",
+                { ignore: ["cmdk-input-wrapper"] },
+            ],
             "@typescript-eslint/no-explicit-any": "off", // Would be great to remove all `any` types...
             "simple-import-sort/imports": "error",
             "simple-import-sort/exports": "error",

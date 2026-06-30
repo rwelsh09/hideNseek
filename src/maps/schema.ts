@@ -130,7 +130,7 @@ const closestLocationsOne = z.union([
     z.literal("pub").describe("Pubs / Bars"),
 ]);
 
-const apiLocationSchema = z.union([
+export const apiLocationSchema = z.union([
     z.literal("golf_course"),
     closestLocationsOne,
 ]);
@@ -164,11 +164,11 @@ const closestQuestionSpecificSchemaOne = baseClosestQuestionSchema.extend({
     places: z.array(z.any()).optional(),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const encompassingClosestQuestionSchema = baseClosestQuestionSchema.extend({
-    locationType: apiLocationSchema,
-    places: z.array(z.any()).optional(),
-});
+export const encompassingClosestQuestionSchema =
+    baseClosestQuestionSchema.extend({
+        locationType: apiLocationSchema,
+        places: z.array(z.any()).optional(),
+    });
 
 export const closestQuestionSchema = closestQuestionSpecificSchemaOne;
 
