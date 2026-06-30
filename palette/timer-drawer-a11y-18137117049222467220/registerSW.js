@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/palette/timer-drawer-a11y-18137117049222467220/sw.js', { scope: '/HideAndSeek/palette/timer-drawer-a11y-18137117049222467220/' })})}
