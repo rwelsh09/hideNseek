@@ -23,3 +23,8 @@
 
 **Learning:** Found instances where raw SVG icons (e.g., `SidebarCloseIcon` from `lucide-react`) were used directly as clickable interactive elements with `onClick` handlers but without semantic `<button>` wrappers. This prevents keyboard focus (Tab navigation) and lacks proper role and screen reader description (`aria-label`).
 **Action:** Always ensure that purely visual SVG icons with click handlers are wrapped in a semantic `<button type="button">` element with appropriate hover/focus styles, keyboard focus indicators (`focus:ring`), and an `aria-label` to provide an accessible and robust interaction pattern.
+
+## 2026-06-30 - Contextual ARIA labels and Focus Styles for List Items
+
+**Learning:** Found an icon-only "Remove entry" button inside a mapped leaderboard list in `TimerDrawer.tsx` that lacked a contextual `aria-label` (making it unclear _which_ entry it removes for screen readers), a `type="button"` attribute, and proper `focus-visible` keyboard navigation styles. Static `title` attributes on repeated list item buttons are insufficient for accessibility.
+**Action:** When adding or reviewing buttons inside mapped lists (like leaderboards or item rows), always ensure the `aria-label` includes contextual data (e.g., the item's name) and that the button has explicit `focus-visible` ring styles for keyboard navigation.
