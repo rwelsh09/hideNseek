@@ -475,6 +475,36 @@ export const ZoneSidebar = () => {
                                     />
                                 </div>
                             </SidebarMenuItem>
+                            <SidebarMenuItem>
+                                <Label className="font-semibold font-poppins ml-2">
+                                    Hiding Zone Radius
+                                </Label>
+                                <div
+                                    className={cn(
+                                        MENU_ITEM_CLASSNAME,
+                                        "gap-2 flex flex-row",
+                                    )}
+                                >
+                                    <Input
+                                        type="number"
+                                        className="rounded-md p-2 w-16"
+                                        value={$hidingRadius}
+                                        onChange={(e) => {
+                                            hidingRadius.set(
+                                                parseFloat(e.target.value),
+                                            );
+                                        }}
+                                        disabled={$isLoading}
+                                    />
+                                    <UnitSelect
+                                        unit={$hidingRadiusUnits}
+                                        disabled={$isLoading}
+                                        onChange={(unit) => {
+                                            hidingRadiusUnits.set(unit);
+                                        }}
+                                    />
+                                </div>
+                            </SidebarMenuItem>
                             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                                 <Label className="font-semibold font-poppins">
                                     Display hiding zones?
@@ -531,36 +561,6 @@ export const ZoneSidebar = () => {
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
                                 </AlertDialog>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem>
-                                <Label className="font-semibold font-poppins ml-2">
-                                    Hiding Zone Radius
-                                </Label>
-                                <div
-                                    className={cn(
-                                        MENU_ITEM_CLASSNAME,
-                                        "gap-2 flex flex-row",
-                                    )}
-                                >
-                                    <Input
-                                        type="number"
-                                        className="rounded-md p-2 w-16"
-                                        value={$hidingRadius}
-                                        onChange={(e) => {
-                                            hidingRadius.set(
-                                                parseFloat(e.target.value),
-                                            );
-                                        }}
-                                        disabled={$isLoading}
-                                    />
-                                    <UnitSelect
-                                        unit={$hidingRadiusUnits}
-                                        disabled={$isLoading}
-                                        onChange={(unit) => {
-                                            hidingRadiusUnits.set(unit);
-                                        }}
-                                    />
-                                </div>
                             </SidebarMenuItem>
                             {$displayHidingZones && stations.length > 0 && (
                                 <SidebarMenuItem

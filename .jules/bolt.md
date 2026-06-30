@@ -1,4 +1,5 @@
 ## YYYY-MM-DD - [Refactoring `useMemo` to `useRef`]
+
 **Learning:** `useMemo` is strictly for performance optimizations of computed values and should never be used as a replacement for `useRef` to hold mutable references (e.g., `useMemo(() => ({ current: null }), [])`). Doing so can lead to unexpected bugs since React may clear `useMemo` cache during rendering to free memory.
 **Action:** Always utilize `useRef` for maintaining state or mutable values (like Leaflet marker instances or watch IDs) that shouldn't trigger re-renders.
 
@@ -18,5 +19,6 @@
 **Action:** Extract inline arrays and large configuration objects into `useMemo` hooks or static constants outside of the render cycle. This provides stable object references, preventing unnecessary Leaflet DOM manipulations.
 
 ## $(date +%Y-%m-%d) - [React-Leaflet Array Prop Memoization]
+
 **Learning:** In React-Leaflet, passing inline array references (like `center={[lat, lng]}`) to child components (e.g., `Marker`, `CircleMarker`) causes the underlying Leaflet instance to trigger expensive `setLatLng` updates on every React render because React-Leaflet checks object equality for array references. However, the `MapContainer` component explicitly ignores changes to its `center` prop after the initial render, so memoizing the `center` array for `MapContainer` provides zero performance benefit and just adds clutter.
 **Action:** Always memoize inline arrays and object literals (e.g., `position`, `center`, `pathOptions`) passed to React-Leaflet child components that react to prop changes to prevent unnecessary DOM updates. Avoid applying this optimization to properties of `MapContainer` that are documented as immutable after initialization (like `center`).
