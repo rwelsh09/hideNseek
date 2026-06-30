@@ -275,7 +275,7 @@ Sidebar.displayName = "Sidebar";
 
 const SidebarTrigger = React.forwardRef<
     React.ComponentRef<typeof Button>,
-    React.ComponentProps<typeof Button> & { "data-tutorial-id"?: string }
+    React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
     const { toggleSidebar } = useStore(SidebarContext);
 
