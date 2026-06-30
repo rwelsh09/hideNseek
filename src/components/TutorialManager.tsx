@@ -246,6 +246,9 @@ export const TutorialManager = () => {
                                               '[data-tutorial-id="left-sidebar-trigger"] button',
                                           ) ||
                                           document.querySelector<HTMLElement>(
+                                              '[data-tutorial-id="left-sidebar-trigger"]',
+                                          ) ||
+                                          document.querySelector<HTMLElement>(
                                               '[data-sidebar="trigger"]',
                                           );
 
@@ -429,6 +432,9 @@ export const TutorialManager = () => {
                                       const trigger =
                                           document.querySelector<HTMLElement>(
                                               '[data-tutorial-id="left-sidebar-trigger"] button',
+                                          ) ||
+                                          document.querySelector<HTMLElement>(
+                                              '[data-tutorial-id="left-sidebar-trigger"]',
                                           ) ||
                                           document.querySelector<HTMLElement>(
                                               '[data-sidebar="trigger"]',
