@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/driverjs-tutorial-cursor-1385391200831350012/sw.js', { scope: '/HideAndSeek/fix/driverjs-tutorial-cursor-1385391200831350012/' })})}
