@@ -18,7 +18,39 @@ export const TutorialManager = () => {
         if ($showTutorial) {
             const driverObj = driver({
                 showProgress: true,
+                disableActiveInteraction: true,
                 onDestroyStarted: () => {
+                    // Global teardown logic for steps
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    if ((driverObj as any)._unlockCheckInterval) {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        clearInterval((driverObj as any)._unlockCheckInterval);
+                    }
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    if ((driverObj as any)._deleteBtnInterval) {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        clearInterval((driverObj as any)._deleteBtnInterval);
+                    }
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
+                    if (
+                        (driverObj as any)._deleteBtn &&
+                        (driverObj as any)._deleteBtnOnClick
+                    ) {
+                        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                        // @ts-ignore
+                        (driverObj as any)._deleteBtn.removeEventListener(
+                            "click",
+                            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                            // @ts-ignore
+                            (driverObj as any)._deleteBtnOnClick,
+                        );
+                    }
+
                     const isRulesPhase =
                         driverObj.getConfig().steps?.length === 2;
 
@@ -417,18 +449,25 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-question-rules-btn"]',
+                                  '[data-tutorial-id="tutorial-question-rules-btn"]',
                               popover: {
                                   title: "How it works",
                                   description:
                                       "Clicking here brings up the specific rules for the question you are currently asking. (Try it later!)",
                                   side: "bottom",
                                   align: "end",
+                                  onPopoverRender: () => {
+                                      // Restore original config for read-only steps
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: true,
+                                      } as any);
+                                  },
                               },
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-share-question-btn"]',
+                                  '[data-tutorial-id="tutorial-share-question-btn"]',
                               popover: {
                                   title: "Share Question",
                                   description:
@@ -439,7 +478,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-paste-question-btn"]',
+                                  '[data-tutorial-id="tutorial-paste-question-btn"]',
                               popover: {
                                   title: "Paste Question",
                                   description:
@@ -450,7 +489,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-delete-question-btn"]',
+                                  '[data-tutorial-id="tutorial-delete-question-btn"]',
                               popover: {
                                   title: "Delete Question",
                                   description:
@@ -460,8 +499,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-gps-btn"]',
+                              element: '[data-tutorial-id="tutorial-gps-btn"]',
                               popover: {
                                   title: "Set to Current Location",
                                   description:
@@ -472,7 +510,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-clipboard-copy-btn"]',
+                                  '[data-tutorial-id="tutorial-clipboard-copy-btn"]',
                               popover: {
                                   title: "Copy Coordinates",
                                   description:
@@ -483,7 +521,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-clipboard-paste-btn"]',
+                                  '[data-tutorial-id="tutorial-clipboard-paste-btn"]',
                               popover: {
                                   title: "Paste Coordinates",
                                   description:
@@ -493,8 +531,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
+                              element: '[data-tutorial-id="tutorial-lock-btn"]',
                               popover: {
                                   title: "Lock Your Answer",
                                   description:
@@ -551,8 +588,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
+                              element: '[data-tutorial-id="tutorial-lock-btn"]',
                               popover: {
                                   title: "Unlock Your Answer",
                                   description:
@@ -591,27 +627,11 @@ export const TutorialManager = () => {
                                       (driverObj as any)._unlockCheckInterval =
                                           checkInterval;
                                   },
-                                  // @ts-expect-error Custom event for Driver.js
-                                  onDeselected: () => {
-                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                      // @ts-ignore
-                                      if (
-                                          (driverObj as any)
-                                              ._unlockCheckInterval
-                                      ) {
-                                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                          // @ts-ignore
-                                          clearInterval(
-                                              (driverObj as any)
-                                                  ._unlockCheckInterval,
-                                          );
-                                      }
-                                  },
                               },
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-delete-question-btn"]',
+                                  '[data-tutorial-id="tutorial-delete-question-btn"]',
                               popover: {
                                   title: "Delete the Question",
                                   description:
@@ -671,36 +691,6 @@ export const TutorialManager = () => {
                                       // @ts-ignore
                                       (driverObj as any)._deleteBtnInterval =
                                           checkInterval;
-                                  },
-                                  onDeselected: () => {
-                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                      // @ts-ignore
-                                      if (
-                                          (driverObj as any)._deleteBtnInterval
-                                      ) {
-                                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                          // @ts-ignore
-                                          clearInterval(
-                                              (driverObj as any)
-                                                  ._deleteBtnInterval,
-                                          );
-                                      }
-                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                      // @ts-ignore
-                                      if (
-                                          (driverObj as any)._deleteBtn &&
-                                          (driverObj as any)._deleteBtnOnClick
-                                      ) {
-                                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                          // @ts-ignore
-                                          (
-                                              driverObj as any
-                                          )._deleteBtn.removeEventListener(
-                                              "click",
-                                              (driverObj as any)
-                                                  ._deleteBtnOnClick,
-                                          );
-                                      }
                                   },
                               },
                           },
