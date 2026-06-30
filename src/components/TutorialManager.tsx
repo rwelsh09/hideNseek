@@ -56,7 +56,7 @@ export const TutorialManager = () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
                                           disableActiveInteraction: false,
-                                      } as any);
+                                      });
 
                                       const trigger =
                                           document.querySelector<HTMLElement>(
@@ -104,7 +104,7 @@ export const TutorialManager = () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
                                           disableActiveInteraction: false,
-                                      } as any);
+                                      });
                                   },
                               },
                           },
@@ -325,7 +325,7 @@ export const TutorialManager = () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
                                           disableActiveInteraction: false,
-                                      } as any);
+                                      });
 
                                       const btn = document.querySelector(
                                           '[data-tutorial-id="tutorial-store-question-btn"]',
@@ -360,7 +360,7 @@ export const TutorialManager = () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
                                           disableActiveInteraction: false,
-                                      } as any);
+                                      });
 
                                       const sidebarL = document.querySelector(
                                           '.peer[data-side="left"]',
@@ -507,7 +507,7 @@ export const TutorialManager = () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
                                           disableActiveInteraction: false,
-                                      } as any);
+                                      });
 
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
@@ -546,7 +546,7 @@ export const TutorialManager = () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
                                           disableActiveInteraction: true,
-                                      } as any);
+                                      });
                                   },
                               },
                           },
@@ -564,7 +564,7 @@ export const TutorialManager = () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
                                           disableActiveInteraction: false,
-                                      } as any);
+                                      });
 
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
@@ -586,26 +586,8 @@ export const TutorialManager = () => {
                                           }
                                       }, 100);
 
-                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                      // @ts-ignore
                                       (driverObj as any)._unlockCheckInterval =
                                           checkInterval;
-                                  },
-                                  // @ts-expect-error Custom event for Driver.js
-                                  onDeselected: () => {
-                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                      // @ts-ignore
-                                      if (
-                                          (driverObj as any)
-                                              ._unlockCheckInterval
-                                      ) {
-                                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                          // @ts-ignore
-                                          clearInterval(
-                                              (driverObj as any)
-                                                  ._unlockCheckInterval,
-                                          );
-                                      }
                                   },
                               },
                           },
@@ -623,7 +605,7 @@ export const TutorialManager = () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
                                           disableActiveInteraction: false,
-                                      } as any);
+                                      });
 
                                       const checkInterval = setInterval(() => {
                                           const btn = document.querySelector(
@@ -655,52 +637,16 @@ export const TutorialManager = () => {
                                                   { once: true },
                                               );
 
-                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                              // @ts-ignore
                                               (driverObj as any)._deleteBtn =
                                                   btn;
-                                              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                              // @ts-ignore
                                               (
                                                   driverObj as any
                                               )._deleteBtnOnClick = onClick;
                                           }
                                       }, 100);
 
-                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                      // @ts-ignore
                                       (driverObj as any)._deleteBtnInterval =
                                           checkInterval;
-                                  },
-                                  onDeselected: () => {
-                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                      // @ts-ignore
-                                      if (
-                                          (driverObj as any)._deleteBtnInterval
-                                      ) {
-                                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                          // @ts-ignore
-                                          clearInterval(
-                                              (driverObj as any)
-                                                  ._deleteBtnInterval,
-                                          );
-                                      }
-                                      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                      // @ts-ignore
-                                      if (
-                                          (driverObj as any)._deleteBtn &&
-                                          (driverObj as any)._deleteBtnOnClick
-                                      ) {
-                                          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                                          // @ts-ignore
-                                          (
-                                              driverObj as any
-                                          )._deleteBtn.removeEventListener(
-                                              "click",
-                                              (driverObj as any)
-                                                  ._deleteBtnOnClick,
-                                          );
-                                      }
                                   },
                               },
                           },
