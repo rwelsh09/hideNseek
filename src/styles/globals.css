@@ -131,3 +131,10 @@ div.leaflet-control-attribution.leaflet-control {
     pointer-events: auto !important;
     cursor: pointer !important;
 }
+
+/* Force lock button to be clickable even if driver-no-interaction is applied to a parent */
+.driver-active [data-tutorial-id="tutorial-lock-btn"],
+.driver-active [data-tutorial-id="tutorial-lock-btn"] * {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
