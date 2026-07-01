@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/a11y-sidebar-trigger-buttons-10862871779890142264/sw.js', { scope: '/HideAndSeek/a11y-sidebar-trigger-buttons-10862871779890142264/' })})}
