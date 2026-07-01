@@ -121,3 +121,20 @@ div.leaflet-control-attribution.leaflet-control {
 .driver-no-interaction * {
     cursor: not-allowed !important;
 }
+
+/* Allow closing sidebars and drawers during tutorial */
+.driver-active [aria-label="Close sidebar"],
+.driver-active [data-sidebar="sidebar"] button[aria-label="Close sidebar"],
+.driver-active button[aria-label="Close sidebar"],
+.driver-active [data-state="open"] > button:has(span.sr-only) {
+
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
+
+/* Force lock button to be clickable even if driver-no-interaction is applied to a parent */
+.driver-active [data-tutorial-id="tutorial-lock-btn"],
+.driver-active [data-tutorial-id="tutorial-lock-btn"] * {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
