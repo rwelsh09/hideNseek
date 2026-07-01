@@ -30,6 +30,7 @@ const PHOTO_LABELS: Record<string, string> = {
     worship: "Place of Worship",
     train: "Station",
     route: "Nearest Intersection",
+    water: "Largest Body of Water",
 };
 
 const PHOTO_DESCRIPTIONS: Record<string, string> = {
@@ -46,6 +47,7 @@ const PHOTO_DESCRIPTIONS: Record<string, string> = {
         "Photograph the nearest church, mosque, temple, or other place of worship.",
     train: "Take a picture showing your transit station or train platform.",
     route: "Take a picture showing the nearest street intersection.",
+    water: "Take a photo of the largest body of water in your hiding zone.",
 };
 
 export const PhotoQuestionComponent = ({

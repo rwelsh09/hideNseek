@@ -25,6 +25,7 @@ import {
     TramFront,
     Trees,
     Utensils,
+    Waves,
 } from "lucide-react";
 import { useState } from "react";
 
@@ -749,6 +750,21 @@ export function AddQuestionDialog() {
                                 <Route className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
                                     Intersection
+                                </span>
+                            </button>
+
+                            <button
+                                type="button"
+                                aria-label="Add photo question for body of water"
+                                title="Add photo question for body of water"
+                                onClick={() =>
+                                    handleQuestionSelect("photo", "water")
+                                }
+                                className="bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Waves className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    Body of Water
                                 </span>
                             </button>
                         </div>
