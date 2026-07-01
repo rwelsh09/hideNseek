@@ -47,7 +47,7 @@ const PHOTO_DESCRIPTIONS: Record<string, string> = {
         "Photograph the nearest church, mosque, temple, or other place of worship.",
     train: "Take a picture showing your transit station or train platform.",
     route: "Take a picture showing the nearest street intersection.",
-    water: "Take a photo of the largest body of water visible from your current location.",
+    water: "Take a photo of the largest body of water in your hiding zone.",
 };
 
 export const PhotoQuestionComponent = ({
