@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/add-water-photo-option-5808866028415540559/sw.js', { scope: '/HideAndSeek/add-water-photo-option-5808866028415540559/' })})}
