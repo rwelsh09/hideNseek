@@ -164,11 +164,11 @@ const closestQuestionSpecificSchemaOne = baseClosestQuestionSchema.extend({
     places: z.array(z.any()).optional(),
 });
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const encompassingClosestQuestionSchema = baseClosestQuestionSchema.extend({
-    locationType: apiLocationSchema,
-    places: z.array(z.any()).optional(),
-});
+export const encompassingClosestQuestionSchema =
+    baseClosestQuestionSchema.extend({
+        locationType: apiLocationSchema,
+        places: z.array(z.any()).optional(),
+    });
 
 export const closestQuestionSchema = closestQuestionSpecificSchemaOne;
 
