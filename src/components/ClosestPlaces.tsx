@@ -63,8 +63,6 @@ const ClosestPlacesForQuestion = ({
 
     const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
 
-    if ($hiderMode && $liveUpdateMapEnabled) return null;
-
     // ⚡ Bolt: Memoize filtered places to avoid O(n) turf.distance recalculations on every map render
     const filteredPlaces = React.useMemo(() => {
         const center = turf.point([question.data.lng, question.data.lat]);
@@ -90,6 +88,8 @@ const ClosestPlacesForQuestion = ({
         question.data.radius,
         $liveUpdateMapEnabled,
     ]);
+
+    if ($hiderMode && $liveUpdateMapEnabled) return null;
 
     return (
         <>

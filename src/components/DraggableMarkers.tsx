@@ -27,7 +27,7 @@ import {
     RadiusQuestionComponent,
 } from "./QuestionCards";
 import { Button } from "./ui/button";
-import { SidebarMenu } from "./ui/sidebar-l";
+import { SidebarContext, SidebarMenu } from "./ui/sidebar-l";
 
 // Global state for which marker is currently being edited
 export const editingQuestionId = atom<number | null>(null);
@@ -155,6 +155,7 @@ export const DraggableMarkers = () => {
             questionModified();
         }
         editingQuestionId.set(null);
+        SidebarContext.get().setOpenMobile(true);
     };
 
     return (
