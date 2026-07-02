@@ -599,21 +599,23 @@ export const cacheAllPlaces = async () => {
         ),
     );
 
-    if (failed > 0) {
-        toast.update(toastId, {
-            render: `Cached most places, but ${failed} failed.`,
-            type: "warning",
-            isLoading: false,
-            autoClose: 5000,
-        });
-    } else {
-        toast.update(toastId, {
-            render: "All possible places have been cached!",
-            type: "success",
-            isLoading: false,
-            autoClose: 3000,
-        });
-    }
+    setTimeout(() => {
+        if (failed > 0) {
+            toast.update(toastId, {
+                render: `Cached most places, but ${failed} failed.`,
+                type: "warning",
+                isLoading: false,
+                autoClose: 5000,
+            });
+        } else {
+            toast.update(toastId, {
+                render: "All possible places have been cached!",
+                type: "success",
+                isLoading: false,
+                autoClose: 3000,
+            });
+        }
+    }, 100);
 };
 
 export const determineMapBoundaries = async () => {
