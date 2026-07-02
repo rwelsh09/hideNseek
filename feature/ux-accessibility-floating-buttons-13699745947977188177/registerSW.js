@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feature/ux-accessibility-floating-buttons-13699745947977188177/sw.js', { scope: '/HideAndSeek/feature/ux-accessibility-floating-buttons-13699745947977188177/' })})}
