@@ -179,28 +179,51 @@ export const findClosestLocations = async (
         const coordKey = `${ptLon.toFixed(4)},${ptLat.toFixed(4)}`;
         if (seenCoords.has(coordKey)) return;
 
-        if (distance <= radiusInMeters) {
-            seenCoords.add(coordKey);
-            const name =
-                element.tags["name:en"] ?? element.tags["name"] ?? fallbackName;
-            const isChain = fallbackName !== null;
-            if (!isChain && seenNames.has(name)) return;
+        seenCoords.add(coordKey);
+        const name =
+            element.tags["name:en"] ?? element.tags["name"] ?? fallbackName;
+        const isChain = fallbackName !== null;
 
-            if (!isChain) {
-                seenNames.add(name);
-            }
+        // Note: we can't completely deduplicate names yet because we might keep a further one and discard a closer one if we do it naively.
+        // But since it's the exact same name, maybe it's fine.
+        if (!isChain && seenNames.has(name)) return;
+        if (!isChain) {
+            seenNames.add(name);
+        }
 
-            // Add a unique identifier for chain restaurants so they can be distinguished visually if needed,
-            // or at least not be identical in properties if standard logic expects it.
-            // However, the find check above is the main culprit.
-            response.features.push(
-                turf.point([ptLon, ptLat], {
-                    name: isChain ? `${name} (${element.id})` : name,
-                    id: element.id,
-                }),
-            );
+        response.features.push(
+            turf.point([ptLon, ptLat], {
+                name: isChain ? `${name} (${element.id})` : name,
+                id: element.id,
+                distance: distance, // Keep track of distance for sorting later
+            }),
+        );
+    });
+
+    // Sort all found elements by distance
+    response.features.sort(
+        (a, b) => (a.properties?.distance || 0) - (b.properties?.distance || 0),
+    );
+
+    // Keep those within radius OR at least the top 5 (if they exist)
+    const top5 = response.features.slice(0, 5);
+    const withinRadius = response.features.filter(
+        (f) => (f.properties?.distance || 0) <= radiusInMeters,
+    );
+
+    // Merge them: if withinRadius has >= 5 elements, it will contain the top 5 anyway.
+    // If withinRadius has < 5 elements, we want to include the rest of the top 5.
+    const finalFeatures = withinRadius.length >= 5 ? withinRadius : top5;
+
+    // Clean up the temporary 'distance' property to not pollute the GeoJSON
+    finalFeatures.forEach((f) => {
+        if (f.properties) {
+            delete f.properties.distance;
         }
     });
+
+    response.features = finalFeatures;
+
     return response;
 };
 
