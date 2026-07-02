@@ -127,7 +127,6 @@ div.leaflet-control-attribution.leaflet-control {
 .driver-active [data-sidebar="sidebar"] button[aria-label="Close sidebar"],
 .driver-active button[aria-label="Close sidebar"],
 .driver-active [data-state="open"] > button:has(span.sr-only) {
-
     pointer-events: auto !important;
     cursor: pointer !important;
 }
