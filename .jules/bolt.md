@@ -27,3 +27,7 @@
 
 **Learning:** React components (e.g., `ClosestPlaces.tsx`, `cards/closest.tsx`) were recreating arrays and re-calculating distances using `turf.distance` inside `.filter` array loops on every render, which is an O(n) operation that degrades frontend performance since these locations arrays can be quite large.
 **Action:** Use `React.useMemo` to wrap the `filteredPlaces` and `filteredFeatures` arrays inside React functional components to ensure expensive geospatial loops are only evaluated when their dependencies actually change.
+
+## 2025-07-02 - Memoization for expensive map calculations
+**Learning:** Found that `turf.distance()` was being called in a `.filter()` loop inside `ClosestPlaces.tsx` that ran on every render without any memoization, scaling linearly (O(n)) with the number of places fetched. The map rendering loop recalculates often.
+**Action:** Always check React-Leaflet or geospatial map rendering components for `.filter()` and `.map()` calls over large feature arrays and wrap computations in `React.useMemo` to prevent massive main-thread blocking overhead.

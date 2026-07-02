@@ -28,3 +28,7 @@
 
 **Learning:** Found an icon-only "Remove entry" button inside a mapped leaderboard list in `TimerDrawer.tsx` that lacked a contextual `aria-label` (making it unclear _which_ entry it removes for screen readers), a `type="button"` attribute, and proper `focus-visible` keyboard navigation styles. Static `title` attributes on repeated list item buttons are insufficient for accessibility.
 **Action:** When adding or reviewing buttons inside mapped lists (like leaderboards or item rows), always ensure the `aria-label` includes contextual data (e.g., the item's name) and that the button has explicit `focus-visible` ring styles for keyboard navigation.
+
+## 2026-07-01 - Added focus-visible and aria-labels to Sidebar Trigger Buttons
+**Learning:** The `TbMessage2Question` and `LiaThumbtackSolid` sidebar trigger buttons inside `sidebar-l.tsx` and `sidebar-r.tsx` were missing `focus-visible` classes, `type="button"`, and `aria-label` attributes, which hurt keyboard navigation accessibility. Using standard `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2` consistently makes the focus state predictable without custom CSS.
+**Action:** Ensure custom Shadcn-style icon buttons have explicit aria-labels and use `focus-visible` utility classes for clear keyboard focus states.

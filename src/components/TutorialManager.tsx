@@ -417,7 +417,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-question-rules-btn"]',
+                                  '[data-tutorial-id="tutorial-question-rules-btn"]',
                               popover: {
                                   title: "How it works",
                                   description:
@@ -428,7 +428,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-share-question-btn"]',
+                                  '[data-tutorial-id="tutorial-share-question-btn"]',
                               popover: {
                                   title: "Share Question",
                                   description:
@@ -439,7 +439,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-paste-question-btn"]',
+                                  '[data-tutorial-id="tutorial-paste-question-btn"]',
                               popover: {
                                   title: "Paste Question",
                                   description:
@@ -450,7 +450,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-delete-question-btn"]',
+                                  '[data-tutorial-id="tutorial-delete-question-btn"]',
                               popover: {
                                   title: "Delete Question",
                                   description:
@@ -460,8 +460,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-gps-btn"]',
+                              element: '[data-tutorial-id="tutorial-gps-btn"]',
                               popover: {
                                   title: "Set to Current Location",
                                   description:
@@ -472,7 +471,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-clipboard-copy-btn"]',
+                                  '[data-tutorial-id="tutorial-clipboard-copy-btn"]',
                               popover: {
                                   title: "Copy Coordinates",
                                   description:
@@ -483,7 +482,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-clipboard-paste-btn"]',
+                                  '[data-tutorial-id="tutorial-clipboard-paste-btn"]',
                               popover: {
                                   title: "Paste Coordinates",
                                   description:
@@ -493,8 +492,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
+                              element: '[data-tutorial-id="tutorial-lock-btn"]',
                               popover: {
                                   title: "Lock Your Answer",
                                   description:
@@ -551,8 +549,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-lock-btn"]',
+                              element: '[data-tutorial-id="tutorial-lock-btn"]',
                               popover: {
                                   title: "Unlock Your Answer",
                                   description:
@@ -593,7 +590,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '.peer[data-side="left"] [data-tutorial-id="tutorial-delete-question-btn"]',
+                                  '[data-tutorial-id="tutorial-delete-question-btn"]',
                               popover: {
                                   title: "Delete the Question",
                                   description:

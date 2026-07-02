@@ -284,9 +284,13 @@ const SidebarTrigger = React.forwardRef<
             ref={ref}
             data-sidebar="trigger"
             size="icon"
+            type="button"
+            aria-label="Toggle Sidebar"
+            title="Toggle Sidebar"
             className={cn(
                 "bg-white hover:bg-[#f4f4f4] text-black rounded-sm border-2 border-black border-opacity-30 cursor-pointer py-1 px-2",
                 "flex items-center gap-1",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 className,
             )}
             onClick={(event) => {
