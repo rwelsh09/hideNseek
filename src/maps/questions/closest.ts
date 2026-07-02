@@ -4,40 +4,43 @@ import { hiderMode } from "@/lib/context";
 import { findClosestLocations } from "@/maps/api";
 import { arcBuffer, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils";
-import type { ClosestQuestion, Units } from "@/maps/schema";
+import type { ClosestQuestion } from "@/maps/schema";
 
-const filterPointsWithinRadius = (
-    points: any,
-    centerLng: number,
-    centerLat: number,
-    radius: number,
-    unit: Units,
-) => {
+const filterPointsWithinRadius = (points: any, question: ClosestQuestion) => {
     if (
-        centerLng === null ||
-        centerLat === null ||
-        radius === undefined ||
-        radius === null
+        question.lng === null ||
+        question.lat === null ||
+        question.radius === undefined ||
+        question.radius === null
     ) {
         return points;
     }
-    const center = turf.point([centerLng, centerLat]);
+    const center = turf.point([question.lng, question.lat]);
 
-    return turf.featureCollection(
-        points.features.filter((feature: any) => {
+    let pointsWithDist = points.features
+        .map((feature: any) => {
             const coords =
                 feature?.geometry?.coordinates ??
                 (feature?.properties?.lon && feature?.properties?.lat
                     ? [feature.properties.lon, feature.properties.lat]
                     : null);
 
-            if (!coords) return false;
+            if (!coords) return { feature, dist: Infinity };
 
             const pt = turf.point(coords);
-            const dist = turf.distance(center, pt, { units: unit });
-            return dist <= radius;
-        }),
-    );
+            const dist = turf.distance(center, pt, { units: question.unit });
+            return { feature, dist };
+        })
+        .filter((p: any) => p.dist <= question.radius);
+
+    pointsWithDist.sort((a: any, b: any) => a.dist - b.dist);
+
+    if (pointsWithDist.length > 5) {
+        pointsWithDist = pointsWithDist.slice(0, 5);
+        question.radius = pointsWithDist[4].dist;
+    }
+
+    return turf.featureCollection(pointsWithDist.map((p: any) => p.feature));
 };
 
 export const adjustPerClosest = async (
@@ -51,13 +54,7 @@ export const adjustPerClosest = async (
 
     const rawPoints = await findClosestLocations(question);
 
-    const points = filterPointsWithinRadius(
-        rawPoints,
-        question.lng,
-        question.lat,
-        question.radius,
-        question.unit,
-    );
+    const points = filterPointsWithinRadius(rawPoints, question);
 
     const voronoi = geoSpatialVoronoi(points);
 
@@ -91,13 +88,7 @@ export const hiderifyClosest = async (question: ClosestQuestion) => {
 
     const rawPoints = await findClosestLocations(question);
 
-    const points = filterPointsWithinRadius(
-        rawPoints,
-        question.lng,
-        question.lat,
-        question.radius,
-        question.unit,
-    );
+    const points = filterPointsWithinRadius(rawPoints, question);
 
     const voronoi = geoSpatialVoronoi(points);
 
@@ -137,13 +128,7 @@ export const hiderifyClosest = async (question: ClosestQuestion) => {
 export const closestPlanningPolygon = async (question: ClosestQuestion) => {
     const rawPoints = await findClosestLocations(question);
 
-    const points = filterPointsWithinRadius(
-        rawPoints,
-        question.lng,
-        question.lat,
-        question.radius,
-        question.unit,
-    );
+    const points = filterPointsWithinRadius(rawPoints, question);
 
     const voronoi = geoSpatialVoronoi(points);
     const circle = await arcBuffer(

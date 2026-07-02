@@ -255,20 +255,34 @@ const ClosestLocationSelector = ({
 
         const center = turf.point([data.lng, data.lat]);
 
-        return locations.features.filter((feature: any) => {
-            const coords =
-                feature?.geometry?.coordinates ??
-                (feature?.properties?.lon && feature?.properties?.lat
-                    ? [feature.properties?.lon, feature.properties?.lat]
-                    : null);
+        let pointsWithDist = locations.features
+            .map((feature: any) => {
+                const coords =
+                    feature?.geometry?.coordinates ??
+                    (feature?.properties?.lon && feature?.properties?.lat
+                        ? [feature.properties?.lon, feature.properties?.lat]
+                        : null);
 
-            if (!coords) return false;
+                if (!coords) return { feature, dist: Infinity };
 
-            const pt = turf.point(coords);
-            const dist = turf.distance(center, pt, { units: data.unit });
+                const pt = turf.point(coords);
+                const dist = turf.distance(center, pt, { units: data.unit });
 
-            return dist <= data.radius;
-        });
+                return { feature, dist };
+            })
+            .filter((p: any) => p.dist <= data.radius);
+
+        pointsWithDist.sort((a: any, b: any) => a.dist - b.dist);
+
+        if (pointsWithDist.length > 5) {
+            pointsWithDist = pointsWithDist.slice(0, 5);
+            if (data.radius !== pointsWithDist[4].dist) {
+                data.radius = pointsWithDist[4].dist;
+                setTimeout(() => questionModified(), 0);
+            }
+        }
+
+        return pointsWithDist.map((p: any) => p.feature);
     })();
 
     // If the currently selected location is no longer within radius, clear it.
