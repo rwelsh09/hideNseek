@@ -63,7 +63,31 @@ const ClosestPlacesForQuestion = ({
 
     const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
 
-    if ($hiderMode && $liveUpdateMapEnabled) return null;
+    // ⚡ Bolt: Memoize filtered places to avoid O(n) turf.distance recalculations on every map render
+    const filteredPlaces = React.useMemo(() => {
+        const center = turf.point([question.data.lng, question.data.lat]);
+        return places.filter((f) => {
+            const coords =
+                f?.geometry?.coordinates ??
+                (f?.properties?.lon && f?.properties?.lat
+                    ? [f.properties?.lon, f.properties?.lat]
+                    : null);
+            if (!coords) return false;
+            if (!$liveUpdateMapEnabled) return true; // Show all places in playtest mode
+            return (
+                turf.distance(center, turf.point(coords), {
+                    units: question.data.unit,
+                }) <= question.data.radius
+            );
+        });
+    }, [
+        places,
+        question.data.lng,
+        question.data.lat,
+        question.data.unit,
+        question.data.radius,
+        $liveUpdateMapEnabled,
+    ]);
 
     // ⚡ Bolt: Memoize filteredPlaces calculation to prevent unnecessary O(n) recalculations of turf.distance() on every render.
     const filteredPlaces = React.useMemo(() => {

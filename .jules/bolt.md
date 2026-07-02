@@ -22,6 +22,12 @@
 
 **Learning:** In React-Leaflet, passing inline array references (like `center={[lat, lng]}`) to child components (e.g., `Marker`, `CircleMarker`) causes the underlying Leaflet instance to trigger expensive `setLatLng` updates on every React render because React-Leaflet checks object equality for array references. However, the `MapContainer` component explicitly ignores changes to its `center` prop after the initial render, so memoizing the `center` array for `MapContainer` provides zero performance benefit and just adds clutter.
 **Action:** Always memoize inline arrays and object literals (e.g., `position`, `center`, `pathOptions`) passed to React-Leaflet child components that react to prop changes to prevent unnecessary DOM updates. Avoid applying this optimization to properties of `MapContainer` that are documented as immutable after initialization (like `center`).
+
+## 2025-02-23 - Memoize expensive turf.js functions
+
+**Learning:** React components (e.g., `ClosestPlaces.tsx`, `cards/closest.tsx`) were recreating arrays and re-calculating distances using `turf.distance` inside `.filter` array loops on every render, which is an O(n) operation that degrades frontend performance since these locations arrays can be quite large.
+**Action:** Use `React.useMemo` to wrap the `filteredPlaces` and `filteredFeatures` arrays inside React functional components to ensure expensive geospatial loops are only evaluated when their dependencies actually change.
+
 ## 2025-07-02 - Memoization for expensive map calculations
 **Learning:** Found that `turf.distance()` was being called in a `.filter()` loop inside `ClosestPlaces.tsx` that ran on every render without any memoization, scaling linearly (O(n)) with the number of places fetched. The map rendering loop recalculates often.
 **Action:** Always check React-Leaflet or geospatial map rendering components for `.filter()` and `.map()` calls over large feature arrays and wrap computations in `React.useMemo` to prevent massive main-thread blocking overhead.
