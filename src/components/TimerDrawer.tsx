@@ -149,7 +149,7 @@ export const TimerDrawer = () => {
             <DrawerTrigger asChild>
                 <button
                     type="button"
-                    className="bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer relative"
+                    className="bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
                     title="Timer & Leaderboard"
                     aria-label="Timer & Leaderboard"
                     data-tutorial-id="timer-drawer-trigger"

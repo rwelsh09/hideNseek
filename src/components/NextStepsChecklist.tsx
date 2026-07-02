@@ -35,9 +35,10 @@ export const NextStepsChecklist = () => {
             <div className="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
                 <h3 className="font-bold text-xl text-white">Next Steps</h3>
                 <button
+                    type="button"
                     aria-label="Dismiss checklist"
                     onClick={() => hasDismissedNextStepsChecklist.set(true)}
-                    className="text-slate-400 hover:text-white transition-colors"
+                    className="text-slate-400 hover:text-white transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800"
                 >
                     <XIcon size={20} />
                 </button>

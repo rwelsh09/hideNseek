@@ -30,5 +30,11 @@
 **Action:** When adding or reviewing buttons inside mapped lists (like leaderboards or item rows), always ensure the `aria-label` includes contextual data (e.g., the item's name) and that the button has explicit `focus-visible` ring styles for keyboard navigation.
 
 ## 2026-07-01 - Added focus-visible and aria-labels to Sidebar Trigger Buttons
+
 **Learning:** The `TbMessage2Question` and `LiaThumbtackSolid` sidebar trigger buttons inside `sidebar-l.tsx` and `sidebar-r.tsx` were missing `focus-visible` classes, `type="button"`, and `aria-label` attributes, which hurt keyboard navigation accessibility. Using standard `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2` consistently makes the focus state predictable without custom CSS.
 **Action:** Ensure custom Shadcn-style icon buttons have explicit aria-labels and use `focus-visible` utility classes for clear keyboard focus states.
+
+## 2026-07-02 - Floating Map Controls Lacking Focus Styles
+
+**Learning:** Found several native floating map controls (`LeafletActionButtons.tsx` and `TimerDrawer.tsx` triggers) and the `NextStepsChecklist.tsx` close button lacking keyboard `focus-visible` utility classes and/or `type="button"` declarations. While these elements functioned correctly for mouse users, they were completely invisible to keyboard navigation, failing WCAG standards.
+**Action:** Always ensure that custom floating buttons and overlay close triggers have explicit `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2` utility classes to guarantee accessible keyboard navigation across all interactive layers.
