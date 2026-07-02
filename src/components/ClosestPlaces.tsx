@@ -6,7 +6,6 @@ import { CircleMarker, Tooltip } from "react-leaflet";
 import { Popup } from "react-leaflet";
 
 import {
-    hiderMode,
     liveUpdateMapEnabled,
     questionModified,
     questions,
@@ -38,7 +37,6 @@ const ClosestPlacesForQuestion = ({
     question: Extract<Question, { id: "closest" }>;
 }) => {
     const [places, setPlaces] = useState<Feature<Point, any>[]>([]);
-    const $hiderMode = useStore(hiderMode);
 
     useEffect(() => {
         let isMounted = true;

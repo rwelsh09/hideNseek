@@ -78,6 +78,7 @@
         "eslint-plugin-react": "^7.37.4",
         "eslint-plugin-simple-import-sort": "^12.1.1",
         "globals": "^16.0.0",
+        "playwright": "^1.61.1",
         "prettier": "3.5.3",
         "typescript-eslint": "^8.24.0",
         "vite-plugin-pwa": "^0.21.2",

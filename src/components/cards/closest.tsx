@@ -276,15 +276,18 @@ const ClosestLocationSelector = ({
     const _selectedLocationName = data.location
         ? data.location.properties?.name
         : null;
-    if (
-        _selectedLocationName &&
-        !filteredFeatures.find(
-            (f: any) => f.properties?.name === _selectedLocationName,
-        )
-    ) {
-        data.location = false;
-        questionModified();
-    }
+
+    useEffect(() => {
+        if (
+            _selectedLocationName &&
+            !filteredFeatures.find(
+                (f: any) => f.properties?.name === _selectedLocationName,
+            )
+        ) {
+            data.location = false;
+            questionModified();
+        }
+    }, [_selectedLocationName, filteredFeatures, data]);
 
     return (
         <div className="flex flex-col w-full">
