@@ -92,10 +92,38 @@ export const determineGeoJSON = async (
 
 import { liveUpdateMapEnabled } from "@/lib/context";
 
+const getLocationTypeName = (locationType: string) => {
+    switch (locationType) {
+        case "museum":
+            return "Museums";
+        case "hospital":
+            return "Hospitals";
+        case "cinema":
+            return "Movie Theaters";
+        case "library":
+            return "Libraries";
+        case "mcdonalds":
+            return "McDonald's";
+        case "seven11":
+            return "7-Elevens";
+        case "timhortons":
+            return "Tim Hortons";
+        case "pub":
+            return "Pubs/Bars";
+        case "golf_course":
+            return "Golf Courses";
+        default:
+            return "Locations";
+    }
+};
+
 export const findClosestLocations = async (
     question: EncompassingClosestQuestionSchema,
-    text: string = "Determining closest locations...",
+    text?: string,
 ) => {
+    const loadingText =
+        text ?? `Finding all ${getLocationTypeName(question.locationType)}...`;
+
     let data;
     if (
         question.locationType === "mcdonalds" ||
@@ -111,14 +139,14 @@ export const findClosestLocations = async (
                   : question.locationType === "timhortons"
                     ? QuestionSpecificLocation.TimHortons
                     : QuestionSpecificLocation.Pub,
-            text,
+            loadingText,
             "nwr",
             "center",
         );
     } else {
         data = await findPlacesInZone(
             `[${LOCATION_FIRST_TAG[question.locationType]}=${question.locationType}]`,
-            text,
+            loadingText,
             "nwr",
             "center",
         );
