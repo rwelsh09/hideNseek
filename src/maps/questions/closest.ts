@@ -6,6 +6,48 @@ import { arcBuffer, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils";
 import type { ClosestQuestion } from "@/maps/schema";
 
+export const fetchClosestLocationsWithGrowth = async (
+    question: ClosestQuestion,
+    text: string = "Determining closest locations...",
+) => {
+    if (
+        question.lng === null ||
+        question.lat === null ||
+        question.radius === undefined ||
+        question.radius === null
+    ) {
+        return findClosestLocations(question, text);
+    }
+
+    let searchRadius = question.radius;
+    const maxAllowedRadius = question.unit === "kilometers" ? 50 : 30;
+
+    // Safety guard: if initial radius is already above max, clamp it to avoid huge queries
+    if (searchRadius > maxAllowedRadius) {
+        searchRadius = maxAllowedRadius;
+    }
+
+    let queryQuestion = { ...question, radius: searchRadius };
+    let rawPoints = await findClosestLocations(queryQuestion, text);
+
+    // Iteratively grow radius until we have at least 5 locations OR we hit max radius
+    while (
+        rawPoints &&
+        rawPoints.features.length < 5 &&
+        searchRadius < maxAllowedRadius
+    ) {
+        searchRadius *= 2;
+        if (searchRadius > maxAllowedRadius) {
+            searchRadius = maxAllowedRadius;
+        }
+
+        queryQuestion = { ...question, radius: searchRadius };
+        rawPoints = await findClosestLocations(queryQuestion, text);
+    }
+
+    return rawPoints;
+};
+
 const filterPointsWithinRadius = (points: any, question: ClosestQuestion) => {
     if (
         question.lng === null ||
@@ -46,15 +88,8 @@ const filterPointsWithinRadius = (points: any, question: ClosestQuestion) => {
             targetRadius = maxAllowedRadius;
         }
 
-        // If there are exactly 5 or more points found in the entire city,
-        // we can set the radius exactly to the 5th point's distance (shrinking or growing).
-        // If there are FEWER than 5 points in the entire city, that means even if we grew the radius, we couldn't find 5.
-        // In that case, we shrink to the farthest found point.
-        // Wait, `maxDistInTop5` is the distance of the furthest point in the top 5 we found.
-        // Because `findClosestLocations` now returns the top 5 points across the ENTIRE city regardless of the initial radius,
-        // `maxDistInTop5` IS the distance needed to encompass the 5 closest points (or all points if < 5 exist).
-        // Therefore, setting the radius to `targetRadius` correctly grows AND shrinks it.
-
+        // Only shrink or grow if the 5th element is within our limit
+        // Or if we need to shrink because there are more than 5 inside the radius
         if (question.radius !== targetRadius) {
             question.radius = targetRadius;
         }
@@ -74,7 +109,7 @@ export const adjustPerClosest = async (
         throw new Error("Must have a location");
     }
 
-    const rawPoints = await findClosestLocations(question);
+    const rawPoints = await fetchClosestLocationsWithGrowth(question);
 
     const points = filterPointsWithinRadius(rawPoints, question);
 
@@ -108,7 +143,7 @@ export const hiderifyClosest = async (question: ClosestQuestion) => {
         return question;
     }
 
-    const rawPoints = await findClosestLocations(question);
+    const rawPoints = await fetchClosestLocationsWithGrowth(question);
 
     const points = filterPointsWithinRadius(rawPoints, question);
 
@@ -148,7 +183,7 @@ export const hiderifyClosest = async (question: ClosestQuestion) => {
 };
 
 export const closestPlanningPolygon = async (question: ClosestQuestion) => {
-    const rawPoints = await findClosestLocations(question);
+    const rawPoints = await fetchClosestLocationsWithGrowth(question);
 
     const points = filterPointsWithinRadius(rawPoints, question);
 

@@ -21,7 +21,7 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn, mapToObj } from "@/lib/utils";
-import { findClosestLocations } from "@/maps/api";
+import { fetchClosestLocationsWithGrowth } from "@/maps/questions/closest";
 import {
     type ClosestQuestion,
     closestQuestionSchema,
@@ -197,7 +197,7 @@ const ClosestLocationSelector = ({
     useEffect(() => {
         let isMounted = true;
         setLoading(true);
-        findClosestLocations(data)
+        fetchClosestLocationsWithGrowth(data)
             .then((res) => {
                 if (isMounted) {
                     setLocations(res);
