@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/update-loading-message-13041709632576378174/sw.js', { scope: '/HideAndSeek/update-loading-message-13041709632576378174/' })})}
