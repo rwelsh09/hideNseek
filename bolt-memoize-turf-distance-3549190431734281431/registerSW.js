@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/bolt-memoize-turf-distance-3549190431734281431/sw.js', { scope: '/HideAndSeek/bolt-memoize-turf-distance-3549190431734281431/' })})}
