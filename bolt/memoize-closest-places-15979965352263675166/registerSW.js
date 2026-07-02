@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/bolt/memoize-closest-places-15979965352263675166/sw.js', { scope: '/HideAndSeek/bolt/memoize-closest-places-15979965352263675166/' })})}
