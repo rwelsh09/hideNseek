@@ -5,6 +5,11 @@ const { chromium } = require("playwright");
     const context = await browser.newContext();
     const page = await context.newPage();
 
+    page.on("console", (msg) => console.log("BROWSER CONSOLE:", msg.text()));
+    page.on("pageerror", (error) =>
+        console.log("BROWSER ERROR:", error.message),
+    );
+
     await page.goto("http://localhost:4321/HideAndSeek");
 
     await page.evaluate(() => {
@@ -21,15 +26,6 @@ const { chromium } = require("playwright");
             .querySelectorAll(".driver-overlay")
             .forEach((el) => el.remove());
         document.body.classList.remove("driver-active");
-    });
-
-    // Inject a mock to bypass overpass API
-    await page.route("**/*overpass-api*", (route) => {
-        route.fulfill({
-            status: 200,
-            contentType: "application/json",
-            body: JSON.stringify({ elements: [] }),
-        });
     });
 
     // Open the "Add Question" dialog
@@ -90,7 +86,7 @@ const { chromium } = require("playwright");
     await page.waitForTimeout(2000);
 
     // Take screenshot
-    await page.screenshot({ path: "verification.png" });
+    await page.screenshot({ path: "verification2.png" });
 
     await browser.close();
 })();

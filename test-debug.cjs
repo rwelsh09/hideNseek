@@ -5,6 +5,11 @@ const { chromium } = require("playwright");
     const context = await browser.newContext();
     const page = await context.newPage();
 
+    page.on("console", (msg) => console.log("BROWSER CONSOLE:", msg.text()));
+    page.on("pageerror", (error) =>
+        console.log("BROWSER ERROR:", error.message),
+    );
+
     await page.goto("http://localhost:4321/HideAndSeek");
 
     await page.evaluate(() => {
@@ -23,12 +28,22 @@ const { chromium } = require("playwright");
         document.body.classList.remove("driver-active");
     });
 
-    // Inject a mock to bypass overpass API
+    // Inject a mock to bypass overpass API and provide deterministic locations
     await page.route("**/*overpass-api*", (route) => {
         route.fulfill({
             status: 200,
             contentType: "application/json",
-            body: JSON.stringify({ elements: [] }),
+            body: JSON.stringify({
+                elements: [
+                    {
+                        type: "node",
+                        id: 1,
+                        lat: 51.05,
+                        lon: -114.05,
+                        tags: { name: "Fake Museum" },
+                    },
+                ],
+            }),
         });
     });
 
@@ -80,6 +95,7 @@ const { chromium } = require("playwright");
     await page.waitForTimeout(1000);
 
     // Open the Questions sidebar
+    console.log("Opening questions sidebar");
     await page.evaluate(() => {
         const qBtn = document.querySelector(
             'button[data-tutorial-id="questions-sidebar-btn"]',
@@ -87,10 +103,14 @@ const { chromium } = require("playwright");
         if (qBtn) qBtn.click();
     });
 
-    await page.waitForTimeout(2000);
+    await page.waitForTimeout(1000);
 
-    // Take screenshot
-    await page.screenshot({ path: "verification.png" });
+    // We want to see if the page is still responsive or frozen.
+    // Evaluate something simple.
+    const isResponsive = await page.evaluate(() => true).catch(() => false);
+    console.log("Page responsive after opening sidebar?", isResponsive);
+
+    await page.screenshot({ path: "verification3.png" });
 
     await browser.close();
 })();

@@ -1,0 +1,58 @@
+
+> Hide and Seek Map@0.1 dev /app
+> astro dev
+
+21:09:56 [types] Generated 3ms
+21:09:56 [content] Syncing content
+21:09:56 [content] Synced content
+
+ astro  v5.18.2 ready in 1092 ms
+
+┃ Local    http://localhost:4321/HideAndSeek
+┃ Network  use --host to expose
+
+21:09:56 watching for file changes...
+21:10:04 [200] / 690ms
+21:10:05 [200] / 11ms
+21:13:25 [200] / 40ms
+21:13:25 [200] / 38ms
+21:20:22 [200] / 24ms
+21:20:22 [200] / 30ms
+21:22:33 [200] / 29ms
+21:22:33 [200] / 31ms
+21:23:37 [200] / 30ms
+21:23:37 [200] / 24ms
+21:31:06 [200] / 31ms
+21:31:06 [200] / 26ms
+21:32:24 [200] / 25ms
+21:32:24 [200] / 37ms
+21:38:26 [200] / 22ms
+21:38:26 [200] / 24ms
+21:39:33 [200] / 25ms
+21:39:33 [200] / 25ms
+21:40:17 [200] / 25ms
+21:40:18 [200] / 25ms
+21:44:27 [200] / 24ms
+21:44:27 [200] / 24ms
+21:45:11 [200] / 24ms
+21:45:12 [200] / 26ms
+21:45:54 [200] / 22ms
+21:45:54 [200] / 20ms
+21:48:53 [200] / 53ms
+21:48:55 [200] / 20ms
+21:51:44 [200] / 24ms
+21:51:46 [200] / 23ms
+21:52:45 [200] / 27ms
+21:52:47 [200] / 21ms
+21:56:33 [200] / 24ms
+21:56:35 [200] / 22ms
+21:59:48 [watch] /src/components/cards/closest.tsx, /src/styles/globals.css
+21:59:48 [watch] src/components/cards/closest.tsx
+22:01:30 [watch] /src/components/cards/closest.tsx, /src/styles/globals.css
+22:01:30 [watch] src/components/cards/closest.tsx
+22:02:18 [200] / 107ms
+22:02:20 [200] / 26ms
+22:05:36 [watch] /src/components/cards/closest.tsx, /src/styles/globals.css
+22:05:36 [watch] src/components/cards/closest.tsx
+22:05:37 [watch] /src/components/cards/closest.tsx, /src/styles/globals.css
+22:05:37 [watch] src/components/cards/closest.tsx

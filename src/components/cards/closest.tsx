@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 
 import { LatitudeLongitude } from "@/components/LatLngPicker";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -244,7 +244,7 @@ const ClosestLocationSelector = ({
 
     // Filter locations to only those within the radius of the primary location
     // ⚡ Bolt: Memoize filtered features to avoid expensive O(n) turf.distance calculations on every render
-    const filteredFeatures = React.useMemo(() => {
+    const filteredFeatures = useMemo(() => {
         if (
             data.lat === null ||
             data.lng === null ||
