@@ -33,8 +33,6 @@ export const determineMeasureBoundary = async (question: MeasureQuestion) => {
                 `Finding ${prettifyLocation(location, true).toLowerCase()}...`,
                 "nwr",
                 "center",
-                [],
-                60,
             );
 
             if (data.remark && data.remark.startsWith("runtime error")) {
