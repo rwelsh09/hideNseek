@@ -180,26 +180,26 @@ const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
 const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
     type: z
         .union([
-            z.literal("museum").describe("Museum Question"),
-            z.literal("hospital").describe("Hospital Question"),
-            z.literal("cinema").describe("Cinema Question"),
-            z.literal("library").describe("Library Question"),
-            z.literal("golf_course").describe("Golf Course Question"),
+            z.literal("museum").describe("Museum"),
+            z.literal("hospital").describe("Hospital"),
+            z.literal("cinema").describe("Cinema"),
+            z.literal("library").describe("Library"),
+            z.literal("golf_course").describe("Golf Course"),
             z
                 .literal("same-neighbourhood")
-                .describe("Neighbourhood (Same As Me) Question"),
+                .describe("Neighbourhood (Same As Me)"),
             z
                 .literal("same-first-letter-neighbourhood")
-                .describe("Neighbourhood (Same First Letter) Question"),
+                .describe("Neighbourhood (Same First Letter)"),
             z
                 .literal("same-first-letter-station")
-                .describe("Station Starts With Same Letter Question"),
+                .describe("Station Starts With Same Letter"),
             z
                 .literal("same-length-station")
-                .describe("Station Has Same Length Question"),
+                .describe("Station Has Same Length"),
             z
                 .literal("same-train-line")
-                .describe("Station On Same Train Line Question"),
+                .describe("Station On Same Train Line"),
         ])
         .default("museum"),
 });
@@ -213,14 +213,14 @@ const baseMeasureQuestionSchema = ordinaryBaseQuestionSchema.extend({
 const ordinaryMeasureQuestionSchema = baseMeasureQuestionSchema.extend({
     type: z
         .union([
-            z.literal("museum").describe("Museum Question"),
-            z.literal("hospital").describe("Hospital Question"),
-            z.literal("cinema").describe("Cinema Question"),
-            z.literal("library").describe("Library Question"),
-            z.literal("golf_course").describe("Golf Course Question"),
-            z.literal("mcdonalds").describe("McDonald's Question"),
-            z.literal("seven11").describe("7-Eleven Question"),
-            z.literal("rail-measure").describe("Train Station Question"),
+            z.literal("museum").describe("Museum"),
+            z.literal("hospital").describe("Hospital"),
+            z.literal("cinema").describe("Cinema"),
+            z.literal("library").describe("Library"),
+            z.literal("golf_course").describe("Golf Course"),
+            z.literal("mcdonalds").describe("McDonald's"),
+            z.literal("seven11").describe("7-Eleven"),
+            z.literal("rail-measure").describe("Train Station"),
         ])
         .default("museum"),
 });
