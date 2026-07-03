@@ -335,3 +335,16 @@ export const showRecommendedStart = persistentAtom<boolean>(
         decode: JSON.parse,
     },
 );
+
+export const leftSidebarOpenSignal = atom<boolean>(true); // desktop default open
+export const rightSidebarOpenSignal = atom<boolean>(false);
+export const timerDrawerOpenSignal = atom<boolean>(false);
+export const anyDrawerOpenSignal = computed(
+    [
+        leftSidebarOpenSignal,
+        rightSidebarOpenSignal,
+        timerDrawerOpenSignal,
+        isOptionsOpenStore,
+    ],
+    (l, r, t, o) => l || r || t || o,
+);

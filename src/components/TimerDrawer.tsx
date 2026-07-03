@@ -13,6 +13,7 @@ import {
     isTimerRunning,
     leaderboard,
     penaltyMinutes,
+    timerDrawerOpenSignal,
     timerElapsedSeconds,
     timerStartTimestamp,
 } from "@/lib/context";
@@ -145,7 +146,10 @@ export const TimerDrawer = () => {
     };
 
     return (
-        <Drawer direction="top">
+        <Drawer
+            direction="top"
+            onOpenChange={(open) => timerDrawerOpenSignal.set(open)}
+        >
             <DrawerTrigger asChild>
                 <button
                     type="button"
