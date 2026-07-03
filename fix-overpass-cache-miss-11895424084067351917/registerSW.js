@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-overpass-cache-miss-11895424084067351917/sw.js', { scope: '/HideAndSeek/fix-overpass-cache-miss-11895424084067351917/' })})}
