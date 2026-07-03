@@ -37,6 +37,7 @@ import { ClosestPlaces } from "./ClosestPlaces";
 import { DraggableMarkers } from "./DraggableMarkers";
 import { LeafletActionButtons } from "./LeafletActionButtons";
 import { PlaytestPlaces } from "./PlaytestPlaces";
+import { RecommendedStartMarker } from "./RecommendedStartMarker";
 import { TransitLinesOverlay } from "./TransitLinesOverlay";
 
 const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
@@ -343,6 +344,7 @@ export const Map = ({ className }: { className?: string }) => {
                 <DraggableMarkers />
                 <ClosestPlaces />
                 <PlaytestPlaces />
+                <RecommendedStartMarker />
                 <div className="leaflet-top leaflet-right">
                     <div
                         className="leaflet-control flex-col flex gap-2"
