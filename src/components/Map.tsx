@@ -7,6 +7,7 @@ import "leaflet-doubletapdragzoom";
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
 import * as L from "leaflet";
+import { Loader2 } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 import { MapContainer, ScaleControl, TileLayer } from "react-leaflet";
 import { toast } from "react-toastify";
@@ -345,16 +346,25 @@ export const Map = ({ className }: { className?: string }) => {
                 <RecommendedStartMarker />
                 <div className="leaflet-top leaflet-right">
                     <div
-                        className="leaflet-control flex-col flex gap-2"
+                        className="leaflet-control flex-col flex gap-2 pointer-events-auto"
                         data-tutorial-id="map-action-buttons"
                     >
                         <LeafletActionButtons />
+                        {$isLoading && (
+                            <div
+                                className="bg-white/80 backdrop-blur-sm shadow-sm w-[30px] h-[30px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30"
+                                title="Loading..."
+                                aria-label="Loading"
+                            >
+                                <Loader2 className="w-5 h-5 animate-spin text-slate-700" />
+                            </div>
+                        )}
                     </div>
                 </div>
                 <ScaleControl position="bottomleft" />
             </MapContainer>
         ),
-        [map, $baseTileLayer, $thunderforestApiKey],
+        [map, $baseTileLayer, $thunderforestApiKey, $isLoading],
     );
 
     useEffect(() => {

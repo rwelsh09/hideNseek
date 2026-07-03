@@ -21,20 +21,18 @@ import type { APILocations, MeasureQuestion } from "@/maps/schema";
 
 export const determineMeasureBoundary = async (question: MeasureQuestion) => {
     switch (question.type) {
-        case "museum-full":
-        case "hospital-full":
-        case "cinema-full":
-        case "library-full":
-        case "golf_course-full": {
-            const location = question.type.split("-full")[0] as APILocations;
+        case "museum":
+        case "hospital":
+        case "cinema":
+        case "library":
+        case "golf_course": {
+            const location = question.type as APILocations;
 
             const data = await findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
                 `Finding ${prettifyLocation(location, true).toLowerCase()}...`,
                 "nwr",
                 "center",
-                [],
-                60,
             );
 
             if (data.remark && data.remark.startsWith("runtime error")) {
@@ -217,11 +215,11 @@ export const calculateMeasureDistance = async (
             return turf.distance(seeker, nearest, { units: "kilometers" });
         }
 
-        case "museum-full":
-        case "hospital-full":
-        case "cinema-full":
-        case "library-full":
-        case "golf_course-full": {
+        case "museum":
+        case "hospital":
+        case "cinema":
+        case "library":
+        case "golf_course": {
             const boundaryData = await determineMeasureBoundary(question);
             if (
                 !boundaryData ||

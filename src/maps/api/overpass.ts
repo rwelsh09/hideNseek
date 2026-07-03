@@ -536,8 +536,6 @@ export const cacheAllPlaces = async () => {
                 undefined,
                 "nwr",
                 "center",
-                [],
-                0,
             ),
         );
     });
