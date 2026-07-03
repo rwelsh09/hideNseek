@@ -121,14 +121,6 @@ onSet(trainStations, ({ newValue }) => {
     });
 });
 
-export const animateMapMovements = persistentAtom<boolean>(
-    "animateMapMovements",
-    true,
-    {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
 export const hidingRadius = persistentAtom<number>("hidingRadius", 0.8, {
     encode: JSON.stringify,
     decode: JSON.parse,

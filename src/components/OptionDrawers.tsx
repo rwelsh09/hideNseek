@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/drawer";
 import {
     additionalMapGeoLocations,
-    animateMapMovements,
     baseTileLayer,
     disabledStations,
     displayTransitLines,
@@ -47,7 +46,6 @@ const HIDING_ZONE_COMPRESSED_URL_PARAM = "hzc";
 
 export const OptionDrawers = ({ className }: { className?: string }) => {
     useStore(triggerLocalRefresh);
-    const $animateMapMovements = useStore(animateMapMovements);
     const $hiderMode = useStore(hiderMode);
     const $hidingZone = useStore(hidingZone);
     const $baseTileLayer = useStore(baseTileLayer);
@@ -356,19 +354,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 </SidebarMenu>
                             )}
                             <Separator className="bg-slate-300 w-[280px]" />
-                            <div className="flex flex-row items-center gap-2 text-center">
-                                <label className="text-xl sm:text-2xl font-semibold font-poppins">
-                                    Animate map movements?
-                                </label>
-                                <Checkbox
-                                    checked={$animateMapMovements}
-                                    onCheckedChange={() => {
-                                        animateMapMovements.set(
-                                            !$animateMapMovements,
-                                        );
-                                    }}
-                                />
-                            </div>
                             <div className="flex flex-row items-center gap-2 text-center">
                                 <label className="text-xl sm:text-2xl font-semibold font-poppins text-center">
                                     Show transit lines overlay?
