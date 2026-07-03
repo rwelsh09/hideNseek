@@ -204,10 +204,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "same-neighbourhood",
-                                    )
+                                    handleQuestionSelect("match", "same-neighbourhood")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -218,10 +215,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "same-train-line",
-                                    )
+                                    handleQuestionSelect("match", "same-train-line")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -328,10 +322,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "rail-measure",
-                                    )
+                                    handleQuestionSelect("measure", "rail-measure")
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -505,10 +496,7 @@ export function AddQuestionDialog() {
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "museum",
-                                        )
+                                        handleQuestionSelect("closest", "museum")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -519,10 +507,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "hospital",
-                                        )
+                                        handleQuestionSelect("closest", "hospital")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -533,10 +518,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "cinema",
-                                        )
+                                        handleQuestionSelect("closest", "cinema")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -547,10 +529,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "library",
-                                        )
+                                        handleQuestionSelect("closest", "library")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -561,10 +540,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "mcdonalds",
-                                        )
+                                        handleQuestionSelect("closest", "mcdonalds")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -575,10 +551,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "seven11",
-                                        )
+                                        handleQuestionSelect("closest", "seven11")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -589,10 +562,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "timhortons",
-                                        )
+                                        handleQuestionSelect("closest", "timhortons")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
