@@ -149,7 +149,18 @@ body.driver-active:has(
             [role="dialog"][data-state="open"] .driver-active-element
         )
     )
-    .driver-overlay {
+    .driver-overlay,
+body.driver-active:has(
+        [data-sidebar="sidebar"][data-state="expanded"],
+        [role="dialog"][data-state="open"]
+    ):not(
+        :has(
+            [data-sidebar="sidebar"][data-state="expanded"]
+                .driver-active-element,
+            [role="dialog"][data-state="open"] .driver-active-element
+        )
+    )
+    .driver-overlay path {
     pointer-events: none !important;
 }
 
