@@ -21,7 +21,7 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn, mapToObj } from "@/lib/utils";
-import { findClosestLocations } from "@/maps/api";
+import { fetchClosestLocationsWithGrowth } from "@/maps/questions/closest";
 import {
     type ClosestQuestion,
     closestQuestionSchema,
@@ -197,7 +197,7 @@ const ClosestLocationSelector = ({
     useEffect(() => {
         let isMounted = true;
         setLoading(true);
-        findClosestLocations(data)
+        fetchClosestLocationsWithGrowth(data)
             .then((res) => {
                 if (isMounted) {
                     setLocations(res);
@@ -255,20 +255,47 @@ const ClosestLocationSelector = ({
 
         const center = turf.point([data.lng, data.lat]);
 
-        return locations.features.filter((feature: any) => {
+        const pointsWithDist = locations.features.map((feature: any) => {
             const coords =
                 feature?.geometry?.coordinates ??
                 (feature?.properties?.lon && feature?.properties?.lat
                     ? [feature.properties?.lon, feature.properties?.lat]
                     : null);
 
-            if (!coords) return false;
+            if (!coords) return { feature, dist: Infinity };
 
             const pt = turf.point(coords);
             const dist = turf.distance(center, pt, { units: data.unit });
 
-            return dist <= data.radius;
+            return { feature, dist };
         });
+
+        pointsWithDist.sort((a: any, b: any) => a.dist - b.dist);
+
+        let closest5 = pointsWithDist.slice(0, 5);
+
+        if (closest5.length > 0) {
+            const maxDistInTop5 = closest5[closest5.length - 1].dist;
+            const maxAllowedRadius = data.unit === "kilometers" ? 50 : 30; // Safety guard
+
+            let targetRadius = maxDistInTop5;
+            if (targetRadius > maxAllowedRadius) {
+                targetRadius = maxAllowedRadius;
+            }
+
+            if (pointsWithDist.length < 5) {
+                targetRadius = maxAllowedRadius;
+            }
+
+            if (data.radius !== targetRadius) {
+                data.radius = targetRadius;
+                setTimeout(() => questionModified(), 0);
+            }
+
+            closest5 = closest5.filter((p: any) => p.dist <= data.radius);
+        }
+
+        return closest5.map((p: any) => p.feature);
     })();
 
     // If the currently selected location is no longer within radius, clear it.

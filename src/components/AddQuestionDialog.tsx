@@ -8,6 +8,7 @@ import {
     Coffee,
     Film,
     Flag,
+    Hamburger,
     Hospital,
     Leaf,
     Library,
@@ -19,6 +20,7 @@ import {
     Route,
     Ruler,
     ShoppingCart,
+    Store,
     Target,
     Thermometer as HotCold,
     Train,
@@ -202,10 +204,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "same-neighbourhood",
-                                    )
+                                    handleQuestionSelect("match", "same-neighbourhood")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -216,10 +215,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "same-train-line",
-                                    )
+                                    handleQuestionSelect("match", "same-train-line")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -293,10 +289,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "golf_course",
-                                    )
+                                    handleQuestionSelect("measure", "golf_course")
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -307,10 +300,29 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "rail-measure",
-                                    )
+                                    handleQuestionSelect("measure", "mcdonalds")
+                                }
+                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Hamburger className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    McDonald&apos;s
+                                </span>
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect("measure", "seven11")
+                                }
+                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <Store className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                    7-Eleven
+                                </span>
+                            </button>
+                            <button
+                                onClick={() =>
+                                    handleQuestionSelect("measure", "rail-measure")
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -322,7 +334,7 @@ export function AddQuestionDialog() {
                         </div>
                     </div>
 
-                    {/* RADAR - Updated buttons for Kilometers */}
+                    {/* RADAR */}
                     <div className="flex flex-col border-t-4 border-orange-500 pt-3">
                         <div className="flex items-center gap-2 mb-1">
                             <div className="bg-orange-500 p-1.5 rounded text-white shrink-0">
@@ -484,10 +496,7 @@ export function AddQuestionDialog() {
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "museum",
-                                        )
+                                        handleQuestionSelect("closest", "museum")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -498,10 +507,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "hospital",
-                                        )
+                                        handleQuestionSelect("closest", "hospital")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -512,10 +518,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "cinema",
-                                        )
+                                        handleQuestionSelect("closest", "cinema")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -526,10 +529,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "library",
-                                        )
+                                        handleQuestionSelect("closest", "library")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -540,10 +540,29 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "timhortons",
-                                        )
+                                        handleQuestionSelect("closest", "mcdonalds")
+                                    }
+                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                >
+                                    <Hamburger className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                        McDonald&apos;s
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        handleQuestionSelect("closest", "seven11")
+                                    }
+                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                >
+                                    <Store className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                        7-Eleven
+                                    </span>
+                                </button>
+                                <button
+                                    onClick={() =>
+                                        handleQuestionSelect("closest", "timhortons")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -608,7 +627,7 @@ export function AddQuestionDialog() {
                             >
                                 <Leaf className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Unique Tree
+                                    Tree
                                 </span>
                             </button>
 
@@ -623,7 +642,7 @@ export function AddQuestionDialog() {
                             >
                                 <Car className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Widest Street
+                                    Street
                                 </span>
                             </button>
 
@@ -638,7 +657,7 @@ export function AddQuestionDialog() {
                             >
                                 <Building2 className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Tallest Structure
+                                    Tallest
                                 </span>
                             </button>
 
@@ -683,7 +702,7 @@ export function AddQuestionDialog() {
                             >
                                 <ShoppingCart className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Store Aisle
+                                    Store
                                 </span>
                             </button>
 
@@ -713,7 +732,7 @@ export function AddQuestionDialog() {
                             >
                                 <Train className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Train Platform
+                                    Platform
                                 </span>
                             </button>
 
@@ -728,7 +747,7 @@ export function AddQuestionDialog() {
                             >
                                 <Route className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Intersection
+                                    Crossing
                                 </span>
                             </button>
 
@@ -743,7 +762,7 @@ export function AddQuestionDialog() {
                             >
                                 <Waves className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Body of Water
+                                    Water
                                 </span>
                             </button>
                         </div>

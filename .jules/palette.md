@@ -38,3 +38,8 @@
 
 **Learning:** Found several native floating map controls (`LeafletActionButtons.tsx` and `TimerDrawer.tsx` triggers) and the `NextStepsChecklist.tsx` close button lacking keyboard `focus-visible` utility classes and/or `type="button"` declarations. While these elements functioned correctly for mouse users, they were completely invisible to keyboard navigation, failing WCAG standards.
 **Action:** Always ensure that custom floating buttons and overlay close triggers have explicit `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2` utility classes to guarantee accessible keyboard navigation across all interactive layers.
+
+## 2026-07-03 - Hemisphere toggle buttons lacking explicit ARIA labels
+
+**Learning:** Found small hemisphere toggle buttons ('N'/'S' and 'E'/'W') in `src/components/LatLngPicker.tsx` that lacked descriptive `aria-label`s and `title`s. Although they contain abbreviated text, their function (toggling the coordinate hemisphere) isn't explicitly clear to screen reader users from just the letters 'N', 'S', 'E', or 'W'. Providing a clear description of the action (e.g., "Toggle to South hemisphere") is much more accessible.
+**Action:** When creating small toggle buttons with abbreviated text or purely visual symbols, always include a descriptive `aria-label` and `title` to clarify the button's purpose and state to assistive technologies.
