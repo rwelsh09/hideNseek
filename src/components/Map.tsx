@@ -364,7 +364,7 @@ export const Map = ({ className }: { className?: string }) => {
                     </div>
                 </div>
                 {$isLoading && (
-                    <div className="absolute top-[20%] left-1/2 -translate-x-1/2 z-[1010] pointer-events-none">
+                    <div className="absolute top-[20%] left-1/2 -translate-x-1/2 z-[9999] pointer-events-none">
                         <div
                             className="bg-white/90 backdrop-blur-md shadow-md w-auto h-[36px] px-3 rounded-full flex items-center justify-center border border-slate-300"
                             title="Loading..."
