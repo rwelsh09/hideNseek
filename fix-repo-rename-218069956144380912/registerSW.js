@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/fix-repo-rename-218069956144380912/sw.js', { scope: '/hideNseek/fix-repo-rename-218069956144380912/' })})}
