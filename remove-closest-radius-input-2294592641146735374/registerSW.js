@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/remove-closest-radius-input-2294592641146735374/sw.js', { scope: '/HideAndSeek/remove-closest-radius-input-2294592641146735374/' })})}
