@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/react-toastify/dist/ReactToastify.css">
+  <script src="https://unpkg.com/react-toastify/dist/react-toastify.umd.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useEffect, useState } = React;
+    const { ToastContainer, toast } = ReactToastify;
+
+    const App = () => {
+      const runCache = async () => {
+        const total = 18;
+        const toastId = toast.loading(`Caching places... (0/${total})`);
+
+        let completed = 0;
+
+        // Fast synchronous updates
+        for(let i=0; i<18; i++) {
+          completed++;
+          toast.update(toastId, {
+            render: `Caching places... (${completed}/${total})`,
+            progress: completed / total,
+          });
+        }
+
+        setTimeout(() => {
+            toast.update(toastId, {
+                render: "All possible places have been cached!",
+                type: "success",
+                isLoading: false,
+                autoClose: 3000,
+            });
+            console.log("Updated to success");
+        }, 100);
+      };
+
+      return (
+        <div>
+          <button id="run-btn" onClick={runCache}>Run Cache</button>
+          <ToastContainer />
+        </div>
+      );
+    };
+
+    ReactDOM.render(<App />, document.getElementById('root'));
+  </script>
+</body>
+</html>
