@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feature/enhance-loading-indicator-12786880141075422507/sw.js', { scope: '/HideAndSeek/feature/enhance-loading-indicator-12786880141075422507/' })})}
