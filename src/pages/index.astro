@@ -20,7 +20,7 @@ import { NextStepsChecklist } from "@/components/NextStepsChecklist";
 <Layout className="bg-main">
     <TutorialManager client:only="react" />
     <NextStepsChecklist client:load />
-    <SidebarProviderL client:load>
+    <SidebarProviderL client:load defaultOpen={false}>
         <SidebarProviderR client:load defaultOpen={false}>
             <QuestionSidebar client:only />
             <main class="flex flex-col flex-grow group">

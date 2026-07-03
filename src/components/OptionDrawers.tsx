@@ -199,8 +199,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                         Options
                     </Button>
                 </DrawerTrigger>
-                <DrawerContent onPointerDown={(e) => e.stopPropagation()}>
-                    <div className="flex flex-col items-center gap-4 mb-4 overflow-y-scroll max-h-[85vh]">
+                <DrawerContent onPointerDown={(e) => e.stopPropagation()} className="max-h-[60vh]">
+                    <div className="flex flex-col items-center gap-4 mb-4 overflow-y-scroll h-full">
                         <DrawerHeader>
                             <DrawerTitle className="text-4xl font-semibold font-poppins">
                                 Options
