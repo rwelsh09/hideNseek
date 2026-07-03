@@ -158,10 +158,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "hospital-full",
-                                    )
+                                    handleQuestionSelect("match", "hospital")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -172,7 +169,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect("match", "cinema-full")
+                                    handleQuestionSelect("match", "cinema")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -183,10 +180,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "library-full",
-                                    )
+                                    handleQuestionSelect("match", "library")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -197,10 +191,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "golf_course-full",
-                                    )
+                                    handleQuestionSelect("match", "golf_course")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -269,10 +260,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "hospital-full",
-                                    )
+                                    handleQuestionSelect("measure", "hospital")
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -283,10 +271,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "cinema-full",
-                                    )
+                                    handleQuestionSelect("measure", "cinema")
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -297,10 +282,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "library-full",
-                                    )
+                                    handleQuestionSelect("measure", "library")
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -313,7 +295,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect(
                                         "measure",
-                                        "golf_course-full",
+                                        "golf_course",
                                     )
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
