@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/Conflict-fix/sw.js', { scope: '/HideAndSeek/Conflict-fix/' })})}
