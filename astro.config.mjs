@@ -1,8 +1,22 @@
 // @ts-check
 import react from "@astrojs/react";
 import tailwind from "@astrojs/tailwind";
+import { execSync } from "node:child_process";
+
 import AstroPWA from "@vite-pwa/astro";
 import { defineConfig } from "astro/config";
+
+let repoName = "HideAndSeek";
+if (process.env.GITHUB_REPOSITORY) {
+    repoName = process.env.GITHUB_REPOSITORY.split("/")[1];
+} else {
+    try {
+        const repoUrl = execSync("git config --get remote.origin.url").toString().trim();
+        repoName = repoUrl.split("/").pop().replace(/\.git$/, "");
+    } catch (e) {
+        // Fallback to default
+    }
+}
 
 // https://astro.build/config
 export default defineConfig({
@@ -44,6 +58,6 @@ export default defineConfig({
     site: "https://rwelsh09.github.io",
     base:
         process.env.BRANCH_NAME && process.env.BRANCH_NAME !== "master"
-            ? `/HideAndSeek/${process.env.BRANCH_NAME}`
-            : "/HideAndSeek",
+            ? `/${repoName}/${process.env.BRANCH_NAME}`
+            : `/${repoName}`,
 });
