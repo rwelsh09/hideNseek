@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-left-sidebar-default-open-12569115212605899542/sw.js', { scope: '/HideAndSeek/fix-left-sidebar-default-open-12569115212605899542/' })})}
