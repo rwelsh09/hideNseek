@@ -22,20 +22,18 @@ import type { APILocations, MatchQuestion } from "@/maps/schema";
 
 export const findMatchPlaces = async (question: MatchQuestion) => {
     switch (question.type) {
-        case "museum-full":
-        case "hospital-full":
-        case "cinema-full":
-        case "library-full":
-        case "golf_course-full": {
-            const location = question.type.split("-full")[0] as APILocations;
+        case "museum":
+        case "hospital":
+        case "cinema":
+        case "library":
+        case "golf_course": {
+            const location = question.type as APILocations;
 
             const data = await findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
                 `Finding ${prettifyLocation(location, true).toLowerCase()}...`,
                 "nwr",
                 "center",
-                [],
-                60,
             );
 
             if (data.remark && data.remark.startsWith("runtime error")) {
@@ -252,11 +250,11 @@ export const determineMatchBoundary = _.memoize(
                 }
                 break;
             }
-            case "museum-full":
-            case "hospital-full":
-            case "cinema-full":
-            case "library-full":
-            case "golf_course-full": {
+            case "museum":
+            case "hospital":
+            case "cinema":
+            case "library":
+            case "golf_course": {
                 const data = await findMatchPlaces(question);
 
                 const voronoi = geoSpatialVoronoi(data);

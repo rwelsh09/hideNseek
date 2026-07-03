@@ -19,11 +19,9 @@ import {
 } from "@/components/ui/sidebar-l";
 import {
     addQuestion,
-    autoSave,
     isLoading,
     penaltyMinutes,
     questions,
-    save,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { questionSchema } from "@/maps/schema";
@@ -42,7 +40,6 @@ import { Button } from "./ui/button";
 export const QuestionSidebar = () => {
     useStore(triggerLocalRefresh);
     const $questions = useStore(questions);
-    const $autoSave = useStore(autoSave);
     const $isLoading = useStore(isLoading);
 
     const $penaltyMinutes = useStore(penaltyMinutes);
@@ -254,17 +251,6 @@ export const QuestionSidebar = () => {
                                 Unlock & Delete All
                             </SidebarMenuButton>
                         </SidebarMenuItem>
-                        {!$autoSave && (
-                            <SidebarMenuItem>
-                                <SidebarMenuButton
-                                    className="bg-blue-600 p-2 rounded-md font-semibold font-poppins transition-shadow duration-500"
-                                    onClick={save}
-                                    disabled={$isLoading}
-                                >
-                                    Save
-                                </SidebarMenuButton>
-                            </SidebarMenuItem>
-                        )}
                     </SidebarMenu>
                 </SidebarGroupContent>
             </SidebarGroup>

@@ -4,13 +4,11 @@ import { useEffect, useState } from "react";
 
 import { LatitudeLongitude } from "@/components/LatLngPicker";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 import { Select } from "@/components/ui/select";
 import {
     MENU_ITEM_CLASSNAME,
     SidebarMenuItem,
 } from "@/components/ui/sidebar-l";
-import { UnitSelect } from "@/components/UnitSelect";
 import {
     hiderMode,
     isLoading,
@@ -20,7 +18,7 @@ import {
     TIME_PENALTIES,
     triggerLocalRefresh,
 } from "@/lib/context";
-import { cn, mapToObj } from "@/lib/utils";
+import { mapToObj } from "@/lib/utils";
 import { fetchClosestLocationsWithGrowth } from "@/maps/questions/closest";
 import {
     type ClosestQuestion,
@@ -81,39 +79,6 @@ export const ClosestQuestionComponent = ({
                 }
             }}
         >
-            <SidebarMenuItem>
-                <div
-                    className={cn(
-                        MENU_ITEM_CLASSNAME,
-                        "gap-2 flex flex-col items-start",
-                    )}
-                >
-                    <div className="flex flex-row gap-2">
-                        <Input
-                            type="number"
-                            className="rounded-md p-2 w-16"
-                            value={data.radius}
-                            onChange={(e) => {
-                                let val = parseFloat(e.target.value);
-                                if (val < 0) {
-                                    val = 0;
-                                }
-                                data.radius = val;
-                                questionModified();
-                            }}
-                            disabled={!data.drag || $isLoading}
-                        />
-                        <UnitSelect
-                            unit={data.unit}
-                            onChange={(unit) => {
-                                data.unit = unit;
-                                questionModified();
-                            }}
-                            disabled={!data.drag || $isLoading}
-                        />
-                    </div>
-                </div>
-            </SidebarMenuItem>
             <SidebarMenuItem>
                 <div className="flex flex-row items-center px-4 py-2 hover:bg-slate-100 hover:dark:bg-zinc-800 transition-colors">
                     <Checkbox
