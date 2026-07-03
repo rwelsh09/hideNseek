@@ -67,10 +67,10 @@ export function AddQuestionDialog() {
             qData.unit = "kilometers";
             qData.within = true;
         } else if (type === "match") {
-            qData.type = detail || "museum-full";
+            qData.type = detail || "museum";
             qData.same = true;
         } else if (type === "measure") {
-            qData.type = detail || "museum-full";
+            qData.type = detail || "museum";
             qData.hiderCloser = true;
         } else if (type === "hot/cold") {
             const destination = turf.destination(
@@ -149,7 +149,7 @@ export function AddQuestionDialog() {
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect("match", "museum-full")
+                                    handleQuestionSelect("match", "museum")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -160,10 +160,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "hospital-full",
-                                    )
+                                    handleQuestionSelect("match", "hospital")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -174,7 +171,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect("match", "cinema-full")
+                                    handleQuestionSelect("match", "cinema")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -185,10 +182,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "library-full",
-                                    )
+                                    handleQuestionSelect("match", "library")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -199,10 +193,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "golf_course-full",
-                                    )
+                                    handleQuestionSelect("match", "golf_course")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -213,10 +204,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "same-neighbourhood",
-                                    )
+                                    handleQuestionSelect("match", "same-neighbourhood")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -227,10 +215,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "same-train-line",
-                                    )
+                                    handleQuestionSelect("match", "same-train-line")
                                 }
                                 className="bg-slate-800 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-slate-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -260,10 +245,7 @@ export function AddQuestionDialog() {
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "museum-full",
-                                    )
+                                    handleQuestionSelect("measure", "museum")
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -274,10 +256,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "hospital-full",
-                                    )
+                                    handleQuestionSelect("measure", "hospital")
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -288,10 +267,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "cinema-full",
-                                    )
+                                    handleQuestionSelect("measure", "cinema")
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -302,10 +278,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "library-full",
-                                    )
+                                    handleQuestionSelect("measure", "library")
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -316,10 +289,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "golf_course-full",
-                                    )
+                                    handleQuestionSelect("measure", "golf_course")
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -352,10 +322,7 @@ export function AddQuestionDialog() {
                             </button>
                             <button
                                 onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "rail-measure",
-                                    )
+                                    handleQuestionSelect("measure", "rail-measure")
                                 }
                                 className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
@@ -529,10 +496,7 @@ export function AddQuestionDialog() {
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "museum",
-                                        )
+                                        handleQuestionSelect("closest", "museum")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -543,10 +507,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "hospital",
-                                        )
+                                        handleQuestionSelect("closest", "hospital")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -557,10 +518,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "cinema",
-                                        )
+                                        handleQuestionSelect("closest", "cinema")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -571,10 +529,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "library",
-                                        )
+                                        handleQuestionSelect("closest", "library")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -585,10 +540,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "mcdonalds",
-                                        )
+                                        handleQuestionSelect("closest", "mcdonalds")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -599,10 +551,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "seven11",
-                                        )
+                                        handleQuestionSelect("closest", "seven11")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
@@ -613,10 +562,7 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "timhortons",
-                                        )
+                                        handleQuestionSelect("closest", "timhortons")
                                     }
                                     className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                 >
