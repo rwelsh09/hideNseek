@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/test-cache-fetch-error-path-3686389516420925719/sw.js', { scope: '/HideAndSeek/test-cache-fetch-error-path-3686389516420925719/' })})}
