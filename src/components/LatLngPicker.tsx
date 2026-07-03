@@ -6,25 +6,15 @@ import {
     LocateIcon,
     PaletteIcon,
 } from "lucide-react";
-import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useDebounce } from "@/hooks/useDebounce";
 import { isLoading } from "@/lib/context";
 import { cn } from "@/lib/utils";
-import { determineName, geocode, ICON_COLORS } from "@/maps/api";
+import { ICON_COLORS } from "@/maps/api";
 
 import { Button } from "./ui/button";
-import {
-    Command,
-    CommandEmpty,
-    CommandGroup,
-    CommandInput,
-    CommandItem,
-    CommandList,
-} from "./ui/command";
 import {
     Dialog,
     DialogClose,
@@ -100,84 +90,8 @@ const LatLngEditForm = ({
     onChange: (lat: number | null, lng: number | null) => void;
     disabled?: boolean;
 }) => {
-    const [inputValue, setInputValue] = useState("");
-    const debouncedValue = useDebounce<string>(inputValue);
-    const [results, setResults] = useState<any[]>([]);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
-
-    useEffect(() => {
-        if (debouncedValue === "") {
-            setResults([]);
-            return;
-        } else {
-            setLoading(true);
-            setResults([]);
-            geocode(debouncedValue, "en", false)
-                .then((x) => {
-                    setResults(x);
-                    setLoading(false);
-                })
-                .catch(() => {
-                    setError(true);
-                    setLoading(false);
-                });
-        }
-    }, [debouncedValue]);
-
-    const _latlngLabels = results.map((r) => determineName(r));
-    const _latlngLabelCounts: Record<string, number> = {};
-    _latlngLabels.forEach((l) => {
-        _latlngLabelCounts[l] = (_latlngLabelCounts[l] || 0) + 1;
-    });
-    const _latlngLabelByKey: Record<string, string> = {};
-    const _latlngOcc: Record<string, number> = {};
-    results.forEach((r) => {
-        const key = `${r.properties.osm_id}${r.properties.name}`;
-        const lbl = determineName(r);
-        const idx = (_latlngOcc[lbl] = (_latlngOcc[lbl] || 0) + 1);
-        _latlngLabelByKey[key] =
-            _latlngLabelCounts[lbl] > 1 ? `${lbl} (${idx})` : lbl;
-    });
-
     return (
         <>
-            <Command shouldFilter={false}>
-                <CommandInput
-                    placeholder="Search place..."
-                    onKeyUp={(x) => setInputValue(x.currentTarget.value)}
-                    disabled={disabled}
-                />
-                <CommandList>
-                    <CommandEmpty>
-                        {loading
-                            ? "Loading..."
-                            : error
-                              ? "Error loading places."
-                              : "No locations found."}
-                    </CommandEmpty>
-                    <CommandGroup>
-                        {results.map((result) => (
-                            <CommandItem
-                                key={`${result.properties.osm_id}${result.properties.name}`}
-                                onSelect={() => {
-                                    const coords = result.geometry.coordinates;
-                                    onChange(coords[0], coords[1]);
-                                }}
-                                className="cursor-pointer"
-                            >
-                                {(() => {
-                                    const _key = `${result.properties.osm_id}${result.properties.name}`;
-                                    return (
-                                        _latlngLabelByKey[_key] ||
-                                        determineName(result)
-                                    );
-                                })()}
-                            </CommandItem>
-                        ))}
-                    </CommandGroup>
-                </CommandList>
-            </Command>
             <div className="flex gap-2 items-center">
                 <Label className="min-w-16">Latitude</Label>
                 <Input

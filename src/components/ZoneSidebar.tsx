@@ -25,7 +25,6 @@ import {
     hidingRadiusUnits,
     isLoading,
     leafletMapContext,
-    liveUpdateMapEnabled,
     questionFinishedMapData,
     questions,
     trainStations,
@@ -240,7 +239,7 @@ export const ZoneSidebar = () => {
                 for (const question of questions.get()) {
                     if (circles.length === 0) break;
 
-                    if (!liveUpdateMapEnabled.get() && question.data.drag) {
+                    if (question.data.drag) {
                         continue;
                     }
 
