@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/explanation/overpass-deduplication-13823176748064834602/sw.js', { scope: '/HideAndSeek/explanation/overpass-deduplication-13823176748064834602/' })})}
