@@ -2,12 +2,17 @@ import "driver.js/dist/driver.css";
 
 import { useStore } from "@nanostores/react";
 import { driver } from "driver.js";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 
 import {
     hasSeenRules,
+    isOptionsOpenStore,
+    leftSidebarOpenSignal,
+    rightSidebarOpenSignal,
     showNextStepsChecklist,
     showTutorial,
+    timerDrawerOpenSignal,
+    anyDrawerOpenSignal,
 } from "@/lib/context";
 
 export const TutorialManager = () => {
@@ -17,6 +22,7 @@ export const TutorialManager = () => {
     useEffect(() => {
         if ($showTutorial) {
             const driverObj = driver({
+                disableActiveInteraction: false,
                 showProgress: true,
                 onDestroyStarted: () => {
                     const isRulesPhase =
@@ -543,7 +549,7 @@ export const TutorialManager = () => {
                                       // Restore original config
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
-                                          disableActiveInteraction: true,
+                                          disableActiveInteraction: false,
                                       });
                                   },
                               },
@@ -655,8 +661,91 @@ export const TutorialManager = () => {
                 driverObj.drive();
             }, 500);
 
+            let originalTitle = "";
+            let originalDesc = "";
+            let originalNextDisplay = "";
+            let originalPrevDisplay = "";
+
+            const handleNudge = (shouldNudge: boolean) => {
+                const titleEl = document.querySelector('.driver-popover-title');
+                const descEl = document.querySelector('.driver-popover-description');
+                const nextBtn = document.querySelector('.driver-popover-next-btn') as HTMLElement;
+                const prevBtn = document.querySelector('.driver-popover-prev-btn') as HTMLElement;
+
+                if (!titleEl) return;
+
+                if (shouldNudge) {
+                    if (!titleEl.hasAttribute('data-nudge-active')) {
+                        originalTitle = titleEl.innerHTML;
+                        originalDesc = descEl ? descEl.innerHTML : "";
+                        originalNextDisplay = nextBtn ? nextBtn.style.display : "";
+                        originalPrevDisplay = prevBtn ? prevBtn.style.display : "";
+
+                        titleEl.setAttribute('data-nudge-active', 'true');
+                        titleEl.innerHTML = "Return to Tutorial";
+                        if (descEl) descEl.innerHTML = "Please close the currently open sidebar or menu to return to the tutorial.";
+                        if (nextBtn) nextBtn.style.display = 'none';
+                        if (prevBtn) prevBtn.style.display = 'none';
+                    }
+                } else {
+                    if (titleEl.hasAttribute('data-nudge-active')) {
+                        titleEl.removeAttribute('data-nudge-active');
+                        titleEl.innerHTML = originalTitle;
+                        if (descEl) descEl.innerHTML = originalDesc;
+                        if (nextBtn) nextBtn.style.display = originalNextDisplay;
+                        if (prevBtn) prevBtn.style.display = originalPrevDisplay;
+                    }
+                }
+            };
+
+            const checkNudge = () => {
+                setTimeout(() => {
+                    const activeIndex = driverObj.getActiveIndex();
+                    if (activeIndex === undefined) return;
+
+                    const steps = driverObj.getConfig().steps || [];
+                    const isRulesPhase = steps.length === 2;
+
+                    const isLeftOpen = leftSidebarOpenSignal.get();
+                    const isRightOpen = rightSidebarOpenSignal.get();
+                    const isTimerOpen = timerDrawerOpenSignal.get();
+                    const isOptionsOpen = isOptionsOpenStore.get();
+
+                    const isMobile = window.innerWidth < 768;
+
+                    let shouldNudge = false;
+
+                    if (isRulesPhase) {
+                        if (isRightOpen || isTimerOpen || isOptionsOpen || (isMobile && isLeftOpen)) {
+                            shouldNudge = true;
+                        }
+                    } else {
+                        if (activeIndex <= 5) {
+                            if (isRightOpen || isTimerOpen || isOptionsOpen || (isMobile && isLeftOpen)) {
+                                shouldNudge = true;
+                            }
+                        } else {
+                            if (isRightOpen || isTimerOpen || isOptionsOpen) {
+                                shouldNudge = true;
+                            }
+                        }
+                    }
+
+                    handleNudge(shouldNudge);
+                }, 50);
+            };
+
+            const unsubLeft = leftSidebarOpenSignal.subscribe(checkNudge);
+            const unsubRight = rightSidebarOpenSignal.subscribe(checkNudge);
+            const unsubTimer = timerDrawerOpenSignal.subscribe(checkNudge);
+            const unsubOptions = isOptionsOpenStore.subscribe(checkNudge);
+
             return () => {
                 try {
+                    unsubLeft();
+                    unsubRight();
+                    unsubTimer();
+                    unsubOptions();
                     driverObj.destroy();
                 } catch {
                     /* ignore */
@@ -666,4 +755,55 @@ export const TutorialManager = () => {
     }, [$showTutorial, $hasSeenRules]);
 
     return null;
+};
+
+
+export const TutorialNudgeOverlay = () => {
+    const $showTutorial = useStore(showTutorial);
+    const $anyDrawerOpen = useStore(anyDrawerOpenSignal);
+
+    // Check if the current driver element is inside an open drawer
+    // If NOT, but a drawer is open, show a full-screen semi-transparent block with a message
+    const [shouldNudge, setShouldNudge] = React.useState(false);
+
+    React.useEffect(() => {
+        if ($showTutorial && $anyDrawerOpen) {
+            // Give driver.js time to update its active element if step changed
+            const timer = setTimeout(() => {
+                const activeElement = document.querySelector('.driver-active-element');
+                if (activeElement) {
+                    const inVaul = activeElement.closest('[vaul-drawer][data-state="open"]');
+                    const inMobileSheet = activeElement.closest('[role="dialog"][data-state="open"]');
+                    const inRightSidebar = activeElement.closest('.peer[data-side="right"][data-state="expanded"]');
+
+                    const rightExpanded = document.querySelector('.peer[data-side="right"][data-state="expanded"]');
+                    const anyVaulDrawerOpen = document.querySelector('[vaul-drawer][data-state="open"]');
+                    const anyMobileSheetOpen = document.querySelector('[role="dialog"][data-state="open"]');
+
+                    let nudge = false;
+                    if (anyVaulDrawerOpen && !inVaul) nudge = true;
+                    if (anyMobileSheetOpen && !inMobileSheet) nudge = true;
+                    if (rightExpanded && !inRightSidebar) nudge = true;
+
+                    setShouldNudge(nudge);
+                }
+            }, 50);
+            return () => clearTimeout(timer);
+        } else {
+            setShouldNudge(false);
+        }
+    }, [$showTutorial, $anyDrawerOpen]);
+
+    if (!shouldNudge) return null;
+
+    return (
+        <div className="fixed inset-0 z-[2000000] flex items-center justify-center bg-black/60 pointer-events-auto">
+            <div className="bg-slate-900 border border-slate-700 p-6 rounded-lg shadow-2xl text-center max-w-sm mx-4">
+                <h3 className="text-xl font-bold text-white mb-2">Return to Tutorial</h3>
+                <p className="text-slate-300">
+                    Please close the currently open sidebar or menu to return to the tutorial.
+                </p>
+            </div>
+        </div>
+    );
 };

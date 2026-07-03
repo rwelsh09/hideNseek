@@ -17,6 +17,7 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { rightSidebarOpenSignal } from "@/lib/context";
 import { cn } from "@/lib/utils";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
@@ -117,6 +118,10 @@ const SidebarProvider = React.forwardRef<
         // We add a state so that we can do data-state="expanded" or "collapsed".
         // This makes it easier to style the sidebar with Tailwind classes.
         const state = open ? "expanded" : "collapsed";
+
+        React.useEffect(() => {
+            rightSidebarOpenSignal.set(openMobile || state === "expanded");
+        }, [openMobile, state]);
 
         React.useEffect(() => {
             SidebarContext.set({

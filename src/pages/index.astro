@@ -12,13 +12,14 @@ import {
 import { QuestionSidebar } from "@/components/QuestionSidebar";
 import { ZoneSidebar } from "@/components/ZoneSidebar";
 import { OptionDrawers } from "@/components/OptionDrawers";
-import { TutorialManager } from "@/components/TutorialManager";
+import { TutorialManager, TutorialNudgeOverlay } from "@/components/TutorialManager";
 import { TimerDrawer } from "@/components/TimerDrawer";
 import { NextStepsChecklist } from "@/components/NextStepsChecklist";
 ---
 
 <Layout className="bg-main">
     <TutorialManager client:only="react" />
+                            <TutorialNudgeOverlay client:only="react" />
     <NextStepsChecklist client:load />
     <SidebarProviderL client:load>
         <SidebarProviderR client:load defaultOpen={false}>
