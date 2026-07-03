@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/add-missing-question-icons-9336338174142474610/sw.js', { scope: '/HideAndSeek/add-missing-question-icons-9336338174142474610/' })})}
