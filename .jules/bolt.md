@@ -29,5 +29,11 @@
 **Action:** Use `React.useMemo` to wrap the `filteredPlaces` and `filteredFeatures` arrays inside React functional components to ensure expensive geospatial loops are only evaluated when their dependencies actually change.
 
 ## 2025-07-02 - Memoization for expensive map calculations
+
 **Learning:** Found that `turf.distance()` was being called in a `.filter()` loop inside `ClosestPlaces.tsx` that ran on every render without any memoization, scaling linearly (O(n)) with the number of places fetched. The map rendering loop recalculates often.
 **Action:** Always check React-Leaflet or geospatial map rendering components for `.filter()` and `.map()` calls over large feature arrays and wrap computations in `React.useMemo` to prevent massive main-thread blocking overhead.
+
+## 2024-03-24 - React Infinite Render Loop in Global State Mutations
+
+**Learning:** Calling global state update functions synchronously during a component's render phase causes infinite re-rendering loops that crash or freeze the application. In `src/components/cards/closest.tsx`, mutating `data.location` and triggering `questionModified()` directly inside the functional component body forced continuous re-evaluation.
+**Action:** Always wrap conditional checks that trigger global state mutations (e.g., calling `questionModified()`) within a `useEffect` hook. Ensure the dependency array includes the necessary reactive variables (like the data object or specific fields being validated) to restrict side effects to strictly necessary post-render updates.
