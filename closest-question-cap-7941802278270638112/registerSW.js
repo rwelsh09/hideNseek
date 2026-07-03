@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/closest-question-cap-7941802278270638112/sw.js', { scope: '/HideAndSeek/closest-question-cap-7941802278270638112/' })})}
