@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/map-loading-stuck-11268108802714038200/sw.js', { scope: '/HideAndSeek/fix/map-loading-stuck-11268108802714038200/' })})}
