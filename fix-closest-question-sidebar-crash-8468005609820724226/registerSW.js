@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-closest-question-sidebar-crash-8468005609820724226/sw.js', { scope: '/HideAndSeek/fix-closest-question-sidebar-crash-8468005609820724226/' })})}
