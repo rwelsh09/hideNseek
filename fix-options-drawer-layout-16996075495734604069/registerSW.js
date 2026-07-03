@@ -1,1 +1,1 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-options-drawer-layout-16996075495734604069/sw.js', { scope: '/HideAndSeek/fix-options-drawer-layout-16996075495734604069/' })})}
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/fix-options-drawer-layout-16996075495734604069/sw.js', { scope: '/hideNseek/fix-options-drawer-layout-16996075495734604069/' })})}
