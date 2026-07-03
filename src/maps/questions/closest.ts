@@ -36,7 +36,7 @@ export const fetchClosestLocationsWithGrowth = async (
         rawPoints.features.length < 5 &&
         searchRadius < maxAllowedRadius
     ) {
-        searchRadius *= 2;
+        searchRadius = Math.max(1, searchRadius * 2); // Prevent 0 * 2 infinite loop
         if (searchRadius > maxAllowedRadius) {
             searchRadius = maxAllowedRadius;
         }
@@ -88,8 +88,15 @@ const filterPointsWithinRadius = (points: any, question: ClosestQuestion) => {
             targetRadius = maxAllowedRadius;
         }
 
-        // Only shrink or grow if the 5th element is within our limit
-        // Or if we need to shrink because there are more than 5 inside the radius
+        // If we found fewer than 5 points total (e.g. they don't exist in the city),
+        // expanding the search won't help. We shouldn't shrink the radius tightly
+        // around these <5 points, otherwise the next time we move the marker slightly,
+        // it starts the search from a tiny radius and repeatedly hits OverpassAPI trying to grow to 50km.
+        // Thus, if we didn't find 5 points, we leave the radius at the max allowed so we don't spam the API next time.
+        if (pointsWithDist.length < 5) {
+            targetRadius = maxAllowedRadius;
+        }
+
         if (question.radius !== targetRadius) {
             question.radius = targetRadius;
         }

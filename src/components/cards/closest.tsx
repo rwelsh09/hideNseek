@@ -283,6 +283,10 @@ const ClosestLocationSelector = ({
                 targetRadius = maxAllowedRadius;
             }
 
+            if (pointsWithDist.length < 5) {
+                targetRadius = maxAllowedRadius;
+            }
+
             if (data.radius !== targetRadius) {
                 data.radius = targetRadius;
                 setTimeout(() => questionModified(), 0);
