@@ -103,7 +103,6 @@ export async function adjustMapGeoDataForQuestion(
 export async function applyQuestionsToMapGeoData(
     questions: Questions,
     mapGeoData: any,
-    _ignore: boolean,
     planningModeCallback?: (
         polygon: FeatureCollection | Feature,
         question: any,
@@ -134,12 +133,6 @@ export async function applyQuestionsToMapGeoData(
                 type: "FeatureCollection",
                 features: [mapGeoData],
             };
-        }
-
-        // if the question is "drag" (hasn't been submitted yet) we shouldn't continue
-        // to further questions since they shouldn't apply to the map yet.
-        if (question.data.drag) {
-            break;
         }
     }
     return mapGeoData;

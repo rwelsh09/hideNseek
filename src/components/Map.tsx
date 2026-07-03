@@ -180,7 +180,6 @@ export const Map = ({ className }: { className?: string }) => {
             mapGeoData = await applyQuestionsToMapGeoData(
                 $questions,
                 mapGeoData,
-                false,
                 (geoJSONObj, question) => {
                     const geoJSONPlane = L.geoJSON(geoJSONObj, {
                         interactive: false,

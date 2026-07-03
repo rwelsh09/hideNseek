@@ -153,10 +153,7 @@ export const findClosestLocations = async (
     const response = turf.points([]);
     const centerPoint = turf.point([question.lng, question.lat]);
 
-    const playtestMode = true;
-    const radiusInMeters = playtestMode
-        ? 50000
-        : turf.convertLength(question.radius, question.unit, "meters");
+    const radiusInMeters = 50000;
 
     const seenNames = new Set<string>();
     const seenCoords = new Set<string>();
