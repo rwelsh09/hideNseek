@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/remove-animate-map-movements-toggle-11442210778824434197/sw.js', { scope: '/HideAndSeek/remove-animate-map-movements-toggle-11442210778824434197/' })})}
