@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/fix/starting-point-toggle-independence-8415942434714169800/sw.js', { scope: '/hideNseek/fix/starting-point-toggle-independence-8415942434714169800/' })})}
