@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/jules-remove-auto-save-toggle-9140933510095788140/sw.js', { scope: '/HideAndSeek/jules-remove-auto-save-toggle-9140933510095788140/' })})}
