@@ -180,11 +180,11 @@ const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
 const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
     type: z
         .union([
-            z.literal("museum-full").describe("Museum Question"),
-            z.literal("hospital-full").describe("Hospital Question"),
-            z.literal("cinema-full").describe("Cinema Question"),
-            z.literal("library-full").describe("Library Question"),
-            z.literal("golf_course-full").describe("Golf Course Question"),
+            z.literal("museum").describe("Museum Question"),
+            z.literal("hospital").describe("Hospital Question"),
+            z.literal("cinema").describe("Cinema Question"),
+            z.literal("library").describe("Library Question"),
+            z.literal("golf_course").describe("Golf Course Question"),
             z
                 .literal("same-neighbourhood")
                 .describe("Neighbourhood (Same As Me) Question"),
@@ -201,7 +201,7 @@ const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
                 .literal("same-train-line")
                 .describe("Station On Same Train Line Question"),
         ])
-        .default("museum-full"),
+        .default("museum"),
 });
 
 export const matchQuestionSchema = ordinaryMatchQuestionSchema;
@@ -213,16 +213,16 @@ const baseMeasureQuestionSchema = ordinaryBaseQuestionSchema.extend({
 const ordinaryMeasureQuestionSchema = baseMeasureQuestionSchema.extend({
     type: z
         .union([
-            z.literal("museum-full").describe("Museum Question"),
-            z.literal("hospital-full").describe("Hospital Question"),
-            z.literal("cinema-full").describe("Cinema Question"),
-            z.literal("library-full").describe("Library Question"),
-            z.literal("golf_course-full").describe("Golf Course Question"),
+            z.literal("museum").describe("Museum Question"),
+            z.literal("hospital").describe("Hospital Question"),
+            z.literal("cinema").describe("Cinema Question"),
+            z.literal("library").describe("Library Question"),
+            z.literal("golf_course").describe("Golf Course Question"),
             z.literal("mcdonalds").describe("McDonald's Question"),
             z.literal("seven11").describe("7-Eleven Question"),
             z.literal("rail-measure").describe("Train Station Question"),
         ])
-        .default("museum-full"),
+        .default("museum"),
 });
 
 export const measureQuestionSchema = ordinaryMeasureQuestionSchema;

@@ -8,11 +8,9 @@ import { createPortal } from "react-dom";
 import { Marker } from "react-leaflet";
 
 import {
-    autoSave,
     hiderMode,
     questionModified,
     questions,
-    save,
     triggerLocalRefresh,
 } from "@/lib/context";
 import type { ICON_COLORS } from "@/maps/api";
@@ -112,7 +110,6 @@ export const DraggableMarkers = () => {
     useStore(triggerLocalRefresh);
     const $questions = useStore(questions);
     const $hiderMode = useStore(hiderMode);
-    const $autoSave = useStore(autoSave);
     const $editingId = useStore(editingQuestionId);
     const $draftQuestionId = useStore(draftQuestionId);
     const [mounted, setMounted] = useState(false);
@@ -173,11 +170,7 @@ export const DraggableMarkers = () => {
                         $hiderMode.longitude =
                             e.target.getLatLng().lng ?? $hiderMode.longitude;
 
-                        if (autoSave.get()) {
-                            hiderMode.set({ ...$hiderMode });
-                        } else {
-                            triggerLocalRefresh.set(Math.random());
-                        }
+                        hiderMode.set({ ...$hiderMode });
                     }}
                 />
             )}
@@ -362,15 +355,6 @@ export const DraggableMarkers = () => {
                                     className="font-semibold font-poppins mt-2 w-full"
                                 >
                                     Disable Hider Mode
-                                </Button>
-                            )}
-
-                            {!$autoSave && (
-                                <Button
-                                    onClick={save}
-                                    className="bg-blue-600 hover:bg-blue-500 font-semibold font-poppins w-full mt-2"
-                                >
-                                    Save Changes
                                 </Button>
                             )}
                         </div>

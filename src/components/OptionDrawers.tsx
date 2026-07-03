@@ -12,7 +12,6 @@ import {
 import {
     additionalMapGeoLocations,
     animateMapMovements,
-    autoSave,
     baseTileLayer,
     disabledStations,
     displayTransitLines,
@@ -51,7 +50,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     useStore(triggerLocalRefresh);
     const $animateMapMovements = useStore(animateMapMovements);
     const $hiderMode = useStore(hiderMode);
-    const $autoSave = useStore(autoSave);
     const $hidingZone = useStore(hidingZone);
     const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
     const $baseTileLayer = useStore(baseTileLayer);
@@ -429,17 +427,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                             !$liveUpdateMapEnabled,
                                         );
                                     }}
-                                />
-                            </div>
-                            <div className="flex flex-row items-center gap-2 text-center">
-                                <label className="text-xl sm:text-2xl font-semibold font-poppins">
-                                    Auto save?
-                                </label>
-                                <Checkbox
-                                    checked={$autoSave}
-                                    onCheckedChange={() =>
-                                        autoSave.set(!$autoSave)
-                                    }
                                 />
                             </div>
 
