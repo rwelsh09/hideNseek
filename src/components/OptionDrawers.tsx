@@ -219,7 +219,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     
                                     {/* Hider Mode Toggle */}
                                     <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                        <Label htmlFor="hider-mode-toggle" className="flex-1 cursor-pointer text-base font-medium">Hider mode?</Label>
+                                        <Label htmlFor="hider-mode-toggle" className="flex-1 cursor-pointer text-base font-medium">Hider Mode</Label>
                                         <Checkbox
                                             id="hider-mode-toggle"
                                             checked={!!$hiderMode}
@@ -271,7 +271,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
 
                                     {/* Recommended Start Toggle */}
                                     <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                        <Label htmlFor="recommended-starting-point-toggle" className="flex-1 cursor-pointer text-base font-medium">Starting Point?</Label>
+                                        <Label htmlFor="recommended-starting-point-toggle" className="flex-1 cursor-pointer text-base font-medium">Starting Point</Label>
                                         <Checkbox
                                             id="recommended-starting-point-toggle"
                                             checked={$showRecommendedStart}
@@ -281,7 +281,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
 
                                     {/* Transit Overlay Toggle */}
                                     <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                        <Label htmlFor="transit-overlay-toggle" className="flex-1 cursor-pointer text-base font-medium">Show transit lines overlay?</Label>
+                                        <Label htmlFor="transit-overlay-toggle" className="flex-1 cursor-pointer text-base font-medium">Transit Lines on Map</Label>
                                         <Checkbox
                                             id="transit-overlay-toggle"
                                             checked={$displayTransitLines}
