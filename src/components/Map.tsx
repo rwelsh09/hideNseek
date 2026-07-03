@@ -331,7 +331,7 @@ export const Map = ({ className }: { className?: string }) => {
                     $mapGeoLocation.geometry.coordinates[0],
                 ]}
                 zoom={10}
-                className={cn("w-[500px] h-[500px]", className)}
+                className={cn("w-[500px] h-[500px]", className, $isLoading && "is-loading")}
                 ref={leafletMapContext.set}
                 // @ts-expect-error Typing doesn't update from react-contextmenu
                 contextmenu={true}
@@ -350,17 +350,22 @@ export const Map = ({ className }: { className?: string }) => {
                         data-tutorial-id="map-action-buttons"
                     >
                         <LeafletActionButtons />
-                        {$isLoading && (
-                            <div
-                                className="bg-white/80 backdrop-blur-sm shadow-sm w-[30px] h-[30px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30"
-                                title="Loading..."
-                                aria-label="Loading"
-                            >
-                                <Loader2 className="w-5 h-5 animate-spin text-slate-700" />
-                            </div>
-                        )}
                     </div>
                 </div>
+                {$isLoading && (
+                    <div className="absolute top-[20%] left-1/2 -translate-x-1/2 z-[1010] pointer-events-none">
+                        <div
+                            className="bg-white/90 backdrop-blur-md shadow-md w-auto h-[36px] px-3 rounded-full flex items-center justify-center border border-slate-300"
+                            title="Loading..."
+                            aria-label="Loading"
+                        >
+                            <Loader2 className="w-5 h-5 animate-spin text-slate-700" />
+                            <span className="ml-2 text-sm font-semibold text-slate-700 uppercase tracking-wider">
+                                Loading...
+                            </span>
+                        </div>
+                    </div>
+                )}
                 <ScaleControl position="bottomleft" />
             </MapContainer>
         ),
