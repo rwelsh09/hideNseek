@@ -10,8 +10,6 @@ import {
     Sidebar,
     SidebarContent,
     SidebarContext,
-    SidebarGroup,
-    SidebarGroupContent,
     SidebarMenu,
     SidebarMenuItem,
 } from "@/components/ui/sidebar-r";
@@ -446,80 +444,75 @@ export const ZoneSidebar = () => {
                     <SidebarCloseIcon className="scale-x-[-1]" />
                 </button>
             </div>
-            <SidebarContent ref={sidebarRef}>
+            <SidebarContent ref={sidebarRef} className="px-4 py-4 space-y-6">
                 <ScrollToTop element={sidebarRef} minHeight={500} />
-                <SidebarGroup>
-                    <SidebarGroupContent>
-                        <SidebarMenu>
-                            <SidebarMenuItem>
-                                <Label className="font-semibold font-poppins ml-2">
-                                    Head Start (Minutes)
-                                </Label>
-                                <div
-                                    className={cn(
-                                        MENU_ITEM_CLASSNAME,
-                                        "gap-2 flex flex-row",
-                                    )}
-                                >
-                                    <Input
-                                        type="number"
-                                        className="rounded-md p-2 w-full"
-                                        value={$headStartMinutes}
-                                        onChange={(e) => {
-                                            headStartMinutes.set(
-                                                parseInt(e.target.value) || 0,
-                                            );
-                                        }}
-                                        disabled={$isLoading}
-                                    />
-                                </div>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem>
-                                <Label className="font-semibold font-poppins ml-2">
-                                    Hiding Zone Radius
-                                </Label>
-                                <div
-                                    className={cn(
-                                        MENU_ITEM_CLASSNAME,
-                                        "gap-2 flex flex-row",
-                                    )}
-                                >
-                                    <Input
-                                        type="number"
-                                        className="rounded-md p-2 w-16"
-                                        value={$hidingRadius}
-                                        onChange={(e) => {
-                                            hidingRadius.set(
-                                                parseFloat(e.target.value),
-                                            );
-                                        }}
-                                        disabled={$isLoading}
-                                    />
-                                    <UnitSelect
-                                        unit={$hidingRadiusUnits}
-                                        disabled={$isLoading}
-                                        onChange={(unit) => {
-                                            hidingRadiusUnits.set(unit);
-                                        }}
-                                    />
-                                </div>
-                            </SidebarMenuItem>
-                            <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                                <Label className="font-semibold font-poppins">
-                                    Display hiding zones?
-                                </Label>
-                                <Checkbox
-                                    defaultChecked={$displayHidingZones}
-                                    checked={$displayHidingZones}
-                                    onCheckedChange={(checked) => {
-                                        if (checked === true) {
-                                            setIsWarningDialogOpen(true);
-                                        } else {
-                                            displayHidingZones.set(false);
-                                        }
+
+                <div className="space-y-3">
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1">
+                        Game Settings
+                    </h3>
+                    <div className="rounded-xl border bg-card shadow-sm overflow-hidden divide-y divide-border">
+                        <div className="flex items-center justify-between p-4 bg-slate-50/30 dark:bg-slate-900/30">
+                            <Label className="flex-1 text-base font-medium text-muted-foreground mr-4">
+                                Head Start (Minutes)
+                            </Label>
+                            <div className="w-[100px]">
+                                <Input
+                                    type="number"
+                                    className="rounded-md p-2 w-full bg-background"
+                                    value={$headStartMinutes}
+                                    onChange={(e) => {
+                                        headStartMinutes.set(
+                                            parseInt(e.target.value) || 0,
+                                        );
                                     }}
                                     disabled={$isLoading}
                                 />
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-between p-4 bg-slate-50/30 dark:bg-slate-900/30">
+                            <Label className="text-base font-medium text-muted-foreground mr-4">
+                                Hiding Zone Radius
+                            </Label>
+                            <div className="flex gap-2 items-center">
+                                <Input
+                                    type="number"
+                                    className="rounded-md p-2 w-16 bg-background"
+                                    value={$hidingRadius}
+                                    onChange={(e) => {
+                                        hidingRadius.set(
+                                            parseFloat(e.target.value),
+                                        );
+                                    }}
+                                    disabled={$isLoading}
+                                />
+                                <UnitSelect
+                                    unit={$hidingRadiusUnits}
+                                    disabled={$isLoading}
+                                    onChange={(unit) => {
+                                        hidingRadiusUnits.set(unit);
+                                    }}
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                            <Label className="flex-1 cursor-pointer text-base font-medium">
+                                Display hiding zones?
+                            </Label>
+                            <Checkbox
+                                defaultChecked={$displayHidingZones}
+                                checked={$displayHidingZones}
+                                onCheckedChange={(checked) => {
+                                    if (checked === true) {
+                                        setIsWarningDialogOpen(true);
+                                    } else {
+                                        displayHidingZones.set(false);
+                                    }
+                                }}
+                                disabled={$isLoading}
+                            />
                                 <AlertDialog
                                     open={isWarningDialogOpen}
                                     onOpenChange={setIsWarningDialogOpen}
@@ -560,7 +553,16 @@ export const ZoneSidebar = () => {
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
                                 </AlertDialog>
-                            </SidebarMenuItem>
+                        </div>
+                    </div>
+                </div>
+
+                <div className="space-y-3">
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1">
+                        Map Display Data
+                    </h3>
+                    <div className="rounded-xl border bg-card shadow-sm overflow-hidden divide-y divide-border">
+                        <SidebarMenu className="gap-0 border-0 bg-transparent p-0 m-0 w-full rounded-none">
                             {$displayHidingZones && stations.length > 0 && (
                                 <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
@@ -771,8 +773,8 @@ export const ZoneSidebar = () => {
                                 </Command>
                             )}
                         </SidebarMenu>
-                    </SidebarGroupContent>
-                </SidebarGroup>
+                    </div>
+                </div>
             </SidebarContent>
         </Sidebar>
     );

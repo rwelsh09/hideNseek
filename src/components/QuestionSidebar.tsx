@@ -11,11 +11,6 @@ import {
     Sidebar,
     SidebarContent,
     SidebarContext,
-    SidebarGroup,
-    SidebarGroupContent,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
 } from "@/components/ui/sidebar-l";
 import {
     addQuestion,
@@ -69,15 +64,15 @@ export const QuestionSidebar = () => {
             <SidebarContent className="px-4 pt-4 pb-2 flex flex-col gap-5 overflow-y-auto">
                 {/* --- TIME PENALTY TRACKER --- */}
                 <div
-                    className="bg-slate-800 rounded-xl p-3 shadow-md border border-slate-700 flex flex-col gap-3"
+                    className="rounded-xl border bg-card shadow-sm p-4 space-y-3"
                     data-tutorial-id="time-penalty-tracker"
                 >
                     <div className="flex justify-between items-center px-1">
-                        <h3 className="text-slate-300 font-bold uppercase tracking-wider text-xs flex items-center gap-1.5">
+                        <h3 className="text-muted-foreground font-bold uppercase tracking-wider text-xs flex items-center gap-1.5">
                             <Clock className="w-4 h-4 text-red-400" />
                             Time Penalty
                         </h3>
-                        <div className="text-white font-mono font-bold text-xl">
+                        <div className="text-foreground font-mono font-bold text-xl">
                             +{$penaltyMinutes}{" "}
                             <span className="text-xs text-slate-400 font-sans">
                                 MIN
@@ -186,17 +181,15 @@ export const QuestionSidebar = () => {
                 })}
             </SidebarContent>
 
-            <SidebarGroup>
-                <SidebarGroupContent>
-                    <SidebarMenu>
-                        <SidebarMenuItem>
-                            <AddQuestionDialog />
-                        </SidebarMenuItem>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton
-                                className="bg-slate-700 hover:bg-slate-600 p-2 rounded-md font-semibold font-poppins transition-colors duration-200 text-white flex items-center justify-center gap-2"
-                                data-tutorial-id="tutorial-paste-question-btn"
-                                onClick={() => {
+            <div className="px-4 pb-4">
+                <div className="space-y-2 mt-4 flex flex-col w-full">
+                    <AddQuestionDialog />
+
+                    <Button
+                        variant="secondary"
+                        className="w-full font-semibold font-poppins flex items-center justify-center gap-2 h-11"
+                        data-tutorial-id="tutorial-paste-question-btn"
+                        onClick={() => {
                                     navigator.clipboard
                                         .readText()
                                         .then((text) => {
@@ -227,12 +220,12 @@ export const QuestionSidebar = () => {
                             >
                                 <ClipboardPasteIcon className="w-4 h-4" />
                                 Paste Question
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                        <SidebarMenuItem>
-                            <SidebarMenuButton
-                                className="bg-red-900/50 hover:bg-red-800/80 p-2 rounded-md font-semibold font-poppins transition-colors duration-200 text-red-200 hover:text-white flex items-center justify-center gap-2 mt-2"
-                                onClick={() => {
+                    </Button>
+
+                    <Button
+                        variant="destructive"
+                        className="w-full font-semibold font-poppins flex items-center justify-center gap-2 h-11 mt-2"
+                        onClick={() => {
                                     if (
                                         window.confirm(
                                             "Are you sure you want to unlock and delete ALL questions? This will also reset your time penalty to 0.",
@@ -249,11 +242,9 @@ export const QuestionSidebar = () => {
                             >
                                 <Trash2 className="w-4 h-4" />
                                 Unlock & Delete All
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    </SidebarMenu>
-                </SidebarGroupContent>
-            </SidebarGroup>
+                    </Button>
+                </div>
+            </div>
         </Sidebar>
     );
 };
