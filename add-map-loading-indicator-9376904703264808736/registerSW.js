@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/add-map-loading-indicator-9376904703264808736/sw.js', { scope: '/HideAndSeek/add-map-loading-indicator-9376904703264808736/' })})}
