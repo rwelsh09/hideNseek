@@ -129,57 +129,63 @@ export const Map = ({ className }: { className?: string }) => {
 
     const followMeMarkerRef = useRef<L.Marker | null>(null);
     const geoWatchIdRef = useRef<number | null>(null);
+    const isRefreshingRef = useRef<boolean>(false);
+    const refreshPendingRef = useRef<boolean>(false);
 
     const refreshQuestions = async () => {
         if (!map) return;
 
-        if ($isLoading) return;
+        if (isRefreshingRef.current) {
+            refreshPendingRef.current = true;
+            return;
+        }
 
+        isRefreshingRef.current = true;
         isLoading.set(true);
 
-        if ($questions.length === 0) {
-            await clearCache();
-        }
-
-        let mapGeoData = mapGeoJSON.get();
-
-        if (!mapGeoData) {
-            const polyGeoData = polyGeoJSON.get();
-            if (polyGeoData) {
-                mapGeoData = polyGeoData;
-                mapGeoJSON.set(polyGeoData);
-            } else {
-                await toast.promise(
-                    determineMapBoundaries()
-                        .then((x) => {
-                            mapGeoJSON.set(x);
-                            mapGeoData = x;
-                        })
-                        .catch(() => {}),
-                    {
-                        error: "Error refreshing map data",
-                    },
-                );
-            }
-        }
-
-        if ($hiderMode !== false) {
-            for (const question of $questions) {
-                await hiderifyQuestion(question);
-            }
-
-            triggerLocalRefresh.set(Math.random()); // Refresh the question sidebar with new information but not this map
-        }
-
-        map.eachLayer((layer: any) => {
-            if (layer.questionKey || layer.questionKey === 0) {
-                map.removeLayer(layer);
-            }
-        });
-
         try {
+            if (questions.get().length === 0) {
+                await clearCache();
+            }
+
+            let mapGeoData = mapGeoJSON.get();
+
+            if (!mapGeoData) {
+                const polyGeoData = polyGeoJSON.get();
+                if (polyGeoData) {
+                    mapGeoData = polyGeoData;
+                    mapGeoJSON.set(polyGeoData);
+                } else {
+                    await toast.promise(
+                        determineMapBoundaries()
+                            .then((x) => {
+                                mapGeoJSON.set(x);
+                                mapGeoData = x;
+                            })
+                            .catch(() => {}),
+                        {
+                            error: "Error refreshing map data",
+                        },
+                    );
+                }
+            }
+
+            if (hiderMode.get() !== false) {
+                for (const question of questions.get()) {
+                    await hiderifyQuestion(question);
+                }
+
+                triggerLocalRefresh.set(Math.random()); // Refresh the question sidebar with new information but not this map
+            }
+
+            map.eachLayer((layer: any) => {
+                if (layer.questionKey || layer.questionKey === 0) {
+                    map.removeLayer(layer);
+                }
+            });
+
             mapGeoData = await applyQuestionsToMapGeoData(
-                $questions,
+                questions.get(),
                 mapGeoData,
                 (geoJSONObj, question) => {
                     const geoJSONPlane = L.geoJSON(geoJSONObj, {
@@ -210,12 +216,17 @@ export const Map = ({ className }: { className?: string }) => {
 
             questionFinishedMapData.set(mapGeoData);
         } catch {
-            isLoading.set(false);
             if (document.querySelectorAll(".Toastify__toast").length === 0) {
-                return toast.error("No solutions found / error occurred");
+                toast.error("No solutions found / error occurred");
             }
         } finally {
             isLoading.set(false);
+            isRefreshingRef.current = false;
+
+            if (refreshPendingRef.current) {
+                refreshPendingRef.current = false;
+                refreshQuestions();
+            }
         }
     };
 

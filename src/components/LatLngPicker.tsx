@@ -358,6 +358,7 @@ export const LatitudeLongitude = ({
                                                 {
                                                     maximumAge: 0,
                                                     enableHighAccuracy: true,
+                                                    timeout: 10000,
                                                 },
                                             );
                                         },
