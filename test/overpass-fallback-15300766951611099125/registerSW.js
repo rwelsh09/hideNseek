@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/test/overpass-fallback-15300766951611099125/sw.js', { scope: '/HideAndSeek/test/overpass-fallback-15300766951611099125/' })})}
