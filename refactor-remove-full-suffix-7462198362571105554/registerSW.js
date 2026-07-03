@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/refactor-remove-full-suffix-7462198362571105554/sw.js', { scope: '/HideAndSeek/refactor-remove-full-suffix-7462198362571105554/' })})}
