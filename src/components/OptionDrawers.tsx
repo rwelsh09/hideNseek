@@ -201,84 +201,12 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                 </DrawerTrigger>
                 <DrawerContent onPointerDown={(e) => e.stopPropagation()}>
                     <div className="flex flex-col items-center gap-4 mb-4 overflow-y-scroll max-h-[85vh]">
-                        <div className="w-full max-w-[280px] sm:max-w-none flex flex-col sm:flex-row gap-4 justify-center mb-2 mt-4">
-                            <Button
-                                onClick={() => {
-                                    isOptionsOpenStore.set(false);
-                                    setTimeout(() => {
-                                        showTutorial.set(true);
-                                    }, 300);
-                                }}
-                                className="w-full sm:w-[280px]"
-                            >
-                                Start Tutorial
-                            </Button>
-                            <a
-                                href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/rules`}
-                                className="w-full sm:w-[280px]"
-                                onClick={() => hasSeenRules.set(true)}
-                                data-tutorial-id="tutorial-rules-btn"
-                            >
-                                <Button className="w-full">Rules & Tips</Button>
-                            </a>
-                        </div>
-
-                        <div className="flex flex-col items-center gap-2 mt-2 w-full max-w-[280px] sm:max-w-[576px]">
-                            <p className="text-sm font-semibold text-gray-500 font-poppins text-center">
-                                Support the project via PayPal:
-                            </p>
-                            <a
-                                href="https://paypal.me/hideNseekApp/4.03"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full sm:w-[280px]"
-                            >
-                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
-                                    <span className="whitespace-normal">
-                                        &quot;Hiding in the 403&quot; &mdash;
-                                        $4.03
-                                    </span>
-                                </Button>
-                            </a>
-                            <a
-                                href="https://paypal.me/hideNseekApp/7"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full sm:w-[280px]"
-                            >
-                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
-                                    <span className="whitespace-normal">
-                                        &quot;7th Ave Free Zone&quot; &mdash;
-                                        $7.00
-                                    </span>
-                                </Button>
-                            </a>
-                            <a
-                                href="https://paypal.me/hideNseekApp/15"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full sm:w-[280px]"
-                            >
-                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
-                                    <span className="whitespace-normal">
-                                        &quot;Lost in the +15s&quot; &mdash;
-                                        $15.00
-                                    </span>
-                                </Button>
-                            </a>
-                            <p className="text-sm text-gray-500 font-poppins text-center mt-1">
-                                Or e-transfer to: <br />
-                                <span className="font-semibold select-all">
-                                    hideNseekAppDonation@gmail.com
-                                </span>
-                            </p>
-                        </div>
-
                         <DrawerHeader>
-                            <DrawerTitle className="text-4xl font-semibold font-poppins underline">
+                            <DrawerTitle className="text-4xl font-semibold font-poppins">
                                 Options
                             </DrawerTitle>
                         </DrawerHeader>
+
                         <div className="flex flex-col items-center gap-4 max-w-[1000px] px-4 sm:px-12 pb-10">
                             <div className="flex flex-row items-center gap-2 mt-2">
                                 <label className="text-2xl font-semibold font-poppins text-center">
@@ -437,6 +365,81 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 >
                                     Reset Everything
                                 </Button>
+                            </div>
+
+                            <Separator className="bg-slate-300 w-[280px]" />
+
+                            <div className="w-full max-w-[280px] sm:max-w-none flex flex-col sm:flex-row gap-4 justify-center">
+                                <Button
+                                    onClick={() => {
+                                        isOptionsOpenStore.set(false);
+                                        setTimeout(() => {
+                                            showTutorial.set(true);
+                                        }, 300);
+                                    }}
+                                    className="w-full sm:w-[280px]"
+                                >
+                                    Start Tutorial
+                                </Button>
+                                <a
+                                    href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/rules`}
+                                    className="w-full sm:w-[280px]"
+                                    onClick={() => hasSeenRules.set(true)}
+                                    data-tutorial-id="tutorial-rules-btn"
+                                >
+                                    <Button className="w-full">Rules & Tips</Button>
+                                </a>
+                            </div>
+
+                            <div className="flex flex-col items-center gap-2 mt-4 w-full max-w-[280px] sm:max-w-[576px]">
+                                <p className="text-sm font-semibold text-gray-500 font-poppins text-center">
+                                    Support the project via PayPal:
+                                </p>
+                                <a
+                                    href="https://paypal.me/hideNseekApp/4.03"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full sm:w-[280px]"
+                                >
+                                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
+                                        <span className="whitespace-normal">
+                                            &quot;Hiding in the 403&quot; &mdash;
+                                            $4.03
+                                        </span>
+                                    </Button>
+                                </a>
+                                <a
+                                    href="https://paypal.me/hideNseekApp/7"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full sm:w-[280px]"
+                                >
+                                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
+                                        <span className="whitespace-normal">
+                                            &quot;7th Ave Free Zone&quot; &mdash;
+                                            $7.00
+                                        </span>
+                                    </Button>
+                                </a>
+                                <a
+                                    href="https://paypal.me/hideNseekApp/15"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="w-full sm:w-[280px]"
+                                >
+                                    <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
+                                        <span className="whitespace-normal">
+                                            &quot;Lost in the +15s&quot; &mdash;
+                                            $15.00
+                                        </span>
+                                    </Button>
+                                </a>
+                                <p className="text-sm text-gray-500 font-poppins text-center mt-1">
+                                    Or e-transfer to: <br />
+                                    <span className="font-semibold select-all">
+                                        hideNseekAppDonation@gmail.com
+                                    </span>
+                                </p>
                             </div>
                         </div>
                     </div>
