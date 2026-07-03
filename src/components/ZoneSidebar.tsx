@@ -27,6 +27,7 @@ import {
     leafletMapContext,
     questionFinishedMapData,
     questions,
+    showRecommendedStart,
     trainStations,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
@@ -71,6 +72,7 @@ import { UnitSelect } from "./UnitSelect";
 
 export const ZoneSidebar = () => {
     const $displayHidingZones = useStore(displayHidingZones);
+    const $showRecommendedStart = useStore(showRecommendedStart);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
     const $displayHidingZonesStyle = useStore(displayHidingZonesStyle);
     const $hidingRadius = useStore(hidingRadius);
@@ -374,7 +376,7 @@ export const ZoneSidebar = () => {
             }
         };
 
-        if ($displayHidingZones && $questionFinishedMapData) {
+        if (($displayHidingZones || $showRecommendedStart) && $questionFinishedMapData) {
             initializeHidingZones().catch((err) => {
                 console.error(err);
                 toast.error(
@@ -383,7 +385,7 @@ export const ZoneSidebar = () => {
                 );
             });
         }
-    }, [$questionFinishedMapData, $displayHidingZones, $hidingRadius]);
+    }, [$questionFinishedMapData, $displayHidingZones, $showRecommendedStart, $hidingRadius]);
 
     useEffect(() => {
         if (!map || isLoading.get()) return;
