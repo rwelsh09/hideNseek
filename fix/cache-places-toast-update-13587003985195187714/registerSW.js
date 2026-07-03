@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/cache-places-toast-update-13587003985195187714/sw.js', { scope: '/HideAndSeek/fix/cache-places-toast-update-13587003985195187714/' })})}
