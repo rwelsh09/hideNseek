@@ -149,6 +149,20 @@ body.driver-active:has(
             [role="dialog"][data-state="open"] .driver-active-element
         )
     )
+    .driver-overlay {
+    pointer-events: none !important;
+}
+
+body.driver-active:has(
+        [data-sidebar="sidebar"][data-state="expanded"],
+        [role="dialog"][data-state="open"]
+    ):not(
+        :has(
+            [data-sidebar="sidebar"][data-state="expanded"]
+                .driver-active-element,
+            [role="dialog"][data-state="open"] .driver-active-element
+        )
+    )
     .driver-popover {
     opacity: 0 !important;
     pointer-events: none !important;

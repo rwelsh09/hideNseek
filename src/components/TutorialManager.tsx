@@ -18,8 +18,6 @@ export const TutorialManager = () => {
         if ($showTutorial) {
             const driverObj = driver({
                 showProgress: true,
-                allowClose: false,
-                allowKeyboardControl: false,
                 onDestroyStarted: () => {
                     const isRulesPhase =
                         driverObj.getConfig().steps?.length === 2;
