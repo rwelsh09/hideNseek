@@ -333,7 +333,7 @@ export const Map = ({ className }: { className?: string }) => {
                     $mapGeoLocation.geometry.coordinates[0],
                 ]}
                 zoom={10}
-                className={cn("w-[500px] h-[500px]", className)}
+                className={cn("w-[500px] h-[500px]", className, $isLoading && "is-loading")}
                 ref={leafletMapContext.set}
                 // @ts-expect-error Typing doesn't update from react-contextmenu
                 contextmenu={true}
@@ -354,11 +354,14 @@ export const Map = ({ className }: { className?: string }) => {
                         <LeafletActionButtons />
                         {$isLoading && (
                             <div
-                                className="bg-white/80 backdrop-blur-sm shadow-sm w-[30px] h-[30px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30"
+                                className="bg-white/80 backdrop-blur-sm shadow-sm w-auto h-[30px] px-2 rounded-sm flex items-center justify-center border-2 border-black border-opacity-30"
                                 title="Loading..."
                                 aria-label="Loading"
                             >
                                 <Loader2 className="w-5 h-5 animate-spin text-slate-700" />
+                                <span className="ml-1.5 text-xs font-semibold text-slate-700 uppercase tracking-wider">
+                                    Loading
+                                </span>
                             </div>
                         )}
                     </div>
