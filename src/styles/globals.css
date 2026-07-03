@@ -112,12 +112,6 @@ div.leaflet-control-attribution.leaflet-control {
     }
 }
 
-/* Loading cursor override for Leaflet */
-.leaflet-container.is-loading,
-.leaflet-container.is-loading * {
-    cursor: wait !important;
-}
-
 /* Driver.js cursor overrides */
 .driver-overlay path {
     cursor: not-allowed !important;

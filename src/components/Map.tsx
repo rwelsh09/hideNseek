@@ -352,6 +352,10 @@ export const Map = ({ className }: { className?: string }) => {
                         data-tutorial-id="map-action-buttons"
                     >
                         <LeafletActionButtons />
+                    </div>
+                </div>
+                <div className="leaflet-bottom leaflet-right mb-6 mr-14">
+                    <div className="leaflet-control pointer-events-auto">
                         {$isLoading && (
                             <div
                                 className="bg-white/80 backdrop-blur-sm shadow-sm w-auto h-[30px] px-2 rounded-sm flex items-center justify-center border-2 border-black border-opacity-30"
