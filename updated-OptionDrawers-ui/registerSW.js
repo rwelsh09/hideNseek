@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/updated-OptionDrawers-ui/sw.js', { scope: '/hideNseek/updated-OptionDrawers-ui/' })})}
