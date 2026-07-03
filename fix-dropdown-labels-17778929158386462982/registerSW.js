@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-dropdown-labels-17778929158386462982/sw.js', { scope: '/HideAndSeek/fix-dropdown-labels-17778929158386462982/' })})}
