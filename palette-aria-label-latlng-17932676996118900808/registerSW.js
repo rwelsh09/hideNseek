@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/palette-aria-label-latlng-17932676996118900808/sw.js', { scope: '/HideAndSeek/palette-aria-label-latlng-17932676996118900808/' })})}
