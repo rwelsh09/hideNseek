@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-options-drawer-height-3225703297315543852/sw.js', { scope: '/HideAndSeek/fix-options-drawer-height-3225703297315543852/' })})}
