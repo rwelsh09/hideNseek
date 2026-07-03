@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/add-tests-cache-4941130200010770697/sw.js', { scope: '/HideAndSeek/add-tests-cache-4941130200010770697/' })})}
