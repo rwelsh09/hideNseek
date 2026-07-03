@@ -75,18 +75,11 @@ const hotColdQuestionSchema = z
             .min(-180, "Longitude must not overlap with the antemeridian")
             .max(180, "Longitude must not overlap with the antemeridian"),
         warmer: z.boolean().default(true),
-        colorA: iconColorSchema.default(() => randomColorExcluding(["green"])),
-        colorB: iconColorSchema.default(() => randomColorExcluding(["green"])),
+        colorA: iconColorSchema.default("gold"),
+        colorB: iconColorSchema.default("blue"),
         /** Note that drag is now synonymous with unlocked */
         drag: z.boolean().default(true),
         collapsed: z.boolean().default(false),
-    })
-    .transform((question) => {
-        if (question.colorA === question.colorB) {
-            question.colorB = "green";
-        }
-
-        return question;
     });
 
 const ordinaryBaseQuestionSchema = z.object({
@@ -111,12 +104,14 @@ const getDefaultUnit = () => {
 const photoQuestionSchema = ordinaryBaseQuestionSchema.extend({
     notes: z.string().default(""),
     type: z.string().default("camera"),
+    color: iconColorSchema.default("blue"),
 });
 
 const radiusQuestionSchema = ordinaryBaseQuestionSchema.extend({
     radius: z.number().min(0, "You cannot have a negative radius").default(50),
     unit: unitsSchema.default(getDefaultUnit),
     within: z.boolean().default(true),
+    color: iconColorSchema.default("orange"),
 });
 
 const closestLocationsOne = z.union([
@@ -139,6 +134,7 @@ const baseClosestQuestionSchema = ordinaryBaseQuestionSchema.extend({
     showLabels: z.boolean().default(false),
     radius: z.number().min(0, "You cannot have a negative radius").default(2),
     unit: unitsSchema.default(getDefaultUnit),
+    color: iconColorSchema.default("violet"),
     location: z
         .union([
             z.object({
@@ -175,6 +171,7 @@ export const closestQuestionSchema = closestQuestionSpecificSchemaOne;
 const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
     same: z.boolean().default(true),
     lengthComparison: z.enum(["shorter", "longer", "same"]).optional(),
+    color: iconColorSchema.default("grey"),
 });
 
 const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
@@ -208,6 +205,7 @@ export const matchQuestionSchema = ordinaryMatchQuestionSchema;
 
 const baseMeasureQuestionSchema = ordinaryBaseQuestionSchema.extend({
     hiderCloser: z.boolean().default(true),
+    color: iconColorSchema.default("green"),
 });
 
 const ordinaryMeasureQuestionSchema = baseMeasureQuestionSchema.extend({
