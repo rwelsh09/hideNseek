@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/add-missing-special-tests-8295878632236308959/sw.js', { scope: '/HideAndSeek/add-missing-special-tests-8295878632236308959/' })})}
