@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/loading-always-on-top/sw.js', { scope: '/HideAndSeek/loading-always-on-top/' })})}
