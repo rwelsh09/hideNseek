@@ -165,7 +165,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                     const baseUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
                     const shareUrl = `${baseUrl}?${HIDING_ZONE_COMPRESSED_URL_PARAM}=${compressedData}`;
 
-                    // Show platform native share sheet if possible
                     await shareOrFallback(shareUrl).then((result) => {
                         if (result === false) {
                             return toast.error(
@@ -199,245 +198,240 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                         Options
                     </Button>
                 </DrawerTrigger>
-                <DrawerContent onPointerDown={(e) => e.stopPropagation()} className="max-h-[60vh]">
-                    <div className="flex flex-col items-center gap-4 mb-4 overflow-y-scroll h-full">
-                        <div className="w-full max-w-[280px] sm:max-w-none flex flex-col sm:flex-row gap-4 justify-center mb-2 mt-4">
-                            <Button
-                                onClick={() => {
-                                    isOptionsOpenStore.set(false);
-                                    setTimeout(() => {
-                                        showTutorial.set(true);
-                                    }, 300);
-                                }}
-                                className="w-full sm:w-[280px]"
-                            >
-                                Start Tutorial
-                            </Button>
-                            <a
-                                href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/rules`}
-                                className="w-full sm:w-[280px]"
-                                onClick={() => hasSeenRules.set(true)}
-                                data-tutorial-id="tutorial-rules-btn"
-                            >
-                                <Button className="w-full">Rules & Tips</Button>
-                            </a>
-                        </div>
-
-                        <div className="flex flex-col items-center gap-2 mt-2 w-full max-w-[280px] sm:max-w-[576px]">
-                            <p className="text-sm font-semibold text-gray-500 font-poppins text-center">
-                                Support the project via PayPal:
-                            </p>
-                            <a
-                                href="https://paypal.me/hideNseekApp/4.03"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full sm:w-[280px]"
-                            >
-                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
-                                    <span className="whitespace-normal">
-                                        &quot;Hiding in the 403&quot; &mdash;
-                                        $4.03
-                                    </span>
-                                </Button>
-                            </a>
-                            <a
-                                href="https://paypal.me/hideNseekApp/7"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full sm:w-[280px]"
-                            >
-                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
-                                    <span className="whitespace-normal">
-                                        &quot;7th Ave Free Zone&quot; &mdash;
-                                        $7.00
-                                    </span>
-                                </Button>
-                            </a>
-                            <a
-                                href="https://paypal.me/hideNseekApp/15"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="w-full sm:w-[280px]"
-                            >
-                                <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white h-auto py-2">
-                                    <span className="whitespace-normal">
-                                        &quot;Lost in the +15s&quot; &mdash;
-                                        $15.00
-                                    </span>
-                                </Button>
-                            </a>
-                            <p className="text-sm text-gray-500 font-poppins text-center mt-1">
-                                Or e-transfer to: <br />
-                                <span className="font-semibold select-all">
-                                    hideNseekAppDonation@gmail.com
-                                </span>
-                            </p>
-                        </div>
-
-                        <DrawerHeader>
-                            <DrawerTitle className="text-4xl font-semibold font-poppins underline">
+                
+                {/* Updated UI structure starts here */}
+                <DrawerContent onPointerDown={(e) => e.stopPropagation()} className="max-h-[85vh]">
+                    <div className="mx-auto w-full max-w-lg overflow-y-auto pb-8 px-4 sm:px-8 custom-scrollbar">
+                        <DrawerHeader className="pt-6 pb-4 sm:px-0">
+                            <DrawerTitle className="text-3xl font-semibold font-poppins text-center sm:text-left">
                                 Options
                             </DrawerTitle>
                         </DrawerHeader>
-                        <div className="flex flex-col items-center gap-4 max-w-[1000px] px-4 sm:px-12 pb-10">
-                            <div className="flex flex-row items-center gap-2 mt-2">
-                                <label className="text-2xl font-semibold font-poppins text-center">
-                                    Hider mode?
-                                </label>
-                                <Checkbox
-                                    checked={!!$hiderMode}
-                                    onCheckedChange={() => {
-                                        if ($hiderMode === false) {
-                                            const $leafletMapContext =
-                                                leafletMapContext.get();
 
-                                            if ($leafletMapContext) {
-                                                const center =
-                                                    $leafletMapContext.getCenter();
-                                                hiderMode.set({
-                                                    latitude: center.lat,
-                                                    longitude: center.lng,
-                                                });
-                                            } else {
-                                                hiderMode.set({
-                                                    latitude: 0,
-                                                    longitude: 0,
-                                                });
-                                            }
-                                        } else {
-                                            hiderMode.set(false);
-                                        }
-                                    }}
-                                />
-                            </div>
-                            <div className="flex flex-row items-center gap-2 text-center">
-                                <label
-                                    className="text-xl sm:text-2xl font-semibold font-poppins text-center"
-                                    htmlFor="recommended-starting-point-toggle"
-                                >
-                                    Starting Point?
-                                </label>
-                                <Checkbox
-                                    id="recommended-starting-point-toggle"
-                                    checked={$showRecommendedStart}
-                                    onCheckedChange={() => {
-                                        showRecommendedStart.set(
-                                            !$showRecommendedStart,
-                                        );
-                                    }}
-                                />
-                            </div>
-                            {$hiderMode !== false && (
-                                <SidebarMenu>
-                                    <LatitudeLongitude
-                                        latitude={$hiderMode.latitude}
-                                        longitude={$hiderMode.longitude}
-                                        inlineEdit
-                                        onChange={(latitude, longitude) => {
-                                            $hiderMode.latitude =
-                                                latitude ?? $hiderMode.latitude;
-                                            $hiderMode.longitude =
-                                                longitude ??
-                                                $hiderMode.longitude;
+                        <div className="flex flex-col gap-8">
+                            
+                            {/* --- Map & Game Settings Card --- */}
+                            <div className="space-y-3">
+                                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1">
+                                    Map & Game Settings
+                                </h3>
+                                <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden divide-y">
+                                    
+                                    {/* Hider Mode Toggle */}
+                                    <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                                        <Label htmlFor="hider-mode-toggle" className="flex-1 cursor-pointer text-base font-medium">Hider Mode</Label>
+                                        <Checkbox
+                                            id="hider-mode-toggle"
+                                            checked={!!$hiderMode}
+                                            onCheckedChange={() => {
+                                                if ($hiderMode === false) {
+                                                    const $leafletMapContext = leafletMapContext.get();
+                                                    if ($leafletMapContext) {
+                                                        const center = $leafletMapContext.getCenter();
+                                                        hiderMode.set({
+                                                            latitude: center.lat,
+                                                            longitude: center.lng,
+                                                        });
+                                                    } else {
+                                                        hiderMode.set({ latitude: 0, longitude: 0 });
+                                                    }
+                                                } else {
+                                                    hiderMode.set(false);
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                    
+                                    {/* Sub-menu for Hider Mode */}
+                                    {$hiderMode !== false && (
+                                        <div className="p-4 bg-slate-50/80 dark:bg-slate-900/50 inner-shadow-sm">
+                                            <SidebarMenu>
+                                                <LatitudeLongitude
+                                                    latitude={$hiderMode.latitude}
+                                                    longitude={$hiderMode.longitude}
+                                                    inlineEdit
+                                                    onChange={(latitude, longitude) => {
+                                                        $hiderMode.latitude = latitude ?? $hiderMode.latitude;
+                                                        $hiderMode.longitude = longitude ?? $hiderMode.longitude;
 
+                                                        if (
+                                                            $hiderMode.latitude !== 0 ||
+                                                            $hiderMode.longitude !== 0
+                                                        ) {
+                                                            hiderMode.set({
+                                                                ...$hiderMode,
+                                                            });
+                                                        }
+                                                    }}
+                                                    label="Location"
+                                                />
+                                            </SidebarMenu>
+                                        </div>
+                                    )}
+
+                                    {/* Recommended Start Toggle */}
+                                    <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                                        <Label htmlFor="recommended-starting-point-toggle" className="flex-1 cursor-pointer text-base font-medium">Starting Point</Label>
+                                        <Checkbox
+                                            id="recommended-starting-point-toggle"
+                                            checked={$showRecommendedStart}
+                                            onCheckedChange={() => showRecommendedStart.set(!$showRecommendedStart)}
+                                        />
+                                    </div>
+
+                                    {/* Transit Overlay Toggle */}
+                                    <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                                        <Label htmlFor="transit-overlay-toggle" className="flex-1 cursor-pointer text-base font-medium">Transit Lines on Map</Label>
+                                        <Checkbox
+                                            id="transit-overlay-toggle"
+                                            checked={$displayTransitLines}
+                                            onCheckedChange={() => displayTransitLines.set(!$displayTransitLines)}
+                                        />
+                                    </div>
+
+                                    {/* Follow Me Toggle */}
+                                    <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                                        <Label htmlFor="follow-me-toggle" className="flex-1 cursor-pointer text-base font-medium">Follow Me (GPS)</Label>
+                                        <Checkbox
+                                            id="follow-me-toggle"
+                                            checked={$followMe}
+                                            onCheckedChange={() => followMe.set(!$followMe)}
+                                        />
+                                    </div>
+
+                                    {/* Map Layer Select */}
+                                    <div className="flex items-center justify-between p-4 bg-slate-50/30 dark:bg-slate-900/30">
+                                        <Label className="text-base font-medium text-muted-foreground mr-4">Map Layout</Label>
+                                        <div className="w-[180px]">
+                                            <Select
+                                                trigger="Map"
+                                                options={{
+                                                    voyager: "CARTO Voyager",
+                                                    light: "CARTO Light",
+                                                    dark: "CARTO Dark",
+                                                    osmcarto: "OpenStreetMap Carto",
+                                                }}
+                                                value={$baseTileLayer}
+                                                onValueChange={(v) => baseTileLayer.set(v as any)}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* --- Learning & Help Actions --- */}
+                            <div className="space-y-3">
+                                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1">
+                                    Help & Learning
+                                </h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <Button
+                                        variant="secondary"
+                                        onClick={() => {
+                                            isOptionsOpenStore.set(false);
+                                            setTimeout(() => {
+                                                showTutorial.set(true);
+                                            }, 300);
+                                        }}
+                                        className="w-full h-11"
+                                    >
+                                        Start Tutorial
+                                    </Button>
+                                    <a
+                                        href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/rules`}
+                                        className="w-full"
+                                        onClick={() => hasSeenRules.set(true)}
+                                        data-tutorial-id="tutorial-rules-btn"
+                                    >
+                                        <Button variant="secondary" className="w-full h-11">Rules & Tips</Button>
+                                    </a>
+                                </div>
+                            </div>
+
+                            {/* --- Donations Callout Box --- */}
+                            <div className="rounded-xl border border-blue-200/60 bg-blue-50/50 dark:bg-blue-950/20 dark:border-blue-900 p-5 space-y-4 shadow-sm">
+                                <div className="space-y-1 text-center">
+                                    <h4 className="font-semibold font-poppins text-blue-900 dark:text-blue-200">Support the Project</h4>
+                                    <p className="text-sm text-blue-700/80 dark:text-blue-300/80">Keep hideNseek running by donating via PayPal</p>
+                                </div>
+                                <div className="flex flex-col gap-2">
+                                    <a href="https://paypal.me/hideNseekApp/4.03" target="_blank" rel="noopener noreferrer">
+                                        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
+                                            "Hiding in the 403" &mdash; $4.03
+                                        </Button>
+                                    </a>
+                                    <a href="https://paypal.me/hideNseekApp/7" target="_blank" rel="noopener noreferrer">
+                                        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
+                                            "7th Ave Free Zone" &mdash; $7.00
+                                        </Button>
+                                    </a>
+                                    <a href="https://paypal.me/hideNseekApp/15" target="_blank" rel="noopener noreferrer">
+                                        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
+                                            "Lost in the +15s" &mdash; $15.00
+                                        </Button>
+                                    </a>
+                                </div>
+                                <div className="pt-3 border-t border-blue-200/50 dark:border-blue-900/50 text-center">
+                                    <p className="text-xs font-poppins text-blue-800/80 dark:text-blue-300/60">
+                                        Or e-transfer to: <br />
+                                        <span className="font-semibold select-all text-blue-950 dark:text-blue-100 block mt-1">
+                                            hideNseekAppDonation@gmail.com
+                                        </span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* --- Data Management (Danger Zone) --- */}
+                            <div className="space-y-3 pb-4">
+                                <h3 className="text-sm font-semibold text-red-500/80 uppercase tracking-wider px-1">
+                                    Data Management
+                                </h3>
+                                <div className="flex flex-col sm:flex-row gap-3">
+                                    <Button
+                                        variant="outline"
+                                        className="w-full h-11 bg-background hover:bg-slate-100 dark:hover:bg-slate-800"
+                                        onClick={() => {
+                                            import("@/maps/api").then(
+                                                ({ cacheAllPlaces }) => {
+                                                    cacheAllPlaces();
+                                                },
+                                            );
+                                        }}
+                                    >
+                                        Pre-save All Places
+                                    </Button>
+                                    <Button
+                                        variant="destructive"
+                                        className="w-full h-11 shadow-sm"
+                                        onClick={async () => {
                                             if (
-                                                $hiderMode.latitude !== 0 ||
-                                                $hiderMode.longitude !== 0
+                                                window.confirm(
+                                                    "Are you sure you want to reset everything? This will delete all saved data and settings.",
+                                                )
                                             ) {
-                                                hiderMode.set({
-                                                    ...$hiderMode,
-                                                });
+                                                if ("caches" in window) {
+                                                    const keys = await caches.keys();
+                                                    await Promise.all(
+                                                        keys.map((key) =>
+                                                            caches.delete(key),
+                                                        ),
+                                                    );
+                                                }
+                                                localStorage.clear();
+                                                sessionStorage.clear();
+                                                sessionStorage.setItem(
+                                                    "resetEverything",
+                                                    "true",
+                                                );
+                                                window.location.reload();
                                             }
                                         }}
-                                        label="Location"
-                                    />
-                                </SidebarMenu>
-                            )}
-                            <Separator className="bg-slate-300 w-[280px]" />
-                            <div className="flex flex-row items-center gap-2 text-center">
-                                <label className="text-xl sm:text-2xl font-semibold font-poppins text-center">
-                                    Show transit lines overlay?
-                                </label>
-                                <Checkbox
-                                    checked={$displayTransitLines}
-                                    onCheckedChange={() => {
-                                        displayTransitLines.set(
-                                            !$displayTransitLines,
-                                        );
-                                    }}
-                                />
+                                    >
+                                        Reset Everything
+                                    </Button>
+                                </div>
                             </div>
-                            <div className="flex flex-row items-center gap-2 text-center">
-                                <label className="text-xl sm:text-2xl font-semibold font-poppins">
-                                    Follow Me (GPS)?
-                                </label>
-                                <Checkbox
-                                    checked={$followMe}
-                                    onCheckedChange={() =>
-                                        followMe.set(!$followMe)
-                                    }
-                                />
-                            </div>
-                            <Separator className="bg-slate-300 w-[280px]" />
-                            <Label>Map</Label>
-                            <Select
-                                trigger="Map"
-                                options={{
-                                    voyager: "CARTO Voyager",
-                                    light: "CARTO Light",
-                                    dark: "CARTO Dark",
-                                    osmcarto: "OpenStreetMap Carto",
-                                }}
-                                value={$baseTileLayer}
-                                onValueChange={(v) =>
-                                    baseTileLayer.set(v as any)
-                                }
-                            />
-                            <div className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-[280px] sm:max-w-none">
-                                <Button
-                                    variant="outline"
-                                    className="w-full sm:w-[280px] font-normal hover:bg-slate-200"
-                                    onClick={() => {
-                                        import("@/maps/api").then(
-                                            ({ cacheAllPlaces }) => {
-                                                cacheAllPlaces();
-                                            },
-                                        );
-                                    }}
-                                >
-                                    Pre-save All Places
-                                </Button>
-                                <Button
-                                    variant="destructive"
-                                    className="w-full sm:w-[280px]"
-                                    onClick={async () => {
-                                        if (
-                                            window.confirm(
-                                                "Are you sure you want to reset everything? This will delete all saved data and settings.",
-                                            )
-                                        ) {
-                                            if ("caches" in window) {
-                                                const keys =
-                                                    await caches.keys();
-                                                await Promise.all(
-                                                    keys.map((key) =>
-                                                        caches.delete(key),
-                                                    ),
-                                                );
-                                            }
-                                            localStorage.clear();
-                                            sessionStorage.clear();
-                                            sessionStorage.setItem(
-                                                "resetEverything",
-                                                "true",
-                                            );
-                                            window.location.reload();
-                                        }
-                                    }}
-                                >
-                                    Reset Everything
-                                </Button>
-                            </div>
+
                         </div>
                     </div>
                 </DrawerContent>
