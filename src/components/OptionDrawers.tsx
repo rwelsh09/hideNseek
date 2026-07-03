@@ -23,7 +23,6 @@ import {
     hidingZone,
     isOptionsOpenStore,
     leafletMapContext,
-    liveUpdateMapEnabled,
     mapGeoJSON,
     mapGeoLocation,
     polyGeoJSON,
@@ -51,7 +50,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $animateMapMovements = useStore(animateMapMovements);
     const $hiderMode = useStore(hiderMode);
     const $hidingZone = useStore(hidingZone);
-    const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
     const $displayTransitLines = useStore(displayTransitLines);
@@ -204,7 +202,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                     </Button>
                 </DrawerTrigger>
                 <DrawerContent onPointerDown={(e) => e.stopPropagation()}>
-                    <div className="flex flex-col items-center gap-4 mb-4">
+                    <div className="flex flex-col items-center gap-4 mb-4 overflow-y-scroll max-h-[85vh]">
                         <div className="w-full max-w-[280px] sm:max-w-none flex flex-col sm:flex-row gap-4 justify-center mb-2 mt-4">
                             <Button
                                 onClick={() => {
@@ -279,11 +277,11 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                         </div>
 
                         <DrawerHeader>
-                            <DrawerTitle className="text-4xl font-semibold font-poppins">
+                            <DrawerTitle className="text-4xl font-semibold font-poppins underline">
                                 Options
                             </DrawerTitle>
                         </DrawerHeader>
-                        <div className="overflow-y-scroll max-h-[25vh] flex flex-col items-center gap-4 max-w-[1000px] px-4 sm:px-12 pb-10">
+                        <div className="flex flex-col items-center gap-4 max-w-[1000px] px-4 sm:px-12 pb-10">
                             <div className="flex flex-row items-center gap-2 mt-2">
                                 <label className="text-2xl font-semibold font-poppins text-center">
                                     Hider mode?
@@ -319,7 +317,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     className="text-xl sm:text-2xl font-semibold font-poppins text-center"
                                     htmlFor="recommended-starting-point-toggle"
                                 >
-                                    Recommended Starting Point?
+                                    Starting Point?
                                 </label>
                                 <Checkbox
                                     id="recommended-starting-point-toggle"
@@ -358,21 +356,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 </SidebarMenu>
                             )}
                             <Separator className="bg-slate-300 w-[280px]" />
-                            <Label>Base map style</Label>
-                            <Select
-                                trigger="Base map style"
-                                options={{
-                                    voyager: "CARTO Voyager",
-                                    light: "CARTO Light",
-                                    dark: "CARTO Dark",
-                                    osmcarto: "OpenStreetMap Carto",
-                                }}
-                                value={$baseTileLayer}
-                                onValueChange={(v) =>
-                                    baseTileLayer.set(v as any)
-                                }
-                            />
-                            <Separator className="bg-slate-300 w-[280px]" />
                             <div className="flex flex-row items-center gap-2 text-center">
                                 <label className="text-xl sm:text-2xl font-semibold font-poppins">
                                     Animate map movements?
@@ -401,37 +384,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             </div>
                             <div className="flex flex-row items-center gap-2 text-center">
                                 <label className="text-xl sm:text-2xl font-semibold font-poppins">
-                                    Live update map?
-                                </label>
-                                <Checkbox
-                                    checked={$liveUpdateMapEnabled}
-                                    onCheckedChange={() => {
-                                        if ($liveUpdateMapEnabled === false) {
-                                            const map = leafletMapContext.get();
-
-                                            if (map) {
-                                                map.eachLayer((layer: any) => {
-                                                    if (
-                                                        layer.questionKey ||
-                                                        layer.questionKey === 0
-                                                    ) {
-                                                        map.removeLayer(layer);
-                                                    }
-                                                });
-                                            }
-                                        } else {
-                                            questions.set([...questions.get()]);
-                                        }
-
-                                        liveUpdateMapEnabled.set(
-                                            !$liveUpdateMapEnabled,
-                                        );
-                                    }}
-                                />
-                            </div>
-
-                            <div className="flex flex-row items-center gap-2 text-center">
-                                <label className="text-xl sm:text-2xl font-semibold font-poppins">
                                     Follow Me (GPS)?
                                 </label>
                                 <Checkbox
@@ -442,7 +394,34 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 />
                             </div>
                             <Separator className="bg-slate-300 w-[280px]" />
+                            <Label>Map</Label>
+                            <Select
+                                trigger="Map"
+                                options={{
+                                    voyager: "CARTO Voyager",
+                                    light: "CARTO Light",
+                                    dark: "CARTO Dark",
+                                    osmcarto: "OpenStreetMap Carto",
+                                }}
+                                value={$baseTileLayer}
+                                onValueChange={(v) =>
+                                    baseTileLayer.set(v as any)
+                                }
+                            />
                             <div className="flex flex-col sm:flex-row items-center gap-2 w-full max-w-[280px] sm:max-w-none">
+                                <Button
+                                    variant="outline"
+                                    className="w-full sm:w-[280px] font-normal hover:bg-slate-200"
+                                    onClick={() => {
+                                        import("@/maps/api").then(
+                                            ({ cacheAllPlaces }) => {
+                                                cacheAllPlaces();
+                                            },
+                                        );
+                                    }}
+                                >
+                                    Pre-save All Places
+                                </Button>
                                 <Button
                                     variant="destructive"
                                     className="w-full sm:w-[280px]"
@@ -472,19 +451,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     }}
                                 >
                                     Reset Everything
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    className="w-full sm:w-[280px] font-normal hover:bg-slate-200"
-                                    onClick={() => {
-                                        import("@/maps/api").then(
-                                            ({ cacheAllPlaces }) => {
-                                                cacheAllPlaces();
-                                            },
-                                        );
-                                    }}
-                                >
-                                    Cache All Possible Places
                                 </Button>
                             </div>
                         </div>

@@ -196,8 +196,8 @@ export const hidingZone = computed(
     },
 );
 
-export const liveUpdateMapEnabled = persistentAtom<boolean>(
-    "liveUpdateMapEnabled",
+export const liveUpdateMapEnabledRemoved = persistentAtom<boolean>(
+    "liveUpdateMapEnabledRemoved",
     false,
     { encode: JSON.stringify, decode: JSON.parse },
 );

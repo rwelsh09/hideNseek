@@ -19,7 +19,6 @@ import {
     hiderMode,
     isLoading,
     leafletMapContext,
-    liveUpdateMapEnabled,
     mapGeoJSON,
     mapGeoLocation,
     polyGeoJSON,
@@ -181,7 +180,7 @@ export const Map = ({ className }: { className?: string }) => {
             mapGeoData = await applyQuestionsToMapGeoData(
                 $questions,
                 mapGeoData,
-                liveUpdateMapEnabled.get(),
+                false,
                 (geoJSONObj, question) => {
                     const geoJSONPlane = L.geoJSON(geoJSONObj, {
                         interactive: false,

@@ -87,7 +87,7 @@ const filterPointsWithinRadius = (points: any, question: ClosestQuestion) => {
         if (targetRadius > maxAllowedRadius) {
             targetRadius = maxAllowedRadius;
         }
-        
+
         if (pointsWithDist.length < 5) {
             targetRadius = maxAllowedRadius;
         }

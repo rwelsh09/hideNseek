@@ -1,16 +1,10 @@
 import { useStore } from "@nanostores/react";
-import * as turf from "@turf/turf";
 import type { Feature, Point } from "geojson";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 import { Popup } from "react-leaflet";
 
-import {
-    hiderMode,
-    liveUpdateMapEnabled,
-    questionModified,
-    questions,
-} from "@/lib/context";
+import { questionModified, questions } from "@/lib/context";
 import { findClosestLocations } from "@/maps/api";
 import type { Question } from "@/maps/schema";
 
@@ -38,7 +32,6 @@ const ClosestPlacesForQuestion = ({
     question: Extract<Question, { id: "closest" }>;
 }) => {
     const [places, setPlaces] = useState<Feature<Point, any>[]>([]);
-    const $hiderMode = useStore(hiderMode);
 
     useEffect(() => {
         let isMounted = true;
@@ -61,11 +54,6 @@ const ClosestPlacesForQuestion = ({
         question.data.places,
     ]);
 
-    const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
-
-    if ($hiderMode && $liveUpdateMapEnabled) return null;
-
-    const center = turf.point([question.data.lng, question.data.lat]);
     const filteredPlaces = places.filter((f) => {
         const coords =
             f?.geometry?.coordinates ??
@@ -73,12 +61,7 @@ const ClosestPlacesForQuestion = ({
                 ? [f.properties?.lon, f.properties?.lat]
                 : null);
         if (!coords) return false;
-        if (!$liveUpdateMapEnabled) return true; // Show all places in playtest mode
-        return (
-            turf.distance(center, turf.point(coords), {
-                units: question.data.unit,
-            }) <= question.data.radius
-        );
+        return true; // Show all places in playtest mode
     });
 
     return (

@@ -3,7 +3,7 @@ import osmtogeojson from "osmtogeojson";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 
-import { liveUpdateMapEnabled, questions } from "@/lib/context";
+import { questions } from "@/lib/context";
 import { findPlacesInZone } from "@/maps/api";
 import { LOCATION_FIRST_TAG } from "@/maps/api/constants";
 
@@ -53,14 +53,11 @@ const PlaytestPlaceMarker = ({
 };
 
 export const PlaytestPlaces = () => {
-    const $liveUpdateMapEnabled = useStore(liveUpdateMapEnabled);
     const $questions = useStore(questions);
 
     const [places, setPlaces] = useState<any[]>([]);
 
     useEffect(() => {
-        if ($liveUpdateMapEnabled) return;
-
         let isMounted = true;
 
         const loadPlaces = async () => {
@@ -181,9 +178,7 @@ export const PlaytestPlaces = () => {
         return () => {
             isMounted = false;
         };
-    }, [$liveUpdateMapEnabled, $questions]);
-
-    if ($liveUpdateMapEnabled) return null;
+    }, [$questions]);
 
     return (
         <>
