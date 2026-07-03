@@ -327,6 +327,15 @@ export const leaderboard = persistentAtom<LeaderboardEntry[]>(
     },
 );
 
+export const showRecommendedStart = persistentAtom<boolean>(
+    "showRecommendedStart",
+    false,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+
 export const leftSidebarOpenSignal = atom<boolean>(true); // desktop default open
 export const rightSidebarOpenSignal = atom<boolean>(false);
 export const timerDrawerOpenSignal = atom<boolean>(false);
