@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/update-center-point-3879958894383076676/sw.js', { scope: '/HideAndSeek/update-center-point-3879958894383076676/' })})}
