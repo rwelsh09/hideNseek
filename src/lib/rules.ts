@@ -7,6 +7,6 @@ export const QUESTION_RULES: Record<string, string> = {
     "hot/cold":
         "Seekers travel a specific distance (e.g., 2km) providing the Hider with their starting and end point. The Hider must reveal if the Seekers are now Warmer (closer) or Colder (further) to the Hider's position.",
     closest:
-        "Seekers select a category. The webapp mathematically divides the entire map into distinct regions originating from the chosen category. The Hider must reveal which 'closest' (region) contains their location.",
+        "Seekers select a category. The webapp mathematically divides the entire map into distinct regions originating from the chosen category. The Hider must reveal which 'closest' (region) contains their location. (Note: The app dynamically limits this to the 5 closest locations to the Seekers' marker to keep questions balanced).",
     photo: "Seekers request a photograph from the Hider's current perspective. The photo must accurately represent their location without being intentionally misleading. The Hider may edit the photo to blackout words.",
 };
