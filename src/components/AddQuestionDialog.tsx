@@ -116,16 +116,16 @@ export function AddQuestionDialog() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
-                    className="w-full flex items-center justify-center gap-2 py-6 text-lg rounded-none border-b border-border"
+                    className="w-full flex items-center justify-center gap-2 h-11"
                     data-tutorial-id="add-question-btn"
                 >
-                    <Plus className="w-6 h-6" /> Add Question
+                    <Plus className="w-5 h-5" /> Add Question
                 </Button>
             </DialogTrigger>
 
-            <DialogContent className="max-w-6xl w-[95vw] sm:w-full bg-gray-100 p-0 flex flex-col max-h-[90dvh] rounded-lg overflow-hidden">
-                <DialogHeader className="bg-red-600 p-3 sm:p-4 m-0 shrink-0">
-                    <DialogTitle className="text-white text-center font-bold text-xl sm:text-2xl uppercase tracking-widest m-0">
+            <DialogContent className="max-w-6xl w-[95vw] sm:w-full bg-card p-0 flex flex-col max-h-[90dvh] rounded-xl overflow-hidden shadow-xl border">
+                <DialogHeader className="bg-slate-800 p-4 m-0 shrink-0 border-b border-slate-700">
+                    <DialogTitle className="text-white text-center font-bold text-xl uppercase tracking-wider m-0">
                         Question Menu
                     </DialogTitle>
                 </DialogHeader>
