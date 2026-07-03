@@ -137,3 +137,71 @@ div.leaflet-control-attribution.leaflet-control {
     pointer-events: auto !important;
     cursor: pointer !important;
 }
+
+/* Hide tutorial popover and show nudge when driver is active, a drawer is open, but the active element is not inside it */
+body.driver-active:has(
+        [data-sidebar="sidebar"][data-state="expanded"],
+        [role="dialog"][data-state="open"]
+    ):not(
+        :has(
+            [data-sidebar="sidebar"][data-state="expanded"]
+                .driver-active-element,
+            [role="dialog"][data-state="open"] .driver-active-element
+        )
+    )
+    .driver-popover {
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+body.driver-active:has(
+        [data-sidebar="sidebar"][data-state="expanded"],
+        [role="dialog"][data-state="open"]
+    ):not(
+        :has(
+            [data-sidebar="sidebar"][data-state="expanded"]
+                .driver-active-element,
+            [role="dialog"][data-state="open"] .driver-active-element
+        )
+    )
+    .driver-overlay
+    path {
+    fill-opacity: 0 !important;
+}
+
+body.driver-active:has(
+        [data-sidebar="sidebar"][data-state="expanded"],
+        [role="dialog"][data-state="open"]
+    ):not(
+        :has(
+            [data-sidebar="sidebar"][data-state="expanded"]
+                .driver-active-element,
+            [role="dialog"][data-state="open"] .driver-active-element
+        )
+    )::after {
+    content: "Close this menu to return to the tutorial";
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #2563eb;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    z-index: 1000000;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    pointer-events: none;
+    animation: nudge-slide-up 0.3s ease-out;
+}
+
+@keyframes nudge-slide-up {
+    from {
+        opacity: 0;
+        transform: translate(-50%, 1rem);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, 0);
+    }
+}
