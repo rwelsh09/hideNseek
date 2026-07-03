@@ -23,11 +23,8 @@ export const TutorialManager = () => {
                         driverObj.getConfig().steps?.length === 2;
 
                     if (isRulesPhase) {
-                        // In the first phase, they clicked the link (or skipped naturally)
-                        // Do NOT prompt and do NOT disable the tutorial globally. Let them return.
                         driverObj.destroy();
                     } else {
-                        // Main phase. Prompt if they are skipping early.
                         if (
                             !driverObj.hasNextStep() ||
                             confirm(
@@ -48,7 +45,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Welcome to Hide & Seek",
                                   description:
-                                      "Before we begin, open the Settings & Options menu so you can read the Rules & Tips.",
+                                      "Before we begin, open the Options menu so you can read the Rules.",
                                   side: "top",
                                   align: "end",
                                   showButtons: ["previous"],
@@ -185,12 +182,11 @@ export const TutorialManager = () => {
                                       "Click here to open the sidebar so we can add a question.",
                                   side: "right",
                                   align: "start",
-                                  showButtons: ["previous"], // Hide Next button to force interaction
+                                  showButtons: ["previous"],
                                   onPopoverRender: () => {
                                       const sidebarL = document.querySelector(
                                           '.peer[data-side="left"]',
                                       );
-                                      // If the sidebar is already expanded (desktop), immediately skip this interaction step
                                       if (
                                           sidebarL &&
                                           sidebarL.getAttribute(
@@ -247,7 +243,7 @@ export const TutorialManager = () => {
                                   description: "Click here to add a question.",
                                   side: "right",
                                   align: "start",
-                                  showButtons: ["previous"], // Hide Next button to force interaction
+                                  showButtons: ["previous"],
                                   onPopoverRender: () => {
                                       const btn = document.querySelector(
                                           '[data-tutorial-id="add-question-btn"]',
@@ -266,7 +262,6 @@ export const TutorialManager = () => {
                                                               clearInterval(
                                                                   checkInterval,
                                                               );
-                                                              // Adding slight timeout for overlay animation
                                                               setTimeout(
                                                                   () =>
                                                                       driverObj.moveNext(),
@@ -290,7 +285,7 @@ export const TutorialManager = () => {
                                       "Let's ask a 5 km Radar question. Click here to add it to the map.",
                                   side: "right",
                                   align: "start",
-                                  showButtons: ["previous"], // Hide Next button
+                                  showButtons: ["previous"],
                                   onPopoverRender: () => {
                                       const btn = document.querySelector(
                                           '[data-tutorial-id="tutorial-add-radar-5"]',
@@ -365,7 +360,6 @@ export const TutorialManager = () => {
                                       const sidebarL = document.querySelector(
                                           '.peer[data-side="left"]',
                                       );
-                                      // If the sidebar is already expanded (desktop), immediately skip this interaction step
                                       if (
                                           sidebarL &&
                                           sidebarL.getAttribute(
@@ -501,7 +495,6 @@ export const TutorialManager = () => {
                                   align: "end",
                                   showButtons: ["previous"],
                                   onPopoverRender: () => {
-                                      // Let the user interact with the map
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
                                           disableActiveInteraction: false,
@@ -512,7 +505,6 @@ export const TutorialManager = () => {
                                               document.querySelector(
                                                   '[data-tutorial-id="tutorial-lock-btn"]',
                                               );
-                                          // The aria-label changes to "Unlock Question" when the question is currently locked
                                           if (
                                               lockBtn &&
                                               lockBtn.getAttribute(
@@ -520,7 +512,6 @@ export const TutorialManager = () => {
                                               ) === "Unlock Question"
                                           ) {
                                               clearInterval(checkInterval);
-                                              // A slight delay to let the animation play before moving
                                               setTimeout(
                                                   () => driverObj.moveNext(),
                                                   300,
@@ -540,7 +531,6 @@ export const TutorialManager = () => {
                                   side: "right",
                                   align: "start",
                                   onPopoverRender: () => {
-                                      // Restore original config
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
                                           disableActiveInteraction: true,
@@ -568,7 +558,6 @@ export const TutorialManager = () => {
                                               document.querySelector(
                                                   '[data-tutorial-id="tutorial-lock-btn"]',
                                               );
-                                          // The aria-label changes to "Lock Question" when the question is currently unlocked
                                           if (
                                               lockBtn &&
                                               lockBtn.getAttribute(
@@ -650,7 +639,6 @@ export const TutorialManager = () => {
                       ],
             });
 
-            // Need a slight delay to ensure elements are mounted before driving
             setTimeout(() => {
                 driverObj.drive();
             }, 500);
