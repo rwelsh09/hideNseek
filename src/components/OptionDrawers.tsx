@@ -29,6 +29,7 @@ import {
     mapGeoLocation,
     polyGeoJSON,
     questions,
+    showRecommendedStart,
     showTutorial,
     triggerLocalRefresh,
 } from "@/lib/context";
@@ -56,6 +57,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
     const $displayTransitLines = useStore(displayTransitLines);
+    const $showRecommendedStart = useStore(showRecommendedStart);
     const $isOptionsOpenStore = useStore(isOptionsOpenStore);
 
     useEffect(() => {
@@ -311,6 +313,23 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                         } else {
                                             hiderMode.set(false);
                                         }
+                                    }}
+                                />
+                            </div>
+                            <div className="flex flex-row items-center gap-2 text-center">
+                                <label
+                                    className="text-xl sm:text-2xl font-semibold font-poppins text-center"
+                                    htmlFor="recommended-starting-point-toggle"
+                                >
+                                    Recommended Starting Point?
+                                </label>
+                                <Checkbox
+                                    id="recommended-starting-point-toggle"
+                                    checked={$showRecommendedStart}
+                                    onCheckedChange={() => {
+                                        showRecommendedStart.set(
+                                            !$showRecommendedStart,
+                                        );
                                     }}
                                 />
                             </div>

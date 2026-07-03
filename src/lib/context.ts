@@ -326,3 +326,12 @@ export const leaderboard = persistentAtom<LeaderboardEntry[]>(
         decode: JSON.parse,
     },
 );
+
+export const showRecommendedStart = persistentAtom<boolean>(
+    "showRecommendedStart",
+    false,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
