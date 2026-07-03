@@ -200,6 +200,16 @@ const LatLngEditForm = ({
                     size="icon"
                     onClick={() => onChange(-latitude, null)}
                     disabled={disabled}
+                    title={
+                        latitude > 0
+                            ? "Toggle to South hemisphere"
+                            : "Toggle to North hemisphere"
+                    }
+                    aria-label={
+                        latitude > 0
+                            ? "Toggle to South hemisphere"
+                            : "Toggle to North hemisphere"
+                    }
                 >
                     {latitude > 0 ? "N" : "S"}
                 </Button>
@@ -226,6 +236,16 @@ const LatLngEditForm = ({
                     size="icon"
                     onClick={() => onChange(null, -longitude)}
                     disabled={disabled}
+                    title={
+                        longitude > 0
+                            ? "Toggle to West hemisphere"
+                            : "Toggle to East hemisphere"
+                    }
+                    aria-label={
+                        longitude > 0
+                            ? "Toggle to West hemisphere"
+                            : "Toggle to East hemisphere"
+                    }
                 >
                     {longitude > 0 ? "E" : "W"}
                 </Button>
