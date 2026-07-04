@@ -454,6 +454,22 @@ export const TutorialManager = () => {
                               },
                           },
                           {
+                              element: '[data-tutorial-id="tutorial-question-result-toggle"]',
+                              popover: {
+                                  title: "Enter the Result",
+                                  description:
+                                      "Based on the Hider's answer, select the appropriate result here.",
+                                  side: "bottom",
+                                  align: "center",
+                                  onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: false,
+                                      });
+                                  },
+                              },
+                          },
+                          {
                               element: '[data-tutorial-id="tutorial-lock-btn"]',
                               popover: {
                                   title: "Lock Your Answer",

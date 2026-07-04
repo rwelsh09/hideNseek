@@ -136,6 +136,7 @@ export const RadiusQuestionComponent = ({
                             questionModified();
                         }}
                         disabled={!!$hiderMode || !data.drag || $isLoading}
+                        data-tutorial-id="tutorial-question-result-toggle"
                     >
                         <ToggleGroupItem value="outside">
                             Outside
