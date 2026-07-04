@@ -66,12 +66,15 @@ export function AddQuestionDialog() {
             qData.radius = detail === "unknown" ? 5 : parseFloat(detail || "5");
             qData.unit = "kilometers";
             qData.within = true;
+            qData.color = "orange";
         } else if (type === "match") {
             qData.type = detail || "museum";
             qData.same = true;
+            qData.color = "indigo";
         } else if (type === "measure") {
             qData.type = detail || "museum";
             qData.hiderCloser = true;
+            qData.color = "green";
         } else if (type === "hot/cold") {
             const destination = turf.destination(
                 [center.lng, center.lat],
@@ -86,15 +89,19 @@ export function AddQuestionDialog() {
                 lngB: destination.geometry.coordinates[0],
                 warmer: true,
                 drag: true,
+                colorA: "gold",
+                colorB: "blue",
             };
         } else if (type === "closest") {
             qData.locationType = detail || "museum";
             qData.radius = 2;
             qData.unit = "kilometers";
+            qData.color = "violet";
         } else if (type === "photo") {
             qId = "photo";
             qData.notes = "";
             qData.type = detail || "camera";
+            qData.color = "blue";
         }
 
         // Add to map immediately
