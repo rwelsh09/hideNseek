@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { VscQuestion, VscShare } from "react-icons/vsc";
+import { VscQuestion, VscShare, VscTrash } from "react-icons/vsc";
 import {
     Popover,
     PopoverContent,
@@ -302,6 +302,22 @@ export const LatitudeLongitude = ({
                                         </PopoverContent>
                                     </Popover>
                                 )}
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    aria-label="Delete Question"
+                                    data-tutorial-id="tutorial-delete-question-btn"
+                                    disabled={$isLoading || disabled}
+                                    onClick={() => {
+                                        questions.set(
+                                            $questions.filter(
+                                                (q) => q.key !== questionKey,
+                                            ),
+                                        );
+                                    }}
+                                >
+                                    <VscTrash />
+                                </Button>
                                 <Dialog>
                                     <DialogTrigger asChild>
                                         <Button

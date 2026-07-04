@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { LockIcon, UnlockIcon } from "lucide-react";
 import { useRef, useState } from "react";
-import { VscChevronDown, VscTrash } from "react-icons/vsc";
+import { VscChevronDown } from "react-icons/vsc";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -87,26 +87,8 @@ export const QuestionCard = ({
                         )}
                     >
                         <SidebarMenu>{children}</SidebarMenu>
-                        <div className="flex gap-2 pt-2 px-2 justify-center">
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                aria-label="Delete Question"
-                                data-tutorial-id="tutorial-delete-question-btn"
-                                disabled={$isLoading}
-                                onClick={() => {
-                                    if (!locked) {
-                                        questions.set(
-                                            $questions.filter(
-                                                (q) => q.key !== questionKey,
-                                            ),
-                                        );
-                                    }
-                                }}
-                            >
-                                <VscTrash />
-                            </Button>
-                            {locked !== undefined && (
+                        {locked !== undefined && (
+                            <div className="flex gap-2 pt-2 px-2 justify-center">
                                 <Button
                                     variant="outline"
                                     size="sm"
@@ -121,8 +103,8 @@ export const QuestionCard = ({
                                 >
                                     {locked ? <LockIcon /> : <UnlockIcon />}
                                 </Button>
-                            )}
-                        </div>
+                            </div>
+                        )}
                     </SidebarGroupContent>
                 </div>
             </SidebarGroup>
