@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/scout-questioncard-refactor-4671685596374063845/sw.js', { scope: '/hideNseek/scout-questioncard-refactor-4671685596374063845/' })})}
