@@ -48,6 +48,13 @@ const randomColor = () =>
         Math.floor(Math.random() * Object.keys(ICON_COLORS).length)
     ];
 
+const randomColorExcluding = (excluded: IconColor[] = []) => {
+    const options = (Object.keys(ICON_COLORS) as IconColor[]).filter(
+        (color) => !excluded.includes(color),
+    );
+
+    return options[Math.floor(Math.random() * options.length)];
+};
 
 const hotColdQuestionSchema = z
     .object({
@@ -118,6 +125,10 @@ const closestLocationsOne = z.union([
     z.literal("pub").describe("Pubs / Bars"),
 ]);
 
+const apiLocationSchema = z.union([
+    z.literal("golf_course"),
+    closestLocationsOne,
+]);
 
 const baseClosestQuestionSchema = ordinaryBaseQuestionSchema.extend({
     showLabels: z.boolean().default(false),
@@ -249,6 +260,7 @@ export type Units = z.infer<typeof unitsSchema>;
 export type RadiusQuestion = z.infer<typeof radiusQuestionSchema>;
 export type HotColdQuestion = z.infer<typeof hotColdQuestionSchema>;
 export type ClosestQuestion = z.infer<typeof closestQuestionSchema>;
+export type APILocations = z.infer<typeof apiLocationSchema>;
 export type MatchQuestion = z.infer<typeof matchQuestionSchema>;
 export type MeasureQuestion = z.infer<typeof measureQuestionSchema>;
 export type PhotoQuestion = z.infer<typeof photoQuestionSchema>;

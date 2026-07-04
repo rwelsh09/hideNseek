@@ -38,6 +38,7 @@ import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { Select } from "./ui/select";
+import { Separator } from "./ui/separator";
 import { SidebarMenu } from "./ui/sidebar-l";
 
 const HIDING_ZONE_URL_PARAM = "hz";
@@ -356,17 +357,17 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 <div className="flex flex-col gap-2">
                                     <a href="https://paypal.me/hideNseekApp/4.03" target="_blank" rel="noopener noreferrer">
                                         <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
-                                            &quot;Hiding in the 403&quot; &mdash; $4.03
+                                            "Hiding in the 403" &mdash; $4.03
                                         </Button>
                                     </a>
                                     <a href="https://paypal.me/hideNseekApp/7" target="_blank" rel="noopener noreferrer">
                                         <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
-                                            &quot;7th Ave Free Zone&quot; &mdash; $7.00
+                                            "7th Ave Free Zone" &mdash; $7.00
                                         </Button>
                                     </a>
                                     <a href="https://paypal.me/hideNseekApp/15" target="_blank" rel="noopener noreferrer">
                                         <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
-                                            &quot;Lost in the +15s&quot; &mdash; $15.00
+                                            "Lost in the +15s" &mdash; $15.00
                                         </Button>
                                     </a>
                                 </div>

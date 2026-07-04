@@ -18,16 +18,16 @@ import {
 } from "@/maps/api";
 import { holedMask, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils";
-import type { MatchQuestion } from "@/maps/schema";
+import type { APILocations, MatchQuestion } from "@/maps/schema";
 
-const findMatchPlaces = async (question: MatchQuestion) => {
+export const findMatchPlaces = async (question: MatchQuestion) => {
     switch (question.type) {
         case "museum":
         case "hospital":
         case "cinema":
         case "library":
         case "golf_course": {
-            const location = question.type;
+            const location = question.type as APILocations;
 
             const data = await findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
@@ -66,7 +66,7 @@ const findMatchPlaces = async (question: MatchQuestion) => {
     }
 };
 
-const determineMatchBoundary = _.memoize(
+export const determineMatchBoundary = _.memoize(
     async (question: MatchQuestion) => {
         let boundary;
 

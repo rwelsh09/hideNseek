@@ -70,7 +70,10 @@ const determinePlanningPolygon = async (question: Question) => {
     }
 };
 
-async function adjustMapGeoDataForQuestion(question: any, mapGeoData: any) {
+async function adjustMapGeoDataForQuestion(
+    question: any,
+    mapGeoData: any,
+) {
     try {
         switch (question?.id) {
             case "radius":

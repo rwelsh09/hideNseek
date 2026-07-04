@@ -18,7 +18,7 @@ export const TutorialManager = () => {
         if ($showTutorial) {
             const driverObj = driver({
                 showProgress: true,
-                overlayClickBehavior: () => {},
+                overlayClickBehavior: (_el, _step, _opts) => {},
                 onDestroyStarted: () => {
                     const isRulesPhase =
                         driverObj.getConfig().steps?.length === 2;
