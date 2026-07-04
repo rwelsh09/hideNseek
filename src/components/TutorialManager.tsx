@@ -351,7 +351,6 @@ export const TutorialManager = () => {
                                       "When you get the answer from the Hider you will open the sidebar to eneter the result and lock it in.",
                                   side: "right",
                                   align: "start",
-                                  showButtons: ["previous"],
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
