@@ -351,6 +351,7 @@ export const TutorialManager = () => {
                                       "When you get the answer from the Hider you will open the sidebar to eneter the result and lock it in.",
                                   side: "right",
                                   align: "start",
+                                  showButtons: ["previous"],
                                   onPopoverRender: () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
@@ -468,7 +469,7 @@ export const TutorialManager = () => {
                                       });
 
                                       const checkInterval = setInterval(() => {
-                                          if (driverObj.getActiveIndex() !== 12) {
+                                          if (driverObj.getActiveIndex() !== 17) {
                                               clearInterval(checkInterval);
                                               return;
                                           }
