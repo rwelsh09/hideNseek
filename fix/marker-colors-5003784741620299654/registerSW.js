@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/fix/marker-colors-5003784741620299654/sw.js', { scope: '/hideNseek/fix/marker-colors-5003784741620299654/' })})}
