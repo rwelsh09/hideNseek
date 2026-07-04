@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/jules-add-tutorial-result-step-6769705515316198013/sw.js', { scope: '/hideNseek/jules-add-tutorial-result-step-6769705515316198013/' })})}
