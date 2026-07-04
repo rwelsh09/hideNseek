@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/jules/fix-match-question-color-2062278561130455528/sw.js', { scope: '/hideNseek/jules/fix-match-question-color-2062278561130455528/' })})}
