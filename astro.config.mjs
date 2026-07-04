@@ -11,13 +11,8 @@ if (process.env.GITHUB_REPOSITORY) {
     repoName = process.env.GITHUB_REPOSITORY.split("/")[1];
 } else {
     try {
-        const repoUrl = execSync("git config --get remote.origin.url")
-            .toString()
-            .trim();
-        repoName = repoUrl
-            .split("/")
-            .pop()
-            .replace(/\.git$/, "");
+        const repoUrl = execSync("git config --get remote.origin.url").toString().trim();
+        repoName = repoUrl.split("/").pop().replace(/\.git$/, "");
     } catch (e) {
         // Fallback to default
     }

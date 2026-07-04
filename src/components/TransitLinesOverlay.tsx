@@ -15,8 +15,7 @@ const styleFeature = (feature: any) => {
 
 export const TransitLinesOverlay = () => {
     const $displayTransitLines = useStore(displayTransitLines);
-    const [transitLinesData, setTransitLinesData] =
-        useState<FeatureCollection | null>(null);
+    const [transitLinesData, setTransitLinesData] = useState<FeatureCollection | null>(null);
 
     useEffect(() => {
         let mounted = true;
@@ -36,5 +35,10 @@ export const TransitLinesOverlay = () => {
         return null;
     }
 
-    return <GeoJSON data={transitLinesData} style={styleFeature} />;
+    return (
+        <GeoJSON
+            data={transitLinesData}
+            style={styleFeature}
+        />
+    );
 };

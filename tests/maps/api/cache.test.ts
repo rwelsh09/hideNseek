@@ -185,9 +185,7 @@ describe("cache.ts", () => {
             });
 
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            vi.mocked(globalThis.fetch).mockImplementation(
-                () => fetchPromise as Promise<Response>,
-            );
+            vi.mocked(globalThis.fetch).mockImplementation(() => fetchPromise as Promise<Response>);
 
             // Start first fetch
             const fetch1 = cacheFetch(url);
@@ -213,9 +211,7 @@ describe("cache.ts", () => {
 
         it("should fallback to direct fetch if an error occurs in caching logic", async () => {
             // Force determineCache to throw an error
-            mockCaches.open.mockRejectedValue(
-                new Error("Caches not supported"),
-            );
+            mockCaches.open.mockRejectedValue(new Error("Caches not supported"));
 
             const fallbackResponse = {
                 ok: true,
@@ -247,9 +243,7 @@ describe("cache.ts", () => {
         });
 
         it("should silently ignore errors", async () => {
-            mockCaches.open.mockRejectedValue(
-                new Error("Caches not supported"),
-            );
+            mockCaches.open.mockRejectedValue(new Error("Caches not supported"));
 
             // This should not throw
             await expect(clearCache(CacheType.CACHE)).resolves.not.toThrow();

@@ -454,8 +454,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element:
-                                  '[data-tutorial-id="tutorial-question-result-toggle"]',
+                              element: '[data-tutorial-id="tutorial-question-result-toggle"]',
                               popover: {
                                   title: "Enter the Result",
                                   description:

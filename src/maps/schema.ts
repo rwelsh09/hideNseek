@@ -2,6 +2,7 @@ import { z } from "zod";
 
 import { ICON_COLORS } from "./api/constants";
 
+
 export const determineUnionizedStrings = (
     obj:
         | z.ZodUnion<any>
@@ -47,30 +48,32 @@ const randomColor = () =>
         Math.floor(Math.random() * Object.keys(ICON_COLORS).length)
     ];
 
-const hotColdQuestionSchema = z.object({
-    latA: z
-        .number()
-        .min(-90, "Latitude must not overlap with the poles")
-        .max(90, "Latitude must not overlap with the poles"),
-    lngA: z
-        .number()
-        .min(-180, "Longitude must not overlap with the antemeridian")
-        .max(180, "Longitude must not overlap with the antemeridian"),
-    latB: z
-        .number()
-        .min(-90, "Latitude must not overlap with the poles")
-        .max(90, "Latitude must not overlap with the poles"),
-    lngB: z
-        .number()
-        .min(-180, "Longitude must not overlap with the antemeridian")
-        .max(180, "Longitude must not overlap with the antemeridian"),
-    warmer: z.boolean().default(true),
-    colorA: iconColorSchema.default("gold"),
-    colorB: iconColorSchema.default("blue"),
-    /** Note that drag is now synonymous with unlocked */
-    drag: z.boolean().default(true),
-    collapsed: z.boolean().default(false),
-});
+
+const hotColdQuestionSchema = z
+    .object({
+        latA: z
+            .number()
+            .min(-90, "Latitude must not overlap with the poles")
+            .max(90, "Latitude must not overlap with the poles"),
+        lngA: z
+            .number()
+            .min(-180, "Longitude must not overlap with the antemeridian")
+            .max(180, "Longitude must not overlap with the antemeridian"),
+        latB: z
+            .number()
+            .min(-90, "Latitude must not overlap with the poles")
+            .max(90, "Latitude must not overlap with the poles"),
+        lngB: z
+            .number()
+            .min(-180, "Longitude must not overlap with the antemeridian")
+            .max(180, "Longitude must not overlap with the antemeridian"),
+        warmer: z.boolean().default(true),
+        colorA: iconColorSchema.default("gold"),
+        colorB: iconColorSchema.default("blue"),
+        /** Note that drag is now synonymous with unlocked */
+        drag: z.boolean().default(true),
+        collapsed: z.boolean().default(false),
+    });
 
 const ordinaryBaseQuestionSchema = z.object({
     lat: z
@@ -115,6 +118,7 @@ const closestLocationsOne = z.union([
     z.literal("pub").describe("Pubs / Bars"),
 ]);
 
+
 const baseClosestQuestionSchema = ordinaryBaseQuestionSchema.extend({
     showLabels: z.boolean().default(false),
     radius: z.number().min(0, "You cannot have a negative radius").default(2),
@@ -145,6 +149,7 @@ const closestQuestionSpecificSchemaOne = baseClosestQuestionSchema.extend({
     places: z.array(z.any()).optional(),
 });
 
+
 export const closestQuestionSchema = closestQuestionSpecificSchemaOne;
 
 const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
@@ -173,7 +178,9 @@ const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
             z
                 .literal("same-length-station")
                 .describe("Station Has Same Length"),
-            z.literal("same-train-line").describe("Station On Same Train Line"),
+            z
+                .literal("same-train-line")
+                .describe("Station On Same Train Line"),
         ])
         .default("museum"),
 });

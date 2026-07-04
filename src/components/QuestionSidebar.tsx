@@ -190,56 +190,58 @@ export const QuestionSidebar = () => {
                         className="w-full font-semibold font-poppins flex items-center justify-center gap-2 h-11"
                         data-tutorial-id="tutorial-paste-question-btn"
                         onClick={() => {
-                            navigator.clipboard
-                                .readText()
-                                .then((text) => {
-                                    try {
-                                        const parsed = JSON.parse(text);
-                                        delete parsed.key; // Ensure a new key is generated
-                                        const validated =
-                                            questionSchema.parse(parsed);
-                                        addQuestion(validated);
-                                        toast.success(
-                                            "Question pasted successfully!",
-                                        );
-                                    } catch {
-                                        toast.error(
-                                            "Failed to parse question from clipboard",
-                                        );
-                                    }
-                                })
-                                .catch(() => {
-                                    toast.error(
-                                        "Failed to read from clipboard",
-                                    );
-                                });
-                        }}
-                        disabled={$isLoading}
-                    >
-                        <ClipboardPasteIcon className="w-4 h-4" />
-                        Paste Question
+                                    navigator.clipboard
+                                        .readText()
+                                        .then((text) => {
+                                            try {
+                                                const parsed = JSON.parse(text);
+                                                delete parsed.key; // Ensure a new key is generated
+                                                const validated =
+                                                    questionSchema.parse(
+                                                        parsed,
+                                                    );
+                                                addQuestion(validated);
+                                                toast.success(
+                                                    "Question pasted successfully!",
+                                                );
+                                            } catch {
+                                                toast.error(
+                                                    "Failed to parse question from clipboard",
+                                                );
+                                            }
+                                        })
+                                        .catch(() => {
+                                            toast.error(
+                                                "Failed to read from clipboard",
+                                            );
+                                        });
+                                }}
+                                disabled={$isLoading}
+                            >
+                                <ClipboardPasteIcon className="w-4 h-4" />
+                                Paste Question
                     </Button>
 
                     <Button
                         variant="destructive"
                         className="w-full font-semibold font-poppins flex items-center justify-center gap-2 h-11 mt-2"
                         onClick={() => {
-                            if (
-                                window.confirm(
-                                    "Are you sure you want to unlock and delete ALL questions? This will also reset your time penalty to 0.",
-                                )
-                            ) {
-                                questions.set([]);
-                                penaltyMinutes.set(0);
-                                toast.success(
-                                    "Cleared all questions and time penalty.",
-                                );
-                            }
-                        }}
-                        disabled={$isLoading || $questions.length === 0}
-                    >
-                        <Trash2 className="w-4 h-4" />
-                        Unlock & Delete All
+                                    if (
+                                        window.confirm(
+                                            "Are you sure you want to unlock and delete ALL questions? This will also reset your time penalty to 0.",
+                                        )
+                                    ) {
+                                        questions.set([]);
+                                        penaltyMinutes.set(0);
+                                        toast.success(
+                                            "Cleared all questions and time penalty.",
+                                        );
+                                    }
+                                }}
+                                disabled={$isLoading || $questions.length === 0}
+                            >
+                                <Trash2 className="w-4 h-4" />
+                                Unlock & Delete All
                     </Button>
                 </div>
             </div>
