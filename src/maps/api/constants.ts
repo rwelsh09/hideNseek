@@ -14,7 +14,6 @@ export const ICON_COLORS = {
     orange: "#CB8427",
     red: "#CB2B3E",
     violet: "#9C2BCB",
-    indigo: "#6366F1",
 };
 
 export const LOCATION_FIRST_TAG: {

@@ -39,11 +39,8 @@ const iconCache: Partial<Record<keyof typeof ICON_COLORS, Icon>> = {};
 
 const getIcon = (color: keyof typeof ICON_COLORS) => {
     if (!iconCache[color]) {
-        const iconUrl = color === "indigo"
-            ? `${import.meta.env.BASE_URL.replace(/\/$/, "")}/marker-icon-2x-indigo.png`
-            : `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`;
         iconCache[color] = new Icon({
-            iconUrl,
+            iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
             shadowUrl:
                 "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
             iconSize: [25, 41],
