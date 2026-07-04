@@ -12,10 +12,8 @@ import {
 import {
     hiderMode,
     isLoading,
-    penaltyMinutes,
     questionModified,
     questions,
-    TIME_PENALTIES,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { mapToObj } from "@/lib/utils";
@@ -57,27 +55,8 @@ export const ClosestQuestionComponent = ({
             label={label}
             sub={sub}
             className={className}
-            collapsed={data.collapsed}
-            setCollapsed={(collapsed) => {
-                data.collapsed = collapsed; // Doesn't trigger a re-render so no need for questionModified
-            }}
-            locked={!data.drag}
-            setLocked={(locked) => {
-                data.drag = !locked;
-                questionModified();
-                if (locked) {
-                    penaltyMinutes.set(
-                        penaltyMinutes.get() + TIME_PENALTIES.closest,
-                    );
-                } else {
-                    penaltyMinutes.set(
-                        Math.max(
-                            0,
-                            penaltyMinutes.get() - TIME_PENALTIES.closest,
-                        ),
-                    );
-                }
-            }}
+            questionData={data}
+            penaltyId={"closest"}
         >
             <SidebarMenuItem>
                 <div className="flex flex-row items-center px-4 py-2 hover:bg-slate-100 hover:dark:bg-zinc-800 transition-colors">

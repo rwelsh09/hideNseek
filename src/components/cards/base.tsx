@@ -1,16 +1,9 @@
 import { useStore } from "@nanostores/react";
 import { LockIcon, UnlockIcon } from "lucide-react";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { VscChevronDown, VscTrash } from "react-icons/vsc";
 
 import { Button } from "@/components/ui/button";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import {
     SidebarGroup,
@@ -18,7 +11,13 @@ import {
     SidebarGroupLabel,
     SidebarMenu,
 } from "@/components/ui/sidebar-l";
-import { isLoading, questions } from "@/lib/context";
+import {
+    isLoading,
+    penaltyMinutes,
+    questionModified,
+    questions,
+    TIME_PENALTIES,
+} from "@/lib/context";
 import { cn } from "@/lib/utils";
 
 export const QuestionCard = ({
@@ -27,30 +26,25 @@ export const QuestionCard = ({
     className,
     label,
     sub,
-    collapsed,
-    locked,
-    setLocked,
-    setCollapsed,
+    questionData,
+    penaltyId,
 }: {
     children: React.ReactNode;
     questionKey: number;
     className?: string;
     label?: string;
     sub?: string;
-    collapsed?: boolean;
-    locked?: boolean;
-    setLocked?: (locked: boolean) => void;
-    setCollapsed?: (collapsed: boolean) => void;
+    questionData: { drag: boolean; collapsed: boolean; [key: string]: any };
+    penaltyId: keyof typeof TIME_PENALTIES;
 }) => {
-    const [isCollapsed, setIsCollapsed] = useState(collapsed ?? false);
+    const [isCollapsed, setIsCollapsed] = useState(
+        questionData.collapsed ?? false,
+    );
     const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
-    const copyButtonRef = useRef<HTMLButtonElement>(null);
 
     const toggleCollapse = () => {
-        if (setCollapsed) {
-            setCollapsed(!isCollapsed);
-        }
+        questionData.collapsed = !isCollapsed;
         setIsCollapsed((prevState) => !prevState);
     };
 
@@ -95,7 +89,7 @@ export const QuestionCard = ({
                                 data-tutorial-id="tutorial-delete-question-btn"
                                 disabled={$isLoading}
                                 onClick={() => {
-                                    if (!locked) {
+                                    if (questionData.drag) {
                                         questions.set(
                                             $questions.filter(
                                                 (q) => q.key !== questionKey,
@@ -106,22 +100,42 @@ export const QuestionCard = ({
                             >
                                 <VscTrash />
                             </Button>
-                            {locked !== undefined && (
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    data-tutorial-id="tutorial-lock-btn"
-                                    aria-label={
-                                        locked
-                                            ? "Unlock Question"
-                                            : "Lock Question"
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                data-tutorial-id="tutorial-lock-btn"
+                                aria-label={
+                                    !questionData.drag
+                                        ? "Unlock Question"
+                                        : "Lock Question"
+                                }
+                                onClick={() => {
+                                    const locked = questionData.drag;
+                                    questionData.drag = !locked;
+                                    questionModified();
+                                    if (locked) {
+                                        penaltyMinutes.set(
+                                            penaltyMinutes.get() +
+                                                TIME_PENALTIES[penaltyId],
+                                        );
+                                    } else {
+                                        penaltyMinutes.set(
+                                            Math.max(
+                                                0,
+                                                penaltyMinutes.get() -
+                                                    TIME_PENALTIES[penaltyId],
+                                            ),
+                                        );
                                     }
-                                    onClick={() => setLocked!(!locked)}
-                                    disabled={$isLoading}
-                                >
-                                    {locked ? <LockIcon /> : <UnlockIcon />}
-                                </Button>
-                            )}
+                                }}
+                                disabled={$isLoading}
+                            >
+                                {!questionData.drag ? (
+                                    <LockIcon />
+                                ) : (
+                                    <UnlockIcon />
+                                )}
+                            </Button>
                         </div>
                     </SidebarGroupContent>
                 </div>

@@ -374,7 +374,10 @@ export const ZoneSidebar = () => {
             }
         };
 
-        if (($displayHidingZones || $showRecommendedStart) && $questionFinishedMapData) {
+        if (
+            ($displayHidingZones || $showRecommendedStart) &&
+            $questionFinishedMapData
+        ) {
             initializeHidingZones().catch((err) => {
                 console.error(err);
                 toast.error(
@@ -383,7 +386,12 @@ export const ZoneSidebar = () => {
                 );
             });
         }
-    }, [$questionFinishedMapData, $displayHidingZones, $showRecommendedStart, $hidingRadius]);
+    }, [
+        $questionFinishedMapData,
+        $displayHidingZones,
+        $showRecommendedStart,
+        $hidingRadius,
+    ]);
 
     useEffect(() => {
         if (!map || isLoading.get()) return;
@@ -515,46 +523,40 @@ export const ZoneSidebar = () => {
                                 }}
                                 disabled={$isLoading}
                             />
-                                <AlertDialog
-                                    open={isWarningDialogOpen}
-                                    onOpenChange={setIsWarningDialogOpen}
-                                >
-                                    <AlertDialogContent>
-                                        <AlertDialogHeader>
-                                            <AlertDialogTitle className="flex items-center text-orange-500">
-                                                <AlertTriangle className="mr-2 inline-block h-5 w-5" />
-                                                Warning: Performance Impact
-                                            </AlertDialogTitle>
-                                            <AlertDialogDescription>
-                                                This feature may slow down your
-                                                device.
-                                            </AlertDialogDescription>
-                                        </AlertDialogHeader>
-                                        <AlertDialogFooter>
-                                            <AlertDialogCancel
-                                                onClick={() => {
-                                                    setIsWarningDialogOpen(
-                                                        false,
-                                                    );
-                                                }}
-                                            >
-                                                Cancel
-                                            </AlertDialogCancel>
-                                            <AlertDialogAction
-                                                onClick={() => {
-                                                    displayHidingZones.set(
-                                                        true,
-                                                    );
-                                                    setIsWarningDialogOpen(
-                                                        false,
-                                                    );
-                                                }}
-                                            >
-                                                Enable
-                                            </AlertDialogAction>
-                                        </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                </AlertDialog>
+                            <AlertDialog
+                                open={isWarningDialogOpen}
+                                onOpenChange={setIsWarningDialogOpen}
+                            >
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle className="flex items-center text-orange-500">
+                                            <AlertTriangle className="mr-2 inline-block h-5 w-5" />
+                                            Warning: Performance Impact
+                                        </AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This feature may slow down your
+                                            device.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel
+                                            onClick={() => {
+                                                setIsWarningDialogOpen(false);
+                                            }}
+                                        >
+                                            Cancel
+                                        </AlertDialogCancel>
+                                        <AlertDialogAction
+                                            onClick={() => {
+                                                displayHidingZones.set(true);
+                                                setIsWarningDialogOpen(false);
+                                            }}
+                                        >
+                                            Enable
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
                         </div>
                     </div>
                 </div>
