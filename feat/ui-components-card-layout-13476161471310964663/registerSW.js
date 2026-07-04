@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/feat/ui-components-card-layout-13476161471310964663/sw.js', { scope: '/hideNseek/feat/ui-components-card-layout-13476161471310964663/' })})}
