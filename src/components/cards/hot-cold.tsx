@@ -114,7 +114,7 @@ export const HotColdQuestionComponent = ({
                 label="End"
                 colorName={data.colorB}
                 onChangeColor={(color: any) => {
-                    data.colorA = color;
+                    data.colorB = color;
                     questionModified();
                 }}
                 onChange={(lat, lng) => {
