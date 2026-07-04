@@ -1,9 +1,8 @@
 import { useStore } from "@nanostores/react";
 import type { FeatureCollection } from "geojson";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { GeoJSON } from "react-leaflet";
 
-import transitLinesData from "@/data/calgary_transit_lines_clean.json";
 import { displayTransitLines } from "@/lib/context";
 
 const styleFeature = (feature: any) => {
@@ -16,14 +15,29 @@ const styleFeature = (feature: any) => {
 
 export const TransitLinesOverlay = () => {
     const $displayTransitLines = useStore(displayTransitLines);
+    const [transitLinesData, setTransitLinesData] = useState<FeatureCollection | null>(null);
 
-    if (!$displayTransitLines) {
+    useEffect(() => {
+        let mounted = true;
+        if ($displayTransitLines && !transitLinesData) {
+            import("@/data/calgary_transit_lines_clean.json").then((module) => {
+                if (mounted) {
+                    setTransitLinesData(module.default as FeatureCollection);
+                }
+            });
+        }
+        return () => {
+            mounted = false;
+        };
+    }, [$displayTransitLines, transitLinesData]);
+
+    if (!$displayTransitLines || !transitLinesData) {
         return null;
     }
 
     return (
         <GeoJSON
-            data={transitLinesData as FeatureCollection}
+            data={transitLinesData}
             style={styleFeature}
         />
     );
