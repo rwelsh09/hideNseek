@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/bolt-dynamic-import-transit-lines-12593766707496906794/sw.js', { scope: '/hideNseek/bolt-dynamic-import-transit-lines-12593766707496906794/' })})}
