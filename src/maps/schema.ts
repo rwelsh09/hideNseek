@@ -171,7 +171,7 @@ export const closestQuestionSchema = closestQuestionSpecificSchemaOne;
 const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
     same: z.boolean().default(true),
     lengthComparison: z.enum(["shorter", "longer", "same"]).optional(),
-    color: iconColorSchema.default("grey"),
+    color: iconColorSchema.default("indigo"),
 });
 
 const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
