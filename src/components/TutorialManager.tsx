@@ -454,6 +454,51 @@ export const TutorialManager = () => {
                               },
                           },
                           {
+                              element: '[data-tutorial-id="tutorial-question-result-toggle"]',
+                              popover: {
+                                  title: "Enter the Result",
+                                  description:
+                                      "Based on the Hider's answer, select the appropriate result here.",
+                                  side: "bottom",
+                                  align: "center",
+                                  showButtons: ["previous"],
+                                  onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: false,
+                                      });
+
+                                      const checkInterval = setInterval(() => {
+                                          if (driverObj.getActiveIndex() !== 12) {
+                                              clearInterval(checkInterval);
+                                              return;
+                                          }
+
+                                          const toggleGroup =
+                                              document.querySelector(
+                                                  '[data-tutorial-id="tutorial-question-result-toggle"]',
+                                              );
+                                          if (toggleGroup) {
+                                              const buttons = toggleGroup.querySelectorAll('button');
+                                              for (const btn of buttons) {
+                                                  if (btn.getAttribute("data-state") === "on") {
+                                                      clearInterval(checkInterval);
+                                                      setTimeout(
+                                                          () => driverObj.moveNext(),
+                                                          300,
+                                                      );
+                                                      break;
+                                                  }
+                                              }
+                                          }
+                                      }, 100);
+
+                                      (driverObj as any)._resultCheckInterval =
+                                          checkInterval;
+                                  },
+                              },
+                          },
+                          {
                               element: '[data-tutorial-id="tutorial-lock-btn"]',
                               popover: {
                                   title: "Lock Your Answer",
