@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/remove-copy-paste-coords-4896078514054469984/sw.js', { scope: '/hideNseek/remove-copy-paste-coords-4896078514054469984/' })})}
