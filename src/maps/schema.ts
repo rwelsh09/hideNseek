@@ -39,6 +39,7 @@ const iconColorSchema = z.union([
     z.literal("orange"),
     z.literal("red"),
     z.literal("violet"),
+    z.literal("indigo"),
 ]);
 
 type IconColor = z.infer<typeof iconColorSchema>;
