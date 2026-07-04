@@ -160,7 +160,8 @@ body.driver-active:has(
             [role="dialog"][data-state="open"] .driver-active-element
         )
     )
-    .driver-overlay path {
+    .driver-overlay
+    path {
     pointer-events: none !important;
 }
 

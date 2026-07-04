@@ -38,7 +38,6 @@ import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { Select } from "./ui/select";
-import { Separator } from "./ui/separator";
 import { SidebarMenu } from "./ui/sidebar-l";
 
 const HIDING_ZONE_URL_PARAM = "hz";
@@ -198,9 +197,12 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                         Options
                     </Button>
                 </DrawerTrigger>
-                
+
                 {/* Updated UI structure starts here */}
-                <DrawerContent onPointerDown={(e) => e.stopPropagation()} className="max-h-[85vh]">
+                <DrawerContent
+                    onPointerDown={(e) => e.stopPropagation()}
+                    className="max-h-[85vh]"
+                >
                     <div className="mx-auto w-full max-w-lg overflow-y-auto pb-8 px-4 sm:px-8 custom-scrollbar">
                         <DrawerHeader className="pt-6 pb-4 sm:px-0">
                             <DrawerTitle className="text-3xl font-semibold font-poppins text-center sm:text-left">
@@ -209,31 +211,41 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                         </DrawerHeader>
 
                         <div className="flex flex-col gap-8">
-                            
                             {/* --- Map & Game Settings Card --- */}
                             <div className="space-y-3">
                                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1">
                                     Map & Game Settings
                                 </h3>
                                 <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden divide-y">
-                                    
                                     {/* Hider Mode Toggle */}
                                     <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                        <Label htmlFor="hider-mode-toggle" className="flex-1 cursor-pointer text-base font-medium">Hider Mode</Label>
+                                        <Label
+                                            htmlFor="hider-mode-toggle"
+                                            className="flex-1 cursor-pointer text-base font-medium"
+                                        >
+                                            Hider Mode
+                                        </Label>
                                         <Checkbox
                                             id="hider-mode-toggle"
                                             checked={!!$hiderMode}
                                             onCheckedChange={() => {
                                                 if ($hiderMode === false) {
-                                                    const $leafletMapContext = leafletMapContext.get();
+                                                    const $leafletMapContext =
+                                                        leafletMapContext.get();
                                                     if ($leafletMapContext) {
-                                                        const center = $leafletMapContext.getCenter();
+                                                        const center =
+                                                            $leafletMapContext.getCenter();
                                                         hiderMode.set({
-                                                            latitude: center.lat,
-                                                            longitude: center.lng,
+                                                            latitude:
+                                                                center.lat,
+                                                            longitude:
+                                                                center.lng,
                                                         });
                                                     } else {
-                                                        hiderMode.set({ latitude: 0, longitude: 0 });
+                                                        hiderMode.set({
+                                                            latitude: 0,
+                                                            longitude: 0,
+                                                        });
                                                     }
                                                 } else {
                                                     hiderMode.set(false);
@@ -241,22 +253,35 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                             }}
                                         />
                                     </div>
-                                    
+
                                     {/* Sub-menu for Hider Mode */}
                                     {$hiderMode !== false && (
                                         <div className="p-4 bg-slate-50/80 dark:bg-slate-900/50 inner-shadow-sm">
                                             <SidebarMenu>
                                                 <LatitudeLongitude
-                                                    latitude={$hiderMode.latitude}
-                                                    longitude={$hiderMode.longitude}
+                                                    latitude={
+                                                        $hiderMode.latitude
+                                                    }
+                                                    longitude={
+                                                        $hiderMode.longitude
+                                                    }
                                                     inlineEdit
-                                                    onChange={(latitude, longitude) => {
-                                                        $hiderMode.latitude = latitude ?? $hiderMode.latitude;
-                                                        $hiderMode.longitude = longitude ?? $hiderMode.longitude;
+                                                    onChange={(
+                                                        latitude,
+                                                        longitude,
+                                                    ) => {
+                                                        $hiderMode.latitude =
+                                                            latitude ??
+                                                            $hiderMode.latitude;
+                                                        $hiderMode.longitude =
+                                                            longitude ??
+                                                            $hiderMode.longitude;
 
                                                         if (
-                                                            $hiderMode.latitude !== 0 ||
-                                                            $hiderMode.longitude !== 0
+                                                            $hiderMode.latitude !==
+                                                                0 ||
+                                                            $hiderMode.longitude !==
+                                                                0
                                                         ) {
                                                             hiderMode.set({
                                                                 ...$hiderMode,
@@ -271,37 +296,64 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
 
                                     {/* Recommended Start Toggle */}
                                     <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                        <Label htmlFor="recommended-starting-point-toggle" className="flex-1 cursor-pointer text-base font-medium">Starting Point</Label>
+                                        <Label
+                                            htmlFor="recommended-starting-point-toggle"
+                                            className="flex-1 cursor-pointer text-base font-medium"
+                                        >
+                                            Starting Point
+                                        </Label>
                                         <Checkbox
                                             id="recommended-starting-point-toggle"
                                             checked={$showRecommendedStart}
-                                            onCheckedChange={() => showRecommendedStart.set(!$showRecommendedStart)}
+                                            onCheckedChange={() =>
+                                                showRecommendedStart.set(
+                                                    !$showRecommendedStart,
+                                                )
+                                            }
                                         />
                                     </div>
 
                                     {/* Transit Overlay Toggle */}
                                     <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                        <Label htmlFor="transit-overlay-toggle" className="flex-1 cursor-pointer text-base font-medium">Transit Lines on Map</Label>
+                                        <Label
+                                            htmlFor="transit-overlay-toggle"
+                                            className="flex-1 cursor-pointer text-base font-medium"
+                                        >
+                                            Transit Lines on Map
+                                        </Label>
                                         <Checkbox
                                             id="transit-overlay-toggle"
                                             checked={$displayTransitLines}
-                                            onCheckedChange={() => displayTransitLines.set(!$displayTransitLines)}
+                                            onCheckedChange={() =>
+                                                displayTransitLines.set(
+                                                    !$displayTransitLines,
+                                                )
+                                            }
                                         />
                                     </div>
 
                                     {/* Follow Me Toggle */}
                                     <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                        <Label htmlFor="follow-me-toggle" className="flex-1 cursor-pointer text-base font-medium">Follow Me (GPS)</Label>
+                                        <Label
+                                            htmlFor="follow-me-toggle"
+                                            className="flex-1 cursor-pointer text-base font-medium"
+                                        >
+                                            Follow Me (GPS)
+                                        </Label>
                                         <Checkbox
                                             id="follow-me-toggle"
                                             checked={$followMe}
-                                            onCheckedChange={() => followMe.set(!$followMe)}
+                                            onCheckedChange={() =>
+                                                followMe.set(!$followMe)
+                                            }
                                         />
                                     </div>
 
                                     {/* Map Layer Select */}
                                     <div className="flex items-center justify-between p-4 bg-slate-50/30 dark:bg-slate-900/30">
-                                        <Label className="text-base font-medium text-muted-foreground mr-4">Map Layout</Label>
+                                        <Label className="text-base font-medium text-muted-foreground mr-4">
+                                            Map Layout
+                                        </Label>
                                         <div className="w-[180px]">
                                             <Select
                                                 trigger="Map"
@@ -309,10 +361,13 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                                     voyager: "CARTO Voyager",
                                                     light: "CARTO Light",
                                                     dark: "CARTO Dark",
-                                                    osmcarto: "OpenStreetMap Carto",
+                                                    osmcarto:
+                                                        "OpenStreetMap Carto",
                                                 }}
                                                 value={$baseTileLayer}
-                                                onValueChange={(v) => baseTileLayer.set(v as any)}
+                                                onValueChange={(v) =>
+                                                    baseTileLayer.set(v as any)
+                                                }
                                             />
                                         </div>
                                     </div>
@@ -343,7 +398,12 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                         onClick={() => hasSeenRules.set(true)}
                                         data-tutorial-id="tutorial-rules-btn"
                                     >
-                                        <Button variant="secondary" className="w-full h-11">Rules & Tips</Button>
+                                        <Button
+                                            variant="secondary"
+                                            className="w-full h-11"
+                                        >
+                                            Rules & Tips
+                                        </Button>
                                     </a>
                                 </div>
                             </div>
@@ -351,23 +411,43 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                             {/* --- Donations Callout Box --- */}
                             <div className="rounded-xl border border-blue-200/60 bg-blue-50/50 dark:bg-blue-950/20 dark:border-blue-900 p-5 space-y-4 shadow-sm">
                                 <div className="space-y-1 text-center">
-                                    <h4 className="font-semibold font-poppins text-blue-900 dark:text-blue-200">Support the Project</h4>
-                                    <p className="text-sm text-blue-700/80 dark:text-blue-300/80">Keep hideNseek running by donating via PayPal</p>
+                                    <h4 className="font-semibold font-poppins text-blue-900 dark:text-blue-200">
+                                        Support the Project
+                                    </h4>
+                                    <p className="text-sm text-blue-700/80 dark:text-blue-300/80">
+                                        Keep hideNseek running by donating via
+                                        PayPal
+                                    </p>
                                 </div>
                                 <div className="flex flex-col gap-2">
-                                    <a href="https://paypal.me/hideNseekApp/4.03" target="_blank" rel="noopener noreferrer">
+                                    <a
+                                        href="https://paypal.me/hideNseekApp/4.03"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
-                                            "Hiding in the 403" &mdash; $4.03
+                                            &quot;Hiding in the 403&quot;
+                                            &mdash; $4.03
                                         </Button>
                                     </a>
-                                    <a href="https://paypal.me/hideNseekApp/7" target="_blank" rel="noopener noreferrer">
+                                    <a
+                                        href="https://paypal.me/hideNseekApp/7"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
-                                            "7th Ave Free Zone" &mdash; $7.00
+                                            &quot;7th Ave Free Zone&quot;
+                                            &mdash; $7.00
                                         </Button>
                                     </a>
-                                    <a href="https://paypal.me/hideNseekApp/15" target="_blank" rel="noopener noreferrer">
+                                    <a
+                                        href="https://paypal.me/hideNseekApp/15"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
                                         <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
-                                            "Lost in the +15s" &mdash; $15.00
+                                            &quot;Lost in the +15s&quot; &mdash;
+                                            $15.00
                                         </Button>
                                     </a>
                                 </div>
@@ -410,7 +490,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                                 )
                                             ) {
                                                 if ("caches" in window) {
-                                                    const keys = await caches.keys();
+                                                    const keys =
+                                                        await caches.keys();
                                                     await Promise.all(
                                                         keys.map((key) =>
                                                             caches.delete(key),
@@ -431,7 +512,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     </Button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </DrawerContent>

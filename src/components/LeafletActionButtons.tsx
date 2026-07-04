@@ -5,10 +5,7 @@ import { MdMyLocation, MdZoomInMap } from "react-icons/md";
 import { useMap } from "react-leaflet";
 import { toast } from "react-toastify";
 
-import {
-    mapGeoLocation,
-    questionFinishedMapData,
-} from "@/lib/context";
+import { mapGeoLocation, questionFinishedMapData } from "@/lib/context";
 import { holedMask } from "@/maps";
 
 export const LeafletActionButtons = () => {
