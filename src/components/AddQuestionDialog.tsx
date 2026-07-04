@@ -70,7 +70,7 @@ export function AddQuestionDialog() {
         } else if (type === "match") {
             qData.type = detail || "museum";
             qData.same = true;
-            qData.color = "grey";
+            qData.color = "indigo";
         } else if (type === "measure") {
             qData.type = detail || "museum";
             qData.hiderCloser = true;
