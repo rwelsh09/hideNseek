@@ -469,7 +469,7 @@ export const TutorialManager = () => {
                                       });
 
                                       const checkInterval = setInterval(() => {
-                                          if (driverObj.getActiveIndex() !== 17) {
+                                          if (driverObj.getActiveIndex() !== 15) {
                                               clearInterval(checkInterval);
                                               return;
                                           }
