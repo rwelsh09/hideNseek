@@ -501,7 +501,7 @@ export const ZoneSidebar = () => {
 
                         <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
                             <Label className="flex-1 cursor-pointer text-base font-medium">
-                                Display hiding zones?
+                                View Hiding Zones
                             </Label>
                             <Checkbox
                                 defaultChecked={$displayHidingZones}
