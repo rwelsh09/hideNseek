@@ -39,7 +39,6 @@ const iconColorSchema = z.union([
     z.literal("orange"),
     z.literal("red"),
     z.literal("violet"),
-    z.literal("indigo"),
 ]);
 
 type IconColor = z.infer<typeof iconColorSchema>;
@@ -172,7 +171,7 @@ export const closestQuestionSchema = closestQuestionSpecificSchemaOne;
 const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
     same: z.boolean().default(true),
     lengthComparison: z.enum(["shorter", "longer", "same"]).optional(),
-    color: iconColorSchema.default("indigo"),
+    color: iconColorSchema.default("red"),
 });
 
 const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({

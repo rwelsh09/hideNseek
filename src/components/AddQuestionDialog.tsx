@@ -70,7 +70,7 @@ export function AddQuestionDialog() {
         } else if (type === "match") {
             qData.type = detail || "museum";
             qData.same = true;
-            qData.color = "indigo";
+            qData.color = "red";
         } else if (type === "measure") {
             qData.type = detail || "museum";
             qData.hiderCloser = true;
@@ -139,13 +139,13 @@ export function AddQuestionDialog() {
 
                 <div className="overflow-y-auto p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-6">
                     {/* MATCH */}
-                    <div className="flex flex-col border-t-4 border-indigo-500 pt-3">
+                    <div className="flex flex-col border-t-4 border-red-500 pt-3">
                         <div className="flex items-center gap-2 mb-1">
-                            <div className="bg-indigo-500 p-1.5 rounded text-white shrink-0">
+                            <div className="bg-red-500 p-1.5 rounded text-white shrink-0">
                                 <MapIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-indigo-500 uppercase leading-none text-sm sm:text-base flex items-center">
+                                <h3 className="font-bold text-red-500 uppercase leading-none text-sm sm:text-base flex items-center">
                                     Match{" "}
                                     <span className="ml-2 bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
                                         +{TIME_PENALTIES.match}
@@ -158,7 +158,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("match", "museum")
                                 }
-                                className="bg-indigo-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-indigo-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Palette className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -169,7 +169,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("match", "hospital")
                                 }
-                                className="bg-indigo-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-indigo-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Hospital className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -180,7 +180,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("match", "cinema")
                                 }
-                                className="bg-indigo-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-indigo-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Film className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -191,7 +191,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("match", "library")
                                 }
-                                className="bg-indigo-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-indigo-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Library className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -202,7 +202,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("match", "golf_course")
                                 }
-                                className="bg-indigo-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-indigo-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <Flag className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -213,7 +213,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("match", "same-neighbourhood")
                                 }
-                                className="bg-indigo-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-indigo-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <MapPinned className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -224,7 +224,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("match", "same-train-line")
                                 }
-                                className="bg-indigo-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-indigo-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
                                 <TramFront className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
