@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/cleanup-unused-code-and-variables-18050888219725471396/sw.js', { scope: '/hideNseek/cleanup-unused-code-and-variables-18050888219725471396/' })})}
