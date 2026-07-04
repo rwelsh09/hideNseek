@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/fix-indigo-marker-color-11894828267632829765/sw.js', { scope: '/hideNseek/fix-indigo-marker-color-11894828267632829765/' })})}
