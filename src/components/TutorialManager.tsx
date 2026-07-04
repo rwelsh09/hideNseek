@@ -46,7 +46,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Welcome to Hide & Seek",
                                   description:
-                                      "Before we begin, open the Options menu so you can read the Rules.",
+                                      "Before we begin, open the Options menu and read the Rules.",
                                   side: "top",
                                   align: "end",
                                   showButtons: ["previous"],
@@ -114,7 +114,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Map Controls",
                                   description:
-                                      "Use these buttons to re-center the map on your location, zoom to the potential hiding areas, or view the entire map.",
+                                      "Use these buttons to re-center the map on your location, zoom to the potential hiding areas or view the entire map.",
                                   side: "left",
                                   align: "start",
                               },
@@ -145,9 +145,9 @@ export const TutorialManager = () => {
                               element:
                                   '[data-tutorial-id="right-sidebar-trigger"]',
                               popover: {
-                                  title: "Game State",
+                                  title: "Game Setup",
                                   description:
-                                      "This opens the right sidebar, where you can set the Hiders head start time and toggle Hiding Zones.",
+                                      "This opens the right sidebar, where you can set the Hiders head start time and toggle & adjust Hiding Zones.",
                                   side: "left",
                                   align: "start",
                               },
@@ -156,9 +156,9 @@ export const TutorialManager = () => {
                               element:
                                   '[data-tutorial-id="tutorial-share-state-btn"]',
                               popover: {
-                                  title: "Share Game State",
+                                  title: "Share Game Setup",
                                   description:
-                                      "Once your head start and hiding zone are set, use this to share your exact Game State with the Seekers so they can load it on their devices.",
+                                      "Once the head start and hiding zones are set, you can use this to share the exact Game Setup with the other players.",
                                   side: "top",
                                   align: "end",
                               },
@@ -169,7 +169,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Options",
                                   description:
-                                      "Access map settings, transit lines overlays, manual save states, and more.",
+                                      "Access Hider Mode, recommended Starting Point, transit lines overlays, and more.",
                                   side: "top",
                                   align: "end",
                               },
@@ -313,7 +313,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Store the Question",
                                   description:
-                                      "You can move the marker to see how it affects the map, but for now just click here to store it in your sidebar and continue.",
+                                      "This is the question that you will ask the Hider. For now, just click here to store it in your sidebar and continue.",
                                   side: "top",
                                   align: "center",
                                   showButtons: ["previous"],
@@ -348,7 +348,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Open the Sidebar",
                                   description:
-                                      "Now open the sidebar to view and lock your question.",
+                                      "When you get the answer from the Hider you will open the sidebar to eneter the result and lock it in.",
                                   side: "right",
                                   align: "start",
                                   showButtons: ["previous"],
@@ -444,44 +444,11 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element:
-                                  '[data-tutorial-id="tutorial-delete-question-btn"]',
-                              popover: {
-                                  title: "Delete Question",
-                                  description:
-                                      "Feel free to test out questions during the game to see how they will affect things. Use this to remove a question you no longer want.",
-                                  side: "bottom",
-                                  align: "end",
-                              },
-                          },
-                          {
                               element: '[data-tutorial-id="tutorial-gps-btn"]',
                               popover: {
                                   title: "Set to Current Location",
                                   description:
                                       "Automatically set the marker's coordinates using your device's GPS.",
-                                  side: "bottom",
-                                  align: "center",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-clipboard-copy-btn"]',
-                              popover: {
-                                  title: "Copy Coordinates",
-                                  description:
-                                      "Quickly copy the current coordinates to your clipboard. For easy sharing with the Hider.",
-                                  side: "bottom",
-                                  align: "center",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-clipboard-paste-btn"]',
-                              popover: {
-                                  title: "Paste Coordinates",
-                                  description:
-                                      "Paste coordinates you copied from the Seekers directly into the question.",
                                   side: "bottom",
                                   align: "center",
                               },
