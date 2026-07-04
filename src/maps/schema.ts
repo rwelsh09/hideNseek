@@ -2,8 +2,6 @@ import { z } from "zod";
 
 import { ICON_COLORS } from "./api/constants";
 
-export const NO_GROUP = "NO_GROUP";
-
 export const determineUnionizedStrings = (
     obj:
         | z.ZodUnion<any>
@@ -49,39 +47,30 @@ const randomColor = () =>
         Math.floor(Math.random() * Object.keys(ICON_COLORS).length)
     ];
 
-const randomColorExcluding = (excluded: IconColor[] = []) => {
-    const options = (Object.keys(ICON_COLORS) as IconColor[]).filter(
-        (color) => !excluded.includes(color),
-    );
-
-    return options[Math.floor(Math.random() * options.length)];
-};
-
-const hotColdQuestionSchema = z
-    .object({
-        latA: z
-            .number()
-            .min(-90, "Latitude must not overlap with the poles")
-            .max(90, "Latitude must not overlap with the poles"),
-        lngA: z
-            .number()
-            .min(-180, "Longitude must not overlap with the antemeridian")
-            .max(180, "Longitude must not overlap with the antemeridian"),
-        latB: z
-            .number()
-            .min(-90, "Latitude must not overlap with the poles")
-            .max(90, "Latitude must not overlap with the poles"),
-        lngB: z
-            .number()
-            .min(-180, "Longitude must not overlap with the antemeridian")
-            .max(180, "Longitude must not overlap with the antemeridian"),
-        warmer: z.boolean().default(true),
-        colorA: iconColorSchema.default("gold"),
-        colorB: iconColorSchema.default("blue"),
-        /** Note that drag is now synonymous with unlocked */
-        drag: z.boolean().default(true),
-        collapsed: z.boolean().default(false),
-    });
+const hotColdQuestionSchema = z.object({
+    latA: z
+        .number()
+        .min(-90, "Latitude must not overlap with the poles")
+        .max(90, "Latitude must not overlap with the poles"),
+    lngA: z
+        .number()
+        .min(-180, "Longitude must not overlap with the antemeridian")
+        .max(180, "Longitude must not overlap with the antemeridian"),
+    latB: z
+        .number()
+        .min(-90, "Latitude must not overlap with the poles")
+        .max(90, "Latitude must not overlap with the poles"),
+    lngB: z
+        .number()
+        .min(-180, "Longitude must not overlap with the antemeridian")
+        .max(180, "Longitude must not overlap with the antemeridian"),
+    warmer: z.boolean().default(true),
+    colorA: iconColorSchema.default("gold"),
+    colorB: iconColorSchema.default("blue"),
+    /** Note that drag is now synonymous with unlocked */
+    drag: z.boolean().default(true),
+    collapsed: z.boolean().default(false),
+});
 
 const ordinaryBaseQuestionSchema = z.object({
     lat: z
@@ -126,11 +115,6 @@ const closestLocationsOne = z.union([
     z.literal("pub").describe("Pubs / Bars"),
 ]);
 
-const apiLocationSchema = z.union([
-    z.literal("golf_course"),
-    closestLocationsOne,
-]);
-
 const baseClosestQuestionSchema = ordinaryBaseQuestionSchema.extend({
     showLabels: z.boolean().default(false),
     radius: z.number().min(0, "You cannot have a negative radius").default(2),
@@ -161,12 +145,6 @@ const closestQuestionSpecificSchemaOne = baseClosestQuestionSchema.extend({
     places: z.array(z.any()).optional(),
 });
 
-export const encompassingClosestQuestionSchema =
-    baseClosestQuestionSchema.extend({
-        locationType: apiLocationSchema,
-        places: z.array(z.any()).optional(),
-    });
-
 export const closestQuestionSchema = closestQuestionSpecificSchemaOne;
 
 const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
@@ -195,9 +173,7 @@ const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
             z
                 .literal("same-length-station")
                 .describe("Station Has Same Length"),
-            z
-                .literal("same-train-line")
-                .describe("Station On Same Train Line"),
+            z.literal("same-train-line").describe("Station On Same Train Line"),
         ])
         .default("museum"),
 });
@@ -266,7 +242,6 @@ export type Units = z.infer<typeof unitsSchema>;
 export type RadiusQuestion = z.infer<typeof radiusQuestionSchema>;
 export type HotColdQuestion = z.infer<typeof hotColdQuestionSchema>;
 export type ClosestQuestion = z.infer<typeof closestQuestionSchema>;
-export type APILocations = z.infer<typeof apiLocationSchema>;
 export type MatchQuestion = z.infer<typeof matchQuestionSchema>;
 export type MeasureQuestion = z.infer<typeof measureQuestionSchema>;
 export type PhotoQuestion = z.infer<typeof photoQuestionSchema>;
@@ -275,9 +250,3 @@ export type Questions = z.infer<typeof questionsSchema>;
 export type DeepPartial<T> = {
     [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
-export type TraditionalClosestQuestion = z.infer<
-    typeof closestQuestionSpecificSchemaOne
->;
-export type EncompassingClosestQuestionSchema = z.infer<
-    typeof encompassingClosestQuestionSchema
->;

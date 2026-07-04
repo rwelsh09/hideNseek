@@ -17,16 +17,16 @@ import {
     QuestionSpecificLocation,
 } from "@/maps/api";
 import { arcBufferToPoint, holedMask, modifyMapData } from "@/maps/geo-utils";
-import type { APILocations, MeasureQuestion } from "@/maps/schema";
+import type { MeasureQuestion } from "@/maps/schema";
 
-export const determineMeasureBoundary = async (question: MeasureQuestion) => {
+const determineMeasureBoundary = async (question: MeasureQuestion) => {
     switch (question.type) {
         case "museum":
         case "hospital":
         case "cinema":
         case "library":
         case "golf_course": {
-            const location = question.type as APILocations;
+            const location = question.type;
 
             const data = await findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,

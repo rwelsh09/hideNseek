@@ -2,7 +2,10 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 import { toast } from "react-toastify";
 import { getOverpassData } from "../../../src/maps/api/overpass";
 import { cacheFetch, determineCache } from "../../../src/maps/api/cache";
-import { OVERPASS_API, OVERPASS_API_FALLBACK } from "../../../src/maps/api/constants";
+import {
+    OVERPASS_API,
+    OVERPASS_API_FALLBACK,
+} from "../../../src/maps/api/constants";
 
 vi.mock("../../../src/maps/api/cache", () => ({
     cacheFetch: vi.fn(),
@@ -38,7 +41,11 @@ describe("getOverpassData", () => {
         const result = await getOverpassData(mockQuery);
 
         expect(cacheFetch).toHaveBeenCalledTimes(1);
-        expect(cacheFetch).toHaveBeenCalledWith(primaryUrl, undefined, "jlhs-map-generator-cache");
+        expect(cacheFetch).toHaveBeenCalledWith(
+            primaryUrl,
+            undefined,
+            "jlhs-map-generator-cache",
+        );
         expect(result).toEqual({ elements: [{ id: 1 }] });
         expect(toast.error).not.toHaveBeenCalled();
     });
@@ -67,11 +74,24 @@ describe("getOverpassData", () => {
         const result = await getOverpassData(mockQuery);
 
         expect(cacheFetch).toHaveBeenCalledTimes(2);
-        expect(cacheFetch).toHaveBeenNthCalledWith(1, primaryUrl, undefined, "jlhs-map-generator-cache");
-        expect(cacheFetch).toHaveBeenNthCalledWith(2, fallbackUrl, undefined, "jlhs-map-generator-cache");
+        expect(cacheFetch).toHaveBeenNthCalledWith(
+            1,
+            primaryUrl,
+            undefined,
+            "jlhs-map-generator-cache",
+        );
+        expect(cacheFetch).toHaveBeenNthCalledWith(
+            2,
+            fallbackUrl,
+            undefined,
+            "jlhs-map-generator-cache",
+        );
 
         expect(determineCache).toHaveBeenCalledWith("jlhs-map-generator-cache");
-        expect(mockCache.put).toHaveBeenCalledWith(primaryUrl, "cloned-response");
+        expect(mockCache.put).toHaveBeenCalledWith(
+            primaryUrl,
+            "cloned-response",
+        );
 
         expect(result).toEqual({ elements: [{ id: 2 }] });
         expect(toast.error).not.toHaveBeenCalled();
@@ -93,7 +113,7 @@ describe("getOverpassData", () => {
         expect(cacheFetch).toHaveBeenCalledTimes(2);
         expect(toast.error).toHaveBeenCalledWith(
             "Could not load data from Overpass: 504 Gateway Timeout",
-            { toastId: "overpass-error" }
+            { toastId: "overpass-error" },
         );
         expect(result).toEqual({ elements: [] });
     });
@@ -119,7 +139,7 @@ describe("getOverpassData", () => {
         expect(cacheFetch).toHaveBeenCalledTimes(2);
         expect(toast.error).toHaveBeenCalledWith(
             "Could not load data from Overpass: 429 Too Many Requests",
-            { toastId: "overpass-error" }
+            { toastId: "overpass-error" },
         );
         expect(result).toEqual({ elements: [] });
     });

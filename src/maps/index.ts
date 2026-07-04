@@ -53,7 +53,7 @@ export const hiderifyQuestion = async (question: Question) => {
     return question;
 };
 
-export const determinePlanningPolygon = async (question: Question) => {
+const determinePlanningPolygon = async (question: Question) => {
     if (question.data.drag) {
         switch (question.id) {
             case "radius":
@@ -70,10 +70,7 @@ export const determinePlanningPolygon = async (question: Question) => {
     }
 };
 
-export async function adjustMapGeoDataForQuestion(
-    question: any,
-    mapGeoData: any,
-) {
+async function adjustMapGeoDataForQuestion(question: any, mapGeoData: any) {
     try {
         switch (question?.id) {
             case "radius":
