@@ -169,13 +169,13 @@ export const TimerDrawer = () => {
                 <div className="p-4 flex-1 flex flex-col overflow-y-auto">
                     <div className="flex flex-col md:flex-row gap-6 w-full max-w-4xl mx-auto h-full">
                         {/* --- LEFT SIDE: TIMER --- */}
-                        <div className="flex-1 flex flex-col gap-4">
+                        <div className="flex-1 rounded-xl border bg-card shadow-sm p-5 space-y-4">
                             <h2 className="text-xl font-bold font-poppins flex items-center gap-2">
                                 <Timer className="w-6 h-6 text-blue-400" />
                                 Timer
                             </h2>
 
-                            <div className="bg-slate-800 rounded-xl p-4 shadow-md border border-slate-700 flex flex-col items-center justify-center gap-2 py-8">
+                            <div className="bg-slate-800/50 rounded-xl p-4 shadow-inner border border-slate-700/50 flex flex-col items-center justify-center gap-2 py-8">
                                 <div className="text-5xl font-mono font-bold text-white">
                                     {formatTime(
                                         $timerElapsedSeconds -
@@ -295,7 +295,7 @@ export const TimerDrawer = () => {
                         </div>
 
                         {/* --- RIGHT SIDE: LEADERBOARD --- */}
-                        <div className="flex-1 flex flex-col gap-4 border-t md:border-t-0 md:border-l border-slate-700 pt-6 md:pt-0 md:pl-6 h-full min-h-[300px]">
+                        <div className="flex-1 rounded-xl border bg-card shadow-sm p-5 h-full min-h-[300px] flex flex-col gap-4">
                             <h2 className="text-xl font-bold font-poppins flex items-center gap-2">
                                 <Trophy className="w-6 h-6 text-yellow-400" />
                                 Leaderboard

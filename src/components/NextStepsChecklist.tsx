@@ -31,19 +31,19 @@ export const NextStepsChecklist = () => {
     }
 
     return (
-        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1020] bg-slate-800 text-slate-200 p-6 rounded-xl shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-slate-600 w-80 sm:w-96 font-poppins">
-            <div className="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
-                <h3 className="font-bold text-xl text-white">Next Steps</h3>
+        <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1020] rounded-xl border bg-card shadow-xl p-5 space-y-4 w-80 sm:w-96 font-poppins">
+            <div className="flex justify-between items-center mb-1 pb-2">
+                <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">Next Steps</h3>
                 <button
                     type="button"
                     aria-label="Dismiss checklist"
                     onClick={() => hasDismissedNextStepsChecklist.set(true)}
-                    className="text-slate-400 hover:text-white transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 focus-visible:ring-offset-slate-800"
+                    className="text-muted-foreground hover:text-foreground transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
                     <XIcon size={20} />
                 </button>
             </div>
-            <ul className="space-y-3 text-sm text-slate-300">
+            <ul className="space-y-3 text-sm text-muted-foreground">
                 <li className="flex gap-2 items-start">
                     <span className="font-bold text-blue-400 w-5 shrink-0">
                         1.
