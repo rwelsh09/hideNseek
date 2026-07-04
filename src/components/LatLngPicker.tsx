@@ -1,5 +1,16 @@
 import { useStore } from "@nanostores/react";
-import { EditIcon, LocateIcon, PaletteIcon } from "lucide-react";
+import { VscQuestion, VscShare } from "react-icons/vsc";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
+import { DialogDescription } from "@/components/ui/dialog";
+import { QUESTION_RULES } from "@/lib/rules";
+import { useRef } from "react";
+import { questions } from "@/lib/context";
+
+import { LocateIcon, PaletteIcon } from "lucide-react";
 import { toast } from "react-toastify";
 
 import { Input } from "@/components/ui/input";
@@ -119,6 +130,7 @@ export const LatitudeLongitude = ({
     children,
     disabled,
     inlineEdit = false,
+    questionKey,
 }: {
     latitude: number;
     longitude: number;
@@ -130,8 +142,11 @@ export const LatitudeLongitude = ({
     children?: React.ReactNode;
     disabled?: boolean;
     inlineEdit?: boolean;
+    questionKey?: number;
 }) => {
     const $isLoading = useStore(isLoading);
+    const $questions = useStore(questions);
+    const copyButtonRef = useRef<HTMLButtonElement>(null);
 
     const color = colorName ? ICON_COLORS[colorName] : "transparent";
 
@@ -177,7 +192,7 @@ export const LatitudeLongitude = ({
                 <div
                     className={cn(!inlineEdit && "flex justify-between gap-1")}
                 >
-                    {inlineEdit ? (
+                    {inlineEdit && (
                         <div className="flex flex-col gap-2 w-full mb-2">
                             <LatLngEditForm
                                 latitude={latitude}
@@ -186,38 +201,6 @@ export const LatitudeLongitude = ({
                                 disabled={disabled}
                             />
                         </div>
-                    ) : (
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button
-                                    disabled={disabled}
-                                    variant="outline"
-                                    size="icon"
-                                    title="Edit coordinates"
-                                    aria-label="Edit coordinates"
-                                >
-                                    <EditIcon />
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent>
-                                <DialogHeader>
-                                    <DialogTitle className="text-2xl">
-                                        Update {label}
-                                    </DialogTitle>
-                                </DialogHeader>
-                                <LatLngEditForm
-                                    latitude={latitude}
-                                    longitude={longitude}
-                                    onChange={onChange}
-                                    disabled={disabled}
-                                />
-                                <DialogFooter>
-                                    <DialogClose asChild>
-                                        <Button>Done</Button>
-                                    </DialogClose>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog>
                     )}
                     {!inlineEdit && onChangeColor && (
                         <Dialog>
@@ -281,6 +264,163 @@ export const LatitudeLongitude = ({
                                 : "contents"
                         }
                     >
+                        {!inlineEdit && questionKey !== undefined && (
+                            <>
+                                {QUESTION_RULES[
+                                    $questions.find(
+                                        (q) => q.key === questionKey,
+                                    )?.id as keyof typeof QUESTION_RULES
+                                ] && (
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <Button
+                                                variant="outline"
+                                                size="icon"
+                                                aria-label="Question Rules"
+                                                data-tutorial-id="tutorial-question-rules-btn"
+                                                disabled={disabled}
+                                            >
+                                                <VscQuestion />
+                                            </Button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80 p-4 z-[9999]">
+                                            <h4 className="font-semibold mb-2">
+                                                How it works
+                                            </h4>
+                                            <p className="text-sm text-muted-foreground">
+                                                {
+                                                    QUESTION_RULES[
+                                                        $questions.find(
+                                                            (q) =>
+                                                                q.key ===
+                                                                questionKey,
+                                                        )
+                                                            ?.id as keyof typeof QUESTION_RULES
+                                                    ]
+                                                }
+                                            </p>
+                                        </PopoverContent>
+                                    </Popover>
+                                )}
+                                <Dialog>
+                                    <DialogTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            size="icon"
+                                            aria-label="Share Question"
+                                            data-tutorial-id="tutorial-share-question-btn"
+                                            disabled={disabled}
+                                        >
+                                            <VscShare />
+                                        </Button>
+                                    </DialogTrigger>
+                                    <DialogContent>
+                                        <DialogHeader>
+                                            <DialogTitle className="text-2xl">
+                                                Share this Question!
+                                            </DialogTitle>
+                                            <DialogDescription>
+                                                Below you can access the JSON
+                                                representing the question. Send
+                                                this to another player for them
+                                                to copy. They can then click
+                                                &ldquo;Paste Question&rdquo; at
+                                                the bottom of the
+                                                &ldquo;Questions&rdquo; sidebar.
+                                            </DialogDescription>
+                                        </DialogHeader>
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            className="mb-2 sm:mb-0 transition-colors"
+                                            ref={copyButtonRef}
+                                            onClick={() => {
+                                                if (
+                                                    !navigator ||
+                                                    !navigator.clipboard
+                                                ) {
+                                                    toast.error(
+                                                        "Clipboard API not supported in your browser",
+                                                    );
+                                                    return;
+                                                }
+                                                navigator.clipboard
+                                                    .writeText(
+                                                        JSON.stringify(
+                                                            $questions.find(
+                                                                (q) =>
+                                                                    q.key ===
+                                                                    questionKey,
+                                                            ),
+                                                            null,
+                                                            4,
+                                                        ),
+                                                    )
+                                                    .then(() => {
+                                                        if (
+                                                            copyButtonRef.current
+                                                        ) {
+                                                            copyButtonRef.current.textContent =
+                                                                "Copied!";
+                                                            copyButtonRef.current.classList.add(
+                                                                "bg-green-500",
+                                                            );
+                                                            setTimeout(() => {
+                                                                if (
+                                                                    copyButtonRef.current
+                                                                ) {
+                                                                    copyButtonRef.current.textContent =
+                                                                        "Copy to Clipboard";
+                                                                    copyButtonRef.current.classList.remove(
+                                                                        "bg-green-500",
+                                                                    );
+                                                                }
+                                                            }, 2000);
+                                                        }
+                                                    })
+                                                    .catch(() => {
+                                                        if (
+                                                            copyButtonRef.current
+                                                        ) {
+                                                            copyButtonRef.current.textContent =
+                                                                "Failed to Copy";
+                                                            copyButtonRef.current.classList.add(
+                                                                "bg-red-500",
+                                                            );
+                                                            setTimeout(() => {
+                                                                if (
+                                                                    copyButtonRef.current
+                                                                ) {
+                                                                    copyButtonRef.current.textContent =
+                                                                        "Copy to Clipboard";
+                                                                    copyButtonRef.current.classList.remove(
+                                                                        "bg-red-500",
+                                                                    );
+                                                                }
+                                                            }, 2000);
+                                                        }
+                                                    });
+                                            }}
+                                        >
+                                            Copy to Clipboard
+                                        </Button>
+                                        <textarea
+                                            className="w-full h-[300px] bg-slate-900 text-white rounded-md p-2"
+                                            readOnly
+                                            value={JSON.stringify(
+                                                $questions.find(
+                                                    (q) =>
+                                                        q.key === questionKey,
+                                                ),
+                                                null,
+                                                4,
+                                            )}
+                                        ></textarea>
+                                    </DialogContent>
+                                </Dialog>
+                            </>
+                        )}
+
                         <Button
                             variant="outline"
                             size="icon"

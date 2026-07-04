@@ -91,6 +91,7 @@ export const HotColdQuestionComponent = ({
             }}
         >
             <LatitudeLongitude
+                questionKey={questionKey}
                 latitude={data.latA}
                 longitude={data.lngA}
                 label="Start"
