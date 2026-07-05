@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/fix-pwa-icon-10606477583186085694/sw.js', { scope: '/hideNseek/fix-pwa-icon-10606477583186085694/' })})}
