@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/icon-update/sw.js', { scope: '/hideNseek/icon-update/' })})}
