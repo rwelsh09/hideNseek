@@ -32,6 +32,7 @@ import { cn } from "@/lib/utils";
 import { applyQuestionsToMapGeoData, holedMask } from "@/maps";
 import { hiderifyQuestion } from "@/maps";
 import { clearCache, determineMapBoundaries } from "@/maps/api";
+import { flyToWithOffset } from "@/maps/ui-utils";
 
 import { ClosestPlaces } from "./ClosestPlaces";
 import { DraggableMarkers } from "./DraggableMarkers";
@@ -495,13 +496,13 @@ export const Map = ({ className }: { className?: string }) => {
         const fallbackToCalgary = () => {
             const extent = $mapGeoLocation?.properties?.extent;
             if (extent) {
-                map.fitBounds(
-                    [
-                        [extent[0], extent[1]],
-                        [extent[2], extent[3]],
-                    ],
-                    { paddingBottomRight: [0, 400] },
-                );
+                const bounds = L.latLngBounds([
+                    [extent[0], extent[1]],
+                    [extent[2], extent[3]],
+                ]);
+                const center = bounds.getCenter();
+                const zoom = map.getBoundsZoom(bounds);
+                flyToWithOffset(map, center, zoom);
             }
         };
 
@@ -513,10 +514,7 @@ export const Map = ({ className }: { className?: string }) => {
         navigator.geolocation.getCurrentPosition(
             (pos) => {
                 const { latitude, longitude } = pos.coords;
-                map.fitBounds(L.latLng(latitude, longitude).toBounds(5000), {
-                    paddingBottomRight: [0, 400],
-                    maxZoom: 12,
-                });
+                flyToWithOffset(map, L.latLng(latitude, longitude), 12);
             },
             () => {
                 toast.error("Unable to center map on your location.");
