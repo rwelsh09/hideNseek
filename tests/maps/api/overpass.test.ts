@@ -44,7 +44,7 @@ describe("getOverpassData", () => {
         expect(cacheFetch).toHaveBeenCalledWith(
             primaryUrl,
             undefined,
-            "jlhs-map-generator-cache",
+            "jlhs-hide-and-seek-cache",
         );
         expect(result).toEqual({ elements: [{ id: 1 }] });
         expect(toast.error).not.toHaveBeenCalled();
@@ -78,16 +78,16 @@ describe("getOverpassData", () => {
             1,
             primaryUrl,
             undefined,
-            "jlhs-map-generator-cache",
+            "jlhs-hide-and-seek-cache",
         );
         expect(cacheFetch).toHaveBeenNthCalledWith(
             2,
             fallbackUrl,
             undefined,
-            "jlhs-map-generator-cache",
+            "jlhs-hide-and-seek-cache",
         );
 
-        expect(determineCache).toHaveBeenCalledWith("jlhs-map-generator-cache");
+        expect(determineCache).toHaveBeenCalledWith("jlhs-hide-and-seek-cache");
         expect(mockCache.put).toHaveBeenCalledWith(
             primaryUrl,
             "cloned-response",

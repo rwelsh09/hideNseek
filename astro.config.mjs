@@ -33,9 +33,9 @@ export default defineConfig({
         AstroPWA({
             manifest: {
                 name: "Hide and Seek Map",
-                short_name: "Map Generator",
+                short_name: "Hide and Seek - Calgary",
                 description:
-                    "Automatically generate maps for Hide and Seek with ease! Simply name the questions and watch the map eliminate hundreds of possibilities in seconds.",
+                    "Automatically watch the map eliminate hundreds of possibilities in seconds for Hide and Seek!",
                 icons: [
                     {
                         src: "icon.png",
