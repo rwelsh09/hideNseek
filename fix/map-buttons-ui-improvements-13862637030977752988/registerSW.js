@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/fix/map-buttons-ui-improvements-13862637030977752988/sw.js', { scope: '/hideNseek/fix/map-buttons-ui-improvements-13862637030977752988/' })})}
