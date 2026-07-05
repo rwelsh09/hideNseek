@@ -13,7 +13,6 @@ import {
     hiderMode,
     isLoading,
     questionModified,
-    questions,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
@@ -37,7 +36,6 @@ export const MeasureQuestionComponent = ({
 }) => {
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
-    const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
     const [distanceValue, setDistanceValue] = React.useState<number | null>(
         null,
@@ -56,18 +54,9 @@ export const MeasureQuestionComponent = ({
         };
     }, [data.lat, data.lng, data.type]);
 
-    const label = `Measure
-    ${
-        $questions
-            .filter((q) => q.id === "measure")
-            .map((q) => q.key)
-            .indexOf(questionKey) + 1
-    }`;
-
     return (
         <QuestionCard
             questionKey={questionKey}
-            label={label}
             sub={sub}
             className={className}
             questionData={data}

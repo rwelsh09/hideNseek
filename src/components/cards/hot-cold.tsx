@@ -8,7 +8,6 @@ import {
     hiderMode,
     isLoading,
     questionModified,
-    questions,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
@@ -31,18 +30,9 @@ export const HotColdQuestionComponent = ({
 }) => {
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
-    const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
 
     const DISTANCE_UNIT = "kilometers";
-
-    const label = `HotCold
-    ${
-        $questions
-            .filter((q) => q.id === "hot/cold")
-            .map((q) => q.key)
-            .indexOf(questionKey) + 1
-    }`;
 
     const hasCoords =
         data.latA !== null &&
@@ -63,7 +53,6 @@ export const HotColdQuestionComponent = ({
     return (
         <QuestionCard
             questionKey={questionKey}
-            label={label}
             sub={sub}
             className={className}
             questionData={data}

@@ -48,6 +48,24 @@ export const QuestionCard = ({
         setIsCollapsed((prevState) => !prevState);
     };
 
+    let displayLabel = label;
+    if (!displayLabel) {
+        const question = $questions.find((q) => q.key === questionKey);
+        if (question) {
+            const index =
+                $questions
+                    .filter((q) => q.id === question.id)
+                    .findIndex((q) => q.key === questionKey) + 1;
+            let typeName = question.id;
+            if (typeName === "hot/cold") typeName = "HotCold";
+            typeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
+            // Replicating the previous exact spacing behavior just in case
+            displayLabel = `${typeName}\n    ${index}`;
+        } else {
+            displayLabel = "Question";
+        }
+    }
+
     return (
         <>
             <SidebarGroup className={className}>
@@ -72,7 +90,7 @@ export const QuestionCard = ({
                         className="ml-8 mr-8 cursor-pointer"
                         onClick={toggleCollapse}
                     >
-                        {label} {sub && `(${sub})`}
+                        {displayLabel} {sub && `(${sub})`}
                     </SidebarGroupLabel>
                     <SidebarGroupContent
                         className={cn(
