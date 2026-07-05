@@ -1,7 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { LockIcon, UnlockIcon } from "lucide-react";
 import { useState } from "react";
-import { VscChevronDown } from "react-icons/vsc";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -43,9 +42,29 @@ export const QuestionCard = ({
     const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
 
-    const toggleCollapse = () => {
-        questionData.collapsed = !isCollapsed;
-        setIsCollapsed((prevState) => !prevState);
+    const toggleLockAndCollapse = () => {
+        const wasUnlocked = questionData.drag;
+        questionData.drag = !wasUnlocked;
+        questionModified();
+
+        if (wasUnlocked) {
+            // We are locking it now
+            penaltyMinutes.set(
+                penaltyMinutes.get() + TIME_PENALTIES[penaltyId],
+            );
+        } else {
+            // We are unlocking it now
+            penaltyMinutes.set(
+                Math.max(
+                    0,
+                    penaltyMinutes.get() - TIME_PENALTIES[penaltyId],
+                ),
+            );
+        }
+
+        // Collapse when locked (drag = false), expand when unlocked (drag = true)
+        questionData.collapsed = wasUnlocked;
+        setIsCollapsed(wasUnlocked);
     };
 
     let displayLabel = label;
@@ -72,23 +91,26 @@ export const QuestionCard = ({
                 <div className="relative">
                     <button
                         type="button"
-                        onClick={toggleCollapse}
+                        onClick={toggleLockAndCollapse}
+                        data-tutorial-id="tutorial-lock-btn"
                         aria-label={
-                            isCollapsed
-                                ? "Expand Question"
-                                : "Collapse Question"
+                            !questionData.drag
+                                ? "Unlock Question"
+                                : "Lock Question"
                         }
                         aria-expanded={!isCollapsed}
-                        className={cn(
-                            "absolute top-2 left-2 text-white border rounded-md transition-all duration-500",
-                            isCollapsed && "-rotate-90",
-                        )}
+                        disabled={$isLoading}
+                        className="absolute top-1.5 left-1.5 p-1 text-white border rounded-md transition-all duration-500 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:opacity-50"
                     >
-                        <VscChevronDown />
+                        {!questionData.drag ? (
+                            <LockIcon className="w-4 h-4 text-foreground" />
+                        ) : (
+                            <UnlockIcon className="w-4 h-4 text-foreground" />
+                        )}
                     </button>
                     <SidebarGroupLabel
-                        className="ml-8 mr-8 cursor-pointer"
-                        onClick={toggleCollapse}
+                        className="ml-10 mr-8 cursor-pointer"
+                        onClick={toggleLockAndCollapse}
                     >
                         {displayLabel} {sub && `(${sub})`}
                     </SidebarGroupLabel>
@@ -99,45 +121,6 @@ export const QuestionCard = ({
                         )}
                     >
                         <SidebarMenu>{children}</SidebarMenu>
-                        <div className="flex gap-2 pt-2 px-2 justify-center">
-                            <Button
-                                variant="outline"
-                                size="sm"
-                                className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700"
-                                data-tutorial-id="tutorial-lock-btn"
-                                aria-label={
-                                    !questionData.drag
-                                        ? "Unlock Question"
-                                        : "Lock Question"
-                                }
-                                onClick={() => {
-                                    const locked = questionData.drag;
-                                    questionData.drag = !locked;
-                                    questionModified();
-                                    if (locked) {
-                                        penaltyMinutes.set(
-                                            penaltyMinutes.get() +
-                                                TIME_PENALTIES[penaltyId],
-                                        );
-                                    } else {
-                                        penaltyMinutes.set(
-                                            Math.max(
-                                                0,
-                                                penaltyMinutes.get() -
-                                                    TIME_PENALTIES[penaltyId],
-                                            ),
-                                        );
-                                    }
-                                }}
-                                disabled={$isLoading}
-                            >
-                                {!questionData.drag ? (
-                                    <LockIcon className="w-4 h-4" />
-                                ) : (
-                                    <UnlockIcon className="w-4 h-4" />
-                                )}
-                            </Button>
-                        </div>
                     </SidebarGroupContent>
                 </div>
             </SidebarGroup>
