@@ -4,7 +4,7 @@
     "version": "0.1",
     "scripts": {
         "dev": "astro dev",
-        "build": "pnpm dlx @vite-pwa/assets-generator public/icon.svg --preset minimal-2023 --outDir public && astro build",
+        "build": "astro build",
         "preview": "astro preview",
         "astro": "astro",
         "lint": "eslint --fix src && prettier . --write",
