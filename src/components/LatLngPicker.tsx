@@ -275,6 +275,7 @@ export const LatitudeLongitude = ({
                                             <Button
                                                 variant="outline"
                                                 size="icon"
+                                                type="button"
                                                 aria-label="Question Rules"
                                                 data-tutorial-id="tutorial-question-rules-btn"
                                                 disabled={disabled}
@@ -304,6 +305,7 @@ export const LatitudeLongitude = ({
                                 <Button
                                     variant="outline"
                                     size="icon"
+                                    type="button"
                                     aria-label="Delete Question"
                                     data-tutorial-id="tutorial-delete-question-btn"
                                     disabled={disabled}
@@ -312,7 +314,7 @@ export const LatitudeLongitude = ({
                                         const currentQ = qList.find(
                                             (q) => q.key === questionKey,
                                         );
-                                        if (currentQ && currentQ.drag) {
+                                        if (currentQ && currentQ.data.drag) {
                                             questions.set(
                                                 qList.filter(
                                                     (q) =>
@@ -329,6 +331,7 @@ export const LatitudeLongitude = ({
                                         <Button
                                             variant="outline"
                                             size="icon"
+                                            type="button"
                                             aria-label="Share Question"
                                             data-tutorial-id="tutorial-share-question-btn"
                                             disabled={disabled}
@@ -486,6 +489,7 @@ export const LatitudeLongitude = ({
                                 );
                             }}
                             disabled={disabled}
+                            type="button"
                             title="Set to current location"
                             aria-label="Set to current location"
                             data-tutorial-id="tutorial-gps-btn"
