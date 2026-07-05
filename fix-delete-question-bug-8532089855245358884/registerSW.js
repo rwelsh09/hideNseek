@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/fix-delete-question-bug-8532089855245358884/sw.js', { scope: '/hideNseek/fix-delete-question-bug-8532089855245358884/' })})}
