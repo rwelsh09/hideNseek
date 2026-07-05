@@ -30,15 +30,19 @@ import { NextStepsChecklist } from "@/components/NextStepsChecklist";
                 >
                     <div class="w-full h-full relative">
                         <div
-                            class="absolute top-[90px] left-[10px] z-[1030] group-[.fullscreen]:hidden flex flex-col gap-2"
+                            class="absolute top-[10px] left-1/2 -translate-x-1/2 z-[1030] group-[.fullscreen]:hidden"
+                        >
+                            <TimerDrawer client:load />
+                        </div>
+                        <div
+                            class="absolute top-[90px] left-[10px] z-[1030] group-[.fullscreen]:hidden"
                         >
                             <div data-tutorial-id="left-sidebar-trigger">
                                 <SidebarTriggerL client:load />
                             </div>
-                            <TimerDrawer client:load />
                         </div>
                         <div
-                            class="absolute top-[160px] md:top-[120px] right-2 z-[1030] group-[.fullscreen]:hidden" data-tutorial-id="right-sidebar-trigger"
+                            class="absolute top-[90px] right-[10px] z-[1030] group-[.fullscreen]:hidden" data-tutorial-id="right-sidebar-trigger"
                         >
                             <SidebarTriggerR client:load />
                         </div>
