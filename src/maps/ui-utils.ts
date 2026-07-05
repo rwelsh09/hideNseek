@@ -8,11 +8,8 @@ export const flyToWithOffset = (
 ) => {
     const targetPoint = map.project(latlng, zoom);
 
-    const isDialogVisible = document.querySelector('[role="dialog"]') !== null;
-    const appliedOffset = isDialogVisible ? offset : [0, 0];
-
-    targetPoint.x += appliedOffset[0];
-    targetPoint.y += appliedOffset[1];
+    targetPoint.x += offset[0];
+    targetPoint.y += offset[1];
 
     const offsetLatLng = map.unproject(targetPoint, zoom);
     map.flyTo(offsetLatLng, zoom);
