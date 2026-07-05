@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/feat/lock-button-collapse-15783589332259742825/sw.js', { scope: '/hideNseek/feat/lock-button-collapse-15783589332259742825/' })})}
