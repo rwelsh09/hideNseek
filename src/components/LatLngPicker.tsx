@@ -312,7 +312,7 @@ export const LatitudeLongitude = ({
                                         const currentQ = qList.find(
                                             (q) => q.key === questionKey,
                                         );
-                                        if (currentQ && currentQ.drag) {
+                                        if (currentQ && currentQ.data.drag) {
                                             questions.set(
                                                 qList.filter(
                                                     (q) =>
