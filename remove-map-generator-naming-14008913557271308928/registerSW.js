@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/remove-map-generator-naming-14008913557271308928/sw.js', { scope: '/hideNseek/remove-map-generator-naming-14008913557271308928/' })})}
