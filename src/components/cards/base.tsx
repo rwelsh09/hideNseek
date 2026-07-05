@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { LockIcon, UnlockIcon } from "lucide-react";
 import { useState } from "react";
-import { VscChevronDown, VscTrash } from "react-icons/vsc";
+import { VscChevronDown } from "react-icons/vsc";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -103,24 +103,7 @@ export const QuestionCard = ({
                             <Button
                                 variant="outline"
                                 size="sm"
-                                aria-label="Delete Question"
-                                data-tutorial-id="tutorial-delete-question-btn"
-                                disabled={$isLoading}
-                                onClick={() => {
-                                    if (questionData.drag) {
-                                        questions.set(
-                                            $questions.filter(
-                                                (q) => q.key !== questionKey,
-                                            ),
-                                        );
-                                    }
-                                }}
-                            >
-                                <VscTrash />
-                            </Button>
-                            <Button
-                                variant="outline"
-                                size="sm"
+                                className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700"
                                 data-tutorial-id="tutorial-lock-btn"
                                 aria-label={
                                     !questionData.drag
@@ -149,9 +132,9 @@ export const QuestionCard = ({
                                 disabled={$isLoading}
                             >
                                 {!questionData.drag ? (
-                                    <LockIcon />
+                                    <LockIcon className="w-4 h-4" />
                                 ) : (
-                                    <UnlockIcon />
+                                    <UnlockIcon className="w-4 h-4" />
                                 )}
                             </Button>
                         </div>
