@@ -306,13 +306,15 @@ export const LatitudeLongitude = ({
                                     size="icon"
                                     aria-label="Delete Question"
                                     data-tutorial-id="tutorial-delete-question-btn"
-                                    disabled={$isLoading || disabled}
+                                    disabled={disabled}
                                     onClick={() => {
-                                        questions.set(
-                                            $questions.filter(
-                                                (q) => q.key !== questionKey,
-                                            ),
-                                        );
+                                        const qList = questions.get();
+                                        const currentQ = qList.find((q) => q.key === questionKey);
+                                        if (currentQ && currentQ.drag) {
+                                            questions.set(
+                                                qList.filter((q) => q.key !== questionKey)
+                                            );
+                                        }
                                     }}
                                 >
                                     <VscTrash />

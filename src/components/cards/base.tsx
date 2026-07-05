@@ -81,39 +81,50 @@ export const QuestionCard = ({
                         )}
                     >
                         <SidebarMenu>{children}</SidebarMenu>
-                        {locked !== undefined && (
-                            <div className="flex gap-2 pt-2 px-2 justify-center">
-                                <Button
-                                    variant="outline"
-                                    size="sm"
-                                    data-tutorial-id="tutorial-lock-btn"
-                                    aria-label={
-                                        locked
-                                            ? "Unlock Question"
-                                            : "Lock Question"
+                        <div className="flex gap-2 pt-2 px-2 justify-center">
+                            <Button
+                                variant="outline"
+                                size="sm"
+                                data-tutorial-id="tutorial-lock-btn"
+                                aria-label={
+                                    !questionData.drag
+                                        ? "Unlock Question"
+                                        : "Lock Question"
+                                }
+                                title={
+                                    !questionData.drag
+                                        ? "Unlock Question"
+                                        : "Lock Question"
+                                }
+                                onClick={() => {
+                                    const locked = questionData.drag;
+                                    questionData.drag = !locked;
+                                    questionModified();
+                                    if (locked) {
+                                        penaltyMinutes.set(
+                                            penaltyMinutes.get() +
+                                                TIME_PENALTIES[penaltyId],
+                                        );
+                                    } else {
+                                        penaltyMinutes.set(
+                                            Math.max(
+                                                0,
+                                                penaltyMinutes.get() -
+                                                    TIME_PENALTIES[penaltyId],
+                                            ),
+                                        );
                                     }
-                                    title={
-                                        locked
-                                            ? "Unlock Question"
-                                            : "Lock Question"
-                                    }
-                                    onClick={() => {
-                                        const d = questions.get();
-                                        if (d[questionKey]) {
-                                            d[questionKey].locked = !locked;
-                                            questionModified();
-                                        }
-                                    }}
-                                    className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700"
-                                >
-                                    {locked ? (
-                                        <LockIcon className="w-4 h-4" />
-                                    ) : (
-                                        <UnlockIcon className="w-4 h-4" />
-                                    )}
-                                </Button>
-                            </div>
-                        )}
+                                }}
+                                disabled={$isLoading}
+                                className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700"
+                            >
+                                {!questionData.drag ? (
+                                    <LockIcon className="w-4 h-4" />
+                                ) : (
+                                    <UnlockIcon className="w-4 h-4" />
+                                )}
+                            </Button>
+                        </div>
                     </SidebarGroupContent>
                 </div>
             </SidebarGroup>
