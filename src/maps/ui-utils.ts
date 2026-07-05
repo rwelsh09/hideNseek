@@ -4,7 +4,7 @@ export const flyToWithOffset = (
     map: L.Map,
     latlng: L.LatLng,
     zoom: number,
-    offset: [number, number] = [0, 100],
+    offset: [number, number] = [0, 150],
 ) => {
     const targetPoint = map.project(latlng, zoom);
 
