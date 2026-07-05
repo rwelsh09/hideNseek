@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/feature/dynamic-question-labels-18233992519318535490/sw.js', { scope: '/hideNseek/feature/dynamic-question-labels-18233992519318535490/' })})}
