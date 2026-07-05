@@ -35,7 +35,7 @@ export default defineConfig({
                 name: "Hide and Seek Map",
                 short_name: "Hide and Seek - Calgary",
                 description:
-                    "Automatically watch the map eliminate hundreds of possibilities in seconds for Hide and Seek!",
+                    "The map automatically eliminates possible hiding areas based on your questions!",
                 icons: [
                     {
                         src: "icon.png",
