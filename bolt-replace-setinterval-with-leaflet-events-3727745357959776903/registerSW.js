@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/bolt-replace-setinterval-with-leaflet-events-3727745357959776903/sw.js', { scope: '/hideNseek/bolt-replace-setinterval-with-leaflet-events-3727745357959776903/' })})}
