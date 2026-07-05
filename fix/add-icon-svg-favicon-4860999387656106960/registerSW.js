@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/fix/add-icon-svg-favicon-4860999387656106960/sw.js', { scope: '/hideNseek/fix/add-icon-svg-favicon-4860999387656106960/' })})}
