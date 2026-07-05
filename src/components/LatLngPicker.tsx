@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { LocateIcon, PaletteIcon } from "lucide-react";
 import { useRef } from "react";
-import { VscQuestion, VscShare } from "react-icons/vsc";
+import { VscQuestion, VscShare, VscTrash } from "react-icons/vsc";
 import { toast } from "react-toastify";
 
 import { DialogDescription } from "@/components/ui/dialog";
@@ -301,6 +301,29 @@ export const LatitudeLongitude = ({
                                         </PopoverContent>
                                     </Popover>
                                 )}
+                                <Button
+                                    variant="outline"
+                                    size="icon"
+                                    aria-label="Delete Question"
+                                    data-tutorial-id="tutorial-delete-question-btn"
+                                    disabled={disabled}
+                                    onClick={() => {
+                                        const qList = questions.get();
+                                        const currentQ = qList.find(
+                                            (q) => q.key === questionKey,
+                                        );
+                                        if (currentQ && currentQ.drag) {
+                                            questions.set(
+                                                qList.filter(
+                                                    (q) =>
+                                                        q.key !== questionKey,
+                                                ),
+                                            );
+                                        }
+                                    }}
+                                >
+                                    <VscTrash />
+                                </Button>
                                 <Dialog>
                                     <DialogTrigger asChild>
                                         <Button
