@@ -12,10 +12,8 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
     hiderMode,
     isLoading,
-    penaltyMinutes,
     questionModified,
     questions,
-    TIME_PENALTIES,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
@@ -72,27 +70,8 @@ export const MeasureQuestionComponent = ({
             label={label}
             sub={sub}
             className={className}
-            collapsed={data.collapsed}
-            setCollapsed={(collapsed) => {
-                data.collapsed = collapsed; // Doesn't trigger a re-render so no need for questionModified
-            }}
-            locked={!data.drag}
-            setLocked={(locked) => {
-                data.drag = !locked;
-                questionModified();
-                if (locked) {
-                    penaltyMinutes.set(
-                        penaltyMinutes.get() + TIME_PENALTIES.measure,
-                    );
-                } else {
-                    penaltyMinutes.set(
-                        Math.max(
-                            0,
-                            penaltyMinutes.get() - TIME_PENALTIES.measure,
-                        ),
-                    );
-                }
-            }}
+            questionData={data}
+            penaltyId={"measure"}
         >
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                 <Select

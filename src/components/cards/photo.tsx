@@ -9,9 +9,7 @@ import {
 } from "@/components/ui/sidebar-l";
 import {
     isLoading,
-    penaltyMinutes,
     questionModified,
-    TIME_PENALTIES,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
@@ -77,27 +75,8 @@ export const PhotoQuestionComponent = ({
             label={label}
             sub={sub}
             className={className}
-            collapsed={data.collapsed}
-            setCollapsed={(collapsed) => {
-                data.collapsed = collapsed;
-            }}
-            locked={!data.drag}
-            setLocked={(locked) => {
-                data.drag = !locked;
-                questionModified();
-                if (locked) {
-                    penaltyMinutes.set(
-                        penaltyMinutes.get() + TIME_PENALTIES.photo,
-                    );
-                } else {
-                    penaltyMinutes.set(
-                        Math.max(
-                            0,
-                            penaltyMinutes.get() - TIME_PENALTIES.photo,
-                        ),
-                    );
-                }
-            }}
+            questionData={data}
+            penaltyId={"photo"}
         >
             <SidebarMenuItem>
                 <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-col")}>

@@ -4,13 +4,6 @@ import { useRef, useState } from "react";
 import { VscChevronDown } from "react-icons/vsc";
 
 import { Button } from "@/components/ui/button";
-import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
 import {
     SidebarGroup,
@@ -18,7 +11,13 @@ import {
     SidebarGroupLabel,
     SidebarMenu,
 } from "@/components/ui/sidebar-l";
-import { isLoading, questions } from "@/lib/context";
+import {
+    isLoading,
+    penaltyMinutes,
+    questionModified,
+    questions,
+    TIME_PENALTIES,
+} from "@/lib/context";
 import { cn } from "@/lib/utils";
 
 export const QuestionCard = ({
@@ -27,30 +26,25 @@ export const QuestionCard = ({
     className,
     label,
     sub,
-    collapsed,
-    locked,
-    setLocked,
-    setCollapsed,
+    questionData,
+    penaltyId,
 }: {
     children: React.ReactNode;
     questionKey: number;
     className?: string;
     label?: string;
     sub?: string;
-    collapsed?: boolean;
-    locked?: boolean;
-    setLocked?: (locked: boolean) => void;
-    setCollapsed?: (collapsed: boolean) => void;
+    questionData: { drag: boolean; collapsed: boolean; [key: string]: any };
+    penaltyId: keyof typeof TIME_PENALTIES;
 }) => {
-    const [isCollapsed, setIsCollapsed] = useState(collapsed ?? false);
+    const [isCollapsed, setIsCollapsed] = useState(
+        questionData.collapsed ?? false,
+    );
     const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
-    const copyButtonRef = useRef<HTMLButtonElement>(null);
 
     const toggleCollapse = () => {
-        if (setCollapsed) {
-            setCollapsed(!isCollapsed);
-        }
+        questionData.collapsed = !isCollapsed;
         setIsCollapsed((prevState) => !prevState);
     };
 
@@ -98,10 +92,25 @@ export const QuestionCard = ({
                                             ? "Unlock Question"
                                             : "Lock Question"
                                     }
-                                    onClick={() => setLocked!(!locked)}
-                                    disabled={$isLoading}
+                                    title={
+                                        locked
+                                            ? "Unlock Question"
+                                            : "Lock Question"
+                                    }
+                                    onClick={() => {
+                                        const d = questions.get();
+                                        if (d[questionKey]) {
+                                            d[questionKey].locked = !locked;
+                                            questionModified();
+                                        }
+                                    }}
+                                    className="w-full bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700"
                                 >
-                                    {locked ? <LockIcon /> : <UnlockIcon />}
+                                    {locked ? (
+                                        <LockIcon className="w-4 h-4" />
+                                    ) : (
+                                        <UnlockIcon className="w-4 h-4" />
+                                    )}
                                 </Button>
                             </div>
                         )}
