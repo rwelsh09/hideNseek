@@ -13,7 +13,6 @@ import {
     hiderMode,
     isLoading,
     questionModified,
-    questions,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
@@ -36,20 +35,11 @@ export const RadiusQuestionComponent = ({
 }) => {
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
-    const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
-    const label = `Radius
-    ${
-        $questions
-            .filter((q) => q.id === "radius")
-            .map((q) => q.key)
-            .indexOf(questionKey) + 1
-    }`;
 
     return (
         <QuestionCard
             questionKey={questionKey}
-            label={label}
             sub={sub}
             className={className}
             questionData={data}

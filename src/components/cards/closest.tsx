@@ -13,7 +13,6 @@ import {
     hiderMode,
     isLoading,
     questionModified,
-    questions,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { mapToObj } from "@/lib/utils";
@@ -39,20 +38,11 @@ export const ClosestQuestionComponent = ({
     className?: string;
     isPreview?: boolean;
 }) => {
-    const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
-    const label = `Closest
-    ${
-        $questions
-            .filter((q) => q.id === "closest")
-            .map((q) => q.key)
-            .indexOf(questionKey) + 1
-    }`;
 
     return (
         <QuestionCard
             questionKey={questionKey}
-            label={label}
             sub={sub}
             className={className}
             questionData={data}
