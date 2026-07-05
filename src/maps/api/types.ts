@@ -43,9 +43,9 @@ export enum QuestionSpecificLocation {
 }
 
 export enum CacheType {
-    CACHE = "jlhs-map-generator-cache",
-    ZONE_CACHE = "jlhs-map-generator-zone-cache",
-    PERMANENT_CACHE = "jlhs-map-generator-permanent-cache",
+    CACHE = "hide-and-seek-cache",
+    ZONE_CACHE = "hide-and-seek-zone-cache",
+    PERMANENT_CACHE = "hide-and-seek-permanent-cache",
 }
 
 export interface StationPlaceProperties {
