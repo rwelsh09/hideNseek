@@ -1,5 +1,6 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
+import * as L from "leaflet";
 import { FaGlobe } from "react-icons/fa";
 import { MdMyLocation, MdZoomInMap } from "react-icons/md";
 import { useMap } from "react-leaflet";
@@ -33,7 +34,10 @@ export const LeafletActionButtons = () => {
                     navigator.geolocation.getCurrentPosition(
                         (pos) => {
                             const { latitude, longitude } = pos.coords;
-                            map.flyTo([latitude, longitude], 12);
+                            map.flyToBounds(
+                                L.latLng(latitude, longitude).toBounds(5000),
+                                { paddingBottomRight: [0, 400], maxZoom: 12 },
+                            );
                         },
                         () => {
                             toast.error("Unable to access your location.");
@@ -64,7 +68,9 @@ export const LeafletActionButtons = () => {
                             [bbox[3], bbox[2]],
                         ];
 
-                        map.flyToBounds(bounds as any);
+                        map.flyToBounds(bounds as any, {
+                            paddingBottomRight: [0, 400],
+                        });
                     } catch {
                         toast.error("Error calculating bounds for hider area");
                     }
@@ -85,7 +91,9 @@ export const LeafletActionButtons = () => {
                             [extent[0], extent[1]],
                             [extent[2], extent[3]],
                         ];
-                        map.flyToBounds(bounds as any);
+                        map.flyToBounds(bounds as any, {
+                            paddingBottomRight: [0, 400],
+                        });
                     } else {
                         // Fallback to Calgary or center if extent is missing
                         if ($mapGeoLocation?.geometry?.coordinates) {
@@ -94,7 +102,10 @@ export const LeafletActionButtons = () => {
                                 $mapGeoLocation.geometry.coordinates[0],
                             ] as [number, number];
 
-                            map.flyTo(center, 11);
+                            map.flyToBounds(
+                                L.latLng(center[0], center[1]).toBounds(10000),
+                                { paddingBottomRight: [0, 400], maxZoom: 11 },
+                            );
                         } else {
                             toast.error("Map extent is unavailable");
                         }
