@@ -20,6 +20,24 @@ import {
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 
+const TYPE_MAPPINGS: Record<string, string> = {
+    museum: "Museum",
+    hospital: "Hospital",
+    cinema: "Cinema",
+    library: "Library",
+    mcdonalds: "McDonald's",
+    seven11: "7-Eleven",
+    timhortons: "Tim Hortons",
+    pub: "Pubs / Bars",
+    golf_course: "Golf Course",
+    "same-neighbourhood": "Neighbourhood (Same As Me)",
+    "same-first-letter-neighbourhood": "Neighbourhood (Same First Letter)",
+    "same-first-letter-station": "Station Starts With Same Letter",
+    "same-length-station": "Station Has Same Length",
+    "same-train-line": "Station On Same Train Line",
+    "rail-measure": "Train Station",
+};
+
 export const QuestionCard = ({
     children,
     questionKey,
@@ -49,8 +67,10 @@ export const QuestionCard = ({
     };
 
     let displayLabel = label;
+    const question = $questions.find((q) => q.key === questionKey);
+    const locked = !questionData.drag;
+
     if (!displayLabel) {
-        const question = $questions.find((q) => q.key === questionKey);
         if (question) {
             const index =
                 $questions
@@ -59,10 +79,52 @@ export const QuestionCard = ({
             let typeName = question.id;
             if (typeName === "hot/cold") typeName = "HotCold";
             typeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
-            // Replicating the previous exact spacing behavior just in case
-            displayLabel = `${typeName}\n    ${index}`;
+
+            if (locked) {
+                if (question.id === "radius") {
+                    displayLabel = `Radius - ${questionData.radius}${questionData.unit === "kilometers" ? "km" : "m"} - ${questionData.within ? "Inside" : "Outside"}`;
+                } else if (question.id === "match") {
+                    const typeStr =
+                        TYPE_MAPPINGS[questionData.type] || questionData.type;
+                    let resultStr = "";
+                    if (questionData.type === "same-length-station") {
+                        resultStr =
+                            questionData.lengthComparison === "shorter"
+                                ? "Shorter"
+                                : questionData.lengthComparison === "longer"
+                                  ? "Longer"
+                                  : "Same";
+                    } else {
+                        resultStr = questionData.same ? "Same" : "Different";
+                    }
+                    displayLabel = `Match - ${typeStr} - ${resultStr}`;
+                } else if (question.id === "measure") {
+                    const typeStr =
+                        TYPE_MAPPINGS[questionData.type] || questionData.type;
+                    displayLabel = `Measure - ${typeStr} - ${questionData.hiderCloser ? "Hider Closer" : "Hider Further"}`;
+                } else if (question.id === "closest") {
+                    const typeStr =
+                        TYPE_MAPPINGS[questionData.locationType] ||
+                        questionData.locationType;
+                    const resultStr = questionData.location
+                        ? questionData.location.properties?.name
+                        : "Not Within";
+                    displayLabel = `Closest - ${typeStr} - ${resultStr}`;
+                } else if (question.id === "hot/cold") {
+                    displayLabel = `Hot/Cold - ${questionData.warmer ? "Warmer" : "Colder"}`;
+                } else {
+                    displayLabel = `${typeName}\n    ${index}`;
+                }
+            } else {
+                displayLabel = `${typeName}\n    ${index}`;
+            }
         } else {
             displayLabel = "Question";
+        }
+    } else {
+        // For photo question or any other question passing explicit label
+        if (locked && question?.id === "photo") {
+            displayLabel = `Photo - ${label}`;
         }
     }
 
