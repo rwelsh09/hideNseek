@@ -2,7 +2,6 @@ import { useStore } from "@nanostores/react";
 import { LockIcon, UnlockIcon } from "lucide-react";
 import { useState } from "react";
 
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import {
     SidebarGroup,
@@ -73,10 +72,7 @@ export const QuestionCard = ({
         } else {
             // We are unlocking it now
             penaltyMinutes.set(
-                Math.max(
-                    0,
-                    penaltyMinutes.get() - TIME_PENALTIES[penaltyId],
-                ),
+                Math.max(0, penaltyMinutes.get() - TIME_PENALTIES[penaltyId]),
             );
         }
 

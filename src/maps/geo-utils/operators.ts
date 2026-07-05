@@ -56,11 +56,9 @@ export const modifyMapData = (
             turf.featureCollection([safeUnion(mapData), safeModifications]),
         );
     }
-    return turf.intersect(
-        turf.featureCollection([
-            safeUnion(mapData),
-            holedMask(safeModifications)!,
-        ]),
+
+    return turf.difference(
+        turf.featureCollection([safeUnion(mapData), safeModifications]),
     );
 };
 
