@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/scout-refactor-question-card-label-5444439461594322026/sw.js', { scope: '/hideNseek/scout-refactor-question-card-label-5444439461594322026/' })})}
