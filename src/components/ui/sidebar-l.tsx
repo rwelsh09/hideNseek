@@ -299,7 +299,7 @@ const SidebarTrigger = React.forwardRef<
             }}
             {...props}
         >
-            <TbMessage2Question />
+            <TbMessage2Question className="w-5 h-5" />
         </button>
     );
 });

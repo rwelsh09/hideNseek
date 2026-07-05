@@ -362,7 +362,7 @@ export const Map = ({ className }: { className?: string }) => {
                 <RecommendedStartMarker />
                 <div className="leaflet-top leaflet-right">
                     <div
-                        className="leaflet-control flex-col flex gap-2 pointer-events-auto"
+                        className="leaflet-control flex-col flex gap-[10px] pointer-events-auto"
                         data-tutorial-id="map-action-buttons"
                     >
                         <LeafletActionButtons />
