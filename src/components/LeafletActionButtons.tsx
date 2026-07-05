@@ -1,5 +1,6 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
+import * as L from "leaflet";
 import { FaGlobe } from "react-icons/fa";
 import { MdMyLocation, MdZoomInMap } from "react-icons/md";
 import { useMap } from "react-leaflet";
@@ -7,6 +8,7 @@ import { toast } from "react-toastify";
 
 import { mapGeoLocation, questionFinishedMapData } from "@/lib/context";
 import { holedMask } from "@/maps";
+import { flyToWithOffset } from "@/maps/ui-utils";
 
 export const LeafletActionButtons = () => {
     const map = useMap();
@@ -33,7 +35,11 @@ export const LeafletActionButtons = () => {
                     navigator.geolocation.getCurrentPosition(
                         (pos) => {
                             const { latitude, longitude } = pos.coords;
-                            map.flyTo([latitude, longitude], 12);
+                            flyToWithOffset(
+                                map,
+                                L.latLng(latitude, longitude),
+                                12,
+                            );
                         },
                         () => {
                             toast.error("Unable to access your location.");
@@ -59,12 +65,15 @@ export const LeafletActionButtons = () => {
                         const bbox = turf.bbox(
                             holedMask($questionFinishedMapData) as any,
                         );
-                        const bounds = [
+                        const boundsObj = L.latLngBounds([
                             [bbox[1], bbox[0]],
                             [bbox[3], bbox[2]],
-                        ];
+                        ]);
 
-                        map.flyToBounds(bounds as any);
+                        const center = boundsObj.getCenter();
+                        const zoom = map.getBoundsZoom(boundsObj);
+
+                        flyToWithOffset(map, center, zoom);
                     } catch {
                         toast.error("Error calculating bounds for hider area");
                     }
@@ -81,11 +90,15 @@ export const LeafletActionButtons = () => {
                 onClick={() => {
                     const extent = $mapGeoLocation?.properties?.extent;
                     if (extent) {
-                        const bounds = [
+                        const boundsObj = L.latLngBounds([
                             [extent[0], extent[1]],
                             [extent[2], extent[3]],
-                        ];
-                        map.flyToBounds(bounds as any);
+                        ]);
+
+                        const center = boundsObj.getCenter();
+                        const zoom = map.getBoundsZoom(boundsObj);
+
+                        flyToWithOffset(map, center, zoom);
                     } else {
                         // Fallback to Calgary or center if extent is missing
                         if ($mapGeoLocation?.geometry?.coordinates) {
@@ -94,7 +107,11 @@ export const LeafletActionButtons = () => {
                                 $mapGeoLocation.geometry.coordinates[0],
                             ] as [number, number];
 
-                            map.flyTo(center, 11);
+                            flyToWithOffset(
+                                map,
+                                L.latLng(center[0], center[1]),
+                                11,
+                            );
                         } else {
                             toast.error("Map extent is unavailable");
                         }
