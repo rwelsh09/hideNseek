@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/scout/modify-map-data-simplification-4642397451431526519/sw.js', { scope: '/hideNseek/scout/modify-map-data-simplification-4642397451431526519/' })})}
