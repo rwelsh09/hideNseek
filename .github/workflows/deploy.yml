@@ -28,6 +28,9 @@ jobs:
               run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
               id: extract_branch
 
+            - name: Generate PWA Icons
+              run: npx --yes @vite-pwa/assets-generator public/icon.svg --preset minimal-2023 --outDir public
+
             - name: Install, build, and upload your site
               uses: withastro/action@v6.1.1
               env:
