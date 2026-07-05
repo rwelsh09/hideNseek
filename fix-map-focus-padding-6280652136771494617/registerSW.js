@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/fix-map-focus-padding-6280652136771494617/sw.js', { scope: '/hideNseek/fix-map-focus-padding-6280652136771494617/' })})}
