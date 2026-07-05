@@ -415,8 +415,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                         Support the Project
                                     </h4>
                                     <p className="text-sm text-blue-700/80 dark:text-blue-300/80">
-                                        Keep hideNseek running by donating via
-                                        PayPal
+                                        Donate via PayPal
                                     </p>
                                 </div>
                                 <div className="flex flex-col gap-2">
