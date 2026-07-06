@@ -31,6 +31,9 @@ export default defineConfig({
             applyBaseStyles: false,
         }),
         AstroPWA({
+            workbox: {
+                navigateFallbackDenylist: [/branches\.html$/],
+            },
             manifest: {
                 name: "Hide and Seek Map",
                 short_name: "Hide and Seek - Calgary",
