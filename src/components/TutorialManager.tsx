@@ -2,8 +2,18 @@ import "driver.js/dist/driver.css";
 
 import { useStore } from "@nanostores/react";
 import { driver } from "driver.js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import {
     hasSeenRules,
     showNextStepsChecklist,
@@ -13,6 +23,10 @@ import {
 export const TutorialManager = () => {
     const $showTutorial = useStore(showTutorial);
     const $hasSeenRules = useStore(hasSeenRules);
+
+    // States for custom confirm dialogs
+    const [confirmEndTutorial, setConfirmEndTutorial] = useState(false);
+    const [activeDriver, setActiveDriver] = useState<any>(null);
 
     useEffect(() => {
         if ($showTutorial) {
@@ -26,15 +40,13 @@ export const TutorialManager = () => {
                     if (isRulesPhase) {
                         driverObj.destroy();
                     } else {
-                        if (
-                            !driverObj.hasNextStep() ||
-                            confirm(
-                                "Are you sure you want to end the tutorial?",
-                            )
-                        ) {
+                        if (!driverObj.hasNextStep()) {
                             driverObj.destroy();
                             showTutorial.set(false);
                             showNextStepsChecklist.set(true);
+                        } else {
+                            setActiveDriver(driverObj);
+                            setConfirmEndTutorial(true);
                         }
                     }
                 },
@@ -638,5 +650,34 @@ export const TutorialManager = () => {
         }
     }, [$showTutorial, $hasSeenRules]);
 
-    return null;
+    return (
+        <>
+            <AlertDialog
+                open={confirmEndTutorial}
+                onOpenChange={setConfirmEndTutorial}
+            >
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                        <AlertDialogTitle>End Tutorial?</AlertDialogTitle>
+                        <AlertDialogDescription>
+                            Are you sure you want to end the tutorial?
+                        </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction
+                            onClick={() => {
+                                if (activeDriver) activeDriver.destroy();
+                                showTutorial.set(false);
+                                showNextStepsChecklist.set(true);
+                                setConfirmEndTutorial(false);
+                            }}
+                        >
+                            End Tutorial
+                        </AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+        </>
+    );
 };

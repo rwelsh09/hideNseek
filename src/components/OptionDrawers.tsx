@@ -3,6 +3,17 @@ import { useEffect } from "react";
 import { toast } from "react-toastify";
 
 import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
     Drawer,
     DrawerContent,
     DrawerHeader,
@@ -479,36 +490,46 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     >
                                         Offline Mode
                                     </Button>
-                                    <Button
-                                        variant="destructive"
-                                        className="w-full h-11 shadow-sm"
-                                        onClick={async () => {
-                                            if (
-                                                window.confirm(
-                                                    "Are you sure you want to reset everything? This will delete all saved data and settings.",
-                                                )
-                                            ) {
-                                                if ("caches" in window) {
-                                                    const keys =
-                                                        await caches.keys();
-                                                    await Promise.all(
-                                                        keys.map((key) =>
-                                                            caches.delete(key),
-                                                        ),
-                                                    );
-                                                }
-                                                localStorage.clear();
-                                                sessionStorage.clear();
-                                                sessionStorage.setItem(
-                                                    "resetEverything",
-                                                    "true",
-                                                );
-                                                window.location.reload();
-                                            }
-                                        }}
-                                    >
-                                        Reset Everything
-                                    </Button>
+                                    <AlertDialog>
+                                        <AlertDialogTrigger asChild>
+                                            <Button
+                                                variant="destructive"
+                                                className="w-full h-11 shadow-sm"
+                                            >
+                                                Reset Everything
+                                            </Button>
+                                        </AlertDialogTrigger>
+                                        <AlertDialogContent>
+                                            <AlertDialogHeader>
+                                                <AlertDialogTitle>Reset Everything?</AlertDialogTitle>
+                                                <AlertDialogDescription>
+                                                    Are you sure you want to reset everything? This will delete all saved data and settings. This action cannot be undone.
+                                                </AlertDialogDescription>
+                                            </AlertDialogHeader>
+                                            <AlertDialogFooter>
+                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogAction
+                                                    onClick={async () => {
+                                                        if ("caches" in window) {
+                                                            const keys = await caches.keys();
+                                                            await Promise.all(
+                                                                keys.map((key) => caches.delete(key)),
+                                                            );
+                                                        }
+                                                        localStorage.clear();
+                                                        sessionStorage.clear();
+                                                        sessionStorage.setItem(
+                                                            "resetEverything",
+                                                            "true",
+                                                        );
+                                                        window.location.reload();
+                                                    }}
+                                                >
+                                                    Continue
+                                                </AlertDialogAction>
+                                            </AlertDialogFooter>
+                                        </AlertDialogContent>
+                                    </AlertDialog>
                                 </div>
                             </div>
                         </div>

@@ -21,6 +21,18 @@ import {
 } from "@/lib/context";
 import { questionSchema } from "@/maps/schema";
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 import { AddQuestionDialog } from "./AddQuestionDialog";
 import {
     ClosestQuestionComponent,
@@ -220,27 +232,40 @@ export const QuestionSidebar = () => {
                         Paste Question
                     </Button>
 
-                    <Button
-                        variant="destructive"
-                        className="w-full font-semibold font-poppins flex items-center justify-center gap-2 h-11 mt-2"
-                        onClick={() => {
-                            if (
-                                window.confirm(
-                                    "Are you sure you want to unlock and delete ALL questions? This will also reset your time penalty to 0.",
-                                )
-                            ) {
-                                questions.set([]);
-                                penaltyMinutes.set(0);
-                                toast.success(
-                                    "Cleared all questions and time penalty.",
-                                );
-                            }
-                        }}
-                        disabled={$isLoading || $questions.length === 0}
-                    >
-                        <Trash2 className="w-4 h-4" />
-                        Unlock & Delete All
-                    </Button>
+                    <AlertDialog>
+                        <AlertDialogTrigger asChild>
+                            <Button
+                                variant="destructive"
+                                className="w-full font-semibold font-poppins flex items-center justify-center gap-2 h-11 mt-2"
+                                disabled={$isLoading || $questions.length === 0}
+                            >
+                                <Trash2 className="w-4 h-4" />
+                                Unlock & Delete All
+                            </Button>
+                        </AlertDialogTrigger>
+                        <AlertDialogContent>
+                            <AlertDialogHeader>
+                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogDescription>
+                                    This will unlock and delete ALL questions, and reset your time penalty to 0. This action cannot be undone.
+                                </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                <AlertDialogAction
+                                    onClick={() => {
+                                        questions.set([]);
+                                        penaltyMinutes.set(0);
+                                        toast.success(
+                                            "Cleared all questions and time penalty.",
+                                        );
+                                    }}
+                                >
+                                    Continue
+                                </AlertDialogAction>
+                            </AlertDialogFooter>
+                        </AlertDialogContent>
+                    </AlertDialog>
                 </div>
             </div>
         </Sidebar>

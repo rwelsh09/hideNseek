@@ -17,6 +17,18 @@ import {
     timerStartTimestamp,
 } from "@/lib/context";
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 
@@ -86,11 +98,9 @@ export const TimerDrawer = () => {
     };
 
     const resetTimer = () => {
-        if (window.confirm("Are you sure you want to reset the timer?")) {
-            isTimerRunning.set(false);
-            timerStartTimestamp.set(null);
-            timerElapsedSeconds.set(0);
-        }
+        isTimerRunning.set(false);
+        timerStartTimestamp.set(null);
+        timerElapsedSeconds.set(0);
     };
 
     const manipulateTimer = (minutes: number) => {
@@ -139,9 +149,7 @@ export const TimerDrawer = () => {
     };
 
     const removeLeaderboardEntry = (id: string) => {
-        if (window.confirm("Remove this entry from the leaderboard?")) {
-            leaderboard.set($leaderboard.filter((entry) => entry.id !== id));
-        }
+        leaderboard.set($leaderboard.filter((entry) => entry.id !== id));
     };
 
     return (
@@ -215,14 +223,31 @@ export const TimerDrawer = () => {
                                         </>
                                     )}
                                 </Button>
-                                <Button
-                                    variant="outline"
-                                    size="lg"
-                                    onClick={resetTimer}
-                                    className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white text-lg"
-                                >
-                                    Reset
-                                </Button>
+                                <AlertDialog>
+                                    <AlertDialogTrigger asChild>
+                                        <Button
+                                            variant="outline"
+                                            size="lg"
+                                            className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white text-lg"
+                                        >
+                                            Reset
+                                        </Button>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Reset Timer?</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                Are you sure you want to reset the timer? This will reset your elapsed time to 0.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction onClick={resetTimer}>
+                                                Continue
+                                            </AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
                             </div>
 
                             <div className="flex flex-col items-center gap-2 mt-4">
@@ -332,19 +357,34 @@ export const TimerDrawer = () => {
                                                     {entry.penaltyMinutes}m
                                                     penalty
                                                 </div>
-                                                <button
-                                                    type="button"
-                                                    onClick={() =>
-                                                        removeLeaderboardEntry(
-                                                            entry.id,
-                                                        )
-                                                    }
-                                                    className="text-slate-500 hover:text-red-400 transition-colors p-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-800"
-                                                    title={`Remove leaderboard entry for ${entry.names}`}
-                                                    aria-label={`Remove leaderboard entry for ${entry.names}`}
-                                                >
-                                                    <Trash2 className="w-4 h-4" />
-                                                </button>
+                                                <AlertDialog>
+                                                    <AlertDialogTrigger asChild>
+                                                        <button
+                                                            type="button"
+                                                            className="text-slate-500 hover:text-red-400 transition-colors p-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-800"
+                                                            title={`Remove leaderboard entry for ${entry.names}`}
+                                                            aria-label={`Remove leaderboard entry for ${entry.names}`}
+                                                        >
+                                                            <Trash2 className="w-4 h-4" />
+                                                        </button>
+                                                    </AlertDialogTrigger>
+                                                    <AlertDialogContent>
+                                                        <AlertDialogHeader>
+                                                            <AlertDialogTitle>Remove Leaderboard Entry?</AlertDialogTitle>
+                                                            <AlertDialogDescription>
+                                                                Are you sure you want to remove this entry from the leaderboard?
+                                                            </AlertDialogDescription>
+                                                        </AlertDialogHeader>
+                                                        <AlertDialogFooter>
+                                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                            <AlertDialogAction
+                                                                onClick={() => removeLeaderboardEntry(entry.id)}
+                                                            >
+                                                                Continue
+                                                            </AlertDialogAction>
+                                                        </AlertDialogFooter>
+                                                    </AlertDialogContent>
+                                                </AlertDialog>
                                             </div>
                                         </div>
                                     ))
