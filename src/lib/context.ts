@@ -194,6 +194,21 @@ export const geolocationPermission = atom<"prompt" | "granted" | "denied">(
     "prompt",
 );
 
+if (typeof window !== "undefined" && navigator.permissions) {
+    navigator.permissions
+        .query({ name: "geolocation" })
+        .then((permissionStatus) => {
+            geolocationPermission.set(permissionStatus.state);
+            permissionStatus.onchange = () => {
+                geolocationPermission.set(permissionStatus.state);
+            };
+        })
+        .catch(() => {
+            // Some browsers (like old Safari) don't support the permissions API for geolocation
+            // We just let it default to "prompt"
+        });
+}
+
 export const isLoading = atom<boolean>(false);
 
 export const isOptionsOpenStore = atom<boolean>(false);
