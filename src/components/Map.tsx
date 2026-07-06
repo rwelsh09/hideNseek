@@ -468,9 +468,13 @@ export const Map = ({ className }: { className?: string }) => {
                     followMeMarkerRef.current = marker;
                 }
             },
-            () => {
-                toast.error("Unable to access your location.");
-                followMe.set(false);
+            (error) => {
+                if (error.code === error.PERMISSION_DENIED) {
+                    toast.error("Location permission denied.");
+                    followMe.set(false);
+                } else {
+                    toast.error("Unable to access your location. Retrying...", { toastId: "location-error" });
+                }
             },
             { enableHighAccuracy: true, maximumAge: 10000, timeout: 20000 },
         );
