@@ -83,6 +83,14 @@ export const NextStepsChecklist = () => {
                         Start the timer and (to the Hider) RUN RUN RUN!
                     </span>
                 </li>
+                <li className="flex gap-2 items-start mt-4 pt-4 border-t border-border">
+                    <span className="font-bold text-indigo-400 w-5 shrink-0">
+                        ★
+                    </span>
+                    <span className="text-indigo-900/90 dark:text-indigo-200/90">
+                        <strong>Pro Tip:</strong> Install this app to your home screen! You'll get a full-screen map without browser toolbars. Look for &quot;Add to Home Screen&quot; in your browser menu (⋮) or share sheet (⍐).
+                    </span>
+                </li>
             </ul>
         </div>
     );
