@@ -11,6 +11,12 @@ interface BeforeInstallPromptEvent extends Event {
     prompt(): Promise<void>;
 }
 
+declare global {
+    interface Window {
+        pwaDeferredPrompt?: BeforeInstallPromptEvent;
+    }
+}
+
 export const PwaInstallTip = () => {
     const [deferredPrompt, setDeferredPrompt] =
         useState<BeforeInstallPromptEvent | null>(null);
@@ -31,6 +37,11 @@ export const PwaInstallTip = () => {
             setIsApple(true);
         }
 
+        // If the event fired before React hydrated, it will be stored here
+        if (window.pwaDeferredPrompt) {
+            setDeferredPrompt(window.pwaDeferredPrompt);
+        }
+
         const handleBeforeInstallPrompt = (e: Event) => {
             // Prevent the mini-infobar from appearing on mobile
             e.preventDefault();
@@ -38,12 +49,23 @@ export const PwaInstallTip = () => {
             setDeferredPrompt(e as BeforeInstallPromptEvent);
         };
 
+        const handlePwaDeferredPromptReady = () => {
+            if (window.pwaDeferredPrompt) {
+                setDeferredPrompt(window.pwaDeferredPrompt);
+            }
+        };
+
         window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
+        window.addEventListener("pwa-deferred-prompt-ready", handlePwaDeferredPromptReady);
 
         return () => {
             window.removeEventListener(
                 "beforeinstallprompt",
                 handleBeforeInstallPrompt,
+            );
+            window.removeEventListener(
+                "pwa-deferred-prompt-ready",
+                handlePwaDeferredPromptReady,
             );
         };
     }, []);
