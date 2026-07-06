@@ -29,40 +29,63 @@ export const getOverpassData = async (
 ) => {
     const encodedQuery = encodeURIComponent(query);
     const primaryUrl = `${OVERPASS_API}?data=${encodedQuery}`;
-    let response = await cacheFetch(primaryUrl, loadingText, cacheType);
+    const fallbackUrl = `${OVERPASS_API_FALLBACK}?data=${encodedQuery}`;
 
-    if (!response.ok) {
-        // Try the fallback, but store the result under the primary URL key so future requests are served from cache without needing to fail-over again.
+    const maxRetries = 2;
+    let attempts = 0;
+    let response: Response | undefined;
+    let errorCategory: "busy" | "network" | "other" | null = null;
+
+    while (attempts <= maxRetries) {
+        attempts++;
         try {
-            const fallbackResponse = await cacheFetch(
-                `${OVERPASS_API_FALLBACK}?data=${encodedQuery}`,
-                loadingText,
-                cacheType,
-            );
-            if (fallbackResponse.ok) {
-                const cache = await determineCache(cacheType);
-                await cache.put(primaryUrl, fallbackResponse.clone());
+            response = await cacheFetch(primaryUrl, loadingText, cacheType);
+
+            if (!response.ok) {
+                // Try the fallback
+                const fallbackResponse = await cacheFetch(
+                    fallbackUrl,
+                    loadingText,
+                    cacheType,
+                );
+                if (fallbackResponse.ok) {
+                    const cache = await determineCache(cacheType);
+                    await cache.put(primaryUrl, fallbackResponse.clone());
+                }
+                response = fallbackResponse;
             }
-            response = fallbackResponse;
-        } catch {
-            toast.error(
-                `Could not load data from Overpass: ${response.status} ${response.statusText}`,
-                { toastId: "overpass-error" },
-            );
-            return { elements: [] };
+
+            if (response.ok) {
+                const data = await response.json();
+                return data;
+            } else if (response.status === 504 || response.status === 429) {
+                errorCategory = "busy";
+            } else {
+                errorCategory = "other";
+                break; // Don't retry non-transient errors like 400 Bad Request
+            }
+        } catch (error) {
+            errorCategory = "network";
+        }
+
+        if (attempts <= maxRetries) {
+            const delay = attempts === 1 ? 1000 : 2000;
+            await new Promise((resolve) => setTimeout(resolve, delay));
         }
     }
 
-    if (!response.ok) {
-        toast.error(
-            `Could not load data from Overpass: ${response.status} ${response.statusText}`,
-            { toastId: "overpass-error" },
-        );
-        return { elements: [] };
+    if (!toast.isActive("overpass-error")) {
+        let errorMessage = "Please try that again.";
+        if (errorCategory === "busy") {
+            errorMessage = "The server is busy. Try clicking Offline Mode at the bottom of the Options menu.";
+        } else if (errorCategory === "network") {
+            errorMessage = "Unable to connect to the map server. Please check your internet connection.";
+        }
+
+        toast.error(errorMessage, { toastId: "overpass-error" });
     }
 
-    const data = await response.json();
-    return data;
+    return { elements: [] };
 };
 
 export const determineGeoJSON = async (
