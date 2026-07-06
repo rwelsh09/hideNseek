@@ -465,22 +465,19 @@ out ${outType};
 
 export const findPlacesSpecificInZone = async (
     location: `${QuestionSpecificLocation}`,
-    silent?: boolean,
 ) => {
     const locations = (
         await findPlacesInZone(
             location,
-            silent
-                ? undefined
-                : `Finding ${
-                      location === '["brand:wikidata"="Q38076"]'
-                          ? "McDonald's"
-                          : location === '["brand:wikidata"="Q259340"]'
-                            ? "7-Elevens"
-                            : location === '["brand:wikidata"="Q175106"]'
-                              ? "Tim Hortons"
-                              : "Pubs/Bars"
-                  }...`,
+            `Finding ${
+                location === '["brand:wikidata"="Q38076"]'
+                    ? "McDonald's"
+                    : location === '["brand:wikidata"="Q259340"]'
+                      ? "7-Elevens"
+                      : location === '["brand:wikidata"="Q175106"]'
+                        ? "Tim Hortons"
+                        : "Pubs/Bars"
+            }...`,
         )
     ).elements;
     return turf.featureCollection(
@@ -541,7 +538,7 @@ export const cacheAllPlaces = async () => {
         tasks.push(() =>
             findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
-                undefined,
+                `Finding ${getLocationTypeName(locationStr)}...`,
                 "nwr",
                 "center",
             ),
@@ -550,25 +547,44 @@ export const cacheAllPlaces = async () => {
 
     // Specific Hardcoded Queries
     tasks.push(() =>
-        findPlacesInZone('["aeroway"="aerodrome"]["iata"]', undefined),
+        findPlacesInZone(
+            '["aeroway"="aerodrome"]["iata"]',
+            "Finding Airports...",
+        ),
     );
     tasks.push(() =>
         findPlacesInZone(
             '[place=city]["population"~"^[1-9]+[0-9]{6}$"]',
-            undefined,
+            "Finding Cities...",
         ),
     );
     tasks.push(() =>
-        findPlacesInZone("[highspeed=yes]", undefined, "nwr", "geom"),
+        findPlacesInZone(
+            "[highspeed=yes]",
+            "Finding High-speed Transit...",
+            "nwr",
+            "geom",
+        ),
     );
     tasks.push(() =>
-        findPlacesInZone('["admin_level"="10"]', undefined, "nwr", "geom"),
+        findPlacesInZone(
+            '["admin_level"="10"]',
+            "Finding Neighborhoods...",
+            "nwr",
+            "geom",
+        ),
     );
-    tasks.push(() => findPlacesInZone("[railway=station]", undefined, "node"));
+    tasks.push(() =>
+        findPlacesInZone(
+            "[railway=station]",
+            "Finding Train Stations...",
+            "node",
+        ),
+    );
 
     // Specific Location Enum Queries (McDonalds, 7Eleven)
     Object.values(QuestionSpecificLocation).forEach((loc) => {
-        tasks.push(() => findPlacesSpecificInZone(loc as any, true));
+        tasks.push(() => findPlacesSpecificInZone(loc as any));
     });
 
     const total = tasks.length;
