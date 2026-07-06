@@ -408,6 +408,18 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 </div>
                             </div>
 
+                            {/* --- App Experience Callout Box --- */}
+                            <div className="rounded-xl border border-indigo-200/60 bg-indigo-50/50 dark:bg-indigo-950/20 dark:border-indigo-900 p-5 space-y-3 shadow-sm">
+                                <div className="space-y-1 text-center">
+                                    <h4 className="font-semibold font-poppins text-indigo-900 dark:text-indigo-200">
+                                        Pro Tip: Play in Full Screen
+                                    </h4>
+                                </div>
+                                <p className="text-sm text-indigo-800/80 dark:text-indigo-300/80 text-center leading-relaxed">
+                                    For the best experience, add this app to your home screen! Installing it removes browser toolbars and gives you a much larger map view.
+                                </p>
+                            </div>
+
                             {/* --- Donations Callout Box --- */}
                             <div className="rounded-xl border border-blue-200/60 bg-blue-50/50 dark:bg-blue-950/20 dark:border-blue-900 p-5 space-y-4 shadow-sm">
                                 <div className="space-y-1 text-center">
