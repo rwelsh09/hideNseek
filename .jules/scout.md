@@ -24,5 +24,6 @@
 **Action:** For geospatial subtraction (e.g., removing a shape from the map data), use `turf.difference` directly rather than calculating an inverse global mask (`holedMask` against `BLANK_GEOJSON`) and intersecting it, to avoid unnecessary complexity and potential geographic rounding errors.
 
 ## 2024-05-18 - Zod internal options reflection
+
 **Learning:** We previously used manual reflection into Zod schema internals (`_def.innerType`, `_def.value`) within UI components (like `ClosestQuestionComponent` and `MatchQuestionComponent`) to extract Select options. This was brittle and led to leaky abstractions.
 **Action:** Use the newly created `getSchemaOptions(schema)` function from `src/maps/schema.ts` when building options objects from Zod schema definitions to encapsulate all Zod internal traversals.

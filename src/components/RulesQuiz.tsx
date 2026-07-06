@@ -206,6 +206,7 @@ export const RulesQuiz = () => {
 
                     return (
                         <button
+                            type="button"
                             key={index}
                             className={optionClass}
                             onClick={() => handleOptionClick(index)}
