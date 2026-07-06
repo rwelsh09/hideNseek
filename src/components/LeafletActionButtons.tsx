@@ -72,22 +72,23 @@ export const LeafletActionButtons = () => {
 
     return (
         <>
-            <AlertDialog
-                onOpenChange={(open) => {
-                    if (open && $showTutorial && $tutorialDriver) {
-                        $tutorialDriver.destroy();
-                    }
-                    if (!open && $showTutorial && $tutorialDriver) {
-                        $tutorialDriver.drive();
-                    }
-                }
-            >
-                <AlertDialogTrigger asChild>
-                    <button
-                        type="button"
-                        className={buttonClass}
-                        title="Focus on your location"
-                        aria-label="Focus on your location"
+            {$geolocationPermission !== "granted" ? (
+                <AlertDialog
+                    onOpenChange={(open) => {
+                        if (open && $showTutorial && $tutorialDriver) {
+                            $tutorialDriver.destroy();
+                        }
+                        if (!open && $showTutorial && $tutorialDriver) {
+                            $tutorialDriver.drive();
+                        }
+                    }}
+                >
+                    <AlertDialogTrigger asChild>
+                        <button
+                            type="button"
+                            className={buttonClass}
+                            title="Focus on your location"
+                            aria-label="Focus on your location"
                         >
                             <MdMyLocation className="w-5 h-5 text-black" />
                         </button>
@@ -172,7 +173,6 @@ export const LeafletActionButtons = () => {
 
                         flyToWithOffset(map, center, zoom);
                     } else {
-                        // Fallback to Calgary or center if extent is missing
                         if ($mapGeoLocation?.geometry?.coordinates) {
                             const center = [
                                 $mapGeoLocation.geometry.coordinates[1],
