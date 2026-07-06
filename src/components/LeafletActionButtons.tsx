@@ -84,51 +84,6 @@ export const LeafletActionButtons = () => {
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-        
-            <button
-                type="button"
-                className={buttonClass}
-                title="Focus on your location"
-                aria-label="Focus on your location"
-                onClick={() => {
-                    if (!navigator.geolocation) {
-                        toast.error(
-                            "Geolocation is not supported by your browser",
-                        );
-                        return;
-                    }
-
-                    if (geolocationPermission.get() === "denied") {
-                        toast.error("Location access denied.", {
-                            toastId: "location-denied",
-                        });
-                        return;
-                    }
-
-                    navigator.geolocation.getCurrentPosition(
-                        (pos) => {
-                            const { latitude, longitude } = pos.coords;
-                            flyToWithOffset(
-                                map,
-                                L.latLng(latitude, longitude),
-                                12,
-                            );
-                        },
-                        (error) => {
-                            if (error.code === error.PERMISSION_DENIED) {
-                                geolocationPermission.set("denied");
-                                toast.error("Location access denied.", {
-                                    toastId: "location-denied",
-                                });
-                            } else {
-                                toast.error("Unable to access your location.");
-                            }
-                        },
-                    );
-                }}
-            >
-                <MdMyLocation className="w-5 h-5 text-black" />
-            </button>
 
             <button
                 type="button"
