@@ -49,7 +49,7 @@ export default defineConfig({
                         src: "icon.svg",
                         sizes: "any",
                         type: "image/svg+xml",
-                        purpose: "any maskable"
+                        purpose: "any maskable",
                     },
                 ],
                 theme_color: "#1F2F3F",

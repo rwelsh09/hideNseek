@@ -20,7 +20,7 @@ import { fetchClosestLocationsWithGrowth } from "@/maps/questions/closest";
 import {
     type ClosestQuestion,
     closestQuestionSchema,
-    determineUnionizedStrings,
+    getSchemaOptions,
 } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
@@ -71,10 +71,8 @@ export const ClosestQuestionComponent = ({
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                 <Select
                     trigger="Location Type"
-                    options={Object.fromEntries(
-                        determineUnionizedStrings(
-                            closestQuestionSchema.shape.locationType,
-                        ).map((x) => [(x._def as any).value, x.description]),
+                    options={getSchemaOptions(
+                        closestQuestionSchema.shape.locationType,
                     )}
                     value={data.locationType}
                     onValueChange={async (value) => {

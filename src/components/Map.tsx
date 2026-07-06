@@ -473,7 +473,9 @@ export const Map = ({ className }: { className?: string }) => {
                     toast.error("Location permission denied.");
                     followMe.set(false);
                 } else {
-                    toast.error("Unable to access your location. Retrying...", { toastId: "location-error" });
+                    toast.error("Unable to access your location. Retrying...", {
+                        toastId: "location-error",
+                    });
                 }
             },
             { enableHighAccuracy: true, maximumAge: 10000, timeout: 20000 },
