@@ -238,7 +238,6 @@ export const findClosestLocations = async (
 
             // Add a unique identifier for chain restaurants so they can be distinguished visually if needed,
             // or at least not be identical in properties if standard logic expects it.
-            // However, the find check above is the main culprit.
             response.features.push(
                 turf.point([ptLon, ptLat], {
                     name: isChain ? `${name} (${element.id})` : name,
@@ -561,7 +560,7 @@ export const cacheAllPlaces = async () => {
         tasks.push(() =>
             findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
-                undefined,
+                `Finding ${getLocationTypeName(locationStr)}...`,
                 "nwr",
                 "center",
             ),
@@ -570,21 +569,20 @@ export const cacheAllPlaces = async () => {
 
     // Specific Hardcoded Queries
     tasks.push(() =>
-        findPlacesInZone('["aeroway"="aerodrome"]["iata"]', undefined),
-    );
-    tasks.push(() =>
         findPlacesInZone(
-            '[place=city]["population"~"^[1-9]+[0-9]{6}$"]',
-            undefined,
+            '["admin_level"="10"]',
+            "Finding Neighborhoods...",
+            "nwr",
+            "geom",
         ),
     );
     tasks.push(() =>
-        findPlacesInZone("[highspeed=yes]", undefined, "nwr", "geom"),
+        findPlacesInZone(
+            "[railway=station]",
+            "Finding Stations...",
+            "node",
+        ),
     );
-    tasks.push(() =>
-        findPlacesInZone('["admin_level"="10"]', undefined, "nwr", "geom"),
-    );
-    tasks.push(() => findPlacesInZone("[railway=station]", undefined, "node"));
 
     // Specific Location Enum Queries (McDonalds, 7Eleven)
     Object.values(QuestionSpecificLocation).forEach((loc) => {

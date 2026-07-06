@@ -10,7 +10,6 @@ import * as L from "leaflet";
 import { Loader2 } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 import { MapContainer, ScaleControl } from "react-leaflet";
-import { OfflineTileLayer } from "./OfflineTileLayer";
 import { toast } from "react-toastify";
 
 import {
@@ -38,6 +37,7 @@ import { flyToWithOffset } from "@/maps/ui-utils";
 import { ClosestPlaces } from "./ClosestPlaces";
 import { DraggableMarkers } from "./DraggableMarkers";
 import { LeafletActionButtons } from "./LeafletActionButtons";
+import { OfflineTileLayer } from "./OfflineTileLayer";
 import { PlaytestPlaces } from "./PlaytestPlaces";
 import { RecommendedStartMarker } from "./RecommendedStartMarker";
 import { TransitLinesOverlay } from "./TransitLinesOverlay";

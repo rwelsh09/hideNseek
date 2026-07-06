@@ -2,7 +2,7 @@ import "leaflet.offline";
 
 import { createTileLayerComponent, type LayerProps } from "@react-leaflet/core";
 import L from "leaflet";
-import { truncate, getStorageLength, savetiles } from "leaflet.offline";
+import { getStorageLength, savetiles, truncate } from "leaflet.offline";
 
 interface OfflineTileLayerProps extends L.TileLayerOptions, LayerProps {
     url: string;
