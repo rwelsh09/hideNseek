@@ -149,7 +149,7 @@ describe("getOverpassData", () => {
 
         expect(cacheFetch).toHaveBeenCalledTimes(6);
         expect(toast.error).toHaveBeenCalledWith(
-            "The map server is currently too busy. Please try again in a few minutes.",
+            "The server is busy. Please try again by clicking Pre-save at the bottom of the Options menu.",
             { toastId: "overpass-error" },
         );
         expect(result).toEqual({ elements: [] });
