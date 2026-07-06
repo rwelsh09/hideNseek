@@ -510,7 +510,7 @@ export const Map = ({ className }: { className?: string }) => {
         if (hasCenteredRef.current) return;
         hasCenteredRef.current = true;
 
-        const fallbackToCalgary = () => {
+        const setDefaultLocation = () => {
             const extent = $mapGeoLocation?.properties?.extent;
             if (extent) {
                 const bounds = L.latLngBounds([
@@ -523,7 +523,7 @@ export const Map = ({ className }: { className?: string }) => {
             }
         };
 
-        fallbackToCalgary();
+        setDefaultLocation();
     }, [$mapGeoLocation, map]);
 
     return displayMap;
