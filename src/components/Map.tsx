@@ -460,6 +460,7 @@ export const Map = ({ className }: { className?: string }) => {
 
         geoWatchIdRef.current = navigator.geolocation.watchPosition(
             (pos) => {
+                geolocationPermission.set("granted");
                 const lat = pos.coords.latitude;
                 const lng = pos.coords.longitude;
                 if (followMeMarkerRef.current) {
