@@ -32,7 +32,13 @@ export default defineConfig({
         }),
         AstroPWA({
             workbox: {
-                navigateFallbackDenylist: [/branches\.html$/],
+                navigateFallbackDenylist: [
+                    /branches\.html$/,
+                    /\/feat\//,
+                    /\/fix\//,
+                    /\/chore\//,
+                    /\/bug\//
+                ],
             },
             manifest: {
                 name: "Hide and Seek Map",
