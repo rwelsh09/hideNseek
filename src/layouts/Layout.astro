@@ -80,6 +80,7 @@ const { className } = Astro.props;
                 crossorigin={pwaInfo.webManifest.useCredentials ? "use-credentials" : undefined}
             />
         )}
+        <script src="/src/pwa.ts"></script>
     </head>
     <body class:list={[className, "dark"]}>
         <slot />
