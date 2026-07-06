@@ -37,7 +37,7 @@ export default defineConfig({
                     /\/feat\//,
                     /\/fix\//,
                     /\/chore\//,
-                    /\/bug\//
+                    /\/bug\//,
                 ],
             },
             manifest: {

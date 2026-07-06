@@ -155,6 +155,7 @@ export function AddQuestionDialog() {
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect("match", "museum")
                                 }
@@ -166,6 +167,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect("match", "hospital")
                                 }
@@ -177,6 +179,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect("match", "cinema")
                                 }
@@ -188,6 +191,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect("match", "library")
                                 }
@@ -199,6 +203,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect("match", "golf_course")
                                 }
@@ -210,6 +215,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect(
                                         "match",
@@ -224,6 +230,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect(
                                         "match",
@@ -257,6 +264,7 @@ export function AddQuestionDialog() {
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect("measure", "museum")
                                 }
@@ -268,6 +276,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect("measure", "hospital")
                                 }
@@ -279,6 +288,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect("measure", "cinema")
                                 }
@@ -290,6 +300,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect("measure", "library")
                                 }
@@ -301,6 +312,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect(
                                         "measure",
@@ -315,6 +327,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect("measure", "mcdonalds")
                                 }
@@ -326,6 +339,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect("measure", "seven11")
                                 }
@@ -337,6 +351,7 @@ export function AddQuestionDialog() {
                                 </span>
                             </button>
                             <button
+                                type="button"
                                 onClick={() =>
                                     handleQuestionSelect(
                                         "measure",
@@ -514,6 +529,7 @@ export function AddQuestionDialog() {
                             </div>
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                                 <button
+                                    type="button"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -528,6 +544,7 @@ export function AddQuestionDialog() {
                                     </span>
                                 </button>
                                 <button
+                                    type="button"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -542,6 +559,7 @@ export function AddQuestionDialog() {
                                     </span>
                                 </button>
                                 <button
+                                    type="button"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -556,6 +574,7 @@ export function AddQuestionDialog() {
                                     </span>
                                 </button>
                                 <button
+                                    type="button"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -570,6 +589,7 @@ export function AddQuestionDialog() {
                                     </span>
                                 </button>
                                 <button
+                                    type="button"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -584,6 +604,7 @@ export function AddQuestionDialog() {
                                     </span>
                                 </button>
                                 <button
+                                    type="button"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -598,6 +619,7 @@ export function AddQuestionDialog() {
                                     </span>
                                 </button>
                                 <button
+                                    type="button"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -612,6 +634,7 @@ export function AddQuestionDialog() {
                                     </span>
                                 </button>
                                 <button
+                                    type="button"
                                     onClick={() =>
                                         handleQuestionSelect("closest", "pub")
                                     }
