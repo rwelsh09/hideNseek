@@ -64,6 +64,13 @@ const { className } = Astro.props;
                 localStorage.clear();
                 sessionStorage.removeItem("resetEverything");
             }
+
+            // Catch the install prompt early before React hydrates
+            window.addEventListener('beforeinstallprompt', (e) => {
+                e.preventDefault();
+                window.pwaDeferredPrompt = e;
+                window.dispatchEvent(new Event('pwa-deferred-prompt-ready'));
+            });
         </script>
         
         <link rel="preconnect" href="https://fonts.googleapis.com" />
