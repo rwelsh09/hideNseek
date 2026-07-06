@@ -188,6 +188,10 @@ export const hidingZone = computed(
     },
 );
 
+export const geolocationPermission = atom<"prompt" | "granted" | "denied">(
+    "prompt",
+);
+
 export const isLoading = atom<boolean>(false);
 
 export const isOptionsOpenStore = atom<boolean>(false);

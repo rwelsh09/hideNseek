@@ -13,7 +13,7 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import { questions } from "@/lib/context";
-import { isLoading } from "@/lib/context";
+import { geolocationPermission, isLoading } from "@/lib/context";
 import { QUESTION_RULES } from "@/lib/rules";
 import { cn } from "@/lib/utils";
 import { ICON_COLORS } from "@/maps/api";
@@ -453,39 +453,50 @@ export const LatitudeLongitude = ({
                                 if (!navigator || !navigator.geolocation)
                                     return alert("Geolocation not supported");
 
+                                if (geolocationPermission.get() === "denied") {
+                                    toast.error("Location access denied.", {
+                                        toastId: "location-denied",
+                                    });
+                                    return;
+                                }
+
                                 isLoading.set(true);
 
-                                toast.promise(
-                                    new Promise<GeolocationPosition>(
-                                        (resolve, reject) => {
-                                            navigator.geolocation.getCurrentPosition(
-                                                resolve,
-                                                reject,
+                                navigator.geolocation.getCurrentPosition(
+                                    (position) => {
+                                        isLoading.set(false);
+                                        onChange(
+                                            position.coords.latitude,
+                                            position.coords.longitude,
+                                        );
+                                        toast.success("Location fetched", {
+                                            autoClose: 500,
+                                        });
+                                    },
+                                    (error) => {
+                                        isLoading.set(false);
+                                        if (
+                                            error.code ===
+                                            error.PERMISSION_DENIED
+                                        ) {
+                                            geolocationPermission.set("denied");
+                                            toast.error(
+                                                "Location access denied.",
                                                 {
-                                                    maximumAge: 0,
-                                                    enableHighAccuracy: true,
-                                                    timeout: 10000,
+                                                    toastId: "location-denied",
                                                 },
                                             );
-                                        },
-                                    )
-                                        .then((position) => {
-                                            isLoading.set(false);
-                                            onChange(
-                                                position.coords.latitude,
-                                                position.coords.longitude,
+                                        } else {
+                                            toast.error(
+                                                "Could not fetch location",
                                             );
-                                        })
-                                        .catch((error) => {
-                                            isLoading.set(false);
-                                            throw error;
-                                        }),
-                                    {
-                                        pending: "Fetching location",
-                                        success: "Location fetched",
-                                        error: "Could not fetch location",
+                                        }
                                     },
-                                    { autoClose: 500 },
+                                    {
+                                        maximumAge: 0,
+                                        enableHighAccuracy: true,
+                                        timeout: 10000,
+                                    },
                                 );
                             }}
                             disabled={disabled}

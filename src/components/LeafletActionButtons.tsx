@@ -6,7 +6,11 @@ import { MdMyLocation, MdZoomInMap } from "react-icons/md";
 import { useMap } from "react-leaflet";
 import { toast } from "react-toastify";
 
-import { mapGeoLocation, questionFinishedMapData } from "@/lib/context";
+import {
+    geolocationPermission,
+    mapGeoLocation,
+    questionFinishedMapData,
+} from "@/lib/context";
 import { holedMask } from "@/maps";
 import { flyToWithOffset } from "@/maps/ui-utils";
 
@@ -32,6 +36,14 @@ export const LeafletActionButtons = () => {
                         );
                         return;
                     }
+
+                    if (geolocationPermission.get() === "denied") {
+                        toast.error("Location access denied.", {
+                            toastId: "location-denied",
+                        });
+                        return;
+                    }
+
                     navigator.geolocation.getCurrentPosition(
                         (pos) => {
                             const { latitude, longitude } = pos.coords;
@@ -41,8 +53,15 @@ export const LeafletActionButtons = () => {
                                 12,
                             );
                         },
-                        () => {
-                            toast.error("Unable to access your location.");
+                        (error) => {
+                            if (error.code === error.PERMISSION_DENIED) {
+                                geolocationPermission.set("denied");
+                                toast.error("Location access denied.", {
+                                    toastId: "location-denied",
+                                });
+                            } else {
+                                toast.error("Unable to access your location.");
+                            }
                         },
                     );
                 }}
