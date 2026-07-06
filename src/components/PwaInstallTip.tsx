@@ -100,8 +100,7 @@ export const PwaInstallTip = () => {
                     </span>
                     <span className="text-indigo-900/90 dark:text-indigo-200/90">
                         <strong>Pro Tip:</strong> Install this app to your home
-                        screen! You'll get a full-screen map without browser
-                        toolbars.
+                        screen! Unlock full-screen mode and offline play.
                     </span>
                 </div>
                 <Button
@@ -124,9 +123,9 @@ export const PwaInstallTip = () => {
                 </span>
                 <span className="text-indigo-900/90 dark:text-indigo-200/90">
                     <strong>Pro Tip:</strong> Install this app to your home
-                    screen! You'll get a full-screen map without browser
-                    toolbars. Look for &quot;Add to Home Screen&quot; in your
-                    browser menu or share sheet (⍐).
+                    screen! Unlock full-screen mode and offline play. Look 
+                    for &quot;Add to Home Screen&quot; in your browser menu
+                    or share sheet (⍐).
                 </span>
             </li>
         );
@@ -138,7 +137,7 @@ export const PwaInstallTip = () => {
             <span className="font-bold text-indigo-400 w-5 shrink-0">★</span>
             <span className="text-indigo-900/90 dark:text-indigo-200/90">
                 <strong>Pro Tip:</strong> Install this app to your home screen!
-                You'll get a full-screen map without browser toolbars. Look for
+                Unlock full-screen mode and offline play. Look for
                 &quot;Add to Home Screen&quot; or install icon in your browser.
             </span>
         </li>
