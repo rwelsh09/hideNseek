@@ -27,30 +27,22 @@ jobs:
                   path: gh-pages-dir
               continue-on-error: true
 
-            - name: Remove branch directory from gh-pages
+            - name: Cleanup branch and Generate branches.html
               run: |
-                  if [ -d "gh-pages-dir/${{ steps.extract_branch.outputs.branch }}" ]; then
-                      echo "Removing directory for branch: ${{ steps.extract_branch.outputs.branch }}"
-                      rm -rf "gh-pages-dir/${{ steps.extract_branch.outputs.branch }}"
+                  BRANCH="${{ steps.extract_branch.outputs.branch }}"
 
-                      cd gh-pages-dir
-                      git config user.name "github-actions[bot]"
-                      git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-                      git add .
-                      git commit -m "Cleanup deployed files for deleted branch: ${{ steps.extract_branch.outputs.branch }}" || echo "No changes to commit"
-                      git push origin gh-pages
-                      cd ..
+                  # 1. Remove branch directory if it exists
+                  if [ -d "gh-pages-dir/$BRANCH" ]; then
+                      echo "Removing directory for branch: $BRANCH"
+                      rm -rf "gh-pages-dir/$BRANCH"
                   else
-                      echo "No deployed directory found for branch: ${{ steps.extract_branch.outputs.branch }}"
+                      echo "No deployed directory found for branch: $BRANCH"
                   fi
 
-            - name: Generate branches.html
-              if: always()
-              run: |
-                  mkdir -p ./root-dist
-                  echo "<!DOCTYPE html><html><head><title>Deployed Branches</title><style>body{font-family:sans-serif;margin:2rem;background:#1F2F3F;color:#fff;}a{color:#4da6ff;text-decoration:none;}a:hover{text-decoration:underline;}ul{list-style-type:none;padding:0;}li{margin:0.5rem 0;padding:1rem;background:#2a3f54;border-radius:8px;}</style></head><body>" > ./root-dist/branches.html
-                  echo "<h1>Hide and Seek - Deployed Branches</h1><ul>" >> ./root-dist/branches.html
-                  echo "<li><a href='./'>master (Root)</a></li>" >> ./root-dist/branches.html
+                  # 2. Generate branches.html directly in gh-pages-dir
+                  echo "<!DOCTYPE html><html><head><title>Deployed Branches</title><style>body{font-family:sans-serif;margin:2rem;background:#1F2F3F;color:#fff;}a{color:#4da6ff;text-decoration:none;}a:hover{text-decoration:underline;}ul{list-style-type:none;padding:0;}li{margin:0.5rem 0;padding:1rem;background:#2a3f54;border-radius:8px;}</style></head><body>" > ./gh-pages-dir/branches.html
+                  echo "<h1>Hide and Seek - Deployed Branches</h1><ul>" >> ./gh-pages-dir/branches.html
+                  echo "<li><a href='./'>master (Root)</a></li>" >> ./gh-pages-dir/branches.html
 
                   git ls-remote --heads origin | awk -F'refs/heads/' '{print $2}' > active_branches.txt
 
@@ -65,20 +57,19 @@ jobs:
                               if [ -d "gh-pages-dir/$branch" ]; then
                                   # Also ignore if branch name starts with _ or ~
                                   if [[ ! "$branch" == _* ]] && [[ ! "$branch" == ~* ]]; then
-                                      echo "<li><a href='./$branch/'>$branch</a></li>" >> ./root-dist/branches.html
+                                      echo "<li><a href='./$branch/'>$branch</a></li>" >> ./gh-pages-dir/branches.html
                                   fi
                               fi
                           fi
                       done < active_branches.txt
                   fi
 
-                  echo "</ul></body></html>" >> ./root-dist/branches.html
+                  echo "</ul></body></html>" >> ./gh-pages-dir/branches.html
 
-            - name: Deploy branches.html to root
-              if: always()
-              uses: peaceiris/actions-gh-pages@v4
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./root-dist
-                  keep_files: true
-                  destination_dir: .
+                  # 3. Commit and Push everything together
+                  cd gh-pages-dir
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add .
+                  git commit -m "Cleanup deployed files and update branches.html for deleted branch: $BRANCH" || echo "No changes to commit"
+                  git push origin gh-pages
