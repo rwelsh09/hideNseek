@@ -38,28 +38,45 @@ jobs:
                   node-version: 22
                   package-manager: pnpm@10.30.3
 
-            - name: Deploy branch content
-              uses: peaceiris/actions-gh-pages@v4
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./dist
-                  keep_files: true
-                  destination_dir: ${{ steps.extract_branch.outputs.branch == 'master' && '.' || steps.extract_branch.outputs.branch }}
+            - name: Run tests
+              run: pnpm test
 
-            - name: Checkout gh-pages to generate index
+            - name: Checkout gh-pages
               uses: actions/checkout@v7
               with:
                   ref: gh-pages
                   path: gh-pages-dir
               continue-on-error: true
 
-            - name: Generate branches.html
-              if: always()
+            - name: Prepare deployment and Generate branches.html
               run: |
-                  mkdir -p ./root-dist
-                  echo "<!DOCTYPE html><html><head><title>Deployed Branches</title><style>body{font-family:sans-serif;margin:2rem;background:#1F2F3F;color:#fff;}a{color:#4da6ff;text-decoration:none;}a:hover{text-decoration:underline;}ul{list-style-type:none;padding:0;}li{margin:0.5rem 0;padding:1rem;background:#2a3f54;border-radius:8px;}</style></head><body>" > ./root-dist/branches.html
-                  echo "<h1>Hide and Seek - Deployed Branches</h1><ul>" >> ./root-dist/branches.html
-                  echo "<li><a href='./'>master (Root)</a></li>" >> ./root-dist/branches.html
+                  # 1. Ensure gh-pages-dir exists (e.g. initial run)
+                  if [ ! -d "gh-pages-dir/.git" ]; then
+                      mkdir -p gh-pages-dir
+                      cd gh-pages-dir
+                      git init
+                      git checkout -b gh-pages
+                      git remote add origin https://${{ github.actor }}:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+                      cd ..
+                  fi
+
+                  BRANCH="${{ steps.extract_branch.outputs.branch }}"
+
+                  # 2. Copy the built site to the target directory
+                  if [ "$BRANCH" == "master" ]; then
+                      # Ensure we don't accidentally remove branch subdirectories
+                      cp -R ./dist/* gh-pages-dir/
+                  else
+                      mkdir -p "gh-pages-dir/$BRANCH"
+                      # Remove old files for this branch specifically
+                      rm -rf "gh-pages-dir/$BRANCH"/*
+                      cp -R ./dist/* "gh-pages-dir/$BRANCH/"
+                  fi
+
+                  # 3. Generate branches.html
+                  echo "<!DOCTYPE html><html><head><title>Deployed Branches</title><style>body{font-family:sans-serif;margin:2rem;background:#1F2F3F;color:#fff;}a{color:#4da6ff;text-decoration:none;}a:hover{text-decoration:underline;}ul{list-style-type:none;padding:0;}li{margin:0.5rem 0;padding:1rem;background:#2a3f54;border-radius:8px;}</style></head><body>" > ./gh-pages-dir/branches.html
+                  echo "<h1>Hide and Seek - Deployed Branches</h1><ul>" >> ./gh-pages-dir/branches.html
+                  echo "<li><a href='./'>master (Root)</a></li>" >> ./gh-pages-dir/branches.html
 
                   git ls-remote --heads origin | awk -F'refs/heads/' '{print $2}' > active_branches.txt
 
@@ -74,20 +91,19 @@ jobs:
                               if [ -d "gh-pages-dir/$branch" ]; then
                                   # Also ignore if branch name starts with _ or ~
                                   if [[ ! "$branch" == _* && ! "$branch" == ~* ]]; then
-                                      echo "<li><a href='./$branch/'>$branch</a></li>" >> ./root-dist/branches.html
+                                      echo "<li><a href='./$branch/'>$branch</a></li>" >> ./gh-pages-dir/branches.html
                                   fi
                               fi
                           fi
                       done < active_branches.txt
                   fi
 
-                  echo "</ul></body></html>" >> ./root-dist/branches.html
+                  echo "</ul></body></html>" >> ./gh-pages-dir/branches.html
 
-            - name: Deploy branches.html to root
-              if: always()
-              uses: peaceiris/actions-gh-pages@v4
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./root-dist
-                  keep_files: true
-                  destination_dir: .
+                  # 4. Commit and Push
+                  cd gh-pages-dir
+                  git config user.name "github-actions[bot]"
+                  git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+                  git add .
+                  git commit -m "Deploy branch $BRANCH" || echo "No changes to commit"
+                  git push origin gh-pages
