@@ -18,6 +18,7 @@ vi.mock("react-toastify", () => ({
         loading: vi.fn(),
         dismiss: vi.fn(),
         update: vi.fn(),
+        isActive: vi.fn().mockReturnValue(false),
     },
 }));
 
@@ -104,15 +105,21 @@ describe("getOverpassData", () => {
             statusText: "Gateway Timeout",
         };
 
+        // Needs to mock across the 3 attempts (initial + 2 retries) each doing a primary and fallback check
         vi.mocked(cacheFetch)
+            .mockResolvedValueOnce(mockPrimaryResponse as any)
+            .mockRejectedValueOnce(new Error("Network failure"))
+            .mockResolvedValueOnce(mockPrimaryResponse as any)
+            .mockRejectedValueOnce(new Error("Network failure"))
             .mockResolvedValueOnce(mockPrimaryResponse as any)
             .mockRejectedValueOnce(new Error("Network failure"));
 
         const result = await getOverpassData(mockQuery);
 
-        expect(cacheFetch).toHaveBeenCalledTimes(2);
+        // 3 attempts * 2 checks (primary + fallback) = 6 calls to cacheFetch
+        expect(cacheFetch).toHaveBeenCalledTimes(6);
         expect(toast.error).toHaveBeenCalledWith(
-            "Could not load data from Overpass: 504 Gateway Timeout",
+            "Unable to connect to the map server. Please check your internet connection.",
             { toastId: "overpass-error" },
         );
         expect(result).toEqual({ elements: [] });
@@ -132,13 +139,17 @@ describe("getOverpassData", () => {
 
         vi.mocked(cacheFetch)
             .mockResolvedValueOnce(mockPrimaryResponse as any)
+            .mockResolvedValueOnce(mockFallbackResponse as any)
+            .mockResolvedValueOnce(mockPrimaryResponse as any)
+            .mockResolvedValueOnce(mockFallbackResponse as any)
+            .mockResolvedValueOnce(mockPrimaryResponse as any)
             .mockResolvedValueOnce(mockFallbackResponse as any);
 
         const result = await getOverpassData(mockQuery);
 
-        expect(cacheFetch).toHaveBeenCalledTimes(2);
+        expect(cacheFetch).toHaveBeenCalledTimes(6);
         expect(toast.error).toHaveBeenCalledWith(
-            "Could not load data from Overpass: 429 Too Many Requests",
+            "The map server is currently too busy. Please try again in a few minutes.",
             { toastId: "overpass-error" },
         );
         expect(result).toEqual({ elements: [] });
