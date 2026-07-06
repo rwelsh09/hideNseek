@@ -53,7 +53,6 @@ jobs:
               uses: actions/upload-pages-artifact@v3
               with:
                   path: "./dist/"
-                  include-hidden-files: true
 
             - name: Checkout gh-pages
               uses: actions/checkout@v7
