@@ -80,7 +80,7 @@ export const LeafletActionButtons = () => {
                     if (!open && $showTutorial && $tutorialDriver) {
                         $tutorialDriver.drive();
                     }
-                }}
+                }
             >
                 <AlertDialogTrigger asChild>
                     <button
