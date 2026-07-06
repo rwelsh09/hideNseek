@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-voronoi-winding-order-9865522849710576480/sw.js', { scope: '/HideAndSeek/fix-voronoi-winding-order-9865522849710576480/' })})}

@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/node-deprecation-warnings-9820181005977093855/sw.js', { scope: '/HideAndSeek/fix/node-deprecation-warnings-9820181005977093855/' })})}

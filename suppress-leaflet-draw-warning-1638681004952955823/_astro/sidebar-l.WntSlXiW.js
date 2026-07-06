@@ -1,1 +1,0 @@
-import{i as t,j as a}from"./sidebar-l.B2p-HnN4.js";import"./use-mobile.Crz63s0P.js";import"./index.CTzypqlY.js";import"./clsx.B-dksMZM.js";import"./index.COiZ6Q9j.js";export{t as SidebarProvider,a as SidebarTrigger};

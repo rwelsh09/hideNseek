@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/tentacles-masking-winding-order-16694878388418235296/sw.js', { scope: '/HideAndSeek/fix/tentacles-masking-winding-order-16694878388418235296/' })})}

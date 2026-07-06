@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix/remove-react-leaflet-draw-5325601579600985939/sw.js', { scope: '/HideAndSeek/fix/remove-react-leaflet-draw-5325601579600985939/' })})}

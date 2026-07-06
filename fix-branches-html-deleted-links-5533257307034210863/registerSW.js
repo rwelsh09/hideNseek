@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-branches-html-deleted-links-5533257307034210863/sw.js', { scope: '/HideAndSeek/fix-branches-html-deleted-links-5533257307034210863/' })})}

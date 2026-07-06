@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-tentacles-zone-limits-categories-12574757837577876833/sw.js', { scope: '/HideAndSeek/fix-tentacles-zone-limits-categories-12574757837577876833/' })})}

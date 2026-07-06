@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/feature/add-photo-question-icons-6091751175633431117/sw.js', { scope: '/HideAndSeek/feature/add-photo-question-icons-6091751175633431117/' })})}

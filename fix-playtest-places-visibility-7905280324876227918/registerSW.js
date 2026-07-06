@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-playtest-places-visibility-7905280324876227918/sw.js', { scope: '/HideAndSeek/fix-playtest-places-visibility-7905280324876227918/' })})}

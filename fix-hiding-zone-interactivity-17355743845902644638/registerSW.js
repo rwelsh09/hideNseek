@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/fix-hiding-zone-interactivity-17355743845902644638/sw.js', { scope: '/HideAndSeek/fix-hiding-zone-interactivity-17355743845902644638/' })})}

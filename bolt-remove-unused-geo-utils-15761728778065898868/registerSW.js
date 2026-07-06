@@ -1,1 +1,0 @@
-if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/HideAndSeek/bolt-remove-unused-geo-utils-15761728778065898868/sw.js', { scope: '/HideAndSeek/bolt-remove-unused-geo-utils-15761728778065898868/' })})}
