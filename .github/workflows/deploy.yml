@@ -53,7 +53,6 @@ jobs:
               uses: actions/upload-pages-artifact@v3
               with:
                   path: "./dist/"
-                  include-hidden-files: true
 
             - name: Checkout gh-pages
               uses: actions/checkout@v7
@@ -122,4 +121,18 @@ jobs:
                   git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
                   git add .
                   git commit -m "Deploy branch $BRANCH" || echo "No changes to commit"
-                  git push origin gh-pages
+
+                  # Retry logic for pushing to gh-pages in case of concurrent runs
+                  for i in {1..5}; do
+                      if git push origin gh-pages; then
+                          break
+                      else
+                          echo "Push failed, pulling with rebase and retrying (attempt $i/5)..."
+                          git pull --rebase origin gh-pages
+                          sleep $(( i * 2 ))
+                      fi
+                      if [ "$i" -eq 5 ]; then
+                          echo "Failed to push after 5 attempts."
+                          exit 1
+                      fi
+                  done
