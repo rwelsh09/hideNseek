@@ -4,6 +4,7 @@ import { XIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import { showNextStepsChecklist, showTutorial } from "@/lib/context";
+import { PwaInstallTip } from "./PwaInstallTip";
 
 export const hasDismissedNextStepsChecklist = persistentAtom<boolean>(
     "hasDismissedNextStepsChecklist",
@@ -83,6 +84,7 @@ export const NextStepsChecklist = () => {
                         Start the timer and (to the Hider) RUN RUN RUN!
                     </span>
                 </li>
+                <PwaInstallTip />
             </ul>
         </div>
     );
