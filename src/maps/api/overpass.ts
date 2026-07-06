@@ -75,9 +75,9 @@ export const getOverpassData = async (
     }
 
     if (!toast.isActive("overpass-error")) {
-        let errorMessage = "We had trouble fetching some map data. Please try again.";
+        let errorMessage = "Please try that again.";
         if (errorCategory === "busy") {
-            errorMessage = "The map server is currently too busy. Please try again in a few minutes.";
+            errorMessage = "The server is busy. Try clicking Pre-save at the bottom of the Options menu.";
         } else if (errorCategory === "network") {
             errorMessage = "Unable to connect to the map server. Please check your internet connection.";
         }
