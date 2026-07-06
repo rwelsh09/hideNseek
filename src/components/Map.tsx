@@ -514,21 +514,7 @@ export const Map = ({ className }: { className?: string }) => {
             }
         };
 
-        if (!navigator.geolocation) {
-            fallbackToCalgary();
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                const { latitude, longitude } = pos.coords;
-                flyToWithOffset(map, L.latLng(latitude, longitude), 12);
-            },
-            () => {
-                toast.error("Unable to center map on your location.");
-                fallbackToCalgary();
-            },
-        );
+        fallbackToCalgary();
     }, [$mapGeoLocation, map]);
 
     return displayMap;
