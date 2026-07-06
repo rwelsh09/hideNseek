@@ -48,23 +48,32 @@ jobs:
                       echo "Running manual bulk cleanup..."
                       cd gh-pages-dir
 
-                      # Iterate through all directories
-                      for d in */; do
-                          # If no directories match, d will be "*/", which is not a directory.
-                          [ -d "$d" ] || continue
-                          DIRNAME="${d%/}"
+                      # Iterate through predefined branch prefixes
+                      PREFIXES=("feat" "fix" "chore" "bug" "scout" "palette")
 
-                          # Ignore master, gh-pages, and root-level artifacts (.git, _astro, ~partytown, etc)
-                          if [ "$DIRNAME" == "master" ] || [ "$DIRNAME" == "gh-pages" ] || [ "$DIRNAME" == ".git" ] || [[ "$DIRNAME" == _* ]] || [[ "$DIRNAME" == ~* ]]; then
-                              continue
-                          fi
+                      for prefix in "${PREFIXES[@]}"; do
+                          if [ -d "$prefix" ]; then
+                              echo "Checking branch prefix directory: $prefix"
+                              # Iterate through subdirectories (branch names under the prefix)
+                              for d in "$prefix"/*/; do
+                                  # If no matching directories, it expands to "$prefix/*/" which isn't a dir
+                                  [ -d "$d" ] || continue
 
-                          # Check if DIRNAME is exactly in active_branches.txt
-                          if ! grep -xq "$DIRNAME" ../active_branches.txt; then
-                              echo "Directory '$DIRNAME' does not match any active branch. Removing..."
-                              rm -rf "$DIRNAME"
-                          else
-                              echo "Keeping active branch directory '$DIRNAME'."
+                                  # Strip trailing slash
+                                  DIRPATH="${d%/}"
+
+                                  # Check if DIRPATH (e.g. feat/my-branch) is in active_branches.txt
+                                  if ! grep -xq "$DIRPATH" ../active_branches.txt; then
+                                      echo "Directory '$DIRPATH' does not match any active branch. Removing..."
+                                      rm -rf "$DIRPATH"
+                                  else
+                                      echo "Keeping active branch directory '$DIRPATH'."
+                                  fi
+                              done
+
+                              # Try to remove the prefix directory if it's empty
+                              # rmdir will fail silently if the directory is not empty
+                              rmdir "$prefix" 2>/dev/null || true
                           fi
                       done
                       cd ..
