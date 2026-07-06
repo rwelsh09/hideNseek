@@ -17,6 +17,7 @@ import {
     addQuestion,
     baseTileLayer,
     followMe,
+    geolocationPermission,
     hiderMode,
     isLoading,
     leafletMapContext,
@@ -452,6 +453,11 @@ export const Map = ({ className }: { className?: string }) => {
             return;
         }
 
+        if (geolocationPermission.get() === "denied") {
+            followMe.set(false);
+            return;
+        }
+
         geoWatchIdRef.current = navigator.geolocation.watchPosition(
             (pos) => {
                 const lat = pos.coords.latitude;
@@ -472,7 +478,10 @@ export const Map = ({ className }: { className?: string }) => {
             },
             (error) => {
                 if (error.code === error.PERMISSION_DENIED) {
-                    toast.error("Location permission denied.");
+                    geolocationPermission.set("denied");
+                    toast.error("Location access denied.", {
+                        toastId: "location-denied",
+                    });
                     followMe.set(false);
                 } else {
                     toast.error("Unable to access your location. Retrying...", {
