@@ -46,8 +46,6 @@ export const TutorialManager = () => {
                             showNextStepsChecklist.set(true);
                         } else {
                             setActiveDriver(driverObj);
-                            // We must destroy the driver overlay first, otherwise its SVG blocks the AlertDialog
-                            // Driver.js recreates it on .drive() if we cancel
                             driverObj.destroy();
                             setConfirmEndTutorial(true);
                         }
@@ -670,7 +668,6 @@ export const TutorialManager = () => {
                         <AlertDialogCancel
                             onClick={() => {
                                 if (activeDriver) {
-                                    // Resume tutorial on cancel
                                     activeDriver.drive();
                                 }
                             }}
