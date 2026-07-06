@@ -141,23 +141,23 @@ div.leaflet-control-attribution.leaflet-control {
 /* Hide tutorial popover and show nudge when driver is active, a drawer is open, but the active element is not inside it */
 body.driver-active:has(
         [data-sidebar="sidebar"][data-state="expanded"],
-        [role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]
+        [role="dialog"][data-state="open"]
     ):not(
         :has(
             [data-sidebar="sidebar"][data-state="expanded"]
                 .driver-active-element,
-            [role="dialog"][data-state="open"] .driver-active-element, [role="alertdialog"][data-state="open"] .driver-active-element
+            [role="dialog"][data-state="open"] .driver-active-element
         )
     )
     .driver-overlay,
 body.driver-active:has(
         [data-sidebar="sidebar"][data-state="expanded"],
-        [role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]
+        [role="dialog"][data-state="open"]
     ):not(
         :has(
             [data-sidebar="sidebar"][data-state="expanded"]
                 .driver-active-element,
-            [role="dialog"][data-state="open"] .driver-active-element, [role="alertdialog"][data-state="open"] .driver-active-element
+            [role="dialog"][data-state="open"] .driver-active-element
         )
     )
     .driver-overlay
@@ -167,12 +167,12 @@ body.driver-active:has(
 
 body.driver-active:has(
         [data-sidebar="sidebar"][data-state="expanded"],
-        [role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]
+        [role="dialog"][data-state="open"]
     ):not(
         :has(
             [data-sidebar="sidebar"][data-state="expanded"]
                 .driver-active-element,
-            [role="dialog"][data-state="open"] .driver-active-element, [role="alertdialog"][data-state="open"] .driver-active-element
+            [role="dialog"][data-state="open"] .driver-active-element
         )
     )
     .driver-popover {
@@ -182,12 +182,12 @@ body.driver-active:has(
 
 body.driver-active:has(
         [data-sidebar="sidebar"][data-state="expanded"],
-        [role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]
+        [role="dialog"][data-state="open"]
     ):not(
         :has(
             [data-sidebar="sidebar"][data-state="expanded"]
                 .driver-active-element,
-            [role="dialog"][data-state="open"] .driver-active-element, [role="alertdialog"][data-state="open"] .driver-active-element
+            [role="dialog"][data-state="open"] .driver-active-element
         )
     )
     .driver-overlay
@@ -197,12 +197,12 @@ body.driver-active:has(
 
 body.driver-active:has(
         [data-sidebar="sidebar"][data-state="expanded"],
-        [role="dialog"][data-state="open"], [role="alertdialog"][data-state="open"]
+        [role="dialog"][data-state="open"]
     ):not(
         :has(
             [data-sidebar="sidebar"][data-state="expanded"]
                 .driver-active-element,
-            [role="dialog"][data-state="open"] .driver-active-element, [role="alertdialog"][data-state="open"] .driver-active-element
+            [role="dialog"][data-state="open"] .driver-active-element
         )
     )::after {
     content: "Close this menu to return to the tutorial";

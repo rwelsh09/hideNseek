@@ -21,6 +21,8 @@ import {
     geolocationPermission,
     mapGeoLocation,
     questionFinishedMapData,
+    showTutorial,
+    tutorialDriver,
 } from "@/lib/context";
 import { holedMask } from "@/maps";
 import { flyToWithOffset } from "@/maps/ui-utils";
@@ -29,13 +31,24 @@ export const LeafletActionButtons = () => {
     const map = useMap();
     const $mapGeoLocation = useStore(mapGeoLocation);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
+    const $showTutorial = useStore(showTutorial);
+    const $tutorialDriver = useStore(tutorialDriver);
 
     const buttonClass =
         "leaflet-full-screen-specific-name bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] p-0 rounded-sm flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2";
 
     return (
         <>
-            <AlertDialog>
+            <AlertDialog
+                onOpenChange={(open) => {
+                    if (open && $showTutorial && $tutorialDriver) {
+                        $tutorialDriver.destroy();
+                    }
+                    if (!open && $showTutorial && $tutorialDriver) {
+                        $tutorialDriver.drive();
+                    }
+                }}
+            >
                 <AlertDialogTrigger asChild>
                     <button
                         type="button"

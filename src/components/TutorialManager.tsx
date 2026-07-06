@@ -18,6 +18,7 @@ import {
     hasSeenRules,
     showNextStepsChecklist,
     showTutorial,
+    tutorialDriver,
 } from "@/lib/context";
 
 export const TutorialManager = () => {
@@ -637,11 +638,14 @@ export const TutorialManager = () => {
                       ],
             });
 
+            tutorialDriver.set(driverObj);
+
             setTimeout(() => {
                 driverObj.drive();
             }, 500);
 
             return () => {
+                tutorialDriver.set(null);
                 try {
                     driverObj.destroy();
                 } catch {
