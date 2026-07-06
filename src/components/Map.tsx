@@ -523,30 +523,7 @@ export const Map = ({ className }: { className?: string }) => {
             }
         };
 
-        if (!navigator.geolocation || geolocationPermission.get() === "denied") {
-            fallbackToCalgary();
-            return;
-        }
-
-        navigator.geolocation.getCurrentPosition(
-            (pos) => {
-                const { latitude, longitude } = pos.coords;
-                flyToWithOffset(map, L.latLng(latitude, longitude), 12);
-            },
-            (error) => {
-                if (error.code === error.PERMISSION_DENIED) {
-                    geolocationPermission.set("denied");
-                    toast.error("Location access denied.", {
-                        toastId: "location-denied",
-                    });
-                } else {
-                    toast.error("Unable to center map on your location.", {
-                        toastId: "location-error",
-                    });
-                }
-                fallbackToCalgary();
-            },
-        );
+        fallbackToCalgary();
     }, [$mapGeoLocation, map]);
 
     return displayMap;
