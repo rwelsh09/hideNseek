@@ -17,7 +17,11 @@ import {
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import { calculateMeasureDistance } from "@/maps/questions/measure";
-import { type MeasureQuestion, measureQuestionSchema } from "@/maps/schema";
+import {
+    getSchemaOptions,
+    type MeasureQuestion,
+    measureQuestionSchema,
+} from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
@@ -65,16 +69,7 @@ export const MeasureQuestionComponent = ({
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                 <Select
                     trigger="Measure Type"
-                    options={Object.fromEntries(
-                        (
-                            ((measureQuestionSchema.shape.type as any)._def
-                                .innerType ||
-                                measureQuestionSchema.shape.type) as any
-                        ).options.map((x: any) => [
-                            (x._def as any).value,
-                            x.description,
-                        ]),
-                    )}
+                    options={getSchemaOptions(measureQuestionSchema.shape.type)}
                     value={data.type}
                     onValueChange={async (value) => {
                         data.type = value;

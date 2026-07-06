@@ -16,7 +16,11 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
-import { type MatchQuestion, matchQuestionSchema } from "@/maps/schema";
+import {
+    getSchemaOptions,
+    type MatchQuestion,
+    matchQuestionSchema,
+} from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
@@ -48,16 +52,7 @@ export const MatchQuestionComponent = ({
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                 <Select
                     trigger="Match Type"
-                    options={Object.fromEntries(
-                        (
-                            ((matchQuestionSchema.shape.type as any)._def
-                                .innerType ||
-                                matchQuestionSchema.shape.type) as any
-                        ).options.map((x: any) => [
-                            (x._def as any).value,
-                            x.description,
-                        ]),
-                    )}
+                    options={getSchemaOptions(matchQuestionSchema.shape.type)}
                     value={data.type}
                     onValueChange={async (value) => {
                         if (value === "same-length-station") {

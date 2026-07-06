@@ -25,6 +25,21 @@ export const determineUnionizedStrings = (
     return [];
 };
 
+export const getSchemaOptions = (
+    obj:
+        | z.ZodUnion<any>
+        | z.ZodLiteral<any>
+        | z.ZodDefault<any>
+        | z.ZodEffects<any>,
+): Record<string, string> => {
+    const options: Record<string, string> = {};
+    const literals = determineUnionizedStrings(obj);
+    for (const lit of literals) {
+        options[lit.value] = lit.description || lit.value;
+    }
+    return options;
+};
+
 const unitsSchema = z.preprocess(
     (val) => (val === "miles" ? "kilometers" : val),
     z.union([z.literal("kilometers"), z.literal("meters")]),
