@@ -450,8 +450,10 @@ export const LatitudeLongitude = ({
                             variant="outline"
                             size="icon"
                             onClick={() => {
-                                if (!navigator || !navigator.geolocation)
-                                    return alert("Geolocation not supported");
+                                if (!navigator || !navigator.geolocation) {
+                                    toast.error("Geolocation not supported");
+                                    return;
+                                }
 
                                 if (geolocationPermission.get() === "denied") {
                                     toast.error("Location access denied.", {
