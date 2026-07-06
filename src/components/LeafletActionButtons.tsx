@@ -29,61 +29,86 @@ export const LeafletActionButtons = () => {
     const map = useMap();
     const $mapGeoLocation = useStore(mapGeoLocation);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
+    const $geolocationPermission = useStore(geolocationPermission);
 
     const buttonClass =
         "leaflet-full-screen-specific-name bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] p-0 rounded-sm flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2";
 
+    const handleLocationFocus = () => {
+        if (!navigator.geolocation) {
+            toast.error("Geolocation is not supported by your browser");
+            return;
+        }
+
+        if (geolocationPermission.get() === "denied") {
+            toast.error("Location access denied.", {
+                toastId: "location-denied",
+            });
+            return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+            (pos) => {
+                geolocationPermission.set("granted");
+                const { latitude, longitude } = pos.coords;
+                flyToWithOffset(map, L.latLng(latitude, longitude), 12);
+            },
+            (error) => {
+                if (error.code === error.PERMISSION_DENIED) {
+                    geolocationPermission.set("denied");
+                    toast.error("Location access denied.", {
+                        toastId: "location-denied",
+                    });
+                } else {
+                    toast.error("Unable to access your location.");
+                }
+            },
+        );
+    };
+
     return (
         <>
-            <AlertDialog>
-                <AlertDialogTrigger asChild>
-                    <button
-                        type="button"
-                        className={buttonClass}
-                        title="Focus on your location"
-                        aria-label="Focus on your location"
-                    >
-                        <MdMyLocation className="w-5 h-5 text-black" />
-                    </button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                    <AlertDialogHeader>
-                        <AlertDialogTitle>Location Access Required</AlertDialogTitle>
-                        <AlertDialogDescription>
-                            To use your location in Questions and enable the
-                            Follow-Me feature, we need to see your location.
-                        </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel>Not Now</AlertDialogCancel>
-                        <AlertDialogAction
-                            onClick={() => {
-                                if (!navigator.geolocation) {
-                                    toast.error(
-                                        "Geolocation is not supported by your browser",
-                                    );
-                                    return;
-                                }
-                                navigator.geolocation.getCurrentPosition(
-                                    (pos) => {
-                                        const { latitude, longitude } = pos.coords;
-                                        flyToWithOffset(
-                                            map,
-                                            L.latLng(latitude, longitude),
-                                            12,
-                                        );
-                                    },
-                                    () => {
-                                        toast.error("Unable to access your location.");
-                                    },
-                                );
-                            }}
+            {$geolocationPermission === "prompt" ? (
+                <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                        <button
+                            type="button"
+                            className={buttonClass}
+                            title="Focus on your location"
+                            aria-label="Focus on your location"
                         >
-                            Allow
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                </AlertDialogContent>
-            </AlertDialog>
+                            <MdMyLocation className="w-5 h-5 text-black" />
+                        </button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                        <AlertDialogHeader>
+                            <AlertDialogTitle>
+                                Location Access Required
+                            </AlertDialogTitle>
+                            <AlertDialogDescription>
+                                To use your location in Questions and enable the
+                                Follow-Me feature, we need to see your location.
+                            </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                            <AlertDialogCancel>Not Now</AlertDialogCancel>
+                            <AlertDialogAction onClick={handleLocationFocus}>
+                                Allow
+                            </AlertDialogAction>
+                        </AlertDialogFooter>
+                    </AlertDialogContent>
+                </AlertDialog>
+            ) : (
+                <button
+                    type="button"
+                    className={buttonClass}
+                    title="Focus on your location"
+                    aria-label="Focus on your location"
+                    onClick={handleLocationFocus}
+                >
+                    <MdMyLocation className="w-5 h-5 text-black" />
+                </button>
+            )}
 
             <button
                 type="button"

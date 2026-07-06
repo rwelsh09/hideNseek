@@ -464,6 +464,7 @@ export const LatitudeLongitude = ({
 
                                 navigator.geolocation.getCurrentPosition(
                                     (position) => {
+                                        geolocationPermission.set("granted");
                                         isLoading.set(false);
                                         onChange(
                                             position.coords.latitude,
