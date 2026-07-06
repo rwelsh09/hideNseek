@@ -465,19 +465,22 @@ out ${outType};
 
 export const findPlacesSpecificInZone = async (
     location: `${QuestionSpecificLocation}`,
+    silent?: boolean,
 ) => {
     const locations = (
         await findPlacesInZone(
             location,
-            `Finding ${
-                location === '["brand:wikidata"="Q38076"]'
-                    ? "McDonald's"
-                    : location === '["brand:wikidata"="Q259340"]'
-                      ? "7-Elevens"
-                      : location === '["brand:wikidata"="Q175106"]'
-                        ? "Tim Hortons"
-                        : "Pubs/Bars"
-            }...`,
+            silent
+                ? undefined
+                : `Finding ${
+                      location === '["brand:wikidata"="Q38076"]'
+                          ? "McDonald's"
+                          : location === '["brand:wikidata"="Q259340"]'
+                            ? "7-Elevens"
+                            : location === '["brand:wikidata"="Q175106"]'
+                              ? "Tim Hortons"
+                              : "Pubs/Bars"
+                  }...`,
         )
     ).elements;
     return turf.featureCollection(
@@ -565,7 +568,7 @@ export const cacheAllPlaces = async () => {
 
     // Specific Location Enum Queries (McDonalds, 7Eleven)
     Object.values(QuestionSpecificLocation).forEach((loc) => {
-        tasks.push(() => findPlacesSpecificInZone(loc as any));
+        tasks.push(() => findPlacesSpecificInZone(loc as any, true));
     });
 
     const total = tasks.length;
