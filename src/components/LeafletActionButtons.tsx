@@ -21,6 +21,8 @@ import {
     geolocationPermission,
     mapGeoLocation,
     questionFinishedMapData,
+    showTutorial,
+    tutorialDriver,
 } from "@/lib/context";
 import { holedMask } from "@/maps";
 import { flyToWithOffset } from "@/maps/ui-utils";
@@ -29,6 +31,8 @@ export const LeafletActionButtons = () => {
     const map = useMap();
     const $mapGeoLocation = useStore(mapGeoLocation);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
+    const $showTutorial = useStore(showTutorial);
+    const $tutorialDriver = useStore(tutorialDriver);
     const $geolocationPermission = useStore(geolocationPermission);
 
     const buttonClass =
@@ -68,8 +72,17 @@ export const LeafletActionButtons = () => {
 
     return (
         <>
-            {$geolocationPermission === "prompt" ? (
-                <AlertDialog>
+            {$geolocationPermission !== "granted" ? (
+                <AlertDialog
+                    onOpenChange={(open) => {
+                        if (open && $showTutorial && $tutorialDriver) {
+                            $tutorialDriver.destroy();
+                        }
+                        if (!open && $showTutorial && $tutorialDriver) {
+                            $tutorialDriver.drive();
+                        }
+                    }}
+                >
                     <AlertDialogTrigger asChild>
                         <button
                             type="button"
@@ -160,7 +173,6 @@ export const LeafletActionButtons = () => {
 
                         flyToWithOffset(map, center, zoom);
                     } else {
-                        // Fallback to Calgary or center if extent is missing
                         if ($mapGeoLocation?.geometry?.coordinates) {
                             const center = [
                                 $mapGeoLocation.geometry.coordinates[1],
