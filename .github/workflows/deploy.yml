@@ -28,18 +28,32 @@ jobs:
               run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
               id: extract_branch
 
-            - name: Install, build, and upload your site
-              uses: withastro/action@v6.1.1
+            - name: Setup Node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v2
+              with:
+                  version: 10.30.3
+
+            - name: Install dependencies
+              run: pnpm install
+
+            - name: Build site
               env:
                   BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
-                  npm_config_minimum_release_age: "0"
-              with:
-                  path: .
-                  node-version: 22
-                  package-manager: pnpm@10.30.3
+              run: pnpm run build
 
             - name: Run tests
               run: pnpm test
+
+            - name: Upload Pages Artifact
+              uses: actions/upload-pages-artifact@v3
+              with:
+                  path: "./dist/"
+                  include-hidden-files: true
 
             - name: Checkout gh-pages
               uses: actions/checkout@v7
