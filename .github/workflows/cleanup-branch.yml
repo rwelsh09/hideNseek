@@ -66,6 +66,8 @@ jobs:
 
                   echo "</ul></body></html>" >> ./gh-pages-dir/branches.html
 
+                  touch ./gh-pages-dir/.nojekyll
+
                   # 3. Commit and Push everything together
                   cd gh-pages-dir
                   git config user.name "github-actions[bot]"
