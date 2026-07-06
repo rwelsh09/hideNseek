@@ -162,6 +162,7 @@ export const Map = ({ className }: { className?: string }) => {
                         determineMapBoundaries()
                             .then((x) => {
                                 mapGeoJSON.set(x);
+                                polyGeoJSON.set(x);
                                 mapGeoData = x;
                             })
                             .catch(() => {}),
