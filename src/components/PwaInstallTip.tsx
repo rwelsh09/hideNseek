@@ -56,6 +56,13 @@ export const PwaInstallTip = () => {
             }
         };
 
+        const handleAppInstalled = () => {
+            setIsInstalled(true);
+            import("@/maps/api").then(({ cacheAllPlaces }) => {
+                cacheAllPlaces();
+            });
+        };
+
         window.addEventListener(
             "beforeinstallprompt",
             handleBeforeInstallPrompt,
@@ -64,6 +71,7 @@ export const PwaInstallTip = () => {
             "pwa-deferred-prompt-ready",
             handlePwaDeferredPromptReady,
         );
+        window.addEventListener("appinstalled", handleAppInstalled);
 
         return () => {
             window.removeEventListener(
@@ -74,6 +82,7 @@ export const PwaInstallTip = () => {
                 "pwa-deferred-prompt-ready",
                 handlePwaDeferredPromptReady,
             );
+            window.removeEventListener("appinstalled", handleAppInstalled);
         };
     }, []);
 
@@ -88,6 +97,9 @@ export const PwaInstallTip = () => {
         if (outcome === "accepted") {
             setDeferredPrompt(null);
             setIsInstalled(true);
+            import("@/maps/api").then(({ cacheAllPlaces }) => {
+                cacheAllPlaces();
+            });
         }
     };
 

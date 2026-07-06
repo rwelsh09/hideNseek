@@ -523,7 +523,12 @@ export const nearestToQuestion = async (question: any) => {
     return turf.nearestPoint(questionPoint, instances as any);
 };
 
+let isCachingAllPlaces = false;
+
 export const cacheAllPlaces = async () => {
+    if (isCachingAllPlaces) return;
+    isCachingAllPlaces = true;
+
     const tasks: (() => Promise<any>)[] = [];
 
     // Standard Locations (from LOCATION_FIRST_TAG)
