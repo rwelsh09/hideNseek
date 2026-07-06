@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
 import { Button } from "./ui/button";
 
 // Define the interface for the BeforeInstallPromptEvent
@@ -23,6 +24,7 @@ export const PwaInstallTip = () => {
     const [isApple, setIsApple] = useState(false);
     const [isInstalled, setIsInstalled] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
+    const hasStartedCache = useRef(false);
 
     useEffect(() => {
         setIsMounted(true);
@@ -57,13 +59,22 @@ export const PwaInstallTip = () => {
 
         const handleAppInstalled = () => {
             setIsInstalled(true);
-            import("@/maps/api").then(({ cacheAllPlaces }) => {
-                cacheAllPlaces();
-            });
+            if (!hasStartedCache.current) {
+                hasStartedCache.current = true;
+                import("@/maps/api").then(({ cacheAllPlaces }) => {
+                    cacheAllPlaces();
+                });
+            }
         };
 
-        window.addEventListener("beforeinstallprompt", handleBeforeInstallPrompt);
-        window.addEventListener("pwa-deferred-prompt-ready", handlePwaDeferredPromptReady);
+        window.addEventListener(
+            "beforeinstallprompt",
+            handleBeforeInstallPrompt,
+        );
+        window.addEventListener(
+            "pwa-deferred-prompt-ready",
+            handlePwaDeferredPromptReady,
+        );
         window.addEventListener("appinstalled", handleAppInstalled);
 
         return () => {
@@ -90,9 +101,12 @@ export const PwaInstallTip = () => {
         if (outcome === "accepted") {
             setDeferredPrompt(null);
             setIsInstalled(true);
-            import("@/maps/api").then(({ cacheAllPlaces }) => {
-                cacheAllPlaces();
-            });
+            if (!hasStartedCache.current) {
+                hasStartedCache.current = true;
+                import("@/maps/api").then(({ cacheAllPlaces }) => {
+                    cacheAllPlaces();
+                });
+            }
         }
     };
 
@@ -135,9 +149,9 @@ export const PwaInstallTip = () => {
                 </span>
                 <span className="text-indigo-900/90 dark:text-indigo-200/90">
                     <strong>Pro Tip:</strong> Install this app to your home
-                    screen! Unlock full-screen mode and offline play. Look 
-                    for &quot;Add to Home Screen&quot; in your browser menu
-                    or share sheet (⍐).
+                    screen! Unlock full-screen mode and offline play. Look for
+                    &quot;Add to Home Screen&quot; in your browser menu or share
+                    sheet (⍐).
                 </span>
             </li>
         );
@@ -149,8 +163,8 @@ export const PwaInstallTip = () => {
             <span className="font-bold text-indigo-400 w-5 shrink-0">★</span>
             <span className="text-indigo-900/90 dark:text-indigo-200/90">
                 <strong>Pro Tip:</strong> Install this app to your home screen!
-                Unlock full-screen mode and offline play. Look for
-                &quot;Add to Home Screen&quot; or install icon in your browser.
+                Unlock full-screen mode and offline play. Look for &quot;Add to
+                Home Screen&quot; or install icon in your browser.
             </span>
         </li>
     );

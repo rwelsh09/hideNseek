@@ -4,6 +4,7 @@ import { XIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import { showNextStepsChecklist, showTutorial } from "@/lib/context";
+
 import { PwaInstallTip } from "./PwaInstallTip";
 
 export const hasDismissedNextStepsChecklist = persistentAtom<boolean>(
