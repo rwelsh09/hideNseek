@@ -9,7 +9,8 @@ import * as turf from "@turf/turf";
 import * as L from "leaflet";
 import { Loader2 } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
-import { MapContainer, ScaleControl, TileLayer } from "react-leaflet";
+import { MapContainer, ScaleControl } from "react-leaflet";
+import { OfflineTileLayer } from "./OfflineTileLayer";
 import { toast } from "react-toastify";
 
 import {
@@ -45,7 +46,7 @@ const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
     switch (tileLayer) {
         case "light":
             return (
-                <TileLayer
+                <OfflineTileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors; &copy; <a href="https://carto.com/attributions">CARTO</a>; Powered by Esri and Turf.js'
                     url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                     subdomains="abcd"
@@ -57,7 +58,7 @@ const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
 
         case "dark":
             return (
-                <TileLayer
+                <OfflineTileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors; &copy; <a href="https://carto.com/attributions">CARTO</a>; Powered by Esri and Turf.js'
                     url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
                     subdomains="abcd"
@@ -70,7 +71,7 @@ const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
         case "transport":
             if (thunderforestApiKey)
                 return (
-                    <TileLayer
+                    <OfflineTileLayer
                         url={`https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=${thunderforestApiKey}`}
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors; &copy; <a href="http://www.thunderforest.com/">Thunderforest</a>; Powered by Esri and Turf.js'
                         maxZoom={22}
@@ -83,7 +84,7 @@ const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
         case "neighbourhood":
             if (thunderforestApiKey)
                 return (
-                    <TileLayer
+                    <OfflineTileLayer
                         url={`https://tile.thunderforest.com/neighbourhood/{z}/{x}/{y}.png?apikey=${thunderforestApiKey}`}
                         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors; &copy; <a href="http://www.thunderforest.com/">Thunderforest</a>; Powered by Esri and Turf.js'
                         maxZoom={22}
@@ -95,7 +96,7 @@ const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
 
         case "osmcarto":
             return (
-                <TileLayer
+                <OfflineTileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors; Powered by Esri and Turf.js'
                     url="https://tile.openstreetmap.org/{z}/{x}/{y}.png"
                     maxZoom={19}
@@ -106,7 +107,7 @@ const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
     }
 
     return (
-        <TileLayer
+        <OfflineTileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors; &copy; <a href="https://carto.com/attributions">CARTO</a>; Powered by Esri and Turf.js'
             url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
             subdomains="abcd"
