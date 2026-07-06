@@ -2,6 +2,7 @@ name: Cleanup Deleted Branch
 
 on:
     delete:
+    workflow_dispatch:
 
 permissions:
     contents: write
@@ -10,10 +11,11 @@ permissions:
 
 jobs:
     cleanup:
-        if: github.event.ref_type == 'branch'
+        if: github.event_name == 'workflow_dispatch' || (github.event_name == 'delete' && github.event.ref_type == 'branch')
         runs-on: ubuntu-latest
         steps:
             - name: Extract deleted branch name
+              if: github.event_name == 'delete'
               id: extract_branch
               run: echo "branch=${{ github.event.ref }}" >> $GITHUB_OUTPUT
 
@@ -29,25 +31,49 @@ jobs:
 
             - name: Cleanup branch and Generate branches.html
               run: |
-                  BRANCH="${{ steps.extract_branch.outputs.branch }}"
+                  # Extract active branches
+                  git ls-remote --heads origin | awk -F'refs/heads/' '{print $2}' > active_branches.txt
+                  sed -i 's/\r$//' active_branches.txt
 
-                  # 1. Remove branch directory if it exists
-                  if [ -d "gh-pages-dir/$BRANCH" ]; then
-                      echo "Removing directory for branch: $BRANCH"
-                      rm -rf "gh-pages-dir/$BRANCH"
-                  else
-                      echo "No deployed directory found for branch: $BRANCH"
+                  if [ "${{ github.event_name }}" == "delete" ]; then
+                      BRANCH="${{ steps.extract_branch.outputs.branch }}"
+                      # 1. Remove branch directory if it exists
+                      if [ -d "gh-pages-dir/$BRANCH" ]; then
+                          echo "Removing directory for branch: $BRANCH"
+                          rm -rf "gh-pages-dir/$BRANCH"
+                      else
+                          echo "No deployed directory found for branch: $BRANCH"
+                      fi
+                  elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+                      echo "Running manual bulk cleanup..."
+                      cd gh-pages-dir
+
+                      # Iterate through all directories
+                      for d in */; do
+                          # If no directories match, d will be "*/", which is not a directory.
+                          [ -d "$d" ] || continue
+                          DIRNAME="${d%/}"
+
+                          # Ignore master, gh-pages, and root-level artifacts (.git, _astro, ~partytown, etc)
+                          if [ "$DIRNAME" == "master" ] || [ "$DIRNAME" == "gh-pages" ] || [ "$DIRNAME" == ".git" ] || [[ "$DIRNAME" == _* ]] || [[ "$DIRNAME" == ~* ]]; then
+                              continue
+                          fi
+
+                          # Check if DIRNAME is exactly in active_branches.txt
+                          if ! grep -xq "$DIRNAME" ../active_branches.txt; then
+                              echo "Directory '$DIRNAME' does not match any active branch. Removing..."
+                              rm -rf "$DIRNAME"
+                          else
+                              echo "Keeping active branch directory '$DIRNAME'."
+                          fi
+                      done
+                      cd ..
                   fi
 
                   # 2. Generate branches.html directly in gh-pages-dir
                   echo "<!DOCTYPE html><html><head><title>Deployed Branches</title><style>body{font-family:sans-serif;margin:2rem;background:#1F2F3F;color:#fff;}a{color:#4da6ff;text-decoration:none;}a:hover{text-decoration:underline;}ul{list-style-type:none;padding:0;}li{margin:0.5rem 0;padding:1rem;background:#2a3f54;border-radius:8px;}</style></head><body>" > ./gh-pages-dir/branches.html
                   echo "<h1>Hide and Seek - Deployed Branches</h1><ul>" >> ./gh-pages-dir/branches.html
                   echo "<li><a href='./'>master (Root)</a></li>" >> ./gh-pages-dir/branches.html
-
-                  git ls-remote --heads origin | awk -F'refs/heads/' '{print $2}' > active_branches.txt
-
-                  # Clean carriage returns just in case
-                  sed -i 's/\r$//' active_branches.txt
 
                   if [ -d "gh-pages-dir" ]; then
                       while IFS= read -r branch; do
@@ -71,5 +97,11 @@ jobs:
                   git config user.name "github-actions[bot]"
                   git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
                   git add .
-                  git commit -m "Cleanup deployed files and update branches.html for deleted branch: $BRANCH" || echo "No changes to commit"
+
+                  if [ "${{ github.event_name }}" == "delete" ]; then
+                      git commit -m "Cleanup deployed files and update branches.html for deleted branch: ${{ steps.extract_branch.outputs.branch }}" || echo "No changes to commit"
+                  else
+                      git commit -m "Bulk cleanup of orphaned deployed branches and update branches.html" || echo "No changes to commit"
+                  fi
+
                   git push origin gh-pages
