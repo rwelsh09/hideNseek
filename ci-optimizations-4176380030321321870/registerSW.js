@@ -1,0 +1,1 @@
+if('serviceWorker' in navigator) {window.addEventListener('load', () => {navigator.serviceWorker.register('/hideNseek/ci-optimizations-4176380030321321870/sw.js', { scope: '/hideNseek/ci-optimizations-4176380030321321870/' })})}
