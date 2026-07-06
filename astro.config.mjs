@@ -70,4 +70,8 @@ export default defineConfig({
         process.env.BRANCH_NAME && process.env.BRANCH_NAME !== "master"
             ? `/${repoName}/${process.env.BRANCH_NAME}`
             : `/${repoName}`,
+    trailingSlash: "always",
+    build: {
+        format: "directory",
+    },
 });

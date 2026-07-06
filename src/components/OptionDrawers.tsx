@@ -393,7 +393,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                         Start Tutorial
                                     </Button>
                                     <a
-                                        href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/rules`}
+                                        href={`${import.meta.env.BASE_URL.replace(/\/$/, "")}/rules/`}
                                         className="w-full"
                                         onClick={() => hasSeenRules.set(true)}
                                         data-tutorial-id="tutorial-rules-btn"
