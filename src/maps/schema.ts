@@ -2,8 +2,6 @@ import { z } from "zod";
 
 import { ICON_COLORS } from "./api/constants";
 
-export const NO_GROUP = "NO_GROUP";
-
 export const determineUnionizedStrings = (
     obj:
         | z.ZodUnion<any>
@@ -278,9 +276,6 @@ export type Questions = z.infer<typeof questionsSchema>;
 export type DeepPartial<T> = {
     [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
-export type TraditionalClosestQuestion = z.infer<
-    typeof closestQuestionSpecificSchemaOne
->;
 export type EncompassingClosestQuestionSchema = z.infer<
     typeof encompassingClosestQuestionSchema
 >;
