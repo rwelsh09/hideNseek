@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { Button } from "./ui/button";
 
@@ -24,7 +24,6 @@ export const PwaInstallTip = () => {
     const [isApple, setIsApple] = useState(false);
     const [isInstalled, setIsInstalled] = useState(false);
     const [isMounted, setIsMounted] = useState(false);
-    const hasStartedCache = useRef(false);
 
     useEffect(() => {
         setIsMounted(true);
@@ -59,12 +58,9 @@ export const PwaInstallTip = () => {
 
         const handleAppInstalled = () => {
             setIsInstalled(true);
-            if (!hasStartedCache.current) {
-                hasStartedCache.current = true;
-                import("@/maps/api").then(({ cacheAllPlaces }) => {
-                    cacheAllPlaces();
-                });
-            }
+            import("@/maps/api").then(({ cacheAllPlaces }) => {
+                cacheAllPlaces();
+            });
         };
 
         window.addEventListener(
@@ -101,12 +97,9 @@ export const PwaInstallTip = () => {
         if (outcome === "accepted") {
             setDeferredPrompt(null);
             setIsInstalled(true);
-            if (!hasStartedCache.current) {
-                hasStartedCache.current = true;
-                import("@/maps/api").then(({ cacheAllPlaces }) => {
-                    cacheAllPlaces();
-                });
-            }
+            import("@/maps/api").then(({ cacheAllPlaces }) => {
+                cacheAllPlaces();
+            });
         }
     };
 
