@@ -49,7 +49,7 @@ jobs:
                       cd gh-pages-dir
 
                       # Iterate through predefined branch prefixes
-                      PREFIXES=("feat" "fix" "chore" "bug" "scout" "palette")
+                      PREFIXES=("feat" "fix" "chore" "bug" "scout" "palette" "bolt")
 
                       for prefix in "${PREFIXES[@]}"; do
                           if [ -d "$prefix" ]; then
