@@ -215,7 +215,6 @@ export const findClosestLocations = async (
 
             // Add a unique identifier for chain restaurants so they can be distinguished visually if needed,
             // or at least not be identical in properties if standard logic expects it.
-            // However, the find check above is the main culprit.
             response.features.push(
                 turf.point([ptLon, ptLat], {
                     name: isChain ? `${name} (${element.id})` : name,
@@ -548,26 +547,6 @@ export const cacheAllPlaces = async () => {
     // Specific Hardcoded Queries
     tasks.push(() =>
         findPlacesInZone(
-            '["aeroway"="aerodrome"]["iata"]',
-            "Finding Airports...",
-        ),
-    );
-    tasks.push(() =>
-        findPlacesInZone(
-            '[place=city]["population"~"^[1-9]+[0-9]{6}$"]',
-            "Finding Cities...",
-        ),
-    );
-    tasks.push(() =>
-        findPlacesInZone(
-            "[highspeed=yes]",
-            "Finding High-speed Transit...",
-            "nwr",
-            "geom",
-        ),
-    );
-    tasks.push(() =>
-        findPlacesInZone(
             '["admin_level"="10"]',
             "Finding Neighborhoods...",
             "nwr",
@@ -577,7 +556,7 @@ export const cacheAllPlaces = async () => {
     tasks.push(() =>
         findPlacesInZone(
             "[railway=station]",
-            "Finding Train Stations...",
+            "Finding Stations...",
             "node",
         ),
     );
