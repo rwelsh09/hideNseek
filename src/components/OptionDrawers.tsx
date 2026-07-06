@@ -477,7 +477,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                             );
                                         }}
                                     >
-                                        Pre-save All Places
+                                        Offline Mode
                                     </Button>
                                     <Button
                                         variant="destructive"
