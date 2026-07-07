@@ -86,7 +86,7 @@ export const getOverpassData = async (
         toast.error(errorMessage, { toastId: "overpass-error" });
     }
 
-    return { elements: [] };
+    return { elements: [], _failed: true };
 };
 
 export const determineGeoJSON = async (
@@ -626,7 +626,10 @@ export const cacheAllPlaces = async () => {
             tasks.map((task) =>
                 limit(async () => {
                     try {
-                        await task();
+                        const result = await task();
+                        if (result && result._failed) {
+                            throw new Error("API Task Failed");
+                        }
                     } catch (e) {
                         console.error("Cache task failed", e);
                         failed++;
