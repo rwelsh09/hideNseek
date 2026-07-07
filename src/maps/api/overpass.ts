@@ -317,6 +317,8 @@ out geom;
     return uniqNodes;
 };
 
+let boundaryPromise: Promise<FeatureCollection<MultiPolygon>> | null = null;
+
 export const findPlacesInZone = async (
     filter: string,
     loadingText?: string,
@@ -337,9 +339,13 @@ export const findPlacesInZone = async (
     let $polyGeoJSON = polyGeoJSON.get();
 
     if (!$polyGeoJSON) {
-        $polyGeoJSON = await determineMapBoundaries();
+        if (!boundaryPromise) {
+            boundaryPromise = determineMapBoundaries();
+        }
+        $polyGeoJSON = await boundaryPromise;
         polyGeoJSON.set($polyGeoJSON);
         mapGeoJSON.set($polyGeoJSON);
+        boundaryPromise = null;
     }
 
     if ($polyGeoJSON) {
