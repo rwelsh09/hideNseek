@@ -74,7 +74,7 @@ export const findMatchPlaces = async (question: MatchQuestion) => {
 
 export const determineMatchBoundary = _.memoize(
     async (question: MatchQuestion) => {
-        let boundary;
+        let boundary: any = false;
 
         switch (question.type) {
             case "same-neighbourhood":

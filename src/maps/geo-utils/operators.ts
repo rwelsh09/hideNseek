@@ -53,14 +53,16 @@ export const modifyMapData = (
         "features" in modifications ? safeUnion(modifications) : modifications;
 
     if (withinModifications) {
-        return turf.intersect(
+        const result = turf.intersect(
             turf.featureCollection([safeUnion(mapData), safeModifications]),
         );
+        return result || turf.feature(turf.multiPolygon([]).geometry) as any;
     }
 
-    return turf.difference(
+    const result = turf.difference(
         turf.featureCollection([safeUnion(mapData), safeModifications]),
     );
+    return result || turf.feature(turf.multiPolygon([]).geometry) as any;
 };
 
 const DEFAULT_BUFFER_UNIT = "kilometers";
