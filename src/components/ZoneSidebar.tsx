@@ -73,6 +73,7 @@ export const ZoneSidebar = () => {
     const $hidingRadiusUnits = useStore(hidingRadiusUnits);
     const $headStartMinutes = useStore(headStartMinutes);
     const $isLoading = useStore(isLoading);
+    const $questions = useStore(questions);
     const map = useStore(leafletMapContext);
     const stations = useStore(trainStations);
     const $disabledStations = useStore(disabledStations);
@@ -207,6 +208,7 @@ export const ZoneSidebar = () => {
         $displayHidingZones,
         $showRecommendedStart,
         $hidingRadius,
+        $questions,
     ]);
 
     useEffect(() => {
