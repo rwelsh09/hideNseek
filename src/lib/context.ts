@@ -234,6 +234,24 @@ export const showTutorial = persistentAtom<boolean>("showTutorials", true, {
     decode: JSON.parse,
 });
 
+export const tutorialCompleted = persistentAtom<boolean>(
+    "tutorialCompleted",
+    false,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+
+export const tutorialStepIndex = persistentAtom<number>(
+    "tutorialStepIndex",
+    0,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+
 export const showNextStepsChecklist = persistentAtom<boolean>(
     "showNextStepsChecklist",
     false,

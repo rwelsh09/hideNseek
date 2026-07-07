@@ -18,7 +18,9 @@ import {
     hasSeenRules,
     showNextStepsChecklist,
     showTutorial,
+    tutorialCompleted,
     tutorialDriver,
+    tutorialStepIndex,
 } from "@/lib/context";
 
 export const TutorialManager = () => {
@@ -34,6 +36,16 @@ export const TutorialManager = () => {
             const driverObj = driver({
                 showProgress: true,
                 overlayClickBehavior: () => {},
+                onHighlightStarted: () => {
+                    const isRulesPhase =
+                        driverObj.getConfig().steps?.length === 2;
+                    if (!isRulesPhase) {
+                        const activeIndex = driverObj.getActiveIndex();
+                        if (activeIndex !== undefined) {
+                            tutorialStepIndex.set(activeIndex);
+                        }
+                    }
+                },
                 onDestroyStarted: () => {
                     const isRulesPhase =
                         driverObj.getConfig().steps?.length === 2;
@@ -43,6 +55,7 @@ export const TutorialManager = () => {
                     } else {
                         if (!driverObj.hasNextStep()) {
                             driverObj.destroy();
+                            tutorialCompleted.set(true);
                             showTutorial.set(false);
                             showNextStepsChecklist.set(true);
                         } else {
@@ -641,7 +654,12 @@ export const TutorialManager = () => {
             tutorialDriver.set(driverObj);
 
             setTimeout(() => {
-                driverObj.drive();
+                const isRulesPhase = driverObj.getConfig().steps?.length === 2;
+                if (!isRulesPhase) {
+                    driverObj.drive(tutorialStepIndex.get() || 0);
+                } else {
+                    driverObj.drive();
+                }
             }, 500);
 
             return () => {

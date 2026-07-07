@@ -4,6 +4,17 @@ import * as React from "react";
 import { toast } from "react-toastify";
 
 import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
     Drawer,
     DrawerTrigger,
     TopDrawerContent,
@@ -16,18 +27,6 @@ import {
     timerElapsedSeconds,
     timerStartTimestamp,
 } from "@/lib/context";
-
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";

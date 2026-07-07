@@ -40,6 +40,8 @@ import {
     showRecommendedStart,
     showTutorial,
     triggerLocalRefresh,
+    tutorialCompleted,
+    tutorialStepIndex,
 } from "@/lib/context";
 import { cn, compress, decompress, shareOrFallback } from "@/lib/utils";
 import { questionsSchema } from "@/maps/schema";
@@ -395,6 +397,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                         variant="secondary"
                                         onClick={() => {
                                             isOptionsOpenStore.set(false);
+                                            tutorialCompleted.set(false);
+                                            tutorialStepIndex.set(0);
                                             setTimeout(() => {
                                                 showTutorial.set(true);
                                             }, 300);
