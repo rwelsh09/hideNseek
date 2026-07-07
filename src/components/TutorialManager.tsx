@@ -252,6 +252,17 @@ export const TutorialManager = () => {
                               },
                           },
                           {
+                              element:
+                                  '[data-tutorial-id="tutorial-paste-question-btn"]',
+                              popover: {
+                                  title: "Paste Question",
+                                  description:
+                                      "If you are the Hider, you can paste the question you copied from the Seekers here to view it on your map.",
+                                  side: "bottom",
+                                  align: "center",
+                              },
+                          },
+                          {
                               element: '[data-tutorial-id="add-question-btn"]',
                               popover: {
                                   title: "Ask a Question",
@@ -309,16 +320,28 @@ export const TutorialManager = () => {
                                           btn.addEventListener(
                                               "click",
                                               () => {
-                                                  setTimeout(
-                                                      () =>
-                                                          driverObj.moveNext(),
-                                                      500,
-                                                  );
+                                                  const checkInterval = setInterval(() => {
+                                                      const floatingPanel = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
+                                                      if (floatingPanel) {
+                                                          clearInterval(checkInterval);
+                                                          setTimeout(() => driverObj.moveNext(), 300);
+                                                      }
+                                                  }, 100);
                                               },
                                               { once: true },
                                           );
                                       }
                                   },
+                              },
+                          },
+                          {
+                              element: '[data-tutorial-id="tutorial-store-question-btn"]',
+                              popover: {
+                                  title: "Adjust Questions",
+                                  description:
+                                      "You can adjust, lock, and manage questions here on the map without opening the sidebar.",
+                                  side: "left",
+                                  align: "start",
                               },
                           },
                           {
@@ -341,17 +364,6 @@ export const TutorialManager = () => {
                                       "Need to send the question details to the Hider? You can copy and share it from here.",
                                   side: "bottom",
                                   align: "end",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-paste-question-btn"]',
-                              popover: {
-                                  title: "Paste Question",
-                                  description:
-                                      "If you are the Hider, you can paste the question you copied from the Seekers here to view it on your map.",
-                                  side: "bottom",
-                                  align: "center",
                               },
                           },
                           {
