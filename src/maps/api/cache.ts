@@ -23,9 +23,10 @@ export const determineCache = async (cacheType: CacheType) => {
 };
 
 export const cacheFetch = async (
-    url: string,
+    url: string, // We use this string purely as the unique Cache Key
     loadingText?: string,
     cacheType: CacheType = CacheType.CACHE,
+    fetchConfig?: { url: string; options: RequestInit } // Added config for POST overrides
 ) => {
     try {
         const cache = await determineCache(cacheType);
@@ -47,7 +48,11 @@ export const cacheFetch = async (
         }
 
         const fetchAndMaybeCache = async () => {
-            const response = await fetch(url);
+            // Use fetchConfig for network call if provided, otherwise fallback to standard GET
+            const targetUrl = fetchConfig ? fetchConfig.url : url;
+            const targetOptions = fetchConfig ? fetchConfig.options : undefined;
+            const response = await fetch(targetUrl, targetOptions);
+
             if (response.ok) {
                 await cache.put(url, response.clone());
             } else {
@@ -75,7 +80,7 @@ export const cacheFetch = async (
             }
         }
     } catch {
-        return fetch(url);
+        return fetch(fetchConfig ? fetchConfig.url : url, fetchConfig ? fetchConfig.options : undefined);
     }
 };
 

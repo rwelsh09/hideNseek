@@ -31,6 +31,15 @@ export const getOverpassData = async (
     const primaryUrl = `${OVERPASS_API}?data=${encodedQuery}`;
     const fallbackUrl = `${OVERPASS_API_FALLBACK}?data=${encodedQuery}`;
 
+    // Move the actual query to a POST request body to avoid 414 URI Too Long errors
+    const fetchOptions: RequestInit = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `data=${encodedQuery}`,
+    };
+
     const maxRetries = 2;
     let attempts = 0;
     let response: Response | undefined;
@@ -39,7 +48,12 @@ export const getOverpassData = async (
     while (attempts <= maxRetries) {
         attempts++;
         try {
-            response = await cacheFetch(primaryUrl, loadingText, cacheType);
+            response = await cacheFetch(
+                primaryUrl,
+                loadingText,
+                cacheType,
+                { url: OVERPASS_API, options: fetchOptions }
+            );
 
             if (!response.ok) {
                 // Try the fallback
@@ -47,6 +61,7 @@ export const getOverpassData = async (
                     fallbackUrl,
                     loadingText,
                     cacheType,
+                    { url: OVERPASS_API_FALLBACK, options: fetchOptions }
                 );
                 if (fallbackResponse.ok) {
                     const cache = await determineCache(cacheType);
@@ -551,89 +566,94 @@ export const cacheAllPlaces = async () => {
     if (isCachingAllPlaces) return;
     isCachingAllPlaces = true;
 
-    const tasks: (() => Promise<any>)[] = [];
+    try {
+        const tasks: (() => Promise<any>)[] = [];
 
-    // Standard Locations (from LOCATION_FIRST_TAG)
-    Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
-        const location = locationStr as APILocations;
+        // Standard Locations (from LOCATION_FIRST_TAG)
+        Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
+            const location = locationStr as APILocations;
 
-        if (
-            location === "mcdonalds" ||
-            location === "seven11" ||
-            location === "timhortons" ||
-            location === "pub"
-        ) {
-            return;
-        }
+            if (
+                location === "mcdonalds" ||
+                location === "seven11" ||
+                location === "timhortons" ||
+                location === "pub"
+            ) {
+                return;
+            }
 
+            tasks.push(() =>
+                findPlacesInZone(
+                    `[${LOCATION_FIRST_TAG[location]}=${location}]`,
+                    `Finding ${getLocationTypeName(locationStr)}...`,
+                    "nwr",
+                    "center",
+                ),
+            );
+        });
+
+        // Specific Hardcoded Queries
         tasks.push(() =>
             findPlacesInZone(
-                `[${LOCATION_FIRST_TAG[location]}=${location}]`,
-                `Finding ${getLocationTypeName(locationStr)}...`,
+                '["admin_level"="10"]',
+                "Finding Neighborhoods...",
                 "nwr",
-                "center",
+                "geom",
             ),
         );
-    });
 
-    // Specific Hardcoded Queries
-    tasks.push(() =>
-        findPlacesInZone(
-            '["admin_level"="10"]',
-            "Finding Neighborhoods...",
-            "nwr",
-            "geom",
-        ),
-    );
-
-    // Specific Location Enum Queries (McDonalds, 7Eleven)
-    Object.values(QuestionSpecificLocation).forEach((loc) => {
-        tasks.push(() => findPlacesSpecificInZone(loc as any));
-    });
-
-    const total = tasks.length;
-    let completed = 0;
-    let failed = 0;
-
-    const toastId = toast.loading(`Caching places... (0/${total})`);
-
-    // Run concurrently to avoid 504 Gateway Timeouts from Overpass
-    const limit = pLimit(3);
-
-    await Promise.all(
-        tasks.map((task) =>
-            limit(async () => {
-                try {
-                    await task();
-                } catch (e) {
-                    console.error("Cache task failed", e);
-                    failed++;
-                } finally {
-                    completed++;
-                    const progress = completed / total;
-                    toast.update(toastId, {
-                        render: `Caching places... (${completed}/${total})`,
-                        progress: progress,
-                    });
-                }
-            }),
-        ),
-    );
-
-    if (failed > 0) {
-        toast.update(toastId, {
-            render: `Cached most places, but ${failed} failed.`,
-            type: "warning",
-            isLoading: false,
-            autoClose: 5000,
+        // Specific Location Enum Queries (McDonalds, 7Eleven)
+        Object.values(QuestionSpecificLocation).forEach((loc) => {
+            tasks.push(() => findPlacesSpecificInZone(loc as any));
         });
-    } else {
-        toast.update(toastId, {
-            render: "All possible places have been cached!",
-            type: "success",
-            isLoading: false,
-            autoClose: 3000,
-        });
+
+        const total = tasks.length;
+        let completed = 0;
+        let failed = 0;
+
+        const toastId = toast.loading(`Caching places... (0/${total})`);
+
+        // Run concurrently to avoid 504 Gateway Timeouts from Overpass
+        const limit = pLimit(3);
+
+        await Promise.all(
+            tasks.map((task) =>
+                limit(async () => {
+                    try {
+                        await task();
+                    } catch (e) {
+                        console.error("Cache task failed", e);
+                        failed++;
+                    } finally {
+                        completed++;
+                        const progress = completed / total;
+                        toast.update(toastId, {
+                            render: `Caching places... (${completed}/${total})`,
+                            progress: progress,
+                        });
+                    }
+                }),
+            ),
+        );
+
+        if (failed > 0) {
+            toast.update(toastId, {
+                render: `Cached most places, but ${failed} failed.`,
+                type: "warning",
+                isLoading: false,
+                autoClose: 5000,
+            });
+        } else {
+            toast.update(toastId, {
+                render: "All possible places have been cached!",
+                type: "success",
+                isLoading: false,
+                autoClose: 3000,
+            });
+        }
+    } finally {
+        // Guarantee unlocking so the user can verify caching was successful in the future
+        isCachingAllPlaces = false;
     }
 };
 

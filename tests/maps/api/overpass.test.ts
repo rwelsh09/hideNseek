@@ -46,6 +46,7 @@ describe("getOverpassData", () => {
             primaryUrl,
             undefined,
             "hide-and-seek-cache",
+            expect.any(Object),
         );
         expect(result).toEqual({ elements: [{ id: 1 }] });
         expect(toast.error).not.toHaveBeenCalled();
@@ -80,12 +81,14 @@ describe("getOverpassData", () => {
             primaryUrl,
             undefined,
             "hide-and-seek-cache",
+            expect.any(Object),
         );
         expect(cacheFetch).toHaveBeenNthCalledWith(
             2,
             fallbackUrl,
             undefined,
             "hide-and-seek-cache",
+            expect.any(Object),
         );
 
         expect(determineCache).toHaveBeenCalledWith("hide-and-seek-cache");

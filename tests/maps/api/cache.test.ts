@@ -108,7 +108,7 @@ describe("cache.ts", () => {
 
             expect(mockCache.match).toHaveBeenCalledWith(url);
             expect(mockCache.delete).toHaveBeenCalledWith(url);
-            expect(globalThis.fetch).toHaveBeenCalledWith(url);
+            expect(globalThis.fetch).toHaveBeenCalledWith(url, undefined);
             expect(mockCache.put).toHaveBeenCalledWith(
                 url,
                 "new-cloned-response",
@@ -130,7 +130,7 @@ describe("cache.ts", () => {
             const result = await cacheFetch(url);
 
             expect(mockCache.match).toHaveBeenCalledWith(url);
-            expect(globalThis.fetch).toHaveBeenCalledWith(url);
+            expect(globalThis.fetch).toHaveBeenCalledWith(url, undefined);
             expect(mockCache.put).toHaveBeenCalledWith(
                 url,
                 "new-cloned-response",
@@ -151,7 +151,7 @@ describe("cache.ts", () => {
 
             const result = await cacheFetch(url);
 
-            expect(globalThis.fetch).toHaveBeenCalledWith(url);
+            expect(globalThis.fetch).toHaveBeenCalledWith(url, undefined);
             expect(mockCache.put).not.toHaveBeenCalled();
             expect(mockCache.delete).toHaveBeenCalledWith(url);
             expect(result).toBe("failed-cloned-response");
@@ -227,7 +227,7 @@ describe("cache.ts", () => {
 
             const result = await cacheFetch(url);
 
-            expect(globalThis.fetch).toHaveBeenCalledWith(url);
+            expect(globalThis.fetch).toHaveBeenCalledWith(url, undefined);
             expect(result).toBe(fallbackResponse as unknown as Response);
         });
     });
