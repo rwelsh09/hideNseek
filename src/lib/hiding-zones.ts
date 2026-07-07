@@ -92,7 +92,8 @@ export const initializeHidingZonesLogic = async () => {
                 );
 
                 if (question.data.type === "same-train-line") {
-                    const seekerLines = extractStationLines(nearestTrainStation);
+                    const seekerLines =
+                        extractStationLines(nearestTrainStation);
 
                     if (seekerLines.length > 0) {
                         circles = circles.filter((circle) => {

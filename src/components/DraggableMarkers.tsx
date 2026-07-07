@@ -110,8 +110,8 @@ export const DraggableMarkers = () => {
     useStore(triggerLocalRefresh);
     const $questions = useStore(questions);
     const $hiderMode = useStore(hiderMode);
+    // Bolt Performance Optimization: Removed unused $draftQuestionId store subscription which previously caused unnecessary component re-renders
     const $editingId = useStore(editingQuestionId);
-    const $draftQuestionId = useStore(draftQuestionId);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {

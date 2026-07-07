@@ -69,8 +69,14 @@ export const RecommendedStartMarker: React.FC = () => {
 
     const [lng, lat] = centerPoint.geometry.coordinates;
 
+    // Bolt Performance Optimization: Memoize the inline array to prevent unnecessary Leaflet setLatLng calls on every render
+    const positionArray = useMemo(
+        () => [lat, lng] as [number, number],
+        [lat, lng],
+    );
+
     return (
-        <Marker position={[lat, lng]} icon={startIcon}>
+        <Marker position={positionArray} icon={startIcon}>
             <Tooltip
                 direction="top"
                 offset={[0, -10]}
