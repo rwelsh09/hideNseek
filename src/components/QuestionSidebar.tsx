@@ -136,6 +136,11 @@ export const QuestionSidebar = () => {
                         </h3>
                     </div>
                 )}
+                {$questions.length === 0 && (
+                    <div className="text-sm text-muted-foreground p-4 text-center border-dashed border-2 rounded-xl mt-4 mx-1">
+                        No active questions. Are they downtown or deep in the burbs?
+                    </div>
+                )}
 
                 {$questions.map((question) => {
                     switch (question.id) {

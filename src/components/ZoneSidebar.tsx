@@ -705,7 +705,7 @@ export const ZoneSidebar = () => {
                                     />
                                     <CommandList className="max-h-full">
                                         <CommandEmpty>
-                                            No hiding zones found.
+                                            No hiding zones found. Did they hop the Red Line to Somerset?
                                         </CommandEmpty>
                                         <CommandGroup>
                                             {stations.map((station) => (

@@ -82,7 +82,7 @@ export const NextStepsChecklist = () => {
                     </span>
                     <span>
                         <strong>Start Timer:</strong> Click the clock icon.
-                        Start the timer and (to the Hider) RUN RUN RUN!
+                        Start the timer and (to the Hider) RUN RUN RUN! Don&apos;t let the CTrain doors close on you!
                     </span>
                 </li>
                 <PwaInstallTip />

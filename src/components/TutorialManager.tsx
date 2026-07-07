@@ -183,7 +183,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Options",
                                   description:
-                                      "Access Hider Mode, recommended Starting Point, transit lines overlays, and more.",
+                                      "Access Hider Mode, recommended Starting Point, transit lines overlays (like the Red and Blue lines), and more.",
                                   side: "top",
                                   align: "end",
                               },
@@ -255,7 +255,7 @@ export const TutorialManager = () => {
                               element: '[data-tutorial-id="add-question-btn"]',
                               popover: {
                                   title: "Ask a Question",
-                                  description: "Click here to add a question.",
+                                  description: "Click here to add a question. Are they hanging out in the +15s or deep in the suburbs?",
                                   side: "right",
                                   align: "start",
                                   showButtons: ["previous"],
