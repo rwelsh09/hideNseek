@@ -9,6 +9,7 @@ import {
     additionalMapGeoLocations,
     mapGeoLocation,
     polyGeoJSON,
+    mapGeoJSON,
 } from "@/lib/context";
 import { safeUnion } from "@/maps/geo-utils";
 
@@ -87,7 +88,7 @@ export const getOverpassData = async (
         toast.error(errorMessage, { toastId: "overpass-error" });
     }
 
-    return { elements: [] };
+    return { elements: [], _failed: true };
 };
 
 export const determineGeoJSON = async (
@@ -318,6 +319,8 @@ out geom;
     return uniqNodes;
 };
 
+let boundaryPromise: Promise<FeatureCollection<MultiPolygon>> | null = null;
+
 export const findPlacesInZone = async (
     filter: string,
     loadingText?: string,
@@ -335,7 +338,18 @@ export const findPlacesInZone = async (
     timeoutDuration: number = 0,
 ) => {
     let query = "";
-    const $polyGeoJSON = polyGeoJSON.get();
+    let $polyGeoJSON = polyGeoJSON.get();
+
+    if (!$polyGeoJSON) {
+        if (!boundaryPromise) {
+            boundaryPromise = determineMapBoundaries();
+        }
+        $polyGeoJSON = await boundaryPromise;
+        polyGeoJSON.set($polyGeoJSON);
+        mapGeoJSON.set($polyGeoJSON);
+        boundaryPromise = null;
+    }
+
     if ($polyGeoJSON) {
         const bbox = turf.bbox($polyGeoJSON);
         const bboxString = `${bbox[1]},${bbox[0]},${bbox[3]},${bbox[2]}`;
@@ -624,7 +638,10 @@ export const cacheAllPlaces = async () => {
             tasks.map((task) =>
                 limit(async () => {
                     try {
-                        await task();
+                        const result = await task();
+                        if (result && result._failed) {
+                            throw new Error("API Task Failed");
+                        }
                     } catch (e) {
                         console.error("Cache task failed", e);
                         failed++;
