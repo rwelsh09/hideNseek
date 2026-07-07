@@ -14,11 +14,14 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
+import { Button } from "@/components/ui/button";
 import {
     hasSeenRules,
     showNextStepsChecklist,
     showTutorial,
+    tutorialCompleted,
     tutorialDriver,
+    tutorialStepIndex,
 } from "@/lib/context";
 
 export const TutorialManager = () => {
@@ -34,6 +37,16 @@ export const TutorialManager = () => {
             const driverObj = driver({
                 showProgress: true,
                 overlayClickBehavior: () => {},
+                onHighlightStarted: () => {
+                    const isRulesPhase =
+                        driverObj.getConfig().steps?.length === 2;
+                    if (!isRulesPhase) {
+                        const activeIndex = driverObj.getActiveIndex();
+                        if (activeIndex !== undefined) {
+                            tutorialStepIndex.set(activeIndex);
+                        }
+                    }
+                },
                 onDestroyStarted: () => {
                     const isRulesPhase =
                         driverObj.getConfig().steps?.length === 2;
@@ -43,6 +56,7 @@ export const TutorialManager = () => {
                     } else {
                         if (!driverObj.hasNextStep()) {
                             driverObj.destroy();
+                            tutorialCompleted.set(true);
                             showTutorial.set(false);
                             showNextStepsChecklist.set(true);
                         } else {
@@ -327,8 +341,8 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Store the Question",
                                   description:
-                                      "This is the question that you will ask the Hider. For now, just click the close button to store it in your sidebar and continue.",
-                                  side: "left",
+                                      "This is the question that you will ask the Hider. For now, just click here to store it in your sidebar and continue.",
+                                  side: "top",
                                   align: "center",
                                   showButtons: ["previous"],
                                   onPopoverRender: () => {
@@ -641,7 +655,43 @@ export const TutorialManager = () => {
             tutorialDriver.set(driverObj);
 
             setTimeout(() => {
-                driverObj.drive();
+                const steps = driverObj.getConfig().steps;
+                const isRulesPhase = steps?.length === 2;
+
+                if (!isRulesPhase && steps) {
+                    let targetIndex = tutorialStepIndex.get() || 0;
+
+                    // Backtrack to find the first step whose element actually exists
+                    while (targetIndex > 0) {
+                        const stepConfig = steps[targetIndex];
+                        if (typeof stepConfig === 'string') {
+                            if (document.querySelector(stepConfig)) break;
+                        } else if (stepConfig && typeof stepConfig.element === 'string') {
+                            if (document.querySelector(stepConfig.element)) break;
+                        } else if (stepConfig && stepConfig.element instanceof Element) {
+                            break;
+                        } else if (stepConfig && stepConfig.element === undefined) {
+                            // It's a modal step
+                            break;
+                        }
+                        targetIndex--;
+                    }
+
+                    // Open left sidebar if we are at step 7 or beyond
+                    if (targetIndex >= 7) {
+                        const sidebarL = document.querySelector('.peer[data-side="left"]');
+                        if (sidebarL && sidebarL.getAttribute("data-state") !== "expanded") {
+                            const trigger = document.querySelector<HTMLElement>('[data-tutorial-id="left-sidebar-trigger"] button') || document.querySelector<HTMLElement>('[data-sidebar="trigger"]');
+                            if (trigger) {
+                                trigger.click();
+                            }
+                        }
+                    }
+
+                    driverObj.drive(targetIndex);
+                } else {
+                    driverObj.drive();
+                }
             }, 500);
 
             return () => {
@@ -659,34 +709,49 @@ export const TutorialManager = () => {
         <>
             <AlertDialog
                 open={confirmEndTutorial}
-                onOpenChange={setConfirmEndTutorial}
+                onOpenChange={(open) => {
+                    setConfirmEndTutorial(open);
+                }}
             >
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>End Tutorial?</AlertDialogTitle>
+                        <AlertDialogTitle>Pause Tutorial?</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Are you sure you want to end the tutorial?
+                            Would you like to pause the tutorial here? You can resume later.
                         </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter>
-                        <AlertDialogCancel
-                            onClick={() => {
-                                if (activeDriver) {
-                                    activeDriver.drive();
-                                }
-                            }}
-                        >
-                            Cancel
-                        </AlertDialogCancel>
-                        <AlertDialogAction
+                    <AlertDialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0 sm:justify-between w-full">
+                        <Button
+                            variant="destructive"
                             onClick={() => {
                                 showTutorial.set(false);
+                                tutorialCompleted.set(true);
                                 showNextStepsChecklist.set(true);
                                 setConfirmEndTutorial(false);
                             }}
                         >
-                            End Tutorial
-                        </AlertDialogAction>
+                            Skip Tutorial
+                        </Button>
+                        <div className="flex flex-col sm:flex-row gap-2">
+                            <AlertDialogCancel
+                                onClick={() => {
+                                    if (activeDriver) {
+                                        activeDriver.drive();
+                                    }
+                                }}
+                            >
+                                Cancel
+                            </AlertDialogCancel>
+                            <AlertDialogAction
+                                onClick={() => {
+                                    showTutorial.set(false);
+                                    showNextStepsChecklist.set(true);
+                                    setConfirmEndTutorial(false);
+                                }}
+                            >
+                                Pause Tutorial
+                            </AlertDialogAction>
+                        </div>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
