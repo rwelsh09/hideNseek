@@ -252,6 +252,17 @@ export const TutorialManager = () => {
                               },
                           },
                           {
+                              element:
+                                  '[data-tutorial-id="tutorial-paste-question-btn"]',
+                              popover: {
+                                  title: "Paste Question",
+                                  description:
+                                      "If you are the Hider, you can paste the question you copied from the Seekers here to view it on your map.",
+                                  side: "bottom",
+                                  align: "center",
+                              },
+                          },
+                          {
                               element: '[data-tutorial-id="add-question-btn"]',
                               popover: {
                                   title: "Ask a Question",
@@ -310,7 +321,7 @@ export const TutorialManager = () => {
                                               "click",
                                               () => {
                                                   const checkInterval = setInterval(() => {
-                                                      const floatingPanel = document.querySelector('#question-floating-panel');
+                                                      const floatingPanel = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
                                                       if (floatingPanel) {
                                                           clearInterval(checkInterval);
                                                           setTimeout(() => driverObj.moveNext(), 300);
@@ -324,7 +335,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element: '#question-floating-panel',
+                              element: '[data-tutorial-id="tutorial-store-question-btn"]',
                               popover: {
                                   title: "Adjust Questions",
                                   description:
@@ -335,7 +346,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '#question-floating-panel [data-tutorial-id="tutorial-question-rules-btn"]',
+                                  '[data-tutorial-id="tutorial-question-rules-btn"]',
                               popover: {
                                   title: "How it works",
                                   description:
@@ -346,7 +357,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '#question-floating-panel [data-tutorial-id="tutorial-share-question-btn"]',
+                                  '[data-tutorial-id="tutorial-share-question-btn"]',
                               popover: {
                                   title: "Share Question",
                                   description:
@@ -356,18 +367,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element:
-                                  '[data-tutorial-id="tutorial-paste-question-btn"]',
-                              popover: {
-                                  title: "Paste Question",
-                                  description:
-                                      "If you are the Hider, you can paste the question you copied from the Seekers here to view it on your map.",
-                                  side: "bottom",
-                                  align: "center",
-                              },
-                          },
-                          {
-                              element: '#question-floating-panel [data-tutorial-id="tutorial-gps-btn"]',
+                              element: '[data-tutorial-id="tutorial-gps-btn"]',
                               popover: {
                                   title: "Set to Current Location",
                                   description:
@@ -378,7 +378,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '#question-floating-panel [data-tutorial-id="tutorial-question-result-toggle"]',
+                                  '[data-tutorial-id="tutorial-question-result-toggle"]',
                               popover: {
                                   title: "Enter the Result",
                                   description:
@@ -394,7 +394,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element: '#question-floating-panel [data-tutorial-id="tutorial-lock-btn"]',
+                              element: '[data-tutorial-id="tutorial-lock-btn"]',
                               popover: {
                                   title: "Lock Your Answer",
                                   description:
@@ -411,7 +411,7 @@ export const TutorialManager = () => {
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
                                               document.querySelector(
-                                                  '#question-floating-panel [data-tutorial-id="tutorial-lock-btn"]',
+                                                  '[data-tutorial-id="tutorial-lock-btn"]',
                                               );
                                           if (
                                               lockBtn &&
@@ -447,7 +447,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element: '#question-floating-panel [data-tutorial-id="tutorial-lock-btn"]',
+                              element: '[data-tutorial-id="tutorial-lock-btn"]',
                               popover: {
                                   title: "Unlock Your Answer",
                                   description:
@@ -464,7 +464,7 @@ export const TutorialManager = () => {
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
                                               document.querySelector(
-                                                  '#question-floating-panel [data-tutorial-id="tutorial-lock-btn"]',
+                                                  '[data-tutorial-id="tutorial-lock-btn"]',
                                               );
                                           if (
                                               lockBtn &&
@@ -487,7 +487,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '#question-floating-panel [data-tutorial-id="tutorial-delete-question-btn"]',
+                                  '[data-tutorial-id="tutorial-delete-question-btn"]',
                               popover: {
                                   title: "Delete the Question",
                                   description:
@@ -503,7 +503,7 @@ export const TutorialManager = () => {
 
                                       const checkInterval = setInterval(() => {
                                           const btn = document.querySelector(
-                                              '#question-floating-panel [data-tutorial-id="tutorial-delete-question-btn"]',
+                                              '[data-tutorial-id="tutorial-delete-question-btn"]',
                                           );
 
                                           if (
