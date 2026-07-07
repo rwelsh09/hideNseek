@@ -1,0 +1,194 @@
+<<<<<<< SEARCH
+const matchesFilter = (tags: any, filterStr: string) => {
+    if (!tags) return false;
+    let match = filterStr.match(/^\["?([^"=~\]]+)"?="?([^"\]]+)"?\]$/);
+    if (match) return tags[match[1]] === match[2];
+    match = filterStr.match(/^\["?([^"=~\]]+)"?~"?([^"\]]+)"?\]$/);
+    if (match) {
+        const regex = new RegExp(match[2]);
+        return regex.test(tags[match[1]]);
+    }
+    return false;
+};
+=======
+const matchesFilter = (tags: any, filterStr: string) => {
+    if (!tags) return false;
+    const blocks = [...filterStr.matchAll(/\[(.*?)\]/g)].map(m => m[1]);
+    for (const block of blocks) {
+        let match = block.match(/^"?([^"=~]+)"?(=|~)"?([^"]+)"?$/);
+        if (match) {
+            const [, key, op, val] = match;
+            if (op === "=") {
+                if (tags[key] !== val) return false;
+            } else if (op === "~") {
+                const regex = new RegExp(val, "i");
+                if (!regex.test(tags[key])) return false;
+            }
+            continue;
+        }
+        match = block.match(/^([^=~]+)(=|~)([^=~]+)$/);
+        if (match) {
+            const [, key, op, val] = match;
+            if (op === "=") {
+                if (tags[key] !== val) return false;
+            } else if (op === "~") {
+                const regex = new RegExp(val, "i");
+                if (!regex.test(tags[key])) return false;
+            }
+            continue;
+        }
+        return false;
+    }
+    return true;
+};
+>>>>>>> REPLACE
+<<<<<<< SEARCH
+            if (data && data._failed) {
+                failed++;
+            } else if (data && data.elements) {
+                let batchedElements = data.elements;
+                if ($polyGeoJSON) {
+                    batchedElements = batchedElements.filter((el: any) => {
+                        let lon = el.center ? el.center.lon : el.lon;
+                        let lat = el.center ? el.center.lat : el.lat;
+
+                        if (
+                            (typeof lon !== "number" || typeof lat !== "number") &&
+                            el.geometry &&
+                            el.geometry.length > 0
+                        ) {
+                            lon = el.geometry[0].lon;
+                            lat = el.geometry[0].lat;
+                        }
+
+                        if (typeof lon !== "number" || typeof lat !== "number")
+                            return false;
+                        const pt = turf.point([lon, lat]);
+                        return $polyGeoJSON.features.some((poly) =>
+                            turf.booleanPointInPolygon(pt, poly as any),
+                        );
+                    });
+                }
+
+                const subtractedEntries = additionalMapGeoLocations
+                    .get()
+                    .filter((e) => !e.added);
+                const subtractedPolygons = subtractedEntries.map((entry) => entry.location);
+                if (subtractedPolygons.length > 0) {
+                    const turfPolys = await Promise.all(
+                        subtractedPolygons.map(
+                            async (location) =>
+                                turf.combine(
+                                    await determineGeoJSON(
+                                        location.properties.osm_id.toString(),
+                                        location.properties.osm_type,
+                                    ),
+                                ).features[0],
+                        ),
+                    );
+                    batchedElements = batchedElements.filter((el: any) => {
+                        const lon = el.center ? el.center.lon : el.lon;
+                        const lat = el.center ? el.center.lat : el.lat;
+                        if (typeof lon !== "number" || typeof lat !== "number")
+                            return false;
+                        const pt = turf.point([lon, lat]);
+                        return !turfPolys.some((poly) =>
+                            turf.booleanPointInPolygon(pt, poly as any),
+                        );
+                    });
+                }
+
+                // Process elements and save individual caches
+                for (const filter of standardFilters) {
+                    const subsetElements = batchedElements.filter((el: any) => matchesFilter(el.tags, filter));
+
+                    let finalSubsetElements = subsetElements;
+                    // Apply exact single location processing for grouping golf courses by name, etc.
+                    const byName: Record<string, any[]> = {};
+                    const result: any[] = [];
+                    for (const e of subsetElements) {
+                        if (e.tags && e.tags.leisure === "golf_course") {
+                            if (e.tags.indoor === "yes") {
+                                continue;
+                            }
+                            if (e.tags.name) {
+                                const name = e.tags.name;
+                                if (!byName[name]) {
+                                    byName[name] = [];
+                                }
+                                byName[name].push(e);
+                                continue;
+                            }
+                        }
+                        result.push(e);
+                    }
+                    for (const items of Object.values(byName)) {
+                        if (items.length === 1) {
+                            result.push(items[0]);
+                        } else {
+                            let totalLat = 0;
+                            let totalLon = 0;
+                            for (const item of items) {
+                                totalLat += item.center ? item.center.lat : item.lat;
+                                totalLon += item.center ? item.center.lon : item.lon;
+                            }
+                            const avgLat = totalLat / items.length;
+                            const avgLon = totalLon / items.length;
+
+                            const base = { ...items[0] };
+                            if (base.center) {
+                                base.center = { lat: avgLat, lon: avgLon };
+                            } else {
+                                base.lat = avgLat;
+                                base.lon = avgLon;
+                            }
+                            result.push(base);
+                        }
+                    }
+                    finalSubsetElements = result;
+
+                    const singleQueryInfo = await buildOverpassQueryForZone(filter, "nwr", "center");
+                    const encodedQuery = encodeURIComponent(singleQueryInfo.query);
+                    const primaryUrl = `${OVERPASS_API}?data=${encodedQuery}`;
+                    const fallbackUrl = `${OVERPASS_API_FALLBACK}?data=${encodedQuery}`;
+
+                    const responseData = {
+                        version: data.version || 0.6,
+                        generator: data.generator || "Overpass API",
+                        osm3s: data.osm3s || {},
+                        elements: finalSubsetElements
+                    };
+
+                    await populateCache(primaryUrl, responseData, CacheType.ZONE_CACHE);
+                    await populateCache(fallbackUrl, responseData, CacheType.ZONE_CACHE);
+                }
+            }
+=======
+            if (data && data._failed) {
+                failed++;
+            } else if (data && data.elements) {
+                const batchedElements = data.elements;
+
+                // Process elements and save individual caches directly.
+                // We do NOT run `booleanPointInPolygon` or grouping logic here because the raw cache
+                // must match exactly what Overpass returns before `findPlacesInZone` processes it.
+                for (const filter of standardFilters) {
+                    const subsetElements = batchedElements.filter((el: any) => matchesFilter(el.tags, filter));
+
+                    const singleQueryInfo = await buildOverpassQueryForZone(filter, "nwr", "center");
+                    const encodedQuery = encodeURIComponent(singleQueryInfo.query);
+                    const primaryUrl = `${OVERPASS_API}?data=${encodedQuery}`;
+                    const fallbackUrl = `${OVERPASS_API_FALLBACK}?data=${encodedQuery}`;
+
+                    const responseData = {
+                        version: data.version || 0.6,
+                        generator: data.generator || "Overpass API",
+                        osm3s: data.osm3s || {},
+                        elements: subsetElements
+                    };
+
+                    await populateCache(primaryUrl, responseData, CacheType.ZONE_CACHE);
+                    await populateCache(fallbackUrl, responseData, CacheType.ZONE_CACHE);
+                }
+            }
+>>>>>>> REPLACE

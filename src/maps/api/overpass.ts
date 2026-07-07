@@ -2,18 +2,17 @@ import * as turf from "@turf/turf";
 import type { FeatureCollection, MultiPolygon } from "geojson";
 import _ from "lodash";
 import osmtogeojson from "osmtogeojson";
-import pLimit from "p-limit";
 import { toast } from "react-toastify";
 
 import {
     additionalMapGeoLocations,
+    mapGeoJSON,
     mapGeoLocation,
     polyGeoJSON,
-    mapGeoJSON,
 } from "@/lib/context";
 import { safeUnion } from "@/maps/geo-utils";
 
-import { cacheFetch, determineCache } from "./cache";
+import { cacheFetch, determineCache, populateCache } from "./cache";
 import {
     LOCATION_FIRST_TAG,
     OVERPASS_API,
@@ -321,9 +320,8 @@ out geom;
 
 let boundaryPromise: Promise<FeatureCollection<MultiPolygon>> | null = null;
 
-export const findPlacesInZone = async (
-    filter: string,
-    loadingText?: string,
+export const buildOverpassQueryForZone = async (
+    filters: string | string[],
     searchType:
         | "node"
         | "way"
@@ -350,13 +348,18 @@ export const findPlacesInZone = async (
         boundaryPromise = null;
     }
 
+    const filterList = Array.isArray(filters) ? filters : [filters];
+
     if ($polyGeoJSON) {
         const bbox = turf.bbox($polyGeoJSON);
         const bboxString = `${bbox[1]},${bbox[0]},${bbox[3]},${bbox[2]}`;
+
+        const filterQueries = filterList.map(f => `${searchType}${f}(${bboxString});`).join("\n");
+
         query = `
 [out:json]${timeoutDuration != 0 ? `[timeout:${timeoutDuration}]` : ""};
 (
-${searchType}${filter}(${bboxString});
+${filterQueries}
 ${
     alternatives.length > 0
         ? alternatives
@@ -386,6 +389,7 @@ out ${outType};
         const searchBlocks = allLocations
             .map((_, idx) => {
                 const regionVar = `area.region${idx}`;
+                const filterQueries = filterList.map(f => `${searchType}${f}(${regionVar});`).join("\n");
                 const altQueries =
                     alternatives.length > 0
                         ? alternatives
@@ -395,7 +399,7 @@ out ${outType};
                               .join("\n")
                         : "";
                 return `
-            ${searchType}${filter}(${regionVar});
+            ${filterQueries}
             ${altQueries}
           `;
             })
@@ -409,6 +413,34 @@ out ${outType};
         out ${outType};
         `;
     }
+
+    return { query, $polyGeoJSON };
+};
+
+export const findPlacesInZone = async (
+    filter: string,
+    loadingText?: string,
+    searchType:
+        | "node"
+        | "way"
+        | "relation"
+        | "nwr"
+        | "nw"
+        | "wr"
+        | "nr"
+        | "area" = "nwr",
+    outType: "center" | "geom" = "center",
+    alternatives: string[] = [],
+    timeoutDuration: number = 0,
+) => {
+    const { query, $polyGeoJSON } = await buildOverpassQueryForZone(
+        filter,
+        searchType,
+        outType,
+        alternatives,
+        timeoutDuration
+    );
+
     const data = await getOverpassData(
         query,
         loadingText,
@@ -580,14 +612,48 @@ export const nearestToQuestion = async (question: any) => {
 
 let isCachingAllPlaces = false;
 
+const matchesFilter = (tags: any, filterStr: string) => {
+    if (!tags) return false;
+    const blocks = [...filterStr.matchAll(/\[(.*?)\]/g)].map(m => m[1]);
+    for (const block of blocks) {
+        let match = block.match(/^"?([^"=~]+)"?(=|~)"?([^"]+)"?$/);
+        if (match) {
+            const [, key, op, val] = match;
+            if (op === "=") {
+                if (tags[key] !== val) return false;
+            } else if (op === "~") {
+                const regex = new RegExp(val, "i");
+                if (!regex.test(tags[key])) return false;
+            }
+            continue;
+        }
+        match = block.match(/^([^=~]+)(=|~)([^=~]+)$/);
+        if (match) {
+            const [, key, op, val] = match;
+            if (op === "=") {
+                if (tags[key] !== val) return false;
+            } else if (op === "~") {
+                const regex = new RegExp(val, "i");
+                if (!regex.test(tags[key])) return false;
+            }
+            continue;
+        }
+        return false;
+    }
+    return true;
+};
+
 export const cacheAllPlaces = async () => {
     if (isCachingAllPlaces) return;
     isCachingAllPlaces = true;
 
     try {
-        const tasks: (() => Promise<any>)[] = [];
+        let failed = 0;
 
-        // Standard Locations (from LOCATION_FIRST_TAG)
+        const toastId = toast.loading(`Caching places... (Batched Request 1/2)`);
+
+        const standardFilters: string[] = [];
+
         Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
             const location = locationStr as APILocations;
 
@@ -600,66 +666,81 @@ export const cacheAllPlaces = async () => {
                 return;
             }
 
-            tasks.push(() =>
-                findPlacesInZone(
-                    `[${LOCATION_FIRST_TAG[location]}=${location}]`,
-                    `Finding ${getLocationTypeName(locationStr)}...`,
-                    "nwr",
-                    "center",
-                ),
-            );
+            standardFilters.push(`[${LOCATION_FIRST_TAG[location]}=${location}]`);
         });
 
-        // Specific Hardcoded Queries
-        tasks.push(() =>
-            findPlacesInZone(
+        Object.values(QuestionSpecificLocation).forEach((loc) => {
+            standardFilters.push(loc as string);
+        });
+
+        try {
+            const { query: batchedQuery } = await buildOverpassQueryForZone(
+                standardFilters,
+                "nwr",
+                "center"
+            );
+
+            const data = await getOverpassData(
+                batchedQuery,
+                "Finding all places...",
+                CacheType.ZONE_CACHE
+            );
+
+            if (data && data._failed) {
+                failed++;
+            } else if (data && data.elements) {
+                const batchedElements = data.elements;
+
+                // Process elements and save individual caches directly.
+                // We do NOT run booleanPointInPolygon or grouping logic here because the raw cache
+                // must match exactly what Overpass returns before findPlacesInZone processes it.
+                for (const filter of standardFilters) {
+                    const subsetElements = batchedElements.filter((el: any) => matchesFilter(el.tags, filter));
+
+                    const singleQueryInfo = await buildOverpassQueryForZone(filter, "nwr", "center");
+                    const encodedQuery = encodeURIComponent(singleQueryInfo.query);
+                    const primaryUrl = `${OVERPASS_API}?data=${encodedQuery}`;
+                    const fallbackUrl = `${OVERPASS_API_FALLBACK}?data=${encodedQuery}`;
+
+                    const responseData = {
+                        version: data.version || 0.6,
+                        generator: data.generator || "Overpass API",
+                        osm3s: data.osm3s || {},
+                        elements: subsetElements
+                    };
+
+                    await populateCache(primaryUrl, responseData, CacheType.ZONE_CACHE);
+                    await populateCache(fallbackUrl, responseData, CacheType.ZONE_CACHE);
+                }
+            }
+        } catch (e) {
+            console.error("Cache batched task failed", e);
+            failed++;
+        }
+
+        toast.update(toastId, {
+            render: `Caching places... (Batched Request 2/2)`,
+            progress: 0.5,
+        });
+
+        try {
+            const result = await findPlacesInZone(
                 '["admin_level"="10"]',
                 "Finding Neighborhoods...",
                 "nwr",
                 "geom",
-            ),
-        );
-
-        // Specific Location Enum Queries (McDonalds, 7Eleven)
-        Object.values(QuestionSpecificLocation).forEach((loc) => {
-            tasks.push(() => findPlacesSpecificInZone(loc as any));
-        });
-
-        const total = tasks.length;
-        let completed = 0;
-        let failed = 0;
-
-        const toastId = toast.loading(`Caching places... (0/${total})`);
-
-        // Run concurrently to avoid 504 Gateway Timeouts from Overpass
-        const limit = pLimit(3);
-
-        await Promise.all(
-            tasks.map((task) =>
-                limit(async () => {
-                    try {
-                        const result = await task();
-                        if (result && result._failed) {
-                            throw new Error("API Task Failed");
-                        }
-                    } catch (e) {
-                        console.error("Cache task failed", e);
-                        failed++;
-                    } finally {
-                        completed++;
-                        const progress = completed / total;
-                        toast.update(toastId, {
-                            render: `Caching places... (${completed}/${total})`,
-                            progress: progress,
-                        });
-                    }
-                }),
-            ),
-        );
+            );
+            if (result && result._failed) {
+                throw new Error("API Task Failed");
+            }
+        } catch (e) {
+            console.error("Cache admin_level task failed", e);
+            failed++;
+        }
 
         if (failed > 0) {
             toast.update(toastId, {
-                render: `Cached most places, but ${failed} failed.`,
+                render: `Cached most places, but some failed.`,
                 type: "warning",
                 isLoading: false,
                 autoClose: 5000,
