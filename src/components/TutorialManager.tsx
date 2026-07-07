@@ -309,11 +309,13 @@ export const TutorialManager = () => {
                                           btn.addEventListener(
                                               "click",
                                               () => {
-                                                  setTimeout(
-                                                      () =>
-                                                          driverObj.moveNext(),
-                                                      500,
-                                                  );
+                                                  const checkInterval = setInterval(() => {
+                                                      const floatingPanel = document.querySelector('#question-floating-panel');
+                                                      if (floatingPanel) {
+                                                          clearInterval(checkInterval);
+                                                          setTimeout(() => driverObj.moveNext(), 300);
+                                                      }
+                                                  }, 100);
                                               },
                                               { once: true },
                                           );
@@ -322,8 +324,18 @@ export const TutorialManager = () => {
                               },
                           },
                           {
+                              element: '#question-floating-panel',
+                              popover: {
+                                  title: "Adjust Questions",
+                                  description:
+                                      "You can adjust, lock, and manage questions here on the map without opening the sidebar.",
+                                  side: "left",
+                                  align: "start",
+                              },
+                          },
+                          {
                               element:
-                                  '[data-tutorial-id="tutorial-question-rules-btn"]',
+                                  '#question-floating-panel [data-tutorial-id="tutorial-question-rules-btn"]',
                               popover: {
                                   title: "How it works",
                                   description:
@@ -334,7 +346,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '[data-tutorial-id="tutorial-share-question-btn"]',
+                                  '#question-floating-panel [data-tutorial-id="tutorial-share-question-btn"]',
                               popover: {
                                   title: "Share Question",
                                   description:
@@ -355,7 +367,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element: '[data-tutorial-id="tutorial-gps-btn"]',
+                              element: '#question-floating-panel [data-tutorial-id="tutorial-gps-btn"]',
                               popover: {
                                   title: "Set to Current Location",
                                   description:
@@ -366,7 +378,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '[data-tutorial-id="tutorial-question-result-toggle"]',
+                                  '#question-floating-panel [data-tutorial-id="tutorial-question-result-toggle"]',
                               popover: {
                                   title: "Enter the Result",
                                   description:
@@ -382,7 +394,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element: '[data-tutorial-id="tutorial-lock-btn"]',
+                              element: '#question-floating-panel [data-tutorial-id="tutorial-lock-btn"]',
                               popover: {
                                   title: "Lock Your Answer",
                                   description:
@@ -399,7 +411,7 @@ export const TutorialManager = () => {
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
                                               document.querySelector(
-                                                  '[data-tutorial-id="tutorial-lock-btn"]',
+                                                  '#question-floating-panel [data-tutorial-id="tutorial-lock-btn"]',
                                               );
                                           if (
                                               lockBtn &&
@@ -435,7 +447,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element: '[data-tutorial-id="tutorial-lock-btn"]',
+                              element: '#question-floating-panel [data-tutorial-id="tutorial-lock-btn"]',
                               popover: {
                                   title: "Unlock Your Answer",
                                   description:
@@ -452,7 +464,7 @@ export const TutorialManager = () => {
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
                                               document.querySelector(
-                                                  '[data-tutorial-id="tutorial-lock-btn"]',
+                                                  '#question-floating-panel [data-tutorial-id="tutorial-lock-btn"]',
                                               );
                                           if (
                                               lockBtn &&
@@ -475,7 +487,7 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '[data-tutorial-id="tutorial-delete-question-btn"]',
+                                  '#question-floating-panel [data-tutorial-id="tutorial-delete-question-btn"]',
                               popover: {
                                   title: "Delete the Question",
                                   description:
@@ -491,7 +503,7 @@ export const TutorialManager = () => {
 
                                       const checkInterval = setInterval(() => {
                                           const btn = document.querySelector(
-                                              '[data-tutorial-id="tutorial-delete-question-btn"]',
+                                              '#question-floating-panel [data-tutorial-id="tutorial-delete-question-btn"]',
                                           );
 
                                           if (

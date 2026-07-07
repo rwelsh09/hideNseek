@@ -233,7 +233,10 @@ export const DraggableMarkers = () => {
             {shouldShowPortal &&
                 typeof document !== "undefined" &&
                 createPortal(
-                    <div className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-[420px] z-[1040] pointer-events-auto bg-slate-900 text-white rounded-2xl shadow-2xl border border-slate-700 flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-8 fade-in duration-300">
+                    <div
+                        id="question-floating-panel"
+                        className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-[420px] z-[1040] pointer-events-auto bg-slate-900 text-white rounded-2xl shadow-2xl border border-slate-700 flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-8 fade-in duration-300"
+                    >
                         {isHiderActive ? (
                             <div className="bg-slate-950 px-5 py-3 flex items-center justify-between shrink-0 shadow-sm border-b border-slate-800">
                                 <h2 className="text-white font-bold uppercase tracking-wider text-sm flex items-center gap-2">
