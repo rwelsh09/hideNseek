@@ -58,7 +58,6 @@ export const PhotoQuestionComponent = ({
     questionKey: number;
     sub?: string;
     className?: string;
-    isPreview?: boolean;
 }) => {
     useStore(triggerLocalRefresh);
     // const $hiderMode = useStore(hiderMode);
