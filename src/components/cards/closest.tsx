@@ -30,11 +30,13 @@ export const ClosestQuestionComponent = ({
     questionKey,
     sub,
     className,
+    isPreview,
 }: {
     data: ClosestQuestion;
     questionKey: number;
     sub?: string;
     className?: string;
+    isPreview?: boolean;
 }) => {
     const $isLoading = useStore(isLoading);
 
@@ -101,12 +103,14 @@ export const ClosestQuestionComponent = ({
                 }}
                 disabled={!data.drag || $isLoading}
             />
-            <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                <ClosestLocationSelector
-                    data={data}
-                    disabled={!data.drag || $isLoading}
-                />
-            </SidebarMenuItem>
+            {!isPreview && (
+                <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
+                    <ClosestLocationSelector
+                        data={data}
+                        disabled={!data.drag || $isLoading}
+                    />
+                </SidebarMenuItem>
+            )}
         </QuestionCard>
     );
 };

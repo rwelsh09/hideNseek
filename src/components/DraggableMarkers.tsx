@@ -27,12 +27,14 @@ import {
 import { Button } from "./ui/button";
 import { SidebarMenu } from "./ui/sidebar-l";
 
+// Global state for which marker is currently being edited
 export const editingQuestionId = atom<number | null>(null);
 export const draftQuestionId = atom<number | null>(null);
 export const draftQuestionType = atom<string | null>(null);
 
 let isDragging = false;
 
+// Cache icons to prevent unnecessary re-renders in react-leaflet by avoiding new object references
 const iconCache: Partial<Record<keyof typeof ICON_COLORS, Icon>> = {};
 
 const getIcon = (color: keyof typeof ICON_COLORS) => {
@@ -108,6 +110,7 @@ export const DraggableMarkers = () => {
     useStore(triggerLocalRefresh);
     const $questions = useStore(questions);
     const $hiderMode = useStore(hiderMode);
+    // Bolt Performance Optimization: Removed unused $draftQuestionId store subscription which previously caused unnecessary component re-renders
     const $editingId = useStore(editingQuestionId);
     const [mounted, setMounted] = useState(false);
 
@@ -125,10 +128,12 @@ export const DraggableMarkers = () => {
     const closePanel = () => {
         if (activeQuestion) {
             if (draftQuestionId.get() === activeQuestion.key) {
+                // It's a draft! Save it but don't lock it.
                 draftQuestionId.set(null);
                 draftQuestionType.set(null);
                 questionModified();
             } else {
+                // Just saving changes for an existing question
                 questionModified();
             }
         }
@@ -285,36 +290,42 @@ export const DraggableMarkers = () => {
                                 <Fragment>
                                     {activeQuestion.id === "radius" && (
                                         <RadiusQuestionComponent
+                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "closest" && (
                                         <ClosestQuestionComponent
+                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "hot/cold" && (
                                         <HotColdQuestionComponent
+                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "match" && (
                                         <MatchQuestionComponent
+                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "measure" && (
                                         <MeasureQuestionComponent
+                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "photo" && (
                                         <PhotoQuestionComponent
+                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
