@@ -13,7 +13,6 @@ import {
     SidebarMenu,
     SidebarMenuItem,
 } from "@/components/ui/sidebar-r";
-import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
     disabledStations,
     displayHidingZones,

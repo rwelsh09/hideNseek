@@ -8,6 +8,17 @@ import {
 import { toast } from "react-toastify";
 
 import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {
     Sidebar,
     SidebarContent,
     SidebarContext,
@@ -20,18 +31,6 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { questionSchema } from "@/maps/schema";
-
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 import { AddQuestionDialog } from "./AddQuestionDialog";
 import {
@@ -245,9 +244,13 @@ export const QuestionSidebar = () => {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>
-                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogTitle>
+                                    Are you absolutely sure?
+                                </AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    This will unlock and delete ALL questions, and reset your time penalty to 0. This action cannot be undone.
+                                    This will unlock and delete ALL questions,
+                                    and reset your time penalty to 0. This
+                                    action cannot be undone.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>

@@ -501,19 +501,35 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                         </AlertDialogTrigger>
                                         <AlertDialogContent>
                                             <AlertDialogHeader>
-                                                <AlertDialogTitle>Reset Everything?</AlertDialogTitle>
+                                                <AlertDialogTitle>
+                                                    Reset Everything?
+                                                </AlertDialogTitle>
                                                 <AlertDialogDescription>
-                                                    Are you sure you want to reset everything? This will delete all saved data and settings. This action cannot be undone.
+                                                    Are you sure you want to
+                                                    reset everything? This will
+                                                    delete all saved data and
+                                                    settings. This action cannot
+                                                    be undone.
                                                 </AlertDialogDescription>
                                             </AlertDialogHeader>
                                             <AlertDialogFooter>
-                                                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                <AlertDialogCancel>
+                                                    Cancel
+                                                </AlertDialogCancel>
                                                 <AlertDialogAction
                                                     onClick={async () => {
-                                                        if ("caches" in window) {
-                                                            const keys = await caches.keys();
+                                                        if (
+                                                            "caches" in window
+                                                        ) {
+                                                            const keys =
+                                                                await caches.keys();
                                                             await Promise.all(
-                                                                keys.map((key) => caches.delete(key)),
+                                                                keys.map(
+                                                                    (key) =>
+                                                                        caches.delete(
+                                                                            key,
+                                                                        ),
+                                                                ),
                                                             );
                                                         }
                                                         localStorage.clear();

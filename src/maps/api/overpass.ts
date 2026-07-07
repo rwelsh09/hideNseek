@@ -64,7 +64,7 @@ export const getOverpassData = async (
                 errorCategory = "other";
                 break; // Don't retry non-transient errors like 400 Bad Request
             }
-        } catch (error) {
+        } catch {
             errorCategory = "network";
         }
 
@@ -77,9 +77,11 @@ export const getOverpassData = async (
     if (!toast.isActive("overpass-error")) {
         let errorMessage = "Please try that again.";
         if (errorCategory === "busy") {
-            errorMessage = "The server is busy. Try clicking Offline Mode at the bottom of the Options menu.";
+            errorMessage =
+                "The server is busy. Try clicking Offline Mode at the bottom of the Options menu.";
         } else if (errorCategory === "network") {
-            errorMessage = "Unable to connect to the map server. Please check your internet connection.";
+            errorMessage =
+                "Unable to connect to the map server. Please check your internet connection.";
         }
 
         toast.error(errorMessage, { toastId: "overpass-error" });
@@ -405,7 +407,11 @@ out ${outType};
             let lat = el.center ? el.center.lat : el.lat;
 
             // Handle ways/relations fetched with "out geom"
-            if ((typeof lon !== "number" || typeof lat !== "number") && el.geometry && el.geometry.length > 0) {
+            if (
+                (typeof lon !== "number" || typeof lat !== "number") &&
+                el.geometry &&
+                el.geometry.length > 0
+            ) {
                 lon = el.geometry[0].lon;
                 lat = el.geometry[0].lat;
             }
