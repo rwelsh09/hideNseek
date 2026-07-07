@@ -4,7 +4,7 @@ import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { showTutorial, tutorialCompleted } from "@/lib/context";
 
-export const ResumeTourButton = () => {
+export const ResumeTutorialButton = () => {
     const $showTutorial = useStore(showTutorial);
     const $tutorialCompleted = useStore(tutorialCompleted);
 
