@@ -20,13 +20,11 @@ export const HotColdQuestionComponent = ({
     questionKey,
     sub,
     className,
-    isPreview,
 }: {
     data: HotColdQuestion;
     questionKey: number;
     sub?: string;
     className?: string;
-    isPreview?: boolean;
 }) => {
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
@@ -102,41 +100,39 @@ export const HotColdQuestionComponent = ({
                 </div>
             )}
 
-            {!isPreview && (
-                <div className="flex gap-2 items-center p-2 flex-wrap">
-                    <Label
-                        className={cn(
-                            "font-semibold text-lg",
-                            $isLoading && "text-muted-foreground",
-                        )}
-                    >
-                        Result
-                    </Label>
-                    <ToggleGroup
-                        className="grow"
-                        type="single"
-                        value={data.warmer ? "warmer" : "colder"}
-                        onValueChange={(value: "warmer" | "colder") => {
-                            data.warmer = value === "warmer";
-                            questionModified();
-                        }}
-                        disabled={!!$hiderMode || !data.drag || $isLoading}
-                    >
-                        <ToggleGroupItem color="red" value="colder">
-                            Colder
-                        </ToggleGroupItem>
-                        <ToggleGroupItem value="warmer">Warmer</ToggleGroupItem>
-                    </ToggleGroup>
-                    {!!$hiderMode && (
-                        <div className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md">
-                            Tell the Seekers:{" "}
-                            <span className="text-primary">
-                                {data.warmer ? "Warmer" : "Colder"}
-                            </span>
-                        </div>
+            <div className="flex gap-2 items-center p-2 flex-wrap">
+                <Label
+                    className={cn(
+                        "font-semibold text-lg",
+                        $isLoading && "text-muted-foreground",
                     )}
-                </div>
-            )}
+                >
+                    Result
+                </Label>
+                <ToggleGroup
+                    className="grow"
+                    type="single"
+                    value={data.warmer ? "warmer" : "colder"}
+                    onValueChange={(value: "warmer" | "colder") => {
+                        data.warmer = value === "warmer";
+                        questionModified();
+                    }}
+                    disabled={!!$hiderMode || !data.drag || $isLoading}
+                >
+                    <ToggleGroupItem color="red" value="colder">
+                        Colder
+                    </ToggleGroupItem>
+                    <ToggleGroupItem value="warmer">Warmer</ToggleGroupItem>
+                </ToggleGroup>
+                {!!$hiderMode && (
+                    <div className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md">
+                        Tell the Seekers:{" "}
+                        <span className="text-primary">
+                            {data.warmer ? "Warmer" : "Colder"}
+                        </span>
+                    </div>
+                )}
+            </div>
         </QuestionCard>
     );
 };
