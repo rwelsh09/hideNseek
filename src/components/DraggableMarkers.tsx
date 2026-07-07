@@ -290,42 +290,36 @@ export const DraggableMarkers = () => {
                                 <Fragment>
                                     {activeQuestion.id === "radius" && (
                                         <RadiusQuestionComponent
-                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "closest" && (
                                         <ClosestQuestionComponent
-                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "hot/cold" && (
                                         <HotColdQuestionComponent
-                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "match" && (
                                         <MatchQuestionComponent
-                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "measure" && (
                                         <MeasureQuestionComponent
-                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
                                     )}
                                     {activeQuestion.id === "photo" && (
                                         <PhotoQuestionComponent
-                                            isPreview={true}
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />
