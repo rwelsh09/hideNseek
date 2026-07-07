@@ -47,7 +47,20 @@ export const cacheFetch = async (
         }
 
         const fetchAndMaybeCache = async () => {
-            const response = await fetch(url);
+            let response: Response;
+            if (url.includes("?data=")) {
+                const [baseUrl, query] = url.split("?data=");
+                response = await fetch(baseUrl, {
+                    method: "POST",
+                    body: `data=${query}`,
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded",
+                    },
+                });
+            } else {
+                response = await fetch(url);
+            }
+
             if (response.ok) {
                 await cache.put(url, response.clone());
             } else {
@@ -75,6 +88,16 @@ export const cacheFetch = async (
             }
         }
     } catch {
+        if (url.includes("?data=")) {
+            const [baseUrl, query] = url.split("?data=");
+            return fetch(baseUrl, {
+                method: "POST",
+                body: `data=${query}`,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                },
+            });
+        }
         return fetch(url);
     }
 };
