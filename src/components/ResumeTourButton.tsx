@@ -17,7 +17,7 @@ export const ResumeTourButton = () => {
             onClick={() => showTutorial.set(true)}
         >
             <Play className="w-4 h-4 mr-1.5" fill="currentColor" />
-            Resume Tour
+            Resume Tutorial
         </Button>
     );
 };
