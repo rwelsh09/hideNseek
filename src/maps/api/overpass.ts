@@ -335,26 +335,18 @@ export const findPlacesInZone = async (
     let query = "";
     const $polyGeoJSON = polyGeoJSON.get();
     if ($polyGeoJSON) {
+        const bbox = turf.bbox($polyGeoJSON);
+        const bboxString = `${bbox[1]},${bbox[0]},${bbox[3]},${bbox[2]}`;
         query = `
 [out:json]${timeoutDuration != 0 ? `[timeout:${timeoutDuration}]` : ""};
 (
-${searchType}${filter}(poly:"${turf
-            .getCoords($polyGeoJSON.features)
-            .flatMap((polygon) => polygon.geometry.coordinates)
-            .flat()
-            .map((coord) => [coord[1], coord[0]].join(" "))
-            .join(" ")}");
+${searchType}${filter}(${bboxString});
 ${
     alternatives.length > 0
         ? alternatives
               .map(
                   (alternative) =>
-                      `${searchType}${alternative}(poly:"${turf
-                          .getCoords($polyGeoJSON.features)
-                          .flatMap((polygon) => polygon.geometry.coordinates)
-                          .flat()
-                          .map((coord) => [coord[1], coord[0]].join(" "))
-                          .join(" ")}");`,
+                      `${searchType}${alternative}(${bboxString});`,
               )
               .join("\n")
         : ""
@@ -406,6 +398,27 @@ out ${outType};
         loadingText,
         CacheType.ZONE_CACHE,
     );
+
+    if ($polyGeoJSON && data && data.elements) {
+        data.elements = data.elements.filter((el: any) => {
+            let lon = el.center ? el.center.lon : el.lon;
+            let lat = el.center ? el.center.lat : el.lat;
+
+            // Handle ways/relations fetched with "out geom"
+            if ((typeof lon !== "number" || typeof lat !== "number") && el.geometry && el.geometry.length > 0) {
+                lon = el.geometry[0].lon;
+                lat = el.geometry[0].lat;
+            }
+
+            if (typeof lon !== "number" || typeof lat !== "number")
+                return false;
+            const pt = turf.point([lon, lat]);
+            return $polyGeoJSON.features.some((poly) =>
+                turf.booleanPointInPolygon(pt, poly as any),
+            );
+        });
+    }
+
     const subtractedEntries = additionalMapGeoLocations
         .get()
         .filter((e) => !e.added);
@@ -551,89 +564,93 @@ export const cacheAllPlaces = async () => {
     if (isCachingAllPlaces) return;
     isCachingAllPlaces = true;
 
-    const tasks: (() => Promise<any>)[] = [];
+    try {
+        const tasks: (() => Promise<any>)[] = [];
 
-    // Standard Locations (from LOCATION_FIRST_TAG)
-    Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
-        const location = locationStr as APILocations;
+        // Standard Locations (from LOCATION_FIRST_TAG)
+        Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
+            const location = locationStr as APILocations;
 
-        if (
-            location === "mcdonalds" ||
-            location === "seven11" ||
-            location === "timhortons" ||
-            location === "pub"
-        ) {
-            return;
-        }
+            if (
+                location === "mcdonalds" ||
+                location === "seven11" ||
+                location === "timhortons" ||
+                location === "pub"
+            ) {
+                return;
+            }
 
+            tasks.push(() =>
+                findPlacesInZone(
+                    `[${LOCATION_FIRST_TAG[location]}=${location}]`,
+                    `Finding ${getLocationTypeName(locationStr)}...`,
+                    "nwr",
+                    "center",
+                ),
+            );
+        });
+
+        // Specific Hardcoded Queries
         tasks.push(() =>
             findPlacesInZone(
-                `[${LOCATION_FIRST_TAG[location]}=${location}]`,
-                `Finding ${getLocationTypeName(locationStr)}...`,
+                '["admin_level"="10"]',
+                "Finding Neighborhoods...",
                 "nwr",
-                "center",
+                "geom",
             ),
         );
-    });
 
-    // Specific Hardcoded Queries
-    tasks.push(() =>
-        findPlacesInZone(
-            '["admin_level"="10"]',
-            "Finding Neighborhoods...",
-            "nwr",
-            "geom",
-        ),
-    );
-
-    // Specific Location Enum Queries (McDonalds, 7Eleven)
-    Object.values(QuestionSpecificLocation).forEach((loc) => {
-        tasks.push(() => findPlacesSpecificInZone(loc as any));
-    });
-
-    const total = tasks.length;
-    let completed = 0;
-    let failed = 0;
-
-    const toastId = toast.loading(`Caching places... (0/${total})`);
-
-    // Run concurrently to avoid 504 Gateway Timeouts from Overpass
-    const limit = pLimit(3);
-
-    await Promise.all(
-        tasks.map((task) =>
-            limit(async () => {
-                try {
-                    await task();
-                } catch (e) {
-                    console.error("Cache task failed", e);
-                    failed++;
-                } finally {
-                    completed++;
-                    const progress = completed / total;
-                    toast.update(toastId, {
-                        render: `Caching places... (${completed}/${total})`,
-                        progress: progress,
-                    });
-                }
-            }),
-        ),
-    );
-
-    if (failed > 0) {
-        toast.update(toastId, {
-            render: `Cached most places, but ${failed} failed.`,
-            type: "warning",
-            isLoading: false,
-            autoClose: 5000,
+        // Specific Location Enum Queries (McDonalds, 7Eleven)
+        Object.values(QuestionSpecificLocation).forEach((loc) => {
+            tasks.push(() => findPlacesSpecificInZone(loc as any));
         });
-    } else {
-        toast.update(toastId, {
-            render: "All possible places have been cached!",
-            type: "success",
-            isLoading: false,
-            autoClose: 3000,
-        });
+
+        const total = tasks.length;
+        let completed = 0;
+        let failed = 0;
+
+        const toastId = toast.loading(`Caching places... (0/${total})`);
+
+        // Run concurrently to avoid 504 Gateway Timeouts from Overpass
+        const limit = pLimit(3);
+
+        await Promise.all(
+            tasks.map((task) =>
+                limit(async () => {
+                    try {
+                        await task();
+                    } catch (e) {
+                        console.error("Cache task failed", e);
+                        failed++;
+                    } finally {
+                        completed++;
+                        const progress = completed / total;
+                        toast.update(toastId, {
+                            render: `Caching places... (${completed}/${total})`,
+                            progress: progress,
+                        });
+                    }
+                }),
+            ),
+        );
+
+        if (failed > 0) {
+            toast.update(toastId, {
+                render: `Cached most places, but ${failed} failed.`,
+                type: "warning",
+                isLoading: false,
+                autoClose: 5000,
+            });
+        } else {
+            toast.update(toastId, {
+                render: "All possible places have been cached!",
+                type: "success",
+                isLoading: false,
+                autoClose: 3000,
+            });
+        }
+    } finally {
+        isCachingAllPlaces = false;
     }
 };
 
