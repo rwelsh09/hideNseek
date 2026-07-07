@@ -255,7 +255,7 @@ export const TutorialManager = () => {
                               element: '[data-tutorial-id="add-question-btn"]',
                               popover: {
                                   title: "Ask a Question",
-                                  description: "Click here to add a question. Are they hanging out in the +15s or deep in the suburbs?",
+                                  description: "Click here to add a question.",
                                   side: "right",
                                   align: "start",
                                   showButtons: ["previous"],
