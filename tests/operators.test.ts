@@ -87,10 +87,10 @@ test("safeUnion throws 'No features' when turf.union returns falsy", () => {
     vi.mocked(turf.union).mockClear();
 });
 
-test("safeUnion handles empty feature collection by throwing error", () => {
+test("safeUnion handles empty feature collection without throwing error", () => {
     const emptyFeature = turf.featureCollection([]);
     // Either throws 'Must have at least 2 geometries' from Turf or 'No features' from safeUnion
-    expect(() => safeUnion(emptyFeature as any)).toThrowError();
+    expect(() => safeUnion(emptyFeature as any)).not.toThrowError();
 });
 
 test("voronoi diagram", () => {

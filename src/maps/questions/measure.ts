@@ -2,12 +2,14 @@ import * as turf from "@turf/turf";
 import _ from "lodash";
 import { toast } from "react-toastify";
 
+import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
+
 import {
     hiderMode,
     mapGeoJSON,
     mapGeoLocation,
     polyGeoJSON,
-    trainStations,
+
 } from "@/lib/context";
 import {
     findPlacesInZone,
@@ -81,13 +83,13 @@ export const determineMeasureBoundary = async (question: MeasureQuestion) => {
             return points.features as any;
         }
         case "rail-measure" as any: {
-            const stations = trainStations.get();
+            const stations = (calgaryTransitData as any).features;
             if (stations.length === 0) return [turf.multiPolygon([])];
             const fc = turf.featureCollection(
-                stations.map((x) => ({
+                stations.map((x: any) => ({
                     type: "Feature",
                     properties: x.properties,
-                    geometry: x.properties.geometry,
+                    geometry: x.geometry,
                 })) as any[],
             );
             return fc.features as any;
@@ -186,15 +188,15 @@ export const calculateMeasureDistance = async (
 
     switch (question.type) {
         case "rail-measure" as any: {
-            const stations = trainStations.get();
+            const stations = (calgaryTransitData as any).features;
             if (stations.length === 0) return null;
             const nearestTrainStation = turf.nearestPoint(
                 seeker,
                 turf.featureCollection(
-                    stations.map((x) => ({
+                    stations.map((x: any) => ({
                         type: "Feature",
                         properties: x.properties,
-                        geometry: x.properties.geometry,
+                        geometry: x.geometry,
                     })) as any,
                 ),
             );

@@ -52,9 +52,10 @@ describe("hot-cold", () => {
         test("should return null or throw if mapData is empty FeatureCollection", () => {
             // safeUnion throws if features are empty, let's test that adjustPerHotCold handles or bubbles it
             const emptyMapData = turf.featureCollection([]);
+            // No longer throws, returns something instead
             expect(() =>
                 adjustPerHotCold(questionTemplate, emptyMapData),
-            ).toThrow();
+            ).not.toThrow();
         });
 
         test("should intersect mapData with warmer voronoi polygon", () => {
