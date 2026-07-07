@@ -557,6 +557,15 @@ export const cacheAllPlaces = async () => {
     Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
         const location = locationStr as APILocations;
 
+        if (
+            location === "mcdonalds" ||
+            location === "seven11" ||
+            location === "timhortons" ||
+            location === "pub"
+        ) {
+            return;
+        }
+
         tasks.push(() =>
             findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
