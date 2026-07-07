@@ -663,6 +663,7 @@ export const cacheAllPlaces = async () => {
                 type: "warning",
                 isLoading: false,
                 autoClose: 5000,
+                progress: undefined,
             });
         } else {
             toast.update(toastId, {
@@ -670,6 +671,7 @@ export const cacheAllPlaces = async () => {
                 type: "success",
                 isLoading: false,
                 autoClose: 3000,
+                progress: undefined,
             });
         }
     } finally {
