@@ -52,14 +52,24 @@ export const modifyMapData = (
         "features" in modifications ? safeUnion(modifications) : modifications;
 
     if (withinModifications) {
-        return turf.intersect(
+        const intersection = turf.intersect(
             turf.featureCollection([safeUnion(mapData), safeModifications]),
         );
+        return intersection
+            ? (turf.rewind(intersection, { mutate: true }) as Feature<
+                  Polygon | MultiPolygon
+              >)
+            : null;
     }
 
-    return turf.difference(
+    const difference = turf.difference(
         turf.featureCollection([safeUnion(mapData), safeModifications]),
     );
+    return difference
+        ? (turf.rewind(difference, { mutate: true }) as Feature<
+              Polygon | MultiPolygon
+          >)
+        : null;
 };
 
 const DEFAULT_BUFFER_UNIT = "kilometers";
