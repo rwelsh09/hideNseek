@@ -10,7 +10,6 @@ import {
     mapGeoJSON,
     mapGeoLocation,
     polyGeoJSON,
-    offlineMode,
 } from "@/lib/context";
 import { safeUnion } from "@/maps/geo-utils";
 
@@ -410,34 +409,11 @@ out ${outType};
         out ${outType};
         `;
     }
-
-    let data;
-    if (offlineMode.get()) {
-        const offlinePlacesModule = await import("@/data/offline_places.json");
-        const offlinePlaces = offlinePlacesModule.default || offlinePlacesModule;
-        const filterRegex = /\["?([^"=]+)"?="?([^"\]]+)"?\]/g;
-        const parsedTags: {key: string, value: string}[] = [];
-        let match;
-
-        // Parse the main filter string
-        while ((match = filterRegex.exec(filter)) !== null) {
-            parsedTags.push({ key: match[1], value: match[2] });
-        }
-
-        // Also parse any alternative filters
-        for (const alt of alternatives) {
-            while ((match = filterRegex.exec(alt)) !== null) {
-                parsedTags.push({ key: match[1], value: match[2] });
-            }
-        }
-
-        const filteredElements = (offlinePlaces.elements || []).filter((el: any) => {
-            return el.tags && parsedTags.some(tag => el.tags[tag.key] === tag.value);
-        });
-        data = { elements: filteredElements };
-    } else {
-        data = await getOverpassData(query, loadingText, CacheType.ZONE_CACHE);
-    }
+    const data = await getOverpassData(
+        query,
+        loadingText,
+        CacheType.ZONE_CACHE,
+    );
 
     if ($polyGeoJSON && data && data.elements) {
         data.elements = data.elements.filter((el: any) => {

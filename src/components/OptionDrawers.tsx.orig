@@ -35,10 +35,10 @@ import {
     leafletMapContext,
     mapGeoJSON,
     mapGeoLocation,
-    offlineMode,
     polyGeoJSON,
     questions,
     showRecommendedStart,
+    offlineMode,
     showTutorial,
     triggerLocalRefresh,
 } from "@/lib/context";
@@ -64,7 +64,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $displayTransitLines = useStore(displayTransitLines);
     const $showRecommendedStart = useStore(showRecommendedStart);
     const $isOptionsOpenStore = useStore(isOptionsOpenStore);
-    const $offlineMode = useStore(offlineMode);
 
     useEffect(() => {
         const params = new URL(window.location.toString()).searchParams;
