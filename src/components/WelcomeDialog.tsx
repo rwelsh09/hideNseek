@@ -59,30 +59,30 @@ export const WelcomeDialog = () => {
 
     return (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
-            <AlertDialogContent className="font-poppins">
+            <AlertDialogContent className="font-poppins sm:max-w-xl">
                 <AlertDialogHeader>
-                    <AlertDialogTitle className="text-2xl font-bold">Welcome to Hide & Seek</AlertDialogTitle>
-                    <AlertDialogDescription className="text-base">
-                        Get ready to explore Calgary! Before you begin, choose how you'd like to start.
+                    <AlertDialogTitle className="text-3xl font-bold mb-2">Welcome to Hide & Seek</AlertDialogTitle>
+                    <AlertDialogDescription className="text-base leading-relaxed">
+                        One player takes the transit network to hide anywhere in Calgary. The other players work together to narrow down the Hider's location by asking map-based questions until they can pinpoint exactly where they are hiding!
                     </AlertDialogDescription>
                 </AlertDialogHeader>
-                <div className="flex flex-col gap-3 py-4">
-                    <Button onClick={handleStartTutorial} size="lg" className="w-full justify-start text-left bg-blue-600 hover:bg-blue-700 text-white">
-                        <div className="flex flex-col items-start">
-                            <span className="font-semibold text-lg">Start Tutorial</span>
-                            <span className="text-xs font-normal opacity-90">A quick interactive guide</span>
+                <div className="flex flex-col gap-4 py-4 mt-2">
+                    <Button onClick={handleStartTutorial} size="lg" className="w-full justify-start text-left h-auto py-4 bg-blue-600 hover:bg-blue-700 text-white">
+                        <div className="flex flex-col items-start gap-1">
+                            <span className="font-semibold text-xl">Start Tutorial</span>
+                            <span className="text-sm font-normal opacity-90">A step-by-step interactive guide</span>
                         </div>
                     </Button>
-                    <Button onClick={handleReadRules} size="lg" variant="secondary" className="w-full justify-start text-left">
-                        <div className="flex flex-col items-start">
-                            <span className="font-semibold text-lg">Read the Rules</span>
-                            <span className="text-xs font-normal opacity-80">Full details on how to play</span>
+                    <Button onClick={handleReadRules} size="lg" variant="secondary" className="w-full justify-start text-left h-auto py-4">
+                        <div className="flex flex-col items-start gap-1">
+                            <span className="font-semibold text-xl">Read the Rules</span>
+                            <span className="text-sm font-normal opacity-80">Full details on how to play</span>
                         </div>
                     </Button>
-                    <Button onClick={handleFigureItOut} size="lg" variant="outline" className="w-full justify-start text-left">
-                        <div className="flex flex-col items-start">
-                            <span className="font-semibold text-lg">Figure it out on my own</span>
-                            <span className="text-xs font-normal opacity-80">Skip the intro and jump right in</span>
+                    <Button onClick={handleFigureItOut} size="lg" variant="outline" className="w-full justify-start text-left h-auto py-4">
+                        <div className="flex flex-col items-start gap-1">
+                            <span className="font-semibold text-xl">Figure it out on my own</span>
+                            <span className="text-sm font-normal opacity-80">Skip the intro and jump right in</span>
                         </div>
                     </Button>
                 </div>
