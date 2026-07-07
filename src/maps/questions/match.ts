@@ -16,14 +16,8 @@ import {
     LOCATION_FIRST_TAG,
     prettifyLocation,
 } from "@/maps/api";
-import {
-    extractStationLines,
-    extractStationName,
-    geoSpatialVoronoi,
-    holedMask,
-    modifyMapData,
-    safeUnion,
-} from "@/maps/geo-utils";
+import { holedMask, modifyMapData, safeUnion } from "@/maps/geo-utils";
+import { geoSpatialVoronoi } from "@/maps/geo-utils";
 import type { APILocations, MatchQuestion } from "@/maps/schema";
 
 export const findMatchPlaces = async (question: MatchQuestion) => {
@@ -141,7 +135,9 @@ export const determineMatchBoundary = _.memoize(
                 if (question.type === "same-neighbourhood") {
                     boundary = nearest;
                 } else {
-                    const hiderEnglishName = extractStationName(nearest);
+                    const hiderEnglishName =
+                        nearest.properties?.["name:en"] ||
+                        nearest.properties?.name;
                     if (!hiderEnglishName) {
                         toast.error(
                             "No English name found for nearest neighbourhood",
@@ -151,7 +147,8 @@ export const determineMatchBoundary = _.memoize(
                     const letter = hiderEnglishName[0].toUpperCase();
 
                     const matchPolygons = data.features.filter((p: any) => {
-                        const name = extractStationName(p);
+                        const name =
+                            p.properties?.["name:en"] || p.properties?.name;
                         return name && name[0].toUpperCase() === letter;
                     });
 
@@ -173,7 +170,9 @@ export const determineMatchBoundary = _.memoize(
                 const point = turf.point([question.lng, question.lat]);
                 const nearest = turf.nearestPoint(point, places);
 
-                const seekerEnglishName = extractStationName(nearest);
+                const seekerEnglishName =
+                    (nearest.properties as any)["name:en"] ||
+                    nearest.properties.name;
 
                 if (!seekerEnglishName) {
                     throw new Error("No English name found");
@@ -187,13 +186,17 @@ export const determineMatchBoundary = _.memoize(
                     const station = feature.properties!.site;
                     return {
                         feature,
-                        stationLines: extractStationLines(station),
-                        stationEnglishName: extractStationName(station) as string,
+                        stationLines: ((station.properties as any).lines ||
+                            []) as string[],
+                        stationEnglishName: ((station.properties as any)[
+                            "name:en"
+                        ] || (station.properties as any).name) as string,
                     };
                 });
 
                 if (question.type === "same-train-line") {
-                    const seekerLines = extractStationLines(nearest);
+                    const seekerLines: string[] =
+                        (nearest.properties as any).lines || [];
                     for (const { feature, stationLines } of mappedFeatures) {
                         if (seekerLines.some((l) => stationLines.includes(l))) {
                             matchCells.push(feature);
@@ -315,22 +318,28 @@ export const hiderifyMatch = async (question: MatchQuestion) => {
         const seekerPoint = turf.point([question.lng, question.lat]);
         const nearestSeekerStation = turf.nearestPoint(seekerPoint, places);
 
-        const seekerEnglishName = extractStationName(nearestSeekerStation);
+        const seekerEnglishName =
+            (nearestSeekerStation.properties as any)["name:en"] ||
+            nearestSeekerStation.properties.name;
 
         if (!seekerEnglishName) {
             return question;
         }
 
         const nearestHiderStation = turf.nearestPoint(hiderPoint, places);
-        const hiderEnglishName = extractStationName(nearestHiderStation);
+        const hiderEnglishName =
+            (nearestHiderStation.properties as any)["name:en"] ||
+            nearestHiderStation.properties.name;
 
         if (!hiderEnglishName) {
             return question;
         }
 
         if (question.type === "same-train-line") {
-            const seekerLines = extractStationLines(nearestSeekerStation);
-            const hiderLines = extractStationLines(nearestHiderStation);
+            const seekerLines: string[] =
+                (nearestSeekerStation.properties as any).lines || [];
+            const hiderLines: string[] =
+                (nearestHiderStation.properties as any).lines || [];
             if (seekerLines.some((l) => hiderLines.includes(l))) {
                 question.same = true;
             } else {

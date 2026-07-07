@@ -14,7 +14,6 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
 import {
     hasSeenRules,
     showNextStepsChecklist,
@@ -341,8 +340,8 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Store the Question",
                                   description:
-                                      "This is the question that you will ask the Hider. For now, just click the close button to store it in your sidebar and continue.",
-                                  side: "left",
+                                      "This is the question that you will ask the Hider. For now, just click here to store it in your sidebar and continue.",
+                                  side: "top",
                                   align: "center",
                                   showButtons: ["previous"],
                                   onPopoverRender: () => {
@@ -655,40 +654,9 @@ export const TutorialManager = () => {
             tutorialDriver.set(driverObj);
 
             setTimeout(() => {
-                const steps = driverObj.getConfig().steps;
-                const isRulesPhase = steps?.length === 2;
-
-                if (!isRulesPhase && steps) {
-                    let targetIndex = tutorialStepIndex.get() || 0;
-
-                    // Backtrack to find the first step whose element actually exists
-                    while (targetIndex > 0) {
-                        const stepConfig = steps[targetIndex];
-                        if (typeof stepConfig === 'string') {
-                            if (document.querySelector(stepConfig)) break;
-                        } else if (stepConfig && typeof stepConfig.element === 'string') {
-                            if (document.querySelector(stepConfig.element)) break;
-                        } else if (stepConfig && stepConfig.element instanceof Element) {
-                            break;
-                        } else if (stepConfig && stepConfig.element === undefined) {
-                            // It's a modal step
-                            break;
-                        }
-                        targetIndex--;
-                    }
-
-                    // Open left sidebar if we are at step 7 or beyond
-                    if (targetIndex >= 7) {
-                        const sidebarL = document.querySelector('.peer[data-side="left"]');
-                        if (sidebarL && sidebarL.getAttribute("data-state") !== "expanded") {
-                            const trigger = document.querySelector<HTMLElement>('[data-tutorial-id="left-sidebar-trigger"] button') || document.querySelector<HTMLElement>('[data-sidebar="trigger"]');
-                            if (trigger) {
-                                trigger.click();
-                            }
-                        }
-                    }
-
-                    driverObj.drive(targetIndex);
+                const isRulesPhase = driverObj.getConfig().steps?.length === 2;
+                if (!isRulesPhase) {
+                    driverObj.drive(tutorialStepIndex.get() || 0);
                 } else {
                     driverObj.drive();
                 }
@@ -709,49 +677,34 @@ export const TutorialManager = () => {
         <>
             <AlertDialog
                 open={confirmEndTutorial}
-                onOpenChange={(open) => {
-                    setConfirmEndTutorial(open);
-                }}
+                onOpenChange={setConfirmEndTutorial}
             >
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Pause Tutorial?</AlertDialogTitle>
+                        <AlertDialogTitle>End Tutorial?</AlertDialogTitle>
                         <AlertDialogDescription>
-                            Would you like to pause the tutorial here? You can resume later.
+                            Are you sure you want to end the tutorial?
                         </AlertDialogDescription>
                     </AlertDialogHeader>
-                    <AlertDialogFooter className="flex flex-col sm:flex-row gap-2 sm:gap-0 sm:justify-between w-full">
-                        <Button
-                            variant="destructive"
+                    <AlertDialogFooter>
+                        <AlertDialogCancel
+                            onClick={() => {
+                                if (activeDriver) {
+                                    activeDriver.drive();
+                                }
+                            }}
+                        >
+                            Cancel
+                        </AlertDialogCancel>
+                        <AlertDialogAction
                             onClick={() => {
                                 showTutorial.set(false);
-                                tutorialCompleted.set(true);
                                 showNextStepsChecklist.set(true);
                                 setConfirmEndTutorial(false);
                             }}
                         >
-                            Skip Tutorial
-                        </Button>
-                        <div className="flex flex-col sm:flex-row gap-2">
-                            <AlertDialogCancel
-                                onClick={() => {
-                                    if (activeDriver) {
-                                        activeDriver.drive();
-                                    }
-                                }}
-                            >
-                                Cancel
-                            </AlertDialogCancel>
-                            <AlertDialogAction
-                                onClick={() => {
-                                    showTutorial.set(false);
-                                    showNextStepsChecklist.set(true);
-                                    setConfirmEndTutorial(false);
-                                }}
-                            >
-                                Pause Tutorial
-                            </AlertDialogAction>
-                        </div>
+                            End Tutorial
+                        </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
