@@ -1,0 +1,21 @@
+
+> Hide and Seek Map@0.1 dev /app
+> astro dev
+
+21:55:51 [types] Generated 1ms
+21:55:51 [content] Syncing content
+21:55:51 [content] Synced content
+21:55:51 [vite] Re-optimizing dependencies because vite config has changed
+
+ astro  v5.18.2 ready in 709 ms
+
+┃ Local    http://localhost:4321/hideNseek/
+┃ Network  use --host to expose
+
+21:55:51 watching for file changes...
+
+ update  ▶ New version of Astro available: 7.0.6
+  Run pnpm dlx @astrojs/upgrade to update
+
+21:58:09 [200] HEAD /rules/ 635ms
+21:58:42 [200] /rules/ 13ms
