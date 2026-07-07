@@ -9,6 +9,7 @@ import {
     additionalMapGeoLocations,
     mapGeoLocation,
     polyGeoJSON,
+    mapGeoJSON,
 } from "@/lib/context";
 import { safeUnion } from "@/maps/geo-utils";
 
@@ -333,7 +334,14 @@ export const findPlacesInZone = async (
     timeoutDuration: number = 0,
 ) => {
     let query = "";
-    const $polyGeoJSON = polyGeoJSON.get();
+    let $polyGeoJSON = polyGeoJSON.get();
+
+    if (!$polyGeoJSON) {
+        $polyGeoJSON = await determineMapBoundaries();
+        polyGeoJSON.set($polyGeoJSON);
+        mapGeoJSON.set($polyGeoJSON);
+    }
+
     if ($polyGeoJSON) {
         const bbox = turf.bbox($polyGeoJSON);
         const bboxString = `${bbox[1]},${bbox[0]},${bbox[3]},${bbox[2]}`;
