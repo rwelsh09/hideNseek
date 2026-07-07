@@ -52,7 +52,7 @@ export const additionalMapGeoLocations = persistentAtom<
 });
 
 export const tutorialDriver = atom<any>(null);
-export const headStartMinutes = persistentAtom<number>("headStartMinutes", 45, {
+export const headStartMinutes = persistentAtom<number>("headStartMinutes", 0, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });

@@ -1,7 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { Clock, Play, Square, Timer, Trash2, Trophy } from "lucide-react";
 import * as React from "react";
-import confetti from "canvas-confetti";
 import { toast } from "react-toastify";
 
 import {
@@ -39,7 +38,6 @@ export const TimerDrawer = () => {
     const $timerStartTimestamp = useStore(timerStartTimestamp);
     const $leaderboard = useStore(leaderboard);
     const $headStartMinutes = useStore(headStartMinutes);
-    const [showRoundOverModal, setShowRoundOverModal] = React.useState(false);
 
     // Format seconds into MM:SS
     const formatTime = (totalSecs: number) => {
@@ -91,45 +89,11 @@ export const TimerDrawer = () => {
             isTimerRunning.set(false);
             // Clear timestamp so it recalculates on next start based on elapsed
             timerStartTimestamp.set(null);
-
-            if ($timerElapsedSeconds > 0) {
-                setShowRoundOverModal(true);
-                triggerConfetti();
-            }
         } else {
             // Recalculate start timestamp to account for already elapsed time
             timerStartTimestamp.set(Date.now() - $timerElapsedSeconds * 1000);
             isTimerRunning.set(true);
         }
-    };
-
-    const triggerConfetti = () => {
-        const duration = 3 * 1000;
-        const end = Date.now() + duration;
-
-        const frame = () => {
-            confetti({
-                particleCount: 5,
-                angle: 60,
-                spread: 55,
-                origin: { x: 0 },
-                colors: ["#26ccff", "#a25afd", "#ff5e7e", "#88ff5a", "#fcff42", "#ffa62d", "#ff36ff"],
-                zIndex: 10000
-            });
-            confetti({
-                particleCount: 5,
-                angle: 120,
-                spread: 55,
-                origin: { x: 1 },
-                colors: ["#26ccff", "#a25afd", "#ff5e7e", "#88ff5a", "#fcff42", "#ffa62d", "#ff36ff"],
-                zIndex: 10000
-            });
-
-            if (Date.now() < end) {
-                requestAnimationFrame(frame);
-            }
-        };
-        frame();
     };
 
     const resetTimer = () => {
@@ -427,24 +391,6 @@ export const TimerDrawer = () => {
                             </div>
                         </div>
                     </div>
-
-                    <AlertDialog open={showRoundOverModal} onOpenChange={setShowRoundOverModal}>
-                        <AlertDialogContent>
-                            <AlertDialogHeader>
-                                <AlertDialogTitle className="text-2xl font-bold text-center flex items-center justify-center gap-2">
-                                    <Trophy className="w-8 h-8 text-yellow-400" />
-                                    Round Over!
-                                </AlertDialogTitle>
-                                <AlertDialogDescription className="text-center text-lg mt-2 flex flex-col gap-2">
-                                    <span>You survived for <strong className="text-white text-xl">{formatTime(getTotalSeconds())}</strong>!</span>
-                                    <span className="text-sm">Check out the leaderboard below to save your record.</span>
-                                </AlertDialogDescription>
-                            </AlertDialogHeader>
-                            <AlertDialogFooter className="sm:justify-center">
-                                <AlertDialogAction onClick={() => setShowRoundOverModal(false)}>View Leaderboard</AlertDialogAction>
-                            </AlertDialogFooter>
-                        </AlertDialogContent>
-                    </AlertDialog>
                 </div>
             </TopDrawerContent>
         </Drawer>

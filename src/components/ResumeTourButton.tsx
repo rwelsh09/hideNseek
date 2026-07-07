@@ -4,7 +4,7 @@ import { Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { showTutorial, tutorialCompleted } from "@/lib/context";
 
-export const ResumeTutorialButton = () => {
+export const ResumeTourButton = () => {
     const $showTutorial = useStore(showTutorial);
     const $tutorialCompleted = useStore(tutorialCompleted);
 
@@ -17,7 +17,7 @@ export const ResumeTutorialButton = () => {
             onClick={() => showTutorial.set(true)}
         >
             <Play className="w-4 h-4 mr-1.5" fill="currentColor" />
-            Resume Tutorial
+            Resume Tour
         </Button>
     );
 };

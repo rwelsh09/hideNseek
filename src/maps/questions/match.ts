@@ -277,7 +277,6 @@ export const determineMatchBoundary = _.memoize(
             type: question.type,
             lat: question.lat,
             lng: question.lng,
-            lengthComparison: question.lengthComparison,
             cat: question.cat,
             entirety: polyGeoJSON.get()
                 ? polyGeoJSON.get()
