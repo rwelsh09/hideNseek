@@ -18,6 +18,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
+    followMe,
     geolocationPermission,
     mapGeoLocation,
     questionFinishedMapData,
@@ -54,6 +55,7 @@ export const LeafletActionButtons = () => {
         navigator.geolocation.getCurrentPosition(
             (pos) => {
                 geolocationPermission.set("granted");
+                followMe.set(true);
                 const { latitude, longitude } = pos.coords;
                 flyToWithOffset(map, L.latLng(latitude, longitude), 12);
             },
