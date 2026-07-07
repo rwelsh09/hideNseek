@@ -682,7 +682,7 @@ export const cacheAllPlaces = async () => {
 
             const data = await getOverpassData(
                 batchedQuery,
-                "Finding all places...",
+                undefined,
                 CacheType.ZONE_CACHE
             );
 
