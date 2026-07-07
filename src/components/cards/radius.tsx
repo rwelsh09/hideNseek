@@ -25,13 +25,11 @@ export const RadiusQuestionComponent = ({
     questionKey,
     sub,
     className,
-    isPreview,
 }: {
     data: RadiusQuestion;
     questionKey: number;
     sub?: string;
     className?: string;
-    isPreview?: boolean;
 }) => {
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
@@ -87,42 +85,38 @@ export const RadiusQuestionComponent = ({
                 }}
                 disabled={!data.drag || $isLoading}
             />
-            {!isPreview && (
-                <div className="flex gap-2 items-center p-2 flex-wrap">
-                    <Label
-                        className={cn(
-                            "font-semibold text-lg",
-                            $isLoading && "text-muted-foreground",
-                        )}
-                    >
-                        Result
-                    </Label>
-                    <ToggleGroup
-                        className="grow"
-                        type="single"
-                        value={data.within ? "inside" : "outside"}
-                        onValueChange={(value: "inside" | "outside") => {
-                            data.within = value === "inside";
-                            questionModified();
-                        }}
-                        disabled={!!$hiderMode || !data.drag || $isLoading}
-                        data-tutorial-id="tutorial-question-result-toggle"
-                    >
-                        <ToggleGroupItem value="outside">
-                            Outside
-                        </ToggleGroupItem>
-                        <ToggleGroupItem value="inside">Inside</ToggleGroupItem>
-                    </ToggleGroup>
-                    {!!$hiderMode && (
-                        <div className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md">
-                            Tell the Seekers:{" "}
-                            <span className="text-primary">
-                                {data.within ? "Inside" : "Outside"}
-                            </span>
-                        </div>
+            <div className="flex gap-2 items-center p-2 flex-wrap">
+                <Label
+                    className={cn(
+                        "font-semibold text-lg",
+                        $isLoading && "text-muted-foreground",
                     )}
-                </div>
-            )}
+                >
+                    Result
+                </Label>
+                <ToggleGroup
+                    className="grow"
+                    type="single"
+                    value={data.within ? "inside" : "outside"}
+                    onValueChange={(value: "inside" | "outside") => {
+                        data.within = value === "inside";
+                        questionModified();
+                    }}
+                    disabled={!!$hiderMode || !data.drag || $isLoading}
+                    data-tutorial-id="tutorial-question-result-toggle"
+                >
+                    <ToggleGroupItem value="outside">Outside</ToggleGroupItem>
+                    <ToggleGroupItem value="inside">Inside</ToggleGroupItem>
+                </ToggleGroup>
+                {!!$hiderMode && (
+                    <div className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md">
+                        Tell the Seekers:{" "}
+                        <span className="text-primary">
+                            {data.within ? "Inside" : "Outside"}
+                        </span>
+                    </div>
+                )}
+            </div>
         </QuestionCard>
     );
 };
