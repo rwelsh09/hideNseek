@@ -1,9 +1,20 @@
 import { useStore } from "@nanostores/react";
+import confetti from "canvas-confetti";
 import { Clock, Play, Square, Timer, Trash2, Trophy } from "lucide-react";
 import * as React from "react";
-import confetti from "canvas-confetti";
 import { toast } from "react-toastify";
 
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import {
     Drawer,
     DrawerTrigger,
@@ -17,18 +28,6 @@ import {
     timerElapsedSeconds,
     timerStartTimestamp,
 } from "@/lib/context";
-
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";

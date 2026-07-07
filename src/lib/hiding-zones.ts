@@ -15,7 +15,11 @@ import {
     QuestionSpecificLocation,
     type StationPlace,
 } from "@/maps/api";
-import { extractStationName, safeUnion } from "@/maps/geo-utils";
+import {
+    extractStationLines,
+    extractStationName,
+    safeUnion,
+} from "@/maps/geo-utils";
 
 export const initializeHidingZonesLogic = async () => {
     const $hidingRadius = hidingRadius.get();
@@ -88,17 +92,11 @@ export const initializeHidingZonesLogic = async () => {
                 );
 
                 if (question.data.type === "same-train-line") {
-                    const seekerLines: string[] =
-                        nearestTrainStation.properties.properties?.lines ||
-                        (nearestTrainStation.properties as any).lines ||
-                        [];
+                    const seekerLines = extractStationLines(nearestTrainStation);
 
                     if (seekerLines.length > 0) {
                         circles = circles.filter((circle) => {
-                            const hiderLines: string[] =
-                                circle.properties.properties?.lines ||
-                                (circle.properties as any).lines ||
-                                [];
+                            const hiderLines = extractStationLines(circle);
 
                             const intersects = seekerLines.some((l) =>
                                 hiderLines.includes(l),
