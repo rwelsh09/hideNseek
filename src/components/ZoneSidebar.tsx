@@ -28,13 +28,9 @@ import {
     showRecommendedStart,
     trainStations,
 } from "@/lib/context";
+import { initializeHidingZonesLogic } from "@/lib/hiding-zones";
 import { cn } from "@/lib/utils";
-import {
-    findPlacesSpecificInZone,
-    QuestionSpecificLocation,
-    type StationCircle,
-    type StationPlace,
-} from "@/maps/api";
+import { type StationCircle } from "@/maps/api";
 import {
     extractStationLabel,
     extractStationName,
@@ -77,6 +73,7 @@ export const ZoneSidebar = () => {
     const $hidingRadiusUnits = useStore(hidingRadiusUnits);
     const $headStartMinutes = useStore(headStartMinutes);
     const $isLoading = useStore(isLoading);
+    const $questions = useStore(questions);
     const map = useStore(leafletMapContext);
     const stations = useStore(trainStations);
     const $disabledStations = useStore(disabledStations);
@@ -194,191 +191,11 @@ export const ZoneSidebar = () => {
     useEffect(() => {
         if (!map || isLoading.get()) return;
 
-        const initializeHidingZones = async () => {
-            isLoading.set(true);
-
-            try {
-                const places: StationPlace[] = [];
-
-                const transitFeatures = (
-                    calgaryTransitData as any
-                ).features.map((f: any) => ({
-                    type: "Feature",
-                    geometry: f.geometry,
-                    properties: {
-                        ...f.properties,
-                        id:
-                            f.properties?.["@id"] ||
-                            f.id ||
-                            `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
-                        name: f.properties?.name,
-                    },
-                }));
-                places.push(...transitFeatures);
-
-                const unionized = safeUnion(
-                    turf.simplify($questionFinishedMapData, {
-                        tolerance: 0.001,
-                    }),
-                );
-
-                let circles = places
-                    .map((place) => {
-                        const radius = $hidingRadius;
-                        const center = turf.getCoord(place);
-                        return turf.circle(center, radius, {
-                            steps: 32,
-                            units: $hidingRadiusUnits,
-                            properties: place,
-                        });
-                    })
-                    .filter((circle) => {
-                        return !turf.booleanWithin(circle, unionized);
-                    });
-
-                for (const question of questions.get()) {
-                    if (circles.length === 0) break;
-
-                    if (question.data.drag) {
-                        continue;
-                    }
-
-                    if (
-                        question.id === "match" &&
-                        (question.data.type === "same-first-letter-station" ||
-                            question.data.type === "same-length-station" ||
-                            question.data.type === "same-train-line")
-                    ) {
-                        const location = turf.point([
-                            question.data.lng,
-                            question.data.lat,
-                        ]);
-                        const nearestTrainStation = turf.nearestPoint(
-                            location,
-                            turf.featureCollection(places) as any,
-                        );
-
-                        if (question.data.type === "same-train-line") {
-                            const seekerLines: string[] =
-                                nearestTrainStation.properties.properties
-                                    ?.lines ||
-                                (nearestTrainStation.properties as any).lines ||
-                                [];
-
-                            if (seekerLines.length > 0) {
-                                circles = circles.filter((circle) => {
-                                    const hiderLines: string[] =
-                                        circle.properties.properties?.lines ||
-                                        (circle.properties as any).lines ||
-                                        [];
-
-                                    const intersects = seekerLines.some((l) =>
-                                        hiderLines.includes(l),
-                                    );
-
-                                    return question.data.same
-                                        ? intersects
-                                        : !intersects;
-                                });
-                            }
-                        }
-
-                        const englishName =
-                            extractStationName(nearestTrainStation);
-                        if (!englishName)
-                            return toast.error("No English name found");
-
-                        if (
-                            question.data.type === "same-first-letter-station"
-                        ) {
-                            const letter = englishName[0].toUpperCase();
-                            circles = circles.filter((circle) => {
-                                const name = extractStationName(
-                                    circle.properties,
-                                );
-                                if (!name) return false;
-                                return question.data.same
-                                    ? name[0].toUpperCase() === letter
-                                    : name[0].toUpperCase() !== letter;
-                            });
-                        } else if (
-                            question.data.type === "same-length-station"
-                        ) {
-                            const seekerLength = englishName.length;
-                            const comparison = question.data.lengthComparison;
-                            circles = circles.filter((circle) => {
-                                const name = extractStationName(
-                                    circle.properties,
-                                );
-                                if (!name) return false;
-                                if (comparison === "same")
-                                    return name.length === seekerLength;
-                                if (comparison === "shorter")
-                                    return name.length < seekerLength;
-                                if (comparison === "longer")
-                                    return name.length > seekerLength;
-                                return false;
-                            });
-                        }
-                    }
-                    if (
-                        question.id === "measure" &&
-                        ((question.data as any).type === "mcdonalds" ||
-                            (question.data as any).type === "seven11")
-                    ) {
-                        const points = await findPlacesSpecificInZone(
-                            (question.data as any).type === "mcdonalds"
-                                ? QuestionSpecificLocation.McDonalds
-                                : QuestionSpecificLocation.Seven11,
-                        );
-
-                        if (points.features.length === 0) {
-                            circles = [];
-                            continue;
-                        }
-
-                        const nearestPoint = turf.nearestPoint(
-                            turf.point([question.data.lng, question.data.lat]),
-                            points as any,
-                        );
-                        const distance = turf.distance(
-                            turf.point([question.data.lng, question.data.lat]),
-                            nearestPoint as any,
-                            { units: "kilometers" },
-                        );
-
-                        circles = circles.filter((circle) => {
-                            const point = turf.point(
-                                turf.getCoord(circle.properties),
-                            );
-                            const nearest = turf.nearestPoint(
-                                point,
-                                points as any,
-                            );
-                            return question.data.hiderCloser
-                                ? turf.distance(point, nearest as any, {
-                                      units: "kilometers",
-                                  }) <
-                                      distance + $hidingRadius
-                                : turf.distance(point, nearest as any, {
-                                      units: "kilometers",
-                                  }) >
-                                      distance - $hidingRadius;
-                        });
-                    }
-                }
-
-                setStations(circles);
-            } finally {
-                isLoading.set(false);
-            }
-        };
-
         if (
             ($displayHidingZones || $showRecommendedStart) &&
             $questionFinishedMapData
         ) {
-            initializeHidingZones().catch((err) => {
+            initializeHidingZonesLogic().catch((err) => {
                 console.error(err);
                 toast.error(
                     "An error occurred during hiding zone initialization",
@@ -391,6 +208,7 @@ export const ZoneSidebar = () => {
         $displayHidingZones,
         $showRecommendedStart,
         $hidingRadius,
+        $questions,
     ]);
 
     useEffect(() => {
