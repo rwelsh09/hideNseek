@@ -585,13 +585,6 @@ export const cacheAllPlaces = async () => {
             "geom",
         ),
     );
-    tasks.push(() =>
-        findPlacesInZone(
-            "[railway=station]",
-            "Finding Stations...",
-            "node",
-        ),
-    );
 
     // Specific Location Enum Queries (McDonalds, 7Eleven)
     Object.values(QuestionSpecificLocation).forEach((loc) => {
