@@ -230,6 +230,29 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     Map & Game Settings
                                 </h3>
                                 <div className="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden divide-y">
+                                    {/* Offline Mode Toggle */}
+                                    <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                                        <Label
+                                            htmlFor="offline-mode-toggle"
+                                            className="flex-1 cursor-pointer text-base font-medium flex gap-2 items-center"
+                                        >
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-wifi-off"><path d="M2 2L22 22"/><path d="M8.5 16.5L12 20L15.5 16.5"/><path d="M17 12c1.3 1.3 2.5 3 3 5"/><path d="M4 17c.5-2 1.7-3.7 3-5"/><path d="M21 9c-2-2-4.5-3.5-7.5-4"/><path d="M10 5.3C6.5 6 3.5 8 1.5 11"/></svg>
+                                            Offline Mode
+                                        </Label>
+                                        <Checkbox
+                                            id="offline-mode-toggle"
+                                            checked={$offlineMode}
+                                            onCheckedChange={(checked) => {
+                                                offlineMode.set(!!checked);
+                                                if (checked) {
+                                                    import("@/data/offline_metadata.json").then((offlineMetadata) => {
+                                                        const date = new Date(offlineMetadata.default.lastUpdated).toLocaleDateString();
+                                                        toast.warning(`Offline mode active. Data last updated: ${date}. Ensure all players are using Offline Mode.`);
+                                                    });
+                                                }
+                                            }}
+                                        />
+                                    </div>
                                     {/* Hider Mode Toggle */}
                                     <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
                                         <Label
@@ -479,27 +502,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     Data Management
                                 </h3>
                                 <div className="flex flex-col sm:flex-row gap-3">
-                                    <div className="flex flex-1 items-center justify-between px-4 h-11 bg-background hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors border rounded-md">
-                                        <Label
-                                            htmlFor="offline-mode-toggle"
-                                            className="flex-1 cursor-pointer text-sm font-medium"
-                                        >
-                                            Offline Mode
-                                        </Label>
-                                        <Checkbox
-                                            id="offline-mode-toggle"
-                                            checked={$offlineMode}
-                                            onCheckedChange={(checked) => {
-                                                offlineMode.set(!!checked);
-                                                if (checked) {
-                                                    import("@/data/offline_metadata.json").then((offlineMetadata) => {
-                                                        const date = new Date(offlineMetadata.default.lastUpdated).toLocaleDateString();
-                                                        toast.warning(`Offline mode active. Data last updated: ${date}. Ensure all players are using Offline Mode.`);
-                                                    });
-                                                }
-                                            }}
-                                        />
-                                    </div>
+
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
                                             <Button

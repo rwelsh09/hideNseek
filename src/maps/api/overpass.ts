@@ -9,8 +9,8 @@ import {
     additionalMapGeoLocations,
     mapGeoJSON,
     mapGeoLocation,
-    polyGeoJSON,
     offlineMode,
+    polyGeoJSON,
 } from "@/lib/context";
 import { safeUnion } from "@/maps/geo-utils";
 
@@ -415,24 +415,28 @@ out ${outType};
     if (offlineMode.get()) {
         const offlinePlacesModule = await import("@/data/offline_places.json");
         const offlinePlaces = offlinePlacesModule.default || offlinePlacesModule;
-        const filterRegex = /\["?([^"=]+)"?="?([^"\]]+)"?\]/g;
-        const parsedTags: {key: string, value: string}[] = [];
+        const filterRegex = /\["?([^"~=]+)"?([~=])"?([^"\]]+)"?\]/g;
+        const parsedTags: {key: string, operator: string, value: string}[] = [];
         let match;
 
         // Parse the main filter string
         while ((match = filterRegex.exec(filter)) !== null) {
-            parsedTags.push({ key: match[1], value: match[2] });
+            parsedTags.push({ key: match[1], operator: match[2], value: match[3] });
         }
 
         // Also parse any alternative filters
         for (const alt of alternatives) {
             while ((match = filterRegex.exec(alt)) !== null) {
-                parsedTags.push({ key: match[1], value: match[2] });
+                parsedTags.push({ key: match[1], operator: match[2], value: match[3] });
             }
         }
 
         const filteredElements = (offlinePlaces.elements || []).filter((el: any) => {
-            return el.tags && parsedTags.some(tag => el.tags[tag.key] === tag.value);
+            return el.tags && parsedTags.some(tag => {
+                const tagValue = el.tags[tag.key];
+                if (!tagValue) return false;
+                return tag.operator === '~' ? new RegExp(tag.value).test(tagValue) : tagValue === tag.value;
+            });
         });
         data = { elements: filteredElements };
     } else {
