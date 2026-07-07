@@ -244,9 +244,13 @@ export const QuestionSidebar = () => {
                         </AlertDialogTrigger>
                         <AlertDialogContent>
                             <AlertDialogHeader>
-                                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                                <AlertDialogTitle>
+                                    Are you absolutely sure?
+                                </AlertDialogTitle>
                                 <AlertDialogDescription>
-                                    This will unlock and delete ALL questions, and reset your time penalty to 0. This action cannot be undone.
+                                    This will unlock and delete ALL questions,
+                                    and reset your time penalty to 0. This
+                                    action cannot be undone.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>

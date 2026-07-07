@@ -113,16 +113,32 @@ export const TimerDrawer = () => {
                 angle: 60,
                 spread: 55,
                 origin: { x: 0 },
-                colors: ["#26ccff", "#a25afd", "#ff5e7e", "#88ff5a", "#fcff42", "#ffa62d", "#ff36ff"],
-                zIndex: 10000
+                colors: [
+                    "#26ccff",
+                    "#a25afd",
+                    "#ff5e7e",
+                    "#88ff5a",
+                    "#fcff42",
+                    "#ffa62d",
+                    "#ff36ff",
+                ],
+                zIndex: 10000,
             });
             confetti({
                 particleCount: 5,
                 angle: 120,
                 spread: 55,
                 origin: { x: 1 },
-                colors: ["#26ccff", "#a25afd", "#ff5e7e", "#88ff5a", "#fcff42", "#ffa62d", "#ff36ff"],
-                zIndex: 10000
+                colors: [
+                    "#26ccff",
+                    "#a25afd",
+                    "#ff5e7e",
+                    "#88ff5a",
+                    "#fcff42",
+                    "#ffa62d",
+                    "#ff36ff",
+                ],
+                zIndex: 10000,
             });
 
             if (Date.now() < end) {
@@ -270,14 +286,22 @@ export const TimerDrawer = () => {
                                     </AlertDialogTrigger>
                                     <AlertDialogContent>
                                         <AlertDialogHeader>
-                                            <AlertDialogTitle>Reset Timer?</AlertDialogTitle>
+                                            <AlertDialogTitle>
+                                                Reset Timer?
+                                            </AlertDialogTitle>
                                             <AlertDialogDescription>
-                                                Are you sure you want to reset the timer? This will reset your elapsed time to 0.
+                                                Are you sure you want to reset
+                                                the timer? This will reset your
+                                                elapsed time to 0.
                                             </AlertDialogDescription>
                                         </AlertDialogHeader>
                                         <AlertDialogFooter>
-                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                            <AlertDialogAction onClick={resetTimer}>
+                                            <AlertDialogCancel>
+                                                Cancel
+                                            </AlertDialogCancel>
+                                            <AlertDialogAction
+                                                onClick={resetTimer}
+                                            >
                                                 Continue
                                             </AlertDialogAction>
                                         </AlertDialogFooter>
@@ -405,15 +429,28 @@ export const TimerDrawer = () => {
                                                     </AlertDialogTrigger>
                                                     <AlertDialogContent>
                                                         <AlertDialogHeader>
-                                                            <AlertDialogTitle>Remove Leaderboard Entry?</AlertDialogTitle>
+                                                            <AlertDialogTitle>
+                                                                Remove
+                                                                Leaderboard
+                                                                Entry?
+                                                            </AlertDialogTitle>
                                                             <AlertDialogDescription>
-                                                                Are you sure you want to remove this entry from the leaderboard?
+                                                                Are you sure you
+                                                                want to remove
+                                                                this entry from
+                                                                the leaderboard?
                                                             </AlertDialogDescription>
                                                         </AlertDialogHeader>
                                                         <AlertDialogFooter>
-                                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                                            <AlertDialogCancel>
+                                                                Cancel
+                                                            </AlertDialogCancel>
                                                             <AlertDialogAction
-                                                                onClick={() => removeLeaderboardEntry(entry.id)}
+                                                                onClick={() =>
+                                                                    removeLeaderboardEntry(
+                                                                        entry.id,
+                                                                    )
+                                                                }
                                                             >
                                                                 Continue
                                                             </AlertDialogAction>
@@ -428,7 +465,10 @@ export const TimerDrawer = () => {
                         </div>
                     </div>
 
-                    <AlertDialog open={showRoundOverModal} onOpenChange={setShowRoundOverModal}>
+                    <AlertDialog
+                        open={showRoundOverModal}
+                        onOpenChange={setShowRoundOverModal}
+                    >
                         <AlertDialogContent>
                             <AlertDialogHeader>
                                 <AlertDialogTitle className="text-2xl font-bold text-center flex items-center justify-center gap-2">
@@ -436,12 +476,25 @@ export const TimerDrawer = () => {
                                     Round Over!
                                 </AlertDialogTitle>
                                 <AlertDialogDescription className="text-center text-lg mt-2 flex flex-col gap-2">
-                                    <span>You survived for <strong className="text-white text-xl">{formatTime(getTotalSeconds())}</strong>!</span>
-                                    <span className="text-sm">Check out the leaderboard below to save your record.</span>
+                                    <span>
+                                        You survived for{" "}
+                                        <strong className="text-white text-xl">
+                                            {formatTime(getTotalSeconds())}
+                                        </strong>
+                                        !
+                                    </span>
+                                    <span className="text-sm">
+                                        Check out the leaderboard below to save
+                                        your record.
+                                    </span>
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter className="sm:justify-center">
-                                <AlertDialogAction onClick={() => setShowRoundOverModal(false)}>View Leaderboard</AlertDialogAction>
+                                <AlertDialogAction
+                                    onClick={() => setShowRoundOverModal(false)}
+                                >
+                                    View Leaderboard
+                                </AlertDialogAction>
                             </AlertDialogFooter>
                         </AlertDialogContent>
                     </AlertDialog>
