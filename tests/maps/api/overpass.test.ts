@@ -122,7 +122,7 @@ describe("getOverpassData", () => {
             "Unable to connect to the map server. Please check your internet connection.",
             { toastId: "overpass-error" },
         );
-        expect(result).toEqual({ elements: [] });
+        expect(result).toEqual({ elements: [], _failed: true });
     });
 
     it("should return empty elements and show toast error if fallback returns !ok", async () => {
@@ -152,6 +152,6 @@ describe("getOverpassData", () => {
             "The server is busy. Try clicking Offline Mode at the bottom of the Options menu.",
             { toastId: "overpass-error" },
         );
-        expect(result).toEqual({ elements: [] });
+        expect(result).toEqual({ elements: [], _failed: true });
     });
 });

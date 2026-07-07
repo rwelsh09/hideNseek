@@ -9,6 +9,7 @@ import {
     showRecommendedStart,
     trainStations,
 } from "@/lib/context";
+import { extractStationId } from "@/maps/geo-utils";
 
 // Create a custom icon for the recommended start point
 const startIcon = L.icon({
@@ -37,7 +38,7 @@ export const RecommendedStartMarker: React.FC = () => {
 
         // Filter out disabled stations
         const activeStations = $trainStations.filter((station) => {
-            const id = station.properties.properties.id;
+            const id = extractStationId(station);
             return id && !$disabledStations.includes(id);
         });
 

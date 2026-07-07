@@ -18,13 +18,16 @@ const createOfflineTileLayer = (props: OfflineTileLayerProps, context: any) => {
         try {
             const length = await getStorageLength();
             if (length > 0) {
-                const lastClear = localStorage.getItem('last_map_cache_clear');
+                const lastClear = localStorage.getItem("last_map_cache_clear");
                 const now = Date.now();
                 const SEVEN_DAYS = 7 * 24 * 60 * 60 * 1000;
 
                 if (!lastClear || now - parseInt(lastClear, 10) > SEVEN_DAYS) {
                     await truncate();
-                    localStorage.setItem('last_map_cache_clear', now.toString());
+                    localStorage.setItem(
+                        "last_map_cache_clear",
+                        now.toString(),
+                    );
                 }
             }
         } catch (e) {
@@ -36,19 +39,21 @@ const createOfflineTileLayer = (props: OfflineTileLayerProps, context: any) => {
     let saveTimeout: any = null;
     let moveEndListener: any = null;
 
-    instance.on('add', (e: any) => {
+    instance.on("add", (e: any) => {
         const map = e.target._map;
         if (!map) return;
 
         control = savetiles(instance, {
-             alwaysDownload: false,
-             confirm: (status: any, successCallback: Function) => successCallback(),
-             confirmRemoval: (status: any, successCallback: Function) => successCallback(),
+            alwaysDownload: false,
+            confirm: (status: any, successCallback: () => void) =>
+                successCallback(),
+            confirmRemoval: (status: any, successCallback: () => void) =>
+                successCallback(),
         });
 
         control.addTo(map);
         if (control.getContainer()) {
-            control.getContainer().style.display = 'none';
+            control.getContainer().style.display = "none";
         }
 
         // Listen to map movements to cache tiles as the user views them
@@ -66,16 +71,16 @@ const createOfflineTileLayer = (props: OfflineTileLayerProps, context: any) => {
                     if (control._saveTiles) {
                         control._saveTiles();
                     }
-                } catch (err) {
-                     // Ignore caching errors
+                } catch {
+                    // Ignore caching errors
                 }
             }, 2000);
         };
 
-        map.on('moveend', moveEndListener);
+        map.on("moveend", moveEndListener);
     });
 
-    instance.on('remove', (e: any) => {
+    instance.on("remove", (e: any) => {
         const map = e.target._map;
         if (!map) return;
 
@@ -84,7 +89,7 @@ const createOfflineTileLayer = (props: OfflineTileLayerProps, context: any) => {
             saveTimeout = null;
         }
         if (moveEndListener) {
-            map.off('moveend', moveEndListener);
+            map.off("moveend", moveEndListener);
             moveEndListener = null;
         }
         if (control) {

@@ -13,7 +13,6 @@ import {
     SidebarMenu,
     SidebarMenuItem,
 } from "@/components/ui/sidebar-r";
-import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
     disabledStations,
     displayHidingZones,
@@ -36,9 +35,11 @@ import {
     type StationPlace,
 } from "@/maps/api";
 import {
+    extractStationId,
     extractStationLabel,
     extractStationName,
     geoSpatialVoronoi,
+    getFeatureProperties,
     lngLatToText,
     safeUnion,
 } from "@/maps/geo-utils";
@@ -117,9 +118,7 @@ export const ZoneSidebar = () => {
                 if (isSelected) {
                     color = "yellow";
                 } else {
-                    const transitType =
-                        feature?.properties?.properties?.transit_type ||
-                        feature?.properties?.transit_type;
+                    const transitType = getFeatureProperties(feature).transit_type;
                     if (transitType === "CTrain Station") {
                         color = "red";
                     } else if (transitType === "MAX Station") {
@@ -398,7 +397,7 @@ export const ZoneSidebar = () => {
 
         if ($displayHidingZones) {
             const activeStations = stations.filter(
-                (x) => !$disabledStations.includes(x.properties.properties.id),
+                (x) => !$disabledStations.includes(extractStationId(x)),
             );
             showGeoJSON(
                 styleStations(
@@ -631,7 +630,7 @@ export const ZoneSidebar = () => {
                                     {(() => {
                                         const selected = stations.find(
                                             (x) =>
-                                                x.properties.properties.id ===
+                                                extractStationId(x) ===
                                                 hidingZoneModeStationID,
                                         );
                                         const displayName = extractStationLabel(
@@ -678,8 +677,7 @@ export const ZoneSidebar = () => {
                                     onClick={() => {
                                         disabledStations.set(
                                             stations.map(
-                                                (x) =>
-                                                    x.properties.properties.id,
+                                                (x) => extractStationId(x),
                                             ),
                                         );
                                     }}
@@ -846,10 +844,10 @@ function styleStations(
 
                     if (voronoi && voronoi.features) {
                         const intersectedCircles = circles.map((circle) => {
-                            const stationId = circle.properties.properties.id;
+                            const stationId = extractStationId(circle);
                             const v = voronoi.features.find(
                                 (f: any) =>
-                                    f.properties?.site?.properties?.id ===
+                                    extractStationId(f.properties?.site) ===
                                     stationId,
                             );
 

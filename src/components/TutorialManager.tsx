@@ -341,8 +341,8 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Store the Question",
                                   description:
-                                      "This is the question that you will ask the Hider. For now, just click here to store it in your sidebar and continue.",
-                                  side: "top",
+                                      "This is the question that you will ask the Hider. For now, just click the close button to store it in your sidebar and continue.",
+                                  side: "left",
                                   align: "center",
                                   showButtons: ["previous"],
                                   onPopoverRender: () => {
