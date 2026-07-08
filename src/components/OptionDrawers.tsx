@@ -40,7 +40,9 @@ import {
     showRecommendedStart,
     showTutorial,
     triggerLocalRefresh,
+    offlineMode,
 } from "@/lib/context";
+import offlineMetadata from "@/data/offline_metadata.json";
 import { cn, compress, decompress, shareOrFallback } from "@/lib/utils";
 import { questionsSchema } from "@/maps/schema";
 
@@ -63,6 +65,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $displayTransitLines = useStore(displayTransitLines);
     const $showRecommendedStart = useStore(showRecommendedStart);
     const $isOptionsOpenStore = useStore(isOptionsOpenStore);
+    const $offlineMode = useStore(offlineMode);
 
     useEffect(() => {
         const params = new URL(window.location.toString()).searchParams;
@@ -480,14 +483,16 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 </h3>
                                 <div className="flex flex-col sm:flex-row gap-3">
                                     <Button
-                                        variant="outline"
-                                        className="w-full h-11 bg-background hover:bg-slate-100 dark:hover:bg-slate-800"
+                                        variant={$offlineMode ? "default" : "outline"}
+                                        className="w-full h-11 bg-background hover:bg-slate-100 dark:hover:bg-slate-800 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground"
+                                        data-state={$offlineMode ? "active" : "inactive"}
                                         onClick={() => {
-                                            import("@/maps/api").then(
-                                                ({ cacheAllPlaces }) => {
-                                                    cacheAllPlaces();
-                                                },
-                                            );
+                                            const newOfflineMode = !$offlineMode;
+                                            offlineMode.set(newOfflineMode);
+                                            if (newOfflineMode) {
+                                                const dateStr = new Date(offlineMetadata.lastUpdated).toLocaleString();
+                                                toast.warning(`Offline mode active. Data last updated: ${dateStr}. Ensure all players are using Offline Mode.`);
+                                            }
                                         }}
                                     >
                                         Offline Mode
