@@ -10,6 +10,7 @@ import {
     mapGeoLocation,
     polyGeoJSON,
     mapGeoJSON,
+    offlineMode,
 } from "@/lib/context";
 import { safeUnion } from "@/maps/geo-utils";
 
@@ -28,6 +29,32 @@ export const getOverpassData = async (
     loadingText?: string,
     cacheType: CacheType = CacheType.CACHE,
 ) => {
+    if (offlineMode.get()) {
+        const offlineData = (await import("@/data/offline_places.json")).default;
+        const regex = /\["([^"]+)"(=|~)"([^"]+)"\]/g;
+        const tags: { key: string; op: string; val: string }[] = [];
+        let match;
+        while ((match = regex.exec(query)) !== null) {
+            tags.push({ key: match[1], op: match[2], val: match[3] });
+        }
+
+        let filteredElements = offlineData.elements;
+        if (tags.length > 0) {
+            filteredElements = offlineData.elements.filter((el: any) => {
+                if (!el.tags) return false;
+                return tags.every((tag) => {
+                    const tagVal = el.tags[tag.key];
+                    if (!tagVal) return false;
+                    if (tag.op === "=") return tagVal === tag.val;
+                    if (tag.op === "~") return new RegExp(tag.val).test(tagVal);
+                    return false;
+                });
+            });
+        }
+
+        return { elements: filteredElements };
+    }
+
     const encodedQuery = encodeURIComponent(query);
     const primaryUrl = `${OVERPASS_API}?data=${encodedQuery}`;
     const fallbackUrl = `${OVERPASS_API_FALLBACK}?data=${encodedQuery}`;
