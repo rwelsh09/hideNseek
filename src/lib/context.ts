@@ -44,14 +44,23 @@ export const mapGeoLocation = persistentAtom<OpenStreetMap>(
     },
 );
 
-export const additionalMapGeoLocations = persistentAtom<
-    AdditionalMapGeoLocations[]
->("additionalMapGeoLocations", [], {
+export const additionalMapGeoLocations = persistentAtom<AdditionalMapGeoLocations[]>("additionalMapGeoLocations", [], {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
+
+export const hasSeenWelcome = persistentAtom<boolean>("hasSeenWelcome", false, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
+
+export const showHiderTutorial = persistentAtom<boolean>("showHiderTutorial", false, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
 
 export const tutorialDriver = atom<any>(null);
+
 export const headStartMinutes = persistentAtom<number>("headStartMinutes", 45, {
     encode: JSON.stringify,
     decode: JSON.parse,
@@ -59,6 +68,7 @@ export const headStartMinutes = persistentAtom<number>("headStartMinutes", 45, {
 export const mapGeoJSON = atom<FeatureCollection<
     Polygon | MultiPolygon
 > | null>(null);
+
 export const polyGeoJSON = persistentAtom<FeatureCollection<
     Polygon | MultiPolygon
 > | null>("polyGeoJSON", null, {
@@ -91,10 +101,8 @@ export const hiderMode = persistentAtom<
     decode: JSON.parse,
 });
 export const triggerLocalRefresh = atom<number>(0);
-export const displayHidingZones = persistentAtom<boolean>(
-    "displayHidingZones",
-    false,
-    {
+
+export const displayHidingZones = persistentAtom<boolean>("displayHidingZones", false, {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
@@ -103,10 +111,7 @@ export const displayHidingZonesStyle = persistentAtom<
     "zones" | "stations" | "no-overlap" | "no-display"
 >("displayHidingZonesStyle", "zones");
 
-export const displayTransitLines = persistentAtom<boolean>(
-    "displayTransitLines",
-    true,
-    {
+export const displayTransitLines = persistentAtom<boolean>("displayTransitLines", true, {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
@@ -127,18 +132,12 @@ export const hidingRadius = persistentAtom<number>("hidingRadius", 0.8, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
-export const hidingRadiusUnits = persistentAtom<Units>(
-    "hidingRadiusUnits",
-    "kilometers",
-    {
+export const hidingRadiusUnits = persistentAtom<Units>("hidingRadiusUnits", "kilometers", {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
 );
-export const disabledStations = persistentAtom<string[]>(
-    "disabledStations",
-    [],
-    {
+export const disabledStations = persistentAtom<string[]>("disabledStations", [], {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
@@ -216,10 +215,8 @@ export const isOptionsOpenStore = atom<boolean>(false);
 export const baseTileLayer = persistentAtom<
     "voyager" | "light" | "dark" | "transport" | "neighbourhood" | "osmcarto"
 >("baseTileLayer", "voyager");
-export const thunderforestApiKey = persistentAtom<string>(
-    "thunderforestApiKey",
-    "",
-    {
+
+export const thunderforestApiKey = persistentAtom<string>("thunderforestApiKey", "", {
         encode: (value: string) => value,
         decode: (value: string) => value,
     },
@@ -229,15 +226,12 @@ export const followMe = persistentAtom<boolean>("followMe", false, {
     decode: JSON.parse,
 });
 
-export const showTutorial = persistentAtom<boolean>("showTutorials", true, {
+export const showTutorial = persistentAtom<boolean>("showTutorials", false, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
 
-export const showNextStepsChecklist = persistentAtom<boolean>(
-    "showNextStepsChecklist",
-    false,
-    {
+export const showNextStepsChecklist = persistentAtom<boolean>("showNextStepsChecklist", false, {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
@@ -263,18 +257,12 @@ export const penaltyMinutes = persistentAtom<number>("penaltyMinutes", 0, {
     decode: JSON.parse,
 });
 
-export const timerStartTimestamp = persistentAtom<number | null>(
-    "timerStartTimestamp",
-    null,
-    {
+export const timerStartTimestamp = persistentAtom<number | null>("timerStartTimestamp", null, {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
 );
-export const timerElapsedSeconds = persistentAtom<number>(
-    "timerElapsedSeconds",
-    0,
-    {
+export const timerElapsedSeconds = persistentAtom<number>("timerElapsedSeconds", 0, {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
@@ -291,19 +279,13 @@ export type LeaderboardEntry = {
     penaltyMinutes: number;
 };
 
-export const leaderboard = persistentAtom<LeaderboardEntry[]>(
-    "leaderboard",
-    [],
-    {
+export const leaderboard = persistentAtom<LeaderboardEntry[]>("leaderboard", [], {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
 );
 
-export const showRecommendedStart = persistentAtom<boolean>(
-    "showRecommendedStart",
-    false,
-    {
+export const showRecommendedStart = persistentAtom<boolean>("showRecommendedStart", false, {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
