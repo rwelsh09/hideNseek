@@ -18,8 +18,8 @@ import {
     hasSeenRules,
     hasSeenWelcome,
     hiderMode,
-    showHiderTutorial,
     isOptionsOpenStore,
+    showHiderTutorial,
     showNextStepsChecklist,
     showTutorial,
     tutorialDriver,
@@ -416,7 +416,7 @@ export const TutorialManager = () => {
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
                                               document.querySelector(
-                                                  '[data-tutorial-id="tutorial-lock-btn"] button',
+                                                  '[data-tutorial-id="tutorial-lock-btn"]',
                                               );
                                           if (
                                               lockBtn &&
@@ -548,7 +548,7 @@ export const TutorialManager = () => {
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
                                               document.querySelector(
-                                                  '[data-tutorial-id="tutorial-lock-btn"] button',
+                                                  '[data-tutorial-id="tutorial-lock-btn"]',
                                               );
                                           if (
                                               lockBtn &&
