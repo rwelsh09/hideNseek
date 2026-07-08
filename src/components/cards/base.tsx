@@ -146,11 +146,10 @@ export const QuestionCard = ({
     return (
         <>
             <SidebarGroup className={className}>
-                <div className="relative">
+                <div className="relative" data-tutorial-id="tutorial-lock-btn">
                     <button
                         type="button"
                         onClick={toggleLockAndCollapse}
-                        data-tutorial-id="tutorial-lock-btn"
                         aria-label={
                             !questionData.drag
                                 ? "Unlock Question"
@@ -174,7 +173,7 @@ export const QuestionCard = ({
                     </SidebarGroupLabel>
                     <SidebarGroupContent
                         className={cn(
-                            "overflow-hidden transition-all duration-1000 max-h-[100rem]", // 100rem is arbitrary
+                            "overflow-hidden transition-all duration-300 max-h-[100rem]", // 100rem is arbitrary
                             isCollapsed && "max-h-0",
                         )}
                     >

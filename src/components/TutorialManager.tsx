@@ -416,7 +416,7 @@ export const TutorialManager = () => {
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
                                               document.querySelector(
-                                                  '[data-tutorial-id="tutorial-lock-btn"]',
+                                                  '[data-tutorial-id="tutorial-lock-btn"] button',
                                               );
                                           if (
                                               lockBtn &&
@@ -427,7 +427,7 @@ export const TutorialManager = () => {
                                               clearInterval(checkInterval);
                                               setTimeout(
                                                   () => driverObj.moveNext(),
-                                                  300,
+                                                  350,
                                               );
                                           }
                                       }, 100);
@@ -490,19 +490,15 @@ export const TutorialManager = () => {
                                           return;
                                       }
 
-                                      const trigger = document.querySelector<HTMLElement>('[data-tutorial-id="left-sidebar-trigger"] button') || document.querySelector<HTMLElement>('[data-sidebar="trigger"]');
-                                      if (trigger) {
-                                          trigger.addEventListener("click", () => {
-                                              const checkInterval = setInterval(() => {
-                                                  const pasteBtn = document.querySelector('[data-tutorial-id="tutorial-paste-question-btn"]');
-                                                  if (pasteBtn) {
-                                                      clearInterval(checkInterval);
-                                                      setTimeout(() => driverObj.moveNext(), 300);
-                                                  }
-                                              }, 100);
-                                              (driverObj as any)._openSidebarCheckInterval = checkInterval;
-                                          }, { once: true });
-                                      }
+                                      const checkInterval = setInterval(() => {
+                                          const pasteBtn = document.querySelector('[data-tutorial-id="tutorial-paste-question-btn"]');
+                                          const currentSidebar = document.querySelector('.peer[data-side="left"]');
+                                          if (pasteBtn || (currentSidebar && currentSidebar.getAttribute("data-state") === "expanded")) {
+                                              clearInterval(checkInterval);
+                                              setTimeout(() => driverObj.moveNext(), 300);
+                                          }
+                                      }, 100);
+                                      (driverObj as any)._openSidebarCheckInterval = checkInterval;
                                   },
                                   onDeselected: () => {
                                       if ((driverObj as any)._openSidebarCheckInterval) {
@@ -552,7 +548,7 @@ export const TutorialManager = () => {
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
                                               document.querySelector(
-                                                  '[data-tutorial-id="tutorial-lock-btn"]',
+                                                  '[data-tutorial-id="tutorial-lock-btn"] button',
                                               );
                                           if (
                                               lockBtn &&
