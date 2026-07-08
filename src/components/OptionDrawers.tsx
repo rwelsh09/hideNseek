@@ -206,6 +206,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                 <DrawerContent
                     onPointerDown={(e) => e.stopPropagation()}
                     className="max-h-[85vh]"
+                    data-tutorial-id="options-drawer"
                 >
                     <div className="mx-auto w-full max-w-lg overflow-y-auto pb-8 px-4 sm:px-8 custom-scrollbar">
                         <DrawerHeader className="pt-6 pb-4 sm:px-0">
