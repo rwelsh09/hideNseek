@@ -8,6 +8,10 @@ export const lngLatToText = (coordinates: [number, number]) => {
 export const getFeatureProperties = (feature: any): Record<string, any> => {
     if (!feature) return {};
 
+    if (feature.properties?.tags) {
+        return feature.properties.tags;
+    }
+
     if (feature.properties?.properties) {
         return {
             ...feature.properties,
