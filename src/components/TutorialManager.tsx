@@ -53,12 +53,12 @@ export const TutorialManager = () => {
                         },
                     },
                     {
-                        element: '[data-tutorial-id="left-sidebar-trigger"]',
+                        element: '[data-tutorial-id="tutorial-paste-question-btn"]',
                         popover: {
                             title: "Answering Questions",
-                            description: "When a Seeker shares a question with you, open the sidebar and click Paste Question to see the answer.",
+                            description: "When a Seeker shares a question with you, click this button to paste it onto the map and see the answer.",
                             side: "right",
-                            align: "start",
+                            align: "end",
                         },
                     }
                 ]
