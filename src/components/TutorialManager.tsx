@@ -499,17 +499,6 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element:
-                                  '[data-tutorial-id="tutorial-paste-question-btn"]',
-                              popover: {
-                                  title: "Paste Question",
-                                  description:
-                                      "If you are the Hider, you can paste the question you copied from the Seekers here to view it on your map.",
-                                  side: "bottom",
-                                  align: "center",
-                              },
-                          },
-                          {
                               element: '[data-tutorial-id="tutorial-gps-btn"]',
                               popover: {
                                   title: "Set to Current Location",
@@ -705,7 +694,7 @@ export const TutorialManager = () => {
                 }
             };
         }
-    }, [$showTutorial, $hasSeenRules, $hasSeenWelcome]);
+    }, [$showTutorial, $hasSeenRules]);
 
     return (
         <>
