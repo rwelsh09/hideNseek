@@ -21,7 +21,6 @@ import {
     DrawerTrigger,
 } from "@/components/ui/drawer";
 import {
-    additionalMapGeoLocations,
     baseTileLayer,
     disabledStations,
     displayTransitLines,
@@ -108,12 +107,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                 mapGeoLocation.set(geojson);
                 mapGeoJSON.set(null);
                 polyGeoJSON.set(null);
-
-                if (geojson.alternateLocations) {
-                    additionalMapGeoLocations.set(geojson.alternateLocations);
-                } else {
-                    additionalMapGeoLocations.set([]);
-                }
             } else {
                 if (geojson.questions) {
                     questions.set(questionsSchema.parse(geojson.questions));
