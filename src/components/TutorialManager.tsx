@@ -416,7 +416,7 @@ export const TutorialManager = () => {
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
                                               document.querySelector(
-                                                  '[data-tutorial-id="tutorial-lock-btn"]',
+                                                  '[data-tutorial-id="tutorial-lock-btn"] button',
                                               );
                                           if (
                                               lockBtn &&
@@ -427,7 +427,7 @@ export const TutorialManager = () => {
                                               clearInterval(checkInterval);
                                               setTimeout(
                                                   () => driverObj.moveNext(),
-                                                  1100,
+                                                  350,
                                               );
                                           }
                                       }, 100);
@@ -548,7 +548,7 @@ export const TutorialManager = () => {
                                       const checkInterval = setInterval(() => {
                                           const lockBtn =
                                               document.querySelector(
-                                                  '[data-tutorial-id="tutorial-lock-btn"]',
+                                                  '[data-tutorial-id="tutorial-lock-btn"] button',
                                               );
                                           if (
                                               lockBtn &&
