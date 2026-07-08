@@ -430,6 +430,24 @@ out ${outType};
                 lat = el.geometry[0].lat;
             }
 
+            if (
+                (typeof lon !== "number" || typeof lat !== "number") &&
+                el.type === "relation"
+            ) {
+                if (el.bounds) {
+                    lon = el.bounds.minlon;
+                    lat = el.bounds.minlat;
+                } else if (el.members && el.members.length > 0) {
+                    const memberWithGeom = el.members.find(
+                        (m: any) => m.geometry && m.geometry.length > 0
+                    );
+                    if (memberWithGeom) {
+                        lon = memberWithGeom.geometry[0].lon;
+                        lat = memberWithGeom.geometry[0].lat;
+                    }
+                }
+            }
+
             if (typeof lon !== "number" || typeof lat !== "number")
                 return false;
             const pt = turf.point([lon, lat]);
@@ -456,8 +474,36 @@ out ${outType};
             ),
         );
         data.elements = data.elements.filter((el: any) => {
-            const lon = el.center ? el.center.lon : el.lon;
-            const lat = el.center ? el.center.lat : el.lat;
+            let lon = el.center ? el.center.lon : el.lon;
+            let lat = el.center ? el.center.lat : el.lat;
+
+            if (
+                (typeof lon !== "number" || typeof lat !== "number") &&
+                el.geometry &&
+                el.geometry.length > 0
+            ) {
+                lon = el.geometry[0].lon;
+                lat = el.geometry[0].lat;
+            }
+
+            if (
+                (typeof lon !== "number" || typeof lat !== "number") &&
+                el.type === "relation"
+            ) {
+                if (el.bounds) {
+                    lon = el.bounds.minlon;
+                    lat = el.bounds.minlat;
+                } else if (el.members && el.members.length > 0) {
+                    const memberWithGeom = el.members.find(
+                        (m: any) => m.geometry && m.geometry.length > 0
+                    );
+                    if (memberWithGeom) {
+                        lon = memberWithGeom.geometry[0].lon;
+                        lat = memberWithGeom.geometry[0].lat;
+                    }
+                }
+            }
+
             if (typeof lon !== "number" || typeof lat !== "number")
                 return false;
             const pt = turf.point([lon, lat]);
