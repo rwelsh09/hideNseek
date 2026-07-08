@@ -105,9 +105,7 @@ export const RadiusQuestionComponent = ({
                     disabled={!!$hiderMode || !data.drag || $isLoading}
                     data-tutorial-id="tutorial-question-result-toggle"
                 >
-                    <ToggleGroupItem value="outside">
-                        Outside
-                    </ToggleGroupItem>
+                    <ToggleGroupItem value="outside">Outside</ToggleGroupItem>
                     <ToggleGroupItem value="inside">Inside</ToggleGroupItem>
                 </ToggleGroup>
                 {!!$hiderMode && (

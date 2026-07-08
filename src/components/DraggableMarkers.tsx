@@ -111,7 +111,6 @@ export const DraggableMarkers = () => {
     const $questions = useStore(questions);
     const $hiderMode = useStore(hiderMode);
     const $editingId = useStore(editingQuestionId);
-    const $draftQuestionId = useStore(draftQuestionId);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {

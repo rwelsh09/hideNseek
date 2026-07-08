@@ -1,10 +1,11 @@
+import { useStore } from "@nanostores/react";
 import { ClipboardPasteIcon } from "lucide-react";
 import { toast } from "react-toastify";
-import { useStore } from "@nanostores/react";
 
-import { Button } from "./ui/button";
 import { addQuestion, isLoading } from "@/lib/context";
 import { questionSchema } from "@/maps/schema";
+
+import { Button } from "./ui/button";
 
 export const PasteQuestionButton = () => {
     const $isLoading = useStore(isLoading);
@@ -21,12 +22,9 @@ export const PasteQuestionButton = () => {
                         try {
                             const parsed = JSON.parse(text);
                             delete parsed.key; // Ensure a new key is generated
-                            const validated =
-                                questionSchema.parse(parsed);
+                            const validated = questionSchema.parse(parsed);
                             addQuestion(validated);
-                            toast.success(
-                                "Question pasted successfully!",
-                            );
+                            toast.success("Question pasted successfully!");
                         } catch {
                             toast.error(
                                 "Failed to parse question from clipboard",
@@ -34,9 +32,7 @@ export const PasteQuestionButton = () => {
                         }
                     })
                     .catch(() => {
-                        toast.error(
-                            "Failed to read from clipboard",
-                        );
+                        toast.error("Failed to read from clipboard");
                     });
             }}
             disabled={$isLoading}

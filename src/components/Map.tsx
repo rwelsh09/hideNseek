@@ -35,12 +35,12 @@ import { hiderifyQuestion } from "@/maps";
 import { clearCache, determineMapBoundaries } from "@/maps/api";
 import { flyToWithOffset } from "@/maps/ui-utils";
 
+import { AddQuestionDialog } from "./AddQuestionDialog";
 import { ClosestPlaces } from "./ClosestPlaces";
 import { DraggableMarkers } from "./DraggableMarkers";
 import { LeafletActionButtons } from "./LeafletActionButtons";
-import { AddQuestionDialog } from "./AddQuestionDialog";
-import { PasteQuestionButton } from "./PasteQuestionButton";
 import { OfflineTileLayer } from "./OfflineTileLayer";
+import { PasteQuestionButton } from "./PasteQuestionButton";
 import { PlaytestPlaces } from "./PlaytestPlaces";
 import { RecommendedStartMarker } from "./RecommendedStartMarker";
 import { TransitLinesOverlay } from "./TransitLinesOverlay";

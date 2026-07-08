@@ -7,9 +7,9 @@ import { toast } from "react-toastify";
 
 import {
     additionalMapGeoLocations,
+    mapGeoJSON,
     mapGeoLocation,
     polyGeoJSON,
-    mapGeoJSON,
 } from "@/lib/context";
 import { safeUnion } from "@/maps/geo-utils";
 

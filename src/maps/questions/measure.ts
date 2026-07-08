@@ -3,13 +3,11 @@ import _ from "lodash";
 import { toast } from "react-toastify";
 
 import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
-
 import {
     hiderMode,
     mapGeoJSON,
     mapGeoLocation,
     polyGeoJSON,
-
 } from "@/lib/context";
 import {
     findPlacesInZone,

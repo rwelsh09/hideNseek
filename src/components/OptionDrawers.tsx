@@ -269,7 +269,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                     {$hiderMode !== false && (
                                         <div className="p-4 bg-slate-50/80 dark:bg-slate-900/50 inner-shadow-sm">
                                             <SidebarMenu>
-                                                <div data-tutorial-id="hider-location-picker">
                                                 <LatitudeLongitude
                                                     latitude={
                                                         $hiderMode.latitude
@@ -302,7 +301,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                                     }}
                                                     label="Location"
                                                 />
-                                                </div>
                                             </SidebarMenu>
                                         </div>
                                     )}

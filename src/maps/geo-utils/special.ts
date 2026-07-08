@@ -11,7 +11,7 @@ export const getFeatureProperties = (feature: any): Record<string, any> => {
     if (feature.properties?.properties) {
         return {
             ...feature.properties,
-            ...feature.properties.properties
+            ...feature.properties.properties,
         };
     }
 

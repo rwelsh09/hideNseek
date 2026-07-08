@@ -188,7 +188,9 @@ export const determineMatchBoundary = _.memoize(
                     return {
                         feature,
                         stationLines: extractStationLines(station),
-                        stationEnglishName: extractStationName(station) as string,
+                        stationEnglishName: extractStationName(
+                            station,
+                        ) as string,
                     };
                 });
 

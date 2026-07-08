@@ -15,16 +15,14 @@ import { OptionDrawers } from "@/components/OptionDrawers";
 import { TutorialManager } from "@/components/TutorialManager";
 import { TimerDrawer } from "@/components/TimerDrawer";
 import { NextStepsChecklist } from "@/components/NextStepsChecklist";
-import { WelcomeDialog } from "@/components/WelcomeDialog";
 ---
 
 <Layout className="bg-main">
-    <WelcomeDialog client:only="react" />
     <TutorialManager client:only="react" />
-    <NextStepsChecklist client:only="react" />
-    <SidebarProviderL client:only="react" defaultOpen={false}>
-        <SidebarProviderR client:only="react" defaultOpen={false}>
-            <QuestionSidebar client:only="react" />
+    <NextStepsChecklist client:load />
+    <SidebarProviderL client:load defaultOpen={false}>
+        <SidebarProviderR client:load defaultOpen={false}>
+            <QuestionSidebar client:only />
             <main class="flex flex-col flex-grow group">
                 <div
                     class="flex justify-center"
@@ -34,33 +32,33 @@ import { WelcomeDialog } from "@/components/WelcomeDialog";
                         <div
                             class="absolute top-[10px] left-1/2 -translate-x-1/2 z-[1030] group-[.fullscreen]:hidden"
                         >
-                            <TimerDrawer client:only="react" />
+                            <TimerDrawer client:load />
                         </div>
                         <div
                             class="absolute top-[142px] left-[10px] z-[1030] group-[.fullscreen]:hidden"
                         >
                             <div data-tutorial-id="left-sidebar-trigger">
-                                <SidebarTriggerL client:only="react" />
+                                <SidebarTriggerL client:load />
                             </div>
                         </div>
                         <div
                             class="absolute top-[142px] right-[10px] z-[1030] group-[.fullscreen]:hidden" data-tutorial-id="right-sidebar-trigger"
                         >
-                            <SidebarTriggerR client:only="react" />
+                            <SidebarTriggerR client:load />
                         </div>
                         <div
                             class="bottom-5 right-2 mx-auto mb-2 w-fit absolute z-[1030] group-[.fullscreen]:hidden" data-tutorial-id="option-drawers-trigger"
                         >
-                            <OptionDrawers client:only="react" />
+                            <OptionDrawers client:load />
                         </div>
                         <Map
                             className="w-full group-[.fullscreen]:w-full group-[.fullscreen]:h-full"
-                            client:only="react"
+                            client:only
                         />
                     </div>
                 </div>
             </main>
-            <ZoneSidebar client:only="react" />
+            <ZoneSidebar client:only />
         </SidebarProviderR>
     </SidebarProviderL>
 </Layout>

@@ -530,8 +530,6 @@ export function AddQuestionDialog() {
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                                 <button
                                     type="button"
-                                    aria-label="Add closest question for museum"
-                                    title="Add closest question for museum"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -547,8 +545,6 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     type="button"
-                                    aria-label="Add closest question for hospital"
-                                    title="Add closest question for hospital"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -564,8 +560,6 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     type="button"
-                                    aria-label="Add closest question for cinema"
-                                    title="Add closest question for cinema"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -581,8 +575,6 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     type="button"
-                                    aria-label="Add closest question for library"
-                                    title="Add closest question for library"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -598,8 +590,6 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     type="button"
-                                    aria-label="Add closest question for mcdonalds"
-                                    title="Add closest question for mcdonalds"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -615,8 +605,6 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     type="button"
-                                    aria-label="Add closest question for seven11"
-                                    title="Add closest question for seven11"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -632,8 +620,6 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     type="button"
-                                    aria-label="Add closest question for timhortons"
-                                    title="Add closest question for timhortons"
                                     onClick={() =>
                                         handleQuestionSelect(
                                             "closest",
@@ -649,8 +635,6 @@ export function AddQuestionDialog() {
                                 </button>
                                 <button
                                     type="button"
-                                    aria-label="Add closest question for pub"
-                                    title="Add closest question for pub"
                                     onClick={() =>
                                         handleQuestionSelect("closest", "pub")
                                     }

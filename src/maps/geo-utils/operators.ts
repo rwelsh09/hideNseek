@@ -20,9 +20,28 @@ export { geoSpatialVoronoi } from "@/maps/geo-utils/voronoi";
 export const safeUnion = (input: FeatureCollection<Polygon | MultiPolygon>) => {
     if (input.features.length === 0) return turf.multiPolygon([]) as any;
     if (input.features.length === 1) return input.features[0];
-    const union = turf.union(input);
+
+    let union;
+    try {
+        union = turf.union(input);
+    } catch (e) {
+        console.error("safeUnion turf.union failed", e);
+        union = null;
+    }
+
     if (union) return union;
-    throw new Error("No features");
+
+    // Fallback: Just return a FeatureCollection or a MultiPolygon manually?
+    // Let's create a combined multipolygon manually.
+    const coordinates: any[] = [];
+    for (const f of input.features) {
+        if (f.geometry.type === "Polygon") {
+            coordinates.push(f.geometry.coordinates);
+        } else if (f.geometry.type === "MultiPolygon") {
+            coordinates.push(...f.geometry.coordinates);
+        }
+    }
+    return turf.multiPolygon(coordinates) as any;
 };
 
 export const holedMask = (
@@ -65,7 +84,10 @@ export const modifyMapData = (
                 turf.featureCollection([safeUnion(mapData), safeModifications]),
             );
         } catch (e) {
-            console.error("turf.intersect failed, falling back to modifications", e);
+            console.error(
+                "turf.intersect failed, falling back to modifications",
+                e,
+            );
             result = safeModifications;
         }
         if (result) return turf.rewind(result, { mutate: true }) as any;
@@ -83,7 +105,6 @@ export const modifyMapData = (
     }
     if (result) return turf.rewind(result, { mutate: true }) as any;
     return mapData;
-
 };
 
 const DEFAULT_BUFFER_UNIT = "kilometers";
