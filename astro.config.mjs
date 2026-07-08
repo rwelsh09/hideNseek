@@ -32,6 +32,7 @@ export default defineConfig({
         }),
         AstroPWA({
             workbox: {
+                maximumFileSizeToCacheInBytes: 5000000,
                 navigateFallbackDenylist: [
                     /branches\.html$/,
                     /\/feat\//,
