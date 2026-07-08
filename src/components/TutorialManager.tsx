@@ -560,6 +560,12 @@ export const TutorialManager = () => {
                                           disableActiveInteraction: true,
                                       });
                                   },
+                                  onDeselected: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: false,
+                                      });
+                                  },
                               },
                           },
                           {
@@ -575,6 +581,12 @@ export const TutorialManager = () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
                                           disableActiveInteraction: true,
+                                      });
+                                  },
+                                  onDeselected: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: false,
                                       });
                                   },
                               },
