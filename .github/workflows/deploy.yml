@@ -49,11 +49,6 @@ jobs:
             - name: Run tests
               run: pnpm test
 
-            - name: Upload Pages Artifact
-              uses: actions/upload-pages-artifact@v3
-              with:
-                  path: "./dist/"
-
             - name: Checkout gh-pages
               uses: actions/checkout@v7
               with:
