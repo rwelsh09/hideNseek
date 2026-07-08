@@ -1,3 +1,4 @@
+import offlineMetadata from "@/data/offline_metadata.json";
 import { useStore } from "@nanostores/react";
 import { useEffect } from "react";
 import { toast } from "react-toastify";

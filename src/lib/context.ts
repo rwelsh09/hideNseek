@@ -286,3 +286,7 @@ export const showRecommendedStart = persistentAtom<boolean>("showRecommendedStar
         decode: JSON.parse,
     },
 );
+export const offlineMode = persistentAtom<boolean>("offlineMode", false, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
