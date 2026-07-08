@@ -15,9 +15,11 @@ import { OptionDrawers } from "@/components/OptionDrawers";
 import { TutorialManager } from "@/components/TutorialManager";
 import { TimerDrawer } from "@/components/TimerDrawer";
 import { NextStepsChecklist } from "@/components/NextStepsChecklist";
+import { WelcomeDialog } from "@/components/WelcomeDialog";
 ---
 
 <Layout className="bg-main">
+    <WelcomeDialog client:load />
     <TutorialManager client:only="react" />
     <NextStepsChecklist client:load />
     <SidebarProviderL client:load defaultOpen={false}>
