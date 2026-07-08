@@ -34,6 +34,7 @@ import {
     leafletMapContext,
     mapGeoJSON,
     mapGeoLocation,
+    offlineMode,
     polyGeoJSON,
     questions,
     showRecommendedStart,
@@ -62,6 +63,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     const $displayTransitLines = useStore(displayTransitLines);
     const $showRecommendedStart = useStore(showRecommendedStart);
     const $isOptionsOpenStore = useStore(isOptionsOpenStore);
+    const $offlineMode = useStore(offlineMode);
 
     useEffect(() => {
         const params = new URL(window.location.toString()).searchParams;
@@ -471,23 +473,52 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                 <h3 className="text-sm font-semibold text-red-500/80 uppercase tracking-wider px-1">
                                     Data Management
                                 </h3>
-                                <div className="flex flex-col sm:flex-row gap-3">
-                                    <Button
-                                        variant="outline"
-                                        className="w-full h-11 bg-background hover:bg-slate-100 dark:hover:bg-slate-800"
-                                        onClick={() => {
-                                            import("@/maps/api").then(
-                                                ({ cacheAllPlaces }) => {
-                                                    cacheAllPlaces();
-                                                },
-                                            );
-                                        }}
-                                    >
-                                        Offline Mode
-                                    </Button>
-                                    <AlertDialog>
-                                        <AlertDialogTrigger asChild>
-                                            <Button
+                                <div className="flex flex-col gap-3">
+                                    <div className="flex items-center space-x-2 mb-2 p-3 rounded-lg border border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/50">
+                                        <Label
+                                            htmlFor="offline-mode-toggle"
+                                            className="flex-1 cursor-pointer text-base font-medium"
+                                        >
+                                            Offline Mode
+                                        </Label>
+                                        <Checkbox
+                                            id="offline-mode-toggle"
+                                            checked={$offlineMode}
+                                            onCheckedChange={() => {
+                                                const newMode = !$offlineMode;
+                                                offlineMode.set(newMode);
+                                                if (newMode) {
+                                                    const lastUpdated = new Date(offlineMetadata.lastUpdated);
+                                                    const diffTime = Math.abs(new Date().getTime() - lastUpdated.getTime());
+                                                    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                                                    if (diffDays > 7) {
+                                                        const formattedDate = lastUpdated.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+                                                        toast.warning(`Ensure all players are using Offline Mode. Data last updated: ${formattedDate}`, {
+                                                            autoClose: 5000,
+                                                        });
+                                                    }
+                                                }
+                                            }}
+                                        />
+                                    </div>
+                                    <div className="flex flex-col sm:flex-row gap-3">
+                                        <Button
+                                            variant="outline"
+                                            className="w-full h-11 bg-background hover:bg-slate-100 dark:hover:bg-slate-800"
+                                            onClick={() => {
+                                                import("@/maps/api").then(
+                                                    ({ cacheAllPlaces }) => {
+                                                        cacheAllPlaces();
+                                                    },
+                                                );
+                                            }}
+                                        >
+                                            Cache Mode
+                                        </Button>
+                                        <AlertDialog>
+                                            <AlertDialogTrigger asChild>
+                                                <Button
                                                 variant="destructive"
                                                 className="w-full h-11 shadow-sm"
                                             >
@@ -540,7 +571,8 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                                 </AlertDialogAction>
                                             </AlertDialogFooter>
                                         </AlertDialogContent>
-                                    </AlertDialog>
+                                        </AlertDialog>
+                                    </div>
                                 </div>
                             </div>
                         </div>
