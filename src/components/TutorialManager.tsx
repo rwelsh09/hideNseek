@@ -18,7 +18,6 @@ import {
     hasSeenRules,
     hiderMode,
     showHiderTutorial,
-    hasSeenWelcome,
     showNextStepsChecklist,
     showTutorial,
     tutorialDriver,
@@ -29,7 +28,6 @@ export const TutorialManager = () => {
     const $hasSeenRules = useStore(hasSeenRules);
     const $hiderMode = useStore(hiderMode);
     const $showHiderTutorial = useStore(showHiderTutorial);
-    const $hasSeenWelcome = useStore(hasSeenWelcome);
 
     // States for custom confirm dialogs
     const [confirmEndTutorial, setConfirmEndTutorial] = useState(false);
@@ -82,7 +80,7 @@ export const TutorialManager = () => {
     }, [$hiderMode, $showHiderTutorial, $showTutorial]);
 
     useEffect(() => {
-        if ($showTutorial && $hasSeenWelcome) {
+        if ($showTutorial) {
             const driverObj = driver({
                 showProgress: true,
                 overlayClickBehavior: () => {},
@@ -694,7 +692,7 @@ export const TutorialManager = () => {
                 }
             };
         }
-    }, [$showTutorial, $hasSeenRules, $hasSeenWelcome]);
+    }, [$showTutorial, $hasSeenRules]);
 
     return (
         <>
