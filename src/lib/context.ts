@@ -263,11 +263,6 @@ export const hasSeenRules = persistentAtom<boolean>("hasSeenRules", false, {
     decode: JSON.parse,
 });
 
-export const hasSeenWelcome = persistentAtom<boolean>("hasSeenWelcome", false, {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-});
-
 // --- TIME PENALTY & INFO BOARD STATE ---
 export const TIME_PENALTIES: Record<string, number> = {
     match: 15,
