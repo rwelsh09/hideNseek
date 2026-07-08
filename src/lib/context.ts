@@ -51,7 +51,7 @@ export const additionalMapGeoLocations = persistentAtom<
     decode: JSON.parse,
 });
 
-export const hasSeenWelcome = persistentAtom<boolean>("hasSeenWelcome", false, {
+export const showHiderTutorial = persistentAtom<boolean>("showHiderTutorial", true, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
