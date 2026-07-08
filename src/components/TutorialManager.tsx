@@ -646,7 +646,7 @@ export const TutorialManager = () => {
                 }
             };
         }
-    }, [$showTutorial, $hasSeenRules]);
+    }, [$showTutorial, $hasSeenRules, $hasSeenWelcome]);
 
     return (
         <>
