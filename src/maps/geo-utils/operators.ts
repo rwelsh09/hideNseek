@@ -56,13 +56,15 @@ export const modifyMapData = (
         const result = turf.intersect(
             turf.featureCollection([safeUnion(mapData), safeModifications]),
         );
-        return result || turf.feature(turf.multiPolygon([]).geometry) as any;
+        if (result) return turf.rewind(result, { mutate: true }) as any;
+        return turf.feature(turf.multiPolygon([]).geometry) as any;
     }
 
     const result = turf.difference(
         turf.featureCollection([safeUnion(mapData), safeModifications]),
     );
-    return result || turf.feature(turf.multiPolygon([]).geometry) as any;
+    if (result) return turf.rewind(result, { mutate: true }) as any;
+    return turf.feature(turf.multiPolygon([]).geometry) as any;
 };
 
 const DEFAULT_BUFFER_UNIT = "kilometers";
