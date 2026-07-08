@@ -51,11 +51,6 @@ export const additionalMapGeoLocations = persistentAtom<
     decode: JSON.parse,
 });
 
-export const showHiderTutorial = persistentAtom<boolean>("showHiderTutorial", true, {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-});
-
 export const tutorialDriver = atom<any>(null);
 export const headStartMinutes = persistentAtom<number>("headStartMinutes", 45, {
     encode: JSON.stringify,
@@ -217,6 +212,11 @@ if (typeof window !== "undefined" && navigator.permissions) {
 export const isLoading = atom<boolean>(false);
 
 export const isOptionsOpenStore = atom<boolean>(false);
+
+export const offlineMode = persistentAtom<boolean>("offlineMode", false, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
 
 export const baseTileLayer = persistentAtom<
     "voyager" | "light" | "dark" | "transport" | "neighbourhood" | "osmcarto"
