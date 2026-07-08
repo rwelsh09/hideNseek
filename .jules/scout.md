@@ -27,3 +27,6 @@
 
 **Learning:** We previously used manual reflection into Zod schema internals (`_def.innerType`, `_def.value`) within UI components (like `ClosestQuestionComponent` and `MatchQuestionComponent`) to extract Select options. This was brittle and led to leaky abstractions.
 **Action:** Use the newly created `getSchemaOptions(schema)` function from `src/maps/schema.ts` when building options objects from Zod schema definitions to encapsulate all Zod internal traversals.
+## 2026-07-04 - Safely Reversing Geospatial Inversions
+**Learning:** We refactored `modifyMapData` to use `turf.difference` directly. However, we also simplified the `hiderify` logic for `match` and `measure` questions, which previously used `holedMask` to do geospatial subtraction of the allowed area against the entire world.
+**Action:** When simplifying inversions, ensure that you keep existing `catch` fallbacks to avoid functional regressions when Turf.js throws an error due to invalid geometry intersections.

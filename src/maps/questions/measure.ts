@@ -141,29 +141,39 @@ export const hiderifyMeasure = async (question: MeasureQuestion) => {
     const $mapGeoJSON = mapGeoJSON.get();
     if ($mapGeoJSON === null) return question;
 
-    let feature = null;
+    const hiderPoint = turf.point([$hiderMode.longitude, $hiderMode.latitude]);
 
     try {
-        feature = holedMask((await adjustPerMeasure(question, $mapGeoJSON))!);
+        const allowedZone = await adjustPerMeasure(question, $mapGeoJSON);
+        if (!allowedZone) return question;
+
+        if ("features" in allowedZone && (allowedZone as any).features.length === 0) {
+            question.hiderCloser = !question.hiderCloser;
+            return question;
+        }
+
+        const allowedUnion = "features" in allowedZone ? safeUnion(allowedZone as any) : allowedZone;
+
+        if (allowedUnion && turf.booleanPointInPolygon(hiderPoint, allowedUnion as any)) {
+            return question;
+        }
     } catch {
         try {
-            feature = await adjustPerMeasure(question, {
+            const fallbackZone = await adjustPerMeasure(question, {
                 type: "FeatureCollection",
-                features: [holedMask($mapGeoJSON)],
-            });
+                features: [holedMask($mapGeoJSON)!],
+            } as any);
+
+            if (fallbackZone && turf.booleanPointInPolygon(hiderPoint, fallbackZone as any)) {
+                question.hiderCloser = !question.hiderCloser;
+            }
         } catch {
             return question;
         }
+        return question;
     }
 
-    if (feature === null || feature === undefined) return question;
-
-    const hiderPoint = turf.point([$hiderMode.longitude, $hiderMode.latitude]);
-
-    if (turf.booleanPointInPolygon(hiderPoint, feature)) {
-        question.hiderCloser = !question.hiderCloser;
-    }
-
+    question.hiderCloser = !question.hiderCloser;
     return question;
 };
 

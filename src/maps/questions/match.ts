@@ -357,27 +357,37 @@ export const hiderifyMatch = async (question: MatchQuestion) => {
         return question;
     }
 
-    let feature = null;
-
     try {
-        feature = holedMask((await adjustPerMatch(question, $mapGeoJSON))!);
+        const allowedZone = await adjustPerMatch(question, $mapGeoJSON);
+        if (!allowedZone) return question;
+
+        if ("features" in allowedZone && (allowedZone as any).features.length === 0) {
+            question.same = !question.same;
+            return question;
+        }
+
+        const allowedUnion = "features" in allowedZone ? safeUnion(allowedZone as any) : allowedZone;
+
+        if (allowedUnion && turf.booleanPointInPolygon(hiderPoint, allowedUnion as any)) {
+            return question;
+        }
     } catch {
         try {
-            feature = await adjustPerMatch(question, {
+            const fallbackZone = await adjustPerMatch(question, {
                 type: "FeatureCollection",
-                features: [holedMask($mapGeoJSON)],
-            });
+                features: [holedMask($mapGeoJSON)!],
+            } as any);
+
+            if (fallbackZone && turf.booleanPointInPolygon(hiderPoint, fallbackZone as any)) {
+                question.same = !question.same;
+            }
         } catch {
             return question;
         }
+        return question;
     }
 
-    if (feature === null || feature === undefined) return question;
-
-    if (turf.booleanPointInPolygon(hiderPoint, feature)) {
-        question.same = !question.same;
-    }
-
+    question.same = !question.same;
     return question;
 };
 
