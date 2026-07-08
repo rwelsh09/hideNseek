@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 
 import calgaryBoundaryData from "@/data/calgary_boundary.json";
 import {
-    additionalMapGeoLocations,
     mapGeoLocation,
     polyGeoJSON,
     mapGeoJSON,
@@ -373,34 +372,21 @@ out ${outType};
 `;
     } else {
         const primaryLocation = mapGeoLocation.get();
-        const additionalLocations = additionalMapGeoLocations
-            .get()
-            .filter((entry) => entry.added)
-            .map((entry) => entry.location);
-        const allLocations = [primaryLocation, ...additionalLocations];
-        const relationToAreaBlocks = allLocations
-            .map((loc, idx) => {
-                const regionVar = `.region${idx}`;
-                return `relation(${loc.properties.osm_id});map_to_area->${regionVar};`;
-            })
-            .join("\n");
-        const searchBlocks = allLocations
-            .map((_, idx) => {
-                const regionVar = `area.region${idx}`;
-                const altQueries =
-                    alternatives.length > 0
-                        ? alternatives
-                              .map(
-                                  (alt) => `${searchType}${alt}(${regionVar});`,
-                              )
-                              .join("\n")
-                        : "";
-                return `
-            ${searchType}${filter}(${regionVar});
+        const regionVar = `.region0`;
+        const relationToAreaBlocks = `relation(${primaryLocation.properties.osm_id});map_to_area->${regionVar};`;
+        const areaRegionVar = `area.region0`;
+        const altQueries =
+            alternatives.length > 0
+                ? alternatives
+                      .map(
+                          (alt) => `${searchType}${alt}(${areaRegionVar});`,
+                      )
+                      .join("\n")
+                : "";
+        const searchBlocks = `
+            ${searchType}${filter}(${areaRegionVar});
             ${altQueries}
           `;
-            })
-            .join("\n");
         query = `
         [out:json]${timeoutDuration !== 0 ? `[timeout:${timeoutDuration}]` : ""};
         ${relationToAreaBlocks}
@@ -435,34 +421,6 @@ out ${outType};
                 return false;
             const pt = turf.point([lon, lat]);
             return $polyGeoJSON.features.some((poly) =>
-                turf.booleanPointInPolygon(pt, poly as any),
-            );
-        });
-    }
-
-    const subtractedEntries = additionalMapGeoLocations
-        .get()
-        .filter((e) => !e.added);
-    const subtractedPolygons = subtractedEntries.map((entry) => entry.location);
-    if (subtractedPolygons.length > 0 && data && data.elements) {
-        const turfPolys = await Promise.all(
-            subtractedPolygons.map(
-                async (location) =>
-                    turf.combine(
-                        await determineGeoJSON(
-                            location.properties.osm_id.toString(),
-                            location.properties.osm_type,
-                        ),
-                    ).features[0],
-            ),
-        );
-        data.elements = data.elements.filter((el: any) => {
-            const lon = el.center ? el.center.lon : el.lon;
-            const lat = el.center ? el.center.lat : el.lat;
-            if (typeof lon !== "number" || typeof lat !== "number")
-                return false;
-            const pt = turf.point([lon, lat]);
-            return !turfPolys.some((poly) =>
                 turf.booleanPointInPolygon(pt, poly as any),
             );
         });
