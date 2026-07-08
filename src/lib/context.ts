@@ -56,6 +56,11 @@ export const hasSeenWelcome = persistentAtom<boolean>("hasSeenWelcome", false, {
     decode: JSON.parse,
 });
 
+export const showHiderTutorial = persistentAtom<boolean>("showHiderTutorial", true, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
+
 export const tutorialDriver = atom<any>(null);
 export const headStartMinutes = persistentAtom<number>("headStartMinutes", 45, {
     encode: JSON.stringify,
