@@ -302,17 +302,6 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element:
-                                  '[data-tutorial-id="tutorial-paste-question-btn"]',
-                              popover: {
-                                  title: "Paste Question",
-                                  description:
-                                      "If you are the Hider, you can paste the question you copied from the Seekers here to view it on your map.",
-                                  side: "bottom",
-                                  align: "center",
-                              },
-                          },
-                          {
                               element: '[data-tutorial-id="add-question-btn"]',
                               popover: {
                                   title: "Ask a Question",
@@ -476,6 +465,100 @@ export const TutorialManager = () => {
                                               );
                                           }
                                       }, 100);
+                                  },
+                              },
+                          },
+                          {
+                              element: '[data-tutorial-id="tutorial-store-question-btn"]',
+                              popover: {
+                                  title: "Close Question",
+                                  description: "Click here to close the question panel.",
+                                  side: "bottom",
+                                  align: "end",
+                                  showButtons: ["previous"],
+                                  onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: false,
+                                      });
+
+                                      const checkInterval = setInterval(() => {
+                                          const storeBtn = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
+                                          if (!storeBtn) {
+                                              clearInterval(checkInterval);
+                                              setTimeout(() => driverObj.moveNext(), 300);
+                                          } else if (!storeBtn.hasAttribute("data-listener-attached")) {
+                                              storeBtn.setAttribute("data-listener-attached", "true");
+                                              storeBtn.addEventListener("click", () => {
+                                                  clearInterval(checkInterval);
+                                                  setTimeout(() => driverObj.moveNext(), 300);
+                                              }, { once: true });
+                                          }
+                                      }, 100);
+                                      (driverObj as any)._closeCheckInterval = checkInterval;
+                                  },
+                                  onDeselected: () => {
+                                      if ((driverObj as any)._closeCheckInterval) {
+                                          clearInterval((driverObj as any)._closeCheckInterval);
+                                      }
+                                  }
+                              }
+                          },
+                          {
+                              element: '[data-tutorial-id="left-sidebar-trigger"]',
+                              popover: {
+                                  title: "Open the Sidebar",
+                                  description: "Click here to open the sidebar.",
+                                  side: "right",
+                                  align: "start",
+                                  showButtons: ["previous"],
+                                  onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: false,
+                                      });
+
+                                      const sidebarL = document.querySelector('.peer[data-side="left"]');
+                                      if (sidebarL && sidebarL.getAttribute("data-state") === "expanded") {
+                                          setTimeout(() => driverObj.moveNext(), 10);
+                                          return;
+                                      }
+
+                                      const trigger = document.querySelector<HTMLElement>('[data-tutorial-id="left-sidebar-trigger"] button') || document.querySelector<HTMLElement>('[data-sidebar="trigger"]');
+                                      if (trigger) {
+                                          trigger.addEventListener("click", () => {
+                                              const checkInterval = setInterval(() => {
+                                                  const pasteBtn = document.querySelector('[data-tutorial-id="tutorial-paste-question-btn"]');
+                                                  if (pasteBtn) {
+                                                      clearInterval(checkInterval);
+                                                      setTimeout(() => driverObj.moveNext(), 300);
+                                                  }
+                                              }, 100);
+                                              (driverObj as any)._openSidebarCheckInterval = checkInterval;
+                                          }, { once: true });
+                                      }
+                                  },
+                                  onDeselected: () => {
+                                      if ((driverObj as any)._openSidebarCheckInterval) {
+                                          clearInterval((driverObj as any)._openSidebarCheckInterval);
+                                      }
+                                  }
+                              }
+                          },
+                          {
+                              element:
+                                  '[data-tutorial-id="tutorial-paste-question-btn"]',
+                              popover: {
+                                  title: "Paste Question",
+                                  description:
+                                      "If you are the Hider, you can paste the question you copied from the Seekers here to view it on your map.",
+                                  side: "bottom",
+                                  align: "center",
+                                  onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: true,
+                                      });
                                   },
                               },
                           },
