@@ -100,6 +100,36 @@ const QUIZ_QUESTIONS = [
         ],
         correct: 1,
     },
+    {
+        question: "Can Seekers use Google Street View to look at a location?",
+        options: [
+            "Yes, if they don't want to walk there.",
+            "Only if the Hider agrees to it.",
+            "No, Seekers must physically go to places to search for the Hider's photos.",
+            "Yes, but it costs a time penalty."
+        ],
+        correct: 2,
+    },
+    {
+        question: "Should players other than the Hider share their live location?",
+        options: [
+            "No, that ruins the surprise.",
+            "Yes, all players other than the Hider must share their location with the group.",
+            "Only when they find the Hider.",
+            "Yes, but only with the Seekers, not the Hider."
+        ],
+        correct: 1,
+    },
+    {
+        question: "If you want to play a practice round, what is highly encouraged?",
+        options: [
+            "To not do it, practice makes imperfect.",
+            "To choose a Hiding Spot together and discuss the different answers one would give.",
+            "To only play in an area you know well.",
+            "To limit the time to 10 minutes."
+        ],
+        correct: 1,
+    },
 ];
 
 export const RulesQuiz = () => {
@@ -114,6 +144,15 @@ export const RulesQuiz = () => {
     useEffect(() => {
         setIsMounted(true);
     }, []);
+
+    useEffect(() => {
+        if (isAnswered && currentQuestionIndex + 1 === QUIZ_QUESTIONS.length) {
+            const timer = setTimeout(() => {
+                quizShowResults.set(true);
+            }, 1000);
+            return () => clearTimeout(timer);
+        }
+    }, [isAnswered, currentQuestionIndex]);
 
     const handleOptionClick = (index: number) => {
         if (isAnswered) return;
@@ -218,6 +257,7 @@ export const RulesQuiz = () => {
                 })}
             </div>
 
+            {currentQuestionIndex + 1 !== QUIZ_QUESTIONS.length && (
             <div className="flex justify-end mt-4 min-h-[40px]">
                 <Button
                     onClick={handleNextQuestion}
@@ -228,11 +268,10 @@ export const RulesQuiz = () => {
                             : "bg-slate-600 opacity-50 cursor-not-allowed"
                     }`}
                 >
-                    {currentQuestionIndex + 1 === QUIZ_QUESTIONS.length
-                        ? "Show Results"
-                        : "Next Question"}
+                    Next Question
                 </Button>
             </div>
+            )}
         </div>
     );
 };
