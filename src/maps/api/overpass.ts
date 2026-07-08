@@ -5,6 +5,7 @@ import osmtogeojson from "osmtogeojson";
 import pLimit from "p-limit";
 import { toast } from "react-toastify";
 
+import calgaryBoundaryData from "@/data/calgary_boundary.json";
 import {
     additionalMapGeoLocations,
     mapGeoLocation,
@@ -680,53 +681,7 @@ export const cacheAllPlaces = async () => {
 };
 
 export const determineMapBoundaries = async () => {
-    const mapGeoDatum = await Promise.all(
-        [
-            {
-                location: mapGeoLocation.get(),
-                added: true,
-                base: true,
-            },
-            ...additionalMapGeoLocations.get(),
-        ].map(async (location) => ({
-            added: location.added,
-            data: await determineGeoJSON(
-                location.location.properties.osm_id.toString(),
-                location.location.properties.osm_type,
-            ),
-        })),
-    );
-
-    let mapGeoData = turf.featureCollection([
-        safeUnion(
-            turf.featureCollection(
-                mapGeoDatum
-                    .filter((x) => x.added)
-                    .flatMap((x) => x.data.features),
-            ) as any,
-        ),
+    return turf.featureCollection([
+        calgaryBoundaryData[0] as Feature<MultiPolygon>,
     ]);
-
-    const differences = mapGeoDatum.filter((x) => !x.added).map((x) => x.data);
-
-    if (differences.length > 0) {
-        mapGeoData = turf.featureCollection([
-            turf.difference(
-                turf.featureCollection([
-                    mapGeoData.features[0],
-                    ...differences.flatMap((x) => x.features),
-                ]),
-            )!,
-        ]);
-    }
-
-    if (turf.coordAll(mapGeoData).length > 10000) {
-        turf.simplify(mapGeoData, {
-            tolerance: 0.0005,
-            highQuality: true,
-            mutate: true,
-        });
-    }
-
-    return turf.combine(mapGeoData) as FeatureCollection<MultiPolygon>;
 };
