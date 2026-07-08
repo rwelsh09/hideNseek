@@ -146,9 +146,10 @@ export const QuestionCard = ({
     return (
         <>
             <SidebarGroup className={className}>
-                <div className="relative" data-tutorial-id="tutorial-lock-btn">
+            <div className="relative">
                     <button
                         type="button"
+                        data-tutorial-id="tutorial-lock-btn"
                         onClick={toggleLockAndCollapse}
                         aria-label={
                             !questionData.drag
