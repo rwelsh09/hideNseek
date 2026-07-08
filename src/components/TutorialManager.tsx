@@ -191,7 +191,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Questions",
                                   description:
-                                      "This opens the left sidebar, where you add and manage questions for the game.",
+                                      "This opens the left sidebar, where you manage questions.",
                                   side: "right",
                                   align: "start",
                               },
@@ -238,69 +238,6 @@ export const TutorialManager = () => {
                                       "Access Hider Mode, recommended Starting Point, transit lines overlays, and more.",
                                   side: "top",
                                   align: "end",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="left-sidebar-trigger"]',
-                              popover: {
-                                  title: "Open the Sidebar",
-                                  description:
-                                      "Click here to open the sidebar so we can add a question.",
-                                  side: "right",
-                                  align: "start",
-                                  showButtons: ["previous"],
-                                  onPopoverRender: () => {
-                                      const sidebarL = document.querySelector(
-                                          '.peer[data-side="left"]',
-                                      );
-                                      if (
-                                          sidebarL &&
-                                          sidebarL.getAttribute(
-                                              "data-state",
-                                          ) === "expanded"
-                                      ) {
-                                          setTimeout(
-                                              () => driverObj.moveNext(),
-                                              10,
-                                          );
-                                          return;
-                                      }
-
-                                      const trigger =
-                                          document.querySelector<HTMLElement>(
-                                              '[data-tutorial-id="left-sidebar-trigger"] button',
-                                          ) ||
-                                          document.querySelector<HTMLElement>(
-                                              '[data-sidebar="trigger"]',
-                                          );
-
-                                      if (trigger) {
-                                          trigger.addEventListener(
-                                              "click",
-                                              () => {
-                                                  const checkInterval =
-                                                      setInterval(() => {
-                                                          const addBtn =
-                                                              document.querySelector(
-                                                                  '[data-tutorial-id="add-question-btn"]',
-                                                              );
-                                                          if (addBtn) {
-                                                              clearInterval(
-                                                                  checkInterval,
-                                                              );
-                                                              setTimeout(
-                                                                  () =>
-                                                                      driverObj.moveNext(),
-                                                                  300,
-                                                              );
-                                                          }
-                                                      }, 100);
-                                              },
-                                              { once: true },
-                                          );
-                                      }
-                                  },
                               },
                           },
                           {
@@ -373,16 +310,6 @@ export const TutorialManager = () => {
                                           );
                                       }
                                   },
-                              },
-                          },
-                          {
-                              element: '[data-tutorial-id="tutorial-store-question-btn"]',
-                              popover: {
-                                  title: "Adjust Questions",
-                                  description:
-                                      "You can adjust, lock, and manage questions here on the map without opening the sidebar.",
-                                  side: "left",
-                                  align: "start",
                               },
                           },
                           {
@@ -546,29 +473,6 @@ export const TutorialManager = () => {
                                       }
                                   }
                               }
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-paste-question-btn"]',
-                              popover: {
-                                  title: "Paste Question",
-                                  description:
-                                      "If you are the Hider, you can paste the question you copied from the Seekers here to view it on your map.",
-                                  side: "bottom",
-                                  align: "center",
-                                  onPopoverRender: () => {
-                                      driverObj.setConfig({
-                                          ...driverObj.getConfig(),
-                                          disableActiveInteraction: true,
-                                      });
-                                  },
-                                  onDeselected: () => {
-                                      driverObj.setConfig({
-                                          ...driverObj.getConfig(),
-                                          disableActiveInteraction: false,
-                                      });
-                                  },
-                              },
                           },
                           {
                               element:
