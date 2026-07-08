@@ -16,6 +16,9 @@ import {
 } from "@/components/ui/alert-dialog";
 import {
     hasSeenRules,
+    hasSeenWelcome,
+    hiderMode,
+    showHiderTutorial,
     showNextStepsChecklist,
     showTutorial,
     tutorialDriver,
@@ -24,13 +27,62 @@ import {
 export const TutorialManager = () => {
     const $showTutorial = useStore(showTutorial);
     const $hasSeenRules = useStore(hasSeenRules);
+    const $hiderMode = useStore(hiderMode);
+    const $showHiderTutorial = useStore(showHiderTutorial);
+    const $hasSeenWelcome = useStore(hasSeenWelcome);
 
     // States for custom confirm dialogs
     const [confirmEndTutorial, setConfirmEndTutorial] = useState(false);
     const [activeDriver, setActiveDriver] = useState<any>(null);
 
     useEffect(() => {
-        if ($showTutorial) {
+        if ($hiderMode !== false && $showHiderTutorial && !$showTutorial) {
+            const hiderDriverObj = driver({
+                showProgress: true,
+                overlayClickBehavior: () => {},
+                onDestroyStarted: () => {
+                    hiderDriverObj.destroy();
+                    showHiderTutorial.set(false);
+                },
+                steps: [
+                    {
+                        element: '[data-tutorial-id="hider-location-picker"]',
+                        popover: {
+                            title: "Hider Location",
+                            description: "Place the green Map Marker on your hiding spot so the app can calculate the answers to give the Seekers.",
+                            side: "top",
+                            align: "center",
+                        },
+                    },
+                    {
+                        element: '[data-tutorial-id="tutorial-paste-question-btn"]',
+                        popover: {
+                            title: "Answering Questions",
+                            description: "When a Seeker shares a question with you, click this button to paste it onto the map and see the answer.",
+                            side: "right",
+                            align: "end",
+                        },
+                    }
+                ]
+            });
+            tutorialDriver.set(hiderDriverObj);
+            setTimeout(() => {
+                hiderDriverObj.drive();
+            }, 500);
+
+            return () => {
+                tutorialDriver.set(null);
+                try {
+                    hiderDriverObj.destroy();
+                } catch {
+                    /* ignore */
+                }
+            };
+        }
+    }, [$hiderMode, $showHiderTutorial, $showTutorial]);
+
+    useEffect(() => {
+        if ($showTutorial && $hasSeenWelcome) {
             const driverObj = driver({
                 showProgress: true,
                 overlayClickBehavior: () => {},
@@ -444,17 +496,6 @@ export const TutorialManager = () => {
                                       "Need to send the question details to the Hider? You can copy and share it from here.",
                                   side: "bottom",
                                   align: "end",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-paste-question-btn"]',
-                              popover: {
-                                  title: "Paste Question",
-                                  description:
-                                      "If you are the Hider, you can paste the question you copied from the Seekers here to view it on your map.",
-                                  side: "bottom",
-                                  align: "center",
                               },
                           },
                           {
