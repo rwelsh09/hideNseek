@@ -19,6 +19,7 @@ import {
     hasSeenWelcome,
     hiderMode,
     showHiderTutorial,
+    isOptionsOpenStore,
     showNextStepsChecklist,
     showTutorial,
     tutorialDriver,
@@ -45,6 +46,42 @@ export const TutorialManager = () => {
                     showHiderTutorial.set(false);
                 },
                 steps: [
+                    {
+                        element: '[data-tutorial-id="options-drawer"]',
+                        popover: {
+                            title: "Welcome Hider!",
+                            description: "Close this options menu I have a couple things to show you.",
+                            side: "top",
+                            align: "center",
+                            onPopoverRender: () => {
+                                hiderDriverObj.setConfig({
+                                    ...hiderDriverObj.getConfig(),
+                                    disableActiveInteraction: false,
+                                    overlayClickBehavior: () => {
+                                        isOptionsOpenStore.set(false);
+                                    }
+                                });
+
+                                const checkInterval = setInterval(() => {
+                                    if (!isOptionsOpenStore.get()) {
+                                        clearInterval(checkInterval);
+                                        setTimeout(() => hiderDriverObj.moveNext(), 300);
+                                    }
+                                }, 100);
+                                
+                                (hiderDriverObj as any)._closeOptionsCheckInterval = checkInterval;
+                            },
+                            onDeselected: () => {
+                                if ((hiderDriverObj as any)._closeOptionsCheckInterval) {
+                                    clearInterval((hiderDriverObj as any)._closeOptionsCheckInterval);
+                                }
+                                hiderDriverObj.setConfig({
+                                    ...hiderDriverObj.getConfig(),
+                                    overlayClickBehavior: () => {}
+                                });
+                            }
+                        }
+                    },
                     {
                         element: '[data-tutorial-id="hider-location-picker"]',
                         popover: {
