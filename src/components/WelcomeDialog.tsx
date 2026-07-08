@@ -70,7 +70,7 @@ export const WelcomeDialog = () => {
                     <Button onClick={handleStartTutorial} size="lg" className="w-full justify-start text-left h-auto py-4 bg-blue-600 hover:bg-blue-700 text-white">
                         <div className="flex flex-col items-start gap-1">
                             <span className="font-semibold text-xl">Start Tutorial</span>
-                            <span className="text-sm font-normal opacity-90">A step-by-step interactive guide</span>
+                            <span className="text-sm font-normal opacity-90">An extensive interactive guide</span>
                         </div>
                     </Button>
                     <Button onClick={handleReadRules} size="lg" variant="secondary" className="w-full justify-start text-left h-auto py-4">
@@ -81,7 +81,7 @@ export const WelcomeDialog = () => {
                     </Button>
                     <Button onClick={handleFigureItOut} size="lg" variant="outline" className="w-full justify-start text-left h-auto py-4">
                         <div className="flex flex-col items-start gap-1">
-                            <span className="font-semibold text-xl">Figure it out on my own</span>
+                            <span className="font-semibold text-xl">I got this!</span>
                             <span className="text-sm font-normal opacity-80">Skip the intro and jump right in</span>
                         </div>
                     </Button>
