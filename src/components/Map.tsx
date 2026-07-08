@@ -13,7 +13,6 @@ import { MapContainer, ScaleControl } from "react-leaflet";
 import { toast } from "react-toastify";
 
 import {
-    additionalMapGeoLocations,
     addQuestion,
     baseTileLayer,
     followMe,
@@ -122,7 +121,6 @@ const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
 };
 
 export const Map = ({ className }: { className?: string }) => {
-    useStore(additionalMapGeoLocations);
     const $mapGeoLocation = useStore(mapGeoLocation);
     const $questions = useStore(questions);
     const $baseTileLayer = useStore(baseTileLayer);
