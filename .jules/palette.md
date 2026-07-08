@@ -43,3 +43,7 @@
 
 **Learning:** Found small hemisphere toggle buttons ('N'/'S' and 'E'/'W') in `src/components/LatLngPicker.tsx` that lacked descriptive `aria-label`s and `title`s. Although they contain abbreviated text, their function (toggling the coordinate hemisphere) isn't explicitly clear to screen reader users from just the letters 'N', 'S', 'E', or 'W'. Providing a clear description of the action (e.g., "Toggle to South hemisphere") is much more accessible.
 **Action:** When creating small toggle buttons with abbreviated text or purely visual symbols, always include a descriptive `aria-label` and `title` to clarify the button's purpose and state to assistive technologies.
+## 2026-07-04 - Closest Category Buttons Lacking ARIA Labels
+
+**Learning:** Found 8 small icon-only buttons in `AddQuestionDialog.tsx` representing different "Closest" question locations (Museum, Hospital, Cinema, etc.) that lacked descriptive `aria-label` and `title` attributes. Without these, assistive technologies would struggle to interpret the button's function, especially since the visible text is extremely small and occasionally truncated.
+**Action:** When adding arrays or groups of visually similar icon buttons, verify each one possesses a distinct, descriptive `aria-label` and matching native browser `title` to ensure they are fully accessible and provide on-hover context.
