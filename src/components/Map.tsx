@@ -38,8 +38,6 @@ import { flyToWithOffset } from "@/maps/ui-utils";
 import { ClosestPlaces } from "./ClosestPlaces";
 import { DraggableMarkers } from "./DraggableMarkers";
 import { LeafletActionButtons } from "./LeafletActionButtons";
-import { AddQuestionDialog } from "./AddQuestionDialog";
-import { PasteQuestionButton } from "./PasteQuestionButton";
 import { OfflineTileLayer } from "./OfflineTileLayer";
 import { PlaytestPlaces } from "./PlaytestPlaces";
 import { RecommendedStartMarker } from "./RecommendedStartMarker";
@@ -371,15 +369,6 @@ export const Map = ({ className }: { className?: string }) => {
                         data-tutorial-id="map-action-buttons"
                     >
                         <LeafletActionButtons />
-                    </div>
-                </div>
-                <div className="leaflet-bottom leaflet-left">
-                    <div className="leaflet-control pointer-events-auto mb-6 ml-2 flex flex-col gap-[10px]">
-                        {$hiderMode === false ? (
-                            <AddQuestionDialog />
-                        ) : (
-                            <PasteQuestionButton />
-                        )}
                     </div>
                 </div>
                 {$isLoading && (

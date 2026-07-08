@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import {
     hasSeenRules,
-    hasSeenWelcome,
     showNextStepsChecklist,
     showTutorial,
     tutorialDriver,
@@ -25,14 +24,13 @@ import {
 export const TutorialManager = () => {
     const $showTutorial = useStore(showTutorial);
     const $hasSeenRules = useStore(hasSeenRules);
-    const $hasSeenWelcome = useStore(hasSeenWelcome);
 
     // States for custom confirm dialogs
     const [confirmEndTutorial, setConfirmEndTutorial] = useState(false);
     const [activeDriver, setActiveDriver] = useState<any>(null);
 
     useEffect(() => {
-        if ($showTutorial && $hasSeenWelcome) {
+        if ($showTutorial) {
             const driverObj = driver({
                 showProgress: true,
                 overlayClickBehavior: () => {},
@@ -655,7 +653,7 @@ export const TutorialManager = () => {
                 }
             };
         }
-    }, [$showTutorial, $hasSeenRules, $hasSeenWelcome]);
+    }, [$showTutorial, $hasSeenRules]);
 
     return (
         <>

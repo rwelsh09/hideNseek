@@ -21,11 +21,12 @@ const LOCATION_QUERIES = [
     `["brand:wikidata"="Q259340"]`, // 7-Eleven
     `["brand:wikidata"="Q175106"]`, // Tim Hortons
     `["amenity"~"^(pub|bar)$"]`, // Pubs/Bars
+    `["admin_level"="10"]`, // Neighborhoods
 ];
 
 async function fetchFromOverpass(query) {
     console.log(`Fetching: ${query}...`);
-    const fullQuery = `[out:json][timeout:25];\nnwr${query}(${CALGARY_BBOX});\nout center;\n`;
+    const fullQuery = `[out:json][timeout:25];\nnwr${query}(${CALGARY_BBOX});\nout ${query.includes("admin_level") ? "geom" : "center"};\n`;
 
     let retries = 3;
     while (retries > 0) {
