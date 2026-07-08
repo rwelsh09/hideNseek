@@ -149,7 +149,7 @@ export const QuestionCard = ({
             <div className="relative">
                     <button
                         type="button"
-                    data-tutorial-id="tutorial-lock-btn"
+                        data-tutorial-id="tutorial-lock-btn"
                         onClick={toggleLockAndCollapse}
                         aria-label={
                             !questionData.drag
