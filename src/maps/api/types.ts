@@ -29,12 +29,6 @@ export interface OpenStreetMapProperties {
     questions?: Question[];
 }
 
-export interface AdditionalMapGeoLocations {
-    added: boolean;
-    location: OpenStreetMap;
-    base: boolean;
-}
-
 export enum QuestionSpecificLocation {
     McDonalds = '["brand:wikidata"="Q38076"]',
     Seven11 = '["brand:wikidata"="Q259340"]',

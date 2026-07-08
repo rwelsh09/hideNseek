@@ -13,7 +13,6 @@ import { MapContainer, ScaleControl } from "react-leaflet";
 import { toast } from "react-toastify";
 
 import {
-    additionalMapGeoLocations,
     addQuestion,
     baseTileLayer,
     followMe,
@@ -122,7 +121,6 @@ const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
 };
 
 export const Map = ({ className }: { className?: string }) => {
-    useStore(additionalMapGeoLocations);
     const $mapGeoLocation = useStore(mapGeoLocation);
     const $questions = useStore(questions);
     const $baseTileLayer = useStore(baseTileLayer);
@@ -161,18 +159,13 @@ export const Map = ({ className }: { className?: string }) => {
                     mapGeoData = polyGeoData;
                     mapGeoJSON.set(polyGeoData);
                 } else {
-                    await toast.promise(
-                        determineMapBoundaries()
-                            .then((x) => {
-                                mapGeoJSON.set(x);
-                                polyGeoJSON.set(x);
-                                mapGeoData = x;
-                            })
-                            .catch(() => {}),
-                        {
-                            error: "Error refreshing map data",
-                        },
-                    );
+                    await determineMapBoundaries()
+                        .then((x) => {
+                            mapGeoJSON.set(x);
+                            polyGeoJSON.set(x);
+                            mapGeoData = x;
+                        })
+                        .catch(() => {});
                 }
             }
 
@@ -348,6 +341,11 @@ export const Map = ({ className }: { className?: string }) => {
                     $mapGeoLocation.geometry.coordinates[0],
                 ]}
                 zoom={10}
+                minZoom={10}
+                maxBounds={[
+                    [50.8427, -114.3158],
+                    [51.2124, -113.8599],
+                ]}
                 className={cn(
                     "w-[500px] h-[500px]",
                     className,

@@ -4,7 +4,6 @@ import type { Map } from "leaflet";
 import { atom, computed, onSet } from "nanostores";
 
 import type {
-    AdditionalMapGeoLocations,
     OpenStreetMap,
     StationCircle,
 } from "@/maps/api";
@@ -148,7 +147,6 @@ export const hidingZone = computed(
         questions,
         polyGeoJSON,
         mapGeoLocation,
-        additionalMapGeoLocations,
         disabledStations,
         hidingRadius,
         hidingRadiusUnits,
@@ -158,7 +156,6 @@ export const hidingZone = computed(
         q,
         geo,
         loc,
-        altLoc,
         disabledStations,
         radius,
         hidingRadiusUnits,
@@ -183,7 +180,6 @@ export const hidingZone = computed(
                 hidingRadius: radius,
                 hidingRadiusUnits,
                 headStartMinutes: $headStartMinutes,
-                alternateLocations: structuredClone(altLoc),
             };
         }
     },
@@ -226,7 +222,7 @@ export const followMe = persistentAtom<boolean>("followMe", false, {
     decode: JSON.parse,
 });
 
-export const showTutorial = persistentAtom<boolean>("showTutorials", false, {
+export const showTutorial = persistentAtom<boolean>("showTutorials", true, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
