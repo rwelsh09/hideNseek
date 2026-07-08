@@ -30,12 +30,18 @@ export const holedMask = (
         | Feature<Polygon | MultiPolygon>
         | FeatureCollection<Polygon | MultiPolygon>,
 ) => {
-    const diff = turf.difference(
-        turf.featureCollection([
-            BLANK_GEOJSON.features[0] as Feature<Polygon>,
-            "features" in input ? safeUnion(input) : input,
-        ]),
-    );
+    let diff;
+    try {
+        diff = turf.difference(
+            turf.featureCollection([
+                BLANK_GEOJSON.features[0] as Feature<Polygon>,
+                "features" in input ? safeUnion(input) : input,
+            ]),
+        );
+    } catch (e) {
+        console.error("holedMask turf.difference failed", e);
+        diff = null;
+    }
     if (!diff) return null;
     return turf.rewind(diff, { mutate: true }) as Feature<
         Polygon | MultiPolygon
@@ -53,18 +59,31 @@ export const modifyMapData = (
         "features" in modifications ? safeUnion(modifications) : modifications;
 
     if (withinModifications) {
-        const result = turf.intersect(
-            turf.featureCollection([safeUnion(mapData), safeModifications]),
-        );
+        let result;
+        try {
+            result = turf.intersect(
+                turf.featureCollection([safeUnion(mapData), safeModifications]),
+            );
+        } catch (e) {
+            console.error("turf.intersect failed, falling back to modifications", e);
+            result = safeModifications;
+        }
         if (result) return turf.rewind(result, { mutate: true }) as any;
-        return turf.feature(turf.multiPolygon([]).geometry) as any;
+        return turf.rewind(safeModifications, { mutate: true }) as any;
     }
 
-    const result = turf.difference(
-        turf.featureCollection([safeUnion(mapData), safeModifications]),
-    );
+    let result;
+    try {
+        result = turf.difference(
+            turf.featureCollection([safeUnion(mapData), safeModifications]),
+        );
+    } catch (e) {
+        console.error("turf.difference failed, falling back to mapData", e);
+        result = mapData;
+    }
     if (result) return turf.rewind(result, { mutate: true }) as any;
-    return turf.feature(turf.multiPolygon([]).geometry) as any;
+    return mapData;
+
 };
 
 const DEFAULT_BUFFER_UNIT = "kilometers";

@@ -90,7 +90,7 @@ export const determineMatchBoundary = _.memoize(
 
                 if (!data.features || data.features.length === 0) {
                     toast.error("No neighbourhood polygons found in this map");
-                    throw new Error("No neighbourhoods found");
+                    return false;
                 }
 
                 const point = turf.point([question.lng, question.lat]);
@@ -135,7 +135,7 @@ export const determineMatchBoundary = _.memoize(
                 }
 
                 if (!nearest) {
-                    throw new Error("No nearest found");
+                    return false;
                 }
 
                 if (question.type === "same-neighbourhood") {
@@ -146,7 +146,7 @@ export const determineMatchBoundary = _.memoize(
                         toast.error(
                             "No English name found for nearest neighbourhood",
                         );
-                        throw new Error("No English name found");
+                        return false;
                     }
                     const letter = hiderEnglishName[0].toUpperCase();
 
@@ -176,7 +176,7 @@ export const determineMatchBoundary = _.memoize(
                 const seekerEnglishName = extractStationName(nearest);
 
                 if (!seekerEnglishName) {
-                    throw new Error("No English name found");
+                    return false;
                 }
 
                 const voronoi = geoSpatialVoronoi(places.features as any);
