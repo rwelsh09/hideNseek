@@ -70,7 +70,7 @@ export const WelcomeDialog = () => {
                     <Button onClick={handleStartTutorial} size="lg" className="w-full justify-start text-left h-auto py-4 bg-blue-600 hover:bg-blue-700 text-white">
                         <div className="flex flex-col items-start gap-1">
                             <span className="font-semibold text-xl">Start Tutorial</span>
-                            <span className="text-sm font-normal opacity-90">A step-by-step interactive guide</span>
+                            <span className="text-sm font-normal opacity-90">An interactive guide on map buttons and adding a question.</span>
                         </div>
                     </Button>
                     <Button onClick={handleReadRules} size="lg" variant="secondary" className="w-full justify-start text-left h-auto py-4">
