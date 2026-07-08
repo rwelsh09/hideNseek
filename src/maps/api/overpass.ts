@@ -5,6 +5,7 @@ import osmtogeojson from "osmtogeojson";
 import pLimit from "p-limit";
 import { toast } from "react-toastify";
 
+import calgaryBoundaryData from "@/data/calgary_boundary.json";
 import {
     mapGeoLocation,
     polyGeoJSON,
@@ -638,20 +639,7 @@ export const cacheAllPlaces = async () => {
 };
 
 export const determineMapBoundaries = async () => {
-    const primaryLocation = mapGeoLocation.get();
-
-    let mapGeoData = await determineGeoJSON(
-        primaryLocation.properties.osm_id.toString(),
-        primaryLocation.properties.osm_type,
-    );
-
-    if (turf.coordAll(mapGeoData).length > 10000) {
-        turf.simplify(mapGeoData, {
-            tolerance: 0.0005,
-            highQuality: true,
-            mutate: true,
-        });
-    }
-
-    return turf.combine(mapGeoData) as FeatureCollection<MultiPolygon>;
+    return turf.featureCollection([
+        calgaryBoundaryData[0] as Feature<MultiPolygon>,
+    ]);
 };
