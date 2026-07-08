@@ -16,6 +16,8 @@ import {
 } from "@/components/ui/alert-dialog";
 import {
     hasSeenRules,
+    hiderMode,
+    showHiderTutorial,
     showNextStepsChecklist,
     showTutorial,
     tutorialDriver,
@@ -24,10 +26,58 @@ import {
 export const TutorialManager = () => {
     const $showTutorial = useStore(showTutorial);
     const $hasSeenRules = useStore(hasSeenRules);
+    const $hiderMode = useStore(hiderMode);
+    const $showHiderTutorial = useStore(showHiderTutorial);
 
     // States for custom confirm dialogs
     const [confirmEndTutorial, setConfirmEndTutorial] = useState(false);
     const [activeDriver, setActiveDriver] = useState<any>(null);
+
+    useEffect(() => {
+        if ($hiderMode !== false && $showHiderTutorial && !$showTutorial) {
+            const hiderDriverObj = driver({
+                showProgress: true,
+                overlayClickBehavior: () => {},
+                onDestroyStarted: () => {
+                    hiderDriverObj.destroy();
+                    showHiderTutorial.set(false);
+                },
+                steps: [
+                    {
+                        element: '[data-tutorial-id="hider-location-picker"]',
+                        popover: {
+                            title: "Hider Location",
+                            description: "Place the green Map Marker on your hiding spot so the app can calculate the answers to give the Seekers.",
+                            side: "top",
+                            align: "center",
+                        },
+                    },
+                    {
+                        element: '[data-tutorial-id="tutorial-paste-question-btn"]',
+                        popover: {
+                            title: "Answering Questions",
+                            description: "When a Seeker shares a question with you, click this button to paste it onto the map and see the answer.",
+                            side: "right",
+                            align: "end",
+                        },
+                    }
+                ]
+            });
+            tutorialDriver.set(hiderDriverObj);
+            setTimeout(() => {
+                hiderDriverObj.drive();
+            }, 500);
+
+            return () => {
+                tutorialDriver.set(null);
+                try {
+                    hiderDriverObj.destroy();
+                } catch {
+                    /* ignore */
+                }
+            };
+        }
+    }, [$hiderMode, $showHiderTutorial, $showTutorial]);
 
     useEffect(() => {
         if ($showTutorial) {
