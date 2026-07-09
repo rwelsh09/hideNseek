@@ -5,6 +5,8 @@ import { VscQuestion, VscShare, VscTrash } from "react-icons/vsc";
 import { toast } from "react-toastify";
 
 import { DialogDescription } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import {
     Popover,
     PopoverContent,
@@ -28,6 +30,94 @@ import {
 } from "./ui/dialog";
 import { SidebarMenuItem } from "./ui/sidebar-l";
 
+const LatLngEditForm = ({
+    latitude,
+    longitude,
+    onChange,
+    disabled,
+}: {
+    latitude: number;
+    longitude: number;
+    onChange: (lat: number | null, lng: number | null) => void;
+    disabled?: boolean;
+}) => {
+    return (
+        <>
+            <div className="flex gap-2 items-center">
+                <Label className="min-w-16">Latitude</Label>
+                <Input
+                    type="number"
+                    value={Math.abs(latitude)}
+                    min={0}
+                    max={90}
+                    onChange={(e) => {
+                        if (isNaN(parseFloat(e.target.value))) return;
+                        onChange(
+                            parseFloat(e.target.value) *
+                                (latitude !== 0 ? Math.sign(latitude) : -1),
+                            null,
+                        );
+                    }}
+                    disabled={disabled}
+                />
+                <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => onChange(-latitude, null)}
+                    disabled={disabled}
+                    title={
+                        latitude > 0
+                            ? "Toggle to South hemisphere"
+                            : "Toggle to North hemisphere"
+                    }
+                    aria-label={
+                        latitude > 0
+                            ? "Toggle to South hemisphere"
+                            : "Toggle to North hemisphere"
+                    }
+                >
+                    {latitude > 0 ? "N" : "S"}
+                </Button>
+            </div>
+            <div className="flex gap-2 items-center">
+                <Label className="min-w-16">Longitude</Label>
+                <Input
+                    type="number"
+                    value={Math.abs(longitude)}
+                    min={0}
+                    max={180}
+                    onChange={(e) => {
+                        if (isNaN(parseFloat(e.target.value))) return;
+                        onChange(
+                            null,
+                            parseFloat(e.target.value) *
+                                (longitude !== 0 ? Math.sign(longitude) : -1),
+                        );
+                    }}
+                    disabled={disabled}
+                />
+                <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => onChange(null, -longitude)}
+                    disabled={disabled}
+                    title={
+                        longitude > 0
+                            ? "Toggle to West hemisphere"
+                            : "Toggle to East hemisphere"
+                    }
+                    aria-label={
+                        longitude > 0
+                            ? "Toggle to West hemisphere"
+                            : "Toggle to East hemisphere"
+                    }
+                >
+                    {longitude > 0 ? "E" : "W"}
+                </Button>
+            </div>
+        </>
+    );
+};
 
 export const LatitudeLongitude = ({
     latitude,
@@ -38,6 +128,7 @@ export const LatitudeLongitude = ({
     onChangeColor,
     children,
     disabled,
+    inlineEdit = false,
     questionKey,
 }: {
     latitude: number;
@@ -49,6 +140,7 @@ export const LatitudeLongitude = ({
     className?: string;
     children?: React.ReactNode;
     disabled?: boolean;
+    inlineEdit?: boolean;
     questionKey?: number;
 }) => {
     const $isLoading = useStore(isLoading);
@@ -68,6 +160,7 @@ export const LatitudeLongitude = ({
                     $isLoading && "brightness-50",
                 )}
             >
+                {!inlineEdit && (
                     <div
                         className={cn(
                             "flex justify-between items-center",
@@ -93,10 +186,22 @@ export const LatitudeLongitude = ({
                             </div>
                         </div>
                     </div>
+                )}
+
                 <div
-                    className="flex justify-between gap-1"
+                    className={cn(!inlineEdit && "flex justify-between gap-1")}
                 >
-                    {onChangeColor && (
+                    {inlineEdit && (
+                        <div className="flex flex-col gap-2 w-full mb-2">
+                            <LatLngEditForm
+                                latitude={latitude}
+                                longitude={longitude}
+                                onChange={onChange}
+                                disabled={disabled}
+                            />
+                        </div>
+                    )}
+                    {!inlineEdit && onChangeColor && (
                         <Dialog>
                             <DialogTrigger asChild>
                                 <Button
@@ -152,9 +257,13 @@ export const LatitudeLongitude = ({
                         </Dialog>
                     )}
                     <div
-                        className="contents"
+                        className={
+                            inlineEdit
+                                ? "flex justify-center gap-2"
+                                : "contents"
+                        }
                     >
-                        {questionKey !== undefined && (
+                        {!inlineEdit && questionKey !== undefined && (
                             <>
                                 {QUESTION_RULES[
                                     $questions.find(

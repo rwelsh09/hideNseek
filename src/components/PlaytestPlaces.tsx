@@ -1,4 +1,3 @@
-import { getFeatureCoords } from "@/maps/geo-utils";
 import { useStore } from "@nanostores/react";
 import osmtogeojson from "osmtogeojson";
 import React, { useEffect, useState } from "react";
@@ -184,7 +183,11 @@ export const PlaytestPlaces = () => {
     return (
         <>
             {places.map((place, i) => {
-                const coords = getFeatureCoords(place);
+                const coords =
+                    place?.geometry?.coordinates ??
+                    (place?.properties?.lon && place?.properties?.lat
+                        ? [place.properties.lon, place.properties.lat]
+                        : null);
 
                 if (!coords) return null;
 

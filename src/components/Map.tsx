@@ -18,9 +18,7 @@ import {
     followMe,
     geolocationPermission,
     hiderMode,
-    hidingZone,
     isLoading,
-    isOptionsOpenStore,
     leafletMapContext,
     mapGeoJSON,
     mapGeoLocation,
@@ -30,7 +28,6 @@ import {
     thunderforestApiKey,
     triggerLocalRefresh,
 } from "@/lib/context";
-import { compress, shareOrFallback } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import { applyQuestionsToMapGeoData, holedMask } from "@/maps";
 import { hiderifyQuestion } from "@/maps";
@@ -42,12 +39,10 @@ import { ClosestPlaces } from "./ClosestPlaces";
 import { DraggableMarkers } from "./DraggableMarkers";
 import { LeafletActionButtons } from "./LeafletActionButtons";
 import { OfflineTileLayer } from "./OfflineTileLayer";
-import { HIDING_ZONE_COMPRESSED_URL_PARAM } from "./OptionDrawers";
 import { PasteQuestionButton } from "./PasteQuestionButton";
 import { PlaytestPlaces } from "./PlaytestPlaces";
 import { RecommendedStartMarker } from "./RecommendedStartMarker";
 import { TransitLinesOverlay } from "./TransitLinesOverlay";
-import { Button } from "./ui/button";
 
 const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
     switch (tileLayer) {
@@ -131,8 +126,6 @@ export const Map = ({ className }: { className?: string }) => {
     const $baseTileLayer = useStore(baseTileLayer);
     const $thunderforestApiKey = useStore(thunderforestApiKey);
     const $hiderMode = useStore(hiderMode);
-    const $hidingZone = useStore(hidingZone);
-
     const $isLoading = useStore(isLoading);
     const $followMe = useStore(followMe);
     const map = useStore(leafletMapContext);
@@ -350,10 +343,9 @@ export const Map = ({ className }: { className?: string }) => {
                 zoom={10}
                 minZoom={10}
                 maxBounds={[
-                    [50.3427, -114.8158],
-                    [51.7124, -113.3599],
+                    [50.8427, -114.3158],
+                    [51.2124, -113.8599],
                 ]}
-                maxBoundsViscosity={1.0}
                 className={cn(
                     "w-[500px] h-[500px]",
                     className,
@@ -380,62 +372,13 @@ export const Map = ({ className }: { className?: string }) => {
                     </div>
                 </div>
                 <div className="leaflet-bottom leaflet-left">
-                    <div className="leaflet-control pointer-events-auto mb-6 ml-[10px] flex flex-col gap-[10px]">
+                    <div className="leaflet-control pointer-events-auto mb-6 ml-2 flex flex-col gap-[10px]">
                         {$hiderMode === false ? (
                             <AddQuestionDialog />
                         ) : (
                             <PasteQuestionButton />
                         )}
                     </div>
-                </div>
-                <div className="leaflet-bottom leaflet-right">
-                    <div className="leaflet-control pointer-events-auto mb-6 mr-[10px] flex justify-end gap-2 max-[412px]:!mb-4 max-[340px]:flex-col">
-                            <Button
-                                className="shadow-md"
-                                data-tutorial-id="tutorial-share-state-btn"
-                                onClick={async () => {
-                                    const hidingZoneString = JSON.stringify($hidingZone);
-                                    let compressedData;
-                                    try {
-                                        compressedData = await compress(hidingZoneString);
-                                    } catch (error) {
-                                        console.error("Compression failed:", error);
-                                        toast.error(`Failed to prepare data for sharing`);
-                                        return;
-                                    }
-
-                                    const baseUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
-                                    const shareUrl = `${baseUrl}?${HIDING_ZONE_COMPRESSED_URL_PARAM}=${compressedData}`;
-
-                                    await shareOrFallback(shareUrl).then((result) => {
-                                        if (result === false) {
-                                            return toast.error(
-                                                `Clipboard not supported. Try manually copying/pasting: ${shareUrl}`,
-                                                { className: "p-0 w-[1000px]" },
-                                            );
-                                        }
-
-                                        if (result === "clipboard") {
-                                            toast.success(
-                                                "Hiding zone URL copied to clipboard",
-                                                {
-                                                    autoClose: 2000,
-                                                },
-                                            );
-                                        }
-                                    });
-                                }}
-                            >
-                                Share
-                            </Button>
-                            <Button
-                                className="w-24 shadow-md"
-                                data-tutorial-id="tutorial-options-btn"
-                                onClick={() => isOptionsOpenStore.set(true)}
-                            >
-                                Options
-                            </Button>
-                        </div>
                 </div>
                 {$isLoading && (
                     <div className="absolute top-[20%] left-1/2 -translate-x-1/2 z-[9999] pointer-events-none">
@@ -591,7 +534,7 @@ export const Map = ({ className }: { className?: string }) => {
         };
 
         setDefaultLocation();
-    }, [map]);
+    }, [$mapGeoLocation, map]);
 
     return displayMap;
 };

@@ -1,4 +1,3 @@
-import { getFeatureCoords } from "@/maps/geo-utils";
 import { useStore } from "@nanostores/react";
 import type { Feature, Point } from "geojson";
 import React, { useEffect, useState } from "react";
@@ -56,7 +55,11 @@ const ClosestPlacesForQuestion = ({
     ]);
 
     const filteredPlaces = places.filter((f) => {
-        const coords = getFeatureCoords(f);
+        const coords =
+            f?.geometry?.coordinates ??
+            (f?.properties?.lon && f?.properties?.lat
+                ? [f.properties?.lon, f.properties?.lat]
+                : null);
         if (!coords) return false;
         return true; // Show all places in playtest mode
     });
@@ -64,7 +67,11 @@ const ClosestPlacesForQuestion = ({
     return (
         <>
             {filteredPlaces.map((f, i) => {
-                const coords = getFeatureCoords(f);
+                const coords =
+                    f?.geometry?.coordinates ??
+                    (f?.properties?.lon && f?.properties?.lat
+                        ? [f.properties?.lon, f.properties?.lat]
+                        : null);
                 if (!coords) return null;
 
                 const isSelected =

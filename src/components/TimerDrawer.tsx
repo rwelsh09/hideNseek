@@ -204,7 +204,7 @@ export const TimerDrawer = () => {
     };
 
     return (
-        <Drawer direction="top">
+        <Drawer direction="top" modal={false}>
             <DrawerTrigger asChild>
                 <button
                     type="button"
