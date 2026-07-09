@@ -433,6 +433,7 @@ export const OptionDrawers = () => {
                                             onCheckedChange={(checked) => {
                                                 offlineMode.set(checked === true);
                                                 if (checked) {
+                                                    window.alert("Please confirm that all other players have Offline Mode enabled to ensure consistent results.");
                                                     const lastUpdated = new Date(offlineMetadata.lastUpdated);
                                                     const now = new Date();
                                                     const ageInDays = (now.getTime() - lastUpdated.getTime()) / (1000 * 60 * 60 * 24);
