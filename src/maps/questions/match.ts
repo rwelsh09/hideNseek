@@ -62,7 +62,7 @@ export const findMatchPlaces = async (question: MatchQuestion) => {
             }
 
             return turf.featureCollection(
-                data.elements.map((x: any) =>
+                data.elements.filter((x: any) => typeof (x.center?.lon ?? x.lon) === 'number' && typeof (x.center?.lat ?? x.lat) === 'number').map((x: any) =>
                     turf.point([
                         x.center ? x.center.lon : x.lon,
                         x.center ? x.center.lat : x.lat,
