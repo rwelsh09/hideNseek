@@ -1,7 +1,7 @@
 import * as turf from "@turf/turf";
 import type { FeatureCollection, MultiPolygon, Point, Polygon } from "geojson";
 import _ from "lodash";
-import osm2geojson from "osm2geojson-lite";
+import osm2geojson from "@/maps/geo-utils/osm2geojson";
 import { toast } from "react-toastify";
 
 import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";

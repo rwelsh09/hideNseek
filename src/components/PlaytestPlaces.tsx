@@ -1,6 +1,6 @@
 import { getFeatureCoords } from "@/maps/geo-utils";
 import { useStore } from "@nanostores/react";
-import osm2geojson from "osm2geojson-lite";
+import osm2geojson from "@/maps/geo-utils/osm2geojson";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 
