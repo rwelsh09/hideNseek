@@ -48,7 +48,7 @@
         "leaflet-doubletapdragzoom": "^0.3.2",
         "leaflet.offline": "^3.2.1",
         "lodash": "^4.17.21",
-        "lucide-react": "1.20.0",
+        "lucide-react": "1.23.0",
         "nanostores": "^0.11.3",
         "osmtogeojson": "3.0.0-beta.5",
         "p-limit": "^7.3.0",
