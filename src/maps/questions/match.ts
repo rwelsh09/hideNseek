@@ -20,7 +20,6 @@ import {
     extractStationLines,
     extractStationName,
     geoSpatialVoronoi,
-    holedMask,
     modifyMapData,
     safeUnion,
 } from "@/maps/geo-utils";
@@ -302,8 +301,7 @@ export const hiderifyMatch = async (question: MatchQuestion) => {
         return question;
     }
 
-    const $mapGeoJSON = mapGeoJSON.get();
-    if ($mapGeoJSON === null) return question;
+    if (mapGeoJSON.get() === null) return question;
 
     const hiderPoint = turf.point([$hiderMode.longitude, $hiderMode.latitude]);
 
@@ -359,25 +357,16 @@ export const hiderifyMatch = async (question: MatchQuestion) => {
         return question;
     }
 
-    let feature = null;
+    const boundary = await determineMatchBoundary(question);
+    if (boundary === false) return question;
 
-    try {
-        feature = holedMask((await adjustPerMatch(question, $mapGeoJSON))!);
-    } catch {
-        try {
-            feature = await adjustPerMatch(question, {
-                type: "FeatureCollection",
-                features: [holedMask($mapGeoJSON)],
-            });
-        } catch {
-            return question;
-        }
-    }
+    const normalizedBoundary =
+        "features" in boundary ? safeUnion(boundary) : boundary;
 
-    if (feature === null || feature === undefined) return question;
-
-    if (turf.booleanPointInPolygon(hiderPoint, feature)) {
-        question.same = !question.same;
+    if (turf.booleanPointInPolygon(hiderPoint, normalizedBoundary)) {
+        question.same = true;
+    } else {
+        question.same = false;
     }
 
     return question;
