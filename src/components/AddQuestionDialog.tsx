@@ -123,7 +123,7 @@ export function AddQuestionDialog() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
-                    className="w-full flex items-center justify-center gap-2 h-11"
+                    className="w-full flex items-center justify-center gap-2 h-10"
                     data-tutorial-id="add-question-btn"
                 >
                     <Plus className="w-5 h-5" /> Add Question

@@ -350,9 +350,10 @@ export const Map = ({ className }: { className?: string }) => {
                 zoom={10}
                 minZoom={10}
                 maxBounds={[
-                    [50.8427, -114.3158],
-                    [51.2124, -113.8599],
+                    [50.3427, -114.8158],
+                    [51.7124, -113.3599],
                 ]}
+                maxBoundsViscosity={1.0}
                 className={cn(
                     "w-[500px] h-[500px]",
                     className,
@@ -379,7 +380,7 @@ export const Map = ({ className }: { className?: string }) => {
                     </div>
                 </div>
                 <div className="leaflet-bottom leaflet-left">
-                    <div className="leaflet-control pointer-events-auto mb-6 ml-[10px] flex flex-col gap-[10px]">
+                    <div className="leaflet-control pointer-events-auto !mb-10 ml-[10px] flex flex-col gap-[10px]">
                         {$hiderMode === false ? (
                             <AddQuestionDialog />
                         ) : (
@@ -388,7 +389,7 @@ export const Map = ({ className }: { className?: string }) => {
                     </div>
                 </div>
                 <div className="leaflet-bottom leaflet-right">
-                    <div className="leaflet-control pointer-events-auto mb-6 mr-[10px] flex justify-end gap-2 max-[412px]:!mb-4 max-[340px]:flex-col">
+                    <div className="leaflet-control pointer-events-auto !mb-10 mr-[10px] flex justify-end gap-2 max-[340px]:flex-col">
                             <Button
                                 className="shadow-md"
                                 data-tutorial-id="tutorial-share-state-btn"
@@ -590,7 +591,7 @@ export const Map = ({ className }: { className?: string }) => {
         };
 
         setDefaultLocation();
-    }, [$mapGeoLocation, map]);
+    }, [map]);
 
     return displayMap;
 };
