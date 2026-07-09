@@ -454,6 +454,9 @@ export const findPlacesInZone = async (
             });
         }
 
+        return data; 
+    } 
+
     if ($polyGeoJSON) {
         const bbox = turf.bbox($polyGeoJSON);
         const bboxString = `${bbox[1]},${bbox[0]},${bbox[3]},${bbox[2]}`;
