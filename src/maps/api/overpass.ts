@@ -434,7 +434,7 @@ export const findPlacesInZone = async (
             return matchesPrimary || matchesAnyAlt;
         });
 
-        const data = { elements: matchedElements };
+        const data = { elements: JSON.parse(JSON.stringify(matchedElements)) };
 
         if (data && data.elements) {
             data.elements.forEach(ensureElementCenter);
