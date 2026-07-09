@@ -108,14 +108,13 @@ export const ZoneSidebar = () => {
             style: (feature: any) => {
                 let color = "blue";
                 const isSelected =
-                    feature?.properties?.id === hidingZoneModeStationID ||
-                    feature?.properties?.properties?.id ===
-                        hidingZoneModeStationID;
+                    extractStationId(feature) === hidingZoneModeStationID;
 
                 if (isSelected) {
                     color = "yellow";
                 } else {
-                    const transitType = getFeatureProperties(feature).transit_type;
+                    const transitType =
+                        getFeatureProperties(feature).transit_type;
                     if (transitType === "CTrain Station") {
                         color = "red";
                     } else if (transitType === "MAX Station") {
@@ -134,9 +133,7 @@ export const ZoneSidebar = () => {
             },
             onEachFeature: nonOverlappingStations
                 ? (feature, layer) => {
-                      const id =
-                          feature?.properties?.id ||
-                          feature?.properties?.properties?.id;
+                      const id = extractStationId(feature);
                       const isSelected = id && id === hidingZoneModeStationID;
 
                       if (isSelected) {
@@ -454,8 +451,9 @@ export const ZoneSidebar = () => {
                                         const displayName = extractStationLabel(
                                             selected?.properties,
                                         );
-                                        const id = selected?.properties
-                                            .properties.id as string;
+                                        const id = extractStationId(
+                                            selected,
+                                        ) as string;
                                         const coords = selected?.properties
                                             .geometry.coordinates as [
                                             number,
@@ -494,8 +492,8 @@ export const ZoneSidebar = () => {
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         disabledStations.set(
-                                            stations.map(
-                                                (x) => extractStationId(x),
+                                            stations.map((x) =>
+                                                extractStationId(x),
                                             ),
                                         );
                                     }}
@@ -526,29 +524,29 @@ export const ZoneSidebar = () => {
                                         <CommandGroup>
                                             {stations.map((station) => (
                                                 <CommandItem
-                                                    key={
-                                                        station.properties
-                                                            .properties.id
-                                                    }
-                                                    data-station-id={
-                                                        station.properties
-                                                            .properties.id
-                                                    }
+                                                    key={extractStationId(
+                                                        station,
+                                                    )}
+                                                    data-station-id={extractStationId(
+                                                        station,
+                                                    )}
                                                     className={cn(
                                                         $disabledStations.includes(
-                                                            station.properties
-                                                                .properties.id,
+                                                            extractStationId(
+                                                                station,
+                                                            ),
                                                         ) && "line-through",
                                                     )}
                                                     onSelect={async () => {
                                                         if (!map) return;
                                                         setTimeout(() => {
+                                                            const stationId =
+                                                                extractStationId(
+                                                                    station,
+                                                                );
                                                             if (
                                                                 $disabledStations.includes(
-                                                                    station
-                                                                        .properties
-                                                                        .properties
-                                                                        .id,
+                                                                    stationId,
                                                                 )
                                                             ) {
                                                                 disabledStations.set(
@@ -558,10 +556,7 @@ export const ZoneSidebar = () => {
                                                                                 x,
                                                                             ) =>
                                                                                 x !==
-                                                                                station
-                                                                                    .properties
-                                                                                    .properties
-                                                                                    .id,
+                                                                                stationId,
                                                                         ),
                                                                     ],
                                                                 );
@@ -569,10 +564,7 @@ export const ZoneSidebar = () => {
                                                                 disabledStations.set(
                                                                     [
                                                                         ...$disabledStations,
-                                                                        station
-                                                                            .properties
-                                                                            .properties
-                                                                            .id,
+                                                                        stationId,
                                                                     ],
                                                                 );
                                                             }
