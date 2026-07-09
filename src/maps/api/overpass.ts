@@ -394,6 +394,8 @@ export const findPlacesInZone = async (
         boundaryPromise = null;
     }
 
+    let data: any;
+
     if (offlineMode.get()) {
         const dataModule = await import('@/data/offline_places.json');
         const offlineData = dataModule.default?.elements || dataModule.elements || [];
@@ -440,78 +442,9 @@ export const findPlacesInZone = async (
             return matchesPrimary || matchesAnyAlt;
         });
 
-        const data = { elements: JSON.parse(JSON.stringify(matchedElements)) };
-
-        if (data && data.elements) {
-            data.elements.forEach(ensureElementCenter);
-        }
-
-        if ($polyGeoJSON && data && data.elements) {
-            data.elements = data.elements.filter((el: any) => {
-                const lon = el.center ? el.center.lon : el.lon;
-                const lat = el.center ? el.center.lat : el.lat;
-
-                if (typeof lon !== "number" || typeof lat !== "number")
-                    return false;
-                const pt = turf.point([lon, lat]);
-                return $polyGeoJSON.features.some((poly) =>
-                    turf.booleanPointInPolygon(pt, poly as any),
-                );
-            });
-        }
-
-        if (data && data.elements) {
-            const byName: Record<string, any[]> = {};
-            const result: any[] = [];
-
-            for (const e of data.elements) {
-                if (e.tags && e.tags.leisure === "golf_course") {
-                    if (e.tags.indoor === "yes") {
-                        continue; // Skip indoor golf locations entirely
-                    }
-                    if (e.tags.name) {
-                        const name = e.tags.name;
-                        if (!byName[name]) {
-                            byName[name] = [];
-                        }
-                        byName[name].push(e);
-                        continue;
-                    }
-                }
-                result.push(e);
-            }
-
-            for (const items of Object.values(byName)) {
-                if (items.length === 1) {
-                    result.push(items[0]);
-                } else {
-                    let totalLat = 0;
-                    let totalLon = 0;
-                    for (const item of items) {
-                        totalLat += item.center ? item.center.lat : item.lat;
-                        totalLon += item.center ? item.center.lon : item.lon;
-                    }
-                    const avgLat = totalLat / items.length;
-                    const avgLon = totalLon / items.length;
-
-                    const base = { ...items[0] };
-                    if (base.center) {
-                        base.center = { lat: avgLat, lon: avgLon };
-                    } else {
-                        base.lat = avgLat;
-                        base.lon = avgLon;
-                    }
-                    result.push(base);
-                }
-            }
-
-            data.elements = result;
-        }
-
-        return data; 
-    } 
-
-    if ($polyGeoJSON) {
+        data = { elements: JSON.parse(JSON.stringify(matchedElements)) };
+    } else {
+        if ($polyGeoJSON) {
         const bbox = turf.bbox($polyGeoJSON);
         const bboxString = `${bbox[1]},${bbox[0]},${bbox[3]},${bbox[2]}`;
         query = `
@@ -557,14 +490,29 @@ out ${outType};
         out ${outType};
         `;
     }
-    const data = await getOverpassData(
-        query,
-        loadingText,
-        CacheType.ZONE_CACHE,
-    );
+        data = await getOverpassData(
+            query,
+            loadingText,
+            CacheType.ZONE_CACHE,
+        );
+    }
 
     if (data && data.elements) {
         data.elements.forEach(ensureElementCenter);
+    }
+
+    if ($polyGeoJSON && data && data.elements) {
+        data.elements = data.elements.filter((el: any) => {
+            const lon = el.center ? el.center.lon : el.lon;
+            const lat = el.center ? el.center.lat : el.lat;
+
+            if (typeof lon !== "number" || typeof lat !== "number")
+                return false;
+            const pt = turf.point([lon, lat]);
+            return $polyGeoJSON.features.some((poly) =>
+                turf.booleanPointInPolygon(pt, poly as any),
+            );
+        });
     }
 
     if ($polyGeoJSON && data && data.elements) {
