@@ -8,6 +8,10 @@ export const lngLatToText = (coordinates: [number, number]) => {
 export const getFeatureProperties = (feature: any): Record<string, any> => {
     if (!feature) return {};
 
+    if (feature.properties?.tags) {
+        return feature.properties.tags;
+    }
+
     if (feature.properties?.properties) {
         return {
             ...feature.properties,
@@ -33,7 +37,7 @@ export const extractStationLabel = (stationPlace: any) =>
 
 export const extractStationLines = (stationPlace: any): string[] => {
     const props = getFeatureProperties(stationPlace);
-    return Array.isArray(props.lines) ? props.lines : [];
+    return (props.route_ref || props.ref || "").split(/[;,]/).map((r: string) => r.trim()).filter(Boolean);
 };
 
 export const extractStationId = (stationPlace: any): string => {
