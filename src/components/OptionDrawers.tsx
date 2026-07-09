@@ -18,7 +18,6 @@ import {
     DrawerContent,
     DrawerHeader,
     DrawerTitle,
-    DrawerTrigger,
 } from "@/components/ui/drawer";
 import offlineMetadata from "@/data/offline_metadata.json";
 import {
@@ -30,7 +29,6 @@ import {
     headStartMinutes,
     hiderMode,
     hidingRadius,
-    hidingZone,
     isOptionsOpenStore,
     leafletMapContext,
     mapGeoJSON,
@@ -42,7 +40,7 @@ import {
     showTutorial,
     triggerLocalRefresh,
 } from "@/lib/context";
-import { cn, compress, decompress, shareOrFallback } from "@/lib/utils";
+import { decompress } from "@/lib/utils";
 import { questionsSchema } from "@/maps/schema";
 
 import { LatitudeLongitude } from "./LatLngPicker";
@@ -53,12 +51,12 @@ import { Select } from "./ui/select";
 import { SidebarMenu } from "./ui/sidebar-l";
 
 const HIDING_ZONE_URL_PARAM = "hz";
-const HIDING_ZONE_COMPRESSED_URL_PARAM = "hzc";
+export const HIDING_ZONE_COMPRESSED_URL_PARAM = "hzc";
 
-export const OptionDrawers = ({ className }: { className?: string }) => {
+export const OptionDrawers = () => {
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
-    const $hidingZone = useStore(hidingZone);
+
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
     const $displayTransitLines = useStore(displayTransitLines);
@@ -147,62 +145,10 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     };
 
     return (
-        <div
-            className={cn(
-                "flex justify-end gap-2 max-[412px]:!mb-4 max-[340px]:flex-col",
-                className,
-            )}
+        <Drawer
+            open={$isOptionsOpenStore}
+            onOpenChange={isOptionsOpenStore.set}
         >
-            <Button
-                className="shadow-md"
-                data-tutorial-id="tutorial-share-state-btn"
-                onClick={async () => {
-                    const hidingZoneString = JSON.stringify($hidingZone);
-                    let compressedData;
-                    try {
-                        compressedData = await compress(hidingZoneString);
-                    } catch (error) {
-                        console.error("Compression failed:", error);
-                        toast.error(`Failed to prepare data for sharing`);
-                        return;
-                    }
-
-                    const baseUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
-                    const shareUrl = `${baseUrl}?${HIDING_ZONE_COMPRESSED_URL_PARAM}=${compressedData}`;
-
-                    await shareOrFallback(shareUrl).then((result) => {
-                        if (result === false) {
-                            return toast.error(
-                                `Clipboard not supported. Try manually copying/pasting: ${shareUrl}`,
-                                { className: "p-0 w-[1000px]" },
-                            );
-                        }
-
-                        if (result === "clipboard") {
-                            toast.success(
-                                "Hiding zone URL copied to clipboard",
-                                {
-                                    autoClose: 2000,
-                                },
-                            );
-                        }
-                    });
-                }}
-            >
-                Share
-            </Button>
-            <Drawer
-                open={$isOptionsOpenStore}
-                onOpenChange={isOptionsOpenStore.set}
-            >
-                <DrawerTrigger className="w-24" asChild>
-                    <Button
-                        className="w-24 shadow-md"
-                        data-tutorial-id="tutorial-options-btn"
-                    >
-                        Options
-                    </Button>
-                </DrawerTrigger>
 
                 {/* Updated UI structure starts here */}
                 <DrawerContent
@@ -273,7 +219,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                                     longitude={
                                                         $hiderMode.longitude
                                                     }
-                                                    inlineEdit
                                                     onChange={(
                                                         latitude,
                                                         longitude,
@@ -488,11 +433,19 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                             onCheckedChange={(checked) => {
                                                 offlineMode.set(checked === true);
                                                 if (checked) {
-                                                    const formattedDate = new Date(offlineMetadata.lastUpdated).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-                                                    toast.warning(
-                                                        `Offline mode active. Data last updated: ${formattedDate}. Ensure all players are using Offline Mode.`,
-                                                        { autoClose: 8000 }
-                                                    );
+                                                    const lastUpdated = new Date(offlineMetadata.lastUpdated);
+                                                    const now = new Date();
+                                                    const ageInDays = (now.getTime() - lastUpdated.getTime()) / (1000 * 60 * 60 * 24);
+
+                                                    if (ageInDays > 7) {
+                                                        const formattedDate = lastUpdated.toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' });
+                                                        toast.warning(
+                                                            `Ensure all players are using Offline Mode. Data last updated: ${formattedDate}. `,
+                                                            { autoClose: 8000 }
+                                                        );
+                                                    } else {
+                                                        toast.success("Offline Mode Active", { autoClose: 8000 });
+                                                    }
                                                 }
                                             }}
                                         />
@@ -558,7 +511,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                         </div>
                     </div>
                 </DrawerContent>
-            </Drawer>
-        </div>
+        </Drawer>
     );
 };
