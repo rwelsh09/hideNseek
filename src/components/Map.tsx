@@ -389,7 +389,7 @@ export const Map = ({ className }: { className?: string }) => {
                     </div>
                 </div>
                 <div className="leaflet-bottom leaflet-right">
-                    <div className="leaflet-control pointer-events-auto !mb-10 mr-[10px] flex justify-end gap-2 max-[412px]:!mb-4 max-[340px]:flex-col">
+                    <div className="leaflet-control pointer-events-auto !mb-10 mr-[10px] flex justify-end gap-2 max-[340px]:flex-col">
                             <Button
                                 className="shadow-md"
                                 data-tutorial-id="tutorial-share-state-btn"
