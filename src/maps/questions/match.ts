@@ -49,7 +49,7 @@ export const findMatchPlaces = async (question: MatchQuestion) => {
                         true,
                     ).toLowerCase()}.`,
                 );
-                return [];
+                return turf.featureCollection([]);
             }
 
             if (data.elements.length >= 5000) {
@@ -59,14 +59,16 @@ export const findMatchPlaces = async (question: MatchQuestion) => {
                         true,
                     ).toLowerCase()} found (${data.elements.length}).`,
                 );
-                return [];
+                return turf.featureCollection([]);
             }
 
-            return data.elements.map((x: any) =>
-                turf.point([
-                    x.center ? x.center.lon : x.lon,
-                    x.center ? x.center.lat : x.lat,
-                ]),
+            return turf.featureCollection(
+                data.elements.map((x: any) =>
+                    turf.point([
+                        x.center ? x.center.lon : x.lon,
+                        x.center ? x.center.lat : x.lat,
+                    ]),
+                )
             );
         }
     }
