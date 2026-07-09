@@ -1,5 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { getFeatureProperties } from "../special";
+import { describe, expect,it } from "vitest";
+
+import { getFeatureProperties } from "@/maps/geo-utils/special";
 
 describe("getFeatureProperties", () => {
     it("should return an empty object for null or undefined input", () => {

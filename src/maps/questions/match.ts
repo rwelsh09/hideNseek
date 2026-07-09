@@ -96,42 +96,45 @@ export const determineMatchBoundary = _.memoize(
                 const point = turf.point([question.lng, question.lat]);
 
                 let nearest: any = null;
+                let fallbackNearest: any = null;
+                let minDistance = Infinity;
+                const [px, py] = point.geometry.coordinates;
                 for (const feature of data.features) {
                     if (
                         feature.geometry.type !== "Polygon" &&
                         feature.geometry.type !== "MultiPolygon"
                     )
                         continue;
-                    if (turf.booleanPointInPolygon(point, feature)) {
-                        nearest = feature;
-                        break;
+
+                    if (!feature.bbox) {
+                        feature.bbox = turf.bbox(feature);
+                    }
+                    const [minX, minY, maxX, maxY] = feature.bbox;
+                    if (px >= minX && px <= maxX && py >= minY && py <= maxY) {
+                        if (turf.booleanPointInPolygon(point, feature)) {
+                            nearest = feature;
+                            break;
+                        }
+                    }
+
+                    let center = feature.properties?.center;
+                    if (!center) {
+                        center = turf.center(feature);
+                        if (!feature.properties) {
+                            feature.properties = {};
+                        }
+                        feature.properties.center = center;
+                    }
+
+                    const d = turf.distance(point, center);
+                    if (d < minDistance) {
+                        minDistance = d;
+                        fallbackNearest = feature;
                     }
                 }
 
                 if (!nearest) {
-                    let minDistance = Infinity;
-                    for (const feature of data.features) {
-                        if (
-                            feature.geometry.type !== "Polygon" &&
-                            feature.geometry.type !== "MultiPolygon"
-                        )
-                            continue;
-
-                        let center = feature.properties?.center;
-                        if (!center) {
-                            center = turf.center(feature);
-                            if (!feature.properties) {
-                                feature.properties = {};
-                            }
-                            feature.properties.center = center;
-                        }
-
-                        const d = turf.distance(point, center);
-                        if (d < minDistance) {
-                            minDistance = d;
-                            nearest = feature;
-                        }
-                    }
+                    nearest = fallbackNearest;
                 }
 
                 if (!nearest) {

@@ -7,9 +7,9 @@ import { toast } from "react-toastify";
 
 import calgaryBoundaryData from "@/data/calgary_boundary.json";
 import {
+    mapGeoJSON,
     mapGeoLocation,
     polyGeoJSON,
-    mapGeoJSON,
 } from "@/lib/context";
 import { safeUnion } from "@/maps/geo-utils";
 
