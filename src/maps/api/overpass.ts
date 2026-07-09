@@ -393,9 +393,9 @@ export const findPlacesInZone = async (
         const dataModule = await import('@/data/offline_places.json');
         const offlineData = dataModule.default?.elements || dataModule.elements || [];
 
-        // Parse filter using regex `/\["([^"]+)"(=|~)"([^"]+)"\]/g`
+        // Parse filter using regex `/\["?([^"\]=~]+)"?(=|~)"?([^"\]]+)"?\]/g`
         const extractFilters = (queryStr: string) => {
-            const regex = /\["([^"]+)"(=|~)"([^"]+)"\]/g;
+            const regex = /\["?([^"\]=~]+)"?(=|~)"?([^"\]]+)"?\]/g;
             const matches = [];
             let match;
             while ((match = regex.exec(queryStr)) !== null) {
