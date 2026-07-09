@@ -139,7 +139,12 @@ export const QuestionCard = ({
     } else {
         // For photo question or any other question passing explicit label
         if (locked && question?.id === "photo") {
-            displayLabel = `Photo - ${label}`;
+            let noteSuffix = "";
+            if (questionData.notes) {
+                const note = questionData.notes as string;
+                noteSuffix = note.length > 30 ? ` - ${note.substring(0, 30)}...` : ` - ${note}`;
+            }
+            displayLabel = `Photo - ${label}${noteSuffix}`;
         }
     }
 
