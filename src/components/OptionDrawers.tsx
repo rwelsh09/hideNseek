@@ -499,7 +499,7 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                                             { autoClose: 8000 }
                                                         );
                                                     } else {
-                                                        toast.warning("Offline Mode Active", { autoClose: 8000 });
+                                                        toast.success("Offline Mode Active", { autoClose: 8000 });
                                                     }
                                                 }
                                             }}
