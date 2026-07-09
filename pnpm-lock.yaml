@@ -69,8 +69,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0(leaflet@1.9.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@terraformer/arcgis':
-        specifier: ^2.1.2
-        version: 2.1.2
+        specifier: ^2.2.2
+        version: 2.2.2
       '@turf/turf':
         specifier: ^7.2.0
         version: 7.3.5
@@ -2402,11 +2402,11 @@ packages:
   '@shikijs/vscode-textmate@10.0.2':
     resolution: {integrity: sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==}
 
-  '@terraformer/arcgis@2.1.2':
-    resolution: {integrity: sha512-IvdfqehcNAUtKU1OFMKwPT8EvdKlVFZ7q7ZKzkIF8XzYZIVsZLuXuOS1UBdRh5u/o+X5Gax7jiZhD8U/4TV+Jw==}
+  '@terraformer/arcgis@2.2.2':
+    resolution: {integrity: sha512-Qcl7jhSdJU0HEBfQema6u6RY5zQYecx83CH1++7GXNPlFC42yRF9cxB17Kfi3Jr7ck/tgxhCo6IP3b0OA97f8w==}
 
-  '@terraformer/common@2.1.2':
-    resolution: {integrity: sha512-cwPdTFzIpekZhZRrgDEkqLKNPoqbyCBQHiemaovnGIeUx0Pl336MY/eCxzJ5zXkrQLVo9zPalq/vYW5HnyKevQ==}
+  '@terraformer/common@2.2.2':
+    resolution: {integrity: sha512-W+O/hblr5g1RBzkehaEfF/EdCerkG7j6g2cGBawp2B2zHXdCdR7NrXc0Sh106SFFJyadQZ62On36S+8wHF4Kag==}
 
   '@trickfilm400/rollup-plugin-off-main-thread@3.0.0-pre1':
     resolution: {integrity: sha512-/67zpWDBLV+oYAEL682s1ktXL0HgqX76f6gaVGkGnVZlBbm1zd0v4Bz8MFF2GGhoX9rvfq3KSQHubFHwa6w6/Q==}
@@ -8752,11 +8752,11 @@ snapshots:
 
   '@shikijs/vscode-textmate@10.0.2': {}
 
-  '@terraformer/arcgis@2.1.2':
+  '@terraformer/arcgis@2.2.2':
     dependencies:
-      '@terraformer/common': 2.1.2
+      '@terraformer/common': 2.2.2
 
-  '@terraformer/common@2.1.2': {}
+  '@terraformer/common@2.2.2': {}
 
   '@trickfilm400/rollup-plugin-off-main-thread@3.0.0-pre1':
     dependencies:

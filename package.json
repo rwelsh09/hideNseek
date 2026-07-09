@@ -31,7 +31,7 @@
         "@radix-ui/react-toggle-group": "^1.1.10",
         "@radix-ui/react-tooltip": "^1.2.6",
         "@react-leaflet/core": "^3.0.0",
-        "@terraformer/arcgis": "^2.1.2",
+        "@terraformer/arcgis": "^2.2.2",
         "@turf/turf": "^7.2.0",
         "astro": "^5.7.13",
         "canvas-confetti": "^1.9.4",
