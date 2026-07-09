@@ -487,11 +487,19 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                                             onCheckedChange={(checked) => {
                                                 offlineMode.set(checked === true);
                                                 if (checked) {
-                                                    const formattedDate = new Date(offlineMetadata.lastUpdated).toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' });
-                                                    toast.warning(
-                                                        `Offline mode active. Data last updated: ${formattedDate}. Ensure all players are using Offline Mode.`,
-                                                        { autoClose: 8000 }
-                                                    );
+                                                    const lastUpdated = new Date(offlineMetadata.lastUpdated);
+                                                    const now = new Date();
+                                                    const ageInDays = (now.getTime() - lastUpdated.getTime()) / (1000 * 60 * 60 * 24);
+
+                                                    if (ageInDays > 7) {
+                                                        const formattedDate = lastUpdated.toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' });
+                                                        toast.warning(
+                                                            `Ensure all players are using Offline Mode. Data last updated: ${formattedDate}. `,
+                                                            { autoClose: 8000 }
+                                                        );
+                                                    } else {
+                                                        toast.success("Offline Mode Active", { autoClose: 8000 });
+                                                    }
                                                 }
                                             }}
                                         />
