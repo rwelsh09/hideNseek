@@ -53,9 +53,9 @@ import { Select } from "./ui/select";
 import { SidebarMenu } from "./ui/sidebar-l";
 
 const HIDING_ZONE_URL_PARAM = "hz";
-const HIDING_ZONE_COMPRESSED_URL_PARAM = "hzc";
+export const HIDING_ZONE_COMPRESSED_URL_PARAM = "hzc";
 
-export const OptionDrawers = ({ className }: { className?: string }) => {
+export const OptionDrawers = () => {
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
     const $hidingZone = useStore(hidingZone);
@@ -147,62 +147,10 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
     };
 
     return (
-        <div
-            className={cn(
-                "flex justify-end gap-2 max-[412px]:!mb-4 max-[340px]:flex-col",
-                className,
-            )}
+        <Drawer
+            open={$isOptionsOpenStore}
+            onOpenChange={isOptionsOpenStore.set}
         >
-            <Button
-                className="shadow-md"
-                data-tutorial-id="tutorial-share-state-btn"
-                onClick={async () => {
-                    const hidingZoneString = JSON.stringify($hidingZone);
-                    let compressedData;
-                    try {
-                        compressedData = await compress(hidingZoneString);
-                    } catch (error) {
-                        console.error("Compression failed:", error);
-                        toast.error(`Failed to prepare data for sharing`);
-                        return;
-                    }
-
-                    const baseUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
-                    const shareUrl = `${baseUrl}?${HIDING_ZONE_COMPRESSED_URL_PARAM}=${compressedData}`;
-
-                    await shareOrFallback(shareUrl).then((result) => {
-                        if (result === false) {
-                            return toast.error(
-                                `Clipboard not supported. Try manually copying/pasting: ${shareUrl}`,
-                                { className: "p-0 w-[1000px]" },
-                            );
-                        }
-
-                        if (result === "clipboard") {
-                            toast.success(
-                                "Hiding zone URL copied to clipboard",
-                                {
-                                    autoClose: 2000,
-                                },
-                            );
-                        }
-                    });
-                }}
-            >
-                Share
-            </Button>
-            <Drawer
-                open={$isOptionsOpenStore}
-                onOpenChange={isOptionsOpenStore.set}
-            >
-                <DrawerTrigger className="w-24" asChild>
-                    <Button
-                        className="w-24 shadow-md"
-                        data-tutorial-id="tutorial-options-btn"
-                    >
-                        Options
-                    </Button>
-                </DrawerTrigger>
 
                 {/* Updated UI structure starts here */}
                 <DrawerContent
@@ -558,7 +506,6 @@ export const OptionDrawers = ({ className }: { className?: string }) => {
                         </div>
                     </div>
                 </DrawerContent>
-            </Drawer>
-        </div>
+        </Drawer>
     );
 };
