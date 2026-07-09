@@ -1,7 +1,7 @@
 import * as turf from "@turf/turf";
 import type { FeatureCollection, MultiPolygon } from "geojson";
 import _ from "lodash";
-import osmtogeojson from "osmtogeojson";
+import osm2geojson from "osm2geojson-lite";
 import pLimit from "p-limit";
 import { toast } from "react-toastify";
 
@@ -107,7 +107,7 @@ export const determineGeoJSON = async (
         "Loading map data...",
         CacheType.PERMANENT_CACHE,
     );
-    const geo = osmtogeojson(data);
+    const geo = osm2geojson(data);
     return {
         ...geo,
         features: geo.features.filter(
@@ -264,7 +264,7 @@ rel(pivot.a)["admin_level"="${adminLevel}"];
 out geom;
     `;
     const data = await getOverpassData(query, "Determining match zone...");
-    const geo = osmtogeojson(data);
+    const geo = osm2geojson(data);
     return geo.features?.[0];
 };
 
@@ -301,7 +301,7 @@ ${tagData.elements
 out geom;
 `;
     const data = await getOverpassData(query, "Finding train lines...");
-    const geoJSON = osmtogeojson(data);
+    const geoJSON = osm2geojson(data);
     const nodes: number[] = [];
     geoJSON.features.forEach((feature: any) => {
         if (feature && feature.id && feature.id.startsWith("node")) {

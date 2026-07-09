@@ -1,6 +1,6 @@
 import { getFeatureCoords } from "@/maps/geo-utils";
 import { useStore } from "@nanostores/react";
-import osmtogeojson from "osmtogeojson";
+import osm2geojson from "osm2geojson-lite";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 
@@ -123,7 +123,7 @@ export const PlaytestPlaces = () => {
                         0,
                     );
 
-                    const features = osmtogeojson(rawData);
+                    const features = osm2geojson(rawData);
 
                     if (features && features.features) {
                         features.features.forEach((f: any) => {
@@ -154,7 +154,7 @@ export const PlaytestPlaces = () => {
                         0,
                     );
 
-                    const features = osmtogeojson(rawData);
+                    const features = osm2geojson(rawData);
 
                     if (features && features.features) {
                         features.features.forEach((f: any) => {

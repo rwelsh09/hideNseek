@@ -3,7 +3,7 @@ import * as turf from "@turf/turf";
 import { findMatchPlaces, determineMatchBoundary } from "@/maps/questions/match";
 import { findPlacesInZone } from "@/maps/api";
 import { toast } from "react-toastify";
-import osmtogeojson from "osmtogeojson";
+import osm2geojson from "osm2geojson-lite";
 
 vi.mock("@/maps/api", async (importOriginal) => {
     const actual = await importOriginal();
@@ -17,7 +17,7 @@ vi.mock("react-toastify", () => ({
     toast: { error: vi.fn() },
 }));
 
-vi.mock("osmtogeojson");
+vi.mock("osm2geojson-lite");
 
 describe("Match Questions", () => {
     beforeEach(() => {
@@ -56,7 +56,7 @@ describe("Match Questions", () => {
             };
 
             vi.mocked(findPlacesInZone).mockResolvedValueOnce(osmMockData);
-            vi.mocked(osmtogeojson).mockReturnValue(turf.featureCollection([mockPolygon]) as any);
+            vi.mocked(osm2geojson).mockReturnValue(turf.featureCollection([mockPolygon]) as any);
 
             const boundary = await determineMatchBoundary({
                 type: "same-neighbourhood",

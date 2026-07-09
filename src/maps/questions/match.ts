@@ -1,7 +1,7 @@
 import * as turf from "@turf/turf";
 import type { FeatureCollection, MultiPolygon, Point, Polygon } from "geojson";
 import _ from "lodash";
-import osmtogeojson from "osmtogeojson";
+import osm2geojson from "osm2geojson-lite";
 import { toast } from "react-toastify";
 
 import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
@@ -80,7 +80,7 @@ export const determineMatchBoundary = _.memoize(
         switch (question.type) {
             case "same-neighbourhood":
             case "same-first-letter-neighbourhood": {
-                const data = osmtogeojson(
+                const data = osm2geojson(
                     await findPlacesInZone(
                         '["admin_level"="10"]',
                         "Finding neighbourhoods...",
