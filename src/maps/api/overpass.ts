@@ -356,6 +356,12 @@ const ensureElementCenter = (el: any) => {
         if (!el.center) {
             el.center = { lon, lat };
         }
+    } else {
+        if (el.center) {
+            if (typeof el.center.lon !== "number" || typeof el.center.lat !== "number") {
+                delete el.center;
+            }
+        }
     }
 };
 
@@ -596,7 +602,7 @@ export const findPlacesSpecificInZone = async (
         )
     ).elements;
     return turf.featureCollection(
-        locations.map((x: any) =>
+        locations.filter((x: any) => typeof (x.center?.lon ?? x.lon) === 'number' && typeof (x.center?.lat ?? x.lat) === 'number').map((x: any) =>
             turf.point([
                 x.center ? x.center.lon : x.lon,
                 x.center ? x.center.lat : x.lat,

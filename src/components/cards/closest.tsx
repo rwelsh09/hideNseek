@@ -1,3 +1,4 @@
+import { getFeatureCoords } from "@/maps/geo-utils";
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
 import { useEffect, useState } from "react";
@@ -185,11 +186,7 @@ const ClosestLocationSelector = ({
         const center = turf.point([data.lng, data.lat]);
 
         const pointsWithDist = locations.features.map((feature: any) => {
-            const coords =
-                feature?.geometry?.coordinates ??
-                (feature?.properties?.lon && feature?.properties?.lat
-                    ? [feature.properties?.lon, feature.properties?.lat]
-                    : null);
+            const coords = getFeatureCoords(feature);
 
             if (!coords) return { feature, dist: Infinity };
 
