@@ -37,6 +37,9 @@ export const extractStationLabel = (stationPlace: any) =>
 
 export const extractStationLines = (stationPlace: any): string[] => {
     const props = getFeatureProperties(stationPlace);
+    if (Array.isArray(props.lines)) {
+        return props.lines;
+    }
     return (props.route_ref || props.ref || "").split(/[;,]/).map((r: string) => r.trim()).filter(Boolean);
 };
 

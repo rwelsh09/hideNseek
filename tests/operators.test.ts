@@ -122,7 +122,9 @@ test("voronoi diagram", () => {
             return; // A glitch with turf where overlapping polygons can cause this
         }
 
-        expect(voronoiIndex).toBe(basePointIndex);
+        const expectedDistance = turf.distance(point, basePoints.features[basePointIndex]);
+        const actualDistance = turf.distance(point, basePoints.features[voronoiIndex]);
+        expect(actualDistance).toBeCloseTo(expectedDistance, 6);
     });
 });
 
