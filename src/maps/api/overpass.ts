@@ -356,6 +356,12 @@ const ensureElementCenter = (el: any) => {
         if (!el.center) {
             el.center = { lon, lat };
         }
+    } else {
+        if (el.center) {
+            if (typeof el.center.lon !== "number" || typeof el.center.lat !== "number") {
+                delete el.center;
+            }
+        }
     }
 };
 
@@ -434,7 +440,7 @@ export const findPlacesInZone = async (
             return matchesPrimary || matchesAnyAlt;
         });
 
-        const data = { elements: matchedElements };
+        const data = { elements: JSON.parse(JSON.stringify(matchedElements)) };
 
         if (data && data.elements) {
             data.elements.forEach(ensureElementCenter);
@@ -454,40 +460,8 @@ export const findPlacesInZone = async (
             });
         }
 
-        const subtractedEntries = additionalMapGeoLocations
-            .get()
-            .filter((e) => !e.added);
-
-        data.elements = data.elements.filter((el: any) => {
-            const hasTagMatch = subtractedEntries.some((entry) => {
-                const queryTags =
-                    entry.locationQuery
-                        ?.match(/\["([^"]+)"(.)"([^"]+)"\]/g)
-                        ?.map((tag) => {
-                            const [, key, operator, value] = tag.match(
-                                /\["([^"]+)"(.)"([^"]+)"\]/,
-                            ) as RegExpMatchArray;
-                            return { key, operator, value };
-                        }) || [];
-
-                return queryTags.every(({ key, operator, value }) => {
-                    const elValue = el.tags?.[key];
-                    if (operator === "=") {
-                        return elValue === value;
-                    } else if (operator === "~") {
-                        return elValue?.match(new RegExp(value));
-                    } else if (operator === "!") {
-                        return elValue !== value;
-                    }
-                    return false;
-                });
-            });
-
-            return !hasTagMatch;
-        });
-
-        return data;
-    }
+        return data; 
+    } 
 
     if ($polyGeoJSON) {
         const bbox = turf.bbox($polyGeoJSON);
@@ -628,7 +602,7 @@ export const findPlacesSpecificInZone = async (
         )
     ).elements;
     return turf.featureCollection(
-        locations.map((x: any) =>
+        locations.filter((x: any) => typeof (x.center?.lon ?? x.lon) === 'number' && typeof (x.center?.lat ?? x.lat) === 'number').map((x: any) =>
             turf.point([
                 x.center ? x.center.lon : x.lon,
                 x.center ? x.center.lat : x.lat,
