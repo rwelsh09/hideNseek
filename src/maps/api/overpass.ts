@@ -7,7 +7,6 @@ import { toast } from "react-toastify";
 
 import calgaryBoundaryData from "@/data/calgary_boundary.json";
 import {
-    additionalMapGeoLocations,
     mapGeoJSON,
     mapGeoLocation,
     offlineMode,
@@ -555,35 +554,6 @@ out ${outType};
                 return false;
             const pt = turf.point([lon, lat]);
             return $polyGeoJSON.features.some((poly) =>
-                turf.booleanPointInPolygon(pt, poly as any),
-            );
-        });
-    }
-
-    const subtractedEntries = additionalMapGeoLocations
-        .get()
-        .filter((e) => !e.added);
-    const subtractedPolygons = subtractedEntries.map((entry) => entry.location);
-    if (subtractedPolygons.length > 0 && data && data.elements) {
-        const turfPolys = await Promise.all(
-            subtractedPolygons.map(
-                async (location) =>
-                    turf.combine(
-                        await determineGeoJSON(
-                            location.properties.osm_id.toString(),
-                            location.properties.osm_type,
-                        ),
-                    ).features[0],
-            ),
-        );
-        data.elements = data.elements.filter((el: any) => {
-            const lon = el.center ? el.center.lon : el.lon;
-            const lat = el.center ? el.center.lat : el.lat;
-
-            if (typeof lon !== "number" || typeof lat !== "number")
-                return false;
-            const pt = turf.point([lon, lat]);
-            return !turfPolys.some((poly) =>
                 turf.booleanPointInPolygon(pt, poly as any),
             );
         });
