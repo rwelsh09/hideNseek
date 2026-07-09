@@ -46,7 +46,7 @@ import { WelcomeDialog } from "@/components/WelcomeDialog";
                         >
                             <SidebarTriggerR client:only="react" />
                         </div>
-                        <OptionDrawers client:only="react" />
+                        <div class="absolute group-[.fullscreen]:hidden" data-tutorial-id="option-drawers-trigger"><OptionDrawers client:only="react" /></div>
                         <Map
                             className="w-full group-[.fullscreen]:w-full group-[.fullscreen]:h-full"
                             client:only="react"

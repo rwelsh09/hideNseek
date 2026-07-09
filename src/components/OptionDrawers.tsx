@@ -18,7 +18,6 @@ import {
     DrawerContent,
     DrawerHeader,
     DrawerTitle,
-    DrawerTrigger,
 } from "@/components/ui/drawer";
 import offlineMetadata from "@/data/offline_metadata.json";
 import {
@@ -30,7 +29,6 @@ import {
     headStartMinutes,
     hiderMode,
     hidingRadius,
-    hidingZone,
     isOptionsOpenStore,
     leafletMapContext,
     mapGeoJSON,
@@ -42,7 +40,7 @@ import {
     showTutorial,
     triggerLocalRefresh,
 } from "@/lib/context";
-import { cn, compress, decompress, shareOrFallback } from "@/lib/utils";
+import { decompress } from "@/lib/utils";
 import { questionsSchema } from "@/maps/schema";
 
 import { LatitudeLongitude } from "./LatLngPicker";
@@ -58,7 +56,7 @@ export const HIDING_ZONE_COMPRESSED_URL_PARAM = "hzc";
 export const OptionDrawers = () => {
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
-    const $hidingZone = useStore(hidingZone);
+
     const $baseTileLayer = useStore(baseTileLayer);
     const $followMe = useStore(followMe);
     const $displayTransitLines = useStore(displayTransitLines);
