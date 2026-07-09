@@ -16,7 +16,7 @@ import {
     prettifyLocation,
     QuestionSpecificLocation,
 } from "@/maps/api";
-import { arcBufferToPoint, holedMask, modifyMapData } from "@/maps/geo-utils";
+import { arcBufferToPoint, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import type { APILocations, MeasureQuestion } from "@/maps/schema";
 
 export const determineMeasureBoundary = async (question: MeasureQuestion) => {
@@ -138,30 +138,20 @@ export const hiderifyMeasure = async (question: MeasureQuestion) => {
         return question;
     }
 
-    const $mapGeoJSON = mapGeoJSON.get();
-    if ($mapGeoJSON === null) return question;
-
-    let feature = null;
-
-    try {
-        feature = holedMask((await adjustPerMeasure(question, $mapGeoJSON))!);
-    } catch {
-        try {
-            feature = await adjustPerMeasure(question, {
-                type: "FeatureCollection",
-                features: [holedMask($mapGeoJSON)],
-            });
-        } catch {
-            return question;
-        }
-    }
-
-    if (feature === null || feature === undefined) return question;
+    if (mapGeoJSON.get() === null) return question;
 
     const hiderPoint = turf.point([$hiderMode.longitude, $hiderMode.latitude]);
 
-    if (turf.booleanPointInPolygon(hiderPoint, feature)) {
-        question.hiderCloser = !question.hiderCloser;
+    const buffer = await bufferedDeterminer(question);
+    if (buffer === false) return question;
+
+    const normalizedBuffer =
+        "features" in buffer ? safeUnion(buffer as any) : buffer;
+
+    if (turf.booleanPointInPolygon(hiderPoint, normalizedBuffer as any)) {
+        question.hiderCloser = true;
+    } else {
+        question.hiderCloser = false;
     }
 
     return question;
