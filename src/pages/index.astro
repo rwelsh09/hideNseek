@@ -26,10 +26,6 @@ import { WelcomeDialog } from "@/components/WelcomeDialog";
         <SidebarProviderR client:only="react" defaultOpen={false}>
             <QuestionSidebar client:only="react" />
             <main class="flex flex-col flex-grow group">
-                <div
-                    class="flex justify-center"
-                    id="map-modal-dialog-container-leaflet"
-                >
                     <div class="w-full h-full relative">
                         <div
                             class="absolute top-[10px] left-1/2 -translate-x-1/2 z-[1030] group-[.fullscreen]:hidden"
@@ -56,7 +52,6 @@ import { WelcomeDialog } from "@/components/WelcomeDialog";
                             client:only="react"
                         />
                     </div>
-                </div>
             </main>
             <ZoneSidebar client:only="react" />
         </SidebarProviderR>

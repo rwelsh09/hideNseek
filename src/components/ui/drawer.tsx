@@ -36,13 +36,7 @@ const DrawerContent = React.forwardRef<
     React.ComponentRef<typeof DrawerPrimitive.Content>,
     React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
-    <DrawerPortal
-        container={
-            typeof document !== "undefined"
-                ? document.querySelector("#map-modal-dialog-container-leaflet")
-                : null
-        }
-    >
+    <DrawerPortal>
         <DrawerOverlay />
         <DrawerPrimitive.Content
             ref={ref}
@@ -63,13 +57,7 @@ const TopDrawerContent = React.forwardRef<
     React.ComponentRef<typeof DrawerPrimitive.Content>,
     React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
-    <DrawerPortal
-        container={
-            typeof document !== "undefined"
-                ? document.querySelector("#map-modal-dialog-container-leaflet")
-                : null
-        }
-    >
+    <DrawerPortal>
         <DrawerOverlay />
         <DrawerPrimitive.Content
             ref={ref}

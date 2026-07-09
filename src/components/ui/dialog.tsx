@@ -33,11 +33,7 @@ const DialogContent = React.forwardRef<
         closeIcon?: boolean;
     }
 >(({ className, children, closeIcon = true, ...props }, ref) => (
-    <DialogPortal
-        container={document.querySelector(
-            "#map-modal-dialog-container-leaflet",
-        )}
-    >
+    <DialogPortal>
         <DialogOverlay />
         <DialogPrimitive.Content
             ref={ref}
