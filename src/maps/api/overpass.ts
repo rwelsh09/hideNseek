@@ -454,41 +454,6 @@ export const findPlacesInZone = async (
             });
         }
 
-        const subtractedEntries = additionalMapGeoLocations
-            .get()
-            .filter((e) => !e.added);
-
-        data.elements = data.elements.filter((el: any) => {
-            const hasTagMatch = subtractedEntries.some((entry) => {
-                const queryTags =
-                    entry.locationQuery
-                        ?.match(/\["([^"]+)"(.)"([^"]+)"\]/g)
-                        ?.map((tag) => {
-                            const [, key, operator, value] = tag.match(
-                                /\["([^"]+)"(.)"([^"]+)"\]/,
-                            ) as RegExpMatchArray;
-                            return { key, operator, value };
-                        }) || [];
-
-                return queryTags.every(({ key, operator, value }) => {
-                    const elValue = el.tags?.[key];
-                    if (operator === "=") {
-                        return elValue === value;
-                    } else if (operator === "~") {
-                        return elValue?.match(new RegExp(value));
-                    } else if (operator === "!") {
-                        return elValue !== value;
-                    }
-                    return false;
-                });
-            });
-
-            return !hasTagMatch;
-        });
-
-        return data;
-    }
-
     if ($polyGeoJSON) {
         const bbox = turf.bbox($polyGeoJSON);
         const bboxString = `${bbox[1]},${bbox[0]},${bbox[3]},${bbox[2]}`;
