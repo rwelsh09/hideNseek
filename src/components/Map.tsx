@@ -534,7 +534,7 @@ export const Map = ({ className }: { className?: string }) => {
         };
 
         setDefaultLocation();
-    }, [$mapGeoLocation, map]);
+    }, [map]);
 
     return displayMap;
 };
