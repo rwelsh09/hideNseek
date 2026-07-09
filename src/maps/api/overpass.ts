@@ -1,7 +1,6 @@
 import * as turf from "@turf/turf";
-import type { FeatureCollection, MultiPolygon } from "geojson";
+import type { Feature, FeatureCollection, MultiPolygon } from "geojson";
 import _ from "lodash";
-import osmtogeojson from "osmtogeojson";
 import pLimit from "p-limit";
 import { toast } from "react-toastify";
 
@@ -13,108 +12,10 @@ import {
     polyGeoJSON,
 } from "@/lib/context";
 
-import { cacheFetch, determineCache } from "./cache";
-import {
-    LOCATION_FIRST_TAG,
-    OVERPASS_API,
-    OVERPASS_API_FALLBACK,
-} from "./constants";
+import { LOCATION_FIRST_TAG } from "./constants";
 import type { APILocations } from "./types";
 import type { EncompassingClosestQuestionSchema } from "./types";
-import { CacheType, QuestionSpecificLocation } from "./types";
-
-export const getOverpassData = async (
-    query: string,
-    loadingText?: string,
-    cacheType: CacheType = CacheType.CACHE,
-) => {
-    const encodedQuery = encodeURIComponent(query);
-    const primaryUrl = `${OVERPASS_API}?data=${encodedQuery}`;
-    const fallbackUrl = `${OVERPASS_API_FALLBACK}?data=${encodedQuery}`;
-
-    const maxRetries = 2;
-    let attempts = 0;
-    let response: Response | undefined;
-    let errorCategory: "busy" | "network" | "other" | null = null;
-
-    while (attempts <= maxRetries) {
-        attempts++;
-        try {
-            response = await cacheFetch(primaryUrl, loadingText, cacheType);
-
-            if (!response.ok) {
-                // Try the fallback
-                const fallbackResponse = await cacheFetch(
-                    fallbackUrl,
-                    loadingText,
-                    cacheType,
-                );
-                if (fallbackResponse.ok) {
-                    const cache = await determineCache(cacheType);
-                    await cache.put(primaryUrl, fallbackResponse.clone());
-                }
-                response = fallbackResponse;
-            }
-
-            if (response.ok) {
-                const data = await response.json();
-                return data;
-            } else if (response.status === 504 || response.status === 429) {
-                errorCategory = "busy";
-            } else {
-                errorCategory = "other";
-                break; // Don't retry non-transient errors like 400 Bad Request
-            }
-        } catch {
-            errorCategory = "network";
-        }
-
-        if (attempts <= maxRetries) {
-            const delay = attempts === 1 ? 1000 : 2000;
-            await new Promise((resolve) => setTimeout(resolve, delay));
-        }
-    }
-
-    if (!toast.isActive("overpass-error")) {
-        let errorMessage = "Please try that again.";
-        if (errorCategory === "busy") {
-            errorMessage =
-                "The server is busy. Try clicking Offline Mode at the bottom of the Options menu.";
-        } else if (errorCategory === "network") {
-            errorMessage =
-                "Unable to connect to the map server. Please check your internet connection.";
-        }
-
-        toast.error(errorMessage, { toastId: "overpass-error" });
-    }
-
-    return { elements: [], _failed: true };
-};
-
-export const determineGeoJSON = async (
-    osmId: string,
-    osmTypeLetter: "W" | "R" | "N",
-): Promise<any> => {
-    const osmTypeMap: { [key: string]: string } = {
-        W: "way",
-        R: "relation",
-        N: "node",
-    };
-    const osmType = osmTypeMap[osmTypeLetter];
-    const query = `[out:json];${osmType}(${osmId});out geom;`;
-    const data = await getOverpassData(
-        query,
-        "Loading map data...",
-        CacheType.PERMANENT_CACHE,
-    );
-    const geo = osmtogeojson(data);
-    return {
-        ...geo,
-        features: geo.features.filter(
-            (feature: any) => feature.geometry.type !== "Point",
-        ),
-    };
-};
+import { QuestionSpecificLocation } from "./types";
 
 const getLocationTypeName = (locationType: string) => {
     switch (locationType) {
@@ -252,73 +153,6 @@ export const findClosestLocations = async (
     return response;
 };
 
-export const findAdminBoundary = async (
-    latitude: number,
-    longitude: number,
-    adminLevel: 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10,
-) => {
-    const query = `
-[out:json];
-is_in(${latitude}, ${longitude})->.a;
-rel(pivot.a)["admin_level"="${adminLevel}"];
-out geom;
-    `;
-    const data = await getOverpassData(query, "Determining match zone...");
-    const geo = osmtogeojson(data);
-    return geo.features?.[0];
-};
-
-export const trainLineNodeFinder = async (node: string): Promise<number[]> => {
-    const nodeId = node.split("/")[1];
-    const tagQuery = `
-[out:json];
-node(${nodeId});
-wr(bn);
-out tags;
-`;
-    const tagData = await getOverpassData(tagQuery, "Finding train line...");
-    const query = `
-[out:json];
-(
-${tagData.elements
-    .map((element: any) => {
-        if (
-            !element.tags.name &&
-            !element.tags["name:en"] &&
-            !element.tags.network
-        )
-            return "";
-        let query = "";
-        if (element.tags.name) query += `wr["name"="${element.tags.name}"];`;
-        if (element.tags["name:en"])
-            query += `wr["name:en"="${element.tags["name:en"]}"];`;
-        if (element.tags["network"])
-            query += `wr["network"="${element.tags["network"]}"];`;
-        return query;
-    })
-    .join("\n")}
-);
-out geom;
-`;
-    const data = await getOverpassData(query, "Finding train lines...");
-    const geoJSON = osmtogeojson(data);
-    const nodes: number[] = [];
-    geoJSON.features.forEach((feature: any) => {
-        if (feature && feature.id && feature.id.startsWith("node")) {
-            nodes.push(parseInt(feature.id.split("/")[1]));
-        }
-    });
-    data.elements.forEach((element: any) => {
-        if (element && element.type === "node") {
-            nodes.push(element.id);
-        } else if (element && element.type === "way") {
-            nodes.push(...element.nodes);
-        }
-    });
-    const uniqNodes = _.uniq(nodes);
-    return uniqNodes;
-};
-
 let boundaryPromise: Promise<FeatureCollection<MultiPolygon>> | null = null;
 
 const ensureElementCenter = (el: any) => {
@@ -394,126 +228,53 @@ export const findPlacesInZone = async (
         boundaryPromise = null;
     }
 
-    if (offlineMode.get()) {
-        const dataModule = await import('@/data/offline_places.json');
-        const offlineData = dataModule.default?.elements || dataModule.elements || [];
 
-        // Parse filter using regex `/\["?([^"\]=~]+)"?(=|~)"?([^"\]]+)"?\]/g`
-        const extractFilters = (queryStr: string) => {
-            const regex = /\["?([^"\]=~]+)"?(=|~)"?([^"\]]+)"?\]/g;
-            const matches = [];
-            let match;
-            while ((match = regex.exec(queryStr)) !== null) {
-                matches.push({ key: match[1], op: match[2], val: match[3] });
-            }
-            return matches;
+    const dataModule = await import('@/data/offline_places.json');
+    const offlineData = dataModule.default?.elements || dataModule.elements || [];
+
+    // Parse filter using regex `/\["?([^"\]=~]+)"?(=|~)"?([^"\]]+)"?\]/g`
+    const extractFilters = (queryStr: string) => {
+        const regex = /\["?([^"\]=~]+)"?(=|~)"?([^"\]]+)"?\]/g;
+        const matches = [];
+        let match;
+        while ((match = regex.exec(queryStr)) !== null) {
+            matches.push({ key: match[1], op: match[2], val: match[3] });
+        }
+        return matches;
+    };
+
+    const primaryFilters = extractFilters(filter);
+    const altFilters = alternatives.map(extractFilters);
+
+    const matchedElements = offlineData.filter((el: any) => {
+        if (!el.tags) return false;
+
+        const checkFilters = (filtersToMatch: any[]) => {
+            if (filtersToMatch.length === 0) return true;
+            return filtersToMatch.every((f) => {
+                const tagVal = el.tags[f.key];
+                if (tagVal === undefined) return false;
+                if (f.op === "=") {
+                    return tagVal === f.val;
+                } else if (f.op === "~") {
+                    try {
+                        const re = new RegExp(f.val);
+                        return re.test(tagVal);
+                    } catch {
+                        return false;
+                    }
+                }
+                return false;
+            });
         };
 
-        const primaryFilters = extractFilters(filter);
-        const altFilters = alternatives.map(extractFilters);
+        const matchesPrimary = checkFilters(primaryFilters);
+        const matchesAnyAlt = altFilters.length > 0 ? altFilters.some(checkFilters) : false;
 
-        const matchedElements = offlineData.filter((el: any) => {
-            if (!el.tags) return false;
+        return matchesPrimary || matchesAnyAlt;
+    });
 
-            const checkFilters = (filtersToMatch: any[]) => {
-                if (filtersToMatch.length === 0) return true;
-                return filtersToMatch.every((f) => {
-                    const tagVal = el.tags[f.key];
-                    if (tagVal === undefined) return false;
-                    if (f.op === "=") {
-                        return tagVal === f.val;
-                    } else if (f.op === "~") {
-                        try {
-                            const re = new RegExp(f.val);
-                            return re.test(tagVal);
-                        } catch {
-                            return false;
-                        }
-                    }
-                    return false;
-                });
-            };
-
-            const matchesPrimary = checkFilters(primaryFilters);
-            const matchesAnyAlt = altFilters.length > 0 ? altFilters.some(checkFilters) : false;
-
-            return matchesPrimary || matchesAnyAlt;
-        });
-
-        const data = { elements: JSON.parse(JSON.stringify(matchedElements)) };
-
-        if (data && data.elements) {
-            data.elements.forEach(ensureElementCenter);
-        }
-
-        if ($polyGeoJSON && data && data.elements) {
-            data.elements = data.elements.filter((el: any) => {
-                const lon = el.center ? el.center.lon : el.lon;
-                const lat = el.center ? el.center.lat : el.lat;
-
-                if (typeof lon !== "number" || typeof lat !== "number")
-                    return false;
-                const pt = turf.point([lon, lat]);
-                return $polyGeoJSON.features.some((poly) =>
-                    turf.booleanPointInPolygon(pt, poly as any),
-                );
-            });
-        }
-
-        return data; 
-    } 
-
-    if ($polyGeoJSON) {
-        const bbox = turf.bbox($polyGeoJSON);
-        const bboxString = `${bbox[1]},${bbox[0]},${bbox[3]},${bbox[2]}`;
-        query = `
-[out:json]${timeoutDuration != 0 ? `[timeout:${timeoutDuration}]` : ""};
-(
-${searchType}${filter}(${bboxString});
-${
-    alternatives.length > 0
-        ? alternatives
-              .map(
-                  (alternative) =>
-                      `${searchType}${alternative}(${bboxString});`,
-              )
-              .join("\n")
-        : ""
-}
-);
-out ${outType};
-`;
-    } else {
-        const primaryLocation = mapGeoLocation.get();
-        const regionVar = `.region0`;
-        const relationToAreaBlocks = `relation(${primaryLocation.properties.osm_id});map_to_area->${regionVar};`;
-        const areaRegionVar = `area.region0`;
-        const altQueries =
-            alternatives.length > 0
-                ? alternatives
-                      .map(
-                          (alt) => `${searchType}${alt}(${areaRegionVar});`,
-                      )
-                      .join("\n")
-                : "";
-        const searchBlocks = `
-            ${searchType}${filter}(${areaRegionVar});
-            ${altQueries}
-          `;
-        query = `
-        [out:json]${timeoutDuration !== 0 ? `[timeout:${timeoutDuration}]` : ""};
-        ${relationToAreaBlocks}
-        (
-        ${searchBlocks}
-        );
-        out ${outType};
-        `;
-    }
-    const data = await getOverpassData(
-        query,
-        loadingText,
-        CacheType.ZONE_CACHE,
-    );
+    const data = { elements: JSON.parse(JSON.stringify(matchedElements)) };
 
     if (data && data.elements) {
         data.elements.forEach(ensureElementCenter);
@@ -531,54 +292,6 @@ out ${outType};
                 turf.booleanPointInPolygon(pt, poly as any),
             );
         });
-    }
-
-    if (data && data.elements) {
-        const byName: Record<string, any[]> = {};
-        const result: any[] = [];
-
-        for (const e of data.elements) {
-            if (e.tags && e.tags.leisure === "golf_course") {
-                if (e.tags.indoor === "yes") {
-                    continue; // Skip indoor golf locations entirely
-                }
-                if (e.tags.name) {
-                    const name = e.tags.name;
-                    if (!byName[name]) {
-                        byName[name] = [];
-                    }
-                    byName[name].push(e);
-                    continue;
-                }
-            }
-            result.push(e);
-        }
-
-        for (const items of Object.values(byName)) {
-            if (items.length === 1) {
-                result.push(items[0]);
-            } else {
-                let totalLat = 0;
-                let totalLon = 0;
-                for (const item of items) {
-                    totalLat += item.center ? item.center.lat : item.lat;
-                    totalLon += item.center ? item.center.lon : item.lon;
-                }
-                const avgLat = totalLat / items.length;
-                const avgLon = totalLon / items.length;
-
-                const base = { ...items[0] };
-                if (base.center) {
-                    base.center = { lat: avgLat, lon: avgLon };
-                } else {
-                    base.lat = avgLat;
-                    base.lon = avgLon;
-                }
-                result.push(base);
-            }
-        }
-
-        data.elements = result;
     }
 
     return data;
