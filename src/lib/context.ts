@@ -48,11 +48,6 @@ export const offlineMode = persistentAtom<boolean>("offlineMode", false, {
     decode: JSON.parse,
 });
 
-export const additionalMapGeoLocations = persistentAtom<AdditionalMapGeoLocations[]>("additionalMapGeoLocations", [], {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-});
-
 export const hasSeenWelcome = persistentAtom<boolean>("hasSeenWelcome", false, {
     encode: JSON.stringify,
     decode: JSON.parse,
