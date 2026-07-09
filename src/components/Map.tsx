@@ -343,9 +343,10 @@ export const Map = ({ className }: { className?: string }) => {
                 zoom={10}
                 minZoom={10}
                 maxBounds={[
-                    [50.8427, -114.3158],
-                    [51.2124, -113.8599],
+                    [50.3427, -114.8158],
+                    [51.7124, -113.3599],
                 ]}
+                maxBoundsViscosity={1.0}
                 className={cn(
                     "w-[500px] h-[500px]",
                     className,
