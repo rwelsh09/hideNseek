@@ -8,12 +8,11 @@ import { toast } from "react-toastify";
 import calgaryBoundaryData from "@/data/calgary_boundary.json";
 import {
     additionalMapGeoLocations,
+    mapGeoJSON,
     mapGeoLocation,
     offlineMode,
     polyGeoJSON,
-    mapGeoJSON,
 } from "@/lib/context";
-import { safeUnion } from "@/maps/geo-utils";
 
 import { cacheFetch, determineCache } from "./cache";
 import {
@@ -323,6 +322,44 @@ out geom;
 
 let boundaryPromise: Promise<FeatureCollection<MultiPolygon>> | null = null;
 
+const ensureElementCenter = (el: any) => {
+    let lon = el.center ? el.center.lon : el.lon;
+    let lat = el.center ? el.center.lat : el.lat;
+
+    if (
+        (typeof lon !== "number" || typeof lat !== "number") &&
+        el.geometry &&
+        el.geometry.length > 0
+    ) {
+        lon = el.geometry[0].lon;
+        lat = el.geometry[0].lat;
+    }
+
+    if (
+        (typeof lon !== "number" || typeof lat !== "number") &&
+        el.type === "relation"
+    ) {
+        if (el.bounds) {
+            lon = el.bounds.minlon;
+            lat = el.bounds.minlat;
+        } else if (el.members && el.members.length > 0) {
+            const memberWithGeom = el.members.find(
+                (m: any) => m.geometry && m.geometry.length > 0
+            );
+            if (memberWithGeom) {
+                lon = memberWithGeom.geometry[0].lon;
+                lat = memberWithGeom.geometry[0].lat;
+            }
+        }
+    }
+
+    if (typeof lon === "number" && typeof lat === "number") {
+        if (!el.center) {
+            el.center = { lon, lat };
+        }
+    }
+};
+
 export const findPlacesInZone = async (
     filter: string,
     loadingText?: string,
@@ -384,7 +421,7 @@ export const findPlacesInZone = async (
                         try {
                             const re = new RegExp(f.val);
                             return re.test(tagVal);
-                        } catch (e) {
+                        } catch {
                             return false;
                         }
                     }
@@ -400,38 +437,14 @@ export const findPlacesInZone = async (
 
         const data = { elements: matchedElements };
 
+        if (data && data.elements) {
+            data.elements.forEach(ensureElementCenter);
+        }
+
         if ($polyGeoJSON && data && data.elements) {
             data.elements = data.elements.filter((el: any) => {
-                let lon = el.center ? el.center.lon : el.lon;
-                let lat = el.center ? el.center.lat : el.lat;
-
-                // Handle ways/relations fetched with "out geom"
-                if (
-                    (typeof lon !== "number" || typeof lat !== "number") &&
-                    el.geometry &&
-                    el.geometry.length > 0
-                ) {
-                    lon = el.geometry[0].lon;
-                    lat = el.geometry[0].lat;
-                }
-
-                if (
-                    (typeof lon !== "number" || typeof lat !== "number") &&
-                    el.type === "relation"
-                ) {
-                    if (el.bounds) {
-                        lon = el.bounds.minlon;
-                        lat = el.bounds.minlat;
-                    } else if (el.members && el.members.length > 0) {
-                        const memberWithGeom = el.members.find(
-                            (m: any) => m.geometry && m.geometry.length > 0
-                        );
-                        if (memberWithGeom) {
-                            lon = memberWithGeom.geometry[0].lon;
-                            lat = memberWithGeom.geometry[0].lat;
-                        }
-                    }
-                }
+                const lon = el.center ? el.center.lon : el.lon;
+                const lat = el.center ? el.center.lat : el.lat;
 
                 if (typeof lon !== "number" || typeof lat !== "number")
                     return false;
@@ -452,7 +465,7 @@ export const findPlacesInZone = async (
                     entry.locationQuery
                         ?.match(/\["([^"]+)"(.)"([^"]+)"\]/g)
                         ?.map((tag) => {
-                            const [_, key, operator, value] = tag.match(
+                            const [, key, operator, value] = tag.match(
                                 /\["([^"]+)"(.)"([^"]+)"\]/,
                             ) as RegExpMatchArray;
                             return { key, operator, value };
@@ -529,38 +542,14 @@ out ${outType};
         CacheType.ZONE_CACHE,
     );
 
+    if (data && data.elements) {
+        data.elements.forEach(ensureElementCenter);
+    }
+
     if ($polyGeoJSON && data && data.elements) {
         data.elements = data.elements.filter((el: any) => {
-            let lon = el.center ? el.center.lon : el.lon;
-            let lat = el.center ? el.center.lat : el.lat;
-
-            // Handle ways/relations fetched with "out geom"
-            if (
-                (typeof lon !== "number" || typeof lat !== "number") &&
-                el.geometry &&
-                el.geometry.length > 0
-            ) {
-                lon = el.geometry[0].lon;
-                lat = el.geometry[0].lat;
-            }
-
-            if (
-                (typeof lon !== "number" || typeof lat !== "number") &&
-                el.type === "relation"
-            ) {
-                if (el.bounds) {
-                    lon = el.bounds.minlon;
-                    lat = el.bounds.minlat;
-                } else if (el.members && el.members.length > 0) {
-                    const memberWithGeom = el.members.find(
-                        (m: any) => m.geometry && m.geometry.length > 0
-                    );
-                    if (memberWithGeom) {
-                        lon = memberWithGeom.geometry[0].lon;
-                        lat = memberWithGeom.geometry[0].lat;
-                    }
-                }
-            }
+            const lon = el.center ? el.center.lon : el.lon;
+            const lat = el.center ? el.center.lat : el.lat;
 
             if (typeof lon !== "number" || typeof lat !== "number")
                 return false;
@@ -588,35 +577,8 @@ out ${outType};
             ),
         );
         data.elements = data.elements.filter((el: any) => {
-            let lon = el.center ? el.center.lon : el.lon;
-            let lat = el.center ? el.center.lat : el.lat;
-
-            if (
-                (typeof lon !== "number" || typeof lat !== "number") &&
-                el.geometry &&
-                el.geometry.length > 0
-            ) {
-                lon = el.geometry[0].lon;
-                lat = el.geometry[0].lat;
-            }
-
-            if (
-                (typeof lon !== "number" || typeof lat !== "number") &&
-                el.type === "relation"
-            ) {
-                if (el.bounds) {
-                    lon = el.bounds.minlon;
-                    lat = el.bounds.minlat;
-                } else if (el.members && el.members.length > 0) {
-                    const memberWithGeom = el.members.find(
-                        (m: any) => m.geometry && m.geometry.length > 0
-                    );
-                    if (memberWithGeom) {
-                        lon = memberWithGeom.geometry[0].lon;
-                        lat = memberWithGeom.geometry[0].lat;
-                    }
-                }
-            }
+            const lon = el.center ? el.center.lon : el.lon;
+            const lat = el.center ? el.center.lat : el.lat;
 
             if (typeof lon !== "number" || typeof lat !== "number")
                 return false;
