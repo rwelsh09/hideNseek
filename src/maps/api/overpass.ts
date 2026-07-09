@@ -365,6 +365,55 @@ const ensureElementCenter = (el: any) => {
     }
 };
 
+
+const mergeGolfCourses = (elements: any[]) => {
+    const byName: Record<string, any[]> = {};
+    const result: any[] = [];
+
+    for (const e of elements) {
+        if (e.tags && e.tags.leisure === "golf_course") {
+            if (e.tags.indoor === "yes") {
+                continue; // Skip indoor golf locations entirely
+            }
+            if (e.tags.name) {
+                const name = e.tags.name;
+                if (!byName[name]) {
+                    byName[name] = [];
+                }
+                byName[name].push(e);
+                continue;
+            }
+        }
+        result.push(e);
+    }
+
+    for (const items of Object.values(byName)) {
+        if (items.length === 1) {
+            result.push(items[0]);
+        } else {
+            let totalLat = 0;
+            let totalLon = 0;
+            for (const item of items) {
+                totalLat += item.center ? item.center.lat : item.lat;
+                totalLon += item.center ? item.center.lon : item.lon;
+            }
+            const avgLat = totalLat / items.length;
+            const avgLon = totalLon / items.length;
+
+            const base = { ...items[0] };
+            if (base.center) {
+                base.center = { lat: avgLat, lon: avgLon };
+            } else {
+                base.lat = avgLat;
+                base.lon = avgLon;
+            }
+            result.push(base);
+        }
+    }
+
+    return result;
+};
+
 export const findPlacesInZone = async (
     filter: string,
     loadingText?: string,
@@ -460,6 +509,10 @@ export const findPlacesInZone = async (
             });
         }
 
+        if (data && data.elements) {
+            data.elements = mergeGolfCourses(data.elements);
+        }
+
         return data; 
     } 
 
@@ -534,51 +587,7 @@ out ${outType};
     }
 
     if (data && data.elements) {
-        const byName: Record<string, any[]> = {};
-        const result: any[] = [];
-
-        for (const e of data.elements) {
-            if (e.tags && e.tags.leisure === "golf_course") {
-                if (e.tags.indoor === "yes") {
-                    continue; // Skip indoor golf locations entirely
-                }
-                if (e.tags.name) {
-                    const name = e.tags.name;
-                    if (!byName[name]) {
-                        byName[name] = [];
-                    }
-                    byName[name].push(e);
-                    continue;
-                }
-            }
-            result.push(e);
-        }
-
-        for (const items of Object.values(byName)) {
-            if (items.length === 1) {
-                result.push(items[0]);
-            } else {
-                let totalLat = 0;
-                let totalLon = 0;
-                for (const item of items) {
-                    totalLat += item.center ? item.center.lat : item.lat;
-                    totalLon += item.center ? item.center.lon : item.lon;
-                }
-                const avgLat = totalLat / items.length;
-                const avgLon = totalLon / items.length;
-
-                const base = { ...items[0] };
-                if (base.center) {
-                    base.center = { lat: avgLat, lon: avgLon };
-                } else {
-                    base.lat = avgLat;
-                    base.lon = avgLon;
-                }
-                result.push(base);
-            }
-        }
-
-        data.elements = result;
+        data.elements = mergeGolfCourses(data.elements);
     }
 
     return data;
