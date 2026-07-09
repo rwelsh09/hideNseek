@@ -215,7 +215,6 @@ export const findPlacesInZone = async (
     alternatives: string[] = [],
     timeoutDuration: number = 0,
 ) => {
-    let query = "";
     let $polyGeoJSON = polyGeoJSON.get();
 
     if (!$polyGeoJSON) {

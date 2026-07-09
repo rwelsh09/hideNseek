@@ -1,4 +1,3 @@
-import { getFeatureCoords } from "@/maps/geo-utils";
 import { useStore } from "@nanostores/react";
 import type { Feature, Point } from "geojson";
 import React, { useEffect, useState } from "react";
@@ -7,6 +6,7 @@ import { Popup } from "react-leaflet";
 
 import { questionModified, questions } from "@/lib/context";
 import { findClosestLocations } from "@/maps/api";
+import { getFeatureCoords } from "@/maps/geo-utils";
 import type { Question } from "@/maps/schema";
 
 import { Button } from "./ui/button";
