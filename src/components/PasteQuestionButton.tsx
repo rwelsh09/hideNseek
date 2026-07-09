@@ -13,7 +13,7 @@ export const PasteQuestionButton = () => {
     return (
         <Button
             variant="secondary"
-            className="w-full font-semibold font-poppins flex items-center justify-center gap-2 h-11"
+            className="w-full font-semibold font-poppins flex items-center justify-center gap-2 h-10"
             data-tutorial-id="tutorial-paste-question-btn"
             onClick={() => {
                 navigator.clipboard

@@ -380,7 +380,7 @@ export const Map = ({ className }: { className?: string }) => {
                     </div>
                 </div>
                 <div className="leaflet-bottom leaflet-left">
-                    <div className="leaflet-control pointer-events-auto mb-6 ml-[10px] flex flex-col gap-[10px]">
+                    <div className="leaflet-control pointer-events-auto !mb-10 ml-[10px] flex flex-col gap-[10px]">
                         {$hiderMode === false ? (
                             <AddQuestionDialog />
                         ) : (
@@ -389,7 +389,7 @@ export const Map = ({ className }: { className?: string }) => {
                     </div>
                 </div>
                 <div className="leaflet-bottom leaflet-right">
-                    <div className="leaflet-control pointer-events-auto mb-6 mr-[10px] flex justify-end gap-2 max-[412px]:!mb-4 max-[340px]:flex-col">
+                    <div className="leaflet-control pointer-events-auto !mb-10 mr-[10px] flex justify-end gap-2 max-[340px]:flex-col">
                             <Button
                                 className="shadow-md"
                                 data-tutorial-id="tutorial-share-state-btn"
