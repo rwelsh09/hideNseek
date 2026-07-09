@@ -33,15 +33,15 @@ describe("Match Questions", () => {
                 ]
             });
             const result = await findMatchPlaces({ type: "museum" } as any);
-            expect(result).toHaveLength(2);
-            expect(result![0].geometry.coordinates).toEqual([-114.0, 51.0]);
-            expect(result![1].geometry.coordinates).toEqual([-114.1, 51.1]);
+            expect(result.features).toHaveLength(2);
+            expect(result.features[0].geometry.coordinates).toEqual([-114.0, 51.0]);
+            expect(result.features[1].geometry.coordinates).toEqual([-114.1, 51.1]);
         });
 
-        it("returns empty array and toasts error if runtime error occurs", async () => {
+        it("returns empty FeatureCollection and toasts error if runtime error occurs", async () => {
             vi.mocked(findPlacesInZone).mockResolvedValueOnce({ remark: "runtime error: timeout" });
             const result = await findMatchPlaces({ type: "museum" } as any);
-            expect(result).toEqual([]);
+            expect(result.features).toEqual([]);
             expect(toast.error).toHaveBeenCalled();
         });
     });

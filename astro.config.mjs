@@ -39,6 +39,7 @@ export default defineConfig({
                     /\/chore\//,
                     /\/bug\//,
                 ],
+                maximumFileSizeToCacheInBytes: 5000000,
             },
             manifest: {
                 name: "Hide and Seek Map",

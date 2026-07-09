@@ -1,10 +1,11 @@
+import { useStore } from "@nanostores/react";
 import { ClipboardPasteIcon } from "lucide-react";
 import { toast } from "react-toastify";
-import { useStore } from "@nanostores/react";
 
-import { Button } from "./ui/button";
 import { addQuestion, isLoading } from "@/lib/context";
 import { questionSchema } from "@/maps/schema";
+
+import { Button } from "./ui/button";
 
 export const PasteQuestionButton = () => {
     const $isLoading = useStore(isLoading);
