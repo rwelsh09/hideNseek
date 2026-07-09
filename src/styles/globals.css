@@ -131,6 +131,12 @@ div.leaflet-control-attribution.leaflet-control {
     cursor: pointer !important;
 }
 
+/* Force lock button to be clickable even if driver-no-interaction is applied to a parent */
+.driver-active [data-tutorial-id="tutorial-lock-btn"],
+.driver-active [data-tutorial-id="tutorial-lock-btn"] * {
+    pointer-events: auto !important;
+    cursor: pointer !important;
+}
 
 /* Hide tutorial popover and show nudge when driver is active, a drawer is open, but the active element is not inside it */
 body.driver-active:has(
