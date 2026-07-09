@@ -37,11 +37,9 @@ import { WelcomeDialog } from "@/components/WelcomeDialog";
                             <TimerDrawer client:only="react" />
                         </div>
                         <div
-                            class="absolute top-[142px] left-[10px] z-[1030] group-[.fullscreen]:hidden"
+                            class="absolute top-[142px] left-[10px] z-[1030] group-[.fullscreen]:hidden" data-tutorial-id="left-sidebar-trigger"
                         >
-                            <div data-tutorial-id="left-sidebar-trigger">
-                                <SidebarTriggerL client:only="react" />
-                            </div>
+                            <SidebarTriggerL client:only="react" />
                         </div>
                         <div
                             class="absolute top-[142px] right-[10px] z-[1030] group-[.fullscreen]:hidden" data-tutorial-id="right-sidebar-trigger"

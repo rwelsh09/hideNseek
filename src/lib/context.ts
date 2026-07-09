@@ -43,7 +43,7 @@ export const mapGeoLocation = persistentAtom<OpenStreetMap>(
     },
 );
 
-export const additionalMapGeoLocations = persistentAtom<AdditionalMapGeoLocations[]>("additionalMapGeoLocations", [], {
+export const offlineMode = persistentAtom<boolean>("offlineMode", false, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });

@@ -18,6 +18,7 @@ import {
     hasSeenRules,
     hasSeenWelcome,
     hiderMode,
+    isOptionsOpenStore,
     showHiderTutorial,
     showNextStepsChecklist,
     showTutorial,
@@ -45,6 +46,42 @@ export const TutorialManager = () => {
                     showHiderTutorial.set(false);
                 },
                 steps: [
+                    {
+                        element: '[data-tutorial-id="options-drawer"]',
+                        popover: {
+                            title: "Welcome Hider!",
+                            description: "Close this options menu I have a couple things to show you.",
+                            side: "top",
+                            align: "center",
+                            onPopoverRender: () => {
+                                hiderDriverObj.setConfig({
+                                    ...hiderDriverObj.getConfig(),
+                                    disableActiveInteraction: false,
+                                    overlayClickBehavior: () => {
+                                        isOptionsOpenStore.set(false);
+                                    }
+                                });
+
+                                const checkInterval = setInterval(() => {
+                                    if (!isOptionsOpenStore.get()) {
+                                        clearInterval(checkInterval);
+                                        setTimeout(() => hiderDriverObj.moveNext(), 300);
+                                    }
+                                }, 100);
+                                
+                                (hiderDriverObj as any)._closeOptionsCheckInterval = checkInterval;
+                            },
+                            onDeselected: () => {
+                                if ((hiderDriverObj as any)._closeOptionsCheckInterval) {
+                                    clearInterval((hiderDriverObj as any)._closeOptionsCheckInterval);
+                                }
+                                hiderDriverObj.setConfig({
+                                    ...hiderDriverObj.getConfig(),
+                                    overlayClickBehavior: () => {}
+                                });
+                            }
+                        }
+                    },
                     {
                         element: '[data-tutorial-id="hider-location-picker"]',
                         popover: {
@@ -191,7 +228,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Questions",
                                   description:
-                                      "This opens the left sidebar, where you add and manage questions for the game.",
+                                      "This opens the left sidebar, where you manage questions.",
                                   side: "right",
                                   align: "start",
                               },
@@ -238,69 +275,6 @@ export const TutorialManager = () => {
                                       "Access Hider Mode, recommended Starting Point, transit lines overlays, and more.",
                                   side: "top",
                                   align: "end",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="left-sidebar-trigger"]',
-                              popover: {
-                                  title: "Open the Sidebar",
-                                  description:
-                                      "Click here to open the sidebar so we can add a question.",
-                                  side: "right",
-                                  align: "start",
-                                  showButtons: ["previous"],
-                                  onPopoverRender: () => {
-                                      const sidebarL = document.querySelector(
-                                          '.peer[data-side="left"]',
-                                      );
-                                      if (
-                                          sidebarL &&
-                                          sidebarL.getAttribute(
-                                              "data-state",
-                                          ) === "expanded"
-                                      ) {
-                                          setTimeout(
-                                              () => driverObj.moveNext(),
-                                              10,
-                                          );
-                                          return;
-                                      }
-
-                                      const trigger =
-                                          document.querySelector<HTMLElement>(
-                                              '[data-tutorial-id="left-sidebar-trigger"] button',
-                                          ) ||
-                                          document.querySelector<HTMLElement>(
-                                              '[data-sidebar="trigger"]',
-                                          );
-
-                                      if (trigger) {
-                                          trigger.addEventListener(
-                                              "click",
-                                              () => {
-                                                  const checkInterval =
-                                                      setInterval(() => {
-                                                          const addBtn =
-                                                              document.querySelector(
-                                                                  '[data-tutorial-id="add-question-btn"]',
-                                                              );
-                                                          if (addBtn) {
-                                                              clearInterval(
-                                                                  checkInterval,
-                                                              );
-                                                              setTimeout(
-                                                                  () =>
-                                                                      driverObj.moveNext(),
-                                                                  300,
-                                                              );
-                                                          }
-                                                      }, 100);
-                                              },
-                                              { once: true },
-                                          );
-                                      }
-                                  },
                               },
                           },
                           {
@@ -361,114 +335,13 @@ export const TutorialManager = () => {
                                           btn.addEventListener(
                                               "click",
                                               () => {
-                                                  setTimeout(
-                                                      () =>
-                                                          driverObj.moveNext(),
-                                                      500,
-                                                  );
-                                              },
-                                              { once: true },
-                                          );
-                                      }
-                                  },
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-store-question-btn"]',
-                              popover: {
-                                  title: "Store the Question",
-                                  description:
-                                      "This is the question that you will ask the Hider. For now, just click the close button to store it in your sidebar and continue.",
-                                  side: "left",
-                                  align: "center",
-                                  showButtons: ["previous"],
-                                  onPopoverRender: () => {
-                                      driverObj.setConfig({
-                                          ...driverObj.getConfig(),
-                                          disableActiveInteraction: false,
-                                      });
-
-                                      const btn = document.querySelector(
-                                          '[data-tutorial-id="tutorial-store-question-btn"]',
-                                      );
-                                      if (btn) {
-                                          btn.addEventListener(
-                                              "click",
-                                              () => {
-                                                  setTimeout(
-                                                      () =>
-                                                          driverObj.moveNext(),
-                                                      500,
-                                                  );
-                                              },
-                                              { once: true },
-                                          );
-                                      }
-                                  },
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="left-sidebar-trigger"]',
-                              popover: {
-                                  title: "Open the Sidebar",
-                                  description:
-                                      "When you get the answer from the Hider you will open the sidebar to eneter the result and lock it in.",
-                                  side: "right",
-                                  align: "start",
-                                  showButtons: ["previous"],
-                                  onPopoverRender: () => {
-                                      driverObj.setConfig({
-                                          ...driverObj.getConfig(),
-                                          disableActiveInteraction: false,
-                                      });
-
-                                      const sidebarL = document.querySelector(
-                                          '.peer[data-side="left"]',
-                                      );
-                                      if (
-                                          sidebarL &&
-                                          sidebarL.getAttribute(
-                                              "data-state",
-                                          ) === "expanded"
-                                      ) {
-                                          setTimeout(
-                                              () => driverObj.moveNext(),
-                                              10,
-                                          );
-                                          return;
-                                      }
-
-                                      const trigger =
-                                          document.querySelector<HTMLElement>(
-                                              '[data-tutorial-id="left-sidebar-trigger"] button',
-                                          ) ||
-                                          document.querySelector<HTMLElement>(
-                                              '[data-sidebar="trigger"]',
-                                          );
-
-                                      if (trigger) {
-                                          trigger.addEventListener(
-                                              "click",
-                                              () => {
-                                                  const checkInterval =
-                                                      setInterval(() => {
-                                                          const lockBtn =
-                                                              document.querySelector(
-                                                                  '[data-tutorial-id="tutorial-lock-btn"]',
-                                                              );
-                                                          if (lockBtn) {
-                                                              clearInterval(
-                                                                  checkInterval,
-                                                              );
-                                                              setTimeout(
-                                                                  () =>
-                                                                      driverObj.moveNext(),
-                                                                  300,
-                                                              );
-                                                          }
-                                                      }, 100);
+                                                  const checkInterval = setInterval(() => {
+                                                      const floatingPanel = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
+                                                      if (floatingPanel) {
+                                                          clearInterval(checkInterval);
+                                                          setTimeout(() => driverObj.moveNext(), 300);
+                                                      }
+                                                  }, 100);
                                               },
                                               { once: true },
                                           );
@@ -554,12 +427,85 @@ export const TutorialManager = () => {
                                               clearInterval(checkInterval);
                                               setTimeout(
                                                   () => driverObj.moveNext(),
-                                                  300,
+                                                  350,
                                               );
                                           }
                                       }, 100);
                                   },
                               },
+                          },
+                          {
+                              element: '[data-tutorial-id="tutorial-store-question-btn"]',
+                              popover: {
+                                  title: "Close Question",
+                                  description: "Click here to close the question panel.",
+                                  side: "bottom",
+                                  align: "end",
+                                  showButtons: ["previous"],
+                                  onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: false,
+                                      });
+
+                                      const checkInterval = setInterval(() => {
+                                          const storeBtn = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
+                                          if (!storeBtn) {
+                                              clearInterval(checkInterval);
+                                              setTimeout(() => driverObj.moveNext(), 300);
+                                          } else if (!storeBtn.hasAttribute("data-listener-attached")) {
+                                              storeBtn.setAttribute("data-listener-attached", "true");
+                                              storeBtn.addEventListener("click", () => {
+                                                  clearInterval(checkInterval);
+                                                  setTimeout(() => driverObj.moveNext(), 300);
+                                              }, { once: true });
+                                          }
+                                      }, 100);
+                                      (driverObj as any)._closeCheckInterval = checkInterval;
+                                  },
+                                  onDeselected: () => {
+                                      if ((driverObj as any)._closeCheckInterval) {
+                                          clearInterval((driverObj as any)._closeCheckInterval);
+                                      }
+                                  }
+                              }
+                          },
+                          {
+                              element: '[data-tutorial-id="left-sidebar-trigger"]',
+                              popover: {
+                                  title: "Open the Sidebar",
+                                  description: "Click here to open the sidebar.",
+                                  side: "right",
+                                  align: "start",
+                                  showButtons: ["previous"],
+                                  onPopoverRender: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: false,
+                                      });
+
+                                      const sidebarL = document.querySelector('.peer[data-side="left"]');
+                                      if (sidebarL && sidebarL.getAttribute("data-state") === "expanded") {
+                                          setTimeout(() => driverObj.moveNext(), 10);
+                                          return;
+                                      }
+
+                                      const checkInterval = setInterval(() => {
+                                          const pasteBtn = document.querySelector('[data-tutorial-id="tutorial-paste-question-btn"]');
+                                          const currentSidebar = document.querySelector('.peer[data-side="left"]');
+                                          if (pasteBtn || (currentSidebar && currentSidebar.getAttribute("data-state") === "expanded")) {
+                                              clearInterval(checkInterval);
+                                              setTimeout(() => driverObj.moveNext(), 300);
+                                          }
+                                      }, 100);
+                                      (driverObj as any)._openSidebarCheckInterval = checkInterval;
+                                  },
+                                  onDeselected: () => {
+                                      if ((driverObj as any)._openSidebarCheckInterval) {
+                                          clearInterval((driverObj as any)._openSidebarCheckInterval);
+                                      }
+                                  }
+                              }
                           },
                           {
                               element:
@@ -574,6 +520,12 @@ export const TutorialManager = () => {
                                       driverObj.setConfig({
                                           ...driverObj.getConfig(),
                                           disableActiveInteraction: true,
+                                      });
+                                  },
+                                  onDeselected: () => {
+                                      driverObj.setConfig({
+                                          ...driverObj.getConfig(),
+                                          disableActiveInteraction: false,
                                       });
                                   },
                               },
@@ -694,7 +646,7 @@ export const TutorialManager = () => {
                 }
             };
         }
-    }, [$showTutorial, $hasSeenRules]);
+    }, [$showTutorial, $hasSeenRules, $hasSeenWelcome]);
 
     return (
         <>
