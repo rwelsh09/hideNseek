@@ -152,6 +152,12 @@ export const determineMatchBoundary = _.memoize(
                     const letter = hiderEnglishName[0].toUpperCase();
 
                     const matchPolygons = data.features.filter((p: any) => {
+                        if (
+                            p.geometry.type !== "Polygon" &&
+                            p.geometry.type !== "MultiPolygon"
+                        ) {
+                            return false;
+                        }
                         const name = extractStationName(p);
                         return name && name[0].toUpperCase() === letter;
                     });
