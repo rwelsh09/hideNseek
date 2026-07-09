@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
     extractStationLabel,
+    extractStationLines,
     extractStationName,
     lngLatToText,
 } from "@/maps/geo-utils/special";
@@ -55,5 +56,46 @@ describe("extractStationLabel", () => {
     it("should fallback to coordinate text if name is missing", () => {
         const place = { properties: {}, geometry: { coordinates: [10, 20] } };
         expect(extractStationLabel(place)).toBe("20°N, 10°E");
+    });
+});
+
+describe("extractStationLines", () => {
+    it("should extract lines from route_ref separated by commas", () => {
+        const place = { properties: { route_ref: "Blue Line, Red Line" } };
+        expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
+    });
+
+    it("should extract lines from route_ref separated by semicolons", () => {
+        const place = { properties: { route_ref: "Blue Line;Red Line" } };
+        expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
+    });
+
+    it("should fallback to ref if route_ref is missing", () => {
+        const place = { properties: { ref: "Green Line, Orange Line" } };
+        expect(extractStationLines(place)).toEqual(["Green Line", "Orange Line"]);
+    });
+
+    it("should trim whitespace from extracted lines", () => {
+        const place = { properties: { route_ref: "  Blue Line  ,   Red Line   " } };
+        expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
+    });
+
+    it("should filter out empty strings", () => {
+        const place = { properties: { route_ref: "Blue Line,,;Red Line;" } };
+        expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
+    });
+
+    it("should return an empty array if both route_ref and ref are missing", () => {
+        const place = { properties: { name: "Station Alpha" } };
+        expect(extractStationLines(place)).toEqual([]);
+    });
+
+    it("should work with nested properties.properties structure", () => {
+        const place = {
+            properties: {
+                properties: { route_ref: "Blue Line, Red Line" }
+            }
+        };
+        expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
     });
 });
