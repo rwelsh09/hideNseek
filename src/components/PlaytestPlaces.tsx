@@ -1,4 +1,3 @@
-import { getFeatureCoords } from "@/maps/geo-utils";
 import { useStore } from "@nanostores/react";
 import osmtogeojson from "osmtogeojson";
 import React, { useEffect, useState } from "react";
@@ -7,6 +6,7 @@ import { CircleMarker, Tooltip } from "react-leaflet";
 import { questions } from "@/lib/context";
 import { findPlacesInZone } from "@/maps/api";
 import { LOCATION_FIRST_TAG } from "@/maps/api/constants";
+import { getFeatureCoords } from "@/maps/geo-utils";
 
 const pathOptionsCache: Record<
     string,
@@ -117,10 +117,7 @@ export const PlaytestPlaces = () => {
                     const rawData = await findPlacesInZone(
                         `[${firstTag}=${firstType}]`,
                         undefined,
-                        "nwr",
-                        "center",
                         alternatives,
-                        0,
                     );
 
                     const features = osmtogeojson(rawData);
@@ -148,10 +145,7 @@ export const PlaytestPlaces = () => {
                     const rawData = await findPlacesInZone(
                         firstSpecific,
                         undefined,
-                        "nwr",
-                        "center",
                         specificAlternatives,
-                        0,
                     );
 
                     const features = osmtogeojson(rawData);
