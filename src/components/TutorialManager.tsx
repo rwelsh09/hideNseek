@@ -145,74 +145,6 @@ export const TutorialManager = () => {
                     ? [
                           {
                               element:
-                                  '[data-tutorial-id="tutorial-options-btn"]',
-                              popover: {
-                                  title: "Welcome to Hide & Seek",
-                                  description:
-                                      "Before we begin, open the Options menu and read the Rules.",
-                                  side: "top",
-                                  align: "end",
-                                  showButtons: ["previous"],
-                                  onPopoverRender: () => {
-                                      driverObj.setConfig({
-                                          ...driverObj.getConfig(),
-                                          disableActiveInteraction: false,
-                                      });
-
-                                      const trigger =
-                                          document.querySelector<HTMLElement>(
-                                              '[data-tutorial-id="tutorial-options-btn"]',
-                                          );
-
-                                      if (trigger) {
-                                          trigger.addEventListener(
-                                              "click",
-                                              () => {
-                                                  const checkInterval =
-                                                      setInterval(() => {
-                                                          const rulesBtn =
-                                                              document.querySelector(
-                                                                  '[data-tutorial-id="tutorial-rules-btn"]',
-                                                              );
-                                                          if (rulesBtn) {
-                                                              clearInterval(
-                                                                  checkInterval,
-                                                              );
-                                                              setTimeout(
-                                                                  () =>
-                                                                      driverObj.moveNext(),
-                                                                  300,
-                                                              );
-                                                          }
-                                                      }, 100);
-                                              },
-                                              { once: true },
-                                          );
-                                      }
-                                  },
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-rules-btn"]',
-                              popover: {
-                                  title: "Read the Rules",
-                                  description:
-                                      "Click here to read how the game works. When you return to the map, the tutorial will continue.",
-                                  side: "top",
-                                  align: "center",
-                                  onPopoverRender: () => {
-                                      driverObj.setConfig({
-                                          ...driverObj.getConfig(),
-                                          disableActiveInteraction: false,
-                                      });
-                                  },
-                              },
-                          },
-                      ]
-                    : [
-                          {
-                              element:
                                   '[data-tutorial-id="map-action-buttons"]',
                               popover: {
                                   title: "Map Controls",
@@ -272,7 +204,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Options",
                                   description:
-                                      "Access Hider Mode, recommended Starting Point, transit lines overlays, and more.",
+                                      "Access to the Rules, Hider Mode, recommended Starting Point, and more.",
                                   side: "top",
                                   align: "end",
                               },
