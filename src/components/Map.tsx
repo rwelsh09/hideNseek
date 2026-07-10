@@ -210,7 +210,17 @@ export const Map = ({ className }: { className?: string }) => {
                 }
             });
 
-            const g = L.geoJSON(mapGeoData, { interactive: false });
+
+            if (!map.getPane("eliminationPane")) {
+                map.createPane("eliminationPane");
+                map.getPane("eliminationPane")!.style.zIndex = "400";
+            }
+
+            const g = L.geoJSON(mapGeoData, {
+                interactive: false,
+                pane: "eliminationPane"
+            });
+
             // @ts-expect-error This is a check such that only this type of layer is removed
             g.eliminationGeoJSON = true;
             g.addTo(map);

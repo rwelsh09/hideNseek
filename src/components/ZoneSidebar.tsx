@@ -105,7 +105,13 @@ export const ZoneSidebar = () => {
         if (!map) return;
         removeHidingZones();
 
+
+        if (!map.getPane("hidingZonesPane")) {
+            map.createPane("hidingZonesPane");
+            map.getPane("hidingZonesPane")!.style.zIndex = "399";
+        }
         const geoJsonLayer = L.geoJSON(geoJSONData, {
+            pane: "hidingZonesPane",
             interactive: nonOverlappingStations,
             style: (feature: any) => {
                 let color = "blue";
@@ -708,46 +714,10 @@ export const ZoneSidebar = () => {
 function styleStations(
     circles: StationCircle[],
     style: string,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     $questionFinishedMapData: any,
 ): FeatureCollection | Feature {
-    const applyMask = (
-        feature: FeatureCollection | Feature,
-    ): FeatureCollection | Feature => {
-        if (!$questionFinishedMapData) return feature;
-        try {
-            const unionized = safeUnion(
-                turf.simplify($questionFinishedMapData, {
-                    tolerance: 0.001,
-                }),
-            );
-            if (feature.type === "FeatureCollection") {
-                const intersectedFeatures = feature.features
-                    .map((f: any) => {
-                        const intersection = turf.difference(
-                            turf.featureCollection([f, unionized]),
-                        );
-                        if (intersection) {
-                            intersection.properties = f.properties;
-                            return intersection;
-                        }
-                        return null;
-                    })
-                    .filter(Boolean);
-                return turf.featureCollection(intersectedFeatures as any);
-            } else {
-                const intersection = turf.difference(
-                    turf.featureCollection([feature as any, unionized]),
-                );
-                if (intersection) {
-                    intersection.properties = feature.properties;
-                    return intersection;
-                }
-                return { type: "FeatureCollection", features: [] };
-            }
-        } catch {
-            return feature;
-        }
-    };
+    const applyMask = (feature: FeatureCollection | Feature): FeatureCollection | Feature => { return feature; };
 
     switch (style) {
         case "no-display":
