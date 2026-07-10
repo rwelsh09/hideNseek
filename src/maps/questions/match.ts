@@ -37,19 +37,7 @@ export const findMatchPlaces = async (question: MatchQuestion) => {
             const data = await findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
                 `Finding ${prettifyLocation(location, true).toLowerCase()}...`,
-                "nwr",
-                "center",
             );
-
-            if (data.remark && data.remark.startsWith("runtime error")) {
-                toast.error(
-                    `Error finding ${prettifyLocation(
-                        location,
-                        true,
-                    ).toLowerCase()}.`,
-                );
-                return turf.featureCollection([]);
-            }
 
             if (data.elements.length >= 5000) {
                 toast.error(
@@ -84,8 +72,6 @@ export const determineMatchBoundary = _.memoize(
                     await findPlacesInZone(
                         '["admin_level"="10"]',
                         "Finding neighbourhoods...",
-                        "nwr",
-                        "geom",
                     ),
                 ) as FeatureCollection<Polygon | MultiPolygon>;
 

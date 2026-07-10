@@ -32,7 +32,7 @@ import { compress, shareOrFallback } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import { applyQuestionsToMapGeoData, holedMask } from "@/maps";
 import { hiderifyQuestion } from "@/maps";
-import { clearCache, determineMapBoundaries } from "@/maps/api";
+import { determineMapBoundaries } from "@/maps/api";
 import { flyToWithOffset } from "@/maps/ui-utils";
 
 import { AddQuestionDialog } from "./AddQuestionDialog";
@@ -152,9 +152,6 @@ export const Map = ({ className }: { className?: string }) => {
         isLoading.set(true);
 
         try {
-            if (questions.get().length === 0) {
-                await clearCache();
-            }
 
             let mapGeoData = mapGeoJSON.get();
 

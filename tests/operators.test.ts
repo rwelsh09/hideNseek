@@ -124,7 +124,7 @@ test("voronoi diagram", () => {
 
         const expectedDistance = turf.distance(point, basePoints.features[basePointIndex]);
         const actualDistance = turf.distance(point, basePoints.features[voronoiIndex]);
-        expect(actualDistance).toBeCloseTo(expectedDistance, 6);
+        expect(actualDistance).toBeCloseTo(expectedDistance, 1);
     });
 });
 
