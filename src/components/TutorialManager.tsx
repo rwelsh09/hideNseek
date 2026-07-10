@@ -181,7 +181,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Game Setup",
                                   description:
-                                      "This opens the right sidebar, where you can set the Hiders head start time and toggle & adjust Hiding Zones.",
+                                      "This opens the right sidebar, where you can adjust the Hiders head start time and toggle & adjust Hiding Zones.",
                                   side: "left",
                                   align: "start",
                               },
@@ -192,7 +192,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Share Game Setup",
                                   description:
-                                      "Once the head start and hiding zones are set, you can use this to share the exact Game Setup with the other players.",
+                                      "If the head start and hiding zones are changed from their default values. Use this to share the Game Setup with the other players.",
                                   side: "top",
                                   align: "end",
                               },
@@ -211,8 +211,8 @@ export const TutorialManager = () => {
                           {
                               element: '[data-tutorial-id="add-question-btn"]',
                               popover: {
-                                  title: "Ask a Question",
-                                  description: "Click here to add a question.",
+                                  title: "Questions",
+                                  description: "Add a question by clicking here.",
                                   side: "right",
                                   align: "start",
                                   showButtons: ["previous"],
@@ -286,18 +286,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "How it works",
                                   description:
-                                      "Clicking here brings up the specific rules for the question you are currently asking. (Try it later!)",
-                                  side: "bottom",
-                                  align: "end",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-share-question-btn"]',
-                              popover: {
-                                  title: "Share Question",
-                                  description:
-                                      "Need to send the question details to the Hider? You can copy and share it from here.",
+                                      "Clicking here brings up the specific rules for the question you are currently asking.",
                                   side: "bottom",
                                   align: "end",
                               },
@@ -307,9 +296,20 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Set to Current Location",
                                   description:
-                                      "Automatically set the marker's coordinates using your device's GPS.",
+                                      "Automatically set the question's marker using your device's GPS.",
                                   side: "bottom",
                                   align: "center",
+                              },
+                          },
+                          {
+                              element:
+                                  '[data-tutorial-id="tutorial-share-question-btn"]',
+                              popover: {
+                                  title: "Ask Question",
+                                  description:
+                                      "When the Seekers agree on a question they'll click here and send the question to the Hider.",
+                                  side: "bottom",
+                                  align: "end",
                               },
                           },
                           {
@@ -405,7 +405,7 @@ export const TutorialManager = () => {
                               element: '[data-tutorial-id="left-sidebar-trigger"]',
                               popover: {
                                   title: "Open the Sidebar",
-                                  description: "Click here to open the sidebar.",
+                                  description: "Click here to manage your questions.",
                                   side: "right",
                                   align: "start",
                                   showButtons: ["previous"],
@@ -444,7 +444,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Time Penalty",
                                   description:
-                                      "Locking a question automatically increases the Time Penalty!",
+                                      "Locking a question automatically increases the Time Penalty.",
                                   side: "right",
                                   align: "start",
                                   onPopoverRender: () => {
@@ -464,9 +464,9 @@ export const TutorialManager = () => {
                           {
                               element: '[data-tutorial-id="tutorial-lock-btn"]',
                               popover: {
-                                  title: "Unlock Your Answer",
+                                  title: "Unlock a Question",
                                   description:
-                                      "Oops, we made a mistake! Let's unlock the question so we can delete it. (Click it to unlock)",
+                                      "Made a mistake? Click the lock to unlock it.",
                                   side: "bottom",
                                   align: "end",
                                   showButtons: ["previous"],
@@ -506,7 +506,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Delete the Question",
                                   description:
-                                      "Now click the delete button to remove this test question and finish the tutorial.",
+                                      "Click the delete button to remove this test question and finish the tutorial.",
                                   side: "bottom",
                                   align: "end",
                                   showButtons: ["previous"],
