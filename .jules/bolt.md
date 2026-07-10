@@ -32,3 +32,7 @@
 
 **Learning:** The application was bundling a ~521KB JSON file (`calgary_transit_lines_clean.json`) into the main `Map.tsx` chunk even though it's only displayed when a user toggles an option (`$displayTransitLines`). Even if it's on by default, dynamic importing moves the ~500KB JSON file out of the critical rendering path for the main component, allowing the map to render sooner while the transit line data loads in the background!
 **Action:** Use dynamic `import()` for large JSON datasets that aren't critical to the initial render. By moving the import inside a `useEffect` that triggers when the feature is enabled, we saved ~270KB on the initial bundle size for the Map component!
+
+## 2024-05-18 - Replacing `turf.distance` with `fastDistance` in tight loops
+**Learning:** `turf.distance` is highly unoptimized for heavy loops over large spatial datasets (e.g. evaluating distances against all OpenStreetMap nodes). It includes deep validations, feature creations, and object cloning that can easily freeze the main UI thread when iterated thousands of times per interaction.
+**Action:** Always prefer the math-only trigonometric `fastDistance` utility function when processing N-body queries or massive data lists to save vast amounts of execution time.

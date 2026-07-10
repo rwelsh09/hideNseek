@@ -6,6 +6,7 @@ import {
     mapGeoJSON,
         polyGeoJSON,
 } from "@/lib/context";
+import { fastDistance } from "@/maps/geo-utils";
 
 import { LOCATION_FIRST_TAG } from "./constants";
 import type { EncompassingClosestQuestionSchema } from "./types";
@@ -112,9 +113,7 @@ export const findClosestLocations = async (
         }
 
         const pt = turf.point([ptLon, ptLat]);
-        const distance = turf.distance(centerPoint, pt, {
-            units: "meters",
-        });
+        const distance = fastDistance(centerPoint.geometry.coordinates as [number, number], pt.geometry.coordinates as [number, number], "meters");
 
         const coordKey = `${ptLon.toFixed(4)},${ptLat.toFixed(4)}`;
         if (seenCoords.has(coordKey)) return;

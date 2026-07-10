@@ -16,7 +16,7 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { mapToObj } from "@/lib/utils";
-import { getFeatureCoords } from "@/maps/geo-utils";
+import { fastDistance, getFeatureCoords } from "@/maps/geo-utils";
 import { fetchClosestLocationsWithGrowth } from "@/maps/questions/closest";
 import {
     type ClosestQuestion,
@@ -191,7 +191,7 @@ const ClosestLocationSelector = ({
             if (!coords) return { feature, dist: Infinity };
 
             const pt = turf.point(coords);
-            const dist = turf.distance(center, pt, { units: data.unit });
+            const dist = fastDistance(center.geometry.coordinates as [number, number], pt.geometry.coordinates as [number, number], data.unit);
 
             return { feature, dist };
         });

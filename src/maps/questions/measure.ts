@@ -16,6 +16,7 @@ import {
     prettifyLocation,
     QuestionSpecificLocation,
 } from "@/maps/api";
+import { fastDistance } from "@/maps/geo-utils";
 import { arcBufferToPoint, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import type { APILocations, MeasureQuestion } from "@/maps/schema";
 
@@ -186,9 +187,7 @@ export const calculateMeasureDistance = async (
                     })) as any,
                 ),
             );
-            return turf.distance(seeker, nearestTrainStation, {
-                units: "kilometers",
-            });
+            return fastDistance(seeker.geometry.coordinates as [number, number], nearestTrainStation.geometry.coordinates as [number, number], "kilometers");
         }
         case "mcdonalds" as any:
         case "seven11" as any: {
@@ -200,7 +199,7 @@ export const calculateMeasureDistance = async (
             if (!points || !points.features || points.features.length === 0)
                 return null;
             const nearest = turf.nearestPoint(seeker, points as any);
-            return turf.distance(seeker, nearest, { units: "kilometers" });
+            return fastDistance(seeker.geometry.coordinates as [number, number], nearest.geometry.coordinates as [number, number], "kilometers");
         }
 
         case "museum":
@@ -237,9 +236,7 @@ export const calculateMeasureDistance = async (
 
                 let dist = Infinity;
                 if (feature.geometry.type === "Point") {
-                    dist = turf.distance(seeker, feature, {
-                        units: "kilometers",
-                    });
+                    dist = fastDistance(seeker.geometry.coordinates as [number, number], feature.geometry.coordinates as [number, number], "kilometers");
                 } else if (
                     feature.geometry.type === "Polygon" ||
                     feature.geometry.type === "MultiPolygon"
@@ -262,9 +259,7 @@ export const calculateMeasureDistance = async (
                     });
                 } else if (feature.geometry.type === "MultiPoint") {
                     for (const coord of feature.geometry.coordinates) {
-                        const d = turf.distance(seeker, turf.point(coord), {
-                            units: "kilometers",
-                        });
+                        const d = fastDistance(seeker.geometry.coordinates as [number, number], coord as [number, number], "kilometers");
                         if (d < dist) dist = d;
                     }
                 }

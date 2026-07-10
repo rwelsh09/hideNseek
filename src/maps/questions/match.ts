@@ -16,6 +16,7 @@ import {
     LOCATION_FIRST_TAG,
     prettifyLocation,
 } from "@/maps/api";
+import { fastDistance } from "@/maps/geo-utils";
 import {
     extractStationLines,
     extractStationName,
@@ -113,7 +114,7 @@ export const determineMatchBoundary = _.memoize(
                             feature.properties.center = center;
                         }
 
-                        const d = turf.distance(point, center);
+                        const d = fastDistance(point.geometry.coordinates as [number, number], center.geometry.coordinates as [number, number], "kilometers");
                         if (d < minDistance) {
                             minDistance = d;
                             nearest = feature;

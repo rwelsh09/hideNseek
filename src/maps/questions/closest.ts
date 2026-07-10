@@ -2,7 +2,7 @@ import * as turf from "@turf/turf";
 
 import { hiderMode } from "@/lib/context";
 import { findClosestLocations } from "@/maps/api";
-import { arcBuffer, geoSpatialVoronoi, getFeatureCoords,safeUnion } from "@/maps/geo-utils";
+import { arcBuffer, geoSpatialVoronoi, fastDistance, getFeatureCoords, safeUnion } from "@/maps/geo-utils";
 import type { ClosestQuestion } from "@/maps/schema";
 
 export const fetchClosestLocationsWithGrowth = async (
@@ -64,7 +64,7 @@ const filterPointsWithinRadius = (points: any, question: ClosestQuestion) => {
         if (!coords) return { feature, dist: Infinity };
 
         const pt = turf.point(coords);
-        const dist = turf.distance(center, pt, { units: question.unit });
+        const dist = fastDistance(center.geometry.coordinates as [number, number], pt.geometry.coordinates as [number, number], question.unit);
         return { feature, dist };
     });
 
@@ -150,7 +150,7 @@ export const hiderifyClosest = async (question: ClosestQuestion) => {
     const location = turf.point([question.lng, question.lat]);
 
     if (
-        turf.distance(hider, location, { units: question.unit }) >
+        fastDistance(hider.geometry.coordinates as [number, number], location.geometry.coordinates as [number, number], question.unit) >
         question.radius
     ) {
         question.location = false;

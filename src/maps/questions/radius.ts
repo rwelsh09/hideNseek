@@ -1,7 +1,7 @@
 import * as turf from "@turf/turf";
 
 import { hiderMode } from "@/lib/context";
-import { arcBuffer, modifyMapData } from "@/maps/geo-utils";
+import { arcBuffer, fastDistance,modifyMapData } from "@/maps/geo-utils";
 import type { RadiusQuestion } from "@/maps/schema";
 
 export const adjustPerRadius = async (
@@ -26,11 +26,7 @@ export const hiderifyRadius = (question: RadiusQuestion) => {
         return question;
     }
 
-    const distance = turf.distance(
-        turf.point([question.lng, question.lat]),
-        turf.point([$hiderMode.longitude, $hiderMode.latitude]),
-        { units: question.unit },
-    );
+    const distance = fastDistance([question.lng, question.lat], [$hiderMode.longitude, $hiderMode.latitude], question.unit);
 
     if (distance <= question.radius) {
         question.within = true;

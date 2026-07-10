@@ -15,6 +15,7 @@ import {
     QuestionSpecificLocation,
     type StationPlace,
 } from "@/maps/api";
+import { fastDistance } from "@/maps/geo-utils";
 import {
     extractStationLines,
     extractStationName,
@@ -162,23 +163,15 @@ export const initializeHidingZonesLogic = async () => {
                     turf.point([question.data.lng, question.data.lat]),
                     points as any,
                 );
-                const distance = turf.distance(
-                    turf.point([question.data.lng, question.data.lat]),
-                    nearestPoint as any,
-                    { units: "kilometers" },
-                );
+                const distance = fastDistance([question.data.lng, question.data.lat], nearestPoint.geometry.coordinates as [number, number], "kilometers");
 
                 circles = circles.filter((circle) => {
                     const point = turf.point(turf.getCoord(circle.properties));
                     const nearest = turf.nearestPoint(point, points as any);
                     return question.data.hiderCloser
-                        ? turf.distance(point, nearest as any, {
-                              units: "kilometers",
-                          }) <
+                        ? fastDistance(point.geometry.coordinates as [number, number], nearest.geometry.coordinates as [number, number], "kilometers") <
                               distance + $hidingRadius
-                        : turf.distance(point, nearest as any, {
-                              units: "kilometers",
-                          }) >
+                        : fastDistance(point.geometry.coordinates as [number, number], nearest.geometry.coordinates as [number, number], "kilometers") >
                               distance - $hidingRadius;
                 });
             }
