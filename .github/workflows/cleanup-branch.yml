@@ -113,4 +113,5 @@ jobs:
                       git commit -m "Bulk cleanup of orphaned deployed branches and update branches.html" || echo "No changes to commit"
                   fi
 
+                  git pull --rebase origin gh-pages || true
                   git push origin gh-pages
