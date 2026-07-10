@@ -218,12 +218,7 @@ export const Map = ({ className }: { className?: string }) => {
 
             const g = L.geoJSON(mapGeoData, {
                 interactive: false,
-                pane: "eliminationPane",
-                style: {
-                    fillColor: "#000",
-                    fillOpacity: 0.5,
-                    color: "none",
-                }
+                pane: "eliminationPane"
             });
 
             // @ts-expect-error This is a check such that only this type of layer is removed
