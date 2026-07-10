@@ -532,7 +532,7 @@ export const ZoneSidebar = () => {
                                                                 precomputed[j].coords,
                                                                 $hidingRadiusUnits,
                                                             );
-                                                            if (d < 2 * $hidingRadius) {
+                                                            if (d < 1.5 * $hidingRadius) {
                                                                 precomputed[i].neighbors.push(j);
                                                                 precomputed[j].neighbors.push(i);
                                                                 precomputed[i].degree++;
