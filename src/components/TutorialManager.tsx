@@ -141,8 +141,7 @@ export const TutorialManager = () => {
                         }
                     }
                 },
-                steps: !$hasSeenRules
-                    ? [
+                steps: [
                           {
                               element:
                                   '[data-tutorial-id="map-action-buttons"]',
@@ -560,7 +559,7 @@ export const TutorialManager = () => {
                                   },
                               },
                           },
-                      ],
+                      ]
             });
 
             tutorialDriver.set(driverObj);
