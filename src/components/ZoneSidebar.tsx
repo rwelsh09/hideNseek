@@ -506,7 +506,10 @@ export const ZoneSidebar = () => {
                                 <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
-                                        const newDisabled = new Set($disabledStations);
+                                        toast.promise(
+                                            new Promise<void>((resolve) => {
+                                                setTimeout(() => {
+                                                    const newDisabled = new Set($disabledStations);
                                         const nodes = stations.map((s, i) => ({
                                             id: i,
                                             stationId: extractStationId(s),
@@ -584,8 +587,17 @@ export const ZoneSidebar = () => {
                                             }
                                         }
 
-                                        disabledStations.set(
-                                            Array.from(newDisabled),
+                                                    disabledStations.set(
+                                                        Array.from(newDisabled),
+                                                    );
+                                                    resolve();
+                                                }, 50);
+                                            }),
+                                            {
+                                                pending: "Optimizing zones...",
+                                                success: "Overlap minimized!",
+                                                error: "Failed to optimize zones",
+                                            }
                                         );
                                     }}
                                     disabled={$isLoading}
