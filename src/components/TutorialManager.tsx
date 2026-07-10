@@ -357,6 +357,10 @@ export const TutorialManager = () => {
                                           disableActiveInteraction: false,
                                       });
 
+                                      if ((driverObj as any)._closeCheckInterval) {
+                                          clearInterval((driverObj as any)._closeCheckInterval);
+                                      }
+
                                       const checkInterval = setInterval(() => {
                                           const storeBtn = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
                                           if (!storeBtn) {
