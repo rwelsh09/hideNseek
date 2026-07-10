@@ -509,90 +509,81 @@ export const ZoneSidebar = () => {
                                     onClick={() => {
                                         toast.promise(
                                             new Promise<void>((resolve) => {
-                                                setTimeout(() => {
-                                                    const newDisabled = new Set($disabledStations);
-                                        const nodes = stations.map((s, i) => ({
-                                            id: i,
-                                            stationId: extractStationId(s),
-                                            point: turf.point(
-                                                getFeatureCoords(s) || (s.geometry as any).coordinates,
-                                            ),
-                                            degree: 0,
-                                            neighbors: [] as number[],
-                                        }));
+                                                // Run heavily intensive unblocking loop over chunks
+                                                const newDisabled = new Set($disabledStations);
 
-                                        for (let i = 0; i < nodes.length; i++) {
-                                            for (
-                                                let j = i + 1;
-                                                j < nodes.length;
-                                                j++
-                                            ) {
-                                                const d = fastDistance(
-                                                    getFeatureCoords(stations[i]) || (stations[i].geometry as any).coordinates,
-                                                    getFeatureCoords(stations[j]) || (stations[j].geometry as any).coordinates,
-                                                    $hidingRadiusUnits,
-                                                );
-                                                if (d < 2 * $hidingRadius) {
-                                                    nodes[i].neighbors.push(j);
-                                                    nodes[j].neighbors.push(i);
-                                                    nodes[i].degree++;
-                                                    nodes[j].degree++;
-                                                }
-                                            }
-                                        }
+                                                const precomputed = stations.map((s, i) => ({
+                                                    id: i,
+                                                    stationId: extractStationId(s),
+                                                    coords: getFeatureCoords(s) || (s.geometry as any).coordinates,
+                                                    degree: 0,
+                                                    neighbors: [] as number[],
+                                                }));
 
-                                        const remaining = new Set(
-                                            nodes
-                                                .filter(
-                                                    (n) =>
-                                                        !newDisabled.has(
-                                                            n.stationId,
-                                                        ),
-                                                )
-                                                .map((n) => n.id),
-                                        );
+                                                let i = 0;
+                                                const CHUNK_SIZE = 50;
 
-                                        while (remaining.size > 0) {
-                                            let minDegree = Infinity;
-                                            let bestNode = -1;
-                                            for (const id of remaining) {
-                                                if (
-                                                    nodes[id].degree < minDegree
-                                                ) {
-                                                    minDegree =
-                                                        nodes[id].degree;
-                                                    bestNode = id;
-                                                }
-                                            }
-
-                                            remaining.delete(bestNode);
-                                            for (const neighbor of nodes[
-                                                bestNode
-                                            ].neighbors) {
-                                                if (remaining.has(neighbor)) {
-                                                    newDisabled.add(
-                                                        nodes[neighbor]
-                                                            .stationId,
-                                                    );
-                                                    remaining.delete(neighbor);
-                                                    for (const nn of nodes[
-                                                        neighbor
-                                                    ].neighbors) {
-                                                        if (
-                                                            remaining.has(nn)
-                                                        ) {
-                                                            nodes[nn].degree--;
+                                                const processChunk = () => {
+                                                    const end = Math.min(i + CHUNK_SIZE, precomputed.length);
+                                                    for (; i < end; i++) {
+                                                        for (let j = i + 1; j < precomputed.length; j++) {
+                                                            const d = fastDistance(
+                                                                precomputed[i].coords,
+                                                                precomputed[j].coords,
+                                                                $hidingRadiusUnits,
+                                                            );
+                                                            if (d < 2 * $hidingRadius) {
+                                                                precomputed[i].neighbors.push(j);
+                                                                precomputed[j].neighbors.push(i);
+                                                                precomputed[i].degree++;
+                                                                precomputed[j].degree++;
+                                                            }
                                                         }
                                                     }
-                                                }
-                                            }
-                                        }
 
-                                                    disabledStations.set(
-                                                        Array.from(newDisabled),
+                                                    if (i < precomputed.length) {
+                                                        requestAnimationFrame(processChunk);
+                                                    } else {
+                                                        finalizeGraph();
+                                                    }
+                                                };
+
+                                                const finalizeGraph = () => {
+                                                    const remaining = new Set(
+                                                        precomputed
+                                                            .filter((n) => !newDisabled.has(n.stationId))
+                                                            .map((n) => n.id)
                                                     );
+
+                                                    while (remaining.size > 0) {
+                                                        let minDegree = Infinity;
+                                                        let bestNode = -1;
+                                                        for (const id of remaining) {
+                                                            if (precomputed[id].degree < minDegree) {
+                                                                minDegree = precomputed[id].degree;
+                                                                bestNode = id;
+                                                            }
+                                                        }
+
+                                                        remaining.delete(bestNode);
+                                                        for (const neighbor of precomputed[bestNode].neighbors) {
+                                                            if (remaining.has(neighbor)) {
+                                                                newDisabled.add(precomputed[neighbor].stationId);
+                                                                remaining.delete(neighbor);
+                                                                for (const nn of precomputed[neighbor].neighbors) {
+                                                                    if (remaining.has(nn)) {
+                                                                        precomputed[nn].degree--;
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+
+                                                    disabledStations.set(Array.from(newDisabled));
                                                     resolve();
-                                                }, 500);
+                                                };
+
+                                                requestAnimationFrame(processChunk);
                                             }),
                                             {
                                                 pending: "Optimizing zones...",
