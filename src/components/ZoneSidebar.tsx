@@ -515,7 +515,7 @@ export const ZoneSidebar = () => {
                                                 const precomputed = stations.map((s, i) => ({
                                                     id: i,
                                                     stationId: extractStationId(s),
-                                                    coords: getFeatureCoords(s) || (s.geometry as any).coordinates,
+                                                    coords: getFeatureCoords(s.properties) || getFeatureCoords(s) || (s.geometry as any).coordinates,
                                                     degree: 0,
                                                     neighbors: [] as number[],
                                                 }));
