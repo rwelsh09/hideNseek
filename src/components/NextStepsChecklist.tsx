@@ -50,8 +50,14 @@ export const NextStepsChecklist = () => {
             <ul className="space-y-3 text-sm text-muted-foreground">
                 <li className="flex gap-2 items-start">
                     <span>
-                        <strong>Start Timer:</strong> Click the clock icon.
-                        Start the timer and (to the Hider) RUN RUN RUN!
+                        <strong>Start the Timer</strong>
+                        <p>Click the clock icon and hit Start.</p>
+                    </span>
+                </li>
+                <li className="flex gap-2 items-start">
+                    <span>
+                        <strong>Hey Hider,</strong>
+                        <p>RUN RUN RUN!</p>
                     </span>
                 </li>
                 <PwaInstallTip />
