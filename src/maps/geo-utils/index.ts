@@ -14,3 +14,22 @@ export const getFeatureCoords = (feature: any) => {
     }
     return null;
 }
+
+export const fastDistance = (c1: [number, number], c2: [number, number], units: "kilometers" | "miles"): number => {
+    const DEG_TO_RAD = Math.PI / 180;
+    const EARTH_RADIUS = units === "kilometers" ? 6371.0088 : 3958.7613;
+
+    const lat1 = c1[1] * DEG_TO_RAD;
+    const lon1 = c1[0] * DEG_TO_RAD;
+    const lat2 = c2[1] * DEG_TO_RAD;
+    const lon2 = c2[0] * DEG_TO_RAD;
+
+    const dLat = lat2 - lat1;
+    const dLon = lon2 - lon1;
+
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+              Math.cos(lat1) * Math.cos(lat2) *
+              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    return EARTH_RADIUS * c;
+};

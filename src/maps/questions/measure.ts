@@ -31,18 +31,16 @@ export const determineMeasureBoundary = async (question: MeasureQuestion) => {
             const data = await findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
                 `Finding ${prettifyLocation(location, true).toLowerCase()}...`,
-                "nwr",
-                "center",
             );
 
-            if (data.remark && data.remark.startsWith("runtime error")) {
+            if (data.elements.length >= 5000) {
                 toast.error(
-                    `Error finding ${prettifyLocation(
+                    `Too many ${prettifyLocation(
                         location,
                         true,
-                    ).toLowerCase()}.`,
+                    ).toLowerCase()} found (${data.elements.length}).`,
                 );
-                return [turf.multiPolygon([])];
+                return [turf.multiPolygon([])] as any;
             }
 
             if (data.elements.length >= 5000) {
