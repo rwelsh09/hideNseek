@@ -9,7 +9,7 @@ import {
 import { QUESTION_RULES } from "@/lib/rules";
 
 export function RulesAccordion() {
-  const [value, setValue] = useState<string[]>(["game-overview"]);
+  const [value, setValue] = useState<string[]>([]);
 
   useEffect(() => {
     const handleHashChange = () => {
