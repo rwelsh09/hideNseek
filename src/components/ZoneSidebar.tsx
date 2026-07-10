@@ -503,6 +503,97 @@ export const ZoneSidebar = () => {
                                 </SidebarMenuItem>
                             )}
                             {$displayHidingZones && (
+                                <SidebarMenuItem
+                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                    onClick={() => {
+                                        const newDisabled = new Set($disabledStations);
+                                        const nodes = stations.map((s, i) => ({
+                                            id: i,
+                                            stationId: extractStationId(s),
+                                            point: turf.point(
+                                                (s.geometry as any).coordinates,
+                                            ),
+                                            degree: 0,
+                                            neighbors: [] as number[],
+                                        }));
+
+                                        for (let i = 0; i < nodes.length; i++) {
+                                            for (
+                                                let j = i + 1;
+                                                j < nodes.length;
+                                                j++
+                                            ) {
+                                                const d = turf.distance(
+                                                    nodes[i].point,
+                                                    nodes[j].point,
+                                                    { units: $hidingRadiusUnits },
+                                                );
+                                                if (d < 2 * $hidingRadius) {
+                                                    nodes[i].neighbors.push(j);
+                                                    nodes[j].neighbors.push(i);
+                                                    nodes[i].degree++;
+                                                    nodes[j].degree++;
+                                                }
+                                            }
+                                        }
+
+                                        const remaining = new Set(
+                                            nodes
+                                                .filter(
+                                                    (n) =>
+                                                        !newDisabled.has(
+                                                            n.stationId,
+                                                        ),
+                                                )
+                                                .map((n) => n.id),
+                                        );
+
+                                        while (remaining.size > 0) {
+                                            let minDegree = Infinity;
+                                            let bestNode = -1;
+                                            for (const id of remaining) {
+                                                if (
+                                                    nodes[id].degree < minDegree
+                                                ) {
+                                                    minDegree =
+                                                        nodes[id].degree;
+                                                    bestNode = id;
+                                                }
+                                            }
+
+                                            remaining.delete(bestNode);
+                                            for (const neighbor of nodes[
+                                                bestNode
+                                            ].neighbors) {
+                                                if (remaining.has(neighbor)) {
+                                                    newDisabled.add(
+                                                        nodes[neighbor]
+                                                            .stationId,
+                                                    );
+                                                    remaining.delete(neighbor);
+                                                    for (const nn of nodes[
+                                                        neighbor
+                                                    ].neighbors) {
+                                                        if (
+                                                            remaining.has(nn)
+                                                        ) {
+                                                            nodes[nn].degree--;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        disabledStations.set(
+                                            Array.from(newDisabled),
+                                        );
+                                    }}
+                                    disabled={$isLoading}
+                                >
+                                    Auto Disable Overlap
+                                </SidebarMenuItem>
+                            )}
+                            {$displayHidingZones && (
                                 <Command
                                     key={
                                         isStationSearchActive
