@@ -108,6 +108,7 @@ export const TutorialManager = () => {
             }, 500);
 
             return () => {
+                document.removeEventListener('tutorial-next', handleNext);
                 tutorialDriver.set(null);
                 try {
                     hiderDriverObj.destroy();
@@ -212,69 +213,115 @@ export const TutorialManager = () => {
                       ]
                     : [
                           {
-                              element:
-                                  '[data-tutorial-id="map-action-buttons"]',
                               popover: {
-                                  title: "Map Controls",
-                                  description:
-                                      "Use these buttons to re-center the map on your location, zoom to the potential hiding areas or view the entire map.",
-                                  side: "left",
-                                  align: "start",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="left-sidebar-trigger"]',
-                              popover: {
-                                  title: "Questions",
-                                  description:
-                                      "This opens the left sidebar, where you manage questions.",
-                                  side: "right",
-                                  align: "start",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="timer-drawer-trigger"]',
-                              popover: {
-                                  title: "Timer & Leaderboard",
-                                  description:
-                                      "Clicking here opens your timer and leaderboard.",
-                                  side: "right",
-                                  align: "start",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="right-sidebar-trigger"]',
-                              popover: {
-                                  title: "Game Setup",
-                                  description:
-                                      "This opens the right sidebar, where you can set the Hiders head start time and toggle & adjust Hiding Zones.",
-                                  side: "left",
-                                  align: "start",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-share-state-btn"]',
-                              popover: {
-                                  title: "Share Game Setup",
-                                  description:
-                                      "Once the head start and hiding zones are set, you can use this to share the exact Game Setup with the other players.",
-                                  side: "top",
-                                  align: "end",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-options-btn"]',
-                              popover: {
-                                  title: "Options",
-                                  description:
-                                      "Access Hider Mode, recommended Starting Point, transit lines overlays, and more.",
-                                  side: "top",
-                                  align: "end",
+                                  title: "UI Overview",
+                                  description: `
+                                      <div class="mt-4 text-sm text-left space-y-4">
+                                          <p class="text-muted-foreground">The core features are highlighted on your screen.</p>
+                                          <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                              <li class="flex items-start gap-2">
+                                                  <span class="flex h-2 w-2 mt-1.5 rounded-full bg-blue-500 shrink-0"></span>
+                                                  <div><strong class="text-foreground">Map Controls:</strong><br/>Re-center, zoom, and adjust view.</div>
+                                              </li>
+                                              <li class="flex items-start gap-2">
+                                                  <span class="flex h-2 w-2 mt-1.5 rounded-full bg-blue-500 shrink-0"></span>
+                                                  <div><strong class="text-foreground">Questions:</strong><br/>Manage your asked questions.</div>
+                                              </li>
+                                              <li class="flex items-start gap-2">
+                                                  <span class="flex h-2 w-2 mt-1.5 rounded-full bg-blue-500 shrink-0"></span>
+                                                  <div><strong class="text-foreground">Timer:</strong><br/>View timer and leaderboard.</div>
+                                              </li>
+                                              <li class="flex items-start gap-2">
+                                                  <span class="flex h-2 w-2 mt-1.5 rounded-full bg-blue-500 shrink-0"></span>
+                                                  <div><strong class="text-foreground">Game Setup:</strong><br/>Set head start and Hiding Zones.</div>
+                                              </li>
+                                              <li class="flex items-start gap-2">
+                                                  <span class="flex h-2 w-2 mt-1.5 rounded-full bg-blue-500 shrink-0"></span>
+                                                  <div><strong class="text-foreground">Share Setup:</strong><br/>Share exact settings with others.</div>
+                                              </li>
+                                              <li class="flex items-start gap-2">
+                                                  <span class="flex h-2 w-2 mt-1.5 rounded-full bg-blue-500 shrink-0"></span>
+                                                  <div><strong class="text-foreground">Options:</strong><br/>Hider Mode, overlays, and more.</div>
+                                              </li>
+                                          </ul>
+                                      </div>
+                                      <div class="mt-6 flex justify-end">
+                                          <button id="custom-next-btn" class="bg-primary text-primary-foreground px-4 py-2 rounded-md font-medium hover:bg-primary/90 transition-colors">Continue</button>
+                                      </div>
+                                  `,
+                                  side: "bottom",
+                                  align: "center",
+                                  showButtons: [],
+                                  onPopoverRender: () => {
+                                      const elementsToHighlight = [
+                                          { id: '[data-tutorial-id="map-action-buttons"]', label: 'Map Controls' },
+                                          { id: '[data-tutorial-id="left-sidebar-trigger"]', label: 'Questions' },
+                                          { id: '[data-tutorial-id="timer-drawer-trigger"]', label: 'Timer' },
+                                          { id: '[data-tutorial-id="right-sidebar-trigger"]', label: 'Game Setup' },
+                                          { id: '[data-tutorial-id="tutorial-share-state-btn"]', label: 'Share Setup' },
+                                          { id: '[data-tutorial-id="tutorial-options-btn"]', label: 'Options' }
+                                      ];
+
+                                      const container = document.createElement('div');
+                                      container.id = 'tutorial-labels-container';
+                                      container.className = 'fixed inset-0 pointer-events-none z-[1000001]';
+                                      document.body.appendChild(container);
+
+                                      elementsToHighlight.forEach(item => {
+                                          const el = document.querySelector(item.id);
+                                          if (el) {
+                                              el.classList.add('!relative', '!z-[1000000]', 'pointer-events-none', 'ring-2', 'ring-white', 'ring-offset-2', 'ring-offset-black/50', 'rounded-md');
+
+                                              const rect = el.getBoundingClientRect();
+                                              const label = document.createElement('div');
+                                              label.className = 'absolute bg-black text-white text-xs px-2 py-1 rounded shadow-lg whitespace-nowrap border border-white/20 flex items-center gap-1.5';
+                                              label.innerHTML = `<span class="flex h-1.5 w-1.5 rounded-full bg-blue-500 animate-pulse"></span>${item.label}`;
+
+                                              if (rect.top < window.innerHeight / 2) {
+                                                  label.style.top = `${rect.bottom + 8}px`;
+                                              } else {
+                                                  label.style.top = `${rect.top - 28}px`;
+                                              }
+
+                                              if (rect.left < window.innerWidth / 2) {
+                                                  label.style.left = `${Math.max(8, rect.left)}px`;
+                                              } else {
+                                                  label.style.left = `${Math.min(window.innerWidth - 8, rect.right)}px`;
+                                                  label.style.transform = 'translateX(-100%)';
+                                              }
+
+                                              container.appendChild(label);
+                                          }
+                                      });
+
+                                      const nextBtn = document.getElementById('custom-next-btn');
+                                      if (nextBtn) {
+                                          nextBtn.addEventListener('click', () => {
+                                              const e = new Event('tutorial-next');
+                                              document.dispatchEvent(e);
+                                          }, { once: true });
+                                      }
+                                  },
+                                  onDeselected: () => {
+                                      const container = document.getElementById('tutorial-labels-container');
+                                      if (container) container.remove();
+
+                                      const elementsToHighlight = [
+                                          '[data-tutorial-id="map-action-buttons"]',
+                                          '[data-tutorial-id="left-sidebar-trigger"]',
+                                          '[data-tutorial-id="timer-drawer-trigger"]',
+                                          '[data-tutorial-id="right-sidebar-trigger"]',
+                                          '[data-tutorial-id="tutorial-share-state-btn"]',
+                                          '[data-tutorial-id="tutorial-options-btn"]'
+                                      ];
+
+                                      elementsToHighlight.forEach(selector => {
+                                          const el = document.querySelector(selector);
+                                          if (el) {
+                                              el.classList.remove('!relative', '!z-[1000000]', 'pointer-events-none', 'ring-2', 'ring-white', 'ring-offset-2', 'ring-offset-black/50', 'rounded-md');
+                                          }
+                                      });
+                                  }
                               },
                           },
                           {
@@ -633,11 +680,17 @@ export const TutorialManager = () => {
 
             tutorialDriver.set(driverObj);
 
+            const handleNext = () => {
+                driverObj.moveNext();
+            };
+            document.addEventListener('tutorial-next', handleNext);
+
             setTimeout(() => {
                 driverObj.drive();
             }, 500);
 
             return () => {
+                document.removeEventListener('tutorial-next', handleNext);
                 tutorialDriver.set(null);
                 try {
                     driverObj.destroy();
