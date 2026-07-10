@@ -58,9 +58,7 @@ export const PwaInstallTip = () => {
 
         const handleAppInstalled = () => {
             setIsInstalled(true);
-            import("@/maps/api").then(({ cacheAllPlaces }) => {
-                cacheAllPlaces();
-            });
+
         };
 
         window.addEventListener(
@@ -97,9 +95,7 @@ export const PwaInstallTip = () => {
         if (outcome === "accepted") {
             setDeferredPrompt(null);
             setIsInstalled(true);
-            import("@/maps/api").then(({ cacheAllPlaces }) => {
-                cacheAllPlaces();
-            });
+
         }
     };
 

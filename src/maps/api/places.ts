@@ -1,18 +1,13 @@
 import * as turf from "@turf/turf";
 import type { Feature, FeatureCollection, MultiPolygon } from "geojson";
-import _ from "lodash";
-import pLimit from "p-limit";
-import { toast } from "react-toastify";
 
 import calgaryBoundaryData from "@/data/calgary_boundary.json";
 import {
     mapGeoJSON,
-    mapGeoLocation,
-    polyGeoJSON,
+        polyGeoJSON,
 } from "@/lib/context";
 
 import { LOCATION_FIRST_TAG } from "./constants";
-import type { APILocations } from "./types";
 import type { EncompassingClosestQuestionSchema } from "./types";
 import { QuestionSpecificLocation } from "./types";
 
@@ -64,15 +59,11 @@ export const findClosestLocations = async (
                     ? QuestionSpecificLocation.TimHortons
                     : QuestionSpecificLocation.Pub,
             loadingText,
-            "nwr",
-            "center",
         );
     } else {
         data = await findPlacesInZone(
             `[${LOCATION_FIRST_TAG[question.locationType]}=${question.locationType}]`,
             loadingText,
-            "nwr",
-            "center",
         );
     }
     const elements = data.elements || [];
@@ -201,18 +192,7 @@ const ensureElementCenter = (el: any) => {
 export const findPlacesInZone = async (
     filter: string,
     loadingText?: string,
-    searchType:
-        | "node"
-        | "way"
-        | "relation"
-        | "nwr"
-        | "nw"
-        | "wr"
-        | "nr"
-        | "area" = "nwr",
-    outType: "center" | "geom" = "center",
     alternatives: string[] = [],
-    timeoutDuration: number = 0,
 ) => {
     let $polyGeoJSON = polyGeoJSON.get();
 
@@ -355,106 +335,6 @@ export const nearestToQuestion = async (question: any) => {
     return turf.nearestPoint(questionPoint, instances as any);
 };
 
-let isCachingAllPlaces = false;
-
-export const cacheAllPlaces = async () => {
-    if (isCachingAllPlaces) return;
-    isCachingAllPlaces = true;
-
-    try {
-        const tasks: (() => Promise<any>)[] = [];
-
-        // Standard Locations (from LOCATION_FIRST_TAG)
-        Object.keys(LOCATION_FIRST_TAG).forEach((locationStr) => {
-            const location = locationStr as APILocations;
-
-            if (
-                location === "mcdonalds" ||
-                location === "seven11" ||
-                location === "timhortons" ||
-                location === "pub"
-            ) {
-                return;
-            }
-
-            tasks.push(() =>
-                findPlacesInZone(
-                    `[${LOCATION_FIRST_TAG[location]}=${location}]`,
-                    `Finding ${getLocationTypeName(locationStr)}...`,
-                    "nwr",
-                    "center",
-                ),
-            );
-        });
-
-        // Specific Hardcoded Queries
-        tasks.push(() =>
-            findPlacesInZone(
-                '["admin_level"="10"]',
-                "Finding Neighborhoods...",
-                "nwr",
-                "geom",
-            ),
-        );
-
-        // Specific Location Enum Queries (McDonalds, 7Eleven)
-        Object.values(QuestionSpecificLocation).forEach((loc) => {
-            tasks.push(() => findPlacesSpecificInZone(loc as any));
-        });
-
-        const total = tasks.length;
-        let completed = 0;
-        let failed = 0;
-
-        const toastId = toast.loading(`Caching places... (0/${total})`);
-
-        // Run concurrently to avoid 504 Gateway Timeouts from Overpass
-        const limit = pLimit(3);
-
-        await Promise.all(
-            tasks.map((task) =>
-                limit(async () => {
-                    try {
-                        const result = await task();
-                        if (result && result._failed) {
-                            throw new Error("API Task Failed");
-                        }
-                    } catch (e) {
-                        console.error("Cache task failed", e);
-                        failed++;
-                    } finally {
-                        completed++;
-                        const progress = completed / total;
-                        toast.update(toastId, {
-                            render: `Caching places... (${completed}/${total})`,
-                            progress: progress,
-                        });
-                    }
-                }),
-            ),
-        );
-
-        if (failed > 0) {
-            toast.update(toastId, {
-                render: `Cached most places, but ${failed} failed.`,
-                type: "warning",
-                isLoading: false,
-                autoClose: 5000,
-                progress: undefined,
-            });
-        } else {
-            toast.update(toastId, {
-                render: "All possible places have been cached!",
-                type: "success",
-                isLoading: false,
-                autoClose: 3000,
-                progress: undefined,
-            });
-        }
-    } finally {
-        isCachingAllPlaces = false;
-    }
-};
 
 export const determineMapBoundaries = async () => {
     return turf.featureCollection([

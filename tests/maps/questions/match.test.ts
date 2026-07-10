@@ -38,8 +38,8 @@ describe("Match Questions", () => {
             expect(result.features[1].geometry.coordinates).toEqual([-114.1, 51.1]);
         });
 
-        it("returns empty FeatureCollection and toasts error if runtime error occurs", async () => {
-            vi.mocked(findPlacesInZone).mockResolvedValueOnce({ remark: "runtime error: timeout" });
+        it("returns empty FeatureCollection and toasts error if too many elements are found", async () => {
+            vi.mocked(findPlacesInZone).mockResolvedValueOnce({ elements: new Array(5000).fill({}) });
             const result = await findMatchPlaces({ type: "museum" } as any);
             expect(result.features).toEqual([]);
             expect(toast.error).toHaveBeenCalled();
