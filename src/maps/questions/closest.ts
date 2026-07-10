@@ -2,7 +2,7 @@ import * as turf from "@turf/turf";
 
 import { hiderMode } from "@/lib/context";
 import { findClosestLocations } from "@/maps/api";
-import { arcBuffer, safeUnion, geoSpatialVoronoi, getFeatureCoords } from "@/maps/geo-utils";
+import { arcBuffer, geoSpatialVoronoi, getFeatureCoords,safeUnion } from "@/maps/geo-utils";
 import type { ClosestQuestion } from "@/maps/schema";
 
 export const fetchClosestLocationsWithGrowth = async (

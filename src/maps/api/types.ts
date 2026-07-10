@@ -36,12 +36,6 @@ export enum QuestionSpecificLocation {
     Pub = '["amenity"~"^(pub|bar)$"]',
 }
 
-export enum CacheType {
-    CACHE = "hide-and-seek-cache",
-    ZONE_CACHE = "hide-and-seek-zone-cache",
-    PERMANENT_CACHE = "hide-and-seek-permanent-cache",
-}
-
 export interface StationPlaceProperties {
     id: string;
     [key: string]: string | undefined;
