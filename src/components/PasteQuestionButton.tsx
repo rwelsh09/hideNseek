@@ -30,7 +30,7 @@ export const PasteQuestionButton = () => {
                             );
                         } catch {
                             toast.error(
-                                "Failed to parse question from clipboard",
+                                "Failed to paste question. Try copying it again.",
                             );
                         }
                     })

@@ -1,7 +1,6 @@
 ---
 import "@/styles/globals.css";
 import { ToastContainer } from "react-toastify";
-// @ts-ignore
 import { pwaInfo } from "virtual:pwa-info";
 
 export interface Props {
@@ -64,6 +63,18 @@ const { className } = Astro.props;
     </head>
     <body class:list={[className, "dark"]}>
         <slot />
-        <ToastContainer client:only theme="dark" />
+        <ToastContainer
+            client:only
+            position="top-center"
+            autoClose={2500}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick={false}
+            rtl={false}
+            pauseOnFocusLoss={false}
+            draggable
+            pauseOnHover={false}
+            theme="dark"
+        />
     </body>
 </html>
