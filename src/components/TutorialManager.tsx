@@ -155,28 +155,6 @@ export const TutorialManager = () => {
                           },
                           {
                               element:
-                                  '[data-tutorial-id="left-sidebar-trigger"]',
-                              popover: {
-                                  title: "Questions",
-                                  description:
-                                      "This opens the left sidebar, where you manage questions.",
-                                  side: "right",
-                                  align: "start",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="timer-drawer-trigger"]',
-                              popover: {
-                                  title: "Timer & Leaderboard",
-                                  description:
-                                      "Clicking here opens your timer and leaderboard.",
-                                  side: "right",
-                                  align: "start",
-                              },
-                          },
-                          {
-                              element:
                                   '[data-tutorial-id="right-sidebar-trigger"]',
                               popover: {
                                   title: "Game Setup",
@@ -318,7 +296,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Enter the Result",
                                   description:
-                                      "Based on the Hider's answer, select the appropriate result here.",
+                                      "Based on the Hider's answer, select the appropriate result here. (leave it as 'Inside' for now)",
                                   side: "bottom",
                                   align: "center",
                                   onPopoverRender: () => {
@@ -400,6 +378,17 @@ export const TutorialManager = () => {
                                       }
                                   }
                               }
+                          },
+                          {
+                              element:
+                                  '[data-tutorial-id="map-action-buttons"]',
+                              popover: {
+                                  title: "Map Controls",
+                                  description:
+                                      "Try clicking the middle button. This will zoom to the newly created potential hiding area.",
+                                  side: "left",
+                                  align: "start",
+                              },
                           },
                           {
                               element: '[data-tutorial-id="left-sidebar-trigger"]',
