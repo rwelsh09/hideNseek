@@ -8,7 +8,6 @@ import calgaryBoundaryData from "@/data/calgary_boundary.json";
 import {
     mapGeoJSON,
     mapGeoLocation,
-    offlineMode,
     polyGeoJSON,
 } from "@/lib/context";
 
