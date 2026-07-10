@@ -3,7 +3,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { atom } from "nanostores";
 import * as React from "react";
-import { LiaThumbtackSolid } from "react-icons/lia";
+import { GrConfigure } from "react-icons/gr";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -288,7 +288,7 @@ const SidebarTrigger = React.forwardRef<
             aria-label="Toggle Sidebar"
             title="Toggle Sidebar"
             className={cn(
-                "bg-white hover:bg-[#f4f4f4] text-black w-[34px] h-[34px] rounded-sm border-2 border-black border-opacity-30 cursor-pointer justify-center p-0",
+                "bg-white hover:bg-[#f4f4f4] text-black w-[34px] h-[34px] rounded-sm  cursor-pointer justify-center p-0",
                 "flex items-center gap-1",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 className,
@@ -299,7 +299,7 @@ const SidebarTrigger = React.forwardRef<
             }}
             {...props}
         >
-            <LiaThumbtackSolid className="w-5 h-5" />
+            <GrConfigure className="w-5 h-5" />
         </button>
     );
 });
