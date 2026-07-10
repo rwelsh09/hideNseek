@@ -30,6 +30,7 @@ import {
 import { initializeHidingZonesLogic } from "@/lib/hiding-zones";
 import { cn } from "@/lib/utils";
 import { type StationCircle } from "@/maps/api";
+import { fastDistance } from "@/maps/geo-utils";
 import {
     extractStationId,
     extractStationLabel,
@@ -526,10 +527,10 @@ export const ZoneSidebar = () => {
                                                 j < nodes.length;
                                                 j++
                                             ) {
-                                                const d = turf.distance(
-                                                    nodes[i].point,
-                                                    nodes[j].point,
-                                                    { units: $hidingRadiusUnits },
+                                                const d = fastDistance(
+                                                    (stations[i].geometry as any).coordinates,
+                                                    (stations[j].geometry as any).coordinates,
+                                                    $hidingRadiusUnits,
                                                 );
                                                 if (d < 2 * $hidingRadius) {
                                                     nodes[i].neighbors.push(j);
@@ -591,7 +592,7 @@ export const ZoneSidebar = () => {
                                                         Array.from(newDisabled),
                                                     );
                                                     resolve();
-                                                }, 50);
+                                                }, 500);
                                             }),
                                             {
                                                 pending: "Optimizing zones...",
