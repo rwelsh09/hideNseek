@@ -79,6 +79,7 @@ export const ZoneSidebar = () => {
     const map = useStore(leafletMapContext);
     const stations = useStore(trainStations);
     const $disabledStations = useStore(disabledStations);
+    const [overlapThreshold, setOverlapThreshold] = useState<number>(1.5);
     const [hidingZoneModeStationID, setHidingZoneModeStationID] =
         useState<string>("");
     const [stationSearch, setStationSearch] = useState<string>("");
@@ -504,6 +505,23 @@ export const ZoneSidebar = () => {
                                 </SidebarMenuItem>
                             )}
                             {$displayHidingZones && (
+                                <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                                    <Label className="text-sm font-medium mr-4">
+                                        Overlap Threshold
+                                    </Label>
+                                    <Input
+                                        type="number"
+                                        className="rounded-md p-1 w-16 h-8 bg-background text-sm"
+                                        value={overlapThreshold}
+                                        step={0.1}
+                                        min={0}
+                                        max={3}
+                                        onChange={(e) => setOverlapThreshold(parseFloat(e.target.value))}
+                                        disabled={$isLoading}
+                                    />
+                                </div>
+                            )}
+                            {$displayHidingZones && (
                                 <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
@@ -532,7 +550,7 @@ export const ZoneSidebar = () => {
                                                                 precomputed[j].coords,
                                                                 $hidingRadiusUnits,
                                                             );
-                                                            if (d < 1.5 * $hidingRadius) {
+                                                            if (d < overlapThreshold * $hidingRadius) {
                                                                 precomputed[i].neighbors.push(j);
                                                                 precomputed[j].neighbors.push(i);
                                                                 precomputed[i].degree++;
