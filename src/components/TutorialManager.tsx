@@ -50,7 +50,8 @@ export const TutorialManager = () => {
                         element: '[data-tutorial-id="options-drawer"]',
                         popover: {
                             title: "Welcome Hider!",
-                            description: "Close this options menu I have a couple things to show you.",
+                            description:
+                                "Close this options menu I have a couple things to show you.",
                             side: "top",
                             align: "center",
                             onPopoverRender: () => {
@@ -59,48 +60,62 @@ export const TutorialManager = () => {
                                     disableActiveInteraction: false,
                                     overlayClickBehavior: () => {
                                         isOptionsOpenStore.set(false);
-                                    }
+                                    },
                                 });
 
                                 const checkInterval = setInterval(() => {
                                     if (!isOptionsOpenStore.get()) {
                                         clearInterval(checkInterval);
-                                        setTimeout(() => hiderDriverObj.moveNext(), 300);
+                                        setTimeout(
+                                            () => hiderDriverObj.moveNext(),
+                                            300,
+                                        );
                                     }
                                 }, 100);
-                                
-                                (hiderDriverObj as any)._closeOptionsCheckInterval = checkInterval;
+
+                                (
+                                    hiderDriverObj as any
+                                )._closeOptionsCheckInterval = checkInterval;
                             },
                             onDeselected: () => {
-                                if ((hiderDriverObj as any)._closeOptionsCheckInterval) {
-                                    clearInterval((hiderDriverObj as any)._closeOptionsCheckInterval);
+                                if (
+                                    (hiderDriverObj as any)
+                                        ._closeOptionsCheckInterval
+                                ) {
+                                    clearInterval(
+                                        (hiderDriverObj as any)
+                                            ._closeOptionsCheckInterval,
+                                    );
                                 }
                                 hiderDriverObj.setConfig({
                                     ...hiderDriverObj.getConfig(),
-                                    overlayClickBehavior: () => {}
+                                    overlayClickBehavior: () => {},
                                 });
-                            }
-                        }
+                            },
+                        },
                     },
                     {
                         element: '[data-tutorial-id="hider-location-picker"]',
                         popover: {
                             title: "Hider Location",
-                            description: "Place the green Map Marker on your hiding spot so the app can calculate the answers to give the Seekers.",
+                            description:
+                                "Place the green Map Marker on your hiding spot so the app can calculate the answers to give the Seekers.",
                             side: "top",
                             align: "center",
                         },
                     },
                     {
-                        element: '[data-tutorial-id="tutorial-paste-question-btn"]',
+                        element:
+                            '[data-tutorial-id="tutorial-paste-question-btn"]',
                         popover: {
                             title: "Answering Questions",
-                            description: "When a Seeker shares a question with you, click this button to paste it onto the map and see the answer.",
+                            description:
+                                "When a Seeker shares a question with you, click this button to paste it onto the map and see the answer.",
                             side: "right",
                             align: "end",
                         },
-                    }
-                ]
+                    },
+                ],
             });
             tutorialDriver.set(hiderDriverObj);
             setTimeout(() => {
@@ -212,69 +227,33 @@ export const TutorialManager = () => {
                       ]
                     : [
                           {
-                              element:
-                                  '[data-tutorial-id="map-action-buttons"]',
                               popover: {
-                                  title: "Map Controls",
+                                  title: "Overview",
                                   description:
-                                      "Use these buttons to re-center the map on your location, zoom to the potential hiding areas or view the entire map.",
-                                  side: "left",
-                                  align: "start",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="left-sidebar-trigger"]',
-                              popover: {
-                                  title: "Questions",
-                                  description:
-                                      "This opens the left sidebar, where you manage questions.",
-                                  side: "right",
-                                  align: "start",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="timer-drawer-trigger"]',
-                              popover: {
-                                  title: "Timer & Leaderboard",
-                                  description:
-                                      "Clicking here opens your timer and leaderboard.",
-                                  side: "right",
-                                  align: "start",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="right-sidebar-trigger"]',
-                              popover: {
-                                  title: "Game Setup",
-                                  description:
-                                      "This opens the right sidebar, where you can set the Hiders head start time and toggle & adjust Hiding Zones.",
-                                  side: "left",
-                                  align: "start",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-share-state-btn"]',
-                              popover: {
-                                  title: "Share Game Setup",
-                                  description:
-                                      "Once the head start and hiding zones are set, you can use this to share the exact Game Setup with the other players.",
-                                  side: "top",
-                                  align: "end",
-                              },
-                          },
-                          {
-                              element:
-                                  '[data-tutorial-id="tutorial-options-btn"]',
-                              popover: {
-                                  title: "Options",
-                                  description:
-                                      "Access Hider Mode, recommended Starting Point, transit lines overlays, and more.",
-                                  side: "top",
-                                  align: "end",
+                                      'highlights and points at everything on the screen.<br><br><div class="flex justify-center gap-4 mt-4"><button id="tutorial-continue-btn" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">Continue to Question</button><button id="tutorial-end-btn" class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">End Tutorial</button></div>',
+                                  showButtons: [],
+                                  onPopoverRender: () => {
+                                      const continueBtn =
+                                          document.getElementById(
+                                              "tutorial-continue-btn",
+                                          );
+                                      const endBtn =
+                                          document.getElementById(
+                                              "tutorial-end-btn",
+                                          );
+                                      if (continueBtn) {
+                                          continueBtn.onclick = () => {
+                                              driverObj.moveNext();
+                                          };
+                                      }
+                                      if (endBtn) {
+                                          endBtn.onclick = () => {
+                                              showTutorial.set(false);
+                                              showNextStepsChecklist.set(true);
+                                              driverObj.destroy();
+                                          };
+                                      }
+                                  },
                               },
                           },
                           {
@@ -335,13 +314,23 @@ export const TutorialManager = () => {
                                           btn.addEventListener(
                                               "click",
                                               () => {
-                                                  const checkInterval = setInterval(() => {
-                                                      const floatingPanel = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
-                                                      if (floatingPanel) {
-                                                          clearInterval(checkInterval);
-                                                          setTimeout(() => driverObj.moveNext(), 300);
-                                                      }
-                                                  }, 100);
+                                                  const checkInterval =
+                                                      setInterval(() => {
+                                                          const floatingPanel =
+                                                              document.querySelector(
+                                                                  '[data-tutorial-id="tutorial-store-question-btn"]',
+                                                              );
+                                                          if (floatingPanel) {
+                                                              clearInterval(
+                                                                  checkInterval,
+                                                              );
+                                                              setTimeout(
+                                                                  () =>
+                                                                      driverObj.moveNext(),
+                                                                  300,
+                                                              );
+                                                          }
+                                                      }, 100);
                                               },
                                               { once: true },
                                           );
@@ -435,10 +424,12 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element: '[data-tutorial-id="tutorial-store-question-btn"]',
+                              element:
+                                  '[data-tutorial-id="tutorial-store-question-btn"]',
                               popover: {
                                   title: "Close Question",
-                                  description: "Click here to close the question panel.",
+                                  description:
+                                      "Click here to close the question panel.",
                                   side: "bottom",
                                   align: "end",
                                   showButtons: ["previous"],
@@ -449,32 +440,63 @@ export const TutorialManager = () => {
                                       });
 
                                       const checkInterval = setInterval(() => {
-                                          const storeBtn = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
+                                          const storeBtn =
+                                              document.querySelector(
+                                                  '[data-tutorial-id="tutorial-store-question-btn"]',
+                                              );
                                           if (!storeBtn) {
                                               clearInterval(checkInterval);
-                                              setTimeout(() => driverObj.moveNext(), 300);
-                                          } else if (!storeBtn.hasAttribute("data-listener-attached")) {
-                                              storeBtn.setAttribute("data-listener-attached", "true");
-                                              storeBtn.addEventListener("click", () => {
-                                                  clearInterval(checkInterval);
-                                                  setTimeout(() => driverObj.moveNext(), 300);
-                                              }, { once: true });
+                                              setTimeout(
+                                                  () => driverObj.moveNext(),
+                                                  300,
+                                              );
+                                          } else if (
+                                              !storeBtn.hasAttribute(
+                                                  "data-listener-attached",
+                                              )
+                                          ) {
+                                              storeBtn.setAttribute(
+                                                  "data-listener-attached",
+                                                  "true",
+                                              );
+                                              storeBtn.addEventListener(
+                                                  "click",
+                                                  () => {
+                                                      clearInterval(
+                                                          checkInterval,
+                                                      );
+                                                      setTimeout(
+                                                          () =>
+                                                              driverObj.moveNext(),
+                                                          300,
+                                                      );
+                                                  },
+                                                  { once: true },
+                                              );
                                           }
                                       }, 100);
-                                      (driverObj as any)._closeCheckInterval = checkInterval;
+                                      (driverObj as any)._closeCheckInterval =
+                                          checkInterval;
                                   },
                                   onDeselected: () => {
-                                      if ((driverObj as any)._closeCheckInterval) {
-                                          clearInterval((driverObj as any)._closeCheckInterval);
+                                      if (
+                                          (driverObj as any)._closeCheckInterval
+                                      ) {
+                                          clearInterval(
+                                              (driverObj as any)
+                                                  ._closeCheckInterval,
+                                          );
                                       }
-                                  }
-                              }
+                                  },
+                              },
                           },
                           {
-                              element: '[data-tutorial-id="left-sidebar-trigger"]',
+                              element:
+                                  '[data-tutorial-id="left-sidebar-trigger"]',
                               popover: {
                                   title: "Open the Sidebar",
-                                  description: "Click here to open the sidebar.",
+                                  description:
+                                      "Click here to open the sidebar.",
                                   side: "right",
                                   align: "start",
                                   showButtons: ["previous"],
@@ -484,28 +506,62 @@ export const TutorialManager = () => {
                                           disableActiveInteraction: false,
                                       });
 
-                                      const sidebarL = document.querySelector('.peer[data-side="left"]');
-                                      if (sidebarL && sidebarL.getAttribute("data-state") === "expanded") {
-                                          setTimeout(() => driverObj.moveNext(), 10);
+                                      const sidebarL = document.querySelector(
+                                          '.peer[data-side="left"]',
+                                      );
+                                      if (
+                                          sidebarL &&
+                                          sidebarL.getAttribute(
+                                              "data-state",
+                                          ) === "expanded"
+                                      ) {
+                                          setTimeout(
+                                              () => driverObj.moveNext(),
+                                              10,
+                                          );
                                           return;
                                       }
 
                                       const checkInterval = setInterval(() => {
-                                          const pasteBtn = document.querySelector('[data-tutorial-id="tutorial-paste-question-btn"]');
-                                          const currentSidebar = document.querySelector('.peer[data-side="left"]');
-                                          if (pasteBtn || (currentSidebar && currentSidebar.getAttribute("data-state") === "expanded")) {
+                                          const pasteBtn =
+                                              document.querySelector(
+                                                  '[data-tutorial-id="tutorial-paste-question-btn"]',
+                                              );
+                                          const currentSidebar =
+                                              document.querySelector(
+                                                  '.peer[data-side="left"]',
+                                              );
+                                          if (
+                                              pasteBtn ||
+                                              (currentSidebar &&
+                                                  currentSidebar.getAttribute(
+                                                      "data-state",
+                                                  ) === "expanded")
+                                          ) {
                                               clearInterval(checkInterval);
-                                              setTimeout(() => driverObj.moveNext(), 300);
+                                              setTimeout(
+                                                  () => driverObj.moveNext(),
+                                                  300,
+                                              );
                                           }
                                       }, 100);
-                                      (driverObj as any)._openSidebarCheckInterval = checkInterval;
+                                      (
+                                          driverObj as any
+                                      )._openSidebarCheckInterval =
+                                          checkInterval;
                                   },
                                   onDeselected: () => {
-                                      if ((driverObj as any)._openSidebarCheckInterval) {
-                                          clearInterval((driverObj as any)._openSidebarCheckInterval);
+                                      if (
+                                          (driverObj as any)
+                                              ._openSidebarCheckInterval
+                                      ) {
+                                          clearInterval(
+                                              (driverObj as any)
+                                                  ._openSidebarCheckInterval,
+                                          );
                                       }
-                                  }
-                              }
+                                  },
+                              },
                           },
                           {
                               element:
