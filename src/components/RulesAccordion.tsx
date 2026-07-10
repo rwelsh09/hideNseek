@@ -165,7 +165,6 @@ export function RulesAccordion() {
               <strong>House Rules:</strong> The rules outlined here are simply recommendations to get you started. Every group&apos;s playstyle is different, so I highly encourage players to discuss and agree on their expectations before starting a game. And/or playing a practice round where you choose a Hiding Spot together and discuss the different answers one would give, especially photos.
             </li>
             <li>
-            <li>
               <strong>No Street View?!</strong> Satellite View isn&apos;t Street View!
             </li>
             <li>
