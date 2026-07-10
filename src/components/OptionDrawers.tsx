@@ -19,7 +19,6 @@ import {
     DrawerHeader,
     DrawerTitle,
 } from "@/components/ui/drawer";
-import offlineMetadata from "@/data/offline_metadata.json";
 import {
     baseTileLayer,
     disabledStations,
@@ -33,7 +32,6 @@ import {
     leafletMapContext,
     mapGeoJSON,
     mapGeoLocation,
-    offlineMode,
     polyGeoJSON,
     questions,
     showRecommendedStart,
@@ -420,36 +418,6 @@ export const OptionDrawers = () => {
                                     Data Management
                                 </h3>
                                 <div className="flex flex-col sm:flex-row gap-3">
-                                    <div className="flex items-center justify-between p-4 bg-background border rounded-md hover:bg-slate-100 dark:hover:bg-slate-800 w-full">
-                                        <Label
-                                            htmlFor="offline-mode-toggle"
-                                            className="flex-1 cursor-pointer text-base font-medium"
-                                        >
-                                            Offline Mode
-                                        </Label>
-                                        <Checkbox
-                                            id="offline-mode-toggle"
-                                            checked={useStore(offlineMode)}
-                                            onCheckedChange={(checked) => {
-                                                offlineMode.set(checked === true);
-                                                if (checked) {
-                                                    const lastUpdated = new Date(offlineMetadata.lastUpdated);
-                                                    const now = new Date();
-                                                    const ageInDays = (now.getTime() - lastUpdated.getTime()) / (1000 * 60 * 60 * 24);
-
-                                                    if (ageInDays > 7) {
-                                                        const formattedDate = lastUpdated.toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' });
-                                                        toast.warning(
-                                                            `Ensure all players are using Offline Mode. Data last updated: ${formattedDate}. `,
-                                                            { autoClose: 8000 }
-                                                        );
-                                                    } else {
-                                                        toast.success("Offline Mode Active", { autoClose: 8000 });
-                                                    }
-                                                }
-                                            }}
-                                        />
-                                    </div>
                                     <AlertDialog>
                                         <AlertDialogTrigger asChild>
                                             <Button
