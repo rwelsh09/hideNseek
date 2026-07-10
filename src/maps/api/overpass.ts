@@ -8,7 +8,6 @@ import calgaryBoundaryData from "@/data/calgary_boundary.json";
 import {
     mapGeoJSON,
     mapGeoLocation,
-    offlineMode,
     polyGeoJSON,
 } from "@/lib/context";
 
@@ -215,7 +214,6 @@ export const findPlacesInZone = async (
     alternatives: string[] = [],
     timeoutDuration: number = 0,
 ) => {
-    let query = "";
     let $polyGeoJSON = polyGeoJSON.get();
 
     if (!$polyGeoJSON) {

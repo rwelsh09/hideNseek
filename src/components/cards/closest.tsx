@@ -1,4 +1,3 @@
-import { getFeatureCoords } from "@/maps/geo-utils";
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
 import { useEffect, useState } from "react";
@@ -17,6 +16,7 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { mapToObj } from "@/lib/utils";
+import { getFeatureCoords } from "@/maps/geo-utils";
 import { fetchClosestLocationsWithGrowth } from "@/maps/questions/closest";
 import {
     type ClosestQuestion,
