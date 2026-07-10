@@ -119,7 +119,7 @@ export const PwaInstallTip = () => {
                     </span>
                     <span className="text-indigo-900/90 dark:text-indigo-200/90">
                         <strong>Pro Tip:</strong> Install this app to your home
-                        screen! Unlock full-screen mode and offline play.
+                        screen! Unlock full-screen mode.
                     </span>
                 </div>
                 <Button
@@ -142,7 +142,7 @@ export const PwaInstallTip = () => {
                 </span>
                 <span className="text-indigo-900/90 dark:text-indigo-200/90">
                     <strong>Pro Tip:</strong> Install this app to your home
-                    screen! Unlock full-screen mode and offline play. Look for
+                    screen! Unlock full-screen mode. Look for
                     &quot;Add to Home Screen&quot; in your browser menu or share
                     sheet (⍐).
                 </span>
@@ -156,7 +156,7 @@ export const PwaInstallTip = () => {
             <span className="font-bold text-indigo-400 w-5 shrink-0">★</span>
             <span className="text-indigo-900/90 dark:text-indigo-200/90">
                 <strong>Pro Tip:</strong> Install this app to your home screen!
-                Unlock full-screen mode and offline play. Look for &quot;Add to
+                Unlock full-screen mode. Look for &quot;Add to
                 Home Screen&quot; or install icon in your browser.
             </span>
         </li>

@@ -165,8 +165,6 @@ export function RulesAccordion() {
               <strong>House Rules:</strong> The rules outlined here are simply recommendations to get you started. Every group&apos;s playstyle is different, so I highly encourage players to discuss and agree on their expectations before starting a game. And/or playing a practice round where you choose a Hiding Spot together and discuss the different answers one would give, especially photos.
             </li>
             <li>
-              <strong>Poor Cellular Reception?</strong> Open the Options drawer, scroll to the bottom, and click <em>&quot;Offline Mode&quot;</em>. This will download all map data needed for the game in advance. This has the added benefit of reducing the time needed to wait for the app to find places (neighbourhoods, libraries, etc.) when switching questions.
-            </li>
             <li>
               <strong>No Street View?!</strong> Satellite View isn&apos;t Street View!
             </li>
