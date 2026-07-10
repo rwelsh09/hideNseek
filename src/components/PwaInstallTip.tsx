@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 
 import { Button } from "./ui/button";
 
-// Define the interface for the BeforeInstallPromptEvent
 interface BeforeInstallPromptEvent extends Event {
     readonly platforms: Array<string>;
     readonly userChoice: Promise<{
@@ -109,21 +108,12 @@ export const PwaInstallTip = () => {
     if (deferredPrompt) {
         return (
             <li className="flex gap-2 items-start mt-4 pt-4 border-t border-border flex-col sm:flex-row">
-                <div className="flex gap-2 items-start">
-                    <span className="font-bold text-indigo-400 w-5 shrink-0">
-                        ★
-                    </span>
-                    <span className="text-indigo-900/90 dark:text-indigo-200/90">
-                        <strong>Pro Tip:</strong> Install this app to your home
-                        screen! Unlock full-screen mode.
-                    </span>
-                </div>
                 <Button
                     onClick={handleInstallClick}
                     className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white shrink-0 mt-2 sm:mt-0"
                     size="sm"
                 >
-                    Install App
+                    Install this App!
                 </Button>
             </li>
         );
@@ -137,23 +127,18 @@ export const PwaInstallTip = () => {
                     ★
                 </span>
                 <span className="text-indigo-900/90 dark:text-indigo-200/90">
-                    <strong>Pro Tip:</strong> Install this app to your home
-                    screen! Unlock full-screen mode. Look for
-                    &quot;Add to Home Screen&quot; in your browser menu or share
-                    sheet (⍐).
+                    Install this app! Look for "Add to Home Screen" in your browser menu or under share (iOS).
                 </span>
             </li>
         );
     }
 
-    // Default fallback (e.g., Firefox Desktop which doesn't support beforeinstallprompt)
+    // Default fallback (e.g. Firefox Desktop which doesn't support beforeinstallprompt)
     return (
         <li className="flex gap-2 items-start mt-4 pt-4 border-t border-border">
             <span className="font-bold text-indigo-400 w-5 shrink-0">★</span>
             <span className="text-indigo-900/90 dark:text-indigo-200/90">
-                <strong>Pro Tip:</strong> Install this app to your home screen!
-                Unlock full-screen mode. Look for &quot;Add to
-                Home Screen&quot; or install icon in your browser.
+                Install this app! Look for &quot;Add to Home Screen&quot; or install icon in your browser.
             </span>
         </li>
     );
