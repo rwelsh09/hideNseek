@@ -117,10 +117,7 @@ export const PlaytestPlaces = () => {
                     const rawData = await findPlacesInZone(
                         `[${firstTag}=${firstType}]`,
                         undefined,
-                        "nwr",
-                        "center",
                         alternatives,
-                        0,
                     );
 
                     const features = osmtogeojson(rawData);
@@ -148,10 +145,7 @@ export const PlaytestPlaces = () => {
                     const rawData = await findPlacesInZone(
                         firstSpecific,
                         undefined,
-                        "nwr",
-                        "center",
                         specificAlternatives,
-                        0,
                     );
 
                     const features = osmtogeojson(rawData);
