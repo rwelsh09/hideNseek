@@ -151,6 +151,7 @@ export const initializeHidingZonesLogic = async () => {
                 const currentDisabled = disabledStations.get();
                 disabledStations.set(Array.from(new Set([...currentDisabled, ...newlyDisabled])));
             }
+
             if (
                 question.id === "measure" &&
                 ((question.data as any).type === "mcdonalds" ||
