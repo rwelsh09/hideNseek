@@ -13,9 +13,11 @@ import {
     SidebarMenu,
     SidebarMenuItem,
 } from "@/components/ui/sidebar-r";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { VscQuestion } from "react-icons/vsc";
 import {
     disabledStations,
-        displayHidingZonesStyle,
+    displayHidingZonesStyle,
     hasSeenPerformanceWarning,
     headStartMinutes,
     hidingRadius,
@@ -476,9 +478,23 @@ export const ZoneSidebar = () => {
                                     Disable All
                                 </SidebarMenuItem>
                             <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                    <Label className="text-sm font-medium mr-4">
-                                        Overlap Threshold
-                                    </Label>
+                                 <Popover>
+                                        <PopoverTrigger asChild>
+                                            <button
+                                                className="flex items-center gap-1 rounded-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 group hover:text-ring/80 transition-colors mr-2"
+                                                aria-label="Overlap Threshold Information"
+                                            >
+                                                <Label className="text-sm font-medium mr-4">
+                                                    Overlap Threshold
+                                                </Label>
+                                            </button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80 text-sm">
+                                            <p>
+                                                Determines how far apart hiding zones must be when using the <strong>Auto Disable Overlap</strong> tool. It acts as a distance multiplier against the Hiding Radius. A lower value allows zones to be closer together (more overlap), while a higher value forces them further apart (less overlap). For example, a value of 2.0 ensures no zones touch at all.
+                                            </p>
+                                        </PopoverContent>
+                                    </Popover>
                                     <Input
                                         type="number"
                                         className="rounded-md p-1 w-16 h-8 bg-background text-sm"
@@ -490,7 +506,8 @@ export const ZoneSidebar = () => {
                                         disabled={$isLoading}
                                     />
                                 </div>
-                            <SidebarMenuItem
+                            <div className="flex items-center gap-2 mt-2">
+                                <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         toast.promise(
@@ -582,6 +599,22 @@ export const ZoneSidebar = () => {
                                 >
                                     Auto Disable Overlap
                                 </SidebarMenuItem>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <button
+                                                className="flex-shrink-0 flex items-center justify-center p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors h-[38px] w-[38px] border ml-2"
+                                                aria-label="Auto Disable Overlap Information"
+                                            >
+                                                <VscQuestion className="h-5 w-5" />
+                                            </button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80 text-sm align-start" align="end">
+                                            <p>
+                                                Automatically disables stations to minimize overlapping zones based on your set <strong>Overlap Threshold</strong>. It calculates the distance between all zones and removes the minimum number of stations needed to ensure no two active zones are closer than the allowed threshold.
+                                            </p>
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
                             <Command
                                     key={
                                         isStationSearchActive
