@@ -17,8 +17,8 @@ import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover
 import { VscQuestion } from "react-icons/vsc";
 import {
     disabledStations,
+    displayHidingZones,
     displayHidingZonesStyle,
-    hasSeenPerformanceWarning,
     headStartMinutes,
     hidingRadius,
     hidingRadiusUnits,
@@ -32,9 +32,8 @@ import {
 import { initializeHidingZonesLogic } from "@/lib/hiding-zones";
 import { cn } from "@/lib/utils";
 import { type StationCircle } from "@/maps/api";
+import { fastDistance, getFeatureCoords } from "@/maps/geo-utils";
 import {
-    fastDistance,
-    getFeatureCoords,
     extractStationId,
     extractStationLabel,
     extractStationName,
@@ -54,6 +53,7 @@ import {
     AlertDialogHeader,
     AlertDialogTitle,
 } from "./ui/alert-dialog";
+import { Checkbox } from "./ui/checkbox";
 import {
     Command,
     CommandEmpty,
@@ -69,10 +69,10 @@ import { MENU_ITEM_CLASSNAME } from "./ui/sidebar-l";
 import { UnitSelect } from "./UnitSelect";
 
 export const ZoneSidebar = () => {
+    const $displayHidingZones = useStore(displayHidingZones);
     const $showRecommendedStart = useStore(showRecommendedStart);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
     const $displayHidingZonesStyle = useStore(displayHidingZonesStyle);
-    const $hasSeenPerformanceWarning = useStore(hasSeenPerformanceWarning);
     const $hidingRadius = useStore(hidingRadius);
     const $hidingRadiusUnits = useStore(hidingRadiusUnits);
     const $headStartMinutes = useStore(headStartMinutes);
@@ -81,14 +81,14 @@ export const ZoneSidebar = () => {
     const map = useStore(leafletMapContext);
     const stations = useStore(trainStations);
     const $disabledStations = useStore(disabledStations);
-    const [overlapThreshold, setOverlapThreshold] = useState<number>(0.8);
-    const [hidingZoneModeStationID, setHidingZoneModeStationID] = useState<string>("");
+    const [overlapThreshold, setOverlapThreshold] = useState<number>(1.5);
+    const [hidingZoneModeStationID, setHidingZoneModeStationID] =
+        useState<string>("");
     const [stationSearch, setStationSearch] = useState<string>("");
     const isStationSearchActive = stationSearch.trim().length > 0;
     const setStations = trainStations.set;
     const sidebarRef = useRef<HTMLDivElement>(null);
     const [isWarningDialogOpen, setIsWarningDialogOpen] = useState(false);
-    const [pendingStyle, setPendingStyle] = useState<"zones" | "no-overlap" | "no-display">("no-display");
 
     const removeHidingZones = () => {
         if (!map) return;
@@ -107,22 +107,24 @@ export const ZoneSidebar = () => {
         if (!map) return;
         removeHidingZones();
 
+
         if (!map.getPane("hidingZonesPane")) {
             map.createPane("hidingZonesPane");
             map.getPane("hidingZonesPane")!.style.zIndex = "399";
         }
-        
         const geoJsonLayer = L.geoJSON(geoJSONData, {
             pane: "hidingZonesPane",
             interactive: nonOverlappingStations,
             style: (feature: any) => {
                 let color = "blue";
-                const isSelected = extractStationId(feature) === hidingZoneModeStationID;
+                const isSelected =
+                    extractStationId(feature) === hidingZoneModeStationID;
 
                 if (isSelected) {
                     color = "yellow";
                 } else {
-                    const transitType = getFeatureProperties(feature).transit_type;
+                    const transitType =
+                        getFeatureProperties(feature).transit_type;
                     if (transitType === "CTrain Station") {
                         color = "red";
                     } else if (transitType === "MAX Station") {
@@ -145,17 +147,23 @@ export const ZoneSidebar = () => {
                       const isSelected = id && id === hidingZoneModeStationID;
 
                       if (isSelected) {
-                          const name = extractStationLabel(feature?.properties) || "Selected Zone";
+                          const name =
+                              extractStationLabel(feature?.properties) ||
+                              "Selected Zone";
                           layer.bindTooltip(name, {
                               permanent: true,
                               direction: "center",
-                              className: "bg-black text-white px-2 py-1 rounded",
+                              className:
+                                  "bg-black text-white px-2 py-1 rounded",
                           });
                       }
 
                       layer.on("click", async () => {
                           if (!map) return;
-                          setHidingZoneModeStationID((prev) => (prev === id ? "" : id));
+
+                          setHidingZoneModeStationID((prev) =>
+                              prev === id ? "" : id,
+                          );
                       });
                   }
                 : undefined,
@@ -168,7 +176,9 @@ export const ZoneSidebar = () => {
                 });
 
                 marker.bindPopup(
-                    `<b>${extractStationName(geoJsonPoint) || "No Name Found"} (${lngLatToText(
+                    `<b>${
+                        extractStationName(geoJsonPoint) || "No Name Found"
+                    } (${lngLatToText(
                         geoJsonPoint.geometry.coordinates as [number, number],
                     )})</b>`,
                 );
@@ -187,24 +197,39 @@ export const ZoneSidebar = () => {
     useEffect(() => {
         if (!map || isLoading.get()) return;
 
-        if ($questionFinishedMapData) {
+        if (
+            ($displayHidingZones || $showRecommendedStart) &&
+            $questionFinishedMapData
+        ) {
             initializeHidingZonesLogic().catch((err) => {
                 console.error(err);
-                toast.error("An error occurred during hiding zone initialization", {
-                    toastId: "hiding-zone-initialization-error",
-                });
+                toast.error(
+                    "An error occurred during hiding zone initialization",
+                    { toastId: "hiding-zone-initialization-error" },
+                );
             });
         }
-    }, [$questionFinishedMapData, $showRecommendedStart, $hidingRadius, $questions]);
+    }, [
+        $questionFinishedMapData,
+        $displayHidingZones,
+        $showRecommendedStart,
+        $hidingRadius,
+        $questions,
+    ]);
 
     useEffect(() => {
         if (!map || isLoading.get()) return;
 
-        if ($displayHidingZonesStyle !== "no-display") {
-            const activeStations = stations.filter((x) => !$disabledStations.includes(extractStationId(x)));
-            
+        if ($displayHidingZones) {
+            const activeStations = stations.filter(
+                (x) => !$disabledStations.includes(extractStationId(x)),
+            );
             showGeoJSON(
-                styleStations(activeStations, $displayHidingZonesStyle, $questionFinishedMapData),
+                styleStations(
+                    activeStations,
+                    $displayHidingZonesStyle,
+                    $questionFinishedMapData,
+                ),
                 $displayHidingZonesStyle === "zones",
             );
 
@@ -213,10 +238,15 @@ export const ZoneSidebar = () => {
                     `[data-station-id="${hidingZoneModeStationID}"]`,
                 );
                 if (element) {
-                    element.scrollIntoView({ behavior: "smooth", block: "center" });
+                    element.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center",
+                    });
                     element.classList.add("selected-card-background-temporary");
                     setTimeout(() => {
-                        element.classList.remove("selected-card-background-temporary");
+                        element.classList.remove(
+                            "selected-card-background-temporary",
+                        );
                     }, 5000);
                 }
             }
@@ -225,6 +255,7 @@ export const ZoneSidebar = () => {
         }
     }, [
         $disabledStations,
+        $displayHidingZones,
         $displayHidingZonesStyle,
         $hidingRadius,
         $questionFinishedMapData,
@@ -265,7 +296,9 @@ export const ZoneSidebar = () => {
                                     className="rounded-md p-2 w-full bg-background"
                                     value={$headStartMinutes}
                                     onChange={(e) => {
-                                        headStartMinutes.set(parseInt(e.target.value) || 0);
+                                        headStartMinutes.set(
+                                            parseInt(e.target.value) || 0,
+                                        );
                                     }}
                                     disabled={$isLoading}
                                 />
@@ -282,7 +315,9 @@ export const ZoneSidebar = () => {
                                     className="rounded-md p-2 w-16 bg-background"
                                     value={$hidingRadius}
                                     onChange={(e) => {
-                                        hidingRadius.set(parseFloat(e.target.value));
+                                        hidingRadius.set(
+                                            parseFloat(e.target.value),
+                                        );
                                     }}
                                     disabled={$isLoading}
                                 />
@@ -296,33 +331,57 @@ export const ZoneSidebar = () => {
                             </div>
                         </div>
 
-                        <AlertDialog open={isWarningDialogOpen} onOpenChange={setIsWarningDialogOpen}>
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle className="flex items-center text-orange-500">
-                                        <AlertTriangle className="mr-2 inline-block h-5 w-5" />
-                                        Warning: Performance Impact
-                                    </AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        This feature may slow down your device.
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel onClick={() => setIsWarningDialogOpen(false)}>
-                                        Cancel
-                                    </AlertDialogCancel>
-                                    <AlertDialogAction
-                                        onClick={() => {
-                                            hasSeenPerformanceWarning.set(true);
-                                            displayHidingZonesStyle.set(pendingStyle);
-                                            setIsWarningDialogOpen(false);
-                                        }}
-                                    >
-                                        Enable
-                                    </AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
+                        <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                            <Label className="flex-1 cursor-pointer text-base font-medium">
+                                View Hiding Zones
+                            </Label>
+                            <Checkbox
+                                defaultChecked={$displayHidingZones}
+                                checked={$displayHidingZones}
+                                onCheckedChange={(checked) => {
+                                    if (checked === true) {
+                                        setIsWarningDialogOpen(true);
+                                    } else {
+                                        displayHidingZones.set(false);
+                                    }
+                                }}
+                                disabled={$isLoading}
+                            />
+                            <AlertDialog
+                                open={isWarningDialogOpen}
+                                onOpenChange={setIsWarningDialogOpen}
+                            >
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle className="flex items-center text-orange-500">
+                                            <AlertTriangle className="mr-2 inline-block h-5 w-5" />
+                                            Warning: Performance Impact
+                                        </AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This feature may slow down your
+                                            device.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel
+                                            onClick={() => {
+                                                setIsWarningDialogOpen(false);
+                                            }}
+                                        >
+                                            Cancel
+                                        </AlertDialogCancel>
+                                        <AlertDialogAction
+                                            onClick={() => {
+                                                displayHidingZones.set(true);
+                                                setIsWarningDialogOpen(false);
+                                            }}
+                                        >
+                                            Enable
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </div>
                     </div>
                 </div>
 
@@ -332,60 +391,84 @@ export const ZoneSidebar = () => {
                     </h3>
                     <div className="rounded-xl border bg-card shadow-sm overflow-hidden divide-y divide-border">
                         <SidebarMenu className="gap-0 border-0 bg-transparent p-0 m-0 w-full rounded-none">
-                            <SidebarMenuItem
-                                className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                onClick={() => {
-                                    setHidingZoneModeStationID("");
-                                    displayHidingZonesStyle.set("no-display");
-                                }}
-                                disabled={$isLoading}
-                            >
-                                No Display
-                            </SidebarMenuItem>
-                            <SidebarMenuItem
-                                className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                onClick={() => {
-                                    if (!$hasSeenPerformanceWarning) {
-                                        setPendingStyle("zones");
-                                        setIsWarningDialogOpen(true);
-                                    } else {
+                            {$displayHidingZones && stations.length > 0 && (
+                                <SidebarMenuItem
+                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                    onClick={() => {
+                                        setHidingZoneModeStationID("");
+                                        displayHidingZonesStyle.set(
+                                            "no-display",
+                                        );
+                                    }}
+                                    disabled={$isLoading}
+                                >
+                                    No Display
+                                </SidebarMenuItem>
+                            )}
+                            {$displayHidingZones && stations.length > 0 && (
+                                <SidebarMenuItem
+                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                    onClick={() => {
+                                        setHidingZoneModeStationID("");
+                                        displayHidingZonesStyle.set("stations");
+                                    }}
+                                    disabled={$isLoading}
+                                >
+                                    All Stations
+                                </SidebarMenuItem>
+                            )}
+                            {$displayHidingZones && stations.length > 0 && (
+                                <SidebarMenuItem
+                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                    onClick={() => {
                                         setHidingZoneModeStationID("");
                                         displayHidingZonesStyle.set("zones");
-                                    }
-                                }}
-                                disabled={$isLoading}
-                            >
-                                All Zones
-                            </SidebarMenuItem>
-                            <SidebarMenuItem
-                                className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                onClick={() => {
-                                    if (!$hasSeenPerformanceWarning) {
-                                        setPendingStyle("no-overlap");
-                                        setIsWarningDialogOpen(true);
-                                    } else {
-                                        setHidingZoneModeStationID("");
-                                        displayHidingZonesStyle.set("no-overlap");
-                                    }
-                                }}
-                                disabled={$isLoading}
-                            >
-                                No Overlap
-                            </SidebarMenuItem>
-                            
-                            {hidingZoneModeStationID && (
+                                    }}
+                                    disabled={$isLoading}
+                                >
+                                    All Zones
+                                </SidebarMenuItem>
+                            )}
+                            {$displayHidingZones && stations.length > 0 && (
                                 <SidebarMenuItem
-                                    className={cn(MENU_ITEM_CLASSNAME, "bg-popover hover:bg-accent")}
+                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                    onClick={() => {
+                                        setHidingZoneModeStationID("");
+                                        displayHidingZonesStyle.set(
+                                            "no-overlap",
+                                        );
+                                    }}
+                                    disabled={$isLoading}
+                                >
+                                    No Overlap
+                                </SidebarMenuItem>
+                            )}
+                            {$displayHidingZones && hidingZoneModeStationID && (
+                                <SidebarMenuItem
+                                    className={cn(
+                                        MENU_ITEM_CLASSNAME,
+                                        "bg-popover hover:bg-accent",
+                                    )}
                                     disabled={$isLoading}
                                 >
                                     Current:{" "}
                                     {(() => {
                                         const selected = stations.find(
-                                            (x) => extractStationId(x) === hidingZoneModeStationID,
+                                            (x) =>
+                                                extractStationId(x) ===
+                                                hidingZoneModeStationID,
                                         );
-                                        const displayName = extractStationLabel(selected?.properties);
-                                        const id = extractStationId(selected) as string;
-                                        const coords = selected?.properties.geometry.coordinates as [number, number];
+                                        const displayName = extractStationLabel(
+                                            selected?.properties,
+                                        );
+                                        const id = extractStationId(
+                                            selected,
+                                        ) as string;
+                                        const coords = selected?.properties
+                                            .geometry.coordinates as [
+                                            number,
+                                            number,
+                                        ];
                                         const href = id?.includes("/")
                                             ? `https://www.openstreetmap.org/${id}`
                                             : `https://www.openstreetmap.org/?mlat=${coords[1]}&mlon=${coords[0]}#map=17/${coords[1]}/${coords[0]}`;
@@ -402,66 +485,73 @@ export const ZoneSidebar = () => {
                                     })()}
                                 </SidebarMenuItem>
                             )}
-
-                            {$disabledStations.length > 0 && (
+                            {$displayHidingZones &&
+                                $disabledStations.length > 0 && (
+                                    <SidebarMenuItem
+                                        className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                        onClick={() => {
+                                            disabledStations.set([]);
+                                        }}
+                                        disabled={$isLoading}
+                                    >
+                                        Clear Disabled
+                                    </SidebarMenuItem>
+                                )}
+                            {$displayHidingZones && (
                                 <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
-                                        disabledStations.set([]);
+                                        disabledStations.set(
+                                            stations.map((x) =>
+                                                extractStationId(x),
+                                            ),
+                                        );
                                     }}
                                     disabled={$isLoading}
                                 >
-                                    Clear Disabled
+                                    Disable All
                                 </SidebarMenuItem>
                             )}
-                            
-                            <SidebarMenuItem
-                                className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                onClick={() => {
-                                    disabledStations.set(stations.map((x) => extractStationId(x)));
-                                }}
-                                disabled={$isLoading}
-                            >
-                                Disable All
-                            </SidebarMenuItem>
-
-                            <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <button
-                                            className="flex items-center gap-1 rounded-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 group hover:text-ring/80 transition-colors mr-2"
-                                            aria-label="Overlap Threshold Information"
-                                        >
-                                            <Label className="text-sm font-medium cursor-pointer">
-                                                Overlap Threshold
-                                            </Label>
-                                            <VscQuestion className="h-4 w-4 text-muted-foreground group-hover:text-ring/80 transition-colors" />
-                                        </button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-80 text-sm">
-                                        <p>
-                                            Determines how far apart hiding zones must be when using the <strong>Auto Disable Overlap</strong> tool. It acts as a distance multiplier against the Hiding Radius. A lower value allows zones to be closer together (more overlap), while a higher value forces them further apart (less overlap). For example, a value of 2.0 ensures no zones touch at all.
-                                        </p>
-                                    </PopoverContent>
-                                </Popover>
-                                <Input
-                                    type="number"
-                                    className="rounded-md p-1 w-16 h-8 bg-background text-sm"
-                                    value={overlapThreshold}
-                                    step={0.1}
-                                    min={0}
-                                    max={3}
-                                    onChange={(e) => setOverlapThreshold(parseFloat(e.target.value))}
-                                    disabled={$isLoading}
-                                />
-                            </div>
-
-                            <div className="flex items-center w-full pr-2">
-                                <SidebarMenuItem
+                            {$displayHidingZones && (
+                                <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <button
+                                                className="flex items-center gap-1 rounded-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 group hover:text-ring/80 transition-colors mr-2"
+                                                aria-label="Overlap Threshold Information"
+                                            >
+                                                <Label className="text-sm font-medium cursor-pointer">
+                                                    Overlap Threshold
+                                                </Label>
+                                                <VscQuestion className="h-4 w-4 text-muted-foreground group-hover:text-ring/80 transition-colors" />
+                                            </button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80 text-sm">
+                                            <p>
+                                                Determines how far apart hiding zones must be when using the <strong>Auto Disable Overlap</strong> tool. It acts as a distance multiplier against the Hiding Radius. A lower value allows zones to be closer together (more overlap), while a higher value forces them further apart (less overlap). For example, a value of 2.0 ensures no zones touch at all.
+                                            </p>
+                                        </PopoverContent>
+                                    </Popover>
+                                    <Input
+                                        type="number"
+                                        className="rounded-md p-1 w-16 h-8 bg-background text-sm"
+                                        value={overlapThreshold}
+                                        step={0.1}
+                                        min={0}
+                                        max={3}
+                                        onChange={(e) => setOverlapThreshold(parseFloat(e.target.value))}
+                                        disabled={$isLoading}
+                                    />
+                                </div>
+                            )}
+                            {$displayHidingZones && (
+                                <div className="flex items-center gap-2 mt-2">
+                                    <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex flex-1 cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         toast.promise(
                                             new Promise<void>((resolve) => {
+                                                // Run heavily intensive unblocking loop over chunks
                                                 const newDisabled = new Set($disabledStations);
 
                                                 const precomputed = stations.map((s, i) => ({
@@ -547,66 +637,106 @@ export const ZoneSidebar = () => {
                                     disabled={$isLoading}
                                 >
                                     Auto Disable Overlap
-                                </SidebarMenuItem>
-                                <Popover>
-                                    <PopoverTrigger asChild>
-                                        <button
-                                            className="flex-shrink-0 flex items-center justify-center p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors h-[38px] w-[38px] border ml-2"
-                                            aria-label="Auto Disable Overlap Information"
-                                        >
-                                            <VscQuestion className="h-5 w-5" />
-                                        </button>
-                                    </PopoverTrigger>
-                                    <PopoverContent className="w-80 text-sm align-start" align="end">
-                                        <p>
-                                            Automatically disables stations to minimize overlapping zones based on your set <strong>Overlap Threshold</strong>. It calculates the distance between all zones and removes the minimum number of stations needed to ensure no two active zones are closer than the allowed threshold.
-                                        </p>
-                                    </PopoverContent>
-                                </Popover>
-                            </div>
-
-                            <Command
-                                key={isStationSearchActive ? "station-search-active" : "station-search-idle"}
-                                shouldFilter={isStationSearchActive}
-                            >
-                                <CommandInput
-                                    placeholder="Search for a hiding zone..."
-                                    value={stationSearch}
-                                    onValueChange={setStationSearch}
-                                    disabled={$isLoading}
-                                />
-                                <CommandList className="max-h-full">
-                                    <CommandEmpty>No hiding zones found.</CommandEmpty>
-                                    <CommandGroup>
-                                        {stations.map((station) => (
-                                            <CommandItem
-                                                key={extractStationId(station)}
-                                                data-station-id={extractStationId(station)}
-                                                className={cn(
-                                                    $disabledStations.includes(extractStationId(station)) && "line-through",
-                                                )}
-                                                onSelect={async () => {
-                                                    if (!map) return;
-                                                    setTimeout(() => {
-                                                        const stationId = extractStationId(station);
-                                                        if ($disabledStations.includes(stationId)) {
-                                                            disabledStations.set([
-                                                                ...$disabledStations.filter((x) => x !== stationId),
-                                                            ]);
-                                                        } else {
-                                                            disabledStations.set([...$disabledStations, stationId]);
-                                                        }
-                                                        setStations([...stations]);
-                                                    }, 100);
-                                                }}
-                                                disabled={$isLoading}
+                                    </SidebarMenuItem>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <button
+                                                className="flex-shrink-0 flex items-center justify-center p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors h-[38px] w-[38px] border ml-2"
+                                                aria-label="Auto Disable Overlap Information"
                                             >
-                                                {extractStationLabel(station.properties)}
-                                            </CommandItem>
-                                        ))}
-                                    </CommandGroup>
-                                </CommandList>
-                            </Command>
+                                                <VscQuestion className="h-5 w-5" />
+                                            </button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80 text-sm align-start" align="end">
+                                            <p>
+                                                Automatically disables stations to minimize overlapping zones based on your set <strong>Overlap Threshold</strong>. It calculates the distance between all zones and removes the minimum number of stations needed to ensure no two active zones are closer than the allowed threshold.
+                                            </p>
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
+                            )}
+                            {$displayHidingZones && (
+                                <Command
+                                    key={
+                                        isStationSearchActive
+                                            ? "station-search-active"
+                                            : "station-search-idle"
+                                    }
+                                    shouldFilter={isStationSearchActive}
+                                >
+                                    <CommandInput
+                                        placeholder="Search for a hiding zone..."
+                                        value={stationSearch}
+                                        onValueChange={setStationSearch}
+                                        disabled={$isLoading}
+                                    />
+                                    <CommandList className="max-h-full">
+                                        <CommandEmpty>
+                                            No hiding zones found.
+                                        </CommandEmpty>
+                                        <CommandGroup>
+                                            {stations.map((station) => (
+                                                <CommandItem
+                                                    key={extractStationId(
+                                                        station,
+                                                    )}
+                                                    data-station-id={extractStationId(
+                                                        station,
+                                                    )}
+                                                    className={cn(
+                                                        $disabledStations.includes(
+                                                            extractStationId(
+                                                                station,
+                                                            ),
+                                                        ) && "line-through",
+                                                    )}
+                                                    onSelect={async () => {
+                                                        if (!map) return;
+                                                        setTimeout(() => {
+                                                            const stationId =
+                                                                extractStationId(
+                                                                    station,
+                                                                );
+                                                            if (
+                                                                $disabledStations.includes(
+                                                                    stationId,
+                                                                )
+                                                            ) {
+                                                                disabledStations.set(
+                                                                    [
+                                                                        ...$disabledStations.filter(
+                                                                            (
+                                                                                x,
+                                                                            ) =>
+                                                                                x !==
+                                                                                stationId,
+                                                                        ),
+                                                                    ],
+                                                                );
+                                                            } else {
+                                                                disabledStations.set(
+                                                                    [
+                                                                        ...$disabledStations,
+                                                                        stationId,
+                                                                    ],
+                                                                );
+                                                            }
+                                                            setStations([
+                                                                ...stations,
+                                                            ]);
+                                                        }, 100);
+                                                    }}
+                                                    disabled={$isLoading}
+                                                >
+                                                    {extractStationLabel(
+                                                        station.properties,
+                                                    )}
+                                                </CommandItem>
+                                            ))}
+                                        </CommandGroup>
+                                    </CommandList>
+                                </Command>
+                            )}
                         </SidebarMenu>
                     </div>
                 </div>
@@ -621,19 +751,21 @@ function styleStations(
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     $questionFinishedMapData: any,
 ): FeatureCollection | Feature {
-    const applyMask = (feature: FeatureCollection | Feature): FeatureCollection | Feature => {
-        return feature;
-    };
+    const applyMask = (feature: FeatureCollection | Feature): FeatureCollection | Feature => { return feature; };
 
     switch (style) {
         case "no-display":
             return { type: "FeatureCollection", features: [] };
         case "no-overlap":
             return applyMask(safeUnion(turf.featureCollection(circles)));
+        case "stations":
+            return applyMask(turf.featureCollection(circles));
         case "zones":
         default:
             if (circles.length > 1) {
-                const points = turf.featureCollection(circles.map((c) => c.properties));
+                const points = turf.featureCollection(
+                    circles.map((c) => c.properties),
+                );
                 try {
                     const voronoi = geoSpatialVoronoi(points as any);
 
@@ -641,7 +773,9 @@ function styleStations(
                         const intersectedCircles = circles.map((circle) => {
                             const stationId = extractStationId(circle);
                             const v = voronoi.features.find(
-                                (f: any) => extractStationId(f.properties?.site) === stationId,
+                                (f: any) =>
+                                    extractStationId(f.properties?.site) ===
+                                    stationId,
                             );
 
                             if (v) {
@@ -655,7 +789,9 @@ function styleStations(
                             }
                             return circle;
                         });
-                        return applyMask(turf.featureCollection(intersectedCircles as any));
+                        return applyMask(
+                            turf.featureCollection(intersectedCircles as any),
+                        );
                     }
                 } catch (e) {
                     console.error("Error generating voronoi for zones:", e);
