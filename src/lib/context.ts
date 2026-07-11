@@ -99,14 +99,9 @@ export const hiderMode = persistentAtom<
 });
 export const triggerLocalRefresh = atom<number>(0);
 
-export const displayHidingZones = persistentAtom<boolean>("displayHidingZones", false, {
-        encode: JSON.stringify,
-        decode: JSON.parse,
-    },
-);
 export const displayHidingZonesStyle = persistentAtom<
     "zones" | "stations" | "no-overlap" | "no-display"
->("displayHidingZonesStyle", "zones");
+>("displayHidingZonesStyle", "no-display");
 
 export const displayTransitLines = persistentAtom<boolean>("displayTransitLines", true, {
         encode: JSON.stringify,
@@ -289,3 +284,8 @@ export const showRecommendedStart = persistentAtom<boolean>("showRecommendedStar
         decode: JSON.parse,
     },
 );
+
+export const hasSeenPerformanceWarning = persistentAtom<boolean>("hasSeenPerformanceWarning", false, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
