@@ -1,5 +1,6 @@
 import * as turf from "@turf/turf";
-import { disabledStations, trainStations, lockedRecommendedStart } from "@/lib/context";
+
+import { disabledStations, lockedRecommendedStart,trainStations } from "@/lib/context";
 import { extractStationId } from "@/maps/geo-utils";
 
 export const getRecommendedStartCoords = (): [number, number] | null => {
