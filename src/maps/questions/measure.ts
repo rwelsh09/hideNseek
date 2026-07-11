@@ -13,44 +13,45 @@ import {
     findPlacesInZone,
     findPlacesSpecificInZone,
     LOCATION_FIRST_TAG,
-    prettifyLocation,
-    QuestionSpecificLocation,
 } from "@/maps/api";
 import { arcBufferToPoint, modifyMapData, safeUnion } from "@/maps/geo-utils";
-import type { APILocations, MeasureQuestion } from "@/maps/schema";
+import { PLACES } from "@/maps/placesConfig";
+import type { MeasureQuestion } from "@/maps/schema";
 
 export const determineMeasureBoundary = async (question: MeasureQuestion) => {
-    switch (question.type) {
-        case "museum":
-        case "hospital":
-        case "cinema":
-        case "library":
-        case "golf_course": {
-            const location = question.type as APILocations;
+    if (question.type === "rail-measure") {
+        const stations = (calgaryTransitData as any).features;
+        if (stations.length === 0) return [turf.multiPolygon([])];
+        const fc = turf.featureCollection(
+            stations.map((x: any) => ({
+                type: "Feature",
+                properties: x.properties,
+                geometry: x.geometry,
+            })) as any[],
+        );
+        return fc.features as any;
+    }
 
+    const place = PLACES.find(p => p.id === question.type);
+    if (place) {
+        if (place.type === "specific" && place.specificLocation) {
+            const points = await findPlacesSpecificInZone(place.specificLocation);
+            if (!points || !points.features || points.features.length === 0)
+                return [turf.multiPolygon([])];
+
+            return points.features as any;
+        } else {
+            const location = place.id;
             const data = await findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
-                `Finding ${prettifyLocation(location, true).toLowerCase()}...`,
+                `Finding ${place.labelPlural.toLowerCase()}...`,
             );
 
             if (data.elements.length >= 5000) {
                 toast.error(
-                    `Too many ${prettifyLocation(
-                        location,
-                        true,
-                    ).toLowerCase()} found (${data.elements.length}).`,
+                    `Too many ${place.labelPlural.toLowerCase()} found (${data.elements.length}).`,
                 );
-                return [turf.multiPolygon([])] as any;
-            }
-
-            if (data.elements.length >= 5000) {
-                toast.error(
-                    `Too many ${prettifyLocation(
-                        location,
-                        true,
-                    ).toLowerCase()} found (${data.elements.length}).`,
-                );
-                return [turf.multiPolygon([])];
+                return [turf.combine(turf.featureCollection([]))] as any;
             }
 
             return [
@@ -66,31 +67,8 @@ export const determineMeasureBoundary = async (question: MeasureQuestion) => {
                 ).features[0],
             ];
         }
-        case "mcdonalds" as any:
-        case "seven11" as any: {
-            const points = await findPlacesSpecificInZone(
-                (question.type as any) === "mcdonalds"
-                    ? QuestionSpecificLocation.McDonalds
-                    : QuestionSpecificLocation.Seven11,
-            );
-            if (!points || !points.features || points.features.length === 0)
-                return [turf.multiPolygon([])];
-
-            return points.features as any;
-        }
-        case "rail-measure" as any: {
-            const stations = (calgaryTransitData as any).features;
-            if (stations.length === 0) return [turf.multiPolygon([])];
-            const fc = turf.featureCollection(
-                stations.map((x: any) => ({
-                    type: "Feature",
-                    properties: x.properties,
-                    geometry: x.geometry,
-                })) as any[],
-            );
-            return fc.features as any;
-        }
     }
+    return [turf.multiPolygon([])] as any;
 };
 
 const bufferedDeterminer = _.memoize(
@@ -190,91 +168,83 @@ export const calculateMeasureDistance = async (
                 units: "kilometers",
             });
         }
-        case "mcdonalds" as any:
-        case "seven11" as any: {
-            const points = await findPlacesSpecificInZone(
-                (question.type as any) === "mcdonalds"
-                    ? QuestionSpecificLocation.McDonalds
-                    : QuestionSpecificLocation.Seven11,
-            );
-            if (!points || !points.features || points.features.length === 0)
-                return null;
-            const nearest = turf.nearestPoint(seeker, points as any);
-            return turf.distance(seeker, nearest, { units: "kilometers" });
-        }
+        default: {
+            const place = PLACES.find(p => p.id === question.type);
+            if (place && place.type === "specific" && place.specificLocation) {
+                const points = await findPlacesSpecificInZone(place.specificLocation);
+                if (!points || !points.features || points.features.length === 0)
+                    return null;
+                const nearest = turf.nearestPoint(seeker, points as any);
+                return turf.distance(seeker, nearest, { units: "kilometers" });
+            } else if (place) {
+                const boundaryData = await determineMeasureBoundary(question);
+                if (
+                    !boundaryData ||
+                    (Array.isArray(boundaryData) && boundaryData.length === 0)
+                )
+                    return null;
 
-        case "museum":
-        case "hospital":
-        case "cinema":
-        case "library":
-        case "golf_course": {
-            const boundaryData = await determineMeasureBoundary(question);
-            if (
-                !boundaryData ||
-                (Array.isArray(boundaryData) && boundaryData.length === 0)
-            )
-                return null;
+                const features = Array.isArray(boundaryData)
+                    ? boundaryData
+                    : [boundaryData];
+                const flattenedFeatures: any[] = [];
 
-            const features = Array.isArray(boundaryData)
-                ? boundaryData
-                : [boundaryData];
-            const flattenedFeatures: any[] = [];
-
-            for (const f of features) {
-                if (f) {
-                    if ((f as any).type === "FeatureCollection") {
-                        flattenedFeatures.push(...(f as any).features);
-                    } else if ((f as any).type === "Feature") {
-                        flattenedFeatures.push(f);
+                for (const f of features) {
+                    if (f) {
+                        if ((f as any).type === "FeatureCollection") {
+                            flattenedFeatures.push(...(f as any).features);
+                        } else if ((f as any).type === "Feature") {
+                            flattenedFeatures.push(f);
+                        }
                     }
                 }
-            }
 
-            let minDistance = Infinity;
+                let minDistance = Infinity;
 
-            for (const feature of flattenedFeatures) {
-                if (!feature || !feature.geometry) continue;
+                for (const feature of flattenedFeatures) {
+                    if (!feature || !feature.geometry) continue;
 
-                let dist = Infinity;
-                if (feature.geometry.type === "Point") {
-                    dist = turf.distance(seeker, feature, {
-                        units: "kilometers",
-                    });
-                } else if (
-                    feature.geometry.type === "Polygon" ||
-                    feature.geometry.type === "MultiPolygon"
-                ) {
-                    dist = turf.pointToLineDistance(
-                        seeker,
-                        turf.polygonToLine(feature as any) as any,
-                        {
-                            units: "kilometers",
-                            method: "geodesic",
-                        },
-                    );
-                } else if (
-                    feature.geometry.type === "LineString" ||
-                    feature.geometry.type === "MultiLineString"
-                ) {
-                    dist = turf.pointToLineDistance(seeker, feature, {
-                        units: "kilometers",
-                        method: "geodesic",
-                    });
-                } else if (feature.geometry.type === "MultiPoint") {
-                    for (const coord of feature.geometry.coordinates) {
-                        const d = turf.distance(seeker, turf.point(coord), {
+                    let dist = Infinity;
+                    if (feature.geometry.type === "Point") {
+                        dist = turf.distance(seeker, feature, {
                             units: "kilometers",
                         });
-                        if (d < dist) dist = d;
+                    } else if (
+                        feature.geometry.type === "Polygon" ||
+                        feature.geometry.type === "MultiPolygon"
+                    ) {
+                        dist = turf.pointToLineDistance(
+                            seeker,
+                            turf.polygonToLine(feature as any) as any,
+                            {
+                                units: "kilometers",
+                                method: "geodesic",
+                            },
+                        );
+                    } else if (
+                        feature.geometry.type === "LineString" ||
+                        feature.geometry.type === "MultiLineString"
+                    ) {
+                        dist = turf.pointToLineDistance(seeker, feature, {
+                            units: "kilometers",
+                            method: "geodesic",
+                        });
+                    } else if (feature.geometry.type === "MultiPoint") {
+                        for (const coord of feature.geometry.coordinates) {
+                            const d = turf.distance(seeker, turf.point(coord), {
+                                units: "kilometers",
+                            });
+                            if (d < dist) dist = d;
+                        }
+                    }
+
+                    if (dist < minDistance) {
+                        minDistance = dist;
                     }
                 }
 
-                if (dist < minDistance) {
-                    minDistance = dist;
-                }
+                return minDistance === Infinity ? null : minDistance;
             }
-
-            return minDistance === Infinity ? null : minDistance;
         }
     }
 
