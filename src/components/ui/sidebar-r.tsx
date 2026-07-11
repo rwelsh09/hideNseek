@@ -288,7 +288,7 @@ const SidebarTrigger = React.forwardRef<
             aria-label="Toggle Sidebar"
             title="Toggle Sidebar"
             className={cn(
-                "bg-white hover:bg-[#f4f4f4] text-black w-[34px] h-[34px] rounded-sm border border-input cursor-pointer justify-center p-0",
+                "bg-white hover:bg-[#f4f4f4] text-black w-[34px] h-[34px] rounded-[4px] border-[2px] border-[rgba(0,0,0,0.2)] bg-clip-padding cursor-pointer justify-center p-0",
                 "flex items-center gap-1",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 className,
