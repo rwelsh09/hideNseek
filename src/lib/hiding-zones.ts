@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
+    disabledStations,
     hidingRadius,
     hidingRadiusUnits,
     isLoading,
@@ -91,11 +92,14 @@ export const initializeHidingZonesLogic = async () => {
                     turf.featureCollection(places) as any,
                 );
 
+                const originalIds = circles.map(c => c.properties.id);
+                let filteredCircles = circles;
+
                 if (question.data.type === "same-train-line") {
                     const seekerLines = extractStationLines(nearestTrainStation);
 
                     if (seekerLines.length > 0) {
-                        circles = circles.filter((circle) => {
+                        filteredCircles = filteredCircles.filter((circle) => {
                             const hiderLines = extractStationLines(circle);
 
                             const intersects = seekerLines.some((l) =>
@@ -117,7 +121,7 @@ export const initializeHidingZonesLogic = async () => {
 
                 if (question.data.type === "same-first-letter-station") {
                     const letter = englishName[0].toUpperCase();
-                    circles = circles.filter((circle) => {
+                    filteredCircles = filteredCircles.filter((circle) => {
                         const name = extractStationName(circle.properties);
                         if (!name) return false;
                         return question.data.same
@@ -127,7 +131,7 @@ export const initializeHidingZonesLogic = async () => {
                 } else if (question.data.type === "same-length-station") {
                     const seekerLength = englishName.length;
                     const comparison = question.data.lengthComparison;
-                    circles = circles.filter((circle) => {
+                    filteredCircles = filteredCircles.filter((circle) => {
                         const name = extractStationName(circle.properties);
                         if (!name) return false;
                         let isMatch = false;
@@ -141,6 +145,11 @@ export const initializeHidingZonesLogic = async () => {
                         return question.data.same ? isMatch : !isMatch;
                     });
                 }
+
+                const remainingIds = filteredCircles.map(c => c.properties.id);
+                const newlyDisabled = originalIds.filter(id => !remainingIds.includes(id));
+                const currentDisabled = disabledStations.get();
+                disabledStations.set(Array.from(new Set([...currentDisabled, ...newlyDisabled])));
             }
             if (
                 question.id === "measure" &&
