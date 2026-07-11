@@ -93,7 +93,6 @@ export const TimerDrawer = () => {
             isTimerRunning.set(false);
             // Clear timestamp so it recalculates on next start based on elapsed
             timerStartTimestamp.set(null);
-            lockedRecommendedStart.set(null);
 
             if ($timerElapsedSeconds > 0) {
                 setShowRoundOverModal(true);
@@ -156,7 +155,6 @@ export const TimerDrawer = () => {
         isTimerRunning.set(false);
         timerStartTimestamp.set(null);
         timerElapsedSeconds.set(0);
-        lockedRecommendedStart.set(null);
     };
 
     const manipulateTimer = (minutes: number) => {
