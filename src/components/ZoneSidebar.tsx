@@ -487,6 +487,7 @@ export const ZoneSidebar = () => {
                                                 <Label className="text-sm font-medium mr-4">
                                                     Overlap Threshold
                                                 </Label>
+                                            </button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-80 text-sm">
                                             <p>
