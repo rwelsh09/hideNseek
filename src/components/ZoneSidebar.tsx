@@ -438,7 +438,7 @@ export const ZoneSidebar = () => {
                                     No Overlap
                                 </SidebarMenuItem>
                             )}
-                            {$displayHidingZonesStyle !== "no-display" && hidingZoneModeStationID && (
+                            {hidingZoneModeStationID && (
                                 <SidebarMenuItem
                                     className={cn(
                                         MENU_ITEM_CLASSNAME,
@@ -480,7 +480,7 @@ export const ZoneSidebar = () => {
                                     })()}
                                 </SidebarMenuItem>
                             )}
-                            {$displayHidingZonesStyle !== "no-display" && $disabledStations.length > 0 && (
+                            {$disabledStations.length > 0 && (
                                     <SidebarMenuItem
                                         className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                         onClick={() => {
@@ -491,8 +491,7 @@ export const ZoneSidebar = () => {
                                         Clear Disabled
                                     </SidebarMenuItem>
                                 )}
-                            {$displayHidingZonesStyle !== "no-display" && (
-                                <SidebarMenuItem
+                            <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         disabledStations.set(
@@ -505,9 +504,7 @@ export const ZoneSidebar = () => {
                                 >
                                     Disable All
                                 </SidebarMenuItem>
-                            )}
-                            {$displayHidingZonesStyle !== "no-display" && (
-                                <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                            <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
                                     <Label className="text-sm font-medium mr-4">
                                         Overlap Threshold
                                     </Label>
@@ -522,9 +519,7 @@ export const ZoneSidebar = () => {
                                         disabled={$isLoading}
                                     />
                                 </div>
-                            )}
-                            {$displayHidingZonesStyle !== "no-display" && (
-                                <SidebarMenuItem
+                            <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         toast.promise(
@@ -616,9 +611,7 @@ export const ZoneSidebar = () => {
                                 >
                                     Auto Disable Overlap
                                 </SidebarMenuItem>
-                            )}
-                            {$displayHidingZonesStyle !== "no-display" && (
-                                <Command
+                            <Command
                                     key={
                                         isStationSearchActive
                                             ? "station-search-active"
@@ -698,7 +691,6 @@ export const ZoneSidebar = () => {
                                         </CommandGroup>
                                     </CommandList>
                                 </Command>
-                            )}
                         </SidebarMenu>
                     </div>
                 </div>
