@@ -50,8 +50,18 @@ import {
 } from "./ui/dialog";
 
 const IconMap: Record<string, React.ElementType> = {
-    Palette, Hospital, Film, Library, Hamburger, Coffee, Beer,
-    Train, MapIcon, Building2, Store, Flag
+    Palette,
+    Hospital,
+    Film,
+    Library,
+    Hamburger,
+    Coffee,
+    Beer,
+    Train,
+    MapIcon,
+    Building2,
+    Store,
+    Flag,
 };
 
 export function AddQuestionDialog() {
@@ -143,7 +153,149 @@ export function AddQuestionDialog() {
                     </DialogTitle>
                 </DialogHeader>
 
-                <div className="overflow-y-auto p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 sm:gap-6">
+                <div className="overflow-y-auto p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 sm:gap-6">
+                    {/* HotCold */}
+                    <div className="flex flex-col border-t-4 border-yellow-400 pt-3">
+                        <div className="flex items-center gap-2 mb-1">
+                            <div className="bg-yellow-400 p-1.5 rounded text-white shrink-0">
+                                <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base flex items-center">
+                                    Hot/Cold{" "}
+                                    <span className="ml-2 bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                        +{TIME_PENALTIES["hot/cold"]}
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
+                            <button
+                                type="button"
+                                aria-label="Add hotCold question for 1 km"
+                                title="Add hotCold question for 1 km"
+                                onClick={() =>
+                                    handleQuestionSelect("hot/cold", "1")
+                                }
+                                className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
+                                1km
+                            </button>
+                            <button
+                                type="button"
+                                aria-label="Add hotCold question for 2 km"
+                                title="Add hotCold question for 2 km"
+                                onClick={() =>
+                                    handleQuestionSelect("hot/cold", "2")
+                                }
+                                className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
+                                2km
+                            </button>
+                            <button
+                                type="button"
+                                aria-label="Add hotCold question for 5 km"
+                                title="Add hotCold question for 5 km"
+                                onClick={() =>
+                                    handleQuestionSelect("hot/cold", "5")
+                                }
+                                className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
+                                5km
+                            </button>
+                        </div>
+                    </div>
+
+                    {/* RADAR */}
+                    <div className="flex flex-col border-t-4 border-orange-500 pt-3">
+                        <div className="flex items-center gap-2 mb-1">
+                            <div className="bg-orange-500 p-1.5 rounded text-white shrink-0">
+                                <Target className="w-4 h-4 sm:w-5 sm:h-5" />
+                            </div>
+                            <div>
+                                <h3 className="font-bold text-orange-500 uppercase leading-none text-sm sm:text-base flex items-center">
+                                    Radar{" "}
+                                    <span className="ml-2 bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                        +{TIME_PENALTIES.radar}
+                                    </span>
+                                </h3>
+                            </div>
+                        </div>
+                        <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
+                            <button
+                                type="button"
+                                aria-label="Add radar question for 0.5 km"
+                                title="Add radar question for 0.5 km"
+                                onClick={() =>
+                                    handleQuestionSelect("radar", "0.5")
+                                }
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                0.5 km
+                            </button>
+                            <button
+                                type="button"
+                                aria-label="Add radar question for 1 km"
+                                title="Add radar question for 1 km"
+                                onClick={() =>
+                                    handleQuestionSelect("radar", "1")
+                                }
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                1 km
+                            </button>
+                            <button
+                                type="button"
+                                aria-label="Add radar question for 2 km"
+                                title="Add radar question for 2 km"
+                                onClick={() =>
+                                    handleQuestionSelect("radar", "2")
+                                }
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                2 km
+                            </button>
+                            <button
+                                type="button"
+                                aria-label="Add radar question for 5 km"
+                                title="Add radar question for 5 km"
+                                data-tutorial-id="tutorial-add-radar-5"
+                                onClick={() =>
+                                    handleQuestionSelect("radar", "5")
+                                }
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                5 km
+                            </button>
+
+                            <button
+                                type="button"
+                                aria-label="Add radar question for 10 km"
+                                title="Add radar question for 10 km"
+                                onClick={() =>
+                                    handleQuestionSelect("radar", "10")
+                                }
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                10 km
+                            </button>
+                            <button
+                                type="button"
+                                aria-label="Add radar question for unknown size"
+                                title="Add radar question for unknown size"
+                                onClick={() =>
+                                    handleQuestionSelect("radar", "unknown")
+                                }
+                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                            >
+                                ????
+                            </button>
+                        </div>
+                    </div>
+
                     {/* MATCH */}
                     <div className="flex flex-col border-t-4 border-red-500 pt-3">
                         <div className="flex items-center gap-2 mb-1">
@@ -349,167 +501,23 @@ export function AddQuestionDialog() {
                         </div>
                     </div>
 
-                    {/* RADAR */}
-                    <div className="flex flex-col border-t-4 border-orange-500 pt-3">
+                    {/* Closest */}
+                    <div className="flex flex-col border-t-4 border-purple-600 pt-3">
                         <div className="flex items-center gap-2 mb-1">
-                            <div className="bg-orange-500 p-1.5 rounded text-white shrink-0">
-                                <Target className="w-4 h-4 sm:w-5 sm:h-5" />
+                            <div className="bg-purple-600 p-1.5 rounded text-white shrink-0">
+                                <Network className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-orange-500 uppercase leading-none text-sm sm:text-base flex items-center">
-                                    Radar{" "}
-                                    <span className="ml-2 bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES.radar}
+                                <h3 className="font-bold text-purple-600 uppercase leading-none text-sm sm:text-base flex items-center">
+                                    Closest{" "}
+                                    <span className="ml-2 bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                        +{TIME_PENALTIES.closest}
                                     </span>
                                 </h3>
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                            <button
-                                type="button"
-                                aria-label="Add radar question for 0.5 km"
-                                title="Add radar question for 0.5 km"
-                                onClick={() =>
-                                    handleQuestionSelect("radar", "0.5")
-                                }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                0.5 km
-                            </button>
-                            <button
-                                type="button"
-                                aria-label="Add radar question for 1 km"
-                                title="Add radar question for 1 km"
-                                onClick={() =>
-                                    handleQuestionSelect("radar", "1")
-                                }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                1 km
-                            </button>
-                            <button
-                                type="button"
-                                aria-label="Add radar question for 2 km"
-                                title="Add radar question for 2 km"
-                                onClick={() =>
-                                    handleQuestionSelect("radar", "2")
-                                }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                2 km
-                            </button>
-                            <button
-                                type="button"
-                                aria-label="Add radar question for 5 km"
-                                title="Add radar question for 5 km"
-                                data-tutorial-id="tutorial-add-radar-5"
-                                onClick={() =>
-                                    handleQuestionSelect("radar", "5")
-                                }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                5 km
-                            </button>
-
-                            <button
-                                type="button"
-                                aria-label="Add radar question for 10 km"
-                                title="Add radar question for 10 km"
-                                onClick={() =>
-                                    handleQuestionSelect("radar", "10")
-                                }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                10 km
-                            </button>
-                            <button
-                                type="button"
-                                aria-label="Add radar question for unknown size"
-                                title="Add radar question for unknown size"
-                                onClick={() =>
-                                    handleQuestionSelect("radar", "unknown")
-                                }
-                                className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                ????
-                            </button>
-                        </div>
-                    </div>
-
-                    {/* THERMOMETER & CLOSEST COLUMN */}
-                    <div className="flex flex-col gap-6">
-                        {/* HotCold */}
-                        <div className="flex flex-col border-t-4 border-yellow-400 pt-3">
-                            <div className="flex items-center gap-2 mb-1">
-                                <div className="bg-yellow-400 p-1.5 rounded text-white shrink-0">
-                                    <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base flex items-center">
-                                        Hot/Cold{" "}
-                                        <span className="ml-2 bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                            +{TIME_PENALTIES["hot/cold"]}
-                                        </span>
-                                    </h3>
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                                <button
-                                    type="button"
-                                    aria-label="Add hotCold question for 1 km"
-                                    title="Add hotCold question for 1 km"
-                                    onClick={() =>
-                                        handleQuestionSelect("hot/cold", "1")
-                                    }
-                                    className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
-                                    1km
-                                </button>
-                                <button
-                                    type="button"
-                                    aria-label="Add hotCold question for 2 km"
-                                    title="Add hotCold question for 2 km"
-                                    onClick={() =>
-                                        handleQuestionSelect("hot/cold", "2")
-                                    }
-                                    className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
-                                    2km
-                                </button>
-                                <button
-                                    type="button"
-                                    aria-label="Add hotCold question for 5 km"
-                                    title="Add hotCold question for 5 km"
-                                    onClick={() =>
-                                        handleQuestionSelect("hot/cold", "5")
-                                    }
-                                    className="bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
-                                    5km
-                                </button>
-                            </div>
-                        </div>
-
-                        {/* Closest */}
-                        <div className="flex flex-col border-t-4 border-purple-600 pt-3">
-                            <div className="flex items-center gap-2 mb-1">
-                                <div className="bg-purple-600 p-1.5 rounded text-white shrink-0">
-                                    <Network className="w-4 h-4 sm:w-5 sm:h-5" />
-                                </div>
-                                <div>
-                                    <h3 className="font-bold text-purple-600 uppercase leading-none text-sm sm:text-base flex items-center">
-                                        Closest{" "}
-                                        <span className="ml-2 bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                            +{TIME_PENALTIES.closest}
-                                        </span>
-                                    </h3>
-                                </div>
-                            </div>
-                            <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                                {PLACES.map(place => {
+                            {PLACES.map((place) => {
                                 const Icon = IconMap[place.icon];
                                 return (
                                     <button
@@ -517,7 +525,12 @@ export function AddQuestionDialog() {
                                         type="button"
                                         aria-label={`Add closest question for ${place.id}`}
                                         title={`Add closest question for ${place.id}`}
-                                        onClick={() => handleQuestionSelect("closest", place.id as any)}
+                                        onClick={() =>
+                                            handleQuestionSelect(
+                                                "closest",
+                                                place.id as any,
+                                            )
+                                        }
                                         className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                                     >
                                         <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
@@ -527,10 +540,8 @@ export function AddQuestionDialog() {
                                     </button>
                                 );
                             })}
-                            </div>
                         </div>
                     </div>
-
                     {/* PHOTO */}
                     <div className="flex flex-col border-t-4 border-sky-400 pt-3">
                         <div className="flex items-center gap-2 mb-1">
