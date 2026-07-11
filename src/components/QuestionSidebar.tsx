@@ -225,6 +225,7 @@ export const QuestionSidebar = () => {
                                 <AlertDialogAction
                                     onClick={() => {
                                         questions.set([]);
+                                        lockedRecommendedStart.set(null);
                                         penaltyMinutes.set(0);
                                         toast.success(
                                             "Cleared all questions and time penalty.",

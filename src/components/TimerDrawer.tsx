@@ -27,7 +27,9 @@ import {
     penaltyMinutes,
     timerElapsedSeconds,
     timerStartTimestamp,
+    lockedRecommendedStart,
 } from "@/lib/context";
+import { lockRecommendedStartIfNeeded } from "@/lib/recommended-start";
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -91,6 +93,7 @@ export const TimerDrawer = () => {
             isTimerRunning.set(false);
             // Clear timestamp so it recalculates on next start based on elapsed
             timerStartTimestamp.set(null);
+            lockedRecommendedStart.set(null);
 
             if ($timerElapsedSeconds > 0) {
                 setShowRoundOverModal(true);
@@ -100,6 +103,7 @@ export const TimerDrawer = () => {
             // Recalculate start timestamp to account for already elapsed time
             timerStartTimestamp.set(Date.now() - $timerElapsedSeconds * 1000);
             isTimerRunning.set(true);
+            lockRecommendedStartIfNeeded();
         }
     };
 
@@ -152,6 +156,7 @@ export const TimerDrawer = () => {
         isTimerRunning.set(false);
         timerStartTimestamp.set(null);
         timerElapsedSeconds.set(0);
+        lockedRecommendedStart.set(null);
     };
 
     const manipulateTimer = (minutes: number) => {
