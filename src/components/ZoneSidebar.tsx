@@ -12,7 +12,7 @@ import {
     SidebarContext,
     SidebarMenu,
     SidebarMenuItem,
- } from "@/components/ui/sidebar-r";
+} from "@/components/ui/sidebar-r";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { VscQuestion } from "react-icons/vsc";
 import {
@@ -515,9 +515,26 @@ export const ZoneSidebar = () => {
                             )}
                             {$displayHidingZones && (
                                 <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                    <Label className="text-sm font-medium mr-4">
-                                        Overlap Threshold
-                                    </Label>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <button
+                                                className="flex items-center gap-1 rounded-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 group hover:text-ring/80 transition-colors mr-2"
+                                                aria-label="Overlap Threshold Information"
+                                            >
+                                                <Label className="text-sm font-medium cursor-pointer">
+                                                    Overlap Threshold
+                                                </Label>
+                                                <VscQuestion className="h-4 w-4 text-muted-foreground group-hover:text-ring/80 transition-colors" />
+                                            </button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80 text-sm">
+                                            <p>
+                                                Controls how much hiding zones are allowed to overlap with each other.
+                                                A higher number means zones can overlap more, while a lower number forces them further apart.
+                                                If set to 0, zones will not be allowed to overlap at all.
+                                            </p>
+                                        </PopoverContent>
+                                    </Popover>
                                     <Input
                                         type="number"
                                         className="rounded-md p-1 w-16 h-8 bg-background text-sm"
@@ -531,11 +548,12 @@ export const ZoneSidebar = () => {
                                 </div>
                             )}
                             {$displayHidingZones && (
-                                <SidebarMenuItem
-                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                    onClick={() => {
-                                        toast.promise(
-                                            new Promise<void>((resolve) => {
+                                <div className="flex items-center gap-2 mt-2">
+                                    <SidebarMenuItem
+                                        className="bg-popover hover:bg-accent relative flex flex-1 cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                        onClick={() => {
+                                            toast.promise(
+                                                new Promise<void>((resolve) => {
                                                 // Run heavily intensive unblocking loop over chunks
                                                 const newDisabled = new Set($disabledStations);
 
@@ -618,15 +636,15 @@ export const ZoneSidebar = () => {
                                                 error: "Failed to optimize zones",
                                             }
                                         );
-                                        }}
-                                        disabled={$isLoading}
-                                    >
-                                        Auto Disable Overlap
+                                    }}
+                                    disabled={$isLoading}
+                                >
+                                    Auto Disable Overlap
                                     </SidebarMenuItem>
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <button
-                                                className="flex-shrink-0 flex items-center justify-center p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors h-[38px] w-[38px] border"
+                                                className="flex-shrink-0 flex items-center justify-center p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors h-[38px] w-[38px] border ml-2"
                                                 aria-label="Auto Disable Overlap Information"
                                             >
                                                 <VscQuestion className="h-5 w-5" />
