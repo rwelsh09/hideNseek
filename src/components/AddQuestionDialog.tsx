@@ -51,7 +51,7 @@ import {
 
 const IconMap: Record<string, React.ElementType> = {
     Palette, Hospital, Film, Library, Hamburger, Coffee, Beer,
-    Train, MapIcon, Building2, Store, Flag
+    Train, MapIcon, Building2, Store, Flag, Utensils, Trees, Church, ShoppingCart
 };
 
 export function AddQuestionDialog() {
