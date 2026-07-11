@@ -100,7 +100,7 @@ export const hiderMode = persistentAtom<
 export const triggerLocalRefresh = atom<number>(0);
 
 export const displayHidingZonesStyle = persistentAtom<
-    "zones" | "stations" | "no-overlap" | "no-display"
+    "zones" | "no-overlap" | "no-display"
 >("displayHidingZonesStyle", "no-display");
 
 export const displayTransitLines = persistentAtom<boolean>("displayTransitLines", true, {
