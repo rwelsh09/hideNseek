@@ -96,7 +96,6 @@ export const PhotoQuestionComponent = ({
                 </div>
             </SidebarMenuItem>
             <LatitudeLongitude
-                questionKey={questionKey}
                 latitude={data.lat}
                 longitude={data.lng}
                 colorName={data.color}

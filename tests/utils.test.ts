@@ -1,5 +1,6 @@
-import { describe, it, expect } from "vitest";
-import { cn, mapToObj } from "../src/lib/utils";
+import { describe, expect,it } from "vitest";
+
+import { cn, mapToObj } from "@/lib/utils";
 
 describe("cn", () => {
     it("merges basic classes", () => {

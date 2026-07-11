@@ -11,8 +11,8 @@ vi.mock("@turf/turf", async (importOriginal) => {
 
 import {
     geoSpatialVoronoi,
-    safeUnion,
     modifyMapData,
+    safeUnion,
 } from "@/maps/geo-utils/operators";
 
 test("safeUnion handles single feature", () => {

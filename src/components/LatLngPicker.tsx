@@ -1,16 +1,8 @@
 import { useStore } from "@nanostores/react";
 import { LocateIcon, PaletteIcon } from "lucide-react";
-import { VscQuestion, VscShare, VscTrash } from "react-icons/vsc";
 import { toast } from "react-toastify";
 
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/popover";
-import { questions, lockedRecommendedStart } from "@/lib/context";
 import { geolocationPermission, isLoading } from "@/lib/context";
-import { QUESTION_RULES } from "@/lib/rules";
 import { cn } from "@/lib/utils";
 import { ICON_COLORS } from "@/maps/api";
 
@@ -36,7 +28,6 @@ export const LatitudeLongitude = ({
     onChangeColor,
     children,
     disabled,
-    questionKey,
 }: {
     latitude: number;
     longitude: number;
@@ -47,11 +38,9 @@ export const LatitudeLongitude = ({
     className?: string;
     children?: React.ReactNode;
     disabled?: boolean;
-    questionKey?: number;
 }) => {
     const $isLoading = useStore(isLoading);
-    const $questions = useStore(questions);
-    const color = colorName ? ICON_COLORS[colorName] : "transparent";
+        const color = colorName ? ICON_COLORS[colorName] : "transparent";
 
     return (
         <>
@@ -150,113 +139,7 @@ export const LatitudeLongitude = ({
                     <div
                         className="contents"
                     >
-                        {questionKey !== undefined && (
-                            <>
-                                {QUESTION_RULES[
-                                    $questions.find(
-                                        (q) => q.key === questionKey,
-                                    )?.id as keyof typeof QUESTION_RULES
-                                ] && (
-                                    <Popover>
-                                        <PopoverTrigger asChild>
-                                            <Button
-                                                variant="outline"
-                                                size="icon"
-                                                type="button"
-                                                aria-label="Question Rules"
-                                                data-tutorial-id="tutorial-question-rules-btn"
-                                                disabled={disabled}
-                                            >
-                                                <VscQuestion />
-                                            </Button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-80 p-4 z-[9999]">
-                                            <h4 className="font-semibold mb-2">
-                                                How it works
-                                            </h4>
-                                            <p className="text-sm text-muted-foreground">
-                                                {
-                                                    QUESTION_RULES[
-                                                        $questions.find(
-                                                            (q) =>
-                                                                q.key ===
-                                                                questionKey,
-                                                        )
-                                                            ?.id as keyof typeof QUESTION_RULES
-                                                    ]
-                                                }
-                                            </p>
-                                        </PopoverContent>
-                                    </Popover>
-                                )}
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    type="button"
-                                    aria-label="Delete Question"
-                                    data-tutorial-id="tutorial-delete-question-btn"
-                                    disabled={disabled}
-                                    onClick={() => {
-                                        const qList = questions.get();
-                                        const currentQ = qList.find(
-                                            (q) => q.key === questionKey,
-                                        );
-                                        if (currentQ && currentQ.data.drag) {
-                                            questions.set(
-                                                qList.filter(
-                                                    (q) =>
-                                                        q.key !== questionKey,
-                                                ),
-                                            );
-                                            if (questions.get().length === 0) {
-                                                lockedRecommendedStart.set(null);
-                                            }
-                                        }
-                                    }}
-                                >
-                                    <VscTrash />
-                                </Button>
-                                <Button
-                                    variant="outline"
-                                    size="icon"
-                                    type="button"
-                                    aria-label="Share Question"
-                                    data-tutorial-id="tutorial-share-question-btn"
-                                    disabled={disabled}
-                                    onClick={() => {
-                                        if (
-                                            !navigator ||
-                                            !navigator.clipboard
-                                        ) {
-                                            toast.error(
-                                                "Clipboard API not supported in your browser",
-                                            );
-                                            return;
-                                        }
-                                        navigator.clipboard
-                                            .writeText(
-                                                JSON.stringify(
-                                                    $questions.find(
-                                                        (q) =>
-                                                            q.key ===
-                                                            questionKey,
-                                                    ),
-                                                    null,
-                                                    4,
-                                                ),
-                                            )
-                                            .then(() => {
-                                                toast.success("Copied to Clipboard!");
-                                            })
-                                            .catch(() => {
-                                                toast.error("Failed to Copy");
-                                            });
-                                    }}
-                                >
-                                    <VscShare />
-                                </Button>
-                            </>
-                        )}
+
 
                         <Button
                             variant="outline"

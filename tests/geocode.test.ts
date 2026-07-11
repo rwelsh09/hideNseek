@@ -1,6 +1,7 @@
-import { describe, expect, it, vi, beforeEach, afterEach } from "vitest";
-import { geocode } from "@/maps/api/geocode";
+import { afterEach,beforeEach, describe, expect, it, vi } from "vitest";
+
 import { GEOCODER_API } from "@/maps/api/constants";
+import { geocode } from "@/maps/api/geocode";
 
 describe("geocode", () => {
     beforeEach(() => {

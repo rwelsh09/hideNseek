@@ -27,3 +27,8 @@
 
 **Learning:** We previously used manual reflection into Zod schema internals (`_def.innerType`, `_def.value`) within UI components (like `ClosestQuestionComponent` and `MatchQuestionComponent`) to extract Select options. This was brittle and led to leaky abstractions.
 **Action:** Use the newly created `getSchemaOptions(schema)` function from `src/maps/schema.ts` when building options objects from Zod schema definitions to encapsulate all Zod internal traversals.
+
+## 2026-07-04 - Centralized question actions in QuestionCard
+
+**Learning:** The previous implementation leaked question-specific actions (Question Rules, Share, and Delete) into `LatLngPicker`, violating separation of concerns because `LatLngPicker` should purely be a location picker and doesn't inherently map to a question (e.g. when picking Hider Location). This caused unnecessary abstractions and prop forwarding.
+**Action:** Always prefer to encapsulate question-specific actions and rendering inside `QuestionCard` rather than passing them down into generic location picker components.
