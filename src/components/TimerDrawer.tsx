@@ -27,7 +27,9 @@ import {
     penaltyMinutes,
     timerElapsedSeconds,
     timerStartTimestamp,
+    lockedRecommendedStart,
 } from "@/lib/context";
+import { lockRecommendedStartIfNeeded } from "@/lib/recommended-start";
 
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
@@ -100,6 +102,7 @@ export const TimerDrawer = () => {
             // Recalculate start timestamp to account for already elapsed time
             timerStartTimestamp.set(Date.now() - $timerElapsedSeconds * 1000);
             isTimerRunning.set(true);
+            lockRecommendedStartIfNeeded();
         }
     };
 

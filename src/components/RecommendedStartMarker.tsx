@@ -7,6 +7,7 @@ import { Marker, Tooltip } from "react-leaflet";
 import {
     disabledStations,
     showRecommendedStart,
+    lockedRecommendedStart,
     trainStations,
 } from "@/lib/context";
 import { extractStationId } from "@/maps/geo-utils";
@@ -30,11 +31,17 @@ const startIcon = L.icon({
 
 export const RecommendedStartMarker: React.FC = () => {
     const $showRecommendedStart = useStore(showRecommendedStart);
+    const $lockedRecommendedStart = useStore(lockedRecommendedStart);
     const $trainStations = useStore(trainStations);
     const $disabledStations = useStore(disabledStations);
 
     const centerPoint = useMemo(() => {
         if (!$showRecommendedStart || $trainStations.length === 0) return null;
+
+        // If it's already locked, return the locked coordinates
+        if ($lockedRecommendedStart) {
+            return turf.point($lockedRecommendedStart as [number, number]);
+        }
 
         // Filter out disabled stations
         const activeStations = $trainStations.filter((station) => {
@@ -63,7 +70,7 @@ export const RecommendedStartMarker: React.FC = () => {
         const centroid = turf.centroid(featureCollection);
 
         return centroid;
-    }, [$showRecommendedStart, $trainStations, $disabledStations]);
+    }, [$showRecommendedStart, $trainStations, $disabledStations, $lockedRecommendedStart]);
 
     if (!centerPoint) return null;
 

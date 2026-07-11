@@ -28,6 +28,7 @@ import {
     penaltyMinutes,
     questions,
     triggerLocalRefresh,
+    lockedRecommendedStart,
 } from "@/lib/context";
 import { questionSchema } from "@/maps/schema";
 
@@ -225,6 +226,7 @@ export const QuestionSidebar = () => {
                                 <AlertDialogAction
                                     onClick={() => {
                                         questions.set([]);
+                                        lockedRecommendedStart.set(null);
                                         penaltyMinutes.set(0);
                                         toast.success(
                                             "Cleared all questions and time penalty.",

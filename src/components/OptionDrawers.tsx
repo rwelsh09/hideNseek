@@ -114,6 +114,7 @@ export const OptionDrawers = () => {
                     polyGeoJSON.set(geojson);
                 } else {
                     questions.set([]);
+                    lockedRecommendedStart.set(null);
                     mapGeoJSON.set(geojson);
                     polyGeoJSON.set(geojson);
                 }

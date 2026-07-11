@@ -8,7 +8,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover";
-import { questions } from "@/lib/context";
+import { questions, lockedRecommendedStart } from "@/lib/context";
 import { geolocationPermission, isLoading } from "@/lib/context";
 import { QUESTION_RULES } from "@/lib/rules";
 import { cn } from "@/lib/utils";
@@ -208,6 +208,9 @@ export const LatitudeLongitude = ({
                                                         q.key !== questionKey,
                                                 ),
                                             );
+                                            if (questions.get().length === 0) {
+                                                lockedRecommendedStart.set(null);
+                                            }
                                         }
                                     }}
                                 >
