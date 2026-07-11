@@ -4,8 +4,11 @@ import type { Feature, FeatureCollection } from "geojson";
 import * as L from "leaflet";
 import { AlertTriangle, SidebarCloseIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { VscQuestion } from "react-icons/vsc";
 import { toast } from "react-toastify";
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
     Sidebar,
     SidebarContent,
@@ -13,8 +16,6 @@ import {
     SidebarMenu,
     SidebarMenuItem,
 } from "@/components/ui/sidebar-r";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { VscQuestion } from "react-icons/vsc";
 import {
     disabledStations,
     displayHidingZonesStyle,
@@ -40,7 +41,6 @@ import {
     geoSpatialVoronoi,
     getFeatureProperties,
     lngLatToText,
-    safeUnion,
 } from "@/maps/geo-utils";
 
 import {
@@ -435,6 +435,12 @@ export const ZoneSidebar = () => {
                                     })()}
                                 </SidebarMenuItem>
                             )}
+                            <Accordion type="single" collapsible className="w-full">
+                                <AccordionItem value="advanced" className="border-none">
+                                    <AccordionTrigger className="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-900/50 text-sm font-medium">
+                                        Advanced Station Management
+                                    </AccordionTrigger>
+                                    <AccordionContent className="p-0 border-t flex flex-col">
                             {$disabledStations.length > 0 && (
                                     <SidebarMenuItem
                                         className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
@@ -563,7 +569,7 @@ export const ZoneSidebar = () => {
                                         </PopoverTrigger>
                                         <PopoverContent className="w-80 text-sm align-start" align="end">
                                             <p>
-                                                Automatically disables stations so that active hiding zones are spread out. The <strong>Overlap Threshold</strong> controls how far apart they must be: a lower number allows more overlap, while a higher number (like 2.0) forces them further apart so they don't touch.
+                                                Automatically disables stations so that active hiding zones are spread out. The <strong>Overlap Threshold</strong> controls how far apart they must be: a lower number allows more overlap, while a higher number (like 2.0) forces them further apart so they don&apos;t touch.
                                             </p>
                                         </PopoverContent>
                                     </Popover>
@@ -663,6 +669,9 @@ export const ZoneSidebar = () => {
                                         </CommandGroup>
                                     </CommandList>
                                 </Command>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
                         </SidebarMenu>
                     </div>
                 </div>
