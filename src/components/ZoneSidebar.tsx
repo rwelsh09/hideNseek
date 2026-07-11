@@ -12,7 +12,9 @@ import {
     SidebarContext,
     SidebarMenu,
     SidebarMenuItem,
-} from "@/components/ui/sidebar-r";
+ } from "@/components/ui/sidebar-r";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { VscQuestion } from "react-icons/vsc";
 import {
     disabledStations,
     displayHidingZones,
@@ -616,11 +618,28 @@ export const ZoneSidebar = () => {
                                                 error: "Failed to optimize zones",
                                             }
                                         );
-                                    }}
-                                    disabled={$isLoading}
-                                >
-                                    Auto Disable Overlap
-                                </SidebarMenuItem>
+                                        }}
+                                        disabled={$isLoading}
+                                    >
+                                        Auto Disable Overlap
+                                    </SidebarMenuItem>
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <button
+                                                className="flex-shrink-0 flex items-center justify-center p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors h-[38px] w-[38px] border"
+                                                aria-label="Auto Disable Overlap Information"
+                                            >
+                                                <VscQuestion className="h-5 w-5" />
+                                            </button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80 text-sm align-start" align="end">
+                                            <p>
+                                                Automatically disables stations to minimize overlapping hiding zones based on your set <strong>Overlap Threshold</strong>.
+                                                This makes the map cleaner and ensures hiding spots are properly spaced out.
+                                            </p>
+                                        </PopoverContent>
+                                    </Popover>
+                                </div>
                             )}
                             {$displayHidingZones && (
                                 <Command
