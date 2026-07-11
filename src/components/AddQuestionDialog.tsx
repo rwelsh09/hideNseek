@@ -7,24 +7,18 @@ import {
     Church,
     Coffee,
     Film,
-    Flag,
     Hamburger,
     Hospital,
     Leaf,
     Library,
     Map as MapIcon,
-    MapPinned,
     Network,
     Palette,
     Plus,
     Route,
-    Ruler,
     ShoppingCart,
     Store,
-    Target,
-    Thermometer as HotCold,
     Train,
-    TramFront,
     Trees,
     Utensils,
     Waves,
@@ -47,6 +41,11 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "./ui/dialog";
+
+const IconMap: Record<string, React.ElementType> = {
+    Palette, Hospital, Film, Library, Hamburger, Coffee, Beer,
+    Train, MapIcon, Building2, Store,
+};
 
 export function AddQuestionDialog() {
     const [open, setOpen] = useState(false);
@@ -202,18 +201,7 @@ export function AddQuestionDialog() {
                                     Library
                                 </span>
                             </button>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect("match", "golf_course")
-                                }
-                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Flag className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Golf
-                                </span>
-                            </button>
+                            
                             <button
                                 type="button"
                                 onClick={() =>
@@ -311,21 +299,7 @@ export function AddQuestionDialog() {
                                     Library
                                 </span>
                             </button>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "golf_course",
-                                    )
-                                }
-                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Flag className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Golf
-                                </span>
-                            </button>
+                            
                             <button
                                 type="button"
                                 onClick={() =>
@@ -528,139 +502,24 @@ export function AddQuestionDialog() {
                                 </div>
                             </div>
                             <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                                <button
-                                    type="button"
-                                    aria-label="Add closest question for museum"
-                                    title="Add closest question for museum"
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "museum",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Palette className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                        Museum
-                                    </span>
-                                </button>
-                                <button
-                                    type="button"
-                                    aria-label="Add closest question for hospital"
-                                    title="Add closest question for hospital"
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "hospital",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Hospital className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                        Hospital
-                                    </span>
-                                </button>
-                                <button
-                                    type="button"
-                                    aria-label="Add closest question for cinema"
-                                    title="Add closest question for cinema"
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "cinema",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Film className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                        Cinema
-                                    </span>
-                                </button>
-                                <button
-                                    type="button"
-                                    aria-label="Add closest question for library"
-                                    title="Add closest question for library"
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "library",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Library className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                        Library
-                                    </span>
-                                </button>
-                                <button
-                                    type="button"
-                                    aria-label="Add closest question for mcdonalds"
-                                    title="Add closest question for mcdonalds"
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "mcdonalds",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Hamburger className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                        McDonald&apos;s
-                                    </span>
-                                </button>
-                                <button
-                                    type="button"
-                                    aria-label="Add closest question for seven11"
-                                    title="Add closest question for seven11"
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "seven11",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Store className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                        7-Eleven
-                                    </span>
-                                </button>
-                                <button
-                                    type="button"
-                                    aria-label="Add closest question for timhortons"
-                                    title="Add closest question for timhortons"
-                                    onClick={() =>
-                                        handleQuestionSelect(
-                                            "closest",
-                                            "timhortons",
-                                        )
-                                    }
-                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Coffee className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                        Tim&apos;s
-                                    </span>
-                                </button>
-                                <button
-                                    type="button"
-                                    aria-label="Add closest question for pub"
-                                    title="Add closest question for pub"
-                                    onClick={() =>
-                                        handleQuestionSelect("closest", "pub")
-                                    }
-                                    className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                                >
-                                    <Beer className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                    <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                        Pub
-                                    </span>
-                                </button>
+                                {PLACES.map(place => {
+                                const Icon = IconMap[place.icon];
+                                return (
+                                    <button
+                                        key={`closest-${place.id}`}
+                                        type="button"
+                                        aria-label={`Add closest question for ${place.id}`}
+                                        title={`Add closest question for ${place.id}`}
+                                        onClick={() => handleQuestionSelect("closest", place.id as any)}
+                                        className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                    >
+                                        <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                        <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                            {place.label}
+                                        </span>
+                                    </button>
+                                );
+                            })}
                             </div>
                         </div>
                     </div>
