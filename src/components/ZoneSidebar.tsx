@@ -79,7 +79,7 @@ export const ZoneSidebar = () => {
     const map = useStore(leafletMapContext);
     const stations = useStore(trainStations);
     const $disabledStations = useStore(disabledStations);
-    const [overlapThreshold, setOverlapThreshold] = useState<number>(1.5);
+    const [overlapThreshold, setOverlapThreshold] = useState<number>(0.8);
     const [hidingZoneModeStationID, setHidingZoneModeStationID] =
         useState<string>("");
     const [stationSearch, setStationSearch] = useState<string>("");
