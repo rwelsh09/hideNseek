@@ -88,7 +88,7 @@ export const ZoneSidebar = () => {
     const setStations = trainStations.set;
     const sidebarRef = useRef<HTMLDivElement>(null);
     const [isWarningDialogOpen, setIsWarningDialogOpen] = useState(false);
-    const [pendingStyle, setPendingStyle] = useState<"zones" | "no-overlap" | "no-display">("no-display");
+    const [pendingStyle, setPendingStyle] = useState<"zones" | "no-display">("no-display");
 
     const removeHidingZones = () => {
         if (!map) return;
@@ -396,21 +396,6 @@ export const ZoneSidebar = () => {
                                 >
                                     All Zones
                                 </SidebarMenuItem>
-                            <SidebarMenuItem
-                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                    onClick={() => {
-                                        if (!$hasSeenPerformanceWarning) {
-                                            setPendingStyle("no-overlap");
-                                            setIsWarningDialogOpen(true);
-                                        } else {
-                                            setHidingZoneModeStationID("");
-                                            displayHidingZonesStyle.set("no-overlap");
-                                        }
-                                    }}
-                                    disabled={$isLoading}
-                                >
-                                    No Overlap
-                                </SidebarMenuItem>
                             {hidingZoneModeStationID && (
                                 <SidebarMenuItem
                                     className={cn(
@@ -700,8 +685,6 @@ function styleStations(
     switch (style) {
         case "no-display":
             return { type: "FeatureCollection", features: [] };
-        case "no-overlap":
-            return applyMask(safeUnion(turf.featureCollection(circles)));
         case "zones":
         default:
             if (circles.length > 1) {
