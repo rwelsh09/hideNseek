@@ -5,8 +5,8 @@ import {
     convertToLongLat,
     determineName,
     prettifyLocation,
-} from "../../../src/maps/api/geo";
-import type { OpenStreetMap } from "../../../src/maps/api/types";
+} from "@/maps/api/geo";
+import type { OpenStreetMap } from "@/maps/api/types";
 
 describe("convertToLongLat", () => {
     it("should convert [lat, long] to [long, lat]", () => {

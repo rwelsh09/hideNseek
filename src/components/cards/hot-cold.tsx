@@ -57,7 +57,6 @@ export const HotColdQuestionComponent = ({
             penaltyId={"hot/cold"}
         >
             <LatitudeLongitude
-                questionKey={questionKey}
                 latitude={data.latA}
                 longitude={data.lngA}
                 label="Start"

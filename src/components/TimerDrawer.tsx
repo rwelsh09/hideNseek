@@ -24,10 +24,10 @@ import {
     headStartMinutes,
     isTimerRunning,
     leaderboard,
+    lockedRecommendedStart,
     penaltyMinutes,
     timerElapsedSeconds,
     timerStartTimestamp,
-    lockedRecommendedStart,
 } from "@/lib/context";
 import { lockRecommendedStartIfNeeded } from "@/lib/recommended-start";
 

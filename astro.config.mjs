@@ -1,8 +1,8 @@
 // @ts-check
-import react from "@astrojs/react";
-import tailwind from "@astrojs/tailwind";
 import { execSync } from "node:child_process";
 
+import react from "@astrojs/react";
+import tailwind from "@astrojs/tailwind";
 import AstroPWA from "@vite-pwa/astro";
 import { defineConfig } from "astro/config";
 

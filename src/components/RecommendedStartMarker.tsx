@@ -6,8 +6,8 @@ import { Marker, Tooltip } from "react-leaflet";
 
 import {
     disabledStations,
-    showRecommendedStart,
     lockedRecommendedStart,
+    showRecommendedStart,
     trainStations,
 } from "@/lib/context";
 import { extractStationId } from "@/maps/geo-utils";
