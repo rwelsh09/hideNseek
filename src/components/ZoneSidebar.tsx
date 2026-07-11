@@ -478,15 +478,15 @@ export const ZoneSidebar = () => {
                                     Disable All
                                 </SidebarMenuItem>
                             <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                 <Popover>
+                                 <Popover modal={false}>
                                         <PopoverTrigger asChild>
                                             <button
                                                 className="flex items-center gap-1 rounded-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 group hover:text-ring/80 transition-colors mr-2"
                                                 aria-label="Overlap Threshold Information"
                                             >
-                                                <Label className="text-sm font-medium mr-4">
+                                                <span className="text-sm font-medium mr-4">
                                                     Overlap Threshold
-                                                </Label>
+                                                </span>
                                             </button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-80 text-sm">
@@ -599,7 +599,7 @@ export const ZoneSidebar = () => {
                                 >
                                     Auto Disable Overlap
                                 </SidebarMenuItem>
-                                    <Popover>
+                                    <Popover modal={false}>
                                         <PopoverTrigger asChild>
                                             <button
                                                 className="flex-shrink-0 flex items-center justify-center p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors h-[38px] w-[38px] border ml-2"
