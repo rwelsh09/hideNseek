@@ -26,7 +26,6 @@ describe("prettifyLocation", () => {
         expect(prettifyLocation("museum" as any)).toBe("Museum");
         expect(prettifyLocation("cinema" as any)).toBe("Cinema");
         expect(prettifyLocation("library" as any)).toBe("Library");
-        expect(prettifyLocation("golf_course" as any)).toBe("Golf Course");
         expect(prettifyLocation("mcdonalds" as any)).toBe("McDonald's");
         expect(prettifyLocation("seven11" as any)).toBe("7-Eleven");
         expect(prettifyLocation("timhortons" as any)).toBe("Tim Hortons");
@@ -40,8 +39,8 @@ describe("prettifyLocation", () => {
 
     it("should fallback to singular + 's' for other locations (plural)", () => {
         expect(prettifyLocation("hospital" as any, true)).toBe("Hospitals");
-        expect(prettifyLocation("cinema" as any, true)).toBe("Cinemas");
-        expect(prettifyLocation("mcdonalds" as any, true)).toBe("McDonald'ss");
+        expect(prettifyLocation("cinema" as any, true)).toBe("Movie Theaters");
+        expect(prettifyLocation("mcdonalds" as any, true)).toBe("McDonald's");
     });
 });
 

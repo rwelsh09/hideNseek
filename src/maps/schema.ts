@@ -1,6 +1,7 @@
 import { z } from "zod";
 
 import { ICON_COLORS } from "./api/constants";
+import { PLACES } from "./placesConfig";
 
 export const determineUnionizedStrings = (
     obj:
@@ -118,21 +119,11 @@ const radiusQuestionSchema = ordinaryBaseQuestionSchema.extend({
     color: iconColorSchema.default("orange"),
 });
 
-const closestLocationsOne = z.union([
-    z.literal("museum").describe("Museums"),
-    z.literal("hospital").describe("Hospitals"),
-    z.literal("cinema").describe("Movie Theaters"),
-    z.literal("library").describe("Libraries"),
-    z.literal("mcdonalds").describe("McDonald's"),
-    z.literal("seven11").describe("7-Eleven"),
-    z.literal("timhortons").describe("Tim Hortons"),
-    z.literal("pub").describe("Pubs / Bars"),
-]);
+const closestLocationsOne = z.union(
+    PLACES.map(p => z.literal(p.id).describe(p.labelPlural)) as any
+);
 
-const apiLocationSchema = z.union([
-    z.literal("golf_course"),
-    closestLocationsOne,
-]);
+const apiLocationSchema = closestLocationsOne;
 
 const baseClosestQuestionSchema = ordinaryBaseQuestionSchema.extend({
     showLabels: z.boolean().default(false),
@@ -181,11 +172,7 @@ const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
 const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
     type: z
         .union([
-            z.literal("museum").describe("Museum"),
-            z.literal("hospital").describe("Hospital"),
-            z.literal("cinema").describe("Cinema"),
-            z.literal("library").describe("Library"),
-            z.literal("golf_course").describe("Golf Course"),
+            ...PLACES.map(p => z.literal(p.id).describe(p.label)),
             z
                 .literal("same-neighbourhood")
                 .describe("Neighbourhood (Same As Me)"),
@@ -199,7 +186,7 @@ const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
                 .literal("same-length-station")
                 .describe("Station Has Same Length"),
             z.literal("same-train-line").describe("Station On Same Train Line"),
-        ])
+        ] as any)
         .default("museum"),
 });
 
@@ -213,15 +200,9 @@ const baseMeasureQuestionSchema = ordinaryBaseQuestionSchema.extend({
 const ordinaryMeasureQuestionSchema = baseMeasureQuestionSchema.extend({
     type: z
         .union([
-            z.literal("museum").describe("Museum"),
-            z.literal("hospital").describe("Hospital"),
-            z.literal("cinema").describe("Cinema"),
-            z.literal("library").describe("Library"),
-            z.literal("golf_course").describe("Golf Course"),
-            z.literal("mcdonalds").describe("McDonald's"),
-            z.literal("seven11").describe("7-Eleven"),
+            ...PLACES.map(p => z.literal(p.id).describe(p.label)),
             z.literal("rail-measure").describe("Train Station"),
-        ])
+        ] as any)
         .default("museum"),
 });
 

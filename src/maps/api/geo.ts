@@ -1,6 +1,8 @@
 import type { LatLngTuple } from "leaflet";
 
-import type { APILocations, OpenStreetMap } from "./types";
+import { PLACES } from "@/maps/placesConfig";
+
+import type { OpenStreetMap } from "./types";
 
 export const convertToLongLat = (coordinates: LatLngTuple): number[] => {
     return [coordinates[1], coordinates[0]];
@@ -11,40 +13,14 @@ export const convertToLatLong = (coordinates: number[]): LatLngTuple => {
 };
 
 export const prettifyLocation = (
-    location: APILocations,
+    location: string,
     plural: boolean = false,
 ): string => {
-    if (plural) {
-        switch (location) {
-            case "library":
-                return "Libraries";
-            case "pub":
-                return "Pubs / Bars";
-            default:
-                return prettifyLocation(location) + "s";
-        }
+    const place = PLACES.find(p => p.id === location);
+    if (place) {
+        return plural ? place.labelPlural : place.label;
     }
-
-    switch (location) {
-        case "hospital":
-            return "Hospital";
-        case "museum":
-            return "Museum";
-        case "cinema":
-            return "Cinema";
-        case "library":
-            return "Library";
-        case "golf_course":
-            return "Golf Course";
-        case "mcdonalds":
-            return "McDonald's";
-        case "seven11":
-            return "7-Eleven";
-        case "timhortons":
-            return "Tim Hortons";
-        case "pub":
-            return "Pub / Bar";
-    }
+    return location;
 };
 
 export const determineName = (feature: OpenStreetMap) => {

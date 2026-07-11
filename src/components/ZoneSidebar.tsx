@@ -4,8 +4,10 @@ import type { Feature, FeatureCollection } from "geojson";
 import * as L from "leaflet";
 import { AlertTriangle, SidebarCloseIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { VscQuestion } from "react-icons/vsc";
 import { toast } from "react-toastify";
 
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import {
     Sidebar,
     SidebarContent,
@@ -13,8 +15,6 @@ import {
     SidebarMenu,
     SidebarMenuItem,
 } from "@/components/ui/sidebar-r";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { VscQuestion } from "react-icons/vsc";
 import {
     disabledStations,
     displayHidingZonesStyle,

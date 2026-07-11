@@ -1,4 +1,4 @@
-import type { APILocations } from "@/maps/schema";
+import { PLACES } from "@/maps/placesConfig";
 
 
 
@@ -16,18 +16,8 @@ export const ICON_COLORS = {
     violet: "#9C2BCB",
 };
 
-export const LOCATION_FIRST_TAG: {
-    [key in APILocations]: "amenity" | "tourism" | "leisure";
-} = {
-    hospital: "amenity",
-    museum: "tourism",
-    cinema: "amenity",
-    library: "amenity",
-    golf_course: "leisure",
-    mcdonalds: "amenity", // Not used for querying but satisfies APILocations mapping
-    seven11: "amenity", // Not used for querying but satisfies APILocations mapping
-    timhortons: "amenity", // Not used for querying but satisfies APILocations mapping
-    pub: "amenity", // Not used for querying but satisfies APILocations mapping
+export const LOCATION_FIRST_TAG: Record<string, string> = {
+    ...Object.fromEntries(PLACES.map(p => [p.id, p.tag])),
 };
 
 export const BLANK_GEOJSON = {
