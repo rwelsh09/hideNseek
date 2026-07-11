@@ -151,6 +151,7 @@ export const TutorialManager = () => {
                                       "Use these buttons to re-center the map on your location, zoom to the potential hiding areas or view the entire map.",
                                   side: "left",
                                   align: "start",
+                                  showButtons: ["next"],
                               },
                           },
                           {
@@ -296,7 +297,7 @@ export const TutorialManager = () => {
                               popover: {
                                   title: "Enter the Result",
                                   description:
-                                      "Based on the Hider's answer, select the appropriate result here. (leave it as 'Inside' for now)",
+                                      "Based on the Hider's answer, select the appropriate result here. (Leave it as 'Inside' for now.)",
                                   side: "bottom",
                                   align: "center",
                                   onPopoverRender: () => {
