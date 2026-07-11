@@ -529,9 +529,7 @@ export const ZoneSidebar = () => {
                                         </PopoverTrigger>
                                         <PopoverContent className="w-80 text-sm">
                                             <p>
-                                                Adjusts the allowed overlap between zones when clicking 'Auto Disable Overlap'.
-                                                It acts as a multiplier against the global Hiding Radius setting. For example, 1.0 means zones can overlap by up to 1 radius distance,
-                                                while 0.0 means no overlap is allowed at all.
+                                                Determines how far apart hiding zones must be when using the <strong>Auto Disable Overlap</strong> tool. It acts as a distance multiplier against the Hiding Radius. A lower value allows zones to be closer together (more overlap), while a higher value forces them further apart (less overlap). For example, a value of 2.0 ensures no zones touch at all.
                                             </p>
                                         </PopoverContent>
                                     </Popover>
@@ -652,8 +650,7 @@ export const ZoneSidebar = () => {
                                         </PopoverTrigger>
                                         <PopoverContent className="w-80 text-sm align-start" align="end">
                                             <p>
-                                                Automatically disables map zones to minimize overlap based on your set <strong>Overlap Threshold</strong> multiplier.
-                                                This ensures hiding spots are properly spaced out across the map. The algorithm removes the minimum number of zones needed to satisfy the threshold.
+                                                Automatically disables stations to minimize overlapping zones based on your set <strong>Overlap Threshold</strong>. It calculates the distance between all zones and removes the minimum number of stations needed to ensure no two active zones are closer than the allowed threshold.
                                             </p>
                                         </PopoverContent>
                                     </Popover>
