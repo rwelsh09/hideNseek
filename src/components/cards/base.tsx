@@ -17,6 +17,7 @@ import {
     TIME_PENALTIES,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
+import { lockRecommendedStartIfNeeded } from "@/lib/recommended-start";
 
 const TYPE_MAPPINGS: Record<string, string> = {
     museum: "Museum",
@@ -60,6 +61,8 @@ export const QuestionCard = ({
     const $isLoading = useStore(isLoading);
 
     const toggleLockAndCollapse = () => {
+        lockRecommendedStartIfNeeded();
+
         const wasUnlocked = questionData.drag;
         questionData.drag = !wasUnlocked;
         questionModified();
