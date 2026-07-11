@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
+    disabledStations,
     hidingRadius,
     hidingRadiusUnits,
     isLoading,
@@ -16,6 +17,7 @@ import {
     type StationPlace,
 } from "@/maps/api";
 import {
+    extractStationId,
     extractStationLines,
     extractStationName,
     safeUnion,
@@ -69,6 +71,10 @@ export const initializeHidingZonesLogic = async () => {
                 return !turf.booleanWithin(circle, unionized);
             });
 
+        // Reset disabled stations since we are recalculating
+        disabledStations.set([]);
+        const newlyDisabledStations: string[] = [];
+
         for (const question of questions.get()) {
             if (circles.length === 0) break;
 
@@ -90,6 +96,9 @@ export const initializeHidingZonesLogic = async () => {
                     location,
                     turf.featureCollection(places) as any,
                 );
+
+
+                const originalIds = circles.map(c => extractStationId(c));
 
                 if (question.data.type === "same-train-line") {
                     const seekerLines = extractStationLines(nearestTrainStation);
@@ -141,6 +150,10 @@ export const initializeHidingZonesLogic = async () => {
                         return question.data.same ? isMatch : !isMatch;
                     });
                 }
+
+                const remainingIds = circles.map(c => extractStationId(c));
+                const newlyDisabled = originalIds.filter(id => !remainingIds.includes(id));
+                newlyDisabledStations.push(...newlyDisabled);
             }
             if (
                 question.id === "measure" &&
@@ -184,7 +197,13 @@ export const initializeHidingZonesLogic = async () => {
             }
         }
 
+
         trainStations.set(circles);
+
+        if (newlyDisabledStations.length > 0) {
+            const currentDisabled = disabledStations.get();
+            disabledStations.set(Array.from(new Set([...currentDisabled, ...newlyDisabledStations])));
+        }
     } finally {
         isLoading.set(false);
     }
