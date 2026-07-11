@@ -372,13 +372,8 @@ export const ZoneSidebar = () => {
                             <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
-                                        if (!$hasSeenPerformanceWarning && "no-display" !== "no-display") {
-                                            setPendingStyle("no-display");
-                                            setIsWarningDialogOpen(true);
-                                        } else {
-                                            setHidingZoneModeStationID("");
-                                            displayHidingZonesStyle.set("no-display");
-                                        }
+                                        setHidingZoneModeStationID("");
+                                        displayHidingZonesStyle.set("no-display");
                                     }}
                                     disabled={$isLoading}
                                 >
@@ -387,7 +382,7 @@ export const ZoneSidebar = () => {
                             <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
-                                        if (!$hasSeenPerformanceWarning && "stations" !== "no-display") {
+                                        if (!$hasSeenPerformanceWarning) {
                                             setPendingStyle("stations");
                                             setIsWarningDialogOpen(true);
                                         } else {
@@ -402,7 +397,7 @@ export const ZoneSidebar = () => {
                             <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
-                                        if (!$hasSeenPerformanceWarning && "zones" !== "no-display") {
+                                        if (!$hasSeenPerformanceWarning) {
                                             setPendingStyle("zones");
                                             setIsWarningDialogOpen(true);
                                         } else {
@@ -417,7 +412,7 @@ export const ZoneSidebar = () => {
                             <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
-                                        if (!$hasSeenPerformanceWarning && "no-overlap" !== "no-display") {
+                                        if (!$hasSeenPerformanceWarning) {
                                             setPendingStyle("no-overlap");
                                             setIsWarningDialogOpen(true);
                                         } else {
