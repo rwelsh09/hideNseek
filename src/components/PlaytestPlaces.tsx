@@ -7,6 +7,7 @@ import { questions } from "@/lib/context";
 import { findPlacesInZone } from "@/maps/api";
 import { LOCATION_FIRST_TAG } from "@/maps/api/constants";
 import { getFeatureCoords } from "@/maps/geo-utils";
+import { PLACES } from "@/maps/placesConfig";
 
 const pathOptionsCache: Record<
     string,
@@ -81,20 +82,13 @@ export const PlaytestPlaces = () => {
 
                 if (data.type) {
                     const type = data.type;
-                    if (type === "mcdonalds")
-                        specificTypesSet.add('["brand:wikidata"="Q38076"]');
-                    else if (type === "seven11")
-                        specificTypesSet.add('["brand:wikidata"="Q259340"]');
-                    else if (type.endsWith("-full")) {
-                        typesSet.add(type.replace("-full", ""));
-                    } else if (
-                        type === "museum" ||
-                        type === "hospital" ||
-                        type === "cinema" ||
-                        type === "library" ||
-                        type === "golf_course"
-                    ) {
-                        typesSet.add(type);
+                    const place = PLACES.find(p => p.id === type || p.id === type.replace("-full", ""));
+                    if (place) {
+                        if (place.type === "specific" && place.specificLocation) {
+                            specificTypesSet.add(place.specificLocation);
+                        } else {
+                            typesSet.add(place.id);
+                        }
                     }
                 }
             });

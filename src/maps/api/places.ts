@@ -6,34 +6,14 @@ import {
     mapGeoJSON,
         polyGeoJSON,
 } from "@/lib/context";
+import { PLACES } from "@/maps/placesConfig";
 
 import { LOCATION_FIRST_TAG } from "./constants";
 import type { EncompassingClosestQuestionSchema } from "./types";
-import { QuestionSpecificLocation } from "./types";
 
-const getLocationTypeName = (locationType: string) => {
-    switch (locationType) {
-        case "museum":
-            return "Museums";
-        case "hospital":
-            return "Hospitals";
-        case "cinema":
-            return "Movie Theaters";
-        case "library":
-            return "Libraries";
-        case "mcdonalds":
-            return "McDonald's";
-        case "seven11":
-            return "7-Elevens";
-        case "timhortons":
-            return "Tim Hortons";
-        case "pub":
-            return "Pubs/Bars";
-        case "golf_course":
-            return "Golf Courses";
-        default:
-            return "Locations";
-    }
+const getLocationTypeName = (location: string) => {
+    const place = PLACES.find(p => p.id === location);
+    return place ? place.labelPlural : "Locations";
 };
 
 export const findClosestLocations = async (
@@ -43,23 +23,10 @@ export const findClosestLocations = async (
     const loadingText =
         text ?? `Finding all ${getLocationTypeName(question.locationType)}...`;
 
+    const place = PLACES.find(p => p.id === question.locationType);
     let data;
-    if (
-        question.locationType === "mcdonalds" ||
-        question.locationType === "seven11" ||
-        question.locationType === "timhortons" ||
-        question.locationType === "pub"
-    ) {
-        data = await findPlacesInZone(
-            question.locationType === "mcdonalds"
-                ? QuestionSpecificLocation.McDonalds
-                : question.locationType === "seven11"
-                  ? QuestionSpecificLocation.Seven11
-                  : question.locationType === "timhortons"
-                    ? QuestionSpecificLocation.TimHortons
-                    : QuestionSpecificLocation.Pub,
-            loadingText,
-        );
+    if (place && place.type === "specific" && place.specificLocation) {
+        data = await findPlacesInZone(place.specificLocation, loadingText);
     } else {
         data = await findPlacesInZone(
             `[${LOCATION_FIRST_TAG[question.locationType]}=${question.locationType}]`,
@@ -77,16 +44,8 @@ export const findClosestLocations = async (
 
     elements.forEach((element: any) => {
         if (!element.tags) return;
-        const fallbackName =
-            question.locationType === "mcdonalds"
-                ? "McDonald's"
-                : question.locationType === "seven11"
-                  ? "7-Eleven"
-                  : question.locationType === "timhortons"
-                    ? "Tim Hortons"
-                    : question.locationType === "pub"
-                      ? "Pub / Bar"
-                      : null;
+        const place = PLACES.find(p => p.id === question.locationType);
+        const fallbackName = place && place.type === "specific" ? place.label : null;
 
         if (
             !element.tags["name"] &&
@@ -276,20 +235,14 @@ export const findPlacesInZone = async (
 };
 
 export const findPlacesSpecificInZone = async (
-    location: `${QuestionSpecificLocation}`,
+    location: string,
 ) => {
+    const place = PLACES.find(p => p.specificLocation === location);
+    const label = place ? place.labelPlural : "Places";
     const locations = (
         await findPlacesInZone(
             location,
-            `Finding ${
-                location === '["brand:wikidata"="Q38076"]'
-                    ? "McDonald's"
-                    : location === '["brand:wikidata"="Q259340"]'
-                      ? "7-Elevens"
-                      : location === '["brand:wikidata"="Q175106"]'
-                        ? "Tim Hortons"
-                        : "Pubs/Bars"
-            }...`,
+            `Finding ${label}...`,
         )
     ).elements;
     return turf.featureCollection(

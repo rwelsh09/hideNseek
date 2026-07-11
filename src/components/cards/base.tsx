@@ -27,17 +27,10 @@ import {
 import { lockRecommendedStartIfNeeded } from "@/lib/recommended-start";
 import { QUESTION_RULES } from "@/lib/rules";
 import { cn } from "@/lib/utils";
+import { PLACES } from "@/maps/placesConfig";
 
 const TYPE_MAPPINGS: Record<string, string> = {
-    museum: "Museum",
-    hospital: "Hospital",
-    cinema: "Cinema",
-    library: "Library",
-    mcdonalds: "McDonald's",
-    seven11: "7-Eleven",
-    timhortons: "Tim Hortons",
-    pub: "Pubs / Bars",
-    golf_course: "Golf Course",
+    ...Object.fromEntries(PLACES.map(p => [p.id, p.label])),
     "same-neighbourhood": "Neighbourhood (Same As Me)",
     "same-first-letter-neighbourhood": "Neighbourhood (Same First Letter)",
     "same-first-letter-station": "Station Starts With Same Letter",

@@ -14,7 +14,6 @@ import {
 import {
     findPlacesInZone,
     LOCATION_FIRST_TAG,
-    prettifyLocation,
 } from "@/maps/api";
 import {
     extractStationLines,
@@ -23,41 +22,38 @@ import {
     modifyMapData,
     safeUnion,
 } from "@/maps/geo-utils";
-import type { APILocations, MatchQuestion } from "@/maps/schema";
+import { PLACES } from "@/maps/placesConfig";
+import type { MatchQuestion } from "@/maps/schema";
 
 export const findMatchPlaces = async (question: MatchQuestion) => {
-    switch (question.type) {
-        case "museum":
-        case "hospital":
-        case "cinema":
-        case "library":
-        case "golf_course": {
-            const location = question.type as APILocations;
-
-            const data = await findPlacesInZone(
+    const place = PLACES.find(p => p.id === question.type);
+    if (place) {
+        const location = place.id;
+        let data;
+        if (place.type === "specific" && place.specificLocation) {
+            data = await findPlacesInZone(place.specificLocation, `Finding ${place.labelPlural.toLowerCase()}...`);
+        } else {
+            data = await findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
-                `Finding ${prettifyLocation(location, true).toLowerCase()}...`,
-            );
-
-            if (data.elements.length >= 5000) {
-                toast.error(
-                    `Too many ${prettifyLocation(
-                        location,
-                        true,
-                    ).toLowerCase()} found (${data.elements.length}).`,
-                );
-                return turf.featureCollection([]);
-            }
-
-            return turf.featureCollection(
-                data.elements.filter((x: any) => typeof (x.center?.lon ?? x.lon) === 'number' && typeof (x.center?.lat ?? x.lat) === 'number').map((x: any) =>
-                    turf.point([
-                        x.center ? x.center.lon : x.lon,
-                        x.center ? x.center.lat : x.lat,
-                    ]),
-                )
+                `Finding ${place.labelPlural.toLowerCase()}...`,
             );
         }
+
+        if (data.elements.length >= 5000) {
+            toast.error(
+                `Too many ${place.labelPlural.toLowerCase()} found (${data.elements.length}).`,
+            );
+            return turf.featureCollection([]);
+        }
+
+        return turf.featureCollection(
+            data.elements.filter((x: any) => typeof (x.center?.lon ?? x.lon) === 'number' && typeof (x.center?.lat ?? x.lat) === 'number').map((x: any) =>
+                turf.point([
+                    x.center ? x.center.lon : x.lon,
+                    x.center ? x.center.lat : x.lat,
+                ]),
+            )
+        );
     }
 };
 
@@ -162,20 +158,20 @@ export const determineMatchBoundary = _.memoize(
             case "same-train-line": {
                 return false;
             }
-            case "museum":
-            case "hospital":
-            case "cinema":
-            case "library":
-            case "golf_course": {
-                const data = await findMatchPlaces(question);
+            default: {
+                const place = PLACES.find(p => p.id === question.type);
+                if (place) {
+                    const data = await findMatchPlaces(question);
+                    if (!data) break;
 
-                const voronoi = geoSpatialVoronoi(data);
-                const point = turf.point([question.lng, question.lat]);
+                    const voronoi = geoSpatialVoronoi(data);
+                    const point = turf.point([question.lng, question.lat]);
 
-                for (const feature of voronoi.features) {
-                    if (turf.booleanPointInPolygon(point, feature)) {
-                        boundary = feature;
-                        break;
+                    for (const feature of voronoi.features) {
+                        if (turf.booleanPointInPolygon(point, feature)) {
+                            boundary = feature;
+                            break;
+                        }
                     }
                 }
                 break;
