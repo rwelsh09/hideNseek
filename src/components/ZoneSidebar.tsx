@@ -329,6 +329,15 @@ export const ZoneSidebar = () => {
                             </div>
                         </div>
 
+
+                    </div>
+                </div>
+
+                <div className="space-y-3">
+                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1">
+                        Map Display Data
+                    </h3>
+                    <div className="rounded-xl border bg-card shadow-sm overflow-hidden divide-y divide-border">
                         <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
                             <Label className="flex-1 cursor-pointer text-base font-medium">
                                 View Hiding Zones
@@ -380,14 +389,6 @@ export const ZoneSidebar = () => {
                                 </AlertDialogContent>
                             </AlertDialog>
                         </div>
-                    </div>
-                </div>
-
-                <div className="space-y-3">
-                    <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1">
-                        Map Display Data
-                    </h3>
-                    <div className="rounded-xl border bg-card shadow-sm overflow-hidden divide-y divide-border">
                         <SidebarMenu className="gap-0 border-0 bg-transparent p-0 m-0 w-full rounded-none">
                             {$displayHidingZones && stations.length > 0 && (
                                 <SidebarMenuItem
