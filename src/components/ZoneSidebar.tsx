@@ -86,7 +86,7 @@ export const ZoneSidebar = () => {
     const setStations = trainStations.set;
     const sidebarRef = useRef<HTMLDivElement>(null);
     const [isWarningDialogOpen, setIsWarningDialogOpen] = useState(false);
-    const [pendingStyle, setPendingStyle] = useState<"zones" | "stations" | "no-overlap" | "no-display">("no-display");
+    const [pendingStyle, setPendingStyle] = useState<"zones" | "no-overlap" | "no-display">("no-display");
 
     const removeHidingZones = () => {
         if (!map) return;
@@ -378,21 +378,6 @@ export const ZoneSidebar = () => {
                                     disabled={$isLoading}
                                 >
                                     No Display
-                                </SidebarMenuItem>
-                            <SidebarMenuItem
-                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                    onClick={() => {
-                                        if (!$hasSeenPerformanceWarning) {
-                                            setPendingStyle("stations");
-                                            setIsWarningDialogOpen(true);
-                                        } else {
-                                            setHidingZoneModeStationID("");
-                                            displayHidingZonesStyle.set("stations");
-                                        }
-                                    }}
-                                    disabled={$isLoading}
-                                >
-                                    All Stations
                                 </SidebarMenuItem>
                             <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
@@ -698,8 +683,6 @@ function styleStations(
             return { type: "FeatureCollection", features: [] };
         case "no-overlap":
             return applyMask(safeUnion(turf.featureCollection(circles)));
-        case "stations":
-            return applyMask(turf.featureCollection(circles));
         case "zones":
         default:
             if (circles.length > 1) {
