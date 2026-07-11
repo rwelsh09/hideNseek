@@ -529,9 +529,9 @@ export const ZoneSidebar = () => {
                                         </PopoverTrigger>
                                         <PopoverContent className="w-80 text-sm">
                                             <p>
-                                                Controls how much hiding zones are allowed to overlap with each other.
-                                                A higher number means zones can overlap more, while a lower number forces them further apart.
-                                                If set to 0, zones will not be allowed to overlap at all.
+                                                Adjusts the allowed overlap between zones when clicking 'Auto Disable Overlap'.
+                                                It acts as a multiplier against the global Hiding Radius setting. For example, 1.0 means zones can overlap by up to 1 radius distance,
+                                                while 0.0 means no overlap is allowed at all.
                                             </p>
                                         </PopoverContent>
                                     </Popover>
@@ -652,8 +652,8 @@ export const ZoneSidebar = () => {
                                         </PopoverTrigger>
                                         <PopoverContent className="w-80 text-sm align-start" align="end">
                                             <p>
-                                                Automatically disables stations to minimize overlapping hiding zones based on your set <strong>Overlap Threshold</strong>.
-                                                This makes the map cleaner and ensures hiding spots are properly spaced out.
+                                                Automatically disables map zones to minimize overlap based on your set <strong>Overlap Threshold</strong> multiplier.
+                                                This ensures hiding spots are properly spaced out across the map. The algorithm removes the minimum number of zones needed to satisfy the threshold.
                                             </p>
                                         </PopoverContent>
                                     </Popover>
