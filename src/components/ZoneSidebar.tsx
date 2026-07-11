@@ -478,23 +478,9 @@ export const ZoneSidebar = () => {
                                     Disable All
                                 </SidebarMenuItem>
                             <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                 <Popover modal={false}>
-                                        <PopoverTrigger asChild>
-                                            <button
-                                                className="flex items-center gap-1 rounded-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 group hover:text-ring/80 transition-colors mr-2"
-                                                aria-label="Overlap Threshold Information"
-                                            >
-                                                <span className="text-sm font-medium mr-4">
-                                                    Overlap Threshold
-                                                </span>
-                                            </button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-80 text-sm">
-                                            <p>
-                                                Determines how far apart hiding zones must be when using the <strong>Auto Disable Overlap</strong> tool. It acts as a distance multiplier against the Hiding Radius. A lower value allows zones to be closer together (more overlap), while a higher value forces them further apart (less overlap). For example, a value of 2.0 ensures no zones touch at all.
-                                            </p>
-                                        </PopoverContent>
-                                    </Popover>
+                                <Label className="text-sm font-medium mr-4">
+                                    Overlap Threshold
+                                </Label>
                                     <Input
                                         type="number"
                                         className="rounded-md p-1 w-16 h-8 bg-background text-sm"
@@ -610,7 +596,7 @@ export const ZoneSidebar = () => {
                                         </PopoverTrigger>
                                         <PopoverContent className="w-80 text-sm align-start" align="end">
                                             <p>
-                                                Automatically disables stations to minimize overlapping zones based on your set <strong>Overlap Threshold</strong>. It calculates the distance between all zones and removes the minimum number of stations needed to ensure no two active zones are closer than the allowed threshold.
+                                                Automatically disables stations so that active hiding zones are spread out. The <strong>Overlap Threshold</strong> controls how far apart they must be: a lower number allows more overlap, while a higher number (like 2.0) forces them further apart so they don't touch.
                                             </p>
                                         </PopoverContent>
                                     </Popover>
