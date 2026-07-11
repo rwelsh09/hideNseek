@@ -17,6 +17,7 @@ import {
     type StationPlace,
 } from "@/maps/api";
 import {
+    extractStationId,
     extractStationLines,
     extractStationName,
     safeUnion,
@@ -70,6 +71,10 @@ export const initializeHidingZonesLogic = async () => {
                 return !turf.booleanWithin(circle, unionized);
             });
 
+        // Reset disabled stations since we are recalculating
+        disabledStations.set([]);
+        const newlyDisabledStations: string[] = [];
+
         for (const question of questions.get()) {
             if (circles.length === 0) break;
 
@@ -92,14 +97,14 @@ export const initializeHidingZonesLogic = async () => {
                     turf.featureCollection(places) as any,
                 );
 
-                const originalIds = circles.map(c => c.properties.id);
-                let filteredCircles = circles;
+
+                const originalIds = circles.map(c => extractStationId(c));
 
                 if (question.data.type === "same-train-line") {
                     const seekerLines = extractStationLines(nearestTrainStation);
 
                     if (seekerLines.length > 0) {
-                        filteredCircles = filteredCircles.filter((circle) => {
+                        circles = circles.filter((circle) => {
                             const hiderLines = extractStationLines(circle);
 
                             const intersects = seekerLines.some((l) =>
@@ -121,7 +126,7 @@ export const initializeHidingZonesLogic = async () => {
 
                 if (question.data.type === "same-first-letter-station") {
                     const letter = englishName[0].toUpperCase();
-                    filteredCircles = filteredCircles.filter((circle) => {
+                    circles = circles.filter((circle) => {
                         const name = extractStationName(circle.properties);
                         if (!name) return false;
                         return question.data.same
@@ -131,7 +136,7 @@ export const initializeHidingZonesLogic = async () => {
                 } else if (question.data.type === "same-length-station") {
                     const seekerLength = englishName.length;
                     const comparison = question.data.lengthComparison;
-                    filteredCircles = filteredCircles.filter((circle) => {
+                    circles = circles.filter((circle) => {
                         const name = extractStationName(circle.properties);
                         if (!name) return false;
                         let isMatch = false;
@@ -146,12 +151,10 @@ export const initializeHidingZonesLogic = async () => {
                     });
                 }
 
-                const remainingIds = filteredCircles.map(c => c.properties.id);
+                const remainingIds = circles.map(c => extractStationId(c));
                 const newlyDisabled = originalIds.filter(id => !remainingIds.includes(id));
-                const currentDisabled = disabledStations.get();
-                disabledStations.set(Array.from(new Set([...currentDisabled, ...newlyDisabled])));
+                newlyDisabledStations.push(...newlyDisabled);
             }
-
             if (
                 question.id === "measure" &&
                 ((question.data as any).type === "mcdonalds" ||
@@ -194,7 +197,13 @@ export const initializeHidingZonesLogic = async () => {
             }
         }
 
+
         trainStations.set(circles);
+
+        if (newlyDisabledStations.length > 0) {
+            const currentDisabled = disabledStations.get();
+            disabledStations.set(Array.from(new Set([...currentDisabled, ...newlyDisabledStations])));
+        }
     } finally {
         isLoading.set(false);
     }
