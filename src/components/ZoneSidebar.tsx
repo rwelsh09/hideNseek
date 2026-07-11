@@ -196,7 +196,6 @@ export const ZoneSidebar = () => {
         if (!map || isLoading.get()) return;
 
         if (
-            ($displayHidingZonesStyle !== "no-display" || $showRecommendedStart) &&
             $questionFinishedMapData
         ) {
             initializeHidingZonesLogic().catch((err) => {
@@ -370,8 +369,7 @@ export const ZoneSidebar = () => {
                             </AlertDialog>
 
                         <SidebarMenu className="gap-0 border-0 bg-transparent p-0 m-0 w-full rounded-none">
-                            {stations.length > 0 && (
-                                <SidebarMenuItem
+                            <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         if (!$hasSeenPerformanceWarning && "no-display" !== "no-display") {
@@ -386,9 +384,7 @@ export const ZoneSidebar = () => {
                                 >
                                     No Display
                                 </SidebarMenuItem>
-                            )}
-                            {stations.length > 0 && (
-                                <SidebarMenuItem
+                            <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         if (!$hasSeenPerformanceWarning && "stations" !== "no-display") {
@@ -403,9 +399,7 @@ export const ZoneSidebar = () => {
                                 >
                                     All Stations
                                 </SidebarMenuItem>
-                            )}
-                            {stations.length > 0 && (
-                                <SidebarMenuItem
+                            <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         if (!$hasSeenPerformanceWarning && "zones" !== "no-display") {
@@ -420,9 +414,7 @@ export const ZoneSidebar = () => {
                                 >
                                     All Zones
                                 </SidebarMenuItem>
-                            )}
-                            {stations.length > 0 && (
-                                <SidebarMenuItem
+                            <SidebarMenuItem
                                     className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                     onClick={() => {
                                         if (!$hasSeenPerformanceWarning && "no-overlap" !== "no-display") {
@@ -437,7 +429,6 @@ export const ZoneSidebar = () => {
                                 >
                                     No Overlap
                                 </SidebarMenuItem>
-                            )}
                             {hidingZoneModeStationID && (
                                 <SidebarMenuItem
                                     className={cn(
