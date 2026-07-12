@@ -60,7 +60,6 @@ export const PhotoQuestionComponent = ({
     className?: string;
 }) => {
     useStore(triggerLocalRefresh);
-    // const $hiderMode = useStore(hiderMode);
     const $isLoading = useStore(isLoading);
     const [localNotes, setLocalNotes] = useState(data.notes);
     useEffect(() => {
