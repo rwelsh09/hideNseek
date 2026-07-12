@@ -312,85 +312,29 @@ export function AddQuestionDialog() {
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect("match", "museum")
-                                }
-                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Palette className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Museum
-                                </span>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect("match", "hospital")
-                                }
-                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Hospital className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Hospital
-                                </span>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect("match", "cinema")
-                                }
-                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Film className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Cinema
-                                </span>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect("match", "library")
-                                }
-                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Library className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Library
-                                </span>
-                            </button>
-
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "same-neighbourhood",
-                                    )
-                                }
-                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <MapPinned className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Community
-                                </span>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "match",
-                                        "same-train-line",
-                                    )
-                                }
-                                className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <TramFront className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Transit
-                                </span>
-                            </button>
+                            {PLACES.filter((place) => place.type !== "specific").map(
+                                (place) => {
+                                    const Icon = IconMap[place.icon];
+                                    return (
+                                        <button
+                                            key={`match-${place.id}`}
+                                            type="button"
+                                            onClick={() =>
+                                                handleQuestionSelect(
+                                                    "match",
+                                                    place.id,
+                                                )
+                                            }
+                                            className="bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                        >
+                                            <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                            <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                                {place.label}
+                                            </span>
+                                        </button>
+                                    );
+                                },
+                            )}
                         </div>
                     </div>
 
@@ -410,94 +354,29 @@ export function AddQuestionDialog() {
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect("measure", "museum")
-                                }
-                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Palette className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Museum
-                                </span>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect("measure", "hospital")
-                                }
-                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Hospital className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Hospital
-                                </span>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect("measure", "cinema")
-                                }
-                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Film className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Cinema
-                                </span>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect("measure", "library")
-                                }
-                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Library className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Library
-                                </span>
-                            </button>
-
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect("measure", "mcdonalds")
-                                }
-                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Hamburger className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    McDonald&apos;s
-                                </span>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect("measure", "seven11")
-                                }
-                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <Store className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    7-Eleven
-                                </span>
-                            </button>
-                            <button
-                                type="button"
-                                onClick={() =>
-                                    handleQuestionSelect(
-                                        "measure",
-                                        "rail-measure",
-                                    )
-                                }
-                                className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
-                            >
-                                <TramFront className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Transit
-                                </span>
-                            </button>
+                            {PLACES.filter((place) => place.type !== "specific").map(
+                                (place) => {
+                                    const Icon = IconMap[place.icon];
+                                    return (
+                                        <button
+                                            key={`measure-${place.id}`}
+                                            type="button"
+                                            onClick={() =>
+                                                handleQuestionSelect(
+                                                    "measure",
+                                                    place.id,
+                                                )
+                                            }
+                                            className="bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
+                                        >
+                                            <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                            <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                                {place.label}
+                                            </span>
+                                        </button>
+                                    );
+                                },
+                            )}
                         </div>
                     </div>
 
@@ -528,7 +407,7 @@ export function AddQuestionDialog() {
                                         onClick={() =>
                                             handleQuestionSelect(
                                                 "closest",
-                                                place.id as any,
+                                                place.id,
                                             )
                                         }
                                         className="bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
