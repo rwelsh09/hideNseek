@@ -67,16 +67,27 @@ export const initializeHidingZonesLogic = async () => {
                     units: $hidingRadiusUnits,
                     properties: place,
                 });
-            })
-            .filter((circle) => {
-                return !turf.booleanWithin(circle, unionized);
             });
 
         // Reset disabled stations since we are recalculating
         disabledStations.set([]);
         const newlyDisabledStations: string[] = [];
-
         const lockedIds = lockedActiveStationIds.get();
+
+        const originalIdsUnion = circles.map(c => extractStationId(c));
+        const originalCirclesStateUnion = [...circles];
+
+        circles = circles.filter((circle) => {
+            return !turf.booleanWithin(circle, unionized);
+        });
+
+        const remainingIdsUnion = circles.map(c => extractStationId(c));
+        const newlyDisabledUnion = originalIdsUnion.filter(id => id && !remainingIdsUnion.includes(id));
+        newlyDisabledStations.push(...(newlyDisabledUnion as string[]));
+
+        if (lockedIds) {
+            circles = originalCirclesStateUnion;
+        }
         for (const question of questions.get()) {
             if (circles.length === 0) break;
 
