@@ -65,14 +65,36 @@ const IconMap: Record<string, React.ElementType> = {
 
 export function AddQuestionDialog() {
     const [open, setOpen] = useState(false);
+
     const $questions = useStore(questions);
-    const lockedTypes = {
-        "hot/cold": $questions.some(q => q.id === "hot/cold" && !q.data.drag),
-        "radar": $questions.some(q => q.id === "radius" && !q.data.drag),
-        "match": $questions.some(q => q.id === "match" && !q.data.drag),
-        "measure": $questions.some(q => q.id === "measure" && !q.data.drag),
-        "closest": $questions.some(q => q.id === "closest" && !q.data.drag),
-        "photo": $questions.some(q => q.id === "photo" && !q.data.drag),
+    const isQuestionLocked = (type: string, detail?: string) => {
+        return $questions.some(q => {
+            if (q.data.drag) return false;
+
+            if (type === "radar" && q.id === "radius") {
+                const radius = detail === "unknown" ? 5 : parseFloat(detail || "5");
+                return q.data.radius === radius;
+            }
+            if (type === "hot/cold" && q.id === "hot/cold") {
+                if (!q.data.lngA || !q.data.latA || !q.data.lngB || !q.data.latB) return false;
+                const dist = turf.distance([q.data.lngA, q.data.latA], [q.data.lngB, q.data.latB], { units: "kilometers" });
+                const detailDist = parseFloat(detail || "5");
+                return Math.abs(dist - detailDist) < 0.1;
+            }
+            if (type === "match" && q.id === "match") {
+                return q.data.type === (detail || "museum");
+            }
+            if (type === "measure" && q.id === "measure") {
+                return q.data.type === (detail || "museum");
+            }
+            if (type === "closest" && q.id === "closest") {
+                return q.data.locationType === (detail || "museum");
+            }
+            if (type === "photo" && q.id === "photo") {
+                return q.data.type === (detail || "camera");
+            }
+            return false;
+        });
     };
 
     const handleQuestionSelect = (type: string, detail?: string) => {
@@ -82,7 +104,7 @@ export function AddQuestionDialog() {
         const key = Math.random();
 
         let qId = type;
-        let qData: any = { lat: center.lat, lng: center.lng, drag: true, doubledPenalty: lockedTypes[type as keyof typeof lockedTypes] || false };
+        let qData: any = { lat: center.lat, lng: center.lng, drag: true, doubledPenalty: isQuestionLocked(type, detail) };
 
         // METRIC UPDATE: Changed all unit payloads to kilometers
         if (type === "radar") {
@@ -172,7 +194,7 @@ export function AddQuestionDialog() {
                                 <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base flex items-center">
                                     Hot/Cold{" "}
                                     <span className="ml-2 bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES["hot/cold"] * (lockedTypes["hot/cold"] ? 2 : 1)}
+                                        +{TIME_PENALTIES["hot/cold"]}
                                     </span>
                                 </h3>
                             </div>
@@ -185,7 +207,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("hot/cold", "1")
                                 }
-                                className={`bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["hot/cold"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("hot/cold", "1") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                 1km
@@ -197,7 +219,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("hot/cold", "2")
                                 }
-                                className={`bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["hot/cold"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("hot/cold", "2") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                 2km
@@ -209,7 +231,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("hot/cold", "5")
                                 }
-                                className={`bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["hot/cold"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("hot/cold", "5") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                 5km
@@ -227,7 +249,7 @@ export function AddQuestionDialog() {
                                 <h3 className="font-bold text-orange-500 uppercase leading-none text-sm sm:text-base flex items-center">
                                     Radar{" "}
                                     <span className="ml-2 bg-orange-100 text-orange-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES.radar * (lockedTypes["radar"] ? 2 : 1)}
+                                        +{TIME_PENALTIES.radar}
                                     </span>
                                 </h3>
                             </div>
@@ -240,7 +262,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "0.5")
                                 }
-                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["radar"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "0.5") ? "opacity-50 grayscale" : ""}`}
                             >
                                 0.5 km
                             </button>
@@ -251,7 +273,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "1")
                                 }
-                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["radar"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "1") ? "opacity-50 grayscale" : ""}`}
                             >
                                 1 km
                             </button>
@@ -262,7 +284,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "2")
                                 }
-                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["radar"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "2") ? "opacity-50 grayscale" : ""}`}
                             >
                                 2 km
                             </button>
@@ -274,7 +296,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "5")
                                 }
-                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["radar"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "5") ? "opacity-50 grayscale" : ""}`}
                             >
                                 5 km
                             </button>
@@ -286,7 +308,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "10")
                                 }
-                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["radar"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "10") ? "opacity-50 grayscale" : ""}`}
                             >
                                 10 km
                             </button>
@@ -297,7 +319,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("radar", "unknown")
                                 }
-                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["radar"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "unknown") ? "opacity-50 grayscale" : ""}`}
                             >
                                 ????
                             </button>
@@ -314,7 +336,7 @@ export function AddQuestionDialog() {
                                 <h3 className="font-bold text-red-500 uppercase leading-none text-sm sm:text-base flex items-center">
                                     Match{" "}
                                     <span className="ml-2 bg-slate-200 text-slate-700 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES.match * (lockedTypes["match"] ? 2 : 1)}
+                                        +{TIME_PENALTIES.match}
                                     </span>
                                 </h3>
                             </div>
@@ -333,7 +355,7 @@ export function AddQuestionDialog() {
                                                     place.id,
                                                 )
                                             }
-                                            className={`bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["match"] ? "opacity-50 grayscale" : ""}`}
+                                            className={`bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("match", place.id) ? "opacity-50 grayscale" : ""}`}
                                         >
                                             <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                             <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -356,7 +378,7 @@ export function AddQuestionDialog() {
                                 <h3 className="font-bold text-green-600 uppercase leading-none text-sm sm:text-base flex items-center">
                                     Measure{" "}
                                     <span className="ml-2 bg-green-100 text-green-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES.measure * (lockedTypes["measure"] ? 2 : 1)}
+                                        +{TIME_PENALTIES.measure}
                                     </span>
                                 </h3>
                             </div>
@@ -375,7 +397,7 @@ export function AddQuestionDialog() {
                                                     place.id,
                                                 )
                                             }
-                                            className={`bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["measure"] ? "opacity-50 grayscale" : ""}`}
+                                            className={`bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("measure", place.id) ? "opacity-50 grayscale" : ""}`}
                                         >
                                             <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                             <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -398,7 +420,7 @@ export function AddQuestionDialog() {
                                 <h3 className="font-bold text-purple-600 uppercase leading-none text-sm sm:text-base flex items-center">
                                     Closest{" "}
                                     <span className="ml-2 bg-purple-100 text-purple-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES.closest * (lockedTypes["closest"] ? 2 : 1)}
+                                        +{TIME_PENALTIES.closest}
                                     </span>
                                 </h3>
                             </div>
@@ -418,7 +440,7 @@ export function AddQuestionDialog() {
                                                 place.id,
                                             )
                                         }
-                                        className={`bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["closest"] ? "opacity-50 grayscale" : ""}`}
+                                        className={`bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("closest", place.id) ? "opacity-50 grayscale" : ""}`}
                                     >
                                         <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                         <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -439,7 +461,7 @@ export function AddQuestionDialog() {
                                 <h3 className="font-bold text-sky-400 uppercase leading-none text-sm sm:text-base flex items-center">
                                     Photo{" "}
                                     <span className="ml-2 bg-sky-100 text-sky-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
-                                        +{TIME_PENALTIES.photo * (lockedTypes["photo"] ? 2 : 1)}
+                                        +{TIME_PENALTIES.photo}
                                     </span>
                                 </h3>
                             </div>
@@ -452,7 +474,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "camera")
                                 }
-                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["photo"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "camera") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <Camera className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -466,7 +488,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "tree")
                                 }
-                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["photo"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "tree") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <Leaf className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -481,7 +503,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "car")
                                 }
-                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["photo"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "car") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <Car className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -496,7 +518,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "building")
                                 }
-                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["photo"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "building") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <Building2 className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -511,7 +533,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "restaurant")
                                 }
-                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["photo"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "restaurant") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <Utensils className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -526,7 +548,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "park")
                                 }
-                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["photo"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "park") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <Trees className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -541,7 +563,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "store")
                                 }
-                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["photo"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "store") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <ShoppingCart className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -556,7 +578,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "worship")
                                 }
-                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["photo"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "worship") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <Church className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -571,7 +593,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "train")
                                 }
-                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["photo"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "train") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <Train className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -586,7 +608,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "route")
                                 }
-                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["photo"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "route") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <Route className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -601,7 +623,7 @@ export function AddQuestionDialog() {
                                 onClick={() =>
                                     handleQuestionSelect("photo", "water")
                                 }
-                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${lockedTypes["photo"] ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "water") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <Waves className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
