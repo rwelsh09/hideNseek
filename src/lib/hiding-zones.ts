@@ -11,6 +11,7 @@ import {
     questions,
     trainStations,
 } from "@/lib/context";
+import { lockedActiveStationIds } from "@/lib/context";
 import {
     findPlacesSpecificInZone,
     QuestionSpecificLocation,
@@ -78,7 +79,7 @@ export const initializeHidingZonesLogic = async () => {
         disabledStations.set(currentDisabledStations.filter(id => !previousQuestionDisabled.includes(id)));
         const newlyDisabledStations: string[] = [];
 
-        // lockedIds previously fetched here
+        const lockedIds = lockedActiveStationIds.get();
         for (const question of questions.get()) {
             if (circles.length === 0) break;
 
@@ -160,9 +161,11 @@ export const initializeHidingZonesLogic = async () => {
                 const newlyDisabled = originalIds.filter(id => !remainingIds.includes(id));
                 newlyDisabledStations.push(...newlyDisabled);
 
-                // Always restore circles array so base shapes do not change
-                const circlesMap = new Map(originalCirclesState.map(c => [extractStationId(c), c]));
-                circles = originalIds.map(id => circlesMap.get(id)).filter(Boolean) as any;
+                if (lockedIds) {
+                    // Restore circles array if it's locked so base shapes do not change
+                    const circlesMap = new Map(originalCirclesState.map(c => [extractStationId(c), c]));
+                    circles = originalIds.map(id => circlesMap.get(id)).filter(Boolean) as any;
+                }
             }
             if (
                 question.id === "measure" &&
@@ -211,8 +214,10 @@ export const initializeHidingZonesLogic = async () => {
                 const newlyDisabledMeasure = originalIdsMeasure.filter(id => !remainingIdsMeasure.includes(id));
                 newlyDisabledStations.push(...newlyDisabledMeasure);
 
-                // Always restore circles array so base shapes do not change
-                circles = originalCirclesStateMeasure;
+                if (lockedIds) {
+                    // Restore circles array if it's locked so base shapes do not change
+                    circles = originalCirclesStateMeasure;
+                }
             }
         }
 
