@@ -1,21 +1,33 @@
 import * as turf from '@turf/turf';
 import fs from 'fs/promises';
+import { readFileSync } from 'fs';
 
 const OVERPASS_API = "https://overpass-api.de/api/interpreter";
 const USER_AGENT = "HideNSeek-OfflineDataFetcher/1.0 (contact: info@example.com)";
 
-const filters = [
-  '["amenity"="hospital"]',
-  '["tourism"="museum"]',
-  '["amenity"="cinema"]',
-  '["amenity"="library"]',
-  '["leisure"="golf_course"]',
-  '["admin_level"="10"]',
-  '["brand:wikidata"="Q38076"]', // McDonalds
-  '["brand:wikidata"="Q259340"]', // Seven11
-  '["brand:wikidata"="Q175106"]', // TimHortons
-  '["amenity"~"^(pub|bar)$"]', // Pub
-];
+function getFilters() {
+    const content = readFileSync('src/maps/placesConfig.ts', 'utf8');
+    const match = content.match(/export const PLACES = (\[[\s\S]*?\]) as const;/);
+    if (!match) return [];
+
+    // Evaluate the config to get the array of objects
+    const PLACES = eval(match[1]);
+
+    const parsedFilters = PLACES.map(p => {
+        if (p.specificLocation) {
+             return p.specificLocation.replace(/^'|'$/g, '');
+        }
+        return `["${p.tag}"="${p.id}"]`;
+    });
+
+    // admin_level=10 is required for neighborhoods logic in match.ts, golf_course is missing from placesConfig but was in the original fetch
+    parsedFilters.push('["admin_level"="10"]');
+    parsedFilters.push('["leisure"="golf_course"]');
+
+    return parsedFilters;
+}
+
+const filters = getFilters();
 
 async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
