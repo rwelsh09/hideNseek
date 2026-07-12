@@ -25,3 +25,6 @@ pnpm-debug.log*
 coverage/
 .vscode/
 dev_server.log
+node_modules/
+dist/
+.astro/
