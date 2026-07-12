@@ -312,7 +312,7 @@ export function AddQuestionDialog() {
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                            {PLACES.filter((place) => {
+                            {PLACES.map((place) => {
                                     const Icon = IconMap[place.icon];
                                     return (
                                         <button
@@ -353,7 +353,7 @@ export function AddQuestionDialog() {
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                            {PLACES.filter((place) => {
+                            {PLACES.map((place) => {
                                     const Icon = IconMap[place.icon];
                                     return (
                                         <button
