@@ -16,7 +16,7 @@ import {
     SidebarGroupLabel,
     SidebarMenu,
 } from "@/components/ui/sidebar-l";
-import { lockedRecommendedStart } from "@/lib/context";
+import { lockedActiveStationIds, lockedRecommendedStart } from "@/lib/context";
 import {
     isLoading,
     penaltyMinutes,
@@ -236,6 +236,7 @@ export const QuestionCard = ({
                                     questions.set(qList.filter((q) => q.key !== questionKey));
                                     if (questions.get().length === 0) {
                                         lockedRecommendedStart.set(null);
+                                        lockedActiveStationIds.set(null);
                                     }
                                 }
                             }}
