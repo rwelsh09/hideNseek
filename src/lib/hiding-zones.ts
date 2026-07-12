@@ -7,11 +7,11 @@ import {
     hidingRadius,
     hidingRadiusUnits,
     isLoading,
+    lockedActiveStationIds,
     questionFinishedMapData,
     questions,
     trainStations,
 } from "@/lib/context";
-import { lockedActiveStationIds } from "@/lib/context";
 import {
     findPlacesSpecificInZone,
     QuestionSpecificLocation,
@@ -23,8 +23,6 @@ import {
     extractStationName,
     safeUnion,
 } from "@/maps/geo-utils";
-
-let previousQuestionDisabled: string[] = [];
 
 export const initializeHidingZonesLogic = async () => {
     const $hidingRadius = hidingRadius.get();
@@ -75,17 +73,15 @@ export const initializeHidingZonesLogic = async () => {
             });
 
         // Reset disabled stations since we are recalculating
-        const currentDisabledStations = disabledStations.get();
-        disabledStations.set(currentDisabledStations.filter(id => !previousQuestionDisabled.includes(id)));
+        disabledStations.set([]);
         const newlyDisabledStations: string[] = [];
 
         const lockedIds = lockedActiveStationIds.get();
         for (const question of questions.get()) {
             if (circles.length === 0) break;
 
-            if (question.data.drag) {
-                continue;
-            }
+            // Evaluate question even if dragged so the map gives live feedback!
+            // if (question.data.drag) { continue; }
 
             if (
                 question.id === "match" &&
@@ -228,7 +224,6 @@ export const initializeHidingZonesLogic = async () => {
             const currentDisabled = disabledStations.get();
             disabledStations.set(Array.from(new Set([...currentDisabled, ...newlyDisabledStations])));
         }
-        previousQuestionDisabled = newlyDisabledStations;
     } finally {
         isLoading.set(false);
     }
