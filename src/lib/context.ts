@@ -7,6 +7,7 @@ import type {
     OpenStreetMap,
     StationCircle,
 } from "@/maps/api";
+import { extractStationId } from "@/maps/geo-utils";
 import { extractStationLabel } from "@/maps/geo-utils";
 import {
     type DeepPartial,
@@ -75,6 +76,13 @@ export const questions = persistentAtom<Questions>("questions", [], {
     decode: (x) => questionsSchema.parse(JSON.parse(x)),
 });
 export const addQuestion = (question: DeepPartial<Question>) => {
+    if (!lockedActiveStationIds.get()) {
+        const activeStations = trainStations.get().filter((station) => {
+            const id = extractStationId(station);
+            return id && !disabledStations.get().includes(id);
+        });
+        lockedActiveStationIds.set(activeStations.map(s => extractStationId(s) as string));
+    }
     questions.get().push(questionSchema.parse(question));
     questionModified();
 };
