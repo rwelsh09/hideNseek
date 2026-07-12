@@ -116,6 +116,7 @@ const photoQuestionSchema = ordinaryBaseQuestionSchema.extend({
 
 const radiusQuestionSchema = ordinaryBaseQuestionSchema.extend({
     radius: z.number().min(0, "You cannot have a negative radius").default(50),
+    isCustom: z.boolean().default(false),
     unit: unitsSchema.default(getDefaultUnit),
     within: z.boolean().default(true),
     color: iconColorSchema.default("orange"),

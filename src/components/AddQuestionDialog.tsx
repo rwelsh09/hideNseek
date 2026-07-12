@@ -72,8 +72,10 @@ export function AddQuestionDialog() {
             if (q.data.drag) return false;
 
             if (type === "radar" && q.id === "radius") {
-                const radius = detail === "unknown" ? 5 : parseFloat(detail || "5");
-                return q.data.radius === radius;
+                const isCustom = detail === "unknown";
+                if (isCustom) return q.data.isCustom === true;
+                const radius = parseFloat(detail || "5");
+                return q.data.radius === radius && !q.data.isCustom;
             }
             if (type === "hot/cold" && q.id === "hot/cold") {
                 if (!q.data.lngA || !q.data.latA || !q.data.lngB || !q.data.latB) return false;
@@ -110,6 +112,7 @@ export function AddQuestionDialog() {
         if (type === "radar") {
             qId = "radius";
             qData.radius = detail === "unknown" ? 5 : parseFloat(detail || "5");
+            qData.isCustom = detail === "unknown";
             qData.unit = "kilometers";
             qData.within = true;
             qData.color = "orange";
@@ -137,6 +140,7 @@ export function AddQuestionDialog() {
                 drag: true,
                 colorA: "gold",
                 colorB: "blue",
+                doubledPenalty: isQuestionLocked(type, detail),
             };
         } else if (type === "closest") {
             qData.locationType = detail || "museum";
