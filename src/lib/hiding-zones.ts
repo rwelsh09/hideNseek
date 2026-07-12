@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
     disabledStations,
+    lockedActiveStationIds,
     hidingRadius,
     hidingRadiusUnits,
     isLoading,
@@ -75,6 +76,7 @@ export const initializeHidingZonesLogic = async () => {
         disabledStations.set([]);
         const newlyDisabledStations: string[] = [];
 
+        const lockedIds = lockedActiveStationIds.get();
         for (const question of questions.get()) {
             if (circles.length === 0) break;
 
@@ -99,6 +101,7 @@ export const initializeHidingZonesLogic = async () => {
 
 
                 const originalIds = circles.map(c => extractStationId(c));
+                const originalCirclesState = [...circles];
 
                 if (question.data.type === "same-train-line") {
                     const seekerLines = extractStationLines(nearestTrainStation);
@@ -154,6 +157,12 @@ export const initializeHidingZonesLogic = async () => {
                 const remainingIds = circles.map(c => extractStationId(c));
                 const newlyDisabled = originalIds.filter(id => !remainingIds.includes(id));
                 newlyDisabledStations.push(...newlyDisabled);
+
+                if (lockedIds) {
+                    // Restore circles array if it's locked so base shapes do not change
+                    const circlesMap = new Map(originalCirclesState.map(c => [extractStationId(c), c]));
+                    circles = originalIds.map(id => circlesMap.get(id)).filter(Boolean) as any;
+                }
             }
             if (
                 question.id === "measure" &&
@@ -181,6 +190,9 @@ export const initializeHidingZonesLogic = async () => {
                     { units: "kilometers" },
                 );
 
+                const originalIdsMeasure = circles.map(c => extractStationId(c));
+                const originalCirclesStateMeasure = [...circles];
+
                 circles = circles.filter((circle) => {
                     const point = turf.point(turf.getCoord(circle.properties));
                     const nearest = turf.nearestPoint(point, points as any);
@@ -194,6 +206,15 @@ export const initializeHidingZonesLogic = async () => {
                           }) >
                               distance - $hidingRadius;
                 });
+
+                const remainingIdsMeasure = circles.map(c => extractStationId(c));
+                const newlyDisabledMeasure = originalIdsMeasure.filter(id => !remainingIdsMeasure.includes(id));
+                newlyDisabledStations.push(...newlyDisabledMeasure);
+
+                if (lockedIds) {
+                    // Restore circles array if it's locked so base shapes do not change
+                    circles = originalCirclesStateMeasure;
+                }
             }
         }
 
