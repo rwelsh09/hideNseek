@@ -291,7 +291,7 @@ export function AddQuestionDialog() {
                                 }
                                 className="bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none"
                             >
-                                ????
+                                Custom
                             </button>
                         </div>
                     </div>
@@ -312,8 +312,7 @@ export function AddQuestionDialog() {
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                            {PLACES.filter((place) => place.type !== "specific").map(
-                                (place) => {
+                            {PLACES.filter((place) => {
                                     const Icon = IconMap[place.icon];
                                     return (
                                         <button
@@ -354,8 +353,7 @@ export function AddQuestionDialog() {
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                            {PLACES.filter((place) => place.type !== "specific").map(
-                                (place) => {
+                            {PLACES.filter((place) => {
                                     const Icon = IconMap[place.icon];
                                     return (
                                         <button
