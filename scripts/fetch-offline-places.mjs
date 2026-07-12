@@ -4,19 +4,6 @@ import fs from 'fs/promises';
 const OVERPASS_API = "https://overpass-api.de/api/interpreter";
 const USER_AGENT = "HideNSeek-OfflineDataFetcher/1.0 (contact: info@example.com)";
 
-const filters = [
-  '["amenity"="hospital"]',
-  '["tourism"="museum"]',
-  '["amenity"="cinema"]',
-  '["amenity"="library"]',
-  '["leisure"="golf_course"]',
-  '["admin_level"="10"]',
-  '["brand:wikidata"="Q38076"]', // McDonalds
-  '["brand:wikidata"="Q259340"]', // Seven11
-  '["brand:wikidata"="Q175106"]', // TimHortons
-  '["amenity"~"^(pub|bar)$"]', // Pub
-];
-
 async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -49,8 +36,42 @@ async function fetchWithRetry(url, options, maxRetries = 3) {
     }
 }
 
+async function getFilters() {
+    const placesContent = await fs.readFile('src/maps/placesConfig.ts', 'utf8');
+    const filters = [
+        '["leisure"="golf_course"]',
+        '["admin_level"="10"]'
+    ];
+
+    // Simple parsing using regex to extract id, tag, type, specificLocation
+    const regex = /\{([^}]+)\}/g;
+    let match;
+    while ((match = regex.exec(placesContent)) !== null) {
+        const itemStr = match[1];
+
+        const idMatch = itemStr.match(/id:\s*["']([^"']+)["']/);
+        const tagMatch = itemStr.match(/tag:\s*["']([^"']+)["']/);
+        const typeMatch = itemStr.match(/type:\s*["']([^"']+)["']/);
+        const specificMatch = itemStr.match(/specificLocation:\s*['"](.*?)['"](,|\s*$)/);
+
+        if (idMatch && typeMatch) {
+            if (typeMatch[1] === 'specific' && specificMatch) {
+                filters.push(specificMatch[1]);
+            } else if (typeMatch[1] === 'generic' && tagMatch) {
+                filters.push(`["${tagMatch[1]}"="${idMatch[1]}"]`);
+            }
+        }
+    }
+
+    // Remove duplicates
+    return [...new Set(filters)];
+}
+
 async function main() {
     try {
+        const filters = await getFilters();
+        console.log("Using filters:", filters);
+
         console.log('Reading boundary data...');
         const boundaryData = JSON.parse(await fs.readFile('src/data/calgary_boundary.json', 'utf8'));
         const featureCollection = turf.featureCollection(boundaryData);

@@ -1,34 +1,6 @@
 import * as turf from "@turf/turf";
-import {
-    Beer,
-    Building2,
-    Camera,
-    Car,
-    Church,
-    Coffee,
-    Film,
-    Flag,
-    Hamburger,
-    Hospital,
-    Leaf,
-    Library,
-    Map as MapIcon,
-    MapPinned,
-    Network,
-    Palette,
-    Plus,
-    Route,
-    Ruler,
-    ShoppingCart,
-    Store,
-    Target,
-    Thermometer as HotCold,
-    Train,
-    TramFront,
-    Trees,
-    Utensils,
-    Waves,
-} from "lucide-react";
+import * as LucideIcons from "lucide-react";
+import { Camera, Car, Leaf, Map as MapIcon, MapPinned, Network, Plus, Route, Ruler, Target, Thermometer as HotCold, TramFront, Waves,  } from "lucide-react";
 import { useState } from "react";
 
 import { SidebarContext } from "@/components/ui/sidebar-l";
@@ -49,10 +21,9 @@ import {
     DialogTrigger,
 } from "./ui/dialog";
 
-const IconMap: Record<string, React.ElementType> = {
-    Palette, Hospital, Film, Library, Hamburger, Coffee, Beer,
-    Train, MapIcon, Building2, Store, Flag, Utensils, Trees, Church, ShoppingCart
-};
+const IconMap: Record<string, React.ElementType> = Object.fromEntries(
+    PLACES.map(p => [p.icon, (LucideIcons as any)[p.icon]])
+);
 
 export function AddQuestionDialog() {
     const [open, setOpen] = useState(false);
