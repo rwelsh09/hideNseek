@@ -23,9 +23,9 @@ import {
     headStartMinutes,
     hidingRadius,
     hidingRadiusUnits,
-    lockedActiveStationIds,
     isLoading,
     leafletMapContext,
+    lockedActiveStationIds,
     questionFinishedMapData,
     questions,
     showRecommendedStart,
@@ -687,7 +687,7 @@ export const ZoneSidebar = () => {
 function styleStations(
     circles: StationCircle[],
     style: string,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
     $questionFinishedMapData: any,
     lockedActiveStationIds?: string[] | null,
     allStations?: any[]

@@ -119,7 +119,7 @@ export function RulesAccordion() {
           <p>
             Every time the Seekers ask a question to narrow down the Hider&apos;s location, a Time Penalty is incurred. This penalty compensates the Hider for revealing clues about their location.
           </p>
-          <p>Each question type carries a specific time cost that is applied to the game clock.</p>
+          <p>Each question type carries a specific time cost that is applied to the game clock. If a question type is already locked, selecting another question of the same type doubles the time penalty.</p>
           <p>
             <strong>Strategic Seeking:</strong> Because asking questions carries a time cost, Seekers must work together to ask the most efficient and strategic questions possible.
           </p>
