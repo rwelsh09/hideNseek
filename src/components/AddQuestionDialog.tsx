@@ -1,25 +1,28 @@
 import * as turf from "@turf/turf";
 import {
-    icons,
-    Camera,
-    Leaf,
-    Car,
     Building2,
-    Utensils,
-    Trees,
-    ShoppingCart,
+    Camera,
+    Car,
     Church,
-    Train,
-    Route,
-    Waves,
-    Plus,
-    Target,
-    Thermometer as HotCold,
+    Leaf,
+    Map as MapIcon,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     MapPinned,
     Network,
-    TramFront,
+    Plus,
+    Route,
     Ruler,
+    ShoppingCart,
+    Target,
+    Thermometer as HotCold,
+    Train,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    TramFront,
+    Trees,
+    Utensils,
+    Waves,
 } from "lucide-react";
+import * as icons from "lucide-react";
 import { useState } from "react";
 
 import { SidebarContext } from "@/components/ui/sidebar-l";
