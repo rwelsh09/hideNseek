@@ -4,7 +4,6 @@ import { toast } from "react-toastify";
 import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
     disabledStations,
-    lockedActiveStationIds,
     hidingRadius,
     hidingRadiusUnits,
     isLoading,
@@ -23,6 +22,8 @@ import {
     extractStationName,
     safeUnion,
 } from "@/maps/geo-utils";
+
+let previousQuestionDisabled: string[] = [];
 
 export const initializeHidingZonesLogic = async () => {
     const $hidingRadius = hidingRadius.get();
@@ -73,10 +74,11 @@ export const initializeHidingZonesLogic = async () => {
             });
 
         // Reset disabled stations since we are recalculating
-        disabledStations.set([]);
+        const currentDisabledStations = disabledStations.get();
+        disabledStations.set(currentDisabledStations.filter(id => !previousQuestionDisabled.includes(id)));
         const newlyDisabledStations: string[] = [];
 
-        const lockedIds = lockedActiveStationIds.get();
+        // lockedIds previously fetched here
         for (const question of questions.get()) {
             if (circles.length === 0) break;
 
@@ -158,11 +160,9 @@ export const initializeHidingZonesLogic = async () => {
                 const newlyDisabled = originalIds.filter(id => !remainingIds.includes(id));
                 newlyDisabledStations.push(...newlyDisabled);
 
-                if (lockedIds) {
-                    // Restore circles array if it's locked so base shapes do not change
-                    const circlesMap = new Map(originalCirclesState.map(c => [extractStationId(c), c]));
-                    circles = originalIds.map(id => circlesMap.get(id)).filter(Boolean) as any;
-                }
+                // Always restore circles array so base shapes do not change
+                const circlesMap = new Map(originalCirclesState.map(c => [extractStationId(c), c]));
+                circles = originalIds.map(id => circlesMap.get(id)).filter(Boolean) as any;
             }
             if (
                 question.id === "measure" &&
@@ -211,10 +211,8 @@ export const initializeHidingZonesLogic = async () => {
                 const newlyDisabledMeasure = originalIdsMeasure.filter(id => !remainingIdsMeasure.includes(id));
                 newlyDisabledStations.push(...newlyDisabledMeasure);
 
-                if (lockedIds) {
-                    // Restore circles array if it's locked so base shapes do not change
-                    circles = originalCirclesStateMeasure;
-                }
+                // Always restore circles array so base shapes do not change
+                circles = originalCirclesStateMeasure;
             }
         }
 
@@ -225,6 +223,7 @@ export const initializeHidingZonesLogic = async () => {
             const currentDisabled = disabledStations.get();
             disabledStations.set(Array.from(new Set([...currentDisabled, ...newlyDisabledStations])));
         }
+        previousQuestionDisabled = newlyDisabledStations;
     } finally {
         isLoading.set(false);
     }
