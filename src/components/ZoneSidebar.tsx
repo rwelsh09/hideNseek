@@ -23,6 +23,7 @@ import {
     headStartMinutes,
     hidingRadius,
     hidingRadiusUnits,
+    lockedActiveStationIds,
     isLoading,
     leafletMapContext,
     questionFinishedMapData,
@@ -80,6 +81,7 @@ export const ZoneSidebar = () => {
     const map = useStore(leafletMapContext);
     const stations = useStore(trainStations);
     const $disabledStations = useStore(disabledStations);
+    const $lockedActiveStationIds = useStore(lockedActiveStationIds);
     const [overlapThreshold, setOverlapThreshold] = useState<number>(0.8);
     const [hidingZoneModeStationID, setHidingZoneModeStationID] =
         useState<string>("");
@@ -227,6 +229,8 @@ export const ZoneSidebar = () => {
                     activeStations,
                     $displayHidingZonesStyle,
                     $questionFinishedMapData,
+                    $lockedActiveStationIds,
+                    stations
                 ),
                 $displayHidingZonesStyle === "zones",
             );
@@ -685,6 +689,8 @@ function styleStations(
     style: string,
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     $questionFinishedMapData: any,
+    lockedActiveStationIds?: string[] | null,
+    allStations?: any[]
 ): FeatureCollection | Feature {
     const applyMask = (feature: FeatureCollection | Feature): FeatureCollection | Feature => { return feature; };
 
@@ -694,13 +700,23 @@ function styleStations(
         case "zones":
         default:
             if (circles.length > 1) {
+                let voronoiPoints = circles;
+                if (lockedActiveStationIds && allStations) {
+                    voronoiPoints = allStations.filter(s => lockedActiveStationIds.includes(extractStationId(s) as string));
+                }
                 const points = turf.featureCollection(
-                    circles.map((c) => c.properties),
+                    voronoiPoints.map((c) => c.properties),
                 );
                 try {
                     const voronoi = geoSpatialVoronoi(points as any);
 
                     if (voronoi && voronoi.features) {
+                        // Filter the locked voronoi polygons to ONLY include the ones corresponding to the currently active circles
+                        const activeVoronoiFeatures = voronoi.features.filter(f =>
+                            circles.some(c => extractStationId(c) === extractStationId(f.properties?.site))
+                        );
+                        voronoi.features = activeVoronoiFeatures;
+
                         const intersectedCircles = circles.map((circle) => {
                             const stationId = extractStationId(circle);
                             const v = voronoi.features.find(

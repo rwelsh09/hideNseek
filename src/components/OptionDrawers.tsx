@@ -33,6 +33,8 @@ import {
     mapGeoJSON,
     mapGeoLocation,
     polyGeoJSON,
+    lockedActiveStationIds,
+    lockedRecommendedStart,
     questions,
     showRecommendedStart,
     showTutorial,
@@ -115,6 +117,7 @@ export const OptionDrawers = () => {
                 } else {
                     questions.set([]);
                     lockedRecommendedStart.set(null);
+                                        lockedActiveStationIds.set(null);
                     mapGeoJSON.set(geojson);
                     polyGeoJSON.set(geojson);
                 }

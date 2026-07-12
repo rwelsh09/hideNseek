@@ -25,7 +25,7 @@ import {
 import {
     addQuestion,
     isLoading,
-    lockedRecommendedStart,
+    lockedActiveStationIds, lockedRecommendedStart,
     penaltyMinutes,
     questions,
     triggerLocalRefresh,
@@ -227,6 +227,7 @@ export const QuestionSidebar = () => {
                                     onClick={() => {
                                         questions.set([]);
                                         lockedRecommendedStart.set(null);
+                                        lockedActiveStationIds.set(null);
                                         penaltyMinutes.set(0);
                                         toast.success(
                                             "Cleared all questions and time penalty.",

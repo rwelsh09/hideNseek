@@ -82,6 +82,7 @@ export const questionModified = () => {
     questions.set([...questions.get()]);
     if (questions.get().length === 0) {
         lockedRecommendedStart.set(null);
+        lockedActiveStationIds.set(null);
     }
 };
 
@@ -273,6 +274,11 @@ export const leaderboard = persistentAtom<LeaderboardEntry[]>("leaderboard", [],
         decode: JSON.parse,
     },
 );
+
+export const lockedActiveStationIds = persistentAtom<string[] | null>("lockedActiveStationIds", null, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+});
 
 export const lockedRecommendedStart = persistentAtom<[number, number] | null>("lockedRecommendedStart", null, {
     encode: JSON.stringify,
