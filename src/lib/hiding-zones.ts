@@ -54,11 +54,7 @@ export const initializeHidingZonesLogic = async () => {
         );
         places.push(...transitFeatures);
 
-        const unionized = safeUnion(
-            turf.simplify($questionFinishedMapData, {
-                tolerance: 0.001,
-            }),
-        );
+        const unionized = safeUnion($questionFinishedMapData);
 
         let circles = places
             .map((place) => {
