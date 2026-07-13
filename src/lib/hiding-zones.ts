@@ -54,11 +54,7 @@ export const initializeHidingZonesLogic = async () => {
         );
         places.push(...transitFeatures);
 
-        const unionized = safeUnion(
-            turf.simplify($questionFinishedMapData, {
-                tolerance: 0.001,
-            }),
-        );
+        const unionized = safeUnion($questionFinishedMapData);
 
         let circles = places
             .map((place) => {
@@ -69,6 +65,9 @@ export const initializeHidingZonesLogic = async () => {
                     units: $hidingRadiusUnits,
                     properties: place,
                 });
+            })
+            .filter((circle) => {
+                return !turf.booleanWithin(circle, unionized);
             });
 
         // Reset disabled stations since we are recalculating
@@ -77,11 +76,7 @@ export const initializeHidingZonesLogic = async () => {
         disabledStations.set(manuallyDisabled);
         const newlyDisabledStations: string[] = [];
 
-        const disabledByMapBoundary = circles
-            .filter(circle => turf.booleanWithin(circle, unionized))
-            .map(circle => extractStationId(circle));
 
-        newlyDisabledStations.push(...disabledByMapBoundary);
 
         const lockedIds = lockedActiveStationIds.get();
         for (const question of questions.get()) {
