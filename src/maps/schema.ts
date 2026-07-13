@@ -123,7 +123,7 @@ const radiusQuestionSchema = ordinaryBaseQuestionSchema.extend({
 });
 
 const closestLocationsOne = z.union(
-    PLACES.map(p => z.literal(p.id).describe(p.labelPlural)) as any
+    PLACES.filter(p => p.type === "specific").map(p => z.literal(p.id).describe(p.labelPlural)) as any
 );
 
 const apiLocationSchema = closestLocationsOne;
@@ -175,7 +175,7 @@ const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
 const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
     type: z
         .union([
-            ...PLACES.map(p => z.literal(p.id).describe(p.label)),
+            ...PLACES.filter(p => p.type === "generic").map(p => z.literal(p.id).describe(p.label)),
             z
                 .literal("same-neighbourhood")
                 .describe("Neighbourhood (Same As Me)"),
@@ -185,10 +185,7 @@ const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
             z
                 .literal("same-first-letter-station")
                 .describe("Station Starts With Same Letter"),
-            z
-                .literal("same-length-station")
-                .describe("Station Has Same Length"),
-            z.literal("same-train-line").describe("Station On Same Train Line"),
+            z.literal("same-train-line").describe("Station - Same Line"),
         ] as any)
         .default("museum"),
 });
@@ -203,8 +200,8 @@ const baseMeasureQuestionSchema = ordinaryBaseQuestionSchema.extend({
 const ordinaryMeasureQuestionSchema = baseMeasureQuestionSchema.extend({
     type: z
         .union([
-            ...PLACES.map(p => z.literal(p.id).describe(p.label)),
-            z.literal("rail-measure").describe("Train Station"),
+            ...PLACES.filter(p => p.type === "generic").map(p => z.literal(p.id).describe(p.label)),
+            z.literal("rail-measure").describe("Station"),
         ] as any)
         .default("museum"),
 });
