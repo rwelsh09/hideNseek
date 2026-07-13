@@ -7,22 +7,17 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Select } from "@/components/ui/select";
 import {
     MENU_ITEM_CLASSNAME,
-    SidebarMenuItem,
-} from "@/components/ui/sidebar-l";
+    SidebarMenuItem } from "@/components/ui/sidebar-l";
 import {
     hiderMode,
     isLoading,
     questionModified,
-    triggerLocalRefresh,
-} from "@/lib/context";
+    triggerLocalRefresh } from "@/lib/context";
 import { mapToObj } from "@/lib/utils";
 import { getFeatureCoords } from "@/maps/geo-utils";
 import { fetchClosestLocationsWithGrowth } from "@/maps/questions/closest";
 import {
-    type ClosestQuestion,
-    closestQuestionSchema,
-    getSchemaOptions,
-} from "@/maps/schema";
+    type ClosestQuestion } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
@@ -30,8 +25,7 @@ export const ClosestQuestionComponent = ({
     data,
     questionKey,
     sub,
-    className,
-}: {
+    className }: {
     data: ClosestQuestion;
     questionKey: number;
     sub?: string;
@@ -67,21 +61,6 @@ export const ClosestQuestionComponent = ({
                     </label>
                 </div>
             </SidebarMenuItem>
-            <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                <Select
-                    trigger="Location Type"
-                    options={getSchemaOptions(
-                        closestQuestionSchema.shape.locationType,
-                    )}
-                    value={data.locationType}
-                    onValueChange={async (value) => {
-                        data.location = false;
-                        data.locationType = value;
-                        questionModified();
-                    }}
-                    disabled={!data.drag || $isLoading}
-                />
-            </SidebarMenuItem>
             <LatitudeLongitude
                 latitude={data.lat}
                 longitude={data.lng}
@@ -113,8 +92,7 @@ export const ClosestQuestionComponent = ({
 
 const ClosestLocationSelector = ({
     data,
-    disabled,
-}: {
+    disabled }: {
     data: ClosestQuestion;
     disabled: boolean;
 }) => {
@@ -246,8 +224,7 @@ const ClosestLocationSelector = ({
                     ...mapToObj(filteredFeatures, (feature: any) => [
                         feature.properties?.name,
                         feature.properties?.name,
-                    ]),
-                }}
+                    ]) }}
                 value={data.location ? data.location.properties?.name : "false"}
                 onValueChange={(value) => {
                     if (value === "false") {

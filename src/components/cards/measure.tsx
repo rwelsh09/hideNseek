@@ -3,25 +3,16 @@ import { Label } from "@radix-ui/react-label";
 import * as React from "react";
 
 import { LatitudeLongitude } from "@/components/LatLngPicker";
-import { Select } from "@/components/ui/select";
-import {
-    MENU_ITEM_CLASSNAME,
-    SidebarMenuItem,
-} from "@/components/ui/sidebar-l";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
     hiderMode,
     isLoading,
     questionModified,
-    triggerLocalRefresh,
-} from "@/lib/context";
+    triggerLocalRefresh } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import { calculateMeasureDistance } from "@/maps/questions/measure";
 import {
-    getSchemaOptions,
-    type MeasureQuestion,
-    measureQuestionSchema,
-} from "@/maps/schema";
+    type MeasureQuestion } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
@@ -29,8 +20,7 @@ export const MeasureQuestionComponent = ({
     data,
     questionKey,
     sub,
-    className,
-}: {
+    className }: {
     data: MeasureQuestion;
     questionKey: number;
     sub?: string;
@@ -64,18 +54,6 @@ export const MeasureQuestionComponent = ({
             questionData={data}
             penaltyId={"measure"}
         >
-            <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                <Select
-                    trigger="Measure Type"
-                    options={getSchemaOptions(measureQuestionSchema.shape.type)}
-                    value={data.type}
-                    onValueChange={async (value) => {
-                        data.type = value;
-                        questionModified();
-                    }}
-                    disabled={!data.drag || $isLoading}
-                />
-            </SidebarMenuItem>
 
             <LatitudeLongitude
                 latitude={data.lat}

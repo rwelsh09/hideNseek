@@ -3,24 +3,15 @@ import * as React from "react";
 
 import { LatitudeLongitude } from "@/components/LatLngPicker";
 import { Label } from "@/components/ui/label";
-import { Select } from "@/components/ui/select";
-import {
-    MENU_ITEM_CLASSNAME,
-    SidebarMenuItem,
-} from "@/components/ui/sidebar-l";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
     hiderMode,
     isLoading,
     questionModified,
-    triggerLocalRefresh,
-} from "@/lib/context";
+    triggerLocalRefresh } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import {
-    getSchemaOptions,
-    type MatchQuestion,
-    matchQuestionSchema,
-} from "@/maps/schema";
+    type MatchQuestion } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
@@ -28,8 +19,7 @@ export const MatchQuestionComponent = ({
     data,
     questionKey,
     sub,
-    className,
-}: {
+    className }: {
     data: MatchQuestion;
     questionKey: number;
     sub?: string;
@@ -47,27 +37,6 @@ export const MatchQuestionComponent = ({
             questionData={data}
             penaltyId={"match"}
         >
-            <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                <Select
-                    trigger="Match Type"
-                    options={getSchemaOptions(matchQuestionSchema.shape.type)}
-                    value={data.type}
-                    onValueChange={async (value) => {
-                        if (value === "same-length-station") {
-                            data.lengthComparison = "same";
-                            data.same = true;
-                        }
-
-                        // The category should be defined such that no error is thrown if this is a zone question.
-                        if (!(data as any).cat) {
-                            (data as any).cat = { adminLevel: 3 };
-                        }
-                        data.type = value;
-                        questionModified();
-                    }}
-                    disabled={!data.drag || $isLoading}
-                />
-            </SidebarMenuItem>
 
             <LatitudeLongitude
                 latitude={data.lat}
