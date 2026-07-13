@@ -39,12 +39,12 @@ export const lockRecommendedStartIfNeeded = () => {
         const coords = getRecommendedStartCoords();
         if (coords) {
             lockedRecommendedStart.set(coords);
-
-            const activeStations = trainStations.get().filter((station) => {
-                const id = extractStationId(station);
-                return id && !disabledStations.get().includes(id);
-            });
-            lockedActiveStationIds.set(activeStations.map(s => extractStationId(s) as string));
         }
+
+        const activeStations = trainStations.get().filter((station) => {
+            const id = extractStationId(station);
+            return id && !disabledStations.get().includes(id);
+        });
+        lockedActiveStationIds.set(activeStations.map(s => extractStationId(s) as string));
     }
 };
