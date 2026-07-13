@@ -25,7 +25,6 @@ import {
     showTutorial,
     tutorialDriver,
 } from "@/lib/context";
-import { holedMask } from "@/maps";
 import { flyToWithOffset } from "@/maps/ui-utils";
 
 export const LeafletActionButtons = () => {
@@ -137,9 +136,7 @@ export const LeafletActionButtons = () => {
                     }
 
                     try {
-                        const bbox = turf.bbox(
-                            holedMask($questionFinishedMapData) as any,
-                        );
+                        const bbox = turf.bbox($questionFinishedMapData as any);
                         const boundsObj = L.latLngBounds([
                             [bbox[1], bbox[0]],
                             [bbox[3], bbox[2]],
