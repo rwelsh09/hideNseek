@@ -2,7 +2,8 @@ import { useStore } from "@nanostores/react";
 import { ClipboardPasteIcon } from "lucide-react";
 import { toast } from "react-toastify";
 
-import { addQuestion, isLoading } from "@/lib/context";
+import { addQuestion, isLoading, penaltyMinutes, TIME_PENALTIES } from "@/lib/context";
+import { lockRecommendedStartIfNeeded } from "@/lib/recommended-start";
 import { questionSchema } from "@/maps/schema";
 
 import { Button } from "./ui/button";
@@ -25,6 +26,14 @@ export const PasteQuestionButton = () => {
                             const validated =
                                 questionSchema.parse(parsed);
                             addQuestion(validated);
+                            if (validated.data.locked) {
+                                lockRecommendedStartIfNeeded();
+                                const penaltyId = validated.id === "radius" ? "radar" : validated.id;
+                                const penaltyAmount =
+                                    TIME_PENALTIES[penaltyId] *
+                                    (validated.data.doubledPenalty ? 2 : 1);
+                                penaltyMinutes.set(penaltyMinutes.get() + penaltyAmount);
+                            }
                             toast.success(
                                 "Question pasted successfully!",
                             );
