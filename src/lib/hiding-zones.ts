@@ -74,7 +74,7 @@ export const initializeHidingZonesLogic = async () => {
         const newlyDisabledStations: string[] = [];
 
         circles.forEach((circle) => {
-            if (turf.booleanWithin(circle, unionized)) {
+            if (turf.difference(turf.featureCollection([circle, unionized])) === null) {
                 newlyDisabledStations.push(extractStationId(circle));
             }
         });
