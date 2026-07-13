@@ -184,7 +184,7 @@ const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
                 .describe("Neighbourhood (Same First Letter)"),
             z
                 .literal("same-first-letter-station")
-                .describe("Station - Same First Letter"),
+                .describe("Station Starts With Same Letter"),
             z.literal("same-train-line").describe("Station - Same Line"),
         ] as any)
         .default("museum"),
