@@ -35,7 +35,8 @@ function getFilters() {
         return `["${p.tag}"="${p.id}"]`;
     });
 
-    parsedFilters.push('["admin_level"="10"]'); // Neighbourhoods
+    parsedFilters.push('["admin_level"="10"]');
+    parsedFilters.push('["leisure"="golf_course"]');
 
     return parsedFilters;
 }
