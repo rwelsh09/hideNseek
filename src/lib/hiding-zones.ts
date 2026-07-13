@@ -69,9 +69,6 @@ export const initializeHidingZonesLogic = async () => {
                     units: $hidingRadiusUnits,
                     properties: place,
                 });
-            })
-            .filter((circle) => {
-                return !turf.booleanWithin(circle, unionized);
             });
 
         // Reset disabled stations since we are recalculating
@@ -80,13 +77,17 @@ export const initializeHidingZonesLogic = async () => {
         disabledStations.set(manuallyDisabled);
         const newlyDisabledStations: string[] = [];
 
+        const disabledByMapBoundary = circles
+            .filter(circle => turf.booleanWithin(circle, unionized))
+            .map(circle => extractStationId(circle));
+
+        newlyDisabledStations.push(...disabledByMapBoundary);
+
         const lockedIds = lockedActiveStationIds.get();
         for (const question of questions.get()) {
             if (circles.length === 0) break;
 
-            if (question.data.drag) {
-                continue;
-            }
+
 
             if (
                 question.id === "match" &&
@@ -164,8 +165,7 @@ export const initializeHidingZonesLogic = async () => {
 
                 if (lockedIds) {
                     // Restore circles array if it's locked so base shapes do not change
-                    const circlesMap = new Map(originalCirclesState.map(c => [extractStationId(c), c]));
-                    circles = originalIds.map(id => circlesMap.get(id)).filter(Boolean) as any;
+                    circles = originalCirclesState;
                 }
             }
             if (
