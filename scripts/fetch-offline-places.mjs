@@ -4,18 +4,43 @@ import fs from 'fs/promises';
 const OVERPASS_API = "https://overpass-api.de/api/interpreter";
 const USER_AGENT = "HideNSeek-OfflineDataFetcher/1.0 (contact: info@example.com)";
 
-const filters = [
-  '["amenity"="hospital"]',
-  '["tourism"="museum"]',
-  '["amenity"="cinema"]',
-  '["amenity"="library"]',
-  '["leisure"="golf_course"]',
-  '["admin_level"="10"]',
-  '["brand:wikidata"="Q38076"]', // McDonalds
-  '["brand:wikidata"="Q259340"]', // Seven11
-  '["brand:wikidata"="Q175106"]', // TimHortons
-  '["amenity"~"^(pub|bar)$"]', // Pub
-];
+import { readFileSync } from 'fs';
+
+function getFilters() {
+    const content = readFileSync('src/maps/placesConfig.ts', 'utf8');
+    const match = content.match(/export const PLACES = (\[[\s\S]*?\]) as const;/);
+    if (!match) return [];
+
+    const placesText = match[1];
+    const places = [];
+
+    const placeMatches = placesText.matchAll(/\{([^{}]+)\}/g);
+    for (const m of placeMatches) {
+        const itemText = m[1];
+        const item = {};
+        itemText.split(',').forEach(part => {
+            const [key, ...rest] = part.split(':').map(s => s.trim());
+            if (key && rest.length) {
+                const valStr = rest.join(':').trim();
+                item[key] = valStr.replace(/^["']|["']$/g, '');
+            }
+        });
+        places.push(item);
+    }
+
+    const parsedFilters = places.map(p => {
+        if (p.specificLocation) {
+             return p.specificLocation.replace(/^'|'$/g, '');
+        }
+        return `["${p.tag}"="${p.id}"]`;
+    });
+
+    parsedFilters.push('["admin_level"="10"]');
+
+    return parsedFilters;
+}
+
+const filters = getFilters();
 
 async function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
