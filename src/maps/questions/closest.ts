@@ -47,7 +47,7 @@ export const fetchClosestLocationsWithGrowth = async (
     return rawPoints;
 };
 
-const filterPointsWithinRadius = (points: any, question: ClosestQuestion) => {
+export const filterPointsWithinRadius = (points: any, question: ClosestQuestion) => {
     if (
         question.lng === null ||
         question.lat === null ||
