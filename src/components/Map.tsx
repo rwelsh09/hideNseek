@@ -198,8 +198,8 @@ export const Map = ({ className }: { className?: string }) => {
                 },
             );
 
-            mapGeoData = {
-                type: "FeatureCollection",
+            const eliminationMask = {
+                type: "FeatureCollection" as const,
                 features: [holedMask(mapGeoData!)!],
             };
 
@@ -216,7 +216,7 @@ export const Map = ({ className }: { className?: string }) => {
                 map.getPane("eliminationPane")!.style.zIndex = "400";
             }
 
-            const g = L.geoJSON(mapGeoData, {
+            const g = L.geoJSON(eliminationMask as any, {
                 interactive: false,
                 pane: "eliminationPane"
             });
