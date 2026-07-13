@@ -1,33 +1,29 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
 import {
-    Beer,
     Building2,
     Camera,
     Car,
     Church,
-    Coffee,
-    Film,
-    Flag,
-    Hamburger,
-    Hospital,
     Leaf,
-    Library,
     Map as MapIcon,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    MapPinned,
     Network,
-    Palette,
     Plus,
     Route,
     Ruler,
     ShoppingCart,
-    Store,
     Target,
     Thermometer as HotCold,
     Train,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    TramFront,
     Trees,
     Utensils,
     Waves,
 } from "lucide-react";
+import * as icons from "lucide-react";
 import { useState } from "react";
 
 import { SidebarContext } from "@/components/ui/sidebar-l";
@@ -48,20 +44,6 @@ import {
     DialogTrigger,
 } from "./ui/dialog";
 
-const IconMap: Record<string, React.ElementType> = {
-    Palette,
-    Hospital,
-    Film,
-    Library,
-    Hamburger,
-    Coffee,
-    Beer,
-    Train,
-    MapIcon,
-    Building2,
-    Store,
-    Flag,
-};
 
 export function AddQuestionDialog() {
     const [open, setOpen] = useState(false);
@@ -348,7 +330,7 @@ export function AddQuestionDialog() {
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             {PLACES.filter((place) => place.type !== "specific").map(
                                 (place) => {
-                                    const Icon = IconMap[place.icon];
+                                    const Icon = icons[place.icon as keyof typeof icons];
                                     return (
                                         <button
                                             key={`match-${place.id}`}
@@ -390,7 +372,7 @@ export function AddQuestionDialog() {
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             {PLACES.filter((place) => place.type !== "specific").map(
                                 (place) => {
-                                    const Icon = IconMap[place.icon];
+                                    const Icon = icons[place.icon as keyof typeof icons];
                                     return (
                                         <button
                                             key={`measure-${place.id}`}
@@ -431,7 +413,7 @@ export function AddQuestionDialog() {
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             {PLACES.map((place) => {
-                                const Icon = IconMap[place.icon];
+                                const Icon = icons[place.icon as keyof typeof icons];
                                 return (
                                     <button
                                         key={`closest-${place.id}`}
