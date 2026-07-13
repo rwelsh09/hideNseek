@@ -3,7 +3,6 @@ import "leaflet-doubletapdrag";
 import "leaflet-doubletapdragzoom";
 
 import { useStore } from "@nanostores/react";
-import * as turf from "@turf/turf";
 import * as L from "leaflet";
 import { Loader2 } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
@@ -11,7 +10,6 @@ import { MapContainer, ScaleControl } from "react-leaflet";
 import { toast } from "react-toastify";
 
 import {
-    addQuestion,
     baseTileLayer,
     followMe,
     geolocationPermission,
@@ -140,6 +138,9 @@ export const Map = ({ className }: { className?: string }) => {
     const isRefreshingRef = useRef<boolean>(false);
     const refreshPendingRef = useRef<boolean>(false);
 
+    const planningLayersRef = useRef<L.Layer[]>([]);
+    const eliminationLayerRef = useRef<L.Layer | null>(null);
+
     const refreshQuestions = async () => {
         if (!map) return;
 
@@ -179,22 +180,18 @@ export const Map = ({ className }: { className?: string }) => {
                 triggerLocalRefresh.set(Math.random()); // Refresh the question sidebar with new information but not this map
             }
 
-            map.eachLayer((layer: any) => {
-                if (layer.questionKey || layer.questionKey === 0) {
-                    map.removeLayer(layer);
-                }
-            });
+            planningLayersRef.current.forEach(layer => map.removeLayer(layer));
+            planningLayersRef.current = [];
 
             mapGeoData = await applyQuestionsToMapGeoData(
                 questions.get(),
                 mapGeoData,
-                (geoJSONObj, question) => {
+                (geoJSONObj) => {
                     const geoJSONPlane = L.geoJSON(geoJSONObj, {
                         interactive: false,
                     });
-                    // @ts-expect-error This is a check such that only this type of layer is removed
-                    geoJSONPlane.questionKey = question.key;
                     geoJSONPlane.addTo(map);
+                    planningLayersRef.current.push(geoJSONPlane);
                 },
             );
 
@@ -203,12 +200,10 @@ export const Map = ({ className }: { className?: string }) => {
                 features: [holedMask(mapGeoData!)!],
             };
 
-            map.eachLayer((layer: any) => {
-                if (layer.eliminationGeoJSON) {
-                    // Hopefully only geoJSON layers
-                    map.removeLayer(layer);
-                }
-            });
+            if (eliminationLayerRef.current) {
+                map.removeLayer(eliminationLayerRef.current);
+                eliminationLayerRef.current = null;
+            }
 
 
             if (!map.getPane("eliminationPane")) {
@@ -221,9 +216,8 @@ export const Map = ({ className }: { className?: string }) => {
                 pane: "eliminationPane"
             });
 
-            // @ts-expect-error This is a check such that only this type of layer is removed
-            g.eliminationGeoJSON = true;
             g.addTo(map);
+            eliminationLayerRef.current = g;
 
             questionFinishedMapData.set(mapGeoData);
         } catch {
@@ -360,23 +354,7 @@ export const Map = ({ className }: { className?: string }) => {
         refreshQuestions();
     }, [$questions, map, $hiderMode]);
 
-    useEffect(() => {
-        const intervalId = setInterval(async () => {
-            if (!map) return;
-            let layerCount = 0;
-            map.eachLayer((layer: any) => {
-                if (layer.eliminationGeoJSON) {
-                    // Hopefully only geoJSON layers
-                    layerCount++;
-                }
-            });
-            if (layerCount > 1) {
-                refreshQuestions();
-            }
-        }, 1000);
 
-        return () => clearInterval(intervalId);
-    }, [map]);
 
     useEffect(() => {
         const handleFullscreenChange = () => {
