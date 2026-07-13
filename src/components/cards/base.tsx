@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/sidebar-l";
 import { lockedActiveStationIds, lockedRecommendedStart } from "@/lib/context";
 import {
+    hiderMode,
     isLoading,
     penaltyMinutes,
     questionModified,
@@ -61,6 +62,7 @@ export const QuestionCard = ({
     );
     const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
+    const $hiderMode = useStore(hiderMode);
 
     const toggleLockAndCollapse = () => {
         lockRecommendedStartIfNeeded();
@@ -90,6 +92,32 @@ export const QuestionCard = ({
     const question = $questions.find((q) => q.key === questionKey);
     const locked = !questionData.drag;
 
+    let resultStr = "";
+    if (question) {
+        if (question.id === "radius") {
+            resultStr = questionData.within ? "Inside" : "Outside";
+        } else if (question.id === "match") {
+            if (questionData.type === "same-length-station") {
+                resultStr =
+                    questionData.lengthComparison === "shorter"
+                        ? "Shorter"
+                        : questionData.lengthComparison === "longer"
+                          ? "Longer"
+                          : "Same";
+            } else {
+                resultStr = questionData.same ? "Same" : "Different";
+            }
+        } else if (question.id === "measure") {
+            resultStr = questionData.hiderCloser ? "Hider Closer" : "Hider Further";
+        } else if (question.id === "closest") {
+            resultStr = questionData.location
+                ? questionData.location.properties?.name
+                : "Not Within";
+        } else if (question.id === "hot/cold") {
+            resultStr = questionData.warmer ? "Warmer" : "Colder";
+        }
+    }
+
     if (!displayLabel) {
         if (question) {
             const index =
@@ -102,41 +130,29 @@ export const QuestionCard = ({
 
             if (locked) {
                 if (question.id === "radius") {
-                    displayLabel = `Radius - ${questionData.radius}${questionData.unit === "kilometers" ? "km" : "m"} - ${questionData.within ? "Inside" : "Outside"}`;
+                    displayLabel = `Radius - ${questionData.radius}${questionData.unit === "kilometers" ? "km" : "m"} - ${resultStr}`;
                 } else if (question.id === "match") {
                     const typeStr =
                         TYPE_MAPPINGS[questionData.type] || questionData.type;
-                    let resultStr = "";
-                    if (questionData.type === "same-length-station") {
-                        resultStr =
-                            questionData.lengthComparison === "shorter"
-                                ? "Shorter"
-                                : questionData.lengthComparison === "longer"
-                                  ? "Longer"
-                                  : "Same";
-                    } else {
-                        resultStr = questionData.same ? "Same" : "Different";
-                    }
                     displayLabel = `Match - ${typeStr} - ${resultStr}`;
                 } else if (question.id === "measure") {
                     const typeStr =
                         TYPE_MAPPINGS[questionData.type] || questionData.type;
-                    displayLabel = `Measure - ${typeStr} - ${questionData.hiderCloser ? "Hider Closer" : "Hider Further"}`;
+                    displayLabel = `Measure - ${typeStr} - ${resultStr}`;
                 } else if (question.id === "closest") {
                     const typeStr =
                         TYPE_MAPPINGS[questionData.locationType] ||
                         questionData.locationType;
-                    const resultStr = questionData.location
-                        ? questionData.location.properties?.name
-                        : "Not Within";
                     displayLabel = `Closest - ${typeStr} - ${resultStr}`;
                 } else if (question.id === "hot/cold") {
-                    displayLabel = `Hot/Cold - ${questionData.warmer ? "Warmer" : "Colder"}`;
+                    displayLabel = `Hot/Cold - ${resultStr}`;
                 } else {
-                    displayLabel = `${typeName}\n    ${index}`;
+                    displayLabel = `${typeName}
+    ${index}`;
                 }
             } else {
-                displayLabel = `${typeName}\n    ${index}`;
+                displayLabel = `${typeName}
+    ${index}`;
             }
         } else {
             displayLabel = "Question";
@@ -251,7 +267,20 @@ export const QuestionCard = ({
                             isCollapsed && "max-h-0",
                         )}
                     >
-                        <SidebarMenu>{children}</SidebarMenu>
+                        <SidebarMenu>
+                            {children}
+                            {!!$hiderMode && resultStr && (
+                                <div
+                                    className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md mx-2 mb-2 flex flex-col gap-2"
+                                    style={{ width: "calc(100% - 1rem)" }}
+                                >
+                                    <div>
+                                        Tell the Seekers:{" "}
+                                        <span className="text-primary">{resultStr}</span>
+                                    </div>
+                                </div>
+                            )}
+                        </SidebarMenu>
                     </SidebarGroupContent>
                 </div>
             </SidebarGroup>
