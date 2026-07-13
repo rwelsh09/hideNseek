@@ -123,14 +123,7 @@ export const HotColdQuestionComponent = ({
                     </ToggleGroupItem>
                     <ToggleGroupItem value="warmer">Warmer</ToggleGroupItem>
                 </ToggleGroup>
-                {!!$hiderMode && (
-                    <div className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md">
-                        Tell the Seekers:{" "}
-                        <span className="text-primary">
-                            {data.warmer ? "Warmer" : "Colder"}
-                        </span>
-                    </div>
-                )}
+
             </div>
         </QuestionCard>
     );

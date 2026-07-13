@@ -263,16 +263,7 @@ const ClosestLocationSelector = ({
                 }}
                 disabled={!!$hiderMode || disabled}
             />
-            {!!$hiderMode && (
-                <div className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md">
-                    Tell the Seekers:{" "}
-                    <span className="text-primary">
-                        {data.location
-                            ? data.location.properties?.name
-                            : "Not Within"}
-                    </span>
-                </div>
-            )}
+
         </div>
     );
 };

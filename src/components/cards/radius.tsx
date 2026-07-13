@@ -109,14 +109,7 @@ export const RadiusQuestionComponent = ({
                     </ToggleGroupItem>
                     <ToggleGroupItem value="inside">Inside</ToggleGroupItem>
                 </ToggleGroup>
-                {!!$hiderMode && (
-                    <div className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md">
-                        Tell the Seekers:{" "}
-                        <span className="text-primary">
-                            {data.within ? "Inside" : "Outside"}
-                        </span>
-                    </div>
-                )}
+
             </div>
         </QuestionCard>
     );
