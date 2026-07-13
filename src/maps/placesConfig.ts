@@ -7,6 +7,8 @@ export const PLACES = [
     { id: "seven11", label: "7-Eleven", labelPlural: "7-Elevens", icon: "Coffee", tag: "amenity", type: "specific", specificLocation: '["brand:wikidata"="Q259340"]' },
     { id: "timhortons", label: "Tim Hortons", labelPlural: "Tim Hortons", icon: "Coffee", tag: "amenity", type: "specific", specificLocation: '["brand:wikidata"="Q175106"]' },
     { id: "pub", label: "Pub / Bar", labelPlural: "Pubs / Bars", icon: "Beer", tag: "amenity", type: "specific", specificLocation: '["amenity"~"^(pub|bar)$"]' },
+    { id: "park", label: "Park", labelPlural: "Parks", icon: "Trees", tag: "leisure", type: "generic" },
+    { id: "restaurant", label: "Restaurant", labelPlural: "Restaurants", icon: "Utensils", tag: "amenity", type: "generic" },
 ] as const;
 
 export type PlaceId = typeof PLACES[number]["id"];
