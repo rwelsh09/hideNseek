@@ -412,29 +412,31 @@ export function AddQuestionDialog() {
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                            {PLACES.map((place) => {
-                                const Icon = icons[place.icon as keyof typeof icons];
-                                return (
-                                    <button
-                                        key={`closest-${place.id}`}
-                                        type="button"
-                                        aria-label={`Add closest question for ${place.id}`}
-                                        title={`Add closest question for ${place.id}`}
-                                        onClick={() =>
-                                            handleQuestionSelect(
-                                                "closest",
-                                                place.id,
-                                            )
-                                        }
-                                        className={`bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("closest", place.id) ? "opacity-50 grayscale" : ""}`}
-                                    >
-                                        <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                        <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                            {place.label}
-                                        </span>
-                                    </button>
-                                );
-                            })}
+                            {PLACES.filter((place) => place.type === "specific").map(
+                                (place) => {
+                                    const Icon = icons[place.icon as keyof typeof icons];
+                                    return (
+                                        <button
+                                            key={`closest-${place.id}`}
+                                            type="button"
+                                            aria-label={`Add closest question for ${place.id}`}
+                                            title={`Add closest question for ${place.id}`}
+                                            onClick={() =>
+                                                handleQuestionSelect(
+                                                    "closest",
+                                                    place.id,
+                                                )
+                                            }
+                                            className={`bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("closest", place.id) ? "opacity-50 grayscale" : ""}`}
+                                        >
+                                            <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                            <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                                {place.label}
+                                            </span>
+                                        </button>
+                                    );
+                                }
+                            )}
                         </div>
                     </div>
                     {/* PHOTO */}
