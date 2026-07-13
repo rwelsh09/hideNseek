@@ -161,7 +161,7 @@ export const DraggableMarkers = () => {
                 />
             )}
             {$questions.map((question) => {
-                if (!question.data || !question.data.drag) return null;
+                if (!question.data || question.data.locked) return null;
 
                 switch (question.id) {
                     case "radius":

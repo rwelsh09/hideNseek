@@ -15,7 +15,7 @@ export const ClosestPlaces = () => {
     const $questions = useStore(questions);
 
     const draggingClosest = $questions.filter(
-        (q) => q.id === "closest" && q.data.drag,
+        (q) => q.id === "closest" && !q.data.locked,
     );
 
     return (

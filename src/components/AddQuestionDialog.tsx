@@ -51,7 +51,7 @@ export function AddQuestionDialog() {
     const $questions = useStore(questions);
     const isQuestionLocked = (type: string, detail?: string) => {
         return $questions.some(q => {
-            if (q.data.drag) return false;
+            if (!q.data.locked) return false;
 
             if (type === "radar" && q.id === "radius") {
                 const isCustom = detail === "unknown";
@@ -88,7 +88,7 @@ export function AddQuestionDialog() {
         const key = Math.random();
 
         let qId = type;
-        let qData: any = { lat: center.lat, lng: center.lng, drag: true, doubledPenalty: isQuestionLocked(type, detail) };
+        let qData: any = { lat: center.lat, lng: center.lng, locked: false, doubledPenalty: isQuestionLocked(type, detail) };
 
         // METRIC UPDATE: Changed all unit payloads to kilometers
         if (type === "radar") {
@@ -119,7 +119,7 @@ export function AddQuestionDialog() {
                 latB: destination.geometry.coordinates[1],
                 lngB: destination.geometry.coordinates[0],
                 warmer: true,
-                drag: true,
+                locked: false,
                 colorA: "gold",
                 colorB: "blue",
                 doubledPenalty: isQuestionLocked(type, detail),

@@ -54,7 +54,7 @@ export const ClosestQuestionComponent = ({
                             data.showLabels = !!checked;
                             questionModified();
                         }}
-                        disabled={!data.drag || $isLoading}
+                        disabled={data.locked || $isLoading}
                         className="mr-2"
                     />
                     <label
@@ -77,7 +77,7 @@ export const ClosestQuestionComponent = ({
                         data.locationType = value;
                         questionModified();
                     }}
-                    disabled={!data.drag || $isLoading}
+                    disabled={data.locked || $isLoading}
                 />
             </SidebarMenuItem>
             <LatitudeLongitude
@@ -97,12 +97,12 @@ export const ClosestQuestionComponent = ({
                     }
                     questionModified();
                 }}
-                disabled={!data.drag || $isLoading}
+                disabled={data.locked || $isLoading}
             />
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                 <ClosestLocationSelector
                     data={data}
-                    disabled={!data.drag || $isLoading}
+                    disabled={data.locked || $isLoading}
                 />
             </SidebarMenuItem>
         </QuestionCard>

@@ -82,9 +82,7 @@ const hotColdQuestionSchema = z.object({
     warmer: z.boolean().default(true),
     colorA: iconColorSchema.default("gold"),
     colorB: iconColorSchema.default("blue"),
-    /** Note that drag is now synonymous with unlocked */
-    drag: z.boolean().default(true),
-    collapsed: z.boolean().default(false),
+    locked: z.boolean().default(false),
     doubledPenalty: z.boolean().default(false),
 });
 
@@ -97,10 +95,8 @@ const ordinaryBaseQuestionSchema = z.object({
         .number()
         .min(-180, "Longitude must not overlap with the antemeridian")
         .max(180, "Longitude must not overlap with the antemeridian"),
-    /** Note that drag is now synonymous with unlocked */
-    drag: z.boolean().default(true),
+    locked: z.boolean().default(false),
     color: iconColorSchema.default(randomColor),
-    collapsed: z.boolean().default(false),
     doubledPenalty: z.boolean().default(false),
 });
 

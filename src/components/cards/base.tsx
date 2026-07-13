@@ -54,11 +54,11 @@ export const QuestionCard = ({
     className?: string;
     label?: string;
     sub?: string;
-    questionData: { drag: boolean; collapsed: boolean; [key: string]: any };
+    questionData: { locked: boolean; [key: string]: any };
     penaltyId: keyof typeof TIME_PENALTIES;
 }) => {
     const [isCollapsed, setIsCollapsed] = useState(
-        questionData.collapsed ?? false,
+        questionData.locked ?? false,
     );
     const $questions = useStore(questions);
     const $isLoading = useStore(isLoading);
@@ -67,8 +67,8 @@ export const QuestionCard = ({
     const toggleLockAndCollapse = () => {
         lockRecommendedStartIfNeeded();
 
-        const wasUnlocked = questionData.drag;
-        questionData.drag = !wasUnlocked;
+        const wasUnlocked = !questionData.locked;
+        questionData.locked = wasUnlocked;
         questionModified();
 
         if (wasUnlocked) {
@@ -83,14 +83,13 @@ export const QuestionCard = ({
             );
         }
 
-        // Collapse when locked (drag = false), expand when unlocked (drag = true)
-        questionData.collapsed = wasUnlocked;
+
         setIsCollapsed(wasUnlocked);
     };
 
     let displayLabel = label;
     const question = $questions.find((q) => q.key === questionKey);
-    const locked = !questionData.drag;
+    const locked = questionData.locked;
 
     let resultStr = "";
     if (question) {
@@ -178,7 +177,7 @@ export const QuestionCard = ({
                         data-tutorial-id="tutorial-lock-btn"
                         onClick={toggleLockAndCollapse}
                         aria-label={
-                            !questionData.drag
+                            questionData.locked
                                 ? "Unlock Question"
                                 : "Lock Question"
                         }
@@ -186,7 +185,7 @@ export const QuestionCard = ({
                         disabled={$isLoading}
                         className="absolute top-1.5 left-1.5 p-1 text-white border rounded-md transition-all duration-500 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:opacity-50"
                     >
-                        {!questionData.drag ? (
+                        {questionData.locked ? (
                             <LockIcon className="w-4 h-4 text-foreground" />
                         ) : (
                             <UnlockIcon className="w-4 h-4 text-foreground" />
@@ -248,7 +247,7 @@ export const QuestionCard = ({
                                 e.stopPropagation();
                                 const qList = questions.get();
                                 const currentQ = qList.find((q) => q.key === questionKey);
-                                if (currentQ && currentQ.data.drag) {
+                                if (currentQ && !currentQ.data.locked) {
                                     questions.set(qList.filter((q) => q.key !== questionKey));
                                     if (questions.get().length === 0) {
                                         lockedRecommendedStart.set(null);

@@ -73,7 +73,7 @@ export const MeasureQuestionComponent = ({
                         data.type = value;
                         questionModified();
                     }}
-                    disabled={!data.drag || $isLoading}
+                    disabled={data.locked || $isLoading}
                 />
             </SidebarMenuItem>
 
@@ -94,7 +94,7 @@ export const MeasureQuestionComponent = ({
                     }
                     questionModified();
                 }}
-                disabled={!data.drag || $isLoading}
+                disabled={data.locked || $isLoading}
             />
             {distanceValue !== null && (
                 <div className="px-2 text-sm text-muted-foreground">
@@ -122,7 +122,7 @@ export const MeasureQuestionComponent = ({
                         data.hiderCloser = value === "closer";
                         questionModified();
                     }}
-                    disabled={!!$hiderMode || !data.drag || $isLoading}
+                    disabled={!!$hiderMode || data.locked || $isLoading}
                 >
                     <ToggleGroupItem value="further">
                         Hider Further
