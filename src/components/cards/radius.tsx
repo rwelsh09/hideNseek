@@ -49,7 +49,7 @@ export const RadiusQuestionComponent = ({
                         type="number"
                         className="rounded-md p-2 w-16"
                         value={data.radius}
-                        disabled={!data.drag || $isLoading}
+                        disabled={data.locked || $isLoading}
                         onChange={(e) => {
                             data.radius = parseFloat(e.target.value);
                             questionModified();
@@ -57,7 +57,7 @@ export const RadiusQuestionComponent = ({
                     />
                     <UnitSelect
                         unit={data.unit}
-                        disabled={!data.drag || $isLoading}
+                        disabled={data.locked || $isLoading}
                         onChange={(unit) => {
                             data.unit = unit;
                             questionModified();
@@ -82,7 +82,7 @@ export const RadiusQuestionComponent = ({
                     }
                     questionModified();
                 }}
-                disabled={!data.drag || $isLoading}
+                disabled={data.locked || $isLoading}
             />
             <div className="flex gap-2 items-center p-2 flex-wrap">
                 <Label
@@ -101,7 +101,7 @@ export const RadiusQuestionComponent = ({
                         data.within = value === "inside";
                         questionModified();
                     }}
-                    disabled={!!$hiderMode || !data.drag || $isLoading}
+                    disabled={!!$hiderMode || data.locked || $isLoading}
                     data-tutorial-id="tutorial-question-result-toggle"
                 >
                     <ToggleGroupItem value="outside">

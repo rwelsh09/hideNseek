@@ -70,7 +70,7 @@ export const HotColdQuestionComponent = ({
                     if (lng !== null) data.lngA = lng;
                     questionModified();
                 }}
-                disabled={!data.drag || $isLoading}
+                disabled={data.locked || $isLoading}
             />
 
             <LatitudeLongitude
@@ -87,7 +87,7 @@ export const HotColdQuestionComponent = ({
                     if (lng !== null) data.lngB = lng;
                     questionModified();
                 }}
-                disabled={!data.drag || $isLoading}
+                disabled={data.locked || $isLoading}
             />
 
             {distanceValue !== null && (
@@ -116,7 +116,7 @@ export const HotColdQuestionComponent = ({
                         data.warmer = value === "warmer";
                         questionModified();
                     }}
-                    disabled={!!$hiderMode || !data.drag || $isLoading}
+                    disabled={!!$hiderMode || data.locked || $isLoading}
                 >
                     <ToggleGroupItem color="red" value="colder">
                         Colder

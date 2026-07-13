@@ -65,7 +65,7 @@ export const MatchQuestionComponent = ({
                         data.type = value;
                         questionModified();
                     }}
-                    disabled={!data.drag || $isLoading}
+                    disabled={data.locked || $isLoading}
                 />
             </SidebarMenuItem>
 
@@ -86,7 +86,7 @@ export const MatchQuestionComponent = ({
                     }
                     questionModified();
                 }}
-                disabled={!data.drag || $isLoading}
+                disabled={data.locked || $isLoading}
             />
             <div
                 className={cn(
@@ -136,7 +136,7 @@ export const MatchQuestionComponent = ({
                                 questionModified();
                             }
                         }}
-                        disabled={!!$hiderMode || !data.drag || $isLoading}
+                        disabled={!!$hiderMode || data.locked || $isLoading}
                     >
                         <ToggleGroupItem value="shorter">
                             Shorter
@@ -160,7 +160,7 @@ export const MatchQuestionComponent = ({
                                 questionModified();
                             }
                         }}
-                        disabled={!!$hiderMode || !data.drag || $isLoading}
+                        disabled={!!$hiderMode || data.locked || $isLoading}
                     >
                         <ToggleGroupItem value="different">
                             Different

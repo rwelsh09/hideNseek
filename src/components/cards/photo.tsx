@@ -83,7 +83,7 @@ export const PhotoQuestionComponent = ({
                         placeholder="Enter information about the photo..."
                         className="rounded-md p-2 w-full"
                         value={localNotes}
-                        disabled={!data.drag || $isLoading}
+                        disabled={data.locked || $isLoading}
                         onChange={(e) => setLocalNotes(e.target.value)}
                         onBlur={() => {
                             if (data.notes !== localNotes) {
@@ -111,7 +111,7 @@ export const PhotoQuestionComponent = ({
                     }
                     questionModified();
                 }}
-                disabled={!data.drag || $isLoading}
+                disabled={data.locked || $isLoading}
             />
             <div
                 className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md mx-2 mb-2 flex flex-col gap-2"
