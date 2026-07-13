@@ -39,7 +39,7 @@ export default defineConfig({
                     /\/chore\//,
                     /\/bug\//,
                 ],
-                maximumFileSizeToCacheInBytes: 5000000,
+                maximumFileSizeToCacheInBytes: 10485760,
                 globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,json}'],
             },
             manifest: {
