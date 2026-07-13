@@ -69,9 +69,6 @@ export const initializeHidingZonesLogic = async () => {
                     units: $hidingRadiusUnits,
                     properties: place,
                 });
-            })
-            .filter((circle) => {
-                return !turf.booleanWithin(circle, unionized);
             });
 
         // Reset disabled stations since we are recalculating
@@ -79,6 +76,12 @@ export const initializeHidingZonesLogic = async () => {
         const manuallyDisabled = currentDisabledForReset.filter(id => !previousQuestionDisabled.includes(id));
         disabledStations.set(manuallyDisabled);
         const newlyDisabledStations: string[] = [];
+
+        circles.forEach((circle) => {
+            if (turf.booleanWithin(circle, unionized)) {
+                newlyDisabledStations.push(extractStationId(circle));
+            }
+        });
 
         const lockedIds = lockedActiveStationIds.get();
         for (const question of questions.get()) {
