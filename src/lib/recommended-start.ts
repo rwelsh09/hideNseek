@@ -35,16 +35,18 @@ export const getRecommendedStartCoords = (): [number, number] | null => {
 };
 
 export const lockRecommendedStartIfNeeded = () => {
+    if (!lockedActiveStationIds.get()) {
+        const activeStations = trainStations.get().filter((station) => {
+            const id = extractStationId(station);
+            return id && !disabledStations.get().includes(id);
+        });
+        lockedActiveStationIds.set(activeStations.map(s => extractStationId(s) as string));
+    }
+
     if (!lockedRecommendedStart.get()) {
         const coords = getRecommendedStartCoords();
         if (coords) {
             lockedRecommendedStart.set(coords);
-
-            const activeStations = trainStations.get().filter((station) => {
-                const id = extractStationId(station);
-                return id && !disabledStations.get().includes(id);
-            });
-            lockedActiveStationIds.set(activeStations.map(s => extractStationId(s) as string));
         }
     }
 };
