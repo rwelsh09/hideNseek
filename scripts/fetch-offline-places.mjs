@@ -36,7 +36,6 @@ function getFilters() {
     });
 
     parsedFilters.push('["admin_level"="10"]');
-    parsedFilters.push('["leisure"="golf_course"]');
 
     return parsedFilters;
 }
