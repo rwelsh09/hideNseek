@@ -72,12 +72,12 @@ export const QuestionCard = ({
         if (wasUnlocked) {
             // We are locking it now
             penaltyMinutes.set(
-                penaltyMinutes.get() + TIME_PENALTIES[penaltyId],
+                penaltyMinutes.get() + TIME_PENALTIES[penaltyId] * (questionData.doubledPenalty ? 2 : 1),
             );
         } else {
             // We are unlocking it now
             penaltyMinutes.set(
-                Math.max(0, penaltyMinutes.get() - TIME_PENALTIES[penaltyId]),
+                Math.max(0, penaltyMinutes.get() - TIME_PENALTIES[penaltyId] * (questionData.doubledPenalty ? 2 : 1)),
             );
         }
 
