@@ -24,6 +24,8 @@ import {
     safeUnion,
 } from "@/maps/geo-utils";
 
+let previousQuestionDisabled: string[] = [];
+
 export const initializeHidingZonesLogic = async () => {
     const $hidingRadius = hidingRadius.get();
     const $hidingRadiusUnits = hidingRadiusUnits.get();
@@ -73,7 +75,9 @@ export const initializeHidingZonesLogic = async () => {
             });
 
         // Reset disabled stations since we are recalculating
-        disabledStations.set([]);
+        const currentDisabledStations = disabledStations.get();
+        const manuallyDisabled = currentDisabledStations.filter(id => !previousQuestionDisabled.includes(id));
+        disabledStations.set(manuallyDisabled);
         const newlyDisabledStations: string[] = [];
 
         const lockedIds = lockedActiveStationIds.get();
@@ -154,7 +158,7 @@ export const initializeHidingZonesLogic = async () => {
                 }
 
                 const remainingIds = circles.map(c => extractStationId(c));
-                const newlyDisabled = originalIds.filter(id => !remainingIds.includes(id));
+                const newlyDisabled = originalIds.filter(id => !remainingIds.includes(id) && !manuallyDisabled.includes(id));
                 newlyDisabledStations.push(...newlyDisabled);
 
                 if (lockedIds) {
@@ -207,7 +211,7 @@ export const initializeHidingZonesLogic = async () => {
                 });
 
                 const remainingIdsMeasure = circles.map(c => extractStationId(c));
-                const newlyDisabledMeasure = originalIdsMeasure.filter(id => !remainingIdsMeasure.includes(id));
+                const newlyDisabledMeasure = originalIdsMeasure.filter(id => !remainingIdsMeasure.includes(id) && !manuallyDisabled.includes(id));
                 newlyDisabledStations.push(...newlyDisabledMeasure);
 
                 if (lockedIds) {
@@ -224,6 +228,7 @@ export const initializeHidingZonesLogic = async () => {
             const currentDisabled = disabledStations.get();
             disabledStations.set(Array.from(new Set([...currentDisabled, ...newlyDisabledStations])));
         }
+        previousQuestionDisabled = newlyDisabledStations;
     } finally {
         isLoading.set(false);
     }
