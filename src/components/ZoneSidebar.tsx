@@ -7,8 +7,17 @@ import { useEffect, useRef, useState } from "react";
 import { VscQuestion } from "react-icons/vsc";
 import { toast } from "react-toastify";
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import {
+    Accordion,
+    AccordionContent,
+    AccordionItem,
+    AccordionTrigger,
+} from "@/components/ui/accordion";
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover";
 import {
     Sidebar,
     SidebarContent,
@@ -90,7 +99,9 @@ export const ZoneSidebar = () => {
     const setStations = trainStations.set;
     const sidebarRef = useRef<HTMLDivElement>(null);
     const [isWarningDialogOpen, setIsWarningDialogOpen] = useState(false);
-    const [pendingStyle, setPendingStyle] = useState<"zones" | "no-display">("no-display");
+    const [pendingStyle, setPendingStyle] = useState<"zones" | "no-display">(
+        "no-display",
+    );
 
     const removeHidingZones = () => {
         if (!map) return;
@@ -108,7 +119,6 @@ export const ZoneSidebar = () => {
     ) => {
         if (!map) return;
         removeHidingZones();
-
 
         if (!map.getPane("hidingZonesPane")) {
             map.createPane("hidingZonesPane");
@@ -199,9 +209,7 @@ export const ZoneSidebar = () => {
     useEffect(() => {
         if (!map || isLoading.get()) return;
 
-        if (
-            $questionFinishedMapData
-        ) {
+        if ($questionFinishedMapData) {
             initializeHidingZonesLogic().catch((err) => {
                 console.error(err);
                 toast.error(
@@ -230,7 +238,7 @@ export const ZoneSidebar = () => {
                     $displayHidingZonesStyle,
                     $questionFinishedMapData,
                     $lockedActiveStationIds,
-                    stations
+                    stations,
                 ),
                 $displayHidingZonesStyle === "zones",
             );
@@ -239,7 +247,12 @@ export const ZoneSidebar = () => {
                 const element: HTMLDivElement | null = document.querySelector(
                     `[data-station-id="${hidingZoneModeStationID}"]`,
                 );
-                if (element) {
+                if (
+                    element &&
+                    stations.find(
+                        (x) => extractStationId(x) === hidingZoneModeStationID,
+                    )
+                ) {
                     element.scrollIntoView({
                         behavior: "smooth",
                         block: "center",
@@ -250,6 +263,13 @@ export const ZoneSidebar = () => {
                             "selected-card-background-temporary",
                         );
                     }, 5000);
+                } else if (
+                    stations.length > 0 &&
+                    !stations.find(
+                        (x) => extractStationId(x) === hidingZoneModeStationID,
+                    )
+                ) {
+                    setHidingZoneModeStationID("");
                 }
             }
         } else {
@@ -267,7 +287,9 @@ export const ZoneSidebar = () => {
     return (
         <Sidebar side="right">
             <div className="flex items-center justify-between">
-                <h2 className="ml-4 mt-4 font-poppins text-2xl">Game Settings</h2>
+                <h2 className="ml-4 mt-4 font-poppins text-2xl">
+                    Game Settings
+                </h2>
                 <button
                     type="button"
                     className="mr-2 visible cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-800 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-slate-400"
@@ -328,8 +350,6 @@ export const ZoneSidebar = () => {
                                 />
                             </div>
                         </div>
-
-
                     </div>
                 </div>
 
@@ -338,65 +358,69 @@ export const ZoneSidebar = () => {
                         Hiding Zone Display Options
                     </h3>
                     <div className="rounded-xl border bg-card shadow-sm overflow-hidden divide-y divide-border">
-
-
-                            <AlertDialog
-                                open={isWarningDialogOpen}
-                                onOpenChange={setIsWarningDialogOpen}
-                            >
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle className="flex items-center text-orange-500">
-                                            <AlertTriangle className="mr-2 inline-block h-5 w-5" />
-                                            Warning: Performance Impact
-                                        </AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            This feature may slow down your device.
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel onClick={() => setIsWarningDialogOpen(false)}>
-                                            Cancel
-                                        </AlertDialogCancel>
-                                        <AlertDialogAction
-                                            onClick={() => {
-                                                hasSeenPerformanceWarning.set(true);
-                                                displayHidingZonesStyle.set(pendingStyle);
-                                                setIsWarningDialogOpen(false);
-                                            }}
-                                        >
-                                            Enable
-                                        </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
+                        <AlertDialog
+                            open={isWarningDialogOpen}
+                            onOpenChange={setIsWarningDialogOpen}
+                        >
+                            <AlertDialogContent>
+                                <AlertDialogHeader>
+                                    <AlertDialogTitle className="flex items-center text-orange-500">
+                                        <AlertTriangle className="mr-2 inline-block h-5 w-5" />
+                                        Warning: Performance Impact
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                        This feature may slow down your device.
+                                    </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                    <AlertDialogCancel
+                                        onClick={() =>
+                                            setIsWarningDialogOpen(false)
+                                        }
+                                    >
+                                        Cancel
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                        onClick={() => {
+                                            hasSeenPerformanceWarning.set(true);
+                                            displayHidingZonesStyle.set(
+                                                pendingStyle,
+                                            );
+                                            setIsWarningDialogOpen(false);
+                                        }}
+                                    >
+                                        Enable
+                                    </AlertDialogAction>
+                                </AlertDialogFooter>
+                            </AlertDialogContent>
+                        </AlertDialog>
 
                         <SidebarMenu className="gap-0 border-0 bg-transparent p-0 m-0 w-full rounded-none">
                             <SidebarMenuItem
-                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                    onClick={() => {
-                                        setHidingZoneModeStationID("");
-                                        displayHidingZonesStyle.set("no-display");
-                                    }}
-                                    disabled={$isLoading}
-                                >
-                                    Hide Zones
-                                </SidebarMenuItem>
+                                className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                onClick={() => {
+                                    setHidingZoneModeStationID("");
+                                    displayHidingZonesStyle.set("no-display");
+                                }}
+                                disabled={$isLoading}
+                            >
+                                Hide Zones
+                            </SidebarMenuItem>
                             <SidebarMenuItem
-                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                    onClick={() => {
-                                        if (!$hasSeenPerformanceWarning) {
-                                            setPendingStyle("zones");
-                                            setIsWarningDialogOpen(true);
-                                        } else {
-                                            setHidingZoneModeStationID("");
-                                            displayHidingZonesStyle.set("zones");
-                                        }
-                                    }}
-                                    disabled={$isLoading}
-                                >
-                                    Show All Zones
-                                </SidebarMenuItem>
+                                className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                onClick={() => {
+                                    if (!$hasSeenPerformanceWarning) {
+                                        setPendingStyle("zones");
+                                        setIsWarningDialogOpen(true);
+                                    } else {
+                                        setHidingZoneModeStationID("");
+                                        displayHidingZonesStyle.set("zones");
+                                    }
+                                }}
+                                disabled={$isLoading}
+                            >
+                                Show All Zones
+                            </SidebarMenuItem>
                             {hidingZoneModeStationID && (
                                 <SidebarMenuItem
                                     className={cn(
@@ -412,20 +436,25 @@ export const ZoneSidebar = () => {
                                                 extractStationId(x) ===
                                                 hidingZoneModeStationID,
                                         );
-                                        const displayName = extractStationLabel(
-                                            selected?.properties,
-                                        );
-                                        const id = extractStationId(
-                                            selected,
+                                        const displayName = selected
+                                            ? extractStationLabel(
+                                                  selected?.properties,
+                                              )
+                                            : "Unknown";
+                                        const id = (
+                                            selected
+                                                ? extractStationId(selected)
+                                                : ""
                                         ) as string;
                                         const coords = selected?.properties
-                                            .geometry.coordinates as [
-                                            number,
-                                            number,
-                                        ];
+                                            ?.geometry?.coordinates as
+                                            | [number, number]
+                                            | undefined;
                                         const href = id?.includes("/")
                                             ? `https://www.openstreetmap.org/${id}`
-                                            : `https://www.openstreetmap.org/?mlat=${coords[1]}&mlon=${coords[0]}#map=17/${coords[1]}/${coords[0]}`;
+                                            : coords
+                                              ? `https://www.openstreetmap.org/?mlat=${coords[1]}&mlon=${coords[0]}#map=17/${coords[1]}/${coords[0]}`
+                                              : "#";
                                         return (
                                             <a
                                                 href={href}
@@ -439,240 +468,415 @@ export const ZoneSidebar = () => {
                                     })()}
                                 </SidebarMenuItem>
                             )}
-                            <Accordion type="single" collapsible className="w-full">
-                                <AccordionItem value="advanced" className="border-none">
+                            <Accordion
+                                type="single"
+                                collapsible
+                                className="w-full"
+                            >
+                                <AccordionItem
+                                    value="advanced"
+                                    className="border-none"
+                                >
                                     <AccordionTrigger className="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-900/50 text-sm font-medium">
                                         Advanced Station Management
                                     </AccordionTrigger>
                                     <AccordionContent className="p-0 border-t flex flex-col">
-                            {$disabledStations.length > 0 && (
-                                    <SidebarMenuItem
-                                        className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                        onClick={() => {
-                                            disabledStations.set([]);
-                                        }}
-                                        disabled={$isLoading}
-                                    >
-                                        Clear Disabled
-                                    </SidebarMenuItem>
-                                )}
-                            <SidebarMenuItem
-                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                    onClick={() => {
-                                        disabledStations.set(
-                                            stations.map((x) =>
-                                                extractStationId(x),
-                                            ),
-                                        );
-                                    }}
-                                    disabled={$isLoading}
-                                >
-                                    Disable All
-                                </SidebarMenuItem>
-                            <div className="flex items-center gap-2 mt-2">
-                                <SidebarMenuItem
-                                    className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                    onClick={() => {
-                                        toast.promise(
-                                            new Promise<void>((resolve) => {
-                                                // Run heavily intensive unblocking loop over chunks
-                                                const newDisabled = new Set($disabledStations);
-
-                                                const precomputed = stations.map((s, i) => ({
-                                                    id: i,
-                                                    stationId: extractStationId(s),
-                                                    coords: getFeatureCoords(s.properties) || getFeatureCoords(s) || (s.geometry as any).coordinates,
-                                                    degree: 0,
-                                                    neighbors: [] as number[],
-                                                }));
-
-                                                let i = 0;
-                                                const CHUNK_SIZE = 50;
-
-                                                const processChunk = () => {
-                                                    const end = Math.min(i + CHUNK_SIZE, precomputed.length);
-                                                    for (; i < end; i++) {
-                                                        for (let j = i + 1; j < precomputed.length; j++) {
-                                                            const d = fastDistance(
-                                                                precomputed[i].coords,
-                                                                precomputed[j].coords,
-                                                                $hidingRadiusUnits,
-                                                            );
-                                                            if (d < overlapThreshold * $hidingRadius) {
-                                                                precomputed[i].neighbors.push(j);
-                                                                precomputed[j].neighbors.push(i);
-                                                                precomputed[i].degree++;
-                                                                precomputed[j].degree++;
-                                                            }
-                                                        }
-                                                    }
-
-                                                    if (i < precomputed.length) {
-                                                        requestAnimationFrame(processChunk);
-                                                    } else {
-                                                        finalizeGraph();
-                                                    }
-                                                };
-
-                                                const finalizeGraph = () => {
-                                                    const remaining = new Set(
-                                                        precomputed
-                                                            .filter((n) => !newDisabled.has(n.stationId))
-                                                            .map((n) => n.id)
-                                                    );
-
-                                                    while (remaining.size > 0) {
-                                                        let minDegree = Infinity;
-                                                        let bestNode = -1;
-                                                        for (const id of remaining) {
-                                                            if (precomputed[id].degree < minDegree) {
-                                                                minDegree = precomputed[id].degree;
-                                                                bestNode = id;
-                                                            }
-                                                        }
-
-                                                        remaining.delete(bestNode);
-                                                        for (const neighbor of precomputed[bestNode].neighbors) {
-                                                            if (remaining.has(neighbor)) {
-                                                                newDisabled.add(precomputed[neighbor].stationId);
-                                                                remaining.delete(neighbor);
-                                                                for (const nn of precomputed[neighbor].neighbors) {
-                                                                    if (remaining.has(nn)) {
-                                                                        precomputed[nn].degree--;
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-
-                                                    disabledStations.set(Array.from(newDisabled));
-                                                    resolve();
-                                                };
-
-                                                requestAnimationFrame(processChunk);
-                                            }),
-                                            {
-                                                pending: "Optimizing zones...",
-                                                success: "Overlap minimized!",
-                                                error: "Failed to optimize zones",
-                                            }
-                                        );
-                                    }}
-                                    disabled={$isLoading}
-                                >
-                                    Auto Disable
-                                </SidebarMenuItem>
-                                    <Popover modal={false}>
-                                        <PopoverTrigger asChild>
-                                            <button
-                                                className="flex-shrink-0 flex items-center justify-center p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors h-[38px] w-[38px] border ml-2"
-                                                aria-label="Auto Disable Overlap Information"
+                                        {$disabledStations.length > 0 && (
+                                            <SidebarMenuItem
+                                                className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                                onClick={() => {
+                                                    disabledStations.set([]);
+                                                }}
+                                                disabled={$isLoading}
                                             >
-                                                <VscQuestion className="h-5 w-5" />
-                                            </button>
-                                        </PopoverTrigger>
-                                        <PopoverContent className="w-80 text-sm align-start" align="end">
-                                            <p>
-                                                Automatically disables stations so that active hiding zones are spread out. The <strong>Overlap Threshold</strong> controls how far apart they must be: a lower number allows more overlap, while a higher number (like 2.0) forces them further apart so they don&apos;t touch.
-                                            </p>
-                                        </PopoverContent>
-                                    </Popover>
-                                </div>
-                            <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                <Label className="text-sm font-medium mr-4">
-                                    Overlap Threshold
-                                </Label>
-                                    <Input
-                                        type="number"
-                                        className="rounded-md p-1 w-16 h-8 bg-background text-sm"
-                                        value={overlapThreshold}
-                                        step={0.1}
-                                        min={0}
-                                        max={3}
-                                        onChange={(e) => setOverlapThreshold(parseFloat(e.target.value))}
-                                        disabled={$isLoading}
-                                    />
-                                </div>
-                            <Command
-                                    key={
-                                        isStationSearchActive
-                                            ? "station-search-active"
-                                            : "station-search-idle"
-                                    }
-                                    shouldFilter={isStationSearchActive}
-                                >
-                                    <CommandInput
-                                        placeholder="Search for a hiding zone..."
-                                        value={stationSearch}
-                                        onValueChange={setStationSearch}
-                                        disabled={$isLoading}
-                                    />
-                                    <CommandList className="max-h-full">
-                                        <CommandEmpty>
-                                            No hiding zones found.
-                                        </CommandEmpty>
-                                        <CommandGroup>
-                                            {stations.map((station) => (
-                                                <CommandItem
-                                                    key={extractStationId(
-                                                        station,
-                                                    )}
-                                                    data-station-id={extractStationId(
-                                                        station,
-                                                    )}
-                                                    className={cn(
-                                                        $disabledStations.includes(
-                                                            extractStationId(
-                                                                station,
-                                                            ),
-                                                        ) && "line-through",
-                                                    )}
-                                                    onSelect={async () => {
-                                                        if (!map) return;
-                                                        setTimeout(() => {
-                                                            const stationId =
-                                                                extractStationId(
-                                                                    station,
+                                                Clear Disabled
+                                            </SidebarMenuItem>
+                                        )}
+                                        <SidebarMenuItem
+                                            className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                            onClick={() => {
+                                                disabledStations.set(
+                                                    stations.map((x) =>
+                                                        extractStationId(x),
+                                                    ),
+                                                );
+                                            }}
+                                            disabled={$isLoading}
+                                        >
+                                            Disable All
+                                        </SidebarMenuItem>
+                                        <div className="flex items-center gap-2 mt-2">
+                                            <SidebarMenuItem
+                                                className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
+                                                onClick={() => {
+                                                    toast.promise(
+                                                        new Promise<void>(
+                                                            (resolve) => {
+                                                                // Run heavily intensive unblocking loop over chunks
+                                                                const newDisabled =
+                                                                    new Set(
+                                                                        $disabledStations,
+                                                                    );
+
+                                                                const precomputed =
+                                                                    stations.map(
+                                                                        (
+                                                                            s,
+                                                                            i,
+                                                                        ) => ({
+                                                                            id: i,
+                                                                            stationId:
+                                                                                extractStationId(
+                                                                                    s,
+                                                                                ),
+                                                                            coords:
+                                                                                getFeatureCoords(
+                                                                                    s.properties,
+                                                                                ) ||
+                                                                                getFeatureCoords(
+                                                                                    s,
+                                                                                ) ||
+                                                                                (
+                                                                                    s.geometry as any
+                                                                                )
+                                                                                    .coordinates,
+                                                                            degree: 0,
+                                                                            neighbors:
+                                                                                [] as number[],
+                                                                        }),
+                                                                    );
+
+                                                                let i = 0;
+                                                                const CHUNK_SIZE = 50;
+
+                                                                const processChunk =
+                                                                    () => {
+                                                                        const end =
+                                                                            Math.min(
+                                                                                i +
+                                                                                    CHUNK_SIZE,
+                                                                                precomputed.length,
+                                                                            );
+                                                                        for (
+                                                                            ;
+                                                                            i <
+                                                                            end;
+                                                                            i++
+                                                                        ) {
+                                                                            for (
+                                                                                let j =
+                                                                                    i +
+                                                                                    1;
+                                                                                j <
+                                                                                precomputed.length;
+                                                                                j++
+                                                                            ) {
+                                                                                const d =
+                                                                                    fastDistance(
+                                                                                        precomputed[
+                                                                                            i
+                                                                                        ]
+                                                                                            .coords,
+                                                                                        precomputed[
+                                                                                            j
+                                                                                        ]
+                                                                                            .coords,
+                                                                                        $hidingRadiusUnits,
+                                                                                    );
+                                                                                if (
+                                                                                    d <
+                                                                                    overlapThreshold *
+                                                                                        $hidingRadius
+                                                                                ) {
+                                                                                    precomputed[
+                                                                                        i
+                                                                                    ].neighbors.push(
+                                                                                        j,
+                                                                                    );
+                                                                                    precomputed[
+                                                                                        j
+                                                                                    ].neighbors.push(
+                                                                                        i,
+                                                                                    );
+                                                                                    precomputed[
+                                                                                        i
+                                                                                    ]
+                                                                                        .degree++;
+                                                                                    precomputed[
+                                                                                        j
+                                                                                    ]
+                                                                                        .degree++;
+                                                                                }
+                                                                            }
+                                                                        }
+
+                                                                        if (
+                                                                            i <
+                                                                            precomputed.length
+                                                                        ) {
+                                                                            requestAnimationFrame(
+                                                                                processChunk,
+                                                                            );
+                                                                        } else {
+                                                                            finalizeGraph();
+                                                                        }
+                                                                    };
+
+                                                                const finalizeGraph =
+                                                                    () => {
+                                                                        const remaining =
+                                                                            new Set(
+                                                                                precomputed
+                                                                                    .filter(
+                                                                                        (
+                                                                                            n,
+                                                                                        ) =>
+                                                                                            !newDisabled.has(
+                                                                                                n.stationId,
+                                                                                            ),
+                                                                                    )
+                                                                                    .map(
+                                                                                        (
+                                                                                            n,
+                                                                                        ) =>
+                                                                                            n.id,
+                                                                                    ),
+                                                                            );
+
+                                                                        while (
+                                                                            remaining.size >
+                                                                            0
+                                                                        ) {
+                                                                            let minDegree =
+                                                                                Infinity;
+                                                                            let bestNode =
+                                                                                -1;
+                                                                            for (const id of remaining) {
+                                                                                if (
+                                                                                    precomputed[
+                                                                                        id
+                                                                                    ]
+                                                                                        .degree <
+                                                                                    minDegree
+                                                                                ) {
+                                                                                    minDegree =
+                                                                                        precomputed[
+                                                                                            id
+                                                                                        ]
+                                                                                            .degree;
+                                                                                    bestNode =
+                                                                                        id;
+                                                                                }
+                                                                            }
+
+                                                                            remaining.delete(
+                                                                                bestNode,
+                                                                            );
+                                                                            for (const neighbor of precomputed[
+                                                                                bestNode
+                                                                            ]
+                                                                                .neighbors) {
+                                                                                if (
+                                                                                    remaining.has(
+                                                                                        neighbor,
+                                                                                    )
+                                                                                ) {
+                                                                                    newDisabled.add(
+                                                                                        precomputed[
+                                                                                            neighbor
+                                                                                        ]
+                                                                                            .stationId,
+                                                                                    );
+                                                                                    remaining.delete(
+                                                                                        neighbor,
+                                                                                    );
+                                                                                    for (const nn of precomputed[
+                                                                                        neighbor
+                                                                                    ]
+                                                                                        .neighbors) {
+                                                                                        if (
+                                                                                            remaining.has(
+                                                                                                nn,
+                                                                                            )
+                                                                                        ) {
+                                                                                            precomputed[
+                                                                                                nn
+                                                                                            ]
+                                                                                                .degree--;
+                                                                                        }
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+
+                                                                        disabledStations.set(
+                                                                            Array.from(
+                                                                                newDisabled,
+                                                                            ),
+                                                                        );
+                                                                        resolve();
+                                                                    };
+
+                                                                requestAnimationFrame(
+                                                                    processChunk,
                                                                 );
-                                                            if (
-                                                                $disabledStations.includes(
-                                                                    stationId,
-                                                                )
-                                                            ) {
-                                                                disabledStations.set(
-                                                                    [
-                                                                        ...$disabledStations.filter(
-                                                                            (
-                                                                                x,
-                                                                            ) =>
-                                                                                x !==
-                                                                                stationId,
-                                                                        ),
-                                                                    ],
-                                                                );
-                                                            } else {
-                                                                disabledStations.set(
-                                                                    [
-                                                                        ...$disabledStations,
-                                                                        stationId,
-                                                                    ],
-                                                                );
-                                                            }
-                                                            setStations([
-                                                                ...stations,
-                                                            ]);
-                                                        }, 100);
-                                                    }}
-                                                    disabled={$isLoading}
+                                                            },
+                                                        ),
+                                                        {
+                                                            pending:
+                                                                "Optimizing zones...",
+                                                            success:
+                                                                "Overlap minimized!",
+                                                            error: "Failed to optimize zones",
+                                                        },
+                                                    );
+                                                }}
+                                                disabled={$isLoading}
+                                            >
+                                                Auto Disable
+                                            </SidebarMenuItem>
+                                            <Popover modal={false}>
+                                                <PopoverTrigger asChild>
+                                                    <button
+                                                        className="flex-shrink-0 flex items-center justify-center p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors h-[38px] w-[38px] border ml-2"
+                                                        aria-label="Auto Disable Overlap Information"
+                                                    >
+                                                        <VscQuestion className="h-5 w-5" />
+                                                    </button>
+                                                </PopoverTrigger>
+                                                <PopoverContent
+                                                    className="w-80 text-sm align-start"
+                                                    align="end"
                                                 >
-                                                    {extractStationLabel(
-                                                        station.properties,
-                                                    )}
-                                                </CommandItem>
-                                            ))}
-                                        </CommandGroup>
-                                    </CommandList>
-                                </Command>
+                                                    <p>
+                                                        Automatically disables
+                                                        stations so that active
+                                                        hiding zones are spread
+                                                        out. The{" "}
+                                                        <strong>
+                                                            Overlap Threshold
+                                                        </strong>{" "}
+                                                        controls how far apart
+                                                        they must be: a lower
+                                                        number allows more
+                                                        overlap, while a higher
+                                                        number (like 2.0) forces
+                                                        them further apart so
+                                                        they don&apos;t touch.
+                                                    </p>
+                                                </PopoverContent>
+                                            </Popover>
+                                        </div>
+                                        <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
+                                            <Label className="text-sm font-medium mr-4">
+                                                Overlap Threshold
+                                            </Label>
+                                            <Input
+                                                type="number"
+                                                className="rounded-md p-1 w-16 h-8 bg-background text-sm"
+                                                value={overlapThreshold}
+                                                step={0.1}
+                                                min={0}
+                                                max={3}
+                                                onChange={(e) =>
+                                                    setOverlapThreshold(
+                                                        parseFloat(
+                                                            e.target.value,
+                                                        ),
+                                                    )
+                                                }
+                                                disabled={$isLoading}
+                                            />
+                                        </div>
+                                        <Command
+                                            key={
+                                                isStationSearchActive
+                                                    ? "station-search-active"
+                                                    : "station-search-idle"
+                                            }
+                                            shouldFilter={isStationSearchActive}
+                                        >
+                                            <CommandInput
+                                                placeholder="Search for a hiding zone..."
+                                                value={stationSearch}
+                                                onValueChange={setStationSearch}
+                                                disabled={$isLoading}
+                                            />
+                                            <CommandList className="max-h-full">
+                                                <CommandEmpty>
+                                                    No hiding zones found.
+                                                </CommandEmpty>
+                                                <CommandGroup>
+                                                    {stations.map((station) => (
+                                                        <CommandItem
+                                                            key={extractStationId(
+                                                                station,
+                                                            )}
+                                                            data-station-id={extractStationId(
+                                                                station,
+                                                            )}
+                                                            className={cn(
+                                                                $disabledStations.includes(
+                                                                    extractStationId(
+                                                                        station,
+                                                                    ),
+                                                                ) &&
+                                                                    "line-through",
+                                                            )}
+                                                            onSelect={async () => {
+                                                                if (!map)
+                                                                    return;
+                                                                setTimeout(
+                                                                    () => {
+                                                                        const stationId =
+                                                                            extractStationId(
+                                                                                station,
+                                                                            );
+                                                                        if (
+                                                                            $disabledStations.includes(
+                                                                                stationId,
+                                                                            )
+                                                                        ) {
+                                                                            disabledStations.set(
+                                                                                [
+                                                                                    ...$disabledStations.filter(
+                                                                                        (
+                                                                                            x,
+                                                                                        ) =>
+                                                                                            x !==
+                                                                                            stationId,
+                                                                                    ),
+                                                                                ],
+                                                                            );
+                                                                        } else {
+                                                                            disabledStations.set(
+                                                                                [
+                                                                                    ...$disabledStations,
+                                                                                    stationId,
+                                                                                ],
+                                                                            );
+                                                                        }
+                                                                        setStations(
+                                                                            [
+                                                                                ...stations,
+                                                                            ],
+                                                                        );
+                                                                    },
+                                                                    100,
+                                                                );
+                                                            }}
+                                                            disabled={
+                                                                $isLoading
+                                                            }
+                                                        >
+                                                            {extractStationLabel(
+                                                                station.properties,
+                                                            )}
+                                                        </CommandItem>
+                                                    ))}
+                                                </CommandGroup>
+                                            </CommandList>
+                                        </Command>
                                     </AccordionContent>
                                 </AccordionItem>
                             </Accordion>
@@ -690,9 +894,13 @@ function styleStations(
 
     $questionFinishedMapData: any,
     lockedActiveStationIds?: string[] | null,
-    allStations?: any[]
+    allStations?: any[],
 ): FeatureCollection | Feature {
-    const applyMask = (feature: FeatureCollection | Feature): FeatureCollection | Feature => { return feature; };
+    const applyMask = (
+        feature: FeatureCollection | Feature,
+    ): FeatureCollection | Feature => {
+        return feature;
+    };
 
     switch (style) {
         case "no-display":
@@ -702,7 +910,11 @@ function styleStations(
             if (circles.length > 1) {
                 let voronoiPoints = circles;
                 if (lockedActiveStationIds && allStations) {
-                    voronoiPoints = allStations.filter(s => lockedActiveStationIds.includes(extractStationId(s) as string));
+                    voronoiPoints = allStations.filter((s) =>
+                        lockedActiveStationIds.includes(
+                            extractStationId(s) as string,
+                        ),
+                    );
                 }
                 const points = turf.featureCollection(
                     voronoiPoints.map((c) => c.properties),
@@ -712,8 +924,13 @@ function styleStations(
 
                     if (voronoi && voronoi.features) {
                         // Filter the locked voronoi polygons to ONLY include the ones corresponding to the currently active circles
-                        const activeVoronoiFeatures = voronoi.features.filter(f =>
-                            circles.some(c => extractStationId(c) === extractStationId(f.properties?.site))
+                        const activeVoronoiFeatures = voronoi.features.filter(
+                            (f) =>
+                                circles.some(
+                                    (c) =>
+                                        extractStationId(c) ===
+                                        extractStationId(f.properties?.site),
+                                ),
                         );
                         voronoi.features = activeVoronoiFeatures;
 
