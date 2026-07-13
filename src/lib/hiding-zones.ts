@@ -164,8 +164,7 @@ export const initializeHidingZonesLogic = async () => {
 
                 if (lockedIds) {
                     // Restore circles array if it's locked so base shapes do not change
-                    const circlesMap = new Map(originalCirclesState.map(c => [extractStationId(c), c]));
-                    circles = originalIds.map(id => circlesMap.get(id)).filter(Boolean) as any;
+                    circles = originalCirclesState;
                 }
             }
             if (
