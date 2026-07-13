@@ -32,3 +32,8 @@
 
 **Learning:** The previous implementation leaked question-specific actions (Question Rules, Share, and Delete) into `LatLngPicker`, violating separation of concerns because `LatLngPicker` should purely be a location picker and doesn't inherently map to a question (e.g. when picking Hider Location). This caused unnecessary abstractions and prop forwarding.
 **Action:** Always prefer to encapsulate question-specific actions and rendering inside `QuestionCard` rather than passing them down into generic location picker components.
+
+## 2026-07-13 - Centralized Derived State (resultStr) and HiderMode Display in QuestionCard
+
+**Learning:** The previous implementation leaked UI derived state management (specifically the `resultStr` formatting for the question summary) and the "Tell the Seekers" `$hiderMode` contextual display into all 5 specific question card components (`closest`, `hot-cold`, `match`, `measure`, `radius`). This repetitive pattern caused unnecessary boilerplate across the application and violated the DRY principle.
+**Action:** Always prefer to encapsulate shared UI state modifications (like computing default result labels and rendering hider mode instruction banners) within the base component itself (`QuestionCard`) when the base component already subscribes to the same state and context.
