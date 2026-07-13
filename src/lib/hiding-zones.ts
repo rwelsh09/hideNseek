@@ -60,20 +60,21 @@ export const initializeHidingZonesLogic = async () => {
             }),
         );
 
-        let circles = places
-            .map((place) => {
-                const radius = $hidingRadius;
-                const center = turf.getCoord(place);
-                return turf.circle(center, radius, {
-                    steps: 32,
-                    units: $hidingRadiusUnits,
-                    properties: place,
-                });
+        let circles = places.map((place) => {
+            const radius = $hidingRadius;
+            const center = turf.getCoord(place);
+            return turf.circle(center, radius, {
+                steps: 32,
+                units: $hidingRadiusUnits,
+                properties: place,
             });
+        });
 
         // Reset disabled stations since we are recalculating
         const currentDisabledForReset = disabledStations.get();
-        const manuallyDisabled = currentDisabledForReset.filter(id => !previousQuestionDisabled.includes(id));
+        const manuallyDisabled = currentDisabledForReset.filter(
+            (id) => !previousQuestionDisabled.includes(id),
+        );
         disabledStations.set(manuallyDisabled);
         const newlyDisabledStations: string[] = [];
 
@@ -107,12 +108,12 @@ export const initializeHidingZonesLogic = async () => {
                     turf.featureCollection(places) as any,
                 );
 
-
-                const originalIds = circles.map(c => extractStationId(c));
+                const originalIds = circles.map((c) => extractStationId(c));
                 const originalCirclesState = [...circles];
 
                 if (question.data.type === "same-train-line") {
-                    const seekerLines = extractStationLines(nearestTrainStation);
+                    const seekerLines =
+                        extractStationLines(nearestTrainStation);
 
                     if (seekerLines.length > 0) {
                         circles = circles.filter((circle) => {
@@ -162,14 +163,17 @@ export const initializeHidingZonesLogic = async () => {
                     });
                 }
 
-                const remainingIds = circles.map(c => extractStationId(c));
-                const newlyDisabled = originalIds.filter(id => !remainingIds.includes(id) && !manuallyDisabled.includes(id));
+                const remainingIds = circles.map((c) => extractStationId(c));
+                const newlyDisabled = originalIds.filter(
+                    (id) =>
+                        !remainingIds.includes(id) &&
+                        !manuallyDisabled.includes(id),
+                );
                 newlyDisabledStations.push(...newlyDisabled);
 
                 if (lockedIds) {
                     // Restore circles array if it's locked so base shapes do not change
-                    const circlesMap = new Map(originalCirclesState.map(c => [extractStationId(c), c]));
-                    circles = originalIds.map(id => circlesMap.get(id)).filter(Boolean) as any;
+                    circles = originalCirclesState;
                 }
             }
             if (
@@ -198,7 +202,9 @@ export const initializeHidingZonesLogic = async () => {
                     { units: "kilometers" },
                 );
 
-                const originalIdsMeasure = circles.map(c => extractStationId(c));
+                const originalIdsMeasure = circles.map((c) =>
+                    extractStationId(c),
+                );
                 const originalCirclesStateMeasure = [...circles];
 
                 circles = circles.filter((circle) => {
@@ -215,8 +221,14 @@ export const initializeHidingZonesLogic = async () => {
                               distance - $hidingRadius;
                 });
 
-                const remainingIdsMeasure = circles.map(c => extractStationId(c));
-                const newlyDisabledMeasure = originalIdsMeasure.filter(id => !remainingIdsMeasure.includes(id) && !manuallyDisabled.includes(id));
+                const remainingIdsMeasure = circles.map((c) =>
+                    extractStationId(c),
+                );
+                const newlyDisabledMeasure = originalIdsMeasure.filter(
+                    (id) =>
+                        !remainingIdsMeasure.includes(id) &&
+                        !manuallyDisabled.includes(id),
+                );
                 newlyDisabledStations.push(...newlyDisabledMeasure);
 
                 if (lockedIds) {
@@ -226,12 +238,15 @@ export const initializeHidingZonesLogic = async () => {
             }
         }
 
-
         trainStations.set(circles);
 
         if (newlyDisabledStations.length > 0) {
             const currentDisabled = disabledStations.get();
-            disabledStations.set(Array.from(new Set([...currentDisabled, ...newlyDisabledStations])));
+            disabledStations.set(
+                Array.from(
+                    new Set([...currentDisabled, ...newlyDisabledStations]),
+                ),
+            );
         }
         previousQuestionDisabled = newlyDisabledStations;
     } finally {
