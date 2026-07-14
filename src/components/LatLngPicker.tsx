@@ -26,6 +26,7 @@ export const LatitudeLongitude = ({
     label = "Location",
     colorName,
     onChangeColor,
+    className,
     children,
     disabled,
 }: {
@@ -51,6 +52,7 @@ export const LatitudeLongitude = ({
                 className={cn(
                     "p-3 rounded-md space-y-2 mt-2",
                     $isLoading && "brightness-50",
+                    className,
                 )}
             >
                     <div

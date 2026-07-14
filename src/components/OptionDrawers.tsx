@@ -212,9 +212,9 @@ export const OptionDrawers = () => {
                                     {/* Sub-menu for Hider Mode */}
                                     {$hiderMode !== false && (
                                         <div className="p-4 bg-slate-50/80 dark:bg-slate-900/50 inner-shadow-sm">
-                                            <SidebarMenu>
-                                                <div data-tutorial-id="hider-location-picker">
+                                            <div data-tutorial-id="hider-location-picker">
                                                 <LatitudeLongitude
+                                                    className="mt-0"
                                                     latitude={
                                                         $hiderMode.latitude
                                                     }
@@ -245,8 +245,7 @@ export const OptionDrawers = () => {
                                                     }}
                                                     label="Location"
                                                 />
-                                                </div>
-                                            </SidebarMenu>
+                                            </div>
                                         </div>
                                     )}
 
