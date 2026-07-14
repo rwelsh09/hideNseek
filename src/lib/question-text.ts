@@ -45,12 +45,12 @@ export const getQuestionShareText = async (question: any, questionData: any): Pr
                     // Fallback
                 }
                 if (type === "same-neighbourhood") return "Are we in the same Neighbourhood?";
-                return "Does your Neighbourhood start with the same letter as ours ([letter])?";
+                return "Does your Neighbourhood start with the same letter as ours?";
             }
 
-            if (type === "same-train-line") return "Are you on the same Train Line as us?";
-            if (type === "same-length-station") return "Does your Train Station have the same length as ours?";
-            if (type === "same-first-letter-station") return "Does your Train Station start with the same letter as ours?";
+            if (type === "same-train-line") return "Are you on the same Line as us?";
+            if (type === "same-length-station") return "Does your Stop have the same length as ours?";
+            if (type === "same-first-letter-station") return "Does your Stop start with the same letter as ours?";
 
             const label = getPlaceLabel(type);
             return `Are you near the same ${label} as us?`;
@@ -72,7 +72,7 @@ export const getQuestionShareText = async (question: any, questionData: any): Pr
             }
 
             if (type === "rail-measure") {
-                return `We are ${distanceStr} from a Train Station. Are you closer or further to your nearest Train Station?`;
+                return `We are ${distanceStr} from a Stop. Are you closer or further to your nearest Stop?`;
             }
             const label = getPlaceLabel(type);
             return `We are ${distanceStr} from a ${label}. Are you closer or further to your nearest ${label}?`;
