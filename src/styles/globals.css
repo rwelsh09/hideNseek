@@ -235,3 +235,7 @@ body.driver-active:has(
         transform: translate(-50%, 0);
     }
 }
+
+div.driver-popover, div.driver-overlay {
+    z-index: 1000000 !important;
+}

@@ -200,7 +200,7 @@ const ClosestLocationSelector = ({
             <Select
                 trigger="Location"
                 options={{
-                    false: "Not Within",
+                    false: "None",
                     ...mapToObj(filteredFeatures, (feature: any) => [
                         feature.properties?.name,
                         feature.properties?.name,

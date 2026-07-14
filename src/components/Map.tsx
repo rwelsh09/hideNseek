@@ -23,7 +23,6 @@ import {
     polyGeoJSON,
     questionFinishedMapData,
     questions,
-    thunderforestApiKey,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { compress, shareOrFallback } from "@/lib/utils";
@@ -45,7 +44,7 @@ import { RecommendedStartMarker } from "./RecommendedStartMarker";
 import { TransitLinesOverlay } from "./TransitLinesOverlay";
 import { Button } from "./ui/button";
 
-const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
+const getTileLayer = (tileLayer: string) => {
     switch (tileLayer) {
         case "satellite":
             return (
@@ -82,32 +81,6 @@ const getTileLayer = (tileLayer: string, thunderforestApiKey: string) => {
                 />
             );
 
-        case "transport":
-            if (thunderforestApiKey)
-                return (
-                    <OfflineTileLayer
-                        url={`https://tile.thunderforest.com/transport/{z}/{x}/{y}.png?apikey=${thunderforestApiKey}`}
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors; &copy; <a href="http://www.thunderforest.com/">Thunderforest</a>; Powered by Esri and Turf.js'
-                        maxZoom={22}
-                        minZoom={2}
-                        noWrap
-                    />
-                );
-            break;
-
-        case "neighbourhood":
-            if (thunderforestApiKey)
-                return (
-                    <OfflineTileLayer
-                        url={`https://tile.thunderforest.com/neighbourhood/{z}/{x}/{y}.png?apikey=${thunderforestApiKey}`}
-                        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors; &copy; <a href="http://www.thunderforest.com/">Thunderforest</a>; Powered by Esri and Turf.js'
-                        maxZoom={22}
-                        minZoom={2}
-                        noWrap
-                    />
-                );
-            break;
-
         case "osmcarto":
             return (
                 <OfflineTileLayer
@@ -136,7 +109,6 @@ export const Map = ({ className }: { className?: string }) => {
     const $mapGeoLocation = useStore(mapGeoLocation);
     const $questions = useStore(questions);
     const $baseTileLayer = useStore(baseTileLayer);
-    const $thunderforestApiKey = useStore(thunderforestApiKey);
     const $hiderMode = useStore(hiderMode);
     const $hidingZone = useStore(hidingZone);
 
@@ -267,7 +239,7 @@ export const Map = ({ className }: { className?: string }) => {
                 )}
                 ref={leafletMapContext.set}
             >
-                {getTileLayer($baseTileLayer, $thunderforestApiKey)}
+                {getTileLayer($baseTileLayer)}
                 <TransitLinesOverlay />
                 <DraggableMarkers />
                 <ClosestPlaces />
@@ -284,9 +256,9 @@ export const Map = ({ className }: { className?: string }) => {
                 <div className="leaflet-bottom leaflet-left">
                     <div className="leaflet-control pointer-events-auto !mb-10 ml-[10px] flex flex-col gap-[10px]">
                         {$hiderMode === false ? (
-                            <AddQuestionDialog />
+                            <AddQuestionDialog iconOnly={true} />
                         ) : (
-                            <PasteQuestionButton />
+                            <PasteQuestionButton iconOnly={true} />
                         )}
                     </div>
                 </div>
@@ -356,7 +328,7 @@ export const Map = ({ className }: { className?: string }) => {
                 <ScaleControl position="bottomleft" />
             </MapContainer>
         ),
-        [map, $baseTileLayer, $thunderforestApiKey, $isLoading],
+        [map, $baseTileLayer, $isLoading],
     );
 
     useEffect(() => {

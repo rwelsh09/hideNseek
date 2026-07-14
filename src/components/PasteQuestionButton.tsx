@@ -7,13 +7,13 @@ import { questionSchema } from "@/maps/schema";
 
 import { Button } from "./ui/button";
 
-export const PasteQuestionButton = () => {
+export const PasteQuestionButton = ({ iconOnly = false }: { iconOnly?: boolean }) => {
     const $isLoading = useStore(isLoading);
 
     return (
         <Button
             variant="secondary"
-            className="w-full font-semibold font-poppins flex items-center justify-center gap-2 h-10"
+            className={iconOnly ? "font-semibold font-poppins flex items-center justify-center gap-2 h-10 w-10 p-0" : "w-full font-semibold font-poppins flex items-center justify-center gap-2 h-10"}
             data-tutorial-id="tutorial-paste-question-btn"
             onClick={() => {
                 navigator.clipboard
@@ -55,7 +55,7 @@ export const PasteQuestionButton = () => {
             disabled={$isLoading}
         >
             <ClipboardPasteIcon className="w-4 h-4" />
-            Paste Question
+            {!iconOnly && "Paste Question"}
         </Button>
     );
 };
