@@ -36,8 +36,10 @@ export const TutorialManager = () => {
     const [confirmEndTutorial, setConfirmEndTutorial] = useState(false);
     const [activeDriver, setActiveDriver] = useState<any>(null);
 
+    const isHiderMode = $hiderMode !== false;
+
     useEffect(() => {
-        if ($hiderMode !== false && $showHiderTutorial && !$showTutorial) {
+        if (isHiderMode && $showHiderTutorial && !$showTutorial) {
             const hiderDriverObj = driver({
                 showProgress: true,
                 overlayClickBehavior: () => {},
@@ -47,36 +49,16 @@ export const TutorialManager = () => {
                 },
                 steps: [
                     {
-                        element: '[data-tutorial-id="options-drawer"]',
                         popover: {
                             title: "Welcome Hider!",
-                            description: "Close this options menu I have a couple things to show you.",
+                            description: "",
                             side: "top",
                             align: "center",
+                            showButtons: ["next"],
                             onPopoverRender: () => {
                                 hiderDriverObj.setConfig({
                                     ...hiderDriverObj.getConfig(),
                                     disableActiveInteraction: false,
-                                    overlayClickBehavior: () => {
-                                        isOptionsOpenStore.set(false);
-                                    }
-                                });
-
-                                const checkInterval = setInterval(() => {
-                                    if (!isOptionsOpenStore.get()) {
-                                        clearInterval(checkInterval);
-                                        setTimeout(() => hiderDriverObj.moveNext(), 300);
-                                    }
-                                }, 100);
-                                
-                                (hiderDriverObj as any)._closeOptionsCheckInterval = checkInterval;
-                            },
-                            onDeselected: () => {
-                                if ((hiderDriverObj as any)._closeOptionsCheckInterval) {
-                                    clearInterval((hiderDriverObj as any)._closeOptionsCheckInterval);
-                                }
-                                hiderDriverObj.setConfig({
-                                    ...hiderDriverObj.getConfig(),
                                     overlayClickBehavior: () => {}
                                 });
                             }
@@ -86,10 +68,82 @@ export const TutorialManager = () => {
                         element: '.tutorial-marker-green',
                         popover: {
                             title: "Hider Location",
-                            description: "Place the green Map Marker on your hiding spot so the app can calculate the answers to give the Seekers.",
+                            description: "Click on the green Map Marker to open its location settings.",
                             side: "top",
                             align: "center",
+                            showButtons: [],
+                            onPopoverRender: () => {
+                                hiderDriverObj.setConfig({
+                                    ...hiderDriverObj.getConfig(),
+                                    disableActiveInteraction: false,
+                                });
+
+                                if ((hiderDriverObj as any)._markerClickCheckInterval) {
+                                    clearInterval((hiderDriverObj as any)._markerClickCheckInterval);
+                                }
+                                const checkInterval = setInterval(() => {
+                                    const gpsBtn = document.querySelector('#hider-location-panel [data-tutorial-id="tutorial-gps-btn"]');
+                                    if (gpsBtn) {
+                                        clearInterval(checkInterval);
+                                        setTimeout(() => hiderDriverObj.moveNext(), 300);
+                                    }
+                                }, 100);
+                                (hiderDriverObj as any)._markerClickCheckInterval = checkInterval;
+                            },
+                            onDeselected: () => {
+                                if ((hiderDriverObj as any)._markerClickCheckInterval) {
+                                    clearInterval((hiderDriverObj as any)._markerClickCheckInterval);
+                                }
+                            }
                         },
+                    },
+                    {
+                        element: '#hider-location-panel [data-tutorial-id="tutorial-gps-btn"]',
+                        popover: {
+                            title: "Set Location",
+                            description: "When you've arrived in your Hiding Zone, click the GPS button to set your hiding location. This is required for accurate question answering.",
+                            side: "bottom",
+                            align: "center",
+                            showButtons: ["next"],
+                            onPopoverRender: () => {
+                                hiderDriverObj.setConfig({
+                                    ...hiderDriverObj.getConfig(),
+                                    disableActiveInteraction: false,
+                                });
+                            }
+                        }
+                    },
+                    {
+                        element: '[data-tutorial-id="tutorial-store-question-btn"]',
+                        popover: {
+                            title: "Close Dialog",
+                            description: "Close this dialog to reveal the Paste Question button.",
+                            side: "bottom",
+                            align: "center",
+                            showButtons: [],
+                            onPopoverRender: () => {
+                                hiderDriverObj.setConfig({
+                                    ...hiderDriverObj.getConfig(),
+                                    disableActiveInteraction: false,
+                                });
+                                if ((hiderDriverObj as any)._popupCloseCheckInterval) {
+                                    clearInterval((hiderDriverObj as any)._popupCloseCheckInterval);
+                                }
+                                const checkInterval = setInterval(() => {
+                                    const popup = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
+                                    if (!popup) {
+                                        clearInterval(checkInterval);
+                                        setTimeout(() => hiderDriverObj.moveNext(), 300);
+                                    }
+                                }, 100);
+                                (hiderDriverObj as any)._popupCloseCheckInterval = checkInterval;
+                            },
+                            onDeselected: () => {
+                                if ((hiderDriverObj as any)._popupCloseCheckInterval) {
+                                    clearInterval((hiderDriverObj as any)._popupCloseCheckInterval);
+                                }
+                            }
+                        }
                     },
                     {
                         element: '[data-tutorial-id="tutorial-paste-question-btn"]',
@@ -98,6 +152,7 @@ export const TutorialManager = () => {
                             description: "When a Seeker shares a question with you, click this button to paste it onto the map and see the answer.",
                             side: "right",
                             align: "end",
+                            showButtons: ["next"]
                         },
                     }
                 ]
@@ -116,7 +171,7 @@ export const TutorialManager = () => {
                 }
             };
         }
-    }, [$hiderMode, $showHiderTutorial, $showTutorial]);
+    }, [isHiderMode, $showHiderTutorial, $showTutorial]);
 
     useEffect(() => {
         if ($showTutorial && $hasSeenWelcome) {
