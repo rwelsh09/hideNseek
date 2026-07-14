@@ -1,8 +1,9 @@
 import * as turf from "@turf/turf";
 import { PLACES } from "@/maps/placesConfig";
-import { determineMatchBoundary, findMatchPlaces } from "@/maps/questions/match";
+import { determineMatchBoundary } from "@/maps/questions/match";
 import { calculateMeasureDistance } from "@/maps/questions/measure";
-import { extractStationName, geoSpatialVoronoi } from "@/maps/geo-utils";
+import { extractStationName } from "@/maps/geo-utils";
+import { PHOTO_DESCRIPTIONS } from "@/components/cards/photo";
 
 export const getQuestionShareText = async (question: any, questionData: any): Promise<string> => {
     if (!question) return "Incoming question from a Seeker!";
@@ -47,43 +48,12 @@ export const getQuestionShareText = async (question: any, questionData: any): Pr
                 return "Does your Neighbourhood start with the same letter as ours ([letter])?";
             }
 
-            if (type === "same-train-line" || type === "same-first-letter-station" || type === "same-length-station") {
-                // Determine seeker's closest station name is slightly complex without full calgaryTransitData directly here
-                // But it evaluates locally.
-                // We'll leave as generic for these specific ones unless easily calculable
-                if (type === "same-train-line") return "Are you on the same Train Line as us ([line])?";
-                if (type === "same-length-station") return "Does your Train Station have the same length as ours ([station])?";
-                return "Does your Train Station start with the same letter as ours ([letter])?";
-            }
-
-            let answer = "[answer]";
-            try {
-                const data = await findMatchPlaces(questionData);
-                if (data) {
-                    const voronoi = geoSpatialVoronoi(data);
-                    const point = turf.point([questionData.lng, questionData.lat]);
-
-                    for (const feature of voronoi.features) {
-                        if (turf.booleanPointInPolygon(point, feature)) {
-                            // Try to get the name of the place
-                            // Wait, the voronoi features don't have the properties of the original point
-                            // Instead of voronoi, just find nearest point!
-                            const nearest = turf.nearestPoint(point, data);
-                            if (nearest && nearest.properties && nearest.properties.name) {
-                                answer = nearest.properties.name;
-                            } else if (nearest && nearest.properties && nearest.properties.tags && nearest.properties.tags.name) {
-                                answer = nearest.properties.tags.name;
-                            }
-                            break;
-                        }
-                    }
-                }
-            } catch (e) {
-                // Ignore and use fallback
-            }
+            if (type === "same-train-line") return "Are you on the same Train Line as us?";
+            if (type === "same-length-station") return "Does your Train Station have the same length as ours?";
+            if (type === "same-first-letter-station") return "Does your Train Station start with the same letter as ours?";
 
             const label = getPlaceLabel(type);
-            return `Is your closest ${label} also ${answer}?`;
+            return `Are you near the same ${label} as us?`;
         }
 
         case "measure": {
@@ -115,7 +85,7 @@ export const getQuestionShareText = async (question: any, questionData: any): Pr
 
         case "photo": {
             if (questionData.notes) return `Photo challenge: ${questionData.notes}`;
-            return `Send us a photo of a ${questionData.type}!`;
+            return PHOTO_DESCRIPTIONS[questionData.type] || `Send us a photo of a ${questionData.type}!`;
         }
 
         default:

@@ -17,7 +17,7 @@ import type { PhotoQuestion } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
-const PHOTO_LABELS: Record<string, string> = {
+export const PHOTO_LABELS: Record<string, string> = {
     camera: "Hider Selfie",
     tree: "Unique Tree",
     car: "Widest Street",
@@ -31,7 +31,7 @@ const PHOTO_LABELS: Record<string, string> = {
     water: "Largest Body of Water",
 };
 
-const PHOTO_DESCRIPTIONS: Record<string, string> = {
+export const PHOTO_DESCRIPTIONS: Record<string, string> = {
     camera: "Take a selfie at your current location with enough background visible to help Seekers identify where you are.",
     tree: "Find and photograph the most unique or distinctive tree in your immediate vicinity.",
     car: "Photograph the widest street or road that you can see from your location.",
