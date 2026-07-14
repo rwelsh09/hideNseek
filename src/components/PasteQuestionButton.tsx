@@ -43,7 +43,6 @@ export const PasteQuestionButton = () => {
             disabled={$isLoading}
         >
             <ClipboardPasteIcon className="w-4 h-4" />
-            Paste Question
         </Button>
     );
 };
