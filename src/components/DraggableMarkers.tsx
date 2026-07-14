@@ -22,7 +22,7 @@ import {
     MatchQuestionComponent,
     MeasureQuestionComponent,
     PhotoQuestionComponent,
-    RadiusQuestionComponent,
+    RadarQuestionComponent,
 } from "./QuestionCards";
 import { Button } from "./ui/button";
 import { SidebarMenu } from "./ui/sidebar-l";
@@ -164,7 +164,7 @@ export const DraggableMarkers = () => {
                 if (!question.data || question.data.locked) return null;
 
                 switch (question.id) {
-                    case "radius":
+                    case "radar":
                     case "closest":
                     case "match":
                     case "photo":
@@ -289,8 +289,8 @@ export const DraggableMarkers = () => {
 
                             {activeQuestion && (
                                 <Fragment>
-                                    {activeQuestion.id === "radius" && (
-                                        <RadiusQuestionComponent
+                                    {activeQuestion.id === "radar" && (
+                                        <RadarQuestionComponent
                                             data={activeQuestion.data as any}
                                             questionKey={activeQuestion.key}
                                         />

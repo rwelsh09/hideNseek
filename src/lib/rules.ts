@@ -2,7 +2,7 @@
 export const QUESTION_RULES: Record<string, string> = {
    "hot/cold":
         "Seekers travel a specific distance (e.g., 2km) providing the Hider with their starting and end point. The Hider must reveal if the Seekers are now Warmer (closer) or Colder (further) to the Hider's position.",
-    radius: "Seekers select a specific distance (e.g., 5km) to project a Radar from their current location. The Hider must answer 'Yes' or 'No' to whether their location falls within that Radar.",
+    radar: "Seekers select a specific distance (e.g., 5km) to project a Radar from their current location. The Hider must answer 'Yes' or 'No' to whether their location falls within that Radar.",
     match: "Seekers ask if the Hider's location shares a specific attribute with them (e.g., 'Does your station's name start with the same letter as ours?', 'Is your nearest Library the same as ours?').",
     measure:
         "Seekers ask for if the Hider is closer or further to a specific type of place (e.g. Hospitals) than they are.",

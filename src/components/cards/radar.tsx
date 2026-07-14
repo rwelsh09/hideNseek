@@ -16,17 +16,17 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
-import type { RadiusQuestion } from "@/maps/schema";
+import type { RadarQuestion } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
-export const RadiusQuestionComponent = ({
+export const RadarQuestionComponent = ({
     data,
     questionKey,
     sub,
     className,
 }: {
-    data: RadiusQuestion;
+    data: RadarQuestion;
     questionKey: number;
     sub?: string;
     className?: string;

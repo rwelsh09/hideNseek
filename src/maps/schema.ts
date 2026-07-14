@@ -110,7 +110,7 @@ const photoQuestionSchema = ordinaryBaseQuestionSchema.extend({
     color: iconColorSchema.default("blue"),
 });
 
-const radiusQuestionSchema = ordinaryBaseQuestionSchema.extend({
+const radarQuestionSchema = ordinaryBaseQuestionSchema.extend({
     radius: z.number().min(0, "You cannot have a negative radius").default(50),
     isCustom: z.boolean().default(false),
     unit: unitsSchema.default(getDefaultUnit),
@@ -212,9 +212,9 @@ export const questionSchema = z.union([
     }),
 
     z.object({
-        id: z.literal("radius"),
+        id: z.literal("radar"),
         key: z.number().default(Math.random),
-        data: radiusQuestionSchema,
+        data: radarQuestionSchema,
     }),
     z.object({
         id: z.literal("hot/cold"),
@@ -241,7 +241,7 @@ export const questionSchema = z.union([
 export const questionsSchema = z.array(questionSchema);
 
 export type Units = z.infer<typeof unitsSchema>;
-export type RadiusQuestion = z.infer<typeof radiusQuestionSchema>;
+export type RadarQuestion = z.infer<typeof radarQuestionSchema>;
 export type HotColdQuestion = z.infer<typeof hotColdQuestionSchema>;
 export type ClosestQuestion = z.infer<typeof closestQuestionSchema>;
 export type APILocations = z.infer<typeof apiLocationSchema>;

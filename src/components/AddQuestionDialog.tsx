@@ -53,7 +53,7 @@ export function AddQuestionDialog() {
         return $questions.some(q => {
             if (!q.data.locked) return false;
 
-            if (type === "radar" && q.id === "radius") {
+            if (type === "radar" && q.id === "radar") {
                 const isCustom = detail === "unknown";
                 if (isCustom) return q.data.isCustom === true;
                 const radius = parseFloat(detail || "5");
@@ -92,7 +92,7 @@ export function AddQuestionDialog() {
 
         // METRIC UPDATE: Changed all unit payloads to kilometers
         if (type === "radar") {
-            qId = "radius";
+            qId = "radar";
             qData.radius = detail === "unknown" ? 5 : parseFloat(detail || "5");
             qData.isCustom = detail === "unknown";
             qData.unit = "kilometers";

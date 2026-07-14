@@ -2,10 +2,10 @@ import * as turf from "@turf/turf";
 
 import { hiderMode } from "@/lib/context";
 import { arcBuffer, modifyMapData } from "@/maps/geo-utils";
-import type { RadiusQuestion } from "@/maps/schema";
+import type { RadarQuestion } from "@/maps/schema";
 
-export const adjustPerRadius = async (
-    question: RadiusQuestion,
+export const adjustPerRadar = async (
+    question: RadarQuestion,
     mapData: any,
 ) => {
     if (mapData === null) return;
@@ -20,7 +20,7 @@ export const adjustPerRadius = async (
     return modifyMapData(mapData, circle, question.within);
 };
 
-export const hiderifyRadius = (question: RadiusQuestion) => {
+export const hiderifyRadar = (question: RadarQuestion) => {
     const $hiderMode = hiderMode.get();
     if ($hiderMode === false) {
         return question;
@@ -41,7 +41,7 @@ export const hiderifyRadius = (question: RadiusQuestion) => {
     return question;
 };
 
-export const radiusPlanningPolygon = async (question: RadiusQuestion) => {
+export const radarPlanningPolygon = async (question: RadarQuestion) => {
     const point = turf.point([question.lng, question.lat]);
     const circle = await arcBuffer(
         turf.featureCollection([point]),
