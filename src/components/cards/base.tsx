@@ -230,10 +230,15 @@ export const QuestionCard = ({
                                     toast.error("Clipboard API not supported in your browser");
                                     return;
                                 }
+
+                                const payload = btoa(unescape(encodeURIComponent(JSON.stringify(question))));
+                                const url = new URL(window.location.href);
+                                url.searchParams.set("q", payload);
+
                                 navigator.clipboard
-                                    .writeText(JSON.stringify(question, null, 4))
-                                    .then(() => toast.success("Copied to Clipboard!"))
-                                    .catch(() => toast.error("Failed to Copy"));
+                                    .writeText(`Incoming question from a Seeker!\n${url.toString()}`)
+                                    .then(() => toast.success("Copied Link to Clipboard!"))
+                                    .catch(() => toast.error("Failed to Copy Link"));
                             }}
                         >
                             <VscShare className="w-4 h-4" />

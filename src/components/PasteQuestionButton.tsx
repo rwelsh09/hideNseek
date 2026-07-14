@@ -20,7 +20,19 @@ export const PasteQuestionButton = () => {
                     .readText()
                     .then((text) => {
                         try {
-                            const parsed = JSON.parse(text);
+                            let jsonText = text;
+
+                            // Check if pasted text is a URL with our q parameter
+                            const urlMatch = text.match(/q=([^&\s]+)/);
+                            if (urlMatch && urlMatch[1]) {
+                                try {
+                                    jsonText = decodeURIComponent(escape(window.atob(urlMatch[1])));
+                                } catch (e) {
+                                    // if decoding fails, jsonText remains as original text which will fail parsing below
+                                }
+                            }
+
+                            const parsed = JSON.parse(jsonText);
                             delete parsed.key; // Ensure a new key is generated
                             const validated =
                                 questionSchema.parse(parsed);
@@ -28,7 +40,7 @@ export const PasteQuestionButton = () => {
                             toast.success(
                                 "Question pasted successfully!",
                             );
-                        } catch {
+                        } catch (e) {
                             toast.error(
                                 "Failed to paste question. Try copying it again.",
                             );

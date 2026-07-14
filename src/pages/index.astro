@@ -16,12 +16,14 @@ import { TutorialManager } from "@/components/TutorialManager";
 import { TimerDrawer } from "@/components/TimerDrawer";
 import { NextStepsChecklist } from "@/components/NextStepsChecklist";
 import { WelcomeDialog } from "@/components/WelcomeDialog";
+import { IncomingQuestionHandler } from "@/components/IncomingQuestionHandler";
 ---
 
 <Layout className="bg-main">
     <WelcomeDialog client:only="react" />
     <TutorialManager client:only="react" />
     <NextStepsChecklist client:only="react" />
+    <IncomingQuestionHandler client:only="react" />
     <SidebarProviderL client:only="react" defaultOpen={false}>
         <SidebarProviderR client:only="react" defaultOpen={false}>
             <QuestionSidebar client:only="react" />
