@@ -185,6 +185,7 @@ export const OptionDrawers = () => {
                                             id="hider-mode-toggle"
                                             checked={!!$hiderMode}
                                             onCheckedChange={() => {
+                                                editingQuestionId.set(null);
                                                 if ($hiderMode === false) {
                                                     const $leafletMapContext =
                                                         leafletMapContext.get();
