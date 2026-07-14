@@ -14,11 +14,14 @@ import {
     hasSeenWelcome,
     showNextStepsChecklist,
     showTutorial,
+    hiderMode,
+    mapGeoLocation,
 } from "@/lib/context";
 
-export const WelcomeDialog = () => {
+export const StartScreen = () => {
     const $hasSeenWelcome = useStore(hasSeenWelcome);
     const $showTutorial = useStore(showTutorial);
+    const $mapGeoLocation = useStore(mapGeoLocation);
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
@@ -49,13 +52,29 @@ export const WelcomeDialog = () => {
         window.location.href = `${import.meta.env.BASE_URL.replace(/\/$/, "")}/rules/`;
     };
 
-    const handleFigureItOut = () => {
+    const handleStartAsSeeker = () => {
         hasSeenWelcome.set(true);
         hasSeenRules.set(true);
         showTutorial.set(false);
         showNextStepsChecklist.set(true);
         setIsOpen(false);
+        hiderMode.set(false);
     };
+
+    const handleStartAsHider = () => {
+        hasSeenWelcome.set(true);
+        hasSeenRules.set(true);
+        showTutorial.set(false);
+        showNextStepsChecklist.set(true);
+        setIsOpen(false);
+        hiderMode.set({
+            latitude:
+                $mapGeoLocation?.geometry?.coordinates?.[1] ?? 51.0447,
+            longitude:
+                $mapGeoLocation?.geometry?.coordinates?.[0] ?? -114.0719,
+        });
+    };
+
 
     return (
         <AlertDialog open={isOpen} onOpenChange={setIsOpen}>
@@ -79,12 +98,20 @@ export const WelcomeDialog = () => {
                             <span className="text-sm font-normal opacity-80">Full details on how to play</span>
                         </div>
                     </Button>
-                    <Button onClick={handleFigureItOut} size="lg" variant="outline" className="w-full justify-start text-left h-auto py-4">
-                        <div className="flex flex-col items-start gap-1">
-                            <span className="font-semibold text-xl">I got this!</span>
-                            <span className="text-sm font-normal opacity-80">Skip the intro and jump right in</span>
-                        </div>
-                    </Button>
+                    <div className="flex gap-4 w-full">
+                        <Button onClick={handleStartAsSeeker} size="lg" variant="outline" className="flex-1 justify-start text-left h-auto py-4">
+                            <div className="flex flex-col items-start gap-1">
+                                <span className="font-semibold text-xl">Start as Seeker</span>
+                                <span className="text-sm font-normal opacity-80">Find the hider</span>
+                            </div>
+                        </Button>
+                        <Button onClick={handleStartAsHider} size="lg" variant="outline" className="flex-1 justify-start text-left h-auto py-4">
+                            <div className="flex flex-col items-start gap-1">
+                                <span className="font-semibold text-xl">Start as Hider</span>
+                                <span className="text-sm font-normal opacity-80">Hide from seekers</span>
+                            </div>
+                        </Button>
+                    </div>
                 </div>
             </AlertDialogContent>
         </AlertDialog>
