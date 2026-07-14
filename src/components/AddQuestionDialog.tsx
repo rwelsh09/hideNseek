@@ -7,8 +7,6 @@ import {
     Church,
     Leaf,
     Map as MapIcon,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    MapPinned,
     Network,
     Plus,
     Route,
@@ -17,8 +15,6 @@ import {
     Target,
     Thermometer as HotCold,
     Train,
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    TramFront,
     Trees,
     Utensils,
     Waves,
@@ -90,7 +86,6 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
         let qId = type;
         let qData: any = { lat: center.lat, lng: center.lng, locked: false, doubledPenalty: isQuestionLocked(type, detail) };
 
-        // METRIC UPDATE: Changed all unit payloads to kilometers
         if (type === "radar") {
             qId = "radar";
             qData.radius = detail === "unknown" ? 5 : parseFloat(detail || "5");
@@ -136,7 +131,7 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
             qData.color = "blue";
         }
 
-        // Add to map immediately
+        // Add to map
         addQuestion({ id: qId as any, key, data: qData });
 
         // Trigger the floating panel to open in DraggableMarkers
@@ -144,7 +139,7 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
         draftQuestionId.set(key);
         draftQuestionType.set(type);
 
-        // Close this grid menu instantly
+        // Close this grid menu
         setOpen(false);
 
         // Force the mobile sidebar to close so the map is completely visible
@@ -286,7 +281,6 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                             >
                                 5 km
                             </button>
-
                             <button
                                 type="button"
                                 aria-label="Add radar question for 10 km"
@@ -297,6 +291,17 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                                 className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "10") ? "opacity-50 grayscale" : ""}`}
                             >
                                 10 km
+                            </button>
+                            <button
+                                type="button"
+                                aria-label="Add radar question for 15 km"
+                                title="Add radar question for 15 km"
+                                onClick={() =>
+                                    handleQuestionSelect("radar", "15")
+                                }
+                                className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "15") ? "opacity-50 grayscale" : ""}`}
+                            >
+                                15 km
                             </button>
                             <button
                                 type="button"
