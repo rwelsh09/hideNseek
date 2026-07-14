@@ -65,6 +65,9 @@ export const TutorialManager = () => {
                                     }
                                 });
 
+                                if ((hiderDriverObj as any)._closeOptionsCheckInterval) {
+                                    clearInterval((hiderDriverObj as any)._closeOptionsCheckInterval);
+                                }
                                 if (isOptionsOpenStore.get()) {
                                     const checkInterval = setInterval(() => {
                                         if (!isOptionsOpenStore.get()) {
@@ -100,6 +103,9 @@ export const TutorialManager = () => {
                                     disableActiveInteraction: false,
                                 });
 
+                                if ((hiderDriverObj as any)._markerClickCheckInterval) {
+                                    clearInterval((hiderDriverObj as any)._markerClickCheckInterval);
+                                }
                                 const checkInterval = setInterval(() => {
                                     const gpsBtn = document.querySelector('[data-tutorial-id="tutorial-gps-btn"]');
                                     if (gpsBtn) {
@@ -143,6 +149,9 @@ export const TutorialManager = () => {
                                     ...hiderDriverObj.getConfig(),
                                     disableActiveInteraction: false,
                                 });
+                                if ((hiderDriverObj as any)._popupCloseCheckInterval) {
+                                    clearInterval((hiderDriverObj as any)._popupCloseCheckInterval);
+                                }
                                 const checkInterval = setInterval(() => {
                                     const popup = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
                                     if (!popup) {
