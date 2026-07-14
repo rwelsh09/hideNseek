@@ -203,14 +203,9 @@ export const isLoading = atom<boolean>(false);
 export const isOptionsOpenStore = atom<boolean>(false);
 
 export const baseTileLayer = persistentAtom<
-    "voyager" | "light" | "dark" | "transport" | "neighbourhood" | "osmcarto" | "satellite"
+    "voyager" | "light" | "dark" | "osmcarto" | "satellite"
 >("baseTileLayer", "voyager");
 
-export const thunderforestApiKey = persistentAtom<string>("thunderforestApiKey", "", {
-        encode: (value: string) => value,
-        decode: (value: string) => value,
-    },
-);
 export const followMe = persistentAtom<boolean>("followMe", false, {
     encode: JSON.stringify,
     decode: JSON.parse,
