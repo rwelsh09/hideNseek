@@ -50,9 +50,10 @@ export const TutorialManager = () => {
                         element: '[data-tutorial-id="options-drawer"]',
                         popover: {
                             title: "Welcome Hider!",
-                            description: "Close this options menu I have a couple things to show you.",
+                            description: "",
                             side: "top",
                             align: "center",
+                            showButtons: ["next"],
                             onPopoverRender: () => {
                                 hiderDriverObj.setConfig({
                                     ...hiderDriverObj.getConfig(),
@@ -62,14 +63,16 @@ export const TutorialManager = () => {
                                     }
                                 });
 
-                                const checkInterval = setInterval(() => {
-                                    if (!isOptionsOpenStore.get()) {
-                                        clearInterval(checkInterval);
-                                        setTimeout(() => hiderDriverObj.moveNext(), 300);
-                                    }
-                                }, 100);
-                                
-                                (hiderDriverObj as any)._closeOptionsCheckInterval = checkInterval;
+                                if (isOptionsOpenStore.get()) {
+                                    const checkInterval = setInterval(() => {
+                                        if (!isOptionsOpenStore.get()) {
+                                            clearInterval(checkInterval);
+                                            setTimeout(() => hiderDriverObj.moveNext(), 300);
+                                        }
+                                    }, 100);
+
+                                    (hiderDriverObj as any)._closeOptionsCheckInterval = checkInterval;
+                                }
                             },
                             onDeselected: () => {
                                 if ((hiderDriverObj as any)._closeOptionsCheckInterval) {
@@ -86,10 +89,45 @@ export const TutorialManager = () => {
                         element: '.tutorial-marker-green',
                         popover: {
                             title: "Hider Location",
-                            description: "Place the green Map Marker on your hiding spot so the app can calculate the answers to give the Seekers.",
+                            description: "Click on the green Map Marker to open its location settings.",
                             side: "top",
                             align: "center",
+                            onPopoverRender: () => {
+                                hiderDriverObj.setConfig({
+                                    ...hiderDriverObj.getConfig(),
+                                    disableActiveInteraction: false,
+                                });
+
+                                const checkInterval = setInterval(() => {
+                                    const gpsBtn = document.querySelector('[data-tutorial-id="tutorial-gps-btn"]');
+                                    if (gpsBtn) {
+                                        clearInterval(checkInterval);
+                                        setTimeout(() => hiderDriverObj.moveNext(), 300);
+                                    }
+                                }, 100);
+                                (hiderDriverObj as any)._markerClickCheckInterval = checkInterval;
+                            },
+                            onDeselected: () => {
+                                if ((hiderDriverObj as any)._markerClickCheckInterval) {
+                                    clearInterval((hiderDriverObj as any)._markerClickCheckInterval);
+                                }
+                            }
                         },
+                    },
+                    {
+                        element: '[data-tutorial-id="tutorial-gps-btn"]',
+                        popover: {
+                            title: "Set Location",
+                            description: "Click the GPS button to set your hiding location. This is required for accurate question answering.",
+                            side: "bottom",
+                            align: "center",
+                            onPopoverRender: () => {
+                                hiderDriverObj.setConfig({
+                                    ...hiderDriverObj.getConfig(),
+                                    disableActiveInteraction: false,
+                                });
+                            }
+                        }
                     },
                     {
                         element: '[data-tutorial-id="tutorial-paste-question-btn"]',
