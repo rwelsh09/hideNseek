@@ -36,8 +36,10 @@ export const TutorialManager = () => {
     const [confirmEndTutorial, setConfirmEndTutorial] = useState(false);
     const [activeDriver, setActiveDriver] = useState<any>(null);
 
+    const isHiderMode = $hiderMode !== false;
+
     useEffect(() => {
-        if ($hiderMode !== false && $showHiderTutorial && !$showTutorial) {
+        if (isHiderMode && $showHiderTutorial && !$showTutorial) {
             const hiderDriverObj = driver({
                 showProgress: true,
                 overlayClickBehavior: () => {},
@@ -47,7 +49,7 @@ export const TutorialManager = () => {
                 },
                 steps: [
                     {
-                        element: '[data-tutorial-id="options-drawer"]',
+                        element: '[data-tutorial-id="options-drawer"] > div',
                         popover: {
                             title: "Welcome Hider!",
                             description: "",
@@ -118,7 +120,7 @@ export const TutorialManager = () => {
                         element: '[data-tutorial-id="tutorial-gps-btn"]',
                         popover: {
                             title: "Set Location",
-                            description: "Click the GPS button to set your hiding location. This is required for accurate question answering.",
+                            description: "When you've arrived in your Hiding Zone, click the GPS button to set your hiding location. This is required for accurate question answering.",
                             side: "bottom",
                             align: "center",
                             onPopoverRender: () => {
@@ -154,7 +156,7 @@ export const TutorialManager = () => {
                 }
             };
         }
-    }, [$hiderMode, $showHiderTutorial, $showTutorial]);
+    }, [isHiderMode, $showHiderTutorial, $showTutorial]);
 
     useEffect(() => {
         if ($showTutorial && $hasSeenWelcome) {

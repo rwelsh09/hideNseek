@@ -3,7 +3,7 @@ import { useStore } from "@nanostores/react";
 import { XIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-import { showNextStepsChecklist, showTutorial } from "@/lib/context";
+import { showNextStepsChecklist, showTutorial, showHiderTutorial } from "@/lib/context";
 
 import { PwaInstallTip } from "./PwaInstallTip";
 
@@ -15,6 +15,7 @@ export const hasDismissedNextStepsChecklist = persistentAtom<boolean>(
 
 export const NextStepsChecklist = () => {
     const isTutorialVisible = useStore(showTutorial);
+    const isHiderTutorialVisible = useStore(showHiderTutorial);
     const isChecklistVisible = useStore(showNextStepsChecklist);
     const hasDismissed = useStore(hasDismissedNextStepsChecklist);
     const [isMounted, setIsMounted] = useState(false);
@@ -26,6 +27,7 @@ export const NextStepsChecklist = () => {
     if (
         !isMounted ||
         isTutorialVisible ||
+        isHiderTutorialVisible ||
         !isChecklistVisible ||
         hasDismissed
     ) {
