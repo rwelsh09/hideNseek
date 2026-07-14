@@ -89,8 +89,10 @@ export async function shareOrFallback(
 
     if (!navigator.share) return shareOrFallback(data, true); // Fallback to clipboard
 
+    const sharePayload = text ? { text: clipboardContent, title } : { url, title };
+
     return await navigator
-        .share({ url, text, title })
+        .share(sharePayload)
         .then(() => true)
         .catch(() => {
             // Try again with clipboard
