@@ -199,65 +199,69 @@ export const QuestionCard = ({
                     </SidebarGroupLabel>
 
                     <div className="absolute right-1.5 top-1.5 flex gap-1 z-10" onClick={(e) => e.stopPropagation()}>
-                        {QUESTION_RULES[question?.id as keyof typeof QUESTION_RULES] && (
-                            <Popover>
-                                <PopoverTrigger asChild>
-                                    <button
-                                        type="button"
-                                        aria-label="Question Rules"
-                                        data-tutorial-id="tutorial-question-rules-btn"
-                                        className="p-1 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors"
-                                    >
-                                        <VscQuestion className="w-4 h-4" />
-                                    </button>
-                                </PopoverTrigger>
-                                <PopoverContent className="w-80 p-4 z-[9999]">
-                                    <h4 className="font-semibold mb-2">How it works</h4>
-                                    <p className="text-sm text-muted-foreground">
-                                        {QUESTION_RULES[question?.id as keyof typeof QUESTION_RULES]}
-                                    </p>
-                                </PopoverContent>
-                            </Popover>
+                        {!questionData.locked && (
+                            <>
+                                {QUESTION_RULES[question?.id as keyof typeof QUESTION_RULES] && (
+                                    <Popover>
+                                        <PopoverTrigger asChild>
+                                            <button
+                                                type="button"
+                                                aria-label="Question Rules"
+                                                data-tutorial-id="tutorial-question-rules-btn"
+                                                className="p-1 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors"
+                                            >
+                                                <VscQuestion className="w-4 h-4" />
+                                            </button>
+                                        </PopoverTrigger>
+                                        <PopoverContent className="w-80 p-4 z-[9999]">
+                                            <h4 className="font-semibold mb-2">How it works</h4>
+                                            <p className="text-sm text-muted-foreground">
+                                                {QUESTION_RULES[question?.id as keyof typeof QUESTION_RULES]}
+                                            </p>
+                                        </PopoverContent>
+                                    </Popover>
+                                )}
+                                <button
+                                    type="button"
+                                    aria-label="Share Question"
+                                    data-tutorial-id="tutorial-share-question-btn"
+                                    className="p-1 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        if (!navigator || !navigator.clipboard) {
+                                            toast.error("Clipboard API not supported in your browser");
+                                            return;
+                                        }
+                                        navigator.clipboard
+                                            .writeText(JSON.stringify(question, null, 4))
+                                            .then(() => toast.success("Copied to Clipboard!"))
+                                            .catch(() => toast.error("Failed to Copy"));
+                                    }}
+                                >
+                                    <VscShare className="w-4 h-4" />
+                                </button>
+                                <button
+                                    type="button"
+                                    aria-label="Delete Question"
+                                    data-tutorial-id="tutorial-delete-question-btn"
+                                    className="p-1 text-red-400 hover:text-red-600 hover:bg-red-100 dark:hover:bg-red-950 rounded-md transition-colors"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        const qList = questions.get();
+                                        const currentQ = qList.find((q) => q.key === questionKey);
+                                        if (currentQ && !currentQ.data.locked) {
+                                            questions.set(qList.filter((q) => q.key !== questionKey));
+                                            if (questions.get().length === 0) {
+                                                lockedRecommendedStart.set(null);
+                                                lockedActiveStationIds.set(null);
+                                            }
+                                        }
+                                    }}
+                                >
+                                    <VscTrash className="w-4 h-4" />
+                                </button>
+                            </>
                         )}
-                        <button
-                            type="button"
-                            aria-label="Share Question"
-                            data-tutorial-id="tutorial-share-question-btn"
-                            className="p-1 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                if (!navigator || !navigator.clipboard) {
-                                    toast.error("Clipboard API not supported in your browser");
-                                    return;
-                                }
-                                navigator.clipboard
-                                    .writeText(JSON.stringify(question, null, 4))
-                                    .then(() => toast.success("Copied to Clipboard!"))
-                                    .catch(() => toast.error("Failed to Copy"));
-                            }}
-                        >
-                            <VscShare className="w-4 h-4" />
-                        </button>
-                        <button
-                            type="button"
-                            aria-label="Delete Question"
-                            data-tutorial-id="tutorial-delete-question-btn"
-                            className="p-1 text-red-400 hover:text-red-600 hover:bg-red-100 dark:hover:bg-red-950 rounded-md transition-colors"
-                            onClick={(e) => {
-                                e.stopPropagation();
-                                const qList = questions.get();
-                                const currentQ = qList.find((q) => q.key === questionKey);
-                                if (currentQ && !currentQ.data.locked) {
-                                    questions.set(qList.filter((q) => q.key !== questionKey));
-                                    if (questions.get().length === 0) {
-                                        lockedRecommendedStart.set(null);
-                                        lockedActiveStationIds.set(null);
-                                    }
-                                }
-                            }}
-                        >
-                            <VscTrash className="w-4 h-4" />
-                        </button>
                     </div>
 
                     <SidebarGroupContent
