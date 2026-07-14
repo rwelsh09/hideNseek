@@ -268,23 +268,22 @@ export const DraggableMarkers = () => {
 
                         <div className="p-4 overflow-y-auto flex-1 flex flex-col gap-4 text-white">
                             {isHiderActive && (
-                                <SidebarMenu>
-                                    <LatitudeLongitude
-                                        latitude={$hiderMode.latitude}
-                                        longitude={$hiderMode.longitude}
-                                        onChange={(latitude, longitude) => {
-                                            hiderMode.set({
-                                                latitude:
-                                                    latitude ??
-                                                    $hiderMode.latitude,
-                                                longitude:
-                                                    longitude ??
-                                                    $hiderMode.longitude,
-                                            });
-                                        }}
-                                        label="Hider Location"
-                                    />
-                                </SidebarMenu>
+                                <LatitudeLongitude
+                                    className="mt-0"
+                                    latitude={$hiderMode.latitude}
+                                    longitude={$hiderMode.longitude}
+                                    onChange={(latitude, longitude) => {
+                                        hiderMode.set({
+                                            latitude:
+                                                latitude ??
+                                                $hiderMode.latitude,
+                                            longitude:
+                                                longitude ??
+                                                $hiderMode.longitude,
+                                        });
+                                    }}
+                                    label={null}
+                                />
                             )}
 
                             {activeQuestion && (
