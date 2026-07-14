@@ -54,33 +54,48 @@ export const decompress = async (
     return new TextDecoder().decode(arrayBuffer);
 };
 
+export interface ShareDataOptions {
+    url: string;
+    text?: string;
+    title?: string;
+}
+
 /**
  * Open native share sheet or fallback to sending to clipboard
- * @param url URL to share
+ * @param data URL string or ShareData to share
  * @param forceClipboard Whether to force usage of the clipboard (instead of share sheet)
  * @returns `true` for native success, `false` for both native and fallback failure and `"clipboard"` for clipboard success
  */
 export async function shareOrFallback(
-    url: string,
+    data: string | ShareDataOptions,
     forceClipboard = false,
 ): Promise<boolean | "clipboard"> {
+    const url = typeof data === "string" ? data : data.url;
+    const text = typeof data === "string" ? undefined : data.text;
+    const title = typeof data === "string" ? undefined : data.title;
+
+    // Fallback content to copy when share sheet isn't used
+    const clipboardContent = text ? `${text}\n${url}` : url;
+
     if (forceClipboard) {
         if (!navigator || !navigator.clipboard) {
             // Clipboard not supported
             return false;
         }
 
-        navigator.clipboard.writeText(url);
+        navigator.clipboard.writeText(clipboardContent);
         return "clipboard";
     }
 
-    if (!navigator.share) return shareOrFallback(url, true); // Fallback to clipboard
+    if (!navigator.share) return shareOrFallback(data, true); // Fallback to clipboard
+
+    const sharePayload = text ? { text: clipboardContent, title } : { url, title };
 
     return await navigator
-        .share({ url })
+        .share(sharePayload)
         .then(() => true)
         .catch(() => {
             // Try again with clipboard
-            return shareOrFallback(url, true);
+            return shareOrFallback(data, true);
         });
 }

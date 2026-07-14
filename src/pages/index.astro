@@ -15,6 +15,7 @@ import { OptionDrawers } from "@/components/OptionDrawers";
 import { TutorialManager } from "@/components/TutorialManager";
 import { TimerDrawer } from "@/components/TimerDrawer";
 import { NextStepsChecklist } from "@/components/NextStepsChecklist";
+import { IncomingQuestionHandler } from "@/components/IncomingQuestionHandler";
 import { StartScreen } from "@/components/StartScreen";
 ---
 
@@ -22,6 +23,7 @@ import { StartScreen } from "@/components/StartScreen";
     <StartScreen client:only="react" />
     <TutorialManager client:only="react" />
     <NextStepsChecklist client:only="react" />
+    <IncomingQuestionHandler client:only="react" />
     <SidebarProviderL client:only="react" defaultOpen={false}>
         <SidebarProviderR client:only="react" defaultOpen={false}>
             <QuestionSidebar client:only="react" />
