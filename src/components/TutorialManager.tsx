@@ -42,7 +42,9 @@ export const TutorialManager = () => {
         if (isHiderMode && $showHiderTutorial && !$showTutorial) {
             const hiderDriverObj = driver({
                 showProgress: true,
-                overlayClickBehavior: () => {},
+                overlayClickBehavior: () => {
+                    isOptionsOpenStore.set(false);
+                },
                 onDestroyStarted: () => {
                     hiderDriverObj.destroy();
                     showHiderTutorial.set(false);
@@ -57,13 +59,6 @@ export const TutorialManager = () => {
                             align: "center",
                             showButtons: ["next"],
                             onPopoverRender: () => {
-                                hiderDriverObj.setConfig({
-                                    ...hiderDriverObj.getConfig(),
-                                    disableActiveInteraction: false,
-                                    overlayClickBehavior: () => {
-                                        isOptionsOpenStore.set(false);
-                                    }
-                                });
 
                                 if ((hiderDriverObj as any)._closeOptionsCheckInterval) {
                                     clearInterval((hiderDriverObj as any)._closeOptionsCheckInterval);
@@ -83,10 +78,6 @@ export const TutorialManager = () => {
                                 if ((hiderDriverObj as any)._closeOptionsCheckInterval) {
                                     clearInterval((hiderDriverObj as any)._closeOptionsCheckInterval);
                                 }
-                                hiderDriverObj.setConfig({
-                                    ...hiderDriverObj.getConfig(),
-                                    overlayClickBehavior: () => {}
-                                });
                             }
                         }
                     },
@@ -99,10 +90,6 @@ export const TutorialManager = () => {
                             align: "center",
                             showButtons: ["previous"],
                             onPopoverRender: () => {
-                                hiderDriverObj.setConfig({
-                                    ...hiderDriverObj.getConfig(),
-                                    disableActiveInteraction: false,
-                                });
 
                                 if ((hiderDriverObj as any)._markerClickCheckInterval) {
                                     clearInterval((hiderDriverObj as any)._markerClickCheckInterval);
@@ -131,10 +118,6 @@ export const TutorialManager = () => {
                             side: "bottom",
                             align: "center",
                             onPopoverRender: () => {
-                                hiderDriverObj.setConfig({
-                                    ...hiderDriverObj.getConfig(),
-                                    disableActiveInteraction: false,
-                                });
                             }
                         }
                     },
@@ -146,10 +129,6 @@ export const TutorialManager = () => {
                             side: "bottom",
                             align: "center",
                             onPopoverRender: () => {
-                                hiderDriverObj.setConfig({
-                                    ...hiderDriverObj.getConfig(),
-                                    disableActiveInteraction: false,
-                                });
                                 if ((hiderDriverObj as any)._popupCloseCheckInterval) {
                                     clearInterval((hiderDriverObj as any)._popupCloseCheckInterval);
                                 }
