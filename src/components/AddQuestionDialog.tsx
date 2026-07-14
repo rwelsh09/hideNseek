@@ -45,7 +45,7 @@ import {
 } from "./ui/dialog";
 
 
-export function AddQuestionDialog() {
+export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) {
     const [open, setOpen] = useState(false);
 
     const $questions = useStore(questions);
@@ -155,10 +155,10 @@ export function AddQuestionDialog() {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
-                    className="w-full flex items-center justify-center gap-2 h-10"
+                    className={iconOnly ? "flex items-center justify-center gap-2 h-10 w-10 p-0" : "w-full flex items-center justify-center gap-2 h-10"}
                     data-tutorial-id="add-question-btn"
                 >
-                    <Plus className="w-5 h-5" /> Add Question
+                    <Plus className="w-5 h-5" /> {!iconOnly && "Add Question"}
                 </Button>
             </DialogTrigger>
 

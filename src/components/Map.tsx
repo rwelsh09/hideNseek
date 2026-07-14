@@ -284,9 +284,9 @@ export const Map = ({ className }: { className?: string }) => {
                 <div className="leaflet-bottom leaflet-left">
                     <div className="leaflet-control pointer-events-auto !mb-10 ml-[10px] flex flex-col gap-[10px]">
                         {$hiderMode === false ? (
-                            <AddQuestionDialog />
+                            <AddQuestionDialog iconOnly={true} />
                         ) : (
-                            <PasteQuestionButton />
+                            <PasteQuestionButton iconOnly={true} />
                         )}
                     </div>
                 </div>
