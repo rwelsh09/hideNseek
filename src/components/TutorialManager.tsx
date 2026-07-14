@@ -97,6 +97,7 @@ export const TutorialManager = () => {
                             description: "Click on the green Map Marker to open its location settings.",
                             side: "top",
                             align: "center",
+                            showButtons: ["previous"],
                             onPopoverRender: () => {
                                 hiderDriverObj.setConfig({
                                     ...hiderDriverObj.getConfig(),
@@ -107,7 +108,7 @@ export const TutorialManager = () => {
                                     clearInterval((hiderDriverObj as any)._markerClickCheckInterval);
                                 }
                                 const checkInterval = setInterval(() => {
-                                    const gpsBtn = document.querySelector('[data-tutorial-id="tutorial-gps-btn"]');
+                                    const gpsBtn = document.querySelector('#hider-location-panel [data-tutorial-id="tutorial-gps-btn"]');
                                     if (gpsBtn) {
                                         clearInterval(checkInterval);
                                         setTimeout(() => hiderDriverObj.moveNext(), 300);
