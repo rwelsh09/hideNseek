@@ -1,5 +1,4 @@
 import { useStore } from "@nanostores/react";
-import { editingQuestionId } from "./DraggableMarkers";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
@@ -185,7 +184,6 @@ export const OptionDrawers = () => {
                                             id="hider-mode-toggle"
                                             checked={!!$hiderMode}
                                             onCheckedChange={() => {
-                                                editingQuestionId.set(null);
                                                 if ($hiderMode === false) {
                                                     const $leafletMapContext =
                                                         leafletMapContext.get();
@@ -211,7 +209,45 @@ export const OptionDrawers = () => {
                                         />
                                     </div>
 
+                                    {/* Sub-menu for Hider Mode */}
+                                    {$hiderMode !== false && (
+                                        <div className="p-4 bg-slate-50/80 dark:bg-slate-900/50 inner-shadow-sm">
+                                            <div data-tutorial-id="hider-location-picker">
+                                                <LatitudeLongitude
+                                                    className="mt-0"
+                                                    latitude={
+                                                        $hiderMode.latitude
+                                                    }
+                                                    longitude={
+                                                        $hiderMode.longitude
+                                                    }
+                                                    onChange={(
+                                                        latitude,
+                                                        longitude,
+                                                    ) => {
+                                                        $hiderMode.latitude =
+                                                            latitude ??
+                                                            $hiderMode.latitude;
+                                                        $hiderMode.longitude =
+                                                            longitude ??
+                                                            $hiderMode.longitude;
 
+                                                        if (
+                                                            $hiderMode.latitude !==
+                                                                0 ||
+                                                            $hiderMode.longitude !==
+                                                                0
+                                                        ) {
+                                                            hiderMode.set({
+                                                                ...$hiderMode,
+                                                            });
+                                                        }
+                                                    }}
+                                                    label={null}
+                                                />
+                                            </div>
+                                        </div>
+                                    )}
 
                                     {/* Recommended Start Toggle */}
                                     <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">

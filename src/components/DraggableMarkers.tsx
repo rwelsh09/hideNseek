@@ -235,7 +235,6 @@ export const DraggableMarkers = () => {
                 typeof document !== "undefined" &&
                 createPortal(
                     <div
-                        id={isHiderActive ? "hider-location-panel" : undefined}
                         className="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-[420px] z-[1040] pointer-events-auto bg-slate-900 text-white rounded-2xl shadow-2xl border border-slate-700 flex flex-col max-h-[85vh] overflow-hidden animate-in slide-in-from-bottom-8 fade-in duration-300"
                     >
                         {isHiderActive ? (
