@@ -47,6 +47,7 @@ const getIcon = (color: keyof typeof ICON_COLORS) => {
             iconAnchor: [12, 41],
             popupAnchor: [1, -34],
             shadowSize: [41, 41],
+            className: `tutorial-marker-${color}`,
         });
     }
     return iconCache[color];

@@ -83,7 +83,7 @@ export const TutorialManager = () => {
                         }
                     },
                     {
-                        element: '[data-tutorial-id="hider-location-picker"]',
+                        element: '.tutorial-marker-green',
                         popover: {
                             title: "Hider Location",
                             description: "Place the green Map Marker on your hiding spot so the app can calculate the answers to give the Seekers.",
