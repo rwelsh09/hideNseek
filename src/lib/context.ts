@@ -203,7 +203,7 @@ export const isLoading = atom<boolean>(false);
 export const isOptionsOpenStore = atom<boolean>(false);
 
 export const baseTileLayer = persistentAtom<
-    "voyager" | "light" | "dark" | "transport" | "neighbourhood" | "osmcarto"
+    "voyager" | "light" | "dark" | "transport" | "neighbourhood" | "osmcarto" | "satellite"
 >("baseTileLayer", "voyager");
 
 export const thunderforestApiKey = persistentAtom<string>("thunderforestApiKey", "", {
