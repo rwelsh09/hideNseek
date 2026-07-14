@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { QUESTION_RULES } from "@/lib/rules";
+import { PwaInstallTip } from "./PwaInstallTip";
 
 export function RulesAccordion() {
   const [value, setValue] = useState<string[]>([]);
@@ -161,6 +162,12 @@ export function RulesAccordion() {
         <AccordionTrigger className="text-2xl font-semibold hover:no-underline hover:text-blue-400">Tips for a Better Game</AccordionTrigger>
         <AccordionContent className="text-base text-slate-300 space-y-4 pt-2">
           <ul className="space-y-3 list-disc pl-5">
+            <li>
+              <strong>Install the App:</strong> For the best experience, including faster load times, full-screen mode, and offline functionality, install this app on your device! 
+              <ul className="list-none p-0 m-0 w-full inline-block">
+                <PwaInstallTip client:only="react" />
+              </ul>
+            </li>
             <li>
               <strong>House Rules:</strong> The rules outlined here are simply recommendations to get you started. Every group&apos;s playstyle is different, so I highly encourage players to discuss and agree on their expectations before starting a game. And/or playing a practice round where you choose a Hiding Spot together and discuss the different answers one would give, especially photos.
             </li>
