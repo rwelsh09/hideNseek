@@ -37,7 +37,7 @@ export const IncomingQuestionHandler = () => {
 
             } catch (e) {
                 console.error("Failed to parse incoming question from URL", e);
-                toast.error("Failed to process the question link. The link might be invalid or corrupted.");
+                toast.error("Failed to process the question link. The link might be invalid or corrupted. Temporarily turn off Hider Mode to add it manually.");
             }
         }
     }, []); // Only run once on mount

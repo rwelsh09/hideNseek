@@ -42,13 +42,13 @@ export const PasteQuestionButton = ({ iconOnly = false }: { iconOnly?: boolean }
                             );
                         } catch (e) {
                             toast.error(
-                                "Failed to paste question. Try copying it again.",
+                                "Failed to paste question. Try copying it again. Or temporarily turn off Hider Mode to add it manually.",
                             );
                         }
                     })
                     .catch(() => {
                         toast.error(
-                            "Failed to read from clipboard",
+                            "Failed to read from clipboard. Or temporarily turn off Hider Mode to add it manually.",
                         );
                     });
             }}

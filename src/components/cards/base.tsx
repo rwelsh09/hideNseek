@@ -242,7 +242,10 @@ export const QuestionCard = ({
 
                                         await shareOrFallback(shareData).then((result) => {
                                             if (result === false) {
-                                                return toast.error("Sharing failed and clipboard API not supported in your browser");
+                                                return toast.error(
+                                                    `Clipboard not supported. Try manually copying/pasting: ${url.toString()}`,
+                                                    { className: "break-all" },
+                                                );
                                             }
 
                                             if (result === "clipboard") {
