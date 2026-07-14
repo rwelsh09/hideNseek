@@ -234,7 +234,7 @@ export const QuestionCard = ({
 
                                 const shareData = {
                                     url: url.toString(),
-                                    text: getQuestionShareText(question, questionData),
+                                    text: await getQuestionShareText(question, questionData),
                                     title: "Share Question"
                                 };
 

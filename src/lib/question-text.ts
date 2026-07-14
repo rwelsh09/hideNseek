@@ -1,7 +1,10 @@
 import * as turf from "@turf/turf";
 import { PLACES } from "@/maps/placesConfig";
+import { determineMatchBoundary, findMatchPlaces } from "@/maps/questions/match";
+import { calculateMeasureDistance } from "@/maps/questions/measure";
+import { extractStationName, geoSpatialVoronoi } from "@/maps/geo-utils";
 
-export const getQuestionShareText = (question: any, questionData: any) => {
+export const getQuestionShareText = async (question: any, questionData: any): Promise<string> => {
     if (!question) return "Incoming question from a Seeker!";
 
     const getPlaceLabel = (id: string, plural = false) => {
@@ -21,7 +24,6 @@ export const getQuestionShareText = (question: any, questionData: any) => {
                     [questionData.lngB, questionData.latB],
                     { units: "kilometers" }
                 );
-                // Round to 1 decimal place if needed, or 2
                 const roundedDist = Math.round(dist * 100) / 100;
                 return `We just moved ${roundedDist}km are we warmer or colder?`;
             }
@@ -29,22 +31,81 @@ export const getQuestionShareText = (question: any, questionData: any) => {
 
         case "match": {
             const type = questionData.type;
-            if (type === "same-neighbourhood") return "Are we in the same Neighbourhood?";
-            if (type === "same-first-letter-neighbourhood") return "Does your Neighbourhood start with the same letter as ours ([letter])?";
-            if (type === "same-train-line") return "Are you on the same Train Line as us ([line])?";
-            if (type === "same-first-letter-station") return "Does your Train Station start with the same letter as ours ([letter])?";
+
+            if (type === "same-neighbourhood" || type === "same-first-letter-neighbourhood") {
+                try {
+                    const boundary = await determineMatchBoundary(questionData);
+                    const name = extractStationName(boundary);
+                    if (name) {
+                        if (type === "same-neighbourhood") return `Are we in the same Neighbourhood (${name})?`;
+                        return `Does your Neighbourhood start with the same letter as ours (${name[0].toUpperCase()})?`;
+                    }
+                } catch (e) {
+                    // Fallback
+                }
+                if (type === "same-neighbourhood") return "Are we in the same Neighbourhood?";
+                return "Does your Neighbourhood start with the same letter as ours ([letter])?";
+            }
+
+            if (type === "same-train-line" || type === "same-first-letter-station" || type === "same-length-station") {
+                // Determine seeker's closest station name is slightly complex without full calgaryTransitData directly here
+                // But it evaluates locally.
+                // We'll leave as generic for these specific ones unless easily calculable
+                if (type === "same-train-line") return "Are you on the same Train Line as us ([line])?";
+                if (type === "same-length-station") return "Does your Train Station have the same length as ours ([station])?";
+                return "Does your Train Station start with the same letter as ours ([letter])?";
+            }
+
+            let answer = "[answer]";
+            try {
+                const data = await findMatchPlaces(questionData);
+                if (data) {
+                    const voronoi = geoSpatialVoronoi(data);
+                    const point = turf.point([questionData.lng, questionData.lat]);
+
+                    for (const feature of voronoi.features) {
+                        if (turf.booleanPointInPolygon(point, feature)) {
+                            // Try to get the name of the place
+                            // Wait, the voronoi features don't have the properties of the original point
+                            // Instead of voronoi, just find nearest point!
+                            const nearest = turf.nearestPoint(point, data);
+                            if (nearest && nearest.properties && nearest.properties.name) {
+                                answer = nearest.properties.name;
+                            } else if (nearest && nearest.properties && nearest.properties.tags && nearest.properties.tags.name) {
+                                answer = nearest.properties.tags.name;
+                            }
+                            break;
+                        }
+                    }
+                }
+            } catch (e) {
+                // Ignore and use fallback
+            }
 
             const label = getPlaceLabel(type);
-            return `Is your closest ${label} also [answer]?`;
+            return `Is your closest ${label} also ${answer}?`;
         }
 
         case "measure": {
             const type = questionData.type;
+            let distanceStr = "[distance]";
+
+            try {
+                const distance = await calculateMeasureDistance(questionData);
+                if (distance !== null) {
+                    // Round to 3 decimal places
+                    const rounded = Math.round(distance * 1000) / 1000;
+                    distanceStr = `${rounded}km`;
+                }
+            } catch (e) {
+                // Ignore and use fallback
+            }
+
             if (type === "rail-measure") {
-                return `We are [distance] from a Train Station. Are you closer or further to your nearest Train Station?`;
+                return `We are ${distanceStr} from a Train Station. Are you closer or further to your nearest Train Station?`;
             }
             const label = getPlaceLabel(type);
-            return `We are [distance] from a ${label}. Are you closer or further to your nearest ${label}?`;
+            return `We are ${distanceStr} from a ${label}. Are you closer or further to your nearest ${label}?`;
         }
 
         case "closest": {
