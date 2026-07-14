@@ -48,7 +48,7 @@ export const hasSeenWelcome = persistentAtom<boolean>("hasSeenWelcome", false, {
     decode: JSON.parse,
 });
 
-export const showHiderTutorial = persistentAtom<boolean>("showHiderTutorial", false, {
+export const showHiderTutorial = persistentAtom<boolean>("showHiderTutorial", true, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
