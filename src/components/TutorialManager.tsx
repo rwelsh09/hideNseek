@@ -132,7 +132,7 @@ export const TutorialManager = () => {
                         }
                     },
                     {
-                        element: '.leaflet-popup-close-button',
+                        element: '[data-tutorial-id="tutorial-store-question-btn"]',
                         popover: {
                             title: "Close Dialog",
                             description: "Close this dialog to reveal the Paste Question button.",
@@ -144,7 +144,7 @@ export const TutorialManager = () => {
                                     disableActiveInteraction: false,
                                 });
                                 const checkInterval = setInterval(() => {
-                                    const popup = document.querySelector('.leaflet-popup-close-button');
+                                    const popup = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
                                     if (!popup) {
                                         clearInterval(checkInterval);
                                         setTimeout(() => hiderDriverObj.moveNext(), 300);
