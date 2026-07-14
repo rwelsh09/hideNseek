@@ -1,0 +1,1 @@
+import{o as e,t}from"./react.BL2IQT_q.js";import{d as n}from"./utils.DLkgG2OQ.js";import{t as r}from"./createLucideIcon.Bhmomgbv.js";var i=r(`chevron-down`,[[`path`,{d:`m6 9 6 6 6-6`,key:`qrunsl`}]]),a=e(t(),1);n();var o=a.createContext(void 0);function s(e){let t=a.useContext(o);return e||t||`ltr`}export{i as n,s as t};
