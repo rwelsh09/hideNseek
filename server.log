@@ -1,0 +1,15 @@
+
+> Hide and Seek Map@0.1 dev /app
+> astro dev
+
+15:47:12 [WARN] [vite] warning: `esbuild` option was specified by "vite:react-babel" plugin. This option is deprecated, please use `oxc` instead.
+15:47:12 [WARN] [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-babel" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+15:47:12 [WARN] [vite] You or a plugin you are using have set `optimizeDeps.esbuildOptions` but this option is now deprecated. Vite now uses Rolldown to optimize the dependencies. Please use `optimizeDeps.rolldownOptions` instead.
+15:47:12 [vite] connected.
+15:47:14 [types] Generated 1ms
+15:47:14 [vite] connected.
+ astro  v7.0.7 ready in 2669 ms
+┃ Local    http://localhost:4321/hideNseek/
+┃ Network  use --host to expose
+15:47:14 watching for file changes...
+15:47:18 [200] / 83ms

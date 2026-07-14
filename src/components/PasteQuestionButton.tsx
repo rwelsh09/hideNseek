@@ -26,7 +26,7 @@ export const PasteQuestionButton = () => {
                             const urlMatch = text.match(/q=([^&\s]+)/);
                             if (urlMatch && urlMatch[1]) {
                                 try {
-                                    jsonText = decodeURIComponent(escape(window.atob(urlMatch[1])));
+                                    jsonText = decodeURIComponent(escape(window.atob(decodeURIComponent(urlMatch[1]))));
                                 } catch (e) {
                                     // if decoding fails, jsonText remains as original text which will fail parsing below
                                 }
