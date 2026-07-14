@@ -26,6 +26,7 @@ import {
     TIME_PENALTIES,
 } from "@/lib/context";
 import { lockRecommendedStartIfNeeded } from "@/lib/recommended-start";
+import { getQuestionShareText } from "@/lib/question-text";
 import { QUESTION_RULES } from "@/lib/rules";
 import { cn, shareOrFallback } from "@/lib/utils";
 import { PLACES } from "@/maps/placesConfig";
@@ -233,7 +234,7 @@ export const QuestionCard = ({
 
                                 const shareData = {
                                     url: url.toString(),
-                                    text: "Incoming question from a Seeker!",
+                                    text: getQuestionShareText(question, questionData),
                                     title: "Share Question"
                                 };
 
