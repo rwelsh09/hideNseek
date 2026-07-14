@@ -89,9 +89,7 @@ export const initializeHidingZonesLogic = async () => {
         for (const question of questions.get()) {
             if (circles.length === 0) break;
 
-            if (!question.data.locked) {
-                continue;
-            }
+
 
             if (
                 question.id === "match" &&
