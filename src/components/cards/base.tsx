@@ -111,7 +111,7 @@ export const QuestionCard = ({
         } else if (question.id === "closest") {
             resultStr = questionData.location
                 ? questionData.location.properties?.name
-                : "Not Within";
+                : "None";
         } else if (question.id === "hot/cold") {
             resultStr = questionData.warmer ? "Warmer" : "Colder";
         }
