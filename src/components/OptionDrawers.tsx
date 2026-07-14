@@ -319,6 +319,7 @@ export const OptionDrawers = () => {
                                                     dark: "CARTO Dark",
                                                     osmcarto:
                                                         "OpenStreetMap Carto",
+                                                    satellite: "Satellite",
                                                 }}
                                                 value={$baseTileLayer}
                                                 onValueChange={(v) =>

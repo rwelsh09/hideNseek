@@ -48,7 +48,7 @@ export const hasSeenWelcome = persistentAtom<boolean>("hasSeenWelcome", false, {
     decode: JSON.parse,
 });
 
-export const showHiderTutorial = persistentAtom<boolean>("showHiderTutorial", false, {
+export const showHiderTutorial = persistentAtom<boolean>("showHiderTutorial", true, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
@@ -203,7 +203,7 @@ export const isLoading = atom<boolean>(false);
 export const isOptionsOpenStore = atom<boolean>(false);
 
 export const baseTileLayer = persistentAtom<
-    "voyager" | "light" | "dark" | "transport" | "neighbourhood" | "osmcarto"
+    "voyager" | "light" | "dark" | "transport" | "neighbourhood" | "osmcarto" | "satellite"
 >("baseTileLayer", "voyager");
 
 export const thunderforestApiKey = persistentAtom<string>("thunderforestApiKey", "", {
