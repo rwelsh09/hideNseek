@@ -132,6 +132,34 @@ export const TutorialManager = () => {
                         }
                     },
                     {
+                        element: '.leaflet-popup-close-button',
+                        popover: {
+                            title: "Close Dialog",
+                            description: "Close this dialog to reveal the Paste Question button.",
+                            side: "bottom",
+                            align: "center",
+                            onPopoverRender: () => {
+                                hiderDriverObj.setConfig({
+                                    ...hiderDriverObj.getConfig(),
+                                    disableActiveInteraction: false,
+                                });
+                                const checkInterval = setInterval(() => {
+                                    const popup = document.querySelector('.leaflet-popup-close-button');
+                                    if (!popup) {
+                                        clearInterval(checkInterval);
+                                        setTimeout(() => hiderDriverObj.moveNext(), 300);
+                                    }
+                                }, 100);
+                                (hiderDriverObj as any)._popupCloseCheckInterval = checkInterval;
+                            },
+                            onDeselected: () => {
+                                if ((hiderDriverObj as any)._popupCloseCheckInterval) {
+                                    clearInterval((hiderDriverObj as any)._popupCloseCheckInterval);
+                                }
+                            }
+                        }
+                    },
+                    {
                         element: '[data-tutorial-id="tutorial-paste-question-btn"]',
                         popover: {
                             title: "Answering Questions",
