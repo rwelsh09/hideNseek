@@ -171,21 +171,21 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
 
                 <div className="overflow-y-auto p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-6 sm:gap-6">
                     {/* HotCold */}
-                    <div className="flex flex-col border-t-4 border-yellow-400 pt-3">
+                    <div className="flex flex-col border-t-4 border-rose-500 pt-3">
                         <div className="flex items-center gap-2 mb-1">
-                            <div className="bg-yellow-400 p-1.5 rounded text-white shrink-0">
+                            <div className="bg-rose-500 p-1.5 rounded text-white shrink-0">
                                 <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />
                             </div>
                             <div>
-                                <h3 className="font-bold text-yellow-500 uppercase leading-none text-sm sm:text-base flex items-center">
+                                <h3 className="font-bold text-rose-600 uppercase leading-none text-sm sm:text-base flex items-center">
                                     Hot/Cold{" "}
-                                    <span className="ml-2 bg-yellow-100 text-yellow-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
+                                    <span className="ml-2 bg-rose-100 text-rose-800 px-1.5 py-0.5 rounded text-[10px] whitespace-nowrap">
                                         +{TIME_PENALTIES["hot/cold"]}
                                     </span>
                                 </h3>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
+                        <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mt-2">
                             <button
                                 type="button"
                                 aria-label="Add hotCold question for 1 km"
@@ -193,22 +193,10 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                                 onClick={() =>
                                     handleQuestionSelect("hot/cold", "1")
                                 }
-                                className={`bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("hot/cold", "1") ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-rose-500 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-rose-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("hot/cold", "1") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                 1km
-                            </button>
-                            <button
-                                type="button"
-                                aria-label="Add hotCold question for 2 km"
-                                title="Add hotCold question for 2 km"
-                                onClick={() =>
-                                    handleQuestionSelect("hot/cold", "2")
-                                }
-                                className={`bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("hot/cold", "2") ? "opacity-50 grayscale" : ""}`}
-                            >
-                                <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
-                                2km
                             </button>
                             <button
                                 type="button"
@@ -217,7 +205,7 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                                 onClick={() =>
                                     handleQuestionSelect("hot/cold", "5")
                                 }
-                                className={`bg-yellow-400 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-yellow-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("hot/cold", "5") ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-rose-500 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-rose-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("hot/cold", "5") ? "opacity-50 grayscale" : ""}`}
                             >
                                 <HotCold className="w-4 h-4 sm:w-5 sm:h-5" />{" "}
                                 5km

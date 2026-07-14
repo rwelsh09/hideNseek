@@ -1,7 +1,7 @@
 // Used in the `Rules` page & for `How it works` on the Question card
 export const QUESTION_RULES: Record<string, string> = {
    "hot/cold":
-        "Seekers travel a specific distance (e.g., 2km) providing the Hider with their starting and end point. The Hider must reveal if the Seekers are now Warmer (closer) or Colder (further) to the Hider's position.",
+        "Seekers travel a specific distance (e.g., 1km) providing the Hider with their starting and end point. The Hider must reveal if the Seekers are now Warmer (closer) or Colder (further) to the Hider's position.",
     radar: "Seekers select a specific distance (e.g., 5km) to project a Radar from their current location. The Hider must answer 'Yes' or 'No' to whether their location falls within that Radar.",
     match: "Seekers ask if the Hider's location shares a specific attribute with them (e.g., 'Does your station's name start with the same letter as ours?', 'Is your nearest Library the same as ours?').",
     measure:
