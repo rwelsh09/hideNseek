@@ -180,8 +180,8 @@ const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
                 .describe("Neighbourhood (Same First Letter)"),
             z
                 .literal("same-first-letter-station")
-                .describe("Stop Starts With Same Letter"),
-            z.literal("same-train-line").describe("Stop - Same Line"),
+                .describe("Station/Stop Starts With Same Letter"),
+            z.literal("same-train-line").describe("Station/Stop - Same Line"),
         ] as any)
         .default("museum"),
 });
@@ -197,7 +197,7 @@ const ordinaryMeasureQuestionSchema = baseMeasureQuestionSchema.extend({
     type: z
         .union([
             ...PLACES.filter(p => p.type === "generic").map(p => z.literal(p.id).describe(p.label)),
-            z.literal("rail-measure").describe("Stop"),
+            z.literal("rail-measure").describe("Train Station"),
         ] as any)
         .default("museum"),
 });
