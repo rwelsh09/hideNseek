@@ -40,7 +40,7 @@ import {
     MatchQuestionComponent,
     MeasureQuestionComponent,
     PhotoQuestionComponent,
-    RadiusQuestionComponent,
+    RadarQuestionComponent,
 } from "./QuestionCards";
 import { Button } from "./ui/button";
 
@@ -139,9 +139,9 @@ export const QuestionSidebar = () => {
 
                 {$questions.map((question) => {
                     switch (question.id) {
-                        case "radius":
+                        case "radar":
                             return (
-                                <RadiusQuestionComponent
+                                <RadarQuestionComponent
                                     data={question.data}
                                     key={question.key}
                                     questionKey={question.key}

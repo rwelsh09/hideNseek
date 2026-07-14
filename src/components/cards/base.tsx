@@ -93,7 +93,7 @@ export const QuestionCard = ({
 
     let resultStr = "";
     if (question) {
-        if (question.id === "radius") {
+        if (question.id === "radar") {
             resultStr = questionData.within ? "Inside" : "Outside";
         } else if (question.id === "match") {
             if (questionData.type === "same-length-station") {
@@ -128,8 +128,8 @@ export const QuestionCard = ({
             typeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
 
             if (locked) {
-                if (question.id === "radius") {
-                    displayLabel = `Radius - ${questionData.radius}${questionData.unit === "kilometers" ? "km" : "m"} - ${resultStr}`;
+                if (question.id === "radar") {
+                    displayLabel = `Radar - ${questionData.radius}${questionData.unit === "kilometers" ? "km" : "m"} - ${resultStr}`;
                 } else if (question.id === "match") {
                     const typeStr =
                         TYPE_MAPPINGS[questionData.type] || questionData.type;

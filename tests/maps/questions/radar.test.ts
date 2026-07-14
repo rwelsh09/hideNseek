@@ -4,11 +4,11 @@ import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { hiderMode } from "@/lib/context";
 import {
-    adjustPerRadius,
-    hiderifyRadius,
-    radiusPlanningPolygon,
-} from "@/maps/questions/radius";
-import type { RadiusQuestion } from "@/maps/schema";
+    adjustPerRadar,
+    hiderifyRadar,
+    radarPlanningPolygon,
+} from "@/maps/questions/radar";
+import type { RadarQuestion } from "@/maps/schema";
 
 vi.mock("@/maps/geo-utils", async (importOriginal) => {
     const actual = await importOriginal<any>();
@@ -44,7 +44,7 @@ describe("radius", () => {
         hiderMode.set(false);
     });
 
-    const question: RadiusQuestion = {
+    const question: RadarQuestion = {
         lat: 51.0447,
         lng: -114.0719,
         radius: 10,
@@ -55,7 +55,7 @@ describe("radius", () => {
         collapsed: false,
     };
 
-    describe("adjustPerRadius", () => {
+    describe("adjustPerRadar", () => {
         it("should return intersected geometry when within is true", async () => {
             const mapData = turf.featureCollection([
                 turf.polygon([
@@ -69,7 +69,7 @@ describe("radius", () => {
                 ]),
             ]) as FeatureCollection<Polygon | MultiPolygon>;
 
-            const result = await adjustPerRadius(question, mapData);
+            const result = await adjustPerRadar(question, mapData);
             expect(result).toBeDefined();
             expect(result?.type).toBe("Feature");
             expect(result?.geometry.type).toMatch(/Polygon/);
@@ -83,7 +83,7 @@ describe("radius", () => {
         });
 
         it("should return difference geometry when within is false", async () => {
-            const questionOutside: RadiusQuestion = {
+            const questionOutside: RadarQuestion = {
                 ...question,
                 within: false,
             };
@@ -100,7 +100,7 @@ describe("radius", () => {
                 ]),
             ]) as FeatureCollection<Polygon | MultiPolygon>;
 
-            const result = await adjustPerRadius(questionOutside, mapData);
+            const result = await adjustPerRadar(questionOutside, mapData);
             expect(result).toBeDefined();
             expect(result?.type).toBe("Feature");
             expect(result?.geometry.type).toMatch(/Polygon/);
@@ -113,14 +113,14 @@ describe("radius", () => {
         });
 
         it("should return undefined if mapData is null", async () => {
-            const result = await adjustPerRadius(question, null);
+            const result = await adjustPerRadar(question, null);
             expect(result).toBeUndefined();
         });
     });
 
-    describe("hiderifyRadius", () => {
+    describe("hiderifyRadar", () => {
         it("should return the question unmodified if hiderMode is false", () => {
-            const result = hiderifyRadius(question);
+            const result = hiderifyRadar(question);
             expect(result).toEqual(question);
         });
 
@@ -128,7 +128,7 @@ describe("radius", () => {
             hiderMode.set({ latitude: 51.0447, longitude: -114.0719 }); // exact same coords
 
             const q = { ...question, within: false };
-            const result = hiderifyRadius(q);
+            const result = hiderifyRadar(q);
 
             expect(result.within).toBe(true);
         });
@@ -137,15 +137,15 @@ describe("radius", () => {
             hiderMode.set({ latitude: 52.0, longitude: -114.0719 }); // far away
 
             const q = { ...question, within: true };
-            const result = hiderifyRadius(q);
+            const result = hiderifyRadar(q);
 
             expect(result.within).toBe(false);
         });
     });
 
-    describe("radiusPlanningPolygon", () => {
+    describe("radarPlanningPolygon", () => {
         it("should return a LineString representing the buffer", async () => {
-            const result = await radiusPlanningPolygon(question);
+            const result = await radarPlanningPolygon(question);
             expect(result).toBeDefined();
             expect(result.type).toBe("Feature");
             if ("geometry" in result) {

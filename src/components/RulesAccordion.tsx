@@ -98,7 +98,7 @@ export function RulesAccordion() {
             {Object.entries(QUESTION_RULES).map(([key, rule]) => (
               <div key={key} className="bg-slate-800 p-4 rounded-xl border border-slate-700">
                 <h3 className="text-xl font-bold capitalize text-blue-400 mb-2">
-                  {key === "radius" ? "Radar" : key}
+                  {key === "radar" ? "Radar" : key}
                 </h3>
                 <p className="text-slate-300">{rule}</p>
               </div>

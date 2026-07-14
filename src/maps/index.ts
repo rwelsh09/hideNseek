@@ -21,10 +21,10 @@ import {
     measurePlanningPolygon,
 } from "./questions/measure";
 import {
-    adjustPerRadius,
-    hiderifyRadius,
-    radiusPlanningPolygon,
-} from "./questions/radius";
+    adjustPerRadar,
+    hiderifyRadar,
+    radarPlanningPolygon,
+} from "./questions/radar";
 import type { Question, Questions } from "./schema";
 
 export * from "./geo-utils";
@@ -32,8 +32,8 @@ export * from "./geo-utils";
 export const hiderifyQuestion = async (question: Question) => {
     if (!question.data.locked) {
         switch (question.id) {
-            case "radius":
-                question.data = hiderifyRadius(question.data);
+            case "radar":
+                question.data = hiderifyRadar(question.data);
                 break;
             case "hot/cold":
                 question.data = hiderifyHotCold(question.data);
@@ -56,8 +56,8 @@ export const hiderifyQuestion = async (question: Question) => {
 export const determinePlanningPolygon = async (question: Question) => {
     if (!question.data.locked) {
         switch (question.id) {
-            case "radius":
-                return radiusPlanningPolygon(question.data);
+            case "radar":
+                return radarPlanningPolygon(question.data);
             case "hot/cold":
                 return hotColdPlanningPolygon(question.data);
             case "closest":
@@ -76,13 +76,13 @@ export async function adjustMapGeoDataForQuestion(
 ) {
     try {
         switch (question?.id) {
-            case "radius":
-                return await adjustPerRadius(question.data, mapGeoData);
+            case "radar":
+                return await adjustPerRadar(question.data, mapGeoData);
             case "hot/cold":
                 return adjustPerHotCold(question.data, mapGeoData);
             case "closest":
                 if (question.data.location === false) {
-                    return adjustPerRadius(
+                    return adjustPerRadar(
                         { ...question.data, within: false },
                         mapGeoData,
                     );
