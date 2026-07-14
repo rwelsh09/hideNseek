@@ -3,7 +3,7 @@ import { useStore } from "@nanostores/react";
 import { XIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-import { showNextStepsChecklist, showTutorial, showHiderTutorial } from "@/lib/context";
+import { showNextStepsChecklist, showTutorial, showHiderTutorial, hiderMode } from "@/lib/context";
 
 import { PwaInstallTip } from "./PwaInstallTip";
 
@@ -18,6 +18,8 @@ export const NextStepsChecklist = () => {
     const isHiderTutorialVisible = useStore(showHiderTutorial);
     const isChecklistVisible = useStore(showNextStepsChecklist);
     const hasDismissed = useStore(hasDismissedNextStepsChecklist);
+    const $hiderMode = useStore(hiderMode);
+    const isHiderMode = $hiderMode !== false;
     const [isMounted, setIsMounted] = useState(false);
 
     useEffect(() => {
@@ -27,7 +29,7 @@ export const NextStepsChecklist = () => {
     if (
         !isMounted ||
         isTutorialVisible ||
-        isHiderTutorialVisible ||
+        (isHiderMode && isHiderTutorialVisible) ||
         !isChecklistVisible ||
         hasDismissed
     ) {
