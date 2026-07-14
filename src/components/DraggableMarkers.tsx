@@ -282,7 +282,7 @@ export const DraggableMarkers = () => {
                                                 $hiderMode.longitude,
                                         });
                                     }}
-                                    label="Hider Location"
+                                    label={null}
                                 />
                             )}
 

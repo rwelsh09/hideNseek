@@ -243,7 +243,7 @@ export const OptionDrawers = () => {
                                                             });
                                                         }
                                                     }}
-                                                    label="Location"
+                                                    label={null}
                                                 />
                                             </div>
                                         </div>
