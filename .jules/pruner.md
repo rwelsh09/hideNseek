@@ -1,3 +1,3 @@
-## 2025-02-27 - Pruner Journal Update
+## 2025-02-27 - [Pruner Journal Update]
 **Learning:** `npx eslint src` can safely identify unused variables, but it emits warnings about ESLint configuration (`Cannot find package '@eslint/js'`). It is best to fix installation via `pnpm install` first. Be aware that `npx tsc --noEmit` might throw many errors related to unresolved icons or external libraries that are irrelevant to the removed unused code. Focus strictly on whether the *removed code* introduces *new* TS errors.
 **Action:** Always test if `npx tsc --noEmit` and `pnpm run test --run` pass despite existing environment issues, ensuring no *new* regressions are introduced. Also note that some linting problems, such as unescaped quotes in `StartScreen.tsx`, are best ignored by Pruner to maintain the strict deletion-only policy.
