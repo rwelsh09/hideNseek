@@ -248,7 +248,7 @@ export const DraggableMarkers = () => {
                                     onClick={closePanel}
                                     aria-label="Close panel"
                                     className="text-slate-300 hover:bg-slate-800 hover:text-white h-8 w-8 p-0 rounded-full"
-                                    data-tutorial-id="tutorial-store-question-btn"
+                                    data-tutorial-id="tutorial-close-panel-btn"
                                 >
                                     <X className="w-4 h-4" />
                                 </Button>
@@ -260,7 +260,7 @@ export const DraggableMarkers = () => {
                                 onClick={closePanel}
                                 aria-label="Close panel"
                                 className="absolute right-2 top-2 z-10 text-slate-400 hover:bg-slate-800 hover:text-white h-8 w-8 p-0 rounded-full"
-                                data-tutorial-id="tutorial-store-question-btn"
+                                data-tutorial-id="tutorial-close-panel-btn"
                             >
                                 <X className="w-4 h-4" />
                             </Button>

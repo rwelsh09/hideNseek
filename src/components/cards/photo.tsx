@@ -24,7 +24,6 @@ export const PHOTO_LABELS: Record<string, string> = {
     building: "Tallest Structure",
     restaurant: "Restaurant",
     park: "Park",
-    store: "Store",
     worship: "Place of Worship",
     train: "Station",
     route: "Nearest Intersection",
@@ -40,7 +39,6 @@ export const PHOTO_DESCRIPTIONS: Record<string, string> = {
     restaurant:
         "Take a photo showing a nearby restaurant, cafe, or food establishment.",
     park: "Take a photo that clearly shows a park, playground, or green space nearby.",
-    store: "Take a photo showing a nearby store.",
     worship:
         "Photograph the nearest church, mosque, temple, or other place of worship.",
     train: "Take a picture showing your transit station or train platform.",
