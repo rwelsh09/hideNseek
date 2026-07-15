@@ -105,10 +105,10 @@ export const RadarQuestionComponent = ({
                     disabled={!!$hiderMode || data.locked || $isLoading}
                     data-tutorial-id="tutorial-question-result-toggle"
                 >
-                    <ToggleGroupItem value="outside">
+                    <ToggleGroupItem value="outside" className="data-[state=on]:bg-blue-500 data-[state=on]:text-white">
                         Outside
                     </ToggleGroupItem>
-                    <ToggleGroupItem value="inside">Inside</ToggleGroupItem>
+                    <ToggleGroupItem value="inside" className="data-[state=on]:bg-rose-500 data-[state=on]:text-white">Inside</ToggleGroupItem>
                 </ToggleGroup>
 
             </div>
