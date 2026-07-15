@@ -43,12 +43,10 @@ import {
 import { decompress } from "@/lib/utils";
 import { questionsSchema } from "@/maps/schema";
 
-import { LatitudeLongitude } from "./LatLngPicker";
 import { Button } from "./ui/button";
 import { Checkbox } from "./ui/checkbox";
 import { Label } from "./ui/label";
 import { Select } from "./ui/select";
-import { SidebarMenu } from "./ui/sidebar";
 
 const HIDING_ZONE_URL_PARAM = "hz";
 export const HIDING_ZONE_COMPRESSED_URL_PARAM = "hzc";

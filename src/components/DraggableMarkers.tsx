@@ -25,7 +25,6 @@ import {
     RadarQuestionComponent,
 } from "./QuestionCards";
 import { Button } from "./ui/button";
-import { SidebarMenu } from "./ui/sidebar";
 
 // Global state for which marker is currently being edited
 export const editingQuestionId = atom<number | null>(null);
@@ -112,7 +111,6 @@ export const DraggableMarkers = () => {
     const $questions = useStore(questions);
     const $hiderMode = useStore(hiderMode);
     const $editingId = useStore(editingQuestionId);
-    const $draftQuestionId = useStore(draftQuestionId);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
