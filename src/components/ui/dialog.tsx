@@ -31,14 +31,15 @@ const DialogContent = React.forwardRef<
     React.ComponentRef<typeof DialogPrimitive.Content>,
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
         closeIcon?: boolean;
+        overlayClassName?: string;
     }
->(({ className, children, closeIcon = true, ...props }, ref) => (
+>(({ className, overlayClassName, children, closeIcon = true, ...props }, ref) => (
     <DialogPortal
         container={document.querySelector(
             "#map-modal-dialog-container-leaflet",
         )}
     >
-        <DialogOverlay />
+        <DialogOverlay className={overlayClassName} />
         <DialogPrimitive.Content
             ref={ref}
             className={cn(
