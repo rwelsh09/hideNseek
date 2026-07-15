@@ -313,6 +313,7 @@ export const ZoneSidebar = () => {
                             <div className="w-[100px]">
                                 <Input
                                     type="number"
+                                    inputMode="decimal"
                                     className="rounded-md p-2 w-full bg-background"
                                     value={$headStartMinutes}
                                     onChange={(e) => {
@@ -332,6 +333,7 @@ export const ZoneSidebar = () => {
                             <div className="flex gap-2 items-center">
                                 <Input
                                     type="number"
+                                    inputMode="decimal"
                                     className="rounded-md p-2 w-16 bg-background"
                                     value={$hidingRadius}
                                     onChange={(e) => {
@@ -773,6 +775,7 @@ export const ZoneSidebar = () => {
                                             </Label>
                                             <Input
                                                 type="number"
+                                                inputMode="decimal"
                                                 className="rounded-md p-1 w-16 h-8 bg-background text-sm"
                                                 value={overlapThreshold}
                                                 step={0.1}
