@@ -6,7 +6,7 @@
             "id": "relation/1924533",
             "properties": {
                 "line": "Blue Line",
-                "color": "#0055A5"
+                "colour": "#0055A5"
             },
             "geometry": {
                 "type": "MultiLineString",
@@ -1042,7 +1042,7 @@
             "id": "relation/2653243",
             "properties": {
                 "line": "Red Line",
-                "color": "#C8102E"
+                "colour": "#C8102E"
             },
             "geometry": {
                 "type": "MultiLineString",
@@ -2107,7 +2107,7 @@
             "id": "relation/9729896",
             "properties": {
                 "line": "Blue Line",
-                "color": "#0055A5"
+                "colour": "#0055A5"
             },
             "geometry": {
                 "type": "MultiLineString",
@@ -3131,7 +3131,7 @@
             "id": "relation/9729911",
             "properties": {
                 "line": "Red Line",
-                "color": "#C8102E"
+                "colour": "#C8102E"
             },
             "geometry": {
                 "type": "MultiLineString",
@@ -4228,7 +4228,7 @@
             "id": "relation/2731660",
             "properties": {
                 "line": "MAX Teal",
-                "color": "#00839A"
+                "colour": "#00839A"
             },
             "geometry": {
                 "type": "MultiLineString",
@@ -5014,7 +5014,7 @@
             "id": "relation/11151342",
             "properties": {
                 "line": "MAX Yellow",
-                "color": "#F6A01A"
+                "colour": "#F6A01A"
             },
             "geometry": {
                 "type": "LineString",
@@ -5587,7 +5587,7 @@
             "id": "relation/12664983",
             "properties": {
                 "line": "MAX Orange",
-                "color": "#E05929"
+                "colour": "#E05929"
             },
             "geometry": {
                 "type": "MultiLineString",
@@ -6260,7 +6260,7 @@
             "id": "relation/12664984",
             "properties": {
                 "line": "MAX Orange",
-                "color": "#E05929"
+                "colour": "#E05929"
             },
             "geometry": {
                 "type": "LineString",
@@ -6916,7 +6916,7 @@
             "id": "relation/16786086",
             "properties": {
                 "line": "MAX Purple",
-                "color": "#6B3B8A"
+                "colour": "#6B3B8A"
             },
             "geometry": {
                 "type": "LineString",
@@ -7328,7 +7328,7 @@
             "id": "relation/18280441",
             "properties": {
                 "line": "MAX Teal",
-                "color": "#00839A"
+                "colour": "#00839A"
             },
             "geometry": {
                 "type": "MultiLineString",
@@ -8107,7 +8107,7 @@
             "id": "relation/18283683",
             "properties": {
                 "line": "MAX Yellow",
-                "color": "#F6A01A"
+                "colour": "#F6A01A"
             },
             "geometry": {
                 "type": "LineString",
@@ -8637,7 +8637,7 @@
             "id": "relation/18283935",
             "properties": {
                 "line": "MAX Purple",
-                "color": "#6B3B8A"
+                "colour": "#6B3B8A"
             },
             "geometry": {
                 "type": "LineString",
@@ -9082,7 +9082,7 @@
             "properties": {
                 "name": "MAX Green",
                 "type": "MAX",
-                "color": "#16a34a"
+                "colour": "#16a34a"
             },
             "geometry": {
                 "type": "MultiLineString",
@@ -9833,7 +9833,7 @@
             "properties": {
                 "name": "MAX Green",
                 "type": "MAX",
-                "color": "#16a34a"
+                "colour": "#16a34a"
             },
             "geometry": {
                 "type": "LineString",
@@ -10323,7 +10323,7 @@
             "properties": {
                 "name": "MAX Green",
                 "type": "MAX",
-                "color": "#16a34a"
+                "colour": "#16a34a"
             },
             "geometry": {
                 "type": "LineString",

@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 
 import { geolocationPermission, isLoading } from "@/lib/context";
 import { cn } from "@/lib/utils";
-import { ICON_COLORS } from "@/maps/api";
+import { ICON_COLOURS } from "@/maps/api";
 
 import { Button } from "./ui/button";
 import {
@@ -22,8 +22,8 @@ export const LatitudeLongitude = ({
     longitude,
     onChange,
     label = "Location",
-    colorName,
-    onChangeColor,
+    colourName,
+    onChangeColour,
     className,
     children,
     disabled,
@@ -32,20 +32,20 @@ export const LatitudeLongitude = ({
     longitude: number;
     onChange: (lat: number | null, lng: number | null) => void;
     label?: React.ReactNode;
-    colorName?: keyof typeof ICON_COLORS;
-    onChangeColor?: (color: keyof typeof ICON_COLORS) => void;
+    colourName?: keyof typeof ICON_COLOURS;
+    onChangeColour?: (colour: keyof typeof ICON_COLOURS) => void;
     className?: string;
     children?: React.ReactNode;
     disabled?: boolean;
 }) => {
     const $isLoading = useStore(isLoading);
-    const color = colorName ? ICON_COLORS[colorName] : "transparent";
+    const colour = colourName ? ICON_COLOURS[colourName] : "transparent";
 
     return (
         <>
             <div
                 style={{
-                    backgroundColor: color,
+                    backgroundColor: colour,
                 }}
                 className={cn(
                     "p-3 rounded-md mt-2 flex flex-col gap-2",
@@ -59,7 +59,7 @@ export const LatitudeLongitude = ({
                         $isLoading && "opacity-50",
                     )}
                     style={{
-                        color: colorName === "gold" ? "black" : (colorName && colorName !== "transparent" ? "white" : undefined),
+                        color: colourName === "gold" ? "black" : (colourName && colourName !== "transparent" ? "white" : undefined),
                     }}
                 >
                     <Button
@@ -150,7 +150,7 @@ export const LatitudeLongitude = ({
                     </div>
                 </div>
 
-                {onChangeColor && (
+                {onChangeColour && (
                     <div className="flex gap-1 justify-end">
                         <Dialog>
                             <DialogTrigger asChild>
@@ -158,45 +158,45 @@ export const LatitudeLongitude = ({
                                     disabled={disabled}
                                     variant="outline"
                                     size="sm"
-                                    title="Change marker color"
-                                    aria-label="Change marker color"
+                                    title="Change marker colour"
+                                    aria-label="Change marker colour"
                                     className="w-full flex gap-2"
                                 >
                                     <PaletteIcon className="w-4 h-4"/>
-                                    Change Color
+                                    Change Colour
                                 </Button>
                             </DialogTrigger>
                             <DialogContent className="z-[1060]" overlayClassName="z-[1060]">
                                 <DialogHeader>
                                     <DialogTitle className="text-2xl">
-                                        Change Color
+                                        Change Colour
                                     </DialogTitle>
                                 </DialogHeader>
                                 <div className="grid grid-cols-4 gap-4 py-4">
                                     {(
-                                        Object.entries(ICON_COLORS) as [
-                                            keyof typeof ICON_COLORS,
+                                        Object.entries(ICON_COLOURS) as [
+                                            keyof typeof ICON_COLOURS,
                                             string,
                                         ][]
-                                    ).map(([colorKey, hexCode]) => (
+                                    ).map(([colourKey, hexCode]) => (
                                         <Button
-                                            key={colorKey}
+                                            key={colourKey}
                                             variant="outline"
                                             size="icon"
                                             className={cn(
                                                 "h-16 w-full rounded-md border-2",
-                                                colorName === colorKey
+                                                colourName === colourKey
                                                     ? "border-primary"
                                                     : "border-transparent",
                                             )}
                                             style={{ backgroundColor: hexCode }}
                                             onClick={() =>
-                                                onChangeColor(
-                                                    colorKey as keyof typeof ICON_COLORS,
+                                                onChangeColour(
+                                                    colourKey as keyof typeof ICON_COLOURS,
                                                 )
                                             }
-                                            title={`Set color to ${colorKey}`}
-                                            aria-label={`Set color to ${colorKey}`}
+                                            title={`Set colour to ${colourKey}`}
+                                            aria-label={`Set colour to ${colourKey}`}
                                         />
                                     ))}
                                 </div>

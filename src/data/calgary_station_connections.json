@@ -5,7 +5,7 @@
             "type": "Feature",
             "properties": {
                 "name": "Blue Line",
-                "color": "#2563eb"
+                "colour": "#2563eb"
             },
             "geometry": {
                 "type": "LineString",
@@ -40,7 +40,7 @@
             "type": "Feature",
             "properties": {
                 "name": "MAX Teal",
-                "color": "#14b8a6"
+                "colour": "#14b8a6"
             },
             "geometry": {
                 "type": "LineString",
@@ -69,7 +69,7 @@
             "type": "Feature",
             "properties": {
                 "name": "Red Line",
-                "color": "#dc2626"
+                "colour": "#dc2626"
             },
             "geometry": {
                 "type": "LineString",
@@ -107,7 +107,7 @@
             "type": "Feature",
             "properties": {
                 "name": "MAX Orange",
-                "color": "#ea580c"
+                "colour": "#ea580c"
             },
             "geometry": {
                 "type": "LineString",
@@ -142,7 +142,7 @@
             "type": "Feature",
             "properties": {
                 "name": "MAX Purple",
-                "color": "#9333ea"
+                "colour": "#9333ea"
             },
             "geometry": {
                 "type": "LineString",
@@ -172,7 +172,7 @@
             "type": "Feature",
             "properties": {
                 "name": "MAX Green",
-                "color": "#16a34a"
+                "colour": "#16a34a"
             },
             "geometry": {
                 "type": "LineString",
@@ -200,7 +200,7 @@
             "type": "Feature",
             "properties": {
                 "name": "MAX Yellow",
-                "color": "#eab308"
+                "colour": "#eab308"
             },
             "geometry": {
                 "type": "LineString",

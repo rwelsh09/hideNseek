@@ -13,7 +13,7 @@ import {
     questions,
     triggerLocalRefresh,
 } from "@/lib/context";
-import type { ICON_COLORS } from "@/maps/api";
+import type { ICON_COLOURS } from "@/maps/api";
 
 import { LatitudeLongitude } from "./LatLngPicker";
 import {
@@ -35,28 +35,28 @@ export const draftQuestionType = atom<string | null>(null);
 let isDragging = false;
 
 // Cache icons to prevent unnecessary re-renders in react-leaflet by avoiding new object references
-const iconCache: Partial<Record<keyof typeof ICON_COLORS, Icon>> = {};
+const iconCache: Partial<Record<keyof typeof ICON_COLOURS, Icon>> = {};
 
-const getIcon = (color: keyof typeof ICON_COLORS) => {
-    if (!iconCache[color]) {
-        iconCache[color] = new Icon({
-            iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${color}.png`,
+const getIcon = (colour: keyof typeof ICON_COLOURS) => {
+    if (!iconCache[colour]) {
+        iconCache[colour] = new Icon({
+            iconUrl: `https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-${colour}.png`,
             shadowUrl:
                 "https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png",
             iconSize: [25, 41],
             iconAnchor: [12, 41],
             popupAnchor: [1, -34],
             shadowSize: [41, 41],
-            className: `tutorial-marker-${color}`,
+            className: `tutorial-marker-${colour}`,
         });
     }
-    return iconCache[color];
+    return iconCache[colour];
 };
 
-const ColoredMarker = ({
+const ColouredMarker = ({
     latitude,
     longitude,
-    color,
+    colour,
     onChange,
     onClick,
 }: {
@@ -64,7 +64,7 @@ const ColoredMarker = ({
     onClick: () => void;
     latitude: number;
     longitude: number;
-    color: keyof typeof ICON_COLORS;
+    colour: keyof typeof ICON_COLOURS;
 }) => {
     const handlersRef = useRef({ onChange, onClick });
 
@@ -100,7 +100,7 @@ const ColoredMarker = ({
     return (
         <Marker
             position={positionArray}
-            icon={color ? getIcon(color) : undefined}
+            icon={colour ? getIcon(colour) : undefined}
             draggable={true}
             eventHandlers={eventHandlers}
         />
@@ -145,8 +145,8 @@ export const DraggableMarkers = () => {
         <Fragment>
             {/* 1. RENDER MARKERS */}
             {$hiderMode !== false && (
-                <ColoredMarker
-                    color="green"
+                <ColouredMarker
+                    colour="green"
                     key="hider"
                     latitude={$hiderMode.latitude}
                     longitude={$hiderMode.longitude}
@@ -171,8 +171,8 @@ export const DraggableMarkers = () => {
                     case "photo":
                     case "measure":
                         return (
-                            <ColoredMarker
-                                color={question.data.color}
+                            <ColouredMarker
+                                colour={question.data.colour}
                                 key={question.key}
                                 latitude={question.data.lat}
                                 longitude={question.data.lng}
@@ -191,8 +191,8 @@ export const DraggableMarkers = () => {
                     case "hot/cold":
                         return (
                             <Fragment key={question.key}>
-                                <ColoredMarker
-                                    color={question.data.colorA}
+                                <ColouredMarker
+                                    colour={question.data.colourA}
                                     key={"a" + question.key.toString()}
                                     latitude={question.data.latA}
                                     longitude={question.data.lngA}
@@ -207,8 +207,8 @@ export const DraggableMarkers = () => {
                                         questionModified();
                                     }}
                                 />
-                                <ColoredMarker
-                                    color={question.data.colorB}
+                                <ColouredMarker
+                                    colour={question.data.colourB}
                                     key={"b" + question.key.toString()}
                                     latitude={question.data.latB}
                                     longitude={question.data.lngB}

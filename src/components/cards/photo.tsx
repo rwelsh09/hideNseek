@@ -97,9 +97,9 @@ export const PhotoQuestionComponent = ({
             <LatitudeLongitude
                 latitude={data.lat}
                 longitude={data.lng}
-                colorName={data.color}
-                onChangeColor={(color: any) => {
-                    data.color = color;
+                colourName={data.colour}
+                onChangeColour={(colour: any) => {
+                    data.colour = colour;
                     questionModified();
                 }}
                 onChange={(lat, lng) => {

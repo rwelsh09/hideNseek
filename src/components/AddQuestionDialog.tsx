@@ -92,15 +92,15 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
             qData.isCustom = detail === "unknown";
             qData.unit = "kilometers";
             qData.within = true;
-            qData.color = "orange";
+            qData.colour = "orange";
         } else if (type === "match") {
             qData.type = detail || "museum";
             qData.same = true;
-            qData.color = "red";
+            qData.colour = "red";
         } else if (type === "measure") {
             qData.type = detail || "museum";
             qData.hiderCloser = true;
-            qData.color = "green";
+            qData.colour = "green";
         } else if (type === "hot/cold") {
             const destination = turf.destination(
                 [center.lng, center.lat],
@@ -115,20 +115,20 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                 lngB: destination.geometry.coordinates[0],
                 warmer: true,
                 locked: false,
-                colorA: "gold",
-                colorB: "blue",
+                colourA: "gold",
+                colourB: "blue",
                 doubledPenalty: isQuestionLocked(type, detail),
             };
         } else if (type === "closest") {
             qData.locationType = detail || "museum";
             qData.radius = 2;
             qData.unit = "kilometers";
-            qData.color = "violet";
+            qData.colour = "violet";
         } else if (type === "photo") {
             qId = "photo";
             qData.notes = "";
             qData.type = detail || "camera";
-            qData.color = "blue";
+            qData.colour = "blue";
         }
 
         // Add to map

@@ -60,9 +60,9 @@ export const HotColdQuestionComponent = ({
                 latitude={data.latA}
                 longitude={data.lngA}
                 label="Start"
-                colorName={data.colorA}
-                onChangeColor={(color: any) => {
-                    data.colorA = color;
+                colourName={data.colourA}
+                onChangeColour={(colour: any) => {
+                    data.colourA = colour;
                     questionModified();
                 }}
                 onChange={(lat, lng) => {
@@ -77,9 +77,9 @@ export const HotColdQuestionComponent = ({
                 latitude={data.latB}
                 longitude={data.lngB}
                 label="End"
-                colorName={data.colorB}
-                onChangeColor={(color: any) => {
-                    data.colorB = color;
+                colourName={data.colourB}
+                onChangeColour={(colour: any) => {
+                    data.colourB = colour;
                     questionModified();
                 }}
                 onChange={(lat, lng) => {

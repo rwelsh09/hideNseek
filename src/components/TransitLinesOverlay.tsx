@@ -7,7 +7,7 @@ import { displayTransitLines } from "@/lib/context";
 
 const styleFeature = (feature: any) => {
     return {
-        color: feature?.properties?.color || "#e11d48", // fallback to a red if not specified
+        color: feature?.properties?.colour || "#e11d48", // fallback to a red if not specified
         weight: 5,
         opacity: 0.8,
     };
