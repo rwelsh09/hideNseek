@@ -1,43 +1,35 @@
-## 2026-07-04 - Centralized State Management in QuestionCard
+## 2026-07-04 - [Centralized State Management in QuestionCard]
 
 **Learning:** The previous implementation leaked UI state management (lock/collapse and time penalty calculation) into all 6 consumer components of `QuestionCard`. This repetitive pattern caused unnecessary boilerplate across the application.
 **Action:** Always prefer to encapsulate shared UI state modifications (like toggling collapsed state or applying shared context effects like penalties) within the base component itself when the behaviour is uniform across all its consumers.
 
-## 2026-07-04 - Centralized derived state in QuestionCard
+## 2026-07-04 - [Centralized derived state in QuestionCard]
 
 **Learning:** The previous implementation leaked UI derived state management (question label calculation) into 5 of the 6 consumer components of `QuestionCard`. This repetitive pattern caused unnecessary boilerplate across the application.
 **Action:** Always prefer to encapsulate shared UI state modifications (like computing default labels) within the base component itself when the base component already subscribes to the same state.
 
-## 2024-05-18 - Playwright Verification Tips
+## 2024-05-18 - [Playwright Verification Tips]
 
 **Learning:** Playwright strict visibility checks can sometimes block testing local interactions if elements are hidden by responsive UI or off-screen scroll bars.
 **Action:** When writing temporary Playwright verification scripts in Python, use `page.evaluate()` to execute clicks via JavaScript (e.g., `element.click()`) to bypass strict Playwright visibility and clickability checks, especially for elements hidden inside responsive sidebars or off-screen panels.
 
-## 2026-07-04 - turf.difference Usage with FeatureCollections
+## 2026-07-04 - [turf.difference Usage with FeatureCollections]
 
 **Learning:** In the project's version of Turf.js (v7), functions like `turf.difference` accept a `FeatureCollection` directly. Passing the raw `.features` array instead will throw an 'Unknown Geometry Type' error.
 **Action:** When performing operations on multiple features at once with Turf v7 (like `turf.difference`), wrap the elements in `turf.featureCollection([...])` rather than spreading them or attempting manual iteration.
 
-## 2026-07-04 - Simplifying Geospatial Inversions
-
-**Learning:** The codebase contained a complex workaround for geospatial subtraction (`modifyMapData`), which calculated a global inverse mask (`holedMask` subtracted from a worldwide `BLANK_GEOJSON`) and then used `turf.intersect`. This is mathematically equivalent to simply subtracting the shape using `turf.difference`, which is more resilient and cleaner to reason about.
-**Action:** For geospatial subtraction (e.g., removing a shape from the map data), use `turf.difference` directly rather than calculating an inverse global mask (`holedMask` against `BLANK_GEOJSON`) and intersecting it, to avoid unnecessary complexity and potential geographic rounding errors.
-
-## 2024-05-18 - Zod internal options reflection
+## 2024-05-18 - [Zod internal options reflection]
 
 **Learning:** We previously used manual reflection into Zod schema internals (`_def.innerType`, `_def.value`) within UI components (like `ClosestQuestionComponent` and `MatchQuestionComponent`) to extract Select options. This was brittle and led to leaky abstractions.
 **Action:** Use the newly created `getSchemaOptions(schema)` function from `src/maps/schema.ts` when building options objects from Zod schema definitions to encapsulate all Zod internal traversals.
 
-## 2026-07-04 - Centralized question actions in QuestionCard
+## 2026-07-04 - [Centralized question actions in QuestionCard]
 
 **Learning:** The previous implementation leaked question-specific actions (Question Rules, Share, and Delete) into `LatLngPicker`, violating separation of concerns because `LatLngPicker` should purely be a location picker and doesn't inherently map to a question (e.g. when picking Hider Location). This caused unnecessary abstractions and prop forwarding.
 **Action:** Always prefer to encapsulate question-specific actions and rendering inside `QuestionCard` rather than passing them down into generic location picker components.
 
-## 2026-07-13 - Centralized Derived State (resultStr) and HiderMode Display in QuestionCard
+## 2026-07-13 - [Centralized Derived State (resultStr) and HiderMode Display in QuestionCard]
 
 **Learning:** The previous implementation leaked UI derived state management (specifically the `resultStr` formatting for the question summary) and the "Tell the Seekers" `$hiderMode` contextual display into all 5 specific question card components (`closest`, `hot-cold`, `match`, `measure`, `radius`). This repetitive pattern caused unnecessary boilerplate across the application and violated the DRY principle.
 **Action:** Always prefer to encapsulate shared UI state modifications (like computing default result labels and rendering hider mode instruction banners) within the base component itself (`QuestionCard`) when the base component already subscribes to the same state and context.
 
-## 2026-07-13 - Eliminate duplicate distance calculation and sorting logic in Question Components
-**Learning:** The `ClosestQuestionComponent` historically contained a massive inline anonymous function (`filteredFeatures`) duplicating the exact domain logic used in `src/maps/questions/closest.ts` (`filterPointsWithinRadius`) for filtering and sorting geographical features within a specific radius. This violated DRY and scattered domain logic into a UI component.
-**Action:** Always extract and export shared domain logic (like geographical calculations) from the underlying map processing utilities, and reuse those exact functions inside the React components, rather than writing duplicate procedural loops inline. Ensure any necessary side effects (like updating global state when a calculated value diverges) are still triggered based on the return value of the shared function.
