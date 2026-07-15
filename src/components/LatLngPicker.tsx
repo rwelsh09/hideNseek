@@ -166,7 +166,7 @@ export const LatitudeLongitude = ({
                                     Change Color
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent>
+                            <DialogContent className="z-[1060]" overlayClassName="z-[1060]">
                                 <DialogHeader>
                                     <DialogTitle className="text-2xl">
                                         Change Color
