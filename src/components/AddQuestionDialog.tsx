@@ -180,7 +180,7 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                                 </h3>
                             </div>
                         </div>
-                        <div className="grid grid-cols-3 gap-1.5 sm:gap-2 mt-2">
+                        <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
                             <button
                                 type="button"
                                 aria-label="Add hotCold question for 1 km"
