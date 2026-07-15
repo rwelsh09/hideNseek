@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-import { ICON_COLORS } from "./api/constants";
+import { ICON_COLOURS } from "./api/constants";
 import { PLACES } from "./placesConfig";
 
 export const determineUnionizedStrings = (
@@ -44,7 +44,7 @@ const unitsSchema = z.preprocess(
     z.union([z.literal("kilometers"), z.literal("meters")]),
 );
 
-const iconColorSchema = z.union([
+const iconColourSchema = z.union([
     z.literal("green"),
     z.literal("black"),
     z.literal("blue"),
@@ -55,11 +55,11 @@ const iconColorSchema = z.union([
     z.literal("violet"),
 ]);
 
-type IconColor = z.infer<typeof iconColorSchema>;
+type IconColour = z.infer<typeof iconColourSchema>;
 
-const randomColor = () =>
-    (Object.keys(ICON_COLORS) as IconColor[])[
-        Math.floor(Math.random() * Object.keys(ICON_COLORS).length)
+const randomColour = () =>
+    (Object.keys(ICON_COLOURS) as IconColour[])[
+        Math.floor(Math.random() * Object.keys(ICON_COLOURS).length)
     ];
 
 const hotColdQuestionSchema = z.object({
@@ -80,8 +80,8 @@ const hotColdQuestionSchema = z.object({
         .min(-180, "Longitude must not overlap with the antemeridian")
         .max(180, "Longitude must not overlap with the antemeridian"),
     warmer: z.boolean().default(true),
-    colorA: iconColorSchema.default("gold"),
-    colorB: iconColorSchema.default("blue"),
+    colourA: iconColourSchema.default("gold"),
+    colourB: iconColourSchema.default("blue"),
     locked: z.boolean().default(false),
     doubledPenalty: z.boolean().default(false),
 });
@@ -96,7 +96,7 @@ const ordinaryBaseQuestionSchema = z.object({
         .min(-180, "Longitude must not overlap with the antemeridian")
         .max(180, "Longitude must not overlap with the antemeridian"),
     locked: z.boolean().default(false),
-    color: iconColorSchema.default(randomColor),
+    colour: iconColourSchema.default(randomColour),
     doubledPenalty: z.boolean().default(false),
 });
 
@@ -107,7 +107,7 @@ const getDefaultUnit = () => {
 const photoQuestionSchema = ordinaryBaseQuestionSchema.extend({
     notes: z.string().default(""),
     type: z.string().default("camera"),
-    color: iconColorSchema.default("blue"),
+    colour: iconColourSchema.default("blue"),
 });
 
 const radarQuestionSchema = ordinaryBaseQuestionSchema.extend({
@@ -115,7 +115,7 @@ const radarQuestionSchema = ordinaryBaseQuestionSchema.extend({
     isCustom: z.boolean().default(false),
     unit: unitsSchema.default(getDefaultUnit),
     within: z.boolean().default(true),
-    color: iconColorSchema.default("orange"),
+    colour: iconColourSchema.default("orange"),
 });
 
 const closestLocationsOne = z.union(
@@ -127,7 +127,7 @@ const apiLocationSchema = closestLocationsOne;
 const baseClosestQuestionSchema = ordinaryBaseQuestionSchema.extend({
     radius: z.number().min(0, "You cannot have a negative radius").default(2),
     unit: unitsSchema.default(getDefaultUnit),
-    color: iconColorSchema.default("violet"),
+    colour: iconColourSchema.default("violet"),
     location: z
         .union([
             z.object({
@@ -164,7 +164,7 @@ export const closestQuestionSchema = closestQuestionSpecificSchemaOne;
 const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
     same: z.boolean().default(true),
     lengthComparison: z.enum(["shorter", "longer", "same"]).optional(),
-    color: iconColorSchema.default("red"),
+    colour: iconColourSchema.default("red"),
 });
 
 const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
@@ -189,7 +189,7 @@ export const matchQuestionSchema = ordinaryMatchQuestionSchema;
 
 const baseMeasureQuestionSchema = ordinaryBaseQuestionSchema.extend({
     hiderCloser: z.boolean().default(true),
-    color: iconColorSchema.default("green"),
+    colour: iconColourSchema.default("green"),
 });
 
 const ordinaryMeasureQuestionSchema = baseMeasureQuestionSchema.extend({

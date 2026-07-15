@@ -128,28 +128,28 @@ export const ZoneSidebar = () => {
             pane: "hidingZonesPane",
             interactive: nonOverlappingStations,
             style: (feature: any) => {
-                let color = "blue";
+                let colour = "blue";
                 const isSelected =
                     extractStationId(feature) === hidingZoneModeStationID;
 
                 if (isSelected) {
-                    color = "yellow";
+                    colour = "yellow";
                 } else {
                     const transitType =
                         getFeatureProperties(feature).transit_type;
                     if (transitType === "CTrain Station") {
-                        color = "red";
+                        colour = "red";
                     } else if (transitType === "MAX Station") {
-                        color = "blue";
+                        colour = "blue";
                     } else if (transitType === "CTrain & MAX Hub") {
-                        color = "purple";
+                        colour = "purple";
                     } else {
-                        color = "green";
+                        colour = "green";
                     }
                 }
                 return {
-                    color: color,
-                    fillColor: color,
+                    color: colour,
+                    fillColor: colour,
                     fillOpacity: 0.2,
                 };
             },

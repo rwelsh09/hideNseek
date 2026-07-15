@@ -14,22 +14,22 @@ const pathOptionsCache: Record<
     { color: string; fillColor: string; fillOpacity: number }
 > = {};
 
-const getPathOptions = (color: string) => {
-    if (!pathOptionsCache[color]) {
-        pathOptionsCache[color] = {
-            color: color,
-            fillColor: color,
+const getPathOptions = (colour: string) => {
+    if (!pathOptionsCache[colour]) {
+        pathOptionsCache[colour] = {
+            color: colour,
+            fillColor: colour,
             fillOpacity: 0.8,
         };
     }
-    return pathOptionsCache[color];
+    return pathOptionsCache[colour];
 };
 
 const TOOLTIP_OFFSET: [number, number] = [0, -10];
 
 const PlaytestPlaceMarker = ({
     coords,
-    color,
+    colour,
     name,
 }: {
     coords: number[];
@@ -45,7 +45,7 @@ const PlaytestPlaceMarker = ({
         <CircleMarker
             center={centerArray}
             radius={5}
-            pathOptions={getPathOptions(color)}
+            pathOptions={getPathOptions(colour)}
         >
             <Tooltip direction="top" offset={TOOLTIP_OFFSET}>
                 {name}
@@ -118,7 +118,7 @@ export const PlaytestPlaces = () => {
                         features.features.forEach((f: any) => {
                             allPlaces.push({
                                 ...f,
-                                customColor: "purple", // distinct color for playtest
+                                customColour: "purple", // distinct colour for playtest
                             });
                         });
                     }
@@ -146,7 +146,7 @@ export const PlaytestPlaces = () => {
                         features.features.forEach((f: any) => {
                             allPlaces.push({
                                 ...f,
-                                customColor: "green",
+                                customColour: "green",
                             });
                         });
                     }
@@ -178,13 +178,13 @@ export const PlaytestPlaces = () => {
                     place?.properties?.name ??
                     place?.properties?.["name:en"] ??
                     "Unknown Place";
-                const color = place?.customColor ?? "orange";
+                const colour = place?.customColour ?? "orange";
 
                 return (
                     <PlaytestPlaceMarker
                         key={i}
                         coords={coords}
-                        color={color}
+                        colour={colour}
                         name={name}
                     />
                 );

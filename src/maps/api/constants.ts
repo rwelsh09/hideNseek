@@ -5,7 +5,7 @@ import { PLACES } from "@/maps/placesConfig";
 
 export const GEOCODER_API = "https://photon.komoot.io/api/";
 
-export const ICON_COLORS = {
+export const ICON_COLOURS = {
     black: "#3D3D3D",
     blue: "#2A81CB",
     gold: "#FFD326",
