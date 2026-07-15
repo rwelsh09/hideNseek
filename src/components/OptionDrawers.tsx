@@ -97,7 +97,56 @@ export const OptionDrawers = () => {
         try {
             const geojson = JSON.parse(hidingZone);
 
-            if (
+            if (geojson.isGameSettings === true) {
+                if (geojson.questions) {
+                    questions.set(questionsSchema.parse(geojson.questions));
+                } else {
+                    questions.set([]);
+                    lockedRecommendedStart.set(null);
+                    lockedActiveStationIds.set(null);
+                }
+
+                if (geojson.hidingRadiusUnits) {
+                    hidingRadiusUnits.set(geojson.hidingRadiusUnits);
+                }
+
+                if (
+                    geojson.disabledStations !== null &&
+                    geojson.disabledStations?.constructor === Array
+                ) {
+                    disabledStations.set(geojson.disabledStations);
+                }
+
+                if (geojson.hidingRadius !== null && geojson.hidingRadius !== undefined) {
+                    hidingRadius.set(geojson.hidingRadius);
+                }
+
+                if (typeof geojson.headStartMinutes === "number") {
+                    headStartMinutes.set(geojson.headStartMinutes);
+                }
+
+                mapGeoLocation.set({
+                    geometry: {
+                        coordinates: [-114.0719, 51.0447],
+                        type: "Point",
+                    },
+                    type: "Feature",
+                    properties: {
+                        osm_type: "R",
+                        osm_id: 3227127,
+                        extent: [50.8427, -114.3158, 51.2124, -113.8599],
+                        country: "Canada",
+                        osm_key: "place",
+                        countrycode: "CA",
+                        osm_value: "city",
+                        name: "Calgary",
+                        type: "city",
+                    },
+                });
+
+                mapGeoJSON.set(null);
+                polyGeoJSON.set(null);
+            } else if (
                 geojson.properties &&
                 geojson.properties.isHidingZone === true
             ) {
