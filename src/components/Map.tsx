@@ -271,11 +271,11 @@ export const Map = ({ className }: { className?: string }) => {
                                     const props = $hidingZone.properties || $hidingZone;
                                     const minimalSettings = {
                                         isGameSettings: true,
-                                        questions: props.questions,
-                                        disabledStations: props.disabledStations || $hidingZone.disabledStations,
-                                        hidingRadius: props.hidingRadius || $hidingZone.hidingRadius,
-                                        hidingRadiusUnits: props.hidingRadiusUnits || $hidingZone.hidingRadiusUnits,
-                                        headStartMinutes: props.headStartMinutes || $hidingZone.headStartMinutes,
+                                        questions: props.questions ?? $hidingZone.questions,
+                                        disabledStations: props.disabledStations ?? $hidingZone.disabledStations,
+                                        hidingRadius: props.hidingRadius ?? $hidingZone.hidingRadius,
+                                        hidingRadiusUnits: props.hidingRadiusUnits ?? $hidingZone.hidingRadiusUnits,
+                                        headStartMinutes: props.headStartMinutes ?? $hidingZone.headStartMinutes,
                                     };
                                     const hidingZoneString = JSON.stringify(minimalSettings);
                                     let compressedData;
