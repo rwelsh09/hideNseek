@@ -28,6 +28,7 @@ import {
     headStartMinutes,
     hiderMode,
     hidingRadius,
+    hidingRadiusUnits,
     isOptionsOpenStore,
     leafletMapContext,
     lockedActiveStationIds,
