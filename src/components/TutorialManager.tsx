@@ -114,7 +114,7 @@ export const TutorialManager = () => {
                         }
                     },
                     {
-                        element: '[data-tutorial-id="tutorial-store-question-btn"]',
+                        element: '[data-tutorial-id="tutorial-close-panel-btn"]',
                         popover: {
                             title: "Close Dialog",
                             description: "Close this dialog to reveal the Paste Question button.",
@@ -130,7 +130,7 @@ export const TutorialManager = () => {
                                     clearInterval((hiderDriverObj as any)._popupCloseCheckInterval);
                                 }
                                 const checkInterval = setInterval(() => {
-                                    const popup = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
+                                    const popup = document.querySelector('[data-tutorial-id="tutorial-close-panel-btn"]');
                                     if (!popup) {
                                         clearInterval(checkInterval);
                                         setTimeout(() => hiderDriverObj.moveNext(), 300);
@@ -301,7 +301,7 @@ export const TutorialManager = () => {
                                               "click",
                                               () => {
                                                   const checkInterval = setInterval(() => {
-                                                      const floatingPanel = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
+                                                      const floatingPanel = document.querySelector('[data-tutorial-id="tutorial-close-panel-btn"]');
                                                       if (floatingPanel) {
                                                           clearInterval(checkInterval);
                                                           setTimeout(() => driverObj.moveNext(), 300);
@@ -400,7 +400,7 @@ export const TutorialManager = () => {
                               },
                           },
                           {
-                              element: '[data-tutorial-id="tutorial-store-question-btn"]',
+                              element: '[data-tutorial-id="tutorial-close-panel-btn"]',
                               popover: {
                                   title: "Close Question",
                                   description: "Click here to close the question panel.",
@@ -418,13 +418,13 @@ export const TutorialManager = () => {
                                       }
 
                                       const checkInterval = setInterval(() => {
-                                          const storeBtn = document.querySelector('[data-tutorial-id="tutorial-store-question-btn"]');
-                                          if (!storeBtn) {
+                                          const closeBtn = document.querySelector('[data-tutorial-id="tutorial-close-panel-btn"]');
+                                          if (!closeBtn) {
                                               clearInterval(checkInterval);
                                               setTimeout(() => driverObj.moveNext(), 300);
-                                          } else if (!storeBtn.hasAttribute("data-listener-attached")) {
-                                              storeBtn.setAttribute("data-listener-attached", "true");
-                                              storeBtn.addEventListener("click", () => {
+                                          } else if (!closeBtn.hasAttribute("data-listener-attached")) {
+                                              closeBtn.setAttribute("data-listener-attached", "true");
+                                              closeBtn.addEventListener("click", () => {
                                                   clearInterval(checkInterval);
                                                   setTimeout(() => driverObj.moveNext(), 300);
                                               }, { once: true });

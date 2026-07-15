@@ -11,7 +11,6 @@ import {
     Plus,
     Route,
     Ruler,
-    ShoppingCart,
     Target,
     Thermometer as HotCold,
     Train,
@@ -575,21 +574,6 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                                 <Trees className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
                                     Park
-                                </span>
-                            </button>
-
-                            <button
-                                type="button"
-                                aria-label="Add photo question for store"
-                                title="Add photo question for store"
-                                onClick={() =>
-                                    handleQuestionSelect("photo", "store")
-                                }
-                                className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "store") ? "opacity-50 grayscale" : ""}`}
-                            >
-                                <ShoppingCart className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                    Store
                                 </span>
                             </button>
 
