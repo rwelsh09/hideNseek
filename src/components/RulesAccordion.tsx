@@ -7,6 +7,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { QUESTION_RULES } from "@/lib/rules";
+
 import { PwaInstallTip } from "./PwaInstallTip";
 
 export function RulesAccordion() {

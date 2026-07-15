@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import {
     MENU_ITEM_CLASSNAME,
     SidebarMenuItem,
-} from "@/components/ui/sidebar-l";
+} from "@/components/ui/sidebar";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { UnitSelect } from "@/components/UnitSelect";
 import {
@@ -47,6 +47,7 @@ export const RadarQuestionComponent = ({
                 <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-row")}>
                     <Input
                         type="number"
+                        inputMode="decimal"
                         className="rounded-md p-2 w-16"
                         value={data.radius}
                         disabled={data.locked || $isLoading}

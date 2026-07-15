@@ -1,10 +1,9 @@
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
-
+import { editingQuestionId } from "@/components/DraggableMarkers";
 import { addQuestion } from "@/lib/context";
 import { questionSchema } from "@/maps/schema";
-import { draftQuestionId, draftQuestionType, editingQuestionId } from "@/components/DraggableMarkers";
 
 export const IncomingQuestionHandler = () => {
 

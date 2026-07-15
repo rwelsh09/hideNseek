@@ -6,6 +6,8 @@ html,
 body {
     margin: 0;
     width: 100%;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
     height: 100%;
 }
 

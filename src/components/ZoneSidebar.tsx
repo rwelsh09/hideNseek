@@ -19,12 +19,12 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import {
+    RightSidebarContext,
     Sidebar,
     SidebarContent,
-    SidebarContext,
     SidebarMenu,
     SidebarMenuItem,
-} from "@/components/ui/sidebar-r";
+} from "@/components/ui/sidebar";
 import {
     disabledStations,
     displayHidingZonesStyle,
@@ -74,7 +74,7 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { ScrollToTop } from "./ui/scroll-to-top";
-import { MENU_ITEM_CLASSNAME } from "./ui/sidebar-l";
+import { MENU_ITEM_CLASSNAME } from "./ui/sidebar";
 import { UnitSelect } from "./UnitSelect";
 
 export const ZoneSidebar = () => {
@@ -295,7 +295,7 @@ export const ZoneSidebar = () => {
                     className="mr-2 visible cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-800 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-slate-400"
                     aria-label="Close sidebar"
                     onClick={() => {
-                        SidebarContext.get().toggleSidebar();
+                        RightSidebarContext.get().toggleSidebar();
                     }}
                 >
                     <SidebarCloseIcon className="scale-x-[-1]" />
@@ -313,6 +313,7 @@ export const ZoneSidebar = () => {
                             <div className="w-[100px]">
                                 <Input
                                     type="number"
+                                    inputMode="decimal"
                                     className="rounded-md p-2 w-full bg-background"
                                     value={$headStartMinutes}
                                     onChange={(e) => {
@@ -332,6 +333,7 @@ export const ZoneSidebar = () => {
                             <div className="flex gap-2 items-center">
                                 <Input
                                     type="number"
+                                    inputMode="decimal"
                                     className="rounded-md p-2 w-16 bg-background"
                                     value={$hidingRadius}
                                     onChange={(e) => {
@@ -773,6 +775,7 @@ export const ZoneSidebar = () => {
                                             </Label>
                                             <Input
                                                 type="number"
+                                                inputMode="decimal"
                                                 className="rounded-md p-1 w-16 h-8 bg-background text-sm"
                                                 value={overlapThreshold}
                                                 step={0.1}
