@@ -74,7 +74,7 @@ import {
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { ScrollToTop } from "./ui/scroll-to-top";
-import { MENU_ITEM_CLASSNAME } from "./ui/sidebar-l";
+import { MENU_ITEM_CLASSNAME } from "./ui/sidebar";
 import { UnitSelect } from "./UnitSelect";
 
 export const ZoneSidebar = () => {
