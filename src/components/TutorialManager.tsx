@@ -224,9 +224,9 @@ export const TutorialManager = () => {
                               element:
                                   '[data-tutorial-id="tutorial-share-state-btn"]',
                               popover: {
-                                  title: "Share Game Setup",
+                                  title: "Share Game",
                                   description:
-                                      "If the head start and hiding zones are changed from their default values. Use this to share the Game Setup with the other players.",
+                                      "Use this to share your current Game State (settings, zones, questions) with the other players.",
                                   side: "top",
                                   align: "end",
                               },

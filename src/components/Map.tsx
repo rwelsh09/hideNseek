@@ -25,7 +25,7 @@ import {
     questions,
     triggerLocalRefresh,
 } from "@/lib/context";
-import { compress, shareOrFallback } from "@/lib/utils";
+import { compress, encodeDisabledStations, shareOrFallback } from "@/lib/utils";
 import { cn } from "@/lib/utils";
 import { applyQuestionsToMapGeoData, holedMask } from "@/maps";
 import { hiderifyQuestion } from "@/maps";
@@ -268,7 +268,19 @@ export const Map = ({ className }: { className?: string }) => {
                                 className="shadow-md"
                                 data-tutorial-id="tutorial-share-state-btn"
                                 onClick={async () => {
-                                    const hidingZoneString = JSON.stringify($hidingZone);
+                                    const props = $hidingZone.properties || $hidingZone;
+                                    const disabledStationsArray = props.disabledStations ?? $hidingZone.disabledStations;
+                                    const minimalSettings = {
+                                        isGameSettings: true,
+                                        questions: props.questions ?? $hidingZone.questions,
+                                        disabledStations: Array.isArray(disabledStationsArray) && disabledStationsArray.length > 0
+                                            ? encodeDisabledStations(disabledStationsArray)
+                                            : disabledStationsArray,
+                                        hidingRadius: props.hidingRadius ?? $hidingZone.hidingRadius,
+                                        hidingRadiusUnits: props.hidingRadiusUnits ?? $hidingZone.hidingRadiusUnits,
+                                        headStartMinutes: props.headStartMinutes ?? $hidingZone.headStartMinutes,
+                                    };
+                                    const hidingZoneString = JSON.stringify(minimalSettings);
                                     let compressedData;
                                     try {
                                         compressedData = await compress(hidingZoneString);
