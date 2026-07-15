@@ -138,11 +138,11 @@ export const MatchQuestionComponent = ({
                         }}
                         disabled={!!$hiderMode || data.locked || $isLoading}
                     >
-                        <ToggleGroupItem value="shorter">
+                        <ToggleGroupItem value="shorter" className="data-[state=on]:bg-blue-500 data-[state=on]:text-white">
                             Shorter
                         </ToggleGroupItem>
-                        <ToggleGroupItem value="same">Same</ToggleGroupItem>
-                        <ToggleGroupItem value="longer">
+                        <ToggleGroupItem value="same" className="data-[state=on]:bg-rose-500 data-[state=on]:text-white">Same</ToggleGroupItem>
+                        <ToggleGroupItem value="longer" className="data-[state=on]:bg-blue-500 data-[state=on]:text-white">
                             Longer
                         </ToggleGroupItem>
                     </ToggleGroup>
@@ -162,10 +162,10 @@ export const MatchQuestionComponent = ({
                         }}
                         disabled={!!$hiderMode || data.locked || $isLoading}
                     >
-                        <ToggleGroupItem value="different">
+                        <ToggleGroupItem value="different" className="data-[state=on]:bg-blue-500 data-[state=on]:text-white">
                             Different
                         </ToggleGroupItem>
-                        <ToggleGroupItem value="same">Same</ToggleGroupItem>
+                        <ToggleGroupItem value="same" className="data-[state=on]:bg-rose-500 data-[state=on]:text-white">Same</ToggleGroupItem>
                     </ToggleGroup>
                 )}
 
