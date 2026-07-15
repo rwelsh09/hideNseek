@@ -180,7 +180,7 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                                 </h3>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
+                        <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mt-2">
                             <button
                                 type="button"
                                 aria-label="Add hotCold question for 1 km"
@@ -223,7 +223,7 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                                 </h3>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
+                        <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mt-2">
                             <button
                                 type="button"
                                 aria-label="Add radar question for 0.5 km"
@@ -320,7 +320,7 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                                 </h3>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
+                        <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mt-2">
                             {PLACES.filter((place) => place.type !== "specific").map(
                                 (place) => {
                                     const Icon = icons[place.icon as keyof typeof icons];
@@ -388,7 +388,7 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                                 </h3>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
+                        <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mt-2">
                             {PLACES.filter((place) => place.type !== "specific").map(
                                 (place) => {
                                     const Icon = icons[place.icon as keyof typeof icons];
@@ -445,7 +445,7 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                                 </h3>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
+                        <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mt-2">
                             {PLACES.filter((place) => place.type === "specific").map(
                                 (place) => {
                                     const Icon = icons[place.icon as keyof typeof icons];
@@ -488,7 +488,7 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                                 </h3>
                             </div>
                         </div>
-                        <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
+                        <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mt-2">
                             <button
                                 type="button"
                                 aria-label="Add photo question for camera"
