@@ -1,0 +1,9 @@
+npm warn Unknown project config "minimum-release-age". This will stop working in the next major version of npm. See `npm help npmrc` for supported config options.
+
+> Hide and Seek Map@0.1 preview
+> astro preview
+
+Port 4321 is in use, trying another one...
+ astro  v7.0.7 ready in 31 ms
+┃ Local    http://localhost:4322/hideNseek/
+┃ Network  use --host to expose

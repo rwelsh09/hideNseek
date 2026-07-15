@@ -1,0 +1,28 @@
+
+> Hide and Seek Map@0.1 dev /app
+> astro dev
+
+▶ Astro collects anonymous usage data.
+  This information helps us improve Astro.
+  Run "astro telemetry disable" to opt-out.
+  https://astro.build/telemetry
+
+03:50:46 [WARN] [vite] warning: `esbuild` option was specified by "vite:react-babel" plugin. This option is deprecated, please use `oxc` instead.
+03:50:46 [WARN] [vite] warning: `optimizeDeps.esbuildOptions` option was specified by "vite:react-babel" plugin. This option is deprecated, please use `optimizeDeps.rolldownOptions` instead.
+03:50:46 [WARN] [vite] You or a plugin you are using have set `optimizeDeps.esbuildOptions` but this option is now deprecated. Vite now uses Rolldown to optimize the dependencies. Please use `optimizeDeps.rolldownOptions` instead.
+03:50:46 [vite] connected.
+03:50:48 [types] Generated 2ms
+03:50:48 [vite] connected.
+ astro  v7.0.7 ready in 2894 ms
+┃ Local    http://localhost:4321/hideNseek/
+┃ Network  use --host to expose
+03:50:48 watching for file changes...
+03:50:50 [vite] [optimizer] bundling dependencies...
+03:51:24 [200] / 90ms
+03:51:25 [200] / 8ms
+03:52:14 [200] / 13ms
+03:52:14 [200] / 23ms
+03:53:03 [200] / 9ms
+03:53:03 [200] / 9ms
+03:53:23 [200] / 5ms
+03:53:23 [200] / 5ms
