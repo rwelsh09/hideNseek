@@ -59,13 +59,13 @@ export const LatitudeLongitude = ({
                         $isLoading && "opacity-50",
                     )}
                     style={{
-                        color: colorName === "gold" ? "black" : undefined,
+                        color: colorName === "gold" ? "black" : (colorName && colorName !== "transparent" ? "white" : undefined),
                     }}
                 >
                     <Button
                         variant="outline"
                         size="icon"
-                        className="shrink-0"
+                        className="shrink-0 text-foreground" style={{ color: "hsl(var(--foreground))" }}
                         onClick={() => {
                             if (!navigator || !navigator.geolocation) {
                                 toast.error("Geolocation not supported");
