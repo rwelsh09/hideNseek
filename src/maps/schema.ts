@@ -125,7 +125,6 @@ const closestLocationsOne = z.union(
 const apiLocationSchema = closestLocationsOne;
 
 const baseClosestQuestionSchema = ordinaryBaseQuestionSchema.extend({
-    showLabels: z.boolean().default(false),
     radius: z.number().min(0, "You cannot have a negative radius").default(2),
     unit: unitsSchema.default(getDefaultUnit),
     color: iconColorSchema.default("violet"),

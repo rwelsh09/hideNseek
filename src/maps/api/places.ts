@@ -271,7 +271,6 @@ export const nearestToQuestion = async (question: any) => {
                 locationType: question.type,
                 locked: true,
                 color: "black",
-                showLabels: false,
             },
             "Finding match locations...",
         );
