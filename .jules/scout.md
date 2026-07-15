@@ -1,14 +1,4 @@
-## 2026-07-04 - [Centralized State Management in QuestionCard]
-
-**Learning:** The previous implementation leaked UI state management (lock/collapse and time penalty calculation) into all 6 consumer components of `QuestionCard`. This repetitive pattern caused unnecessary boilerplate across the application.
-**Action:** Always prefer to encapsulate shared UI state modifications (like toggling collapsed state or applying shared context effects like penalties) within the base component itself when the behaviour is uniform across all its consumers.
-
-## 2026-07-04 - [Centralized derived state in QuestionCard]
-
-**Learning:** The previous implementation leaked UI derived state management (question label calculation) into 5 of the 6 consumer components of `QuestionCard`. This repetitive pattern caused unnecessary boilerplate across the application.
-**Action:** Always prefer to encapsulate shared UI state modifications (like computing default labels) within the base component itself when the base component already subscribes to the same state.
-
-## 2024-05-18 - [Playwright Verification Tips]
+## 2026-06-18 - [Playwright Verification Tips]
 
 **Learning:** Playwright strict visibility checks can sometimes block testing local interactions if elements are hidden by responsive UI or off-screen scroll bars.
 **Action:** When writing temporary Playwright verification scripts in Python, use `page.evaluate()` to execute clicks via JavaScript (e.g., `element.click()`) to bypass strict Playwright visibility and clickability checks, especially for elements hidden inside responsive sidebars or off-screen panels.
@@ -18,18 +8,13 @@
 **Learning:** In the project's version of Turf.js (v7), functions like `turf.difference` accept a `FeatureCollection` directly. Passing the raw `.features` array instead will throw an 'Unknown Geometry Type' error.
 **Action:** When performing operations on multiple features at once with Turf v7 (like `turf.difference`), wrap the elements in `turf.featureCollection([...])` rather than spreading them or attempting manual iteration.
 
-## 2024-05-18 - [Zod internal options reflection]
+## 2026-06-18 - [Zod internal options reflection]
 
 **Learning:** We previously used manual reflection into Zod schema internals (`_def.innerType`, `_def.value`) within UI components (like `ClosestQuestionComponent` and `MatchQuestionComponent`) to extract Select options. This was brittle and led to leaky abstractions.
 **Action:** Use the newly created `getSchemaOptions(schema)` function from `src/maps/schema.ts` when building options objects from Zod schema definitions to encapsulate all Zod internal traversals.
 
-## 2026-07-04 - [Centralized question actions in QuestionCard]
+## 2026-07-13 - [Centralize State and Logic in QuestionCard]
 
-**Learning:** The previous implementation leaked question-specific actions (Question Rules, Share, and Delete) into `LatLngPicker`, violating separation of concerns because `LatLngPicker` should purely be a location picker and doesn't inherently map to a question (e.g. when picking Hider Location). This caused unnecessary abstractions and prop forwarding.
-**Action:** Always prefer to encapsulate question-specific actions and rendering inside `QuestionCard` rather than passing them down into generic location picker components.
-
-## 2026-07-13 - [Centralized Derived State (resultStr) and HiderMode Display in QuestionCard]
-
-**Learning:** The previous implementation leaked UI derived state management (specifically the `resultStr` formatting for the question summary) and the "Tell the Seekers" `$hiderMode` contextual display into all 5 specific question card components (`closest`, `hot-cold`, `match`, `measure`, `radius`). This repetitive pattern caused unnecessary boilerplate across the application and violated the DRY principle.
-**Action:** Always prefer to encapsulate shared UI state modifications (like computing default result labels and rendering hider mode instruction banners) within the base component itself (`QuestionCard`) when the base component already subscribes to the same state and context.
+**Learning:** Previously, state management (lock/collapse, penalties), derived state (`resultStr`, default labels), contextual display ("Tell the Seekers" `$hiderMode`), and question-specific actions (Rules, Share, Delete) were leaked into consumer components (like `closest`, `hot-cold`, etc.) or generic components (like `LatLngPicker`). This caused repetitive boilerplate and violated separation of concerns.
+**Action:** Always prefer to encapsulate shared UI state modifications, derived logic, and specific actions within the base component itself (`QuestionCard`) when the behavior is uniform across all its consumers or relies on shared context.
 
