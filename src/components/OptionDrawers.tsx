@@ -41,7 +41,7 @@ import {
     showTutorial,
     triggerLocalRefresh,
 } from "@/lib/context";
-import { decompress } from "@/lib/utils";
+import { decodeDisabledStations, decompress } from "@/lib/utils";
 import { questionsSchema } from "@/maps/schema";
 
 import { LatitudeLongitude } from "./LatLngPicker";
@@ -111,11 +111,12 @@ export const OptionDrawers = () => {
                     hidingRadiusUnits.set(geojson.hidingRadiusUnits);
                 }
 
-                if (
-                    geojson.disabledStations !== null &&
-                    geojson.disabledStations?.constructor === Array
-                ) {
-                    disabledStations.set(geojson.disabledStations);
+                if (geojson.disabledStations !== null && geojson.disabledStations !== undefined) {
+                    if (typeof geojson.disabledStations === "string") {
+                        disabledStations.set(decodeDisabledStations(geojson.disabledStations));
+                    } else if (geojson.disabledStations.constructor === Array) {
+                        disabledStations.set(geojson.disabledStations);
+                    }
                 }
 
                 if (geojson.hidingRadius !== null && geojson.hidingRadius !== undefined) {

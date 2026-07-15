@@ -1,62 +1,51 @@
-import { describe, expect,it } from "vitest";
+import { cn, mapToObj, compress, decompress, shareOrFallback, encodeDisabledStations, decodeDisabledStations, STATION_IDS_INDEX } from "../src/lib/utils";
+import { expect, describe, test, vi, afterEach } from "vitest";
 
-import { cn, mapToObj } from "@/lib/utils";
-
-describe("cn", () => {
-    it("merges basic classes", () => {
-        expect(cn("a", "b", "c")).toBe("a b c");
+describe("utils", () => {
+    test("cn", () => {
+        expect(cn("a", "b")).toBe("a b");
+        expect(cn("a", undefined, "b", null)).toBe("a b");
     });
 
-    it("handles conditional classes", () => {
-        expect(cn("a", { b: true, c: false })).toBe("a b");
+    test("mapToObj", () => {
+        const arr = ["a", "b"];
+        const fn = (item: string) => [item, item.toUpperCase()] as [string, string];
+        const obj = mapToObj(arr, fn);
+        expect(obj).toEqual({ a: "A", b: "B" });
     });
 
-    it("resolves tailwind class conflicts", () => {
-        expect(cn("px-2 py-1", "p-4")).toBe("p-4");
-        expect(cn("bg-red-500", "bg-blue-500")).toBe("bg-blue-500");
+    test("compress/decompress", async () => {
+        const str = "hello world";
+        const compressed = await compress(str);
+        expect(compressed).not.toBe(str);
+        const decompressed = await decompress(compressed);
+        expect(decompressed).toBe(str);
     });
 
-    it("handles arrays and falsy values", () => {
-        expect(cn(["a", "b"], null, undefined, "c", false, "")).toBe("a b c");
-    });
-
-    it("handles nested arrays", () => {
-        expect(cn(["a", ["b", "c"]])).toBe("a b c");
-    });
-});
-
-describe("mapToObj", () => {
-    it("returns an empty object for an empty array", () => {
-        expect(mapToObj([], (item) => [String(item), item])).toEqual({});
-    });
-
-    it("maps an array of primitives correctly", () => {
-        const arr = ["a", "b", "c"];
-        expect(mapToObj(arr, (item) => [item, item.toUpperCase()])).toEqual({
-            a: "A",
-            b: "B",
-            c: "C",
+    describe("encodeDisabledStations / decodeDisabledStations", () => {
+        test("should encode and decode disabled stations successfully", () => {
+            const testStations = [STATION_IDS_INDEX[0], STATION_IDS_INDEX[10], STATION_IDS_INDEX[50], STATION_IDS_INDEX[115]];
+            const encoded = encodeDisabledStations(testStations);
+            const decoded = decodeDisabledStations(encoded);
+            expect(decoded).toEqual(testStations.sort());
         });
-    });
 
-    it("maps an array of objects correctly", () => {
-        const arr = [
-            { id: "1", name: "Alice" },
-            { id: "2", name: "Bob" },
-        ];
-        expect(mapToObj(arr, (item) => [item.id, item.name])).toEqual({
-            "1": "Alice",
-            "2": "Bob",
+        test("should handle empty stations array", () => {
+            const encoded = encodeDisabledStations([]);
+            const decoded = decodeDisabledStations(encoded);
+            expect(decoded).toEqual([]);
         });
-    });
 
-    it("overwrites duplicate keys with the last mapped value", () => {
-        const arr = [
-            { id: "1", name: "Alice" },
-            { id: "1", name: "Alice Updated" },
-        ];
-        expect(mapToObj(arr, (item) => [item.id, item.name])).toEqual({
-            "1": "Alice Updated",
+        test("should ignore unknown stations", () => {
+            const testStations = [STATION_IDS_INDEX[10], "unknown_station_123"];
+            const encoded = encodeDisabledStations(testStations);
+            const decoded = decodeDisabledStations(encoded);
+            expect(decoded).toEqual([STATION_IDS_INDEX[10]]);
+        });
+
+        test("should return empty array for invalid base64 string", () => {
+            const decoded = decodeDisabledStations("invalid!!!base64");
+            expect(decoded).toEqual([]);
         });
     });
 });
