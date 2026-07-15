@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+
 import calgaryRapidTransitData from "@/data/calgary_rapid_transit_network.json";
 
 export const STATION_IDS_INDEX = (calgaryRapidTransitData.features as any[])

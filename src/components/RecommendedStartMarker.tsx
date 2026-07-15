@@ -29,6 +29,8 @@ const startIcon = L.icon({
     tooltipAnchor: [0, -32],
 });
 
+const TOOLTIP_OFFSET: [number, number] = [0, -10];
+
 export const RecommendedStartMarker: React.FC = () => {
     const $showRecommendedStart = useStore(showRecommendedStart);
     const $lockedRecommendedStart = useStore(lockedRecommendedStart);
@@ -76,11 +78,16 @@ export const RecommendedStartMarker: React.FC = () => {
 
     const [lng, lat] = centerPoint.geometry.coordinates;
 
+    const positionArray = useMemo(
+        () => [lat, lng] as [number, number],
+        [lat, lng],
+    );
+
     return (
-        <Marker position={[lat, lng]} icon={startIcon}>
+        <Marker position={positionArray} icon={startIcon}>
             <Tooltip
                 direction="top"
-                offset={[0, -10]}
+                offset={TOOLTIP_OFFSET}
                 opacity={0.9}
                 permanent
                 className="font-bold shadow-md bg-primary text-primary-foreground border-none px-3 py-1.5"

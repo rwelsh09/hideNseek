@@ -32,3 +32,6 @@
 
 **Learning:** The application was bundling a ~521KB JSON file (`calgary_transit_lines_clean.json`) into the main chunk (previously `Map.tsx`) even though it's only displayed when a user toggles an option (`$displayTransitLines`). Even if it's on by default, dynamic importing moves the ~500KB JSON file out of the critical rendering path for the main component, allowing the map to render sooner while the transit line data loads in the background!
 **Action:** Use dynamic `import()` for large JSON datasets that aren't critical to the initial render. By moving the import inside a `useEffect` that triggers when the feature is enabled, we saved ~270KB on the initial bundle size by extracting it into `TransitLinesOverlay.tsx` and dynamically importing it!
+## 2026-07-15 - [Extract Inline Arrays in React-Leaflet Props]
+**Learning:** Passing inline arrays like `[lat, lng]` or `[0, -10]` as props (e.g., `position` or `offset`) to `react-leaflet` components (like `Marker` or `Tooltip`) causes unnecessary internal method calls (like `setLatLng`) on every render because the array reference changes.
+**Action:** Always extract static arrays to module-level constants or wrap dynamic arrays in `useMemo` hooks to ensure stable object references across React renders.
