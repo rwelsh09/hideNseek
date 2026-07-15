@@ -50,7 +50,7 @@ export const RadarQuestionComponent = ({
                         inputMode="decimal"
                         className="rounded-md p-2 w-16"
                         value={data.radius}
-                        disabled={data.locked || $isLoading}
+                        disabled={!data.isCustom || data.locked || $isLoading}
                         onChange={(e) => {
                             data.radius = parseFloat(e.target.value);
                             questionModified();
@@ -58,7 +58,7 @@ export const RadarQuestionComponent = ({
                     />
                     <UnitSelect
                         unit={data.unit}
-                        disabled={data.locked || $isLoading}
+                        disabled={!data.isCustom || data.locked || $isLoading}
                         onChange={(unit) => {
                             data.unit = unit;
                             questionModified();
