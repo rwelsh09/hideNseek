@@ -15,7 +15,7 @@ import {
     SidebarGroupContent,
     SidebarGroupLabel,
     SidebarMenu,
-} from "@/components/ui/sidebar-l";
+} from "@/components/ui/sidebar";
 import { lockedActiveStationIds, lockedRecommendedStart } from "@/lib/context";
 import {
     hiderMode,
@@ -25,8 +25,8 @@ import {
     questions,
     TIME_PENALTIES,
 } from "@/lib/context";
-import { lockRecommendedStartIfNeeded } from "@/lib/recommended-start";
 import { getQuestionShareText } from "@/lib/question-text";
+import { lockRecommendedStartIfNeeded } from "@/lib/recommended-start";
 import { QUESTION_RULES } from "@/lib/rules";
 import { cn, shareOrFallback } from "@/lib/utils";
 import { PLACES } from "@/maps/placesConfig";

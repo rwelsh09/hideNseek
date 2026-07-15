@@ -25,7 +25,7 @@ import {
     RadarQuestionComponent,
 } from "./QuestionCards";
 import { Button } from "./ui/button";
-import { SidebarMenu } from "./ui/sidebar-l";
+import { SidebarMenu } from "./ui/sidebar";
 
 // Global state for which marker is currently being edited
 export const editingQuestionId = atom<number | null>(null);

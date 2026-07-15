@@ -4,6 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { atom } from "nanostores";
 import * as React from "react";
 import { GrConfigure } from "react-icons/gr";
+import { TbMessage2Question } from "react-icons/tb";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -38,7 +39,9 @@ type SidebarContextType = {
     toggleSidebar: () => void;
 };
 
-export const SidebarContext = atom<SidebarContextType>({
+export const SidebarSideContext = React.createContext<"left" | "right">("left");
+
+export const LeftSidebarContext = atom<SidebarContextType>({
     state: "expanded",
     open: true,
     setOpen: () => {},
@@ -48,12 +51,29 @@ export const SidebarContext = atom<SidebarContextType>({
     toggleSidebar: () => {},
 });
 
+export const RightSidebarContext = atom<SidebarContextType>({
+    state: "expanded",
+    open: true,
+    setOpen: () => {},
+    openMobile: false,
+    setOpenMobile: () => {},
+    isMobile: false,
+    toggleSidebar: () => {},
+});
+
+export const useSidebar = (sideProp?: "left" | "right") => {
+    const contextSide = React.useContext(SidebarSideContext);
+    const side = sideProp ?? contextSide;
+    return useStore(side === "left" ? LeftSidebarContext : RightSidebarContext);
+};
+
 const SidebarProvider = React.forwardRef<
     HTMLDivElement,
     React.ComponentProps<"div"> & {
         defaultOpen?: boolean;
         open?: boolean;
         onOpenChange?: (open: boolean) => void;
+        side?: "left" | "right";
     }
 >(
     (
@@ -64,6 +84,7 @@ const SidebarProvider = React.forwardRef<
             className,
             style,
             children,
+            side = "left",
             ...props
         },
         ref,
@@ -86,7 +107,7 @@ const SidebarProvider = React.forwardRef<
                 }
 
                 // This sets the cookie to keep the sidebar state.
-                document.cookie = `${SIDEBAR_COOKIE_NAME}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
+                document.cookie = `${SIDEBAR_COOKIE_NAME}:${side}=${openState}; path=/; max-age=${SIDEBAR_COOKIE_MAX_AGE}`;
             },
             [setOpenProp, open],
         );
@@ -119,7 +140,7 @@ const SidebarProvider = React.forwardRef<
         const state = open ? "expanded" : "collapsed";
 
         React.useEffect(() => {
-            SidebarContext.set({
+            (side === "left" ? LeftSidebarContext : RightSidebarContext).set({
                 state,
                 open,
                 setOpen,
@@ -139,6 +160,7 @@ const SidebarProvider = React.forwardRef<
         ]);
 
         return (
+            <SidebarSideContext.Provider value={side}>
             <TooltipProvider delayDuration={0}>
                 <div
                     style={
@@ -158,6 +180,7 @@ const SidebarProvider = React.forwardRef<
                     {children}
                 </div>
             </TooltipProvider>
+            </SidebarSideContext.Provider>
         );
     },
 );
@@ -183,10 +206,11 @@ const Sidebar = React.forwardRef<
         ref,
     ) => {
         const { isMobile, state, openMobile, setOpenMobile } =
-            useStore(SidebarContext);
+            useStore(side === "left" ? LeftSidebarContext : RightSidebarContext);
 
         if (collapsible === "none") {
             return (
+                <SidebarSideContext.Provider value={side}>
                 <div
                     className={cn(
                         "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground",
@@ -197,6 +221,7 @@ const Sidebar = React.forwardRef<
                 >
                     {children}
                 </div>
+                </SidebarSideContext.Provider>
             );
         }
 
@@ -273,17 +298,47 @@ const Sidebar = React.forwardRef<
 );
 Sidebar.displayName = "Sidebar";
 
-const SidebarTrigger = React.forwardRef<
+const LeftSidebarTrigger = React.forwardRef<
     React.ComponentRef<typeof Button>,
     React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
-    const { toggleSidebar } = useStore(SidebarContext);
+    const { toggleSidebar } = useSidebar("left");
 
     return (
         <button
             ref={ref}
             data-sidebar="trigger"
-            size="icon"
+            type="button"
+            aria-label="Toggle Sidebar"
+            title="Toggle Sidebar"
+            className={cn(
+                "bg-white hover:bg-[#f4f4f4] text-black w-[34px] h-[34px] rounded-[4px] border-[2px] border-[rgba(0,0,0,0.2)] bg-clip-padding cursor-pointer justify-center p-0",
+                "flex items-center gap-1",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+                className,
+            )}
+            onClick={(event) => {
+                onClick?.(event);
+                toggleSidebar();
+            }}
+            {...props}
+        >
+            <TbMessage2Question className="w-5 h-5" />
+        </button>
+    );
+});
+LeftSidebarTrigger.displayName = "LeftSidebarTrigger";
+
+const RightSidebarTrigger = React.forwardRef<
+    React.ComponentRef<typeof Button>,
+    React.ComponentProps<typeof Button>
+>(({ className, onClick, ...props }, ref) => {
+    const { toggleSidebar } = useSidebar("right");
+
+    return (
+        <button
+            ref={ref}
+            data-sidebar="trigger"
             type="button"
             aria-label="Toggle Sidebar"
             title="Toggle Sidebar"
@@ -303,13 +358,13 @@ const SidebarTrigger = React.forwardRef<
         </button>
     );
 });
-SidebarTrigger.displayName = "SidebarTrigger";
+RightSidebarTrigger.displayName = "RightSidebarTrigger";
 
 const SidebarRail = React.forwardRef<
     HTMLButtonElement,
     React.ComponentProps<"button">
 >(({ className, ...props }, ref) => {
-    const { toggleSidebar } = useStore(SidebarContext);
+    const { toggleSidebar } = useSidebar();
 
     return (
         <button
@@ -586,7 +641,7 @@ const SidebarMenuButton = React.forwardRef<
         ref,
     ) => {
         const Comp = asChild ? Slot : "button";
-        const { isMobile, state } = useStore(SidebarContext);
+        const { isMobile, state } = useSidebar();
 
         const button = (
             <Comp
@@ -774,6 +829,8 @@ const SidebarMenuSubButton = React.forwardRef<
 SidebarMenuSubButton.displayName = "SidebarMenuSubButton";
 
 export {
+    LeftSidebarTrigger,
+    RightSidebarTrigger,
     Sidebar,
     SidebarContent,
     SidebarFooter,
@@ -796,5 +853,4 @@ export {
     SidebarProvider,
     SidebarRail,
     SidebarSeparator,
-    SidebarTrigger,
 };

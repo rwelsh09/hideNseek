@@ -18,10 +18,10 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {
+    LeftSidebarContext,
     Sidebar,
     SidebarContent,
-    SidebarContext,
-} from "@/components/ui/sidebar-l";
+} from "@/components/ui/sidebar";
 import {
     addQuestion,
     isLoading,
@@ -66,7 +66,7 @@ export const QuestionSidebar = () => {
                     className="mr-2 visible text-white cursor-pointer hover:bg-slate-800 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-slate-400"
                     aria-label="Close sidebar"
                     onClick={() => {
-                        SidebarContext.get().toggleSidebar();
+                        LeftSidebarContext.get().toggleSidebar();
                     }}
                 >
                     <SidebarCloseIcon />

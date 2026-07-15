@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import {
     MENU_ITEM_CLASSNAME,
     SidebarMenuItem,
-} from "@/components/ui/sidebar-l";
+} from "@/components/ui/sidebar";
 import {
     isLoading,
     questionModified,
