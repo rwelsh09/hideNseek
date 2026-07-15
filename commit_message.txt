@@ -1,0 +1,15 @@
+🏛️ Curator: Knowledge base cleanup
+
+🗑️ Removed:
+- Notes about missing timeout on `getCurrentPosition` (never set in actual code)
+- Redundant and excessively fragmented notes about memoizing React-Leaflet props and extracting arrays
+- Scattered notes about ARIA labels and focus-visible on specific buttons, combined into a comprehensive rule
+- Granular notes about centralizing state/actions in `QuestionCard` combined into one
+
+🔄 Updated:
+- Fixed hallucinated dates from 2024 and 2025 to align with the valid timeline (June 2026+)
+- Corrected UK/US spelling differences where relevant (`ICON_COLOURS` instead of `ICON_COLORS`, `onChangeColour`)
+- Ensured consistent formatting across all markdown files
+
+📉 Impact:
+- Removed ~77 lines of stale, fragmented, or factually incorrect context and added ~24 lines of consolidated, up-to-date learnings, saving significant token space.
