@@ -255,37 +255,6 @@ export const findPlacesSpecificInZone = async (
     );
 };
 
-export const nearestToQuestion = async (question: any) => {
-    let radius = 30;
-    let instances: any = { features: [] };
-    let iterations = 0;
-    const MAX_ITERATIONS = 10;
-    while (instances.features.length === 0 && iterations < MAX_ITERATIONS) {
-        instances = await findClosestLocations(
-            {
-                lat: question.lat,
-                lng: question.lng,
-                radius: radius,
-                unit: "kilometers",
-                location: false,
-                locationType: question.type,
-                locked: true,
-                color: "black",
-            },
-            "Finding match locations...",
-        );
-        radius += 30;
-        iterations++;
-    }
-
-    if (instances.features.length === 0) {
-        return null;
-    }
-
-    const questionPoint = turf.point([question.lng, question.lat]);
-    return turf.nearestPoint(questionPoint, instances as any);
-};
-
 
 export const determineMapBoundaries = async () => {
     return turf.featureCollection([
