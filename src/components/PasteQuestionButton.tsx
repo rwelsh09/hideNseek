@@ -15,6 +15,7 @@ export const PasteQuestionButton = ({ iconOnly = false }: { iconOnly?: boolean }
             variant="secondary"
             className={iconOnly ? "font-semibold font-poppins flex items-center justify-center gap-2 h-10 w-10 p-0" : "w-full font-semibold font-poppins flex items-center justify-center gap-2 h-10"}
             data-tutorial-id="tutorial-paste-question-btn"
+            aria-label="Paste Question"
             onClick={() => {
                 navigator.clipboard
                     .readText()
@@ -27,7 +28,7 @@ export const PasteQuestionButton = ({ iconOnly = false }: { iconOnly?: boolean }
                             if (urlMatch && urlMatch[1]) {
                                 try {
                                     jsonText = decodeURIComponent(escape(window.atob(decodeURIComponent(urlMatch[1]))));
-                                } catch (e) {
+                                } catch {
                                     // if decoding fails, jsonText remains as original text which will fail parsing below
                                 }
                             }
@@ -40,7 +41,7 @@ export const PasteQuestionButton = ({ iconOnly = false }: { iconOnly?: boolean }
                             toast.success(
                                 "Question pasted successfully!",
                             );
-                        } catch (e) {
+                        } catch {
                             toast.error(
                                 "Failed to paste question. Try copying it again.",
                             );
