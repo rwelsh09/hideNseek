@@ -2,14 +2,11 @@ import { useStore } from "@nanostores/react";
 import type { Feature, Point } from "geojson";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
-import { Popup } from "react-leaflet";
 
 import { questionModified, questions } from "@/lib/context";
 import { findClosestLocations } from "@/maps/api";
 import { getFeatureCoords } from "@/maps/geo-utils";
 import type { Question } from "@/maps/schema";
-
-import { Button } from "./ui/button";
 
 export const ClosestPlaces = () => {
     const $questions = useStore(questions);
@@ -134,33 +131,9 @@ const ClosestPlaceMarker = ({
             }
             eventHandlers={eventHandlers}
         >
-            {question.data.showLabels && (
-                <Tooltip direction="top" offset={TOOLTIP_OFFSET} permanent>
-                    {f.properties?.name || "Unknown Location"}
-                </Tooltip>
-            )}
-            {!question.data.showLabels && (
-                <Tooltip direction="top" offset={TOOLTIP_OFFSET}>
-                    {f.properties?.name || "Unknown Location"}
-                </Tooltip>
-            )}
-            <Popup>
-                <div className="flex flex-col gap-2">
-                    <span className="font-semibold text-sm">
-                        {f.properties?.name || "Unknown Location"}
-                    </span>
-                    <Button
-                        size="sm"
-                        onClick={() => {
-                            question.data.location = f;
-                            questionModified();
-                        }}
-                        variant={isSelected ? "secondary" : "default"}
-                    >
-                        {isSelected ? "Selected" : "Select Location"}
-                    </Button>
-                </div>
-            </Popup>
+            <Tooltip direction="top" offset={TOOLTIP_OFFSET}>
+                {f.properties?.name || "Unknown Location"}
+            </Tooltip>
         </CircleMarker>
     );
 };

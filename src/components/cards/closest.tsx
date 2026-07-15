@@ -2,7 +2,6 @@ import { useStore } from "@nanostores/react";
 import { useEffect, useState } from "react";
 
 import { LatitudeLongitude } from "@/components/LatLngPicker";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Select } from "@/components/ui/select";
 import {
     MENU_ITEM_CLASSNAME,
@@ -45,26 +44,6 @@ export const ClosestQuestionComponent = ({
             questionData={data}
             penaltyId={"closest"}
         >
-            <SidebarMenuItem>
-                <div className="flex flex-row items-center px-4 py-2 hover:bg-slate-100 hover:dark:bg-zinc-800 transition-colors">
-                    <Checkbox
-                        id={`show-labels-${questionKey}`}
-                        checked={data.showLabels}
-                        onCheckedChange={(checked) => {
-                            data.showLabels = !!checked;
-                            questionModified();
-                        }}
-                        disabled={data.locked || $isLoading}
-                        className="mr-2"
-                    />
-                    <label
-                        htmlFor={`show-labels-${questionKey}`}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-                    >
-                        Show Name Labels on Map
-                    </label>
-                </div>
-            </SidebarMenuItem>
             <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
                 <Select
                     trigger="Location Type"
