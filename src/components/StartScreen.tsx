@@ -12,10 +12,10 @@ import { Button } from "@/components/ui/button";
 import {
     hasSeenRules,
     hasSeenWelcome,
-    showNextStepsChecklist,
-    showTutorial,
     hiderMode,
     mapGeoLocation,
+    showNextStepsChecklist,
+    showTutorial,
 } from "@/lib/context";
 
 export const StartScreen = () => {

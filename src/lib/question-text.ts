@@ -1,9 +1,10 @@
 import * as turf from "@turf/turf";
+
+import { PHOTO_DESCRIPTIONS } from "@/components/cards/photo";
+import { extractStationName } from "@/maps/geo-utils";
 import { PLACES } from "@/maps/placesConfig";
 import { determineMatchBoundary } from "@/maps/questions/match";
 import { calculateMeasureDistance } from "@/maps/questions/measure";
-import { extractStationName } from "@/maps/geo-utils";
-import { PHOTO_DESCRIPTIONS } from "@/components/cards/photo";
 
 export const getQuestionShareText = async (question: any, questionData: any): Promise<string> => {
     if (!question) return "Incoming question from a Seeker!";

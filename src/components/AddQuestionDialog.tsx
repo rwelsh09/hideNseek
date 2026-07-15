@@ -22,7 +22,7 @@ import {
 import * as icons from "lucide-react";
 import { useState } from "react";
 
-import { SidebarContext } from "@/components/ui/sidebar-l";
+import { LeftSidebarContext } from "@/components/ui/sidebar";
 import { addQuestion, leafletMapContext, questions, TIME_PENALTIES } from "@/lib/context";
 import { PLACES } from "@/maps/placesConfig";
 
@@ -143,7 +143,7 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
         setOpen(false);
 
         // Force the mobile sidebar to close so the map is completely visible
-        SidebarContext.get().setOpenMobile(false);
+        LeftSidebarContext.get().setOpenMobile(false);
     };
 
     return (

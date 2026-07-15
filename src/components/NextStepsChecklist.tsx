@@ -3,7 +3,7 @@ import { useStore } from "@nanostores/react";
 import { XIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-import { showNextStepsChecklist, showTutorial, showHiderTutorial, hiderMode } from "@/lib/context";
+import { hiderMode,showHiderTutorial, showNextStepsChecklist, showTutorial } from "@/lib/context";
 
 import { PwaInstallTip } from "./PwaInstallTip";
 

@@ -19,12 +19,12 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover";
 import {
+    RightSidebarContext,
     Sidebar,
     SidebarContent,
-    SidebarContext,
     SidebarMenu,
     SidebarMenuItem,
-} from "@/components/ui/sidebar-r";
+} from "@/components/ui/sidebar";
 import {
     disabledStations,
     displayHidingZonesStyle,
@@ -295,7 +295,7 @@ export const ZoneSidebar = () => {
                     className="mr-2 visible cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-800 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-slate-400"
                     aria-label="Close sidebar"
                     onClick={() => {
-                        SidebarContext.get().toggleSidebar();
+                        RightSidebarContext.get().toggleSidebar();
                     }}
                 >
                     <SidebarCloseIcon className="scale-x-[-1]" />
