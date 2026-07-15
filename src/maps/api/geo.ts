@@ -16,7 +16,7 @@ export const prettifyLocation = (
     location: string,
     plural: boolean = false,
 ): string => {
-    const place = PLACES.find(p => p.id === location);
+    const place = PLACES.find((p) => p.id === location);
     if (place) {
         return plural ? place.labelPlural : place.label;
     }

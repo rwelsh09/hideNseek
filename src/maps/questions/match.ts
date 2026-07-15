@@ -11,10 +11,7 @@ import {
     mapGeoLocation,
     polyGeoJSON,
 } from "@/lib/context";
-import {
-    findPlacesInZone,
-    LOCATION_FIRST_TAG,
-} from "@/maps/api";
+import { findPlacesInZone, LOCATION_FIRST_TAG } from "@/maps/api";
 import {
     extractStationLines,
     extractStationName,
@@ -26,12 +23,15 @@ import { PLACES } from "@/maps/placesConfig";
 import type { MatchQuestion } from "@/maps/schema";
 
 export const findMatchPlaces = async (question: MatchQuestion) => {
-    const place = PLACES.find(p => p.id === question.type);
+    const place = PLACES.find((p) => p.id === question.type);
     if (place) {
         const location = place.id;
         let data;
         if (place.type === "specific" && place.specificLocation) {
-            data = await findPlacesInZone(place.specificLocation, `Finding ${place.labelPlural.toLowerCase()}...`);
+            data = await findPlacesInZone(
+                place.specificLocation,
+                `Finding ${place.labelPlural.toLowerCase()}...`,
+            );
         } else {
             data = await findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
@@ -47,12 +47,18 @@ export const findMatchPlaces = async (question: MatchQuestion) => {
         }
 
         return turf.featureCollection(
-            data.elements.filter((x: any) => typeof (x.center?.lon ?? x.lon) === 'number' && typeof (x.center?.lat ?? x.lat) === 'number').map((x: any) =>
-                turf.point([
-                    x.center ? x.center.lon : x.lon,
-                    x.center ? x.center.lat : x.lat,
-                ]),
-            )
+            data.elements
+                .filter(
+                    (x: any) =>
+                        typeof (x.center?.lon ?? x.lon) === "number" &&
+                        typeof (x.center?.lat ?? x.lat) === "number",
+                )
+                .map((x: any) =>
+                    turf.point([
+                        x.center ? x.center.lon : x.lon,
+                        x.center ? x.center.lat : x.lat,
+                    ]),
+                ),
         );
     }
 };
@@ -159,7 +165,7 @@ export const determineMatchBoundary = _.memoize(
                 return false;
             }
             default: {
-                const place = PLACES.find(p => p.id === question.type);
+                const place = PLACES.find((p) => p.id === question.type);
                 if (place) {
                     const data = await findMatchPlaces(question);
                     if (!data) break;

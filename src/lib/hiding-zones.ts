@@ -79,7 +79,9 @@ export const initializeHidingZonesLogic = async () => {
         const newlyDisabledStations: string[] = [];
 
         circles.forEach((circle) => {
-            const diff = turf.difference(turf.featureCollection([circle, unionized]));
+            const diff = turf.difference(
+                turf.featureCollection([circle, unionized]),
+            );
             if (!diff || turf.area(diff) < 1) {
                 const id = extractStationId(circle);
                 if (!manuallyDisabled.includes(id)) {

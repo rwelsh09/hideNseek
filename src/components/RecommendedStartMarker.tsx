@@ -70,7 +70,12 @@ export const RecommendedStartMarker: React.FC = () => {
         const centroid = turf.centroid(featureCollection);
 
         return centroid;
-    }, [$showRecommendedStart, $trainStations, $disabledStations, $lockedRecommendedStart]);
+    }, [
+        $showRecommendedStart,
+        $trainStations,
+        $disabledStations,
+        $lockedRecommendedStart,
+    ]);
 
     if (!centerPoint) return null;
 

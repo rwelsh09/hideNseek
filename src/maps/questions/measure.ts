@@ -32,10 +32,12 @@ export const determineMeasureBoundary = async (question: MeasureQuestion) => {
         return fc.features as any;
     }
 
-    const place = PLACES.find(p => p.id === question.type);
+    const place = PLACES.find((p) => p.id === question.type);
     if (place) {
         if (place.type === "specific" && place.specificLocation) {
-            const points = await findPlacesSpecificInZone(place.specificLocation);
+            const points = await findPlacesSpecificInZone(
+                place.specificLocation,
+            );
             if (!points || !points.features || points.features.length === 0)
                 return [turf.multiPolygon([])];
 
@@ -57,12 +59,20 @@ export const determineMeasureBoundary = async (question: MeasureQuestion) => {
             return [
                 turf.combine(
                     turf.featureCollection(
-                        data.elements.filter((x: any) => typeof (x.center?.lon ?? x.lon) === 'number' && typeof (x.center?.lat ?? x.lat) === 'number').map((x: any) =>
-                            turf.point([
-                                x.center ? x.center.lon : x.lon,
-                                x.center ? x.center.lat : x.lat,
-                            ]),
-                        ),
+                        data.elements
+                            .filter(
+                                (x: any) =>
+                                    typeof (x.center?.lon ?? x.lon) ===
+                                        "number" &&
+                                    typeof (x.center?.lat ?? x.lat) ===
+                                        "number",
+                            )
+                            .map((x: any) =>
+                                turf.point([
+                                    x.center ? x.center.lon : x.lon,
+                                    x.center ? x.center.lat : x.lat,
+                                ]),
+                            ),
                     ),
                 ).features[0],
             ];
@@ -169,9 +179,11 @@ export const calculateMeasureDistance = async (
             });
         }
         default: {
-            const place = PLACES.find(p => p.id === question.type);
+            const place = PLACES.find((p) => p.id === question.type);
             if (place && place.type === "specific" && place.specificLocation) {
-                const points = await findPlacesSpecificInZone(place.specificLocation);
+                const points = await findPlacesSpecificInZone(
+                    place.specificLocation,
+                );
                 if (!points || !points.features || points.features.length === 0)
                     return null;
                 const nearest = turf.nearestPoint(seeker, points as any);

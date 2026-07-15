@@ -131,7 +131,6 @@ export const MeasureQuestionComponent = ({
                         Hider Closer
                     </ToggleGroupItem>
                 </ToggleGroup>
-
             </div>
         </QuestionCard>
     );

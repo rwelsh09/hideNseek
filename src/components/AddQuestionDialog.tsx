@@ -23,7 +23,12 @@ import * as icons from "lucide-react";
 import { useState } from "react";
 
 import { SidebarContext } from "@/components/ui/sidebar-l";
-import { addQuestion, leafletMapContext, questions, TIME_PENALTIES } from "@/lib/context";
+import {
+    addQuestion,
+    leafletMapContext,
+    questions,
+    TIME_PENALTIES,
+} from "@/lib/context";
 import { PLACES } from "@/maps/placesConfig";
 
 import {
@@ -40,13 +45,16 @@ import {
     DialogTrigger,
 } from "./ui/dialog";
 
-
-export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) {
+export function AddQuestionDialog({
+    iconOnly = false,
+}: {
+    iconOnly?: boolean;
+}) {
     const [open, setOpen] = useState(false);
 
     const $questions = useStore(questions);
     const isQuestionLocked = (type: string, detail?: string) => {
-        return $questions.some(q => {
+        return $questions.some((q) => {
             if (!q.data.locked) return false;
 
             if (type === "radar" && q.id === "radar") {
@@ -56,8 +64,18 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                 return q.data.radius === radius && !q.data.isCustom;
             }
             if (type === "hot/cold" && q.id === "hot/cold") {
-                if (!q.data.lngA || !q.data.latA || !q.data.lngB || !q.data.latB) return false;
-                const dist = turf.distance([q.data.lngA, q.data.latA], [q.data.lngB, q.data.latB], { units: "kilometers" });
+                if (
+                    !q.data.lngA ||
+                    !q.data.latA ||
+                    !q.data.lngB ||
+                    !q.data.latB
+                )
+                    return false;
+                const dist = turf.distance(
+                    [q.data.lngA, q.data.latA],
+                    [q.data.lngB, q.data.latB],
+                    { units: "kilometers" },
+                );
                 const detailDist = parseFloat(detail || "5");
                 return Math.abs(dist - detailDist) < 0.1;
             }
@@ -84,7 +102,12 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
         const key = Math.random();
 
         let qId = type;
-        let qData: any = { lat: center.lat, lng: center.lng, locked: false, doubledPenalty: isQuestionLocked(type, detail) };
+        let qData: any = {
+            lat: center.lat,
+            lng: center.lng,
+            locked: false,
+            doubledPenalty: isQuestionLocked(type, detail),
+        };
 
         if (type === "radar") {
             qId = "radar";
@@ -150,7 +173,11 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
-                    className={iconOnly ? "flex items-center justify-center gap-2 h-10 w-10 p-0" : "w-full flex items-center justify-center gap-2 h-10"}
+                    className={
+                        iconOnly
+                            ? "flex items-center justify-center gap-2 h-10 w-10 p-0"
+                            : "w-full flex items-center justify-center gap-2 h-10"
+                    }
                     data-tutorial-id="add-question-btn"
                 >
                     <Plus className="w-5 h-5" /> {!iconOnly && "Add Question"}
@@ -321,34 +348,51 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                            {PLACES.filter((place) => place.type !== "specific").map(
-                                (place) => {
-                                    const Icon = icons[place.icon as keyof typeof icons];
-                                    return (
-                                        <button
-                                            key={`match-${place.id}`}
-                                            type="button"
-                                            onClick={() =>
-                                                handleQuestionSelect(
-                                                    "match",
-                                                    place.id,
-                                                )
-                                            }
-                                            className={`bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("match", place.id) ? "opacity-50 grayscale" : ""}`}
-                                        >
-                                            <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                            <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                                {place.label}
-                                            </span>
-                                        </button>
-                                    );
-                                },
-                            )}
+                            {PLACES.filter(
+                                (place) => place.type !== "specific",
+                            ).map((place) => {
+                                const Icon =
+                                    icons[place.icon as keyof typeof icons];
+                                return (
+                                    <button
+                                        key={`match-${place.id}`}
+                                        type="button"
+                                        onClick={() =>
+                                            handleQuestionSelect(
+                                                "match",
+                                                place.id,
+                                            )
+                                        }
+                                        className={`bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("match", place.id) ? "opacity-50 grayscale" : ""}`}
+                                    >
+                                        <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                        <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                            {place.label}
+                                        </span>
+                                    </button>
+                                );
+                            })}
                             {[
-                                { id: "same-neighbourhood", label: "Nhbd (Same)", icon: MapIcon },
-                                { id: "same-first-letter-neighbourhood", label: "Nhbd (Letter)", icon: MapIcon },
-                                { id: "same-train-line", label: "Station (Line)", icon: Train },
-                                { id: "same-first-letter-station", label: "Station (Letter)", icon: Train },
+                                {
+                                    id: "same-neighbourhood",
+                                    label: "Nhbd (Same)",
+                                    icon: MapIcon,
+                                },
+                                {
+                                    id: "same-first-letter-neighbourhood",
+                                    label: "Nhbd (Letter)",
+                                    icon: MapIcon,
+                                },
+                                {
+                                    id: "same-train-line",
+                                    label: "Station (Line)",
+                                    icon: Train,
+                                },
+                                {
+                                    id: "same-first-letter-station",
+                                    label: "Station (Letter)",
+                                    icon: Train,
+                                },
                             ].map((place) => {
                                 const Icon = place.icon;
                                 return (
@@ -389,29 +433,30 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                            {PLACES.filter((place) => place.type !== "specific").map(
-                                (place) => {
-                                    const Icon = icons[place.icon as keyof typeof icons];
-                                    return (
-                                        <button
-                                            key={`measure-${place.id}`}
-                                            type="button"
-                                            onClick={() =>
-                                                handleQuestionSelect(
-                                                    "measure",
-                                                    place.id,
-                                                )
-                                            }
-                                            className={`bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("measure", place.id) ? "opacity-50 grayscale" : ""}`}
-                                        >
-                                            <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                            <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                                {place.label}
-                                            </span>
-                                        </button>
-                                    );
-                                },
-                            )}
+                            {PLACES.filter(
+                                (place) => place.type !== "specific",
+                            ).map((place) => {
+                                const Icon =
+                                    icons[place.icon as keyof typeof icons];
+                                return (
+                                    <button
+                                        key={`measure-${place.id}`}
+                                        type="button"
+                                        onClick={() =>
+                                            handleQuestionSelect(
+                                                "measure",
+                                                place.id,
+                                            )
+                                        }
+                                        className={`bg-green-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-green-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("measure", place.id) ? "opacity-50 grayscale" : ""}`}
+                                    >
+                                        <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                        <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                            {place.label}
+                                        </span>
+                                    </button>
+                                );
+                            })}
                             <button
                                 type="button"
                                 onClick={() =>
@@ -446,31 +491,32 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
                             </div>
                         </div>
                         <div className="grid grid-cols-4 gap-1.5 sm:gap-2 mt-2">
-                            {PLACES.filter((place) => place.type === "specific").map(
-                                (place) => {
-                                    const Icon = icons[place.icon as keyof typeof icons];
-                                    return (
-                                        <button
-                                            key={`closest-${place.id}`}
-                                            type="button"
-                                            aria-label={`Add closest question for ${place.id}`}
-                                            title={`Add closest question for ${place.id}`}
-                                            onClick={() =>
-                                                handleQuestionSelect(
-                                                    "closest",
-                                                    place.id,
-                                                )
-                                            }
-                                            className={`bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("closest", place.id) ? "opacity-50 grayscale" : ""}`}
-                                        >
-                                            <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
-                                            <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
-                                                {place.label}
-                                            </span>
-                                        </button>
-                                    );
-                                }
-                            )}
+                            {PLACES.filter(
+                                (place) => place.type === "specific",
+                            ).map((place) => {
+                                const Icon =
+                                    icons[place.icon as keyof typeof icons];
+                                return (
+                                    <button
+                                        key={`closest-${place.id}`}
+                                        type="button"
+                                        aria-label={`Add closest question for ${place.id}`}
+                                        title={`Add closest question for ${place.id}`}
+                                        onClick={() =>
+                                            handleQuestionSelect(
+                                                "closest",
+                                                place.id,
+                                            )
+                                        }
+                                        className={`bg-purple-600 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-purple-700 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("closest", place.id) ? "opacity-50 grayscale" : ""}`}
+                                    >
+                                        <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
+                                        <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
+                                            {place.label}
+                                        </span>
+                                    </button>
+                                );
+                            })}
                         </div>
                     </div>
                     {/* PHOTO */}

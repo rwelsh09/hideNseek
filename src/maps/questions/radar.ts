@@ -4,10 +4,7 @@ import { hiderMode } from "@/lib/context";
 import { arcBuffer, modifyMapData } from "@/maps/geo-utils";
 import type { RadarQuestion } from "@/maps/schema";
 
-export const adjustPerRadar = async (
-    question: RadarQuestion,
-    mapData: any,
-) => {
+export const adjustPerRadar = async (question: RadarQuestion, mapData: any) => {
     if (mapData === null) return;
 
     const point = turf.point([question.lng, question.lat]);

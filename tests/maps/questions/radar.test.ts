@@ -1,5 +1,5 @@
 import * as turf from "@turf/turf";
-import type { FeatureCollection, MultiPolygon,Polygon } from "geojson";
+import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { hiderMode } from "@/lib/context";

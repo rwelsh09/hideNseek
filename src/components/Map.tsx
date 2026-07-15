@@ -49,7 +49,7 @@ const getTileLayer = (tileLayer: string) => {
         case "satellite":
             return (
                 <OfflineTileLayer
-                    attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EAP, and the GIS User Community'
+                    attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EAP, and the GIS User Community"
                     url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                     maxZoom={19}
                     minZoom={2}
@@ -136,7 +136,6 @@ export const Map = ({ className }: { className?: string }) => {
         isLoading.set(true);
 
         try {
-
             let mapGeoData = mapGeoJSON.get();
 
             if (!mapGeoData) {
@@ -163,7 +162,9 @@ export const Map = ({ className }: { className?: string }) => {
                 triggerLocalRefresh.set(Math.random()); // Refresh the question sidebar with new information but not this map
             }
 
-            planningLayersRef.current.forEach(layer => map.removeLayer(layer));
+            planningLayersRef.current.forEach((layer) =>
+                map.removeLayer(layer),
+            );
             planningLayersRef.current = [];
 
             mapGeoData = await applyQuestionsToMapGeoData(
@@ -188,7 +189,6 @@ export const Map = ({ className }: { className?: string }) => {
                 eliminationLayerRef.current = null;
             }
 
-
             if (!map.getPane("eliminationPane")) {
                 map.createPane("eliminationPane");
                 map.getPane("eliminationPane")!.style.zIndex = "400";
@@ -196,7 +196,7 @@ export const Map = ({ className }: { className?: string }) => {
 
             const g = L.geoJSON(mapGeoData, {
                 interactive: false,
-                pane: "eliminationPane"
+                pane: "eliminationPane",
             });
 
             g.addTo(map);
@@ -264,24 +264,29 @@ export const Map = ({ className }: { className?: string }) => {
                 </div>
                 <div className="leaflet-bottom leaflet-right">
                     <div className="leaflet-control pointer-events-auto !mb-10 mr-[10px] flex justify-end gap-2 max-[340px]:flex-col">
-                            <Button
-                                className="shadow-md"
-                                data-tutorial-id="tutorial-share-state-btn"
-                                onClick={async () => {
-                                    const hidingZoneString = JSON.stringify($hidingZone);
-                                    let compressedData;
-                                    try {
-                                        compressedData = await compress(hidingZoneString);
-                                    } catch (error) {
-                                        console.error("Compression failed:", error);
-                                        toast.error(`Failed to prepare data for sharing`);
-                                        return;
-                                    }
+                        <Button
+                            className="shadow-md"
+                            data-tutorial-id="tutorial-share-state-btn"
+                            onClick={async () => {
+                                const hidingZoneString =
+                                    JSON.stringify($hidingZone);
+                                let compressedData;
+                                try {
+                                    compressedData =
+                                        await compress(hidingZoneString);
+                                } catch (error) {
+                                    console.error("Compression failed:", error);
+                                    toast.error(
+                                        `Failed to prepare data for sharing`,
+                                    );
+                                    return;
+                                }
 
-                                    const baseUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
-                                    const shareUrl = `${baseUrl}?${HIDING_ZONE_COMPRESSED_URL_PARAM}=${compressedData}`;
+                                const baseUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
+                                const shareUrl = `${baseUrl}?${HIDING_ZONE_COMPRESSED_URL_PARAM}=${compressedData}`;
 
-                                    await shareOrFallback(shareUrl).then((result) => {
+                                await shareOrFallback(shareUrl).then(
+                                    (result) => {
                                         if (result === false) {
                                             return toast.error(
                                                 `Clipboard not supported. Try manually copying/pasting: ${shareUrl}`,
@@ -297,19 +302,20 @@ export const Map = ({ className }: { className?: string }) => {
                                                 },
                                             );
                                         }
-                                    });
-                                }}
-                            >
-                                Share
-                            </Button>
-                            <Button
-                                className="w-24 shadow-md"
-                                data-tutorial-id="tutorial-options-btn"
-                                onClick={() => isOptionsOpenStore.set(true)}
-                            >
-                                Options
-                            </Button>
-                        </div>
+                                    },
+                                );
+                            }}
+                        >
+                            Share
+                        </Button>
+                        <Button
+                            className="w-24 shadow-md"
+                            data-tutorial-id="tutorial-options-btn"
+                            onClick={() => isOptionsOpenStore.set(true)}
+                        >
+                            Options
+                        </Button>
+                    </div>
                 </div>
                 {$isLoading && (
                     <div className="absolute top-[20%] left-1/2 -translate-x-1/2 z-[9999] pointer-events-none">
@@ -336,8 +342,6 @@ export const Map = ({ className }: { className?: string }) => {
 
         refreshQuestions();
     }, [$questions, map, $hiderMode]);
-
-
 
     useEffect(() => {
         const handleFullscreenChange = () => {

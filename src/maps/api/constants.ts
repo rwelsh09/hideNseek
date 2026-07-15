@@ -1,8 +1,5 @@
 import { PLACES } from "@/maps/placesConfig";
 
-
-
-
 export const GEOCODER_API = "https://photon.komoot.io/api/";
 
 export const ICON_COLOURS = {
@@ -17,7 +14,7 @@ export const ICON_COLOURS = {
 };
 
 export const LOCATION_FIRST_TAG: Record<string, string> = {
-    ...Object.fromEntries(PLACES.map(p => [p.id, p.tag])),
+    ...Object.fromEntries(PLACES.map((p) => [p.id, p.tag])),
 };
 
 export const BLANK_GEOJSON = {

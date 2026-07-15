@@ -73,11 +73,16 @@ describe("extractStationLines", () => {
 
     it("should fallback to ref if route_ref is missing", () => {
         const place = { properties: { ref: "Green Line, Orange Line" } };
-        expect(extractStationLines(place)).toEqual(["Green Line", "Orange Line"]);
+        expect(extractStationLines(place)).toEqual([
+            "Green Line",
+            "Orange Line",
+        ]);
     });
 
     it("should trim whitespace from extracted lines", () => {
-        const place = { properties: { route_ref: "  Blue Line  ,   Red Line   " } };
+        const place = {
+            properties: { route_ref: "  Blue Line  ,   Red Line   " },
+        };
         expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
     });
 
@@ -94,8 +99,8 @@ describe("extractStationLines", () => {
     it("should work with nested properties.properties structure", () => {
         const place = {
             properties: {
-                properties: { route_ref: "Blue Line, Red Line" }
-            }
+                properties: { route_ref: "Blue Line, Red Line" },
+            },
         };
         expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
     });

@@ -1,4 +1,4 @@
-import { beforeEach,describe, expect, it, vi } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { GEOCODER_API } from "@/maps/api/constants";
 import { geocode } from "@/maps/api/geocode";

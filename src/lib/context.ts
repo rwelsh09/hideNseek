@@ -3,10 +3,7 @@ import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import type { Map } from "leaflet";
 import { atom, computed, onSet } from "nanostores";
 
-import type {
-    OpenStreetMap,
-    StationCircle,
-} from "@/maps/api";
+import type { OpenStreetMap, StationCircle } from "@/maps/api";
 import { extractStationLabel } from "@/maps/geo-utils";
 import {
     type DeepPartial,
@@ -48,10 +45,14 @@ export const hasSeenWelcome = persistentAtom<boolean>("hasSeenWelcome", false, {
     decode: JSON.parse,
 });
 
-export const showHiderTutorial = persistentAtom<boolean>("showHiderTutorial", true, {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-});
+export const showHiderTutorial = persistentAtom<boolean>(
+    "showHiderTutorial",
+    true,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
 
 export const tutorialDriver = atom<any>(null);
 
@@ -100,11 +101,15 @@ export const hiderMode = persistentAtom<
 });
 export const triggerLocalRefresh = atom<number>(0);
 
-export const displayHidingZonesStyle = persistentAtom<
-    "zones" | "no-display"
->("displayHidingZonesStyle", "no-display");
+export const displayHidingZonesStyle = persistentAtom<"zones" | "no-display">(
+    "displayHidingZonesStyle",
+    "no-display",
+);
 
-export const displayTransitLines = persistentAtom<boolean>("displayTransitLines", true, {
+export const displayTransitLines = persistentAtom<boolean>(
+    "displayTransitLines",
+    true,
+    {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
@@ -125,12 +130,18 @@ export const hidingRadius = persistentAtom<number>("hidingRadius", 0.8, {
     encode: JSON.stringify,
     decode: JSON.parse,
 });
-export const hidingRadiusUnits = persistentAtom<Units>("hidingRadiusUnits", "kilometers", {
+export const hidingRadiusUnits = persistentAtom<Units>(
+    "hidingRadiusUnits",
+    "kilometers",
+    {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
 );
-export const disabledStations = persistentAtom<string[]>("disabledStations", [], {
+export const disabledStations = persistentAtom<string[]>(
+    "disabledStations",
+    [],
+    {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
@@ -216,7 +227,10 @@ export const showTutorial = persistentAtom<boolean>("showTutorials", true, {
     decode: JSON.parse,
 });
 
-export const showNextStepsChecklist = persistentAtom<boolean>("showNextStepsChecklist", false, {
+export const showNextStepsChecklist = persistentAtom<boolean>(
+    "showNextStepsChecklist",
+    false,
+    {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
@@ -242,12 +256,18 @@ export const penaltyMinutes = persistentAtom<number>("penaltyMinutes", 0, {
     decode: JSON.parse,
 });
 
-export const timerStartTimestamp = persistentAtom<number | null>("timerStartTimestamp", null, {
+export const timerStartTimestamp = persistentAtom<number | null>(
+    "timerStartTimestamp",
+    null,
+    {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
 );
-export const timerElapsedSeconds = persistentAtom<number>("timerElapsedSeconds", 0, {
+export const timerElapsedSeconds = persistentAtom<number>(
+    "timerElapsedSeconds",
+    0,
+    {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
@@ -264,29 +284,47 @@ export type LeaderboardEntry = {
     penaltyMinutes: number;
 };
 
-export const leaderboard = persistentAtom<LeaderboardEntry[]>("leaderboard", [], {
+export const leaderboard = persistentAtom<LeaderboardEntry[]>(
+    "leaderboard",
+    [],
+    {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
 );
 
-export const lockedActiveStationIds = persistentAtom<string[] | null>("lockedActiveStationIds", null, {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-});
-
-export const lockedRecommendedStart = persistentAtom<[number, number] | null>("lockedRecommendedStart", null, {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-});
-
-export const showRecommendedStart = persistentAtom<boolean>("showRecommendedStart", false, {
+export const lockedActiveStationIds = persistentAtom<string[] | null>(
+    "lockedActiveStationIds",
+    null,
+    {
         encode: JSON.stringify,
         decode: JSON.parse,
     },
 );
 
-export const hasSeenPerformanceWarning = persistentAtom<boolean>("hasSeenPerformanceWarning", false, {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-});
+export const lockedRecommendedStart = persistentAtom<[number, number] | null>(
+    "lockedRecommendedStart",
+    null,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+
+export const showRecommendedStart = persistentAtom<boolean>(
+    "showRecommendedStart",
+    false,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);
+
+export const hasSeenPerformanceWarning = persistentAtom<boolean>(
+    "hasSeenPerformanceWarning",
+    false,
+    {
+        encode: JSON.stringify,
+        decode: JSON.parse,
+    },
+);

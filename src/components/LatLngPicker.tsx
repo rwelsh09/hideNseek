@@ -59,13 +59,19 @@ export const LatitudeLongitude = ({
                         $isLoading && "opacity-50",
                     )}
                     style={{
-                        color: colourName === "gold" ? "black" : (colourName && colourName !== "transparent" ? "white" : undefined),
+                        color:
+                            colourName === "gold"
+                                ? "black"
+                                : colourName && colourName !== "transparent"
+                                  ? "white"
+                                  : undefined,
                     }}
                 >
                     <Button
                         variant="outline"
                         size="icon"
-                        className="shrink-0 text-foreground" style={{ color: "hsl(var(--foreground))" }}
+                        className="shrink-0 text-foreground"
+                        style={{ color: "hsl(var(--foreground))" }}
                         onClick={() => {
                             if (!navigator || !navigator.geolocation) {
                                 toast.error("Geolocation not supported");
@@ -96,20 +102,14 @@ export const LatitudeLongitude = ({
                                 (error) => {
                                     isLoading.set(false);
                                     if (
-                                        error.code ===
-                                        error.PERMISSION_DENIED
+                                        error.code === error.PERMISSION_DENIED
                                     ) {
                                         geolocationPermission.set("denied");
-                                        toast.error(
-                                            "Location access denied.",
-                                            {
-                                                toastId: "location-denied",
-                                            },
-                                        );
+                                        toast.error("Location access denied.", {
+                                            toastId: "location-denied",
+                                        });
                                     } else {
-                                        toast.error(
-                                            "Could not fetch location",
-                                        );
+                                        toast.error("Could not fetch location");
                                     }
                                 },
                                 {
@@ -162,11 +162,14 @@ export const LatitudeLongitude = ({
                                     aria-label="Change marker colour"
                                     className="w-full flex gap-2"
                                 >
-                                    <PaletteIcon className="w-4 h-4"/>
+                                    <PaletteIcon className="w-4 h-4" />
                                     Change Colour
                                 </Button>
                             </DialogTrigger>
-                            <DialogContent className="z-[1060]" overlayClassName="z-[1060]">
+                            <DialogContent
+                                className="z-[1060]"
+                                overlayClassName="z-[1060]"
+                            >
                                 <DialogHeader>
                                     <DialogTitle className="text-2xl">
                                         Change Colour

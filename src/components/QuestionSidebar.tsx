@@ -1,9 +1,5 @@
 import { useStore } from "@nanostores/react";
-import {
-    Clock,
-    SidebarCloseIcon,
-    Trash2,
-} from "lucide-react";
+import { Clock, SidebarCloseIcon, Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
 
 import {
@@ -23,14 +19,13 @@ import {
     SidebarContext,
 } from "@/components/ui/sidebar-l";
 import {
-    addQuestion,
     isLoading,
-    lockedActiveStationIds, lockedRecommendedStart,
+    lockedActiveStationIds,
+    lockedRecommendedStart,
     penaltyMinutes,
     questions,
     triggerLocalRefresh,
 } from "@/lib/context";
-import { questionSchema } from "@/maps/schema";
 
 import { AddQuestionDialog } from "./AddQuestionDialog";
 import { PasteQuestionButton } from "./PasteQuestionButton";

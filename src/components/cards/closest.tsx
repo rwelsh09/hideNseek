@@ -14,7 +14,10 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { mapToObj } from "@/lib/utils";
-import { fetchClosestLocationsWithGrowth, filterPointsWithinRadius } from "@/maps/questions/closest";
+import {
+    fetchClosestLocationsWithGrowth,
+    filterPointsWithinRadius,
+} from "@/maps/questions/closest";
 import {
     type ClosestQuestion,
     closestQuestionSchema,
@@ -200,7 +203,6 @@ const ClosestLocationSelector = ({
                 }}
                 disabled={!!$hiderMode || disabled}
             />
-
         </div>
     );
 };

@@ -1,4 +1,4 @@
-import { describe, expect,it } from "vitest";
+import { describe, expect, it } from "vitest";
 
 import { getFeatureProperties } from "@/maps/geo-utils/special";
 
@@ -13,14 +13,14 @@ describe("getFeatureProperties", () => {
             properties: {
                 tags: {
                     name: "Test Tag",
-                    amenity: "cafe"
-                }
-            }
+                    amenity: "cafe",
+                },
+            },
         };
 
         expect(getFeatureProperties(feature)).toEqual({
             name: "Test Tag",
-            amenity: "cafe"
+            amenity: "cafe",
         });
     });
 
@@ -29,9 +29,9 @@ describe("getFeatureProperties", () => {
             properties: {
                 baseProp: "base",
                 properties: {
-                    nestedProp: "nested"
-                }
-            }
+                    nestedProp: "nested",
+                },
+            },
         };
 
         const result = getFeatureProperties(feature);
@@ -39,9 +39,9 @@ describe("getFeatureProperties", () => {
         expect(result).toEqual({
             baseProp: "base",
             properties: {
-                nestedProp: "nested"
+                nestedProp: "nested",
             },
-            nestedProp: "nested"
+            nestedProp: "nested",
         });
     });
 
@@ -49,25 +49,25 @@ describe("getFeatureProperties", () => {
         const feature = {
             properties: {
                 a: 1,
-                b: 2
-            }
+                b: 2,
+            },
         };
 
         expect(getFeatureProperties(feature)).toEqual({
             a: 1,
-            b: 2
+            b: 2,
         });
     });
 
     it("should return the feature itself if feature.properties does not exist", () => {
         const feature = {
             id: 123,
-            type: "Feature"
+            type: "Feature",
         };
 
         expect(getFeatureProperties(feature)).toEqual({
             id: 123,
-            type: "Feature"
+            type: "Feature",
         });
     });
 });

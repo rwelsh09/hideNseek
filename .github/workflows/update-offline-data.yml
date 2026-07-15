@@ -1,47 +1,47 @@
 name: Update Offline Data
 
 on:
-  workflow_dispatch:
-  schedule:
-    # Run at 00:00 every Monday
-    - cron: "0 0 * * 1"
+    workflow_dispatch:
+    schedule:
+        # Run at 00:00 every Monday
+        - cron: "0 0 * * 1"
 
 jobs:
-  update-data:
-    runs-on: ubuntu-latest
+    update-data:
+        runs-on: ubuntu-latest
 
-    permissions:
-      contents: write
-      actions: write
+        permissions:
+            contents: write
+            actions: write
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 10.30.3
+            - name: Setup pnpm
+              uses: pnpm/action-setup@v3
+              with:
+                  version: 10.30.3
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: "pnpm"
+            - name: Setup Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: "pnpm"
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
 
-      - name: Run Fetch Script
-        run: node scripts/fetch-offline-places.mjs
+            - name: Run Fetch Script
+              run: node scripts/fetch-offline-places.mjs
 
-      - name: Commit and push changes
-        uses: stefanzweifel/git-auto-commit-action@v5
-        with:
-          commit_message: "chore: auto-update offline places data"
-          file_pattern: "src/data/offline_places.json src/data/offline_metadata.json"
+            - name: Commit and push changes
+              uses: stefanzweifel/git-auto-commit-action@v5
+              with:
+                  commit_message: "chore: auto-update offline places data"
+                  file_pattern: "src/data/offline_places.json src/data/offline_metadata.json"
 
-      - name: Trigger Deploy
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh workflow run deploy.yml --ref ${{ github.ref_name }}
+            - name: Trigger Deploy
+              env:
+                  GH_TOKEN: ${{ github.token }}
+              run: gh workflow run deploy.yml --ref ${{ github.ref_name }}

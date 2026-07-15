@@ -104,12 +104,9 @@ export const RadarQuestionComponent = ({
                     disabled={!!$hiderMode || data.locked || $isLoading}
                     data-tutorial-id="tutorial-question-result-toggle"
                 >
-                    <ToggleGroupItem value="outside">
-                        Outside
-                    </ToggleGroupItem>
+                    <ToggleGroupItem value="outside">Outside</ToggleGroupItem>
                     <ToggleGroupItem value="inside">Inside</ToggleGroupItem>
                 </ToggleGroup>
-
             </div>
         </QuestionCard>
     );

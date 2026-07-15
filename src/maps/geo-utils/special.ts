@@ -15,7 +15,7 @@ export const getFeatureProperties = (feature: any): Record<string, any> => {
     if (feature.properties?.properties) {
         return {
             ...feature.properties,
-            ...feature.properties.properties
+            ...feature.properties.properties,
         };
     }
 
@@ -40,7 +40,10 @@ export const extractStationLines = (stationPlace: any): string[] => {
     if (Array.isArray(props.lines)) {
         return props.lines;
     }
-    return (props.route_ref || props.ref || "").split(/[;,]/).map((r: string) => r.trim()).filter(Boolean);
+    return (props.route_ref || props.ref || "")
+        .split(/[;,]/)
+        .map((r: string) => r.trim())
+        .filter(Boolean);
 };
 
 export const extractStationId = (stationPlace: any): string => {
