@@ -238,28 +238,6 @@ export const findPlacesInZone = async (
     return data;
 };
 
-export const findPlacesSpecificInZone = async (
-    location: string,
-) => {
-    const place = PLACES.find(p => p.specificLocation === location);
-    const label = place ? place.labelPlural : "Places";
-    const locations = (
-        await findPlacesInZone(
-            location,
-            `Finding ${label}...`,
-        )
-    ).elements;
-    return turf.featureCollection(
-        locations.filter((x: any) => typeof (x.center?.lon ?? x.lon) === 'number' && typeof (x.center?.lat ?? x.lat) === 'number').map((x: any) =>
-            turf.point([
-                x.center ? x.center.lon : x.lon,
-                x.center ? x.center.lat : x.lat,
-            ]),
-        ),
-    );
-};
-
-
 export const determineMapBoundaries = async () => {
     return turf.featureCollection([
         calgaryBoundaryData[0] as Feature<MultiPolygon>,
