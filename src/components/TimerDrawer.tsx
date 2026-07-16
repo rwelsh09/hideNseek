@@ -24,7 +24,6 @@ import {
     headStartMinutes,
     isTimerRunning,
     leaderboard,
-    lockedRecommendedStart,
     penaltyMinutes,
     timerElapsedSeconds,
     timerStartTimestamp,

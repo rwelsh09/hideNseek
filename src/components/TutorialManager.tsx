@@ -21,7 +21,6 @@ import {
     hasSeenRules,
     hasSeenWelcome,
     hiderMode,
-    isOptionsOpenStore,
     showHiderTutorial,
     showNextStepsChecklist,
     showTutorial,
