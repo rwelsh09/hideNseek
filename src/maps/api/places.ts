@@ -148,6 +148,25 @@ const ensureElementCenter = (el: any) => {
     }
 };
 
+export const checkFilters = (filtersToMatch: any[], tags: Record<string, string>) => {
+    if (filtersToMatch.length === 0) return true;
+    return filtersToMatch.every((f) => {
+        const tagVal = tags[f.key];
+        if (tagVal === undefined) return false;
+        if (f.op === "=") {
+            return tagVal === f.val;
+        } else if (f.op === "~") {
+            try {
+                const re = new RegExp(f.val);
+                return re.test(tagVal);
+            } catch {
+                return false;
+            }
+        }
+        return false;
+    });
+};
+
 export const findPlacesInZone = async (
     filter: string,
     loadingText?: string,
@@ -189,27 +208,8 @@ export const findPlacesInZone = async (
     const matchedElements = offlineData.filter((el: any) => {
         if (!el.tags) return false;
 
-        const checkFilters = (filtersToMatch: any[]) => {
-            if (filtersToMatch.length === 0) return true;
-            return filtersToMatch.every((f) => {
-                const tagVal = el.tags[f.key];
-                if (tagVal === undefined) return false;
-                if (f.op === "=") {
-                    return tagVal === f.val;
-                } else if (f.op === "~") {
-                    try {
-                        const re = new RegExp(f.val);
-                        return re.test(tagVal);
-                    } catch {
-                        return false;
-                    }
-                }
-                return false;
-            });
-        };
-
-        const matchesPrimary = checkFilters(primaryFilters);
-        const matchesAnyAlt = altFilters.length > 0 ? altFilters.some(checkFilters) : false;
+        const matchesPrimary = checkFilters(primaryFilters, el.tags);
+        const matchesAnyAlt = altFilters.length > 0 ? altFilters.some(f => checkFilters(f, el.tags)) : false;
 
         return matchesPrimary || matchesAnyAlt;
     });
