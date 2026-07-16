@@ -156,9 +156,9 @@ export const Map = ({ className }: { className?: string }) => {
             }
 
             if (hiderMode.get() !== false) {
-                for (const question of questions.get()) {
-                    await hiderifyQuestion(question);
-                }
+                await Promise.all(
+                    questions.get().map((question) => hiderifyQuestion(question)),
+                );
 
                 triggerLocalRefresh.set(Math.random()); // Refresh the question sidebar with new information but not this map
             }
