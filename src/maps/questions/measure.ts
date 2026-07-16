@@ -17,7 +17,7 @@ import { arcBufferToPoint, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import { PLACES } from "@/maps/placesConfig";
 import type { MeasureQuestion } from "@/maps/schema";
 
-export const determineMeasureBoundary = async (question: MeasureQuestion) => {
+const determineMeasureBoundary = async (question: MeasureQuestion) => {
     if (question.type === "rail-measure") {
         const stations = (calgaryTransitData as any).features;
         if (stations.length === 0) return [turf.multiPolygon([])];

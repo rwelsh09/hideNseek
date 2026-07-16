@@ -53,7 +53,7 @@ export const hiderifyQuestion = async (question: Question) => {
     return question;
 };
 
-export const determinePlanningPolygon = async (question: Question) => {
+const determinePlanningPolygon = async (question: Question) => {
     if (!question.data.locked) {
         switch (question.id) {
             case "radar":

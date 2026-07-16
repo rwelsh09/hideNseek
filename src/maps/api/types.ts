@@ -9,12 +9,12 @@ export interface OpenStreetMap {
     properties: OpenStreetMapProperties;
 }
 
-export interface OpenStreetMapGeometry {
+interface OpenStreetMapGeometry {
     type: string;
     coordinates: LatLngTuple;
 }
 
-export interface OpenStreetMapProperties {
+interface OpenStreetMapProperties {
     osm_type: "W" | "R" | "N";
     osm_id: number;
     extent?: number[];
@@ -36,7 +36,7 @@ export enum QuestionSpecificLocation {
     Pub = '["amenity"~"^(pub|bar)$"]',
 }
 
-export interface StationPlaceProperties {
+interface StationPlaceProperties {
     id: string;
     [key: string]: string | undefined;
 }
@@ -45,6 +45,5 @@ export type StationPlace = Feature<Point, StationPlaceProperties>;
 export type StationCircle = Feature<Polygon, StationPlace>;
 
 export type {
-    APILocations,
     EncompassingClosestQuestionSchema,
 } from "@/maps/schema";

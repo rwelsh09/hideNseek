@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { PLACES } from "./placesConfig";
 
-export const determineUnionizedStrings = (
+const determineUnionizedStrings = (
     obj:
         | z.ZodUnion<any>
         | z.ZodLiteral<any>
@@ -145,7 +145,7 @@ const closestQuestionSpecificSchemaOne = baseClosestQuestionSchema.extend({
     places: z.array(z.any()).optional(),
 });
 
-export const encompassingClosestQuestionSchema =
+const encompassingClosestQuestionSchema =
     baseClosestQuestionSchema.extend({
         locationType: apiLocationSchema,
         places: z.array(z.any()).optional(),
@@ -231,11 +231,12 @@ export const questionSchema = z.union([
 
 export const questionsSchema = z.array(questionSchema);
 
+type APILocations = z.infer<typeof apiLocationSchema>;
+
 export type Units = z.infer<typeof unitsSchema>;
 export type RadarQuestion = z.infer<typeof radarQuestionSchema>;
 export type HotColdQuestion = z.infer<typeof hotColdQuestionSchema>;
 export type ClosestQuestion = z.infer<typeof closestQuestionSchema>;
-export type APILocations = z.infer<typeof apiLocationSchema>;
 export type MatchQuestion = z.infer<typeof matchQuestionSchema>;
 export type MeasureQuestion = z.infer<typeof measureQuestionSchema>;
 export type PhotoQuestion = z.infer<typeof photoQuestionSchema>;

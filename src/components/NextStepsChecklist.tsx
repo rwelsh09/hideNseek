@@ -7,7 +7,7 @@ import { hiderMode,showHiderTutorial, showNextStepsChecklist, showTutorial } fro
 
 import { PwaInstallTip } from "./PwaInstallTip";
 
-export const hasDismissedNextStepsChecklist = persistentAtom<boolean>(
+const hasDismissedNextStepsChecklist = persistentAtom<boolean>(
     "hasDismissedNextStepsChecklist",
     false,
     { encode: JSON.stringify, decode: JSON.parse },
