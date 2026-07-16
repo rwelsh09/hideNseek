@@ -38,6 +38,8 @@ export function MeasureSection({
                             <button
                                 key={`measure-${place.id}`}
                                 type="button"
+                                aria-label={`Add measure question for ${place.label}`}
+                                title={`Add measure question for ${place.label}`}
                                 onClick={() =>
                                     handleQuestionSelect("measure", place.id)
                                 }
@@ -53,6 +55,8 @@ export function MeasureSection({
                 )}
                 <button
                     type="button"
+                    aria-label={`Add measure question for Station`}
+                    title={`Add measure question for Station`}
                     onClick={() =>
                         handleQuestionSelect("measure", "rail-measure")
                     }
