@@ -1,3 +1,4 @@
+import { encodeBase64 } from "@/lib/utils";
 import { useStore } from "@nanostores/react";
 import { LockIcon, UnlockIcon } from "lucide-react";
 import { useState } from "react";
@@ -230,7 +231,7 @@ export const QuestionCard = ({
                                     onClick={async (e) => {
                                         e.stopPropagation();
 
-                                        const payload = btoa(unescape(encodeURIComponent(JSON.stringify(question))));
+                                        const payload = encodeBase64(JSON.stringify(question));
                                         const url = new URL(window.location.href);
                                         url.searchParams.set("q", payload);
 
