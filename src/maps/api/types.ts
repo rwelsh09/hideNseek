@@ -29,13 +29,6 @@ interface OpenStreetMapProperties {
     questions?: Question[];
 }
 
-export enum QuestionSpecificLocation {
-    McDonalds = '["brand:wikidata"="Q38076"]',
-    Seven11 = '["brand:wikidata"="Q259340"]',
-    TimHortons = '["brand:wikidata"="Q175106"]',
-    Pub = '["amenity"~"^(pub|bar)$"]',
-}
-
 interface StationPlaceProperties {
     id: string;
     [key: string]: string | undefined;
