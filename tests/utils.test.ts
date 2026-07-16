@@ -32,6 +32,7 @@ describe("utils", () => {
 
         test("should handle empty stations array", () => {
             const encoded = encodeDisabledStations([]);
+            expect(encoded).toBe("0");
             const decoded = decodeDisabledStations(encoded);
             expect(decoded).toEqual([]);
         });
