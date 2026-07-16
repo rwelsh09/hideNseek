@@ -80,8 +80,8 @@ const hotColdQuestionSchema = z.object({
         .min(-180, "Longitude must not overlap with the antemeridian")
         .max(180, "Longitude must not overlap with the antemeridian"),
     warmer: z.boolean().default(true),
-    colourA: iconColourSchema.default("gold"),
-    colourB: iconColourSchema.default("blue"),
+    colourA: iconColourSchema.default("blue"),
+    colourB: iconColourSchema.default("red"),
     locked: z.boolean().default(false),
     doubledPenalty: z.boolean().default(false),
 });

@@ -33,10 +33,10 @@ describe("hot-cold", () => {
         latB: 51.1,
         lngB: -114.1,
         warmer: true,
-        colorA: "red",
-        colorB: "blue",
-        drag: true,
-        collapsed: false,
+        colourA: "blue",
+        colourB: "red",
+        locked: false,
+        doubledPenalty: false,
     };
 
     beforeEach(() => {
