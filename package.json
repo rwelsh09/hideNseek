@@ -48,7 +48,7 @@
         "lodash": "^4.17.21",
         "lucide-react": "1.24.0",
         "nanostores": "^0.11.3",
-        "osmtogeojson": "3.0.0-beta.5",
+        "osm2geojson-lite": "^2.0.1",
         "react": "19.1.0",
         "react-dom": "19.1.0",
         "react-icons": "^5.5.0",

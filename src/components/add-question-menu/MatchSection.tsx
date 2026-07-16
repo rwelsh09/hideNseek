@@ -1,5 +1,5 @@
-import { Map as MapIcon, Train } from "lucide-react";
 import * as icons from "lucide-react";
+import { Map as MapIcon, Train } from "lucide-react";
 
 import { TIME_PENALTIES } from "@/lib/context";
 import { PLACES } from "@/maps/placesConfig";
