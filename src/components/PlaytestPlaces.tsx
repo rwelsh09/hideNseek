@@ -118,7 +118,26 @@ export const PlaytestPlaces = () => {
                         alternatives,
                     );
 
-                    const features = osm2geojson(rawData);
+                    const processedData = {
+                        ...rawData,
+                        elements: rawData.elements.map((e: any) => {
+                            if (
+                                (e.type === "way" || e.type === "relation") &&
+                                e.center
+                            ) {
+                                return {
+                                    ...e,
+                                    type: "node",
+                                    lat: e.center.lat,
+                                    lon: e.center.lon,
+                                    id: e.id,
+                                    tags: e.tags,
+                                };
+                            }
+                            return e;
+                        }),
+                    };
+                    const features = osm2geojson(processedData);
 
                     if (features && features.features) {
                         features.features.forEach((f: any) => {
@@ -146,7 +165,26 @@ export const PlaytestPlaces = () => {
                         specificAlternatives,
                     );
 
-                    const features = osm2geojson(rawData);
+                    const processedData = {
+                        ...rawData,
+                        elements: rawData.elements.map((e: any) => {
+                            if (
+                                (e.type === "way" || e.type === "relation") &&
+                                e.center
+                            ) {
+                                return {
+                                    ...e,
+                                    type: "node",
+                                    lat: e.center.lat,
+                                    lon: e.center.lon,
+                                    id: e.id,
+                                    tags: e.tags,
+                                };
+                            }
+                            return e;
+                        }),
+                    };
+                    const features = osm2geojson(processedData);
 
                     if (features && features.features) {
                         features.features.forEach((f: any) => {
