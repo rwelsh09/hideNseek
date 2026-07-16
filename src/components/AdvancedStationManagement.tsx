@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { VscQuestion } from "react-icons/vsc";
 import { toast } from "react-toastify";
 
@@ -53,6 +53,11 @@ export const AdvancedStationManagement = () => {
 
     const isStationSearchActive = stationSearch.trim().length > 0;
     const setStations = trainStations.set;
+
+    const disabledStationsSet = useMemo(
+        () => new Set($disabledStations),
+        [$disabledStations],
+    );
 
     return (
         <AccordionItem value="advanced" className="border-none">
@@ -377,7 +382,7 @@ export const AdvancedStationManagement = () => {
                                         station,
                                     )}
                                     className={cn(
-                                        $disabledStations.includes(
+                                        disabledStationsSet.has(
                                             extractStationId(
                                                 station,
                                             ),
@@ -394,7 +399,7 @@ export const AdvancedStationManagement = () => {
                                                         station,
                                                     );
                                                 if (
-                                                    $disabledStations.includes(
+                                                    disabledStationsSet.has(
                                                         stationId,
                                                     )
                                                 ) {
