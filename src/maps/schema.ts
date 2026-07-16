@@ -1,6 +1,5 @@
 import { z } from "zod";
 
-import { ICON_COLOURS } from "./api/constants";
 import { PLACES } from "./placesConfig";
 
 export const determineUnionizedStrings = (
@@ -55,13 +54,6 @@ const iconColourSchema = z.union([
     z.literal("violet"),
 ]);
 
-type IconColour = z.infer<typeof iconColourSchema>;
-
-const randomColour = () =>
-    (Object.keys(ICON_COLOURS) as IconColour[])[
-        Math.floor(Math.random() * Object.keys(ICON_COLOURS).length)
-    ];
-
 const hotColdQuestionSchema = z.object({
     latA: z
         .number()
@@ -96,7 +88,7 @@ const ordinaryBaseQuestionSchema = z.object({
         .min(-180, "Longitude must not overlap with the antemeridian")
         .max(180, "Longitude must not overlap with the antemeridian"),
     locked: z.boolean().default(false),
-    colour: iconColourSchema.default(randomColour),
+    colour: iconColourSchema.default("blue"),
     doubledPenalty: z.boolean().default(false),
 });
 

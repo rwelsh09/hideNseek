@@ -7,3 +7,6 @@
 
 **Learning:** Successfully removed `nearestToQuestion` from `src/maps/api/places.ts`. It was totally unused and an orphaned export.
 **Action:** Always check usages before removal, and ensure exports are not actually public API before sweeping.
+## 2026-06-25 - Pruning ICON_COLOURS
+**Learning:** `ICON_COLOURS` is exported from `src/maps/api/constants.ts` and heavily used throughout components (e.g. `DraggableMarkers.tsx`, `LatLngPicker.tsx`) to reference color hexes, so it cannot be fully removed from the codebase. However, `randomColour` in `src/maps/schema.ts` which relied on it was completely unused (since Zod schema extension overrides `.default` values, the default generator was never called).
+**Action:** When pruning "dead" imports or constants in a Zod schema file, carefully check if the constant itself is a global definition used by other UI components before assuming it can be deleted project-wide.
