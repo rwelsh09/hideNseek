@@ -145,7 +145,7 @@ const closestQuestionSpecificSchemaOne = baseClosestQuestionSchema.extend({
     places: z.array(z.any()).optional(),
 });
 
-export const encompassingClosestQuestionSchema =
+const encompassingClosestQuestionSchema =
     baseClosestQuestionSchema.extend({
         locationType: apiLocationSchema,
         places: z.array(z.any()).optional(),
