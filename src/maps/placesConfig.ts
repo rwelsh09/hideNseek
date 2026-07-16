@@ -9,6 +9,7 @@ export const PLACES = [
     { id: "seven11", label: "7-Eleven", labelPlural: "7-Elevens", icon: "Store", tag: "amenity", type: "specific", specificLocation: '["brand:wikidata"="Q259340"]' },
     { id: "timhortons", label: "Tim Hortons", labelPlural: "Tim Hortons", icon: "Coffee", tag: "amenity", type: "specific", specificLocation: '["brand:wikidata"="Q175106"]' },
     { id: "pub", label: "Pub / Bar", labelPlural: "Pubs / Bars", icon: "Beer", tag: "amenity", type: "specific", specificLocation: '["amenity"~"^(pub|bar)$"]' },
+    { id: "pizza", label: "Pizza Place", labelPlural: "Pizza Places", icon: "Pizza", tag: "cuisine", type: "specific", specificLocation: '["cuisine"="pizza"]' },
 ] as const;
 
 export type PlaceId = typeof PLACES[number]["id"];
