@@ -13,8 +13,6 @@ import {
     trainStations,
 } from "@/lib/context";
 import {
-    findPlacesSpecificInZone,
-    QuestionSpecificLocation,
     type StationPlace,
 } from "@/maps/api";
 import {
@@ -177,66 +175,6 @@ export const initializeHidingZonesLogic = async () => {
                 if (lockedIds) {
                     // Restore circles array if it's locked so base shapes do not change
                     circles = originalCirclesState;
-                }
-            }
-            if (
-                question.id === "measure" &&
-                ((question.data as any).type === "mcdonalds" ||
-                    (question.data as any).type === "seven11")
-            ) {
-                const points = await findPlacesSpecificInZone(
-                    (question.data as any).type === "mcdonalds"
-                        ? QuestionSpecificLocation.McDonalds
-                        : QuestionSpecificLocation.Seven11,
-                );
-
-                if (points.features.length === 0) {
-                    circles = [];
-                    continue;
-                }
-
-                const nearestPoint = turf.nearestPoint(
-                    turf.point([question.data.lng, question.data.lat]),
-                    points as any,
-                );
-                const distance = turf.distance(
-                    turf.point([question.data.lng, question.data.lat]),
-                    nearestPoint as any,
-                    { units: "kilometers" },
-                );
-
-                const originalIdsMeasure = circles.map((c) =>
-                    extractStationId(c),
-                );
-                const originalCirclesStateMeasure = [...circles];
-
-                circles = circles.filter((circle) => {
-                    const point = turf.point(turf.getCoord(circle.properties));
-                    const nearest = turf.nearestPoint(point, points as any);
-                    return question.data.hiderCloser
-                        ? turf.distance(point, nearest as any, {
-                              units: "kilometers",
-                          }) <
-                              distance + $hidingRadius
-                        : turf.distance(point, nearest as any, {
-                              units: "kilometers",
-                          }) >
-                              distance - $hidingRadius;
-                });
-
-                const remainingIdsMeasure = circles.map((c) =>
-                    extractStationId(c),
-                );
-                const newlyDisabledMeasure = originalIdsMeasure.filter(
-                    (id) =>
-                        !remainingIdsMeasure.includes(id) &&
-                        !manuallyDisabled.includes(id),
-                );
-                newlyDisabledStations.push(...newlyDisabledMeasure);
-
-                if (lockedIds) {
-                    // Restore circles array if it's locked so base shapes do not change
-                    circles = originalCirclesStateMeasure;
                 }
             }
         }

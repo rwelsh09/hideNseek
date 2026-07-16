@@ -11,7 +11,6 @@ import {
 } from "@/lib/context";
 import {
     findPlacesInZone,
-    findPlacesSpecificInZone,
     LOCATION_FIRST_TAG,
 } from "@/maps/api";
 import { arcBufferToPoint, modifyMapData, safeUnion } from "@/maps/geo-utils";
@@ -34,39 +33,31 @@ const determineMeasureBoundary = async (question: MeasureQuestion) => {
 
     const place = PLACES.find(p => p.id === question.type);
     if (place) {
-        if (place.type === "specific" && place.specificLocation) {
-            const points = await findPlacesSpecificInZone(place.specificLocation);
-            if (!points || !points.features || points.features.length === 0)
-                return [turf.multiPolygon([])];
+        const location = place.id;
+        const data = await findPlacesInZone(
+            `[${LOCATION_FIRST_TAG[location]}=${location}]`,
+            `Finding ${place.labelPlural.toLowerCase()}...`,
+        );
 
-            return points.features as any;
-        } else {
-            const location = place.id;
-            const data = await findPlacesInZone(
-                `[${LOCATION_FIRST_TAG[location]}=${location}]`,
-                `Finding ${place.labelPlural.toLowerCase()}...`,
+        if (data.elements.length >= 5000) {
+            toast.error(
+                `Too many ${place.labelPlural.toLowerCase()} found (${data.elements.length}).`,
             );
-
-            if (data.elements.length >= 5000) {
-                toast.error(
-                    `Too many ${place.labelPlural.toLowerCase()} found (${data.elements.length}).`,
-                );
-                return [turf.combine(turf.featureCollection([]))] as any;
-            }
-
-            return [
-                turf.combine(
-                    turf.featureCollection(
-                        data.elements.filter((x: any) => typeof (x.center?.lon ?? x.lon) === 'number' && typeof (x.center?.lat ?? x.lat) === 'number').map((x: any) =>
-                            turf.point([
-                                x.center ? x.center.lon : x.lon,
-                                x.center ? x.center.lat : x.lat,
-                            ]),
-                        ),
-                    ),
-                ).features[0],
-            ];
+            return [turf.combine(turf.featureCollection([]))] as any;
         }
+
+        return [
+            turf.combine(
+                turf.featureCollection(
+                    data.elements.filter((x: any) => typeof (x.center?.lon ?? x.lon) === 'number' && typeof (x.center?.lat ?? x.lat) === 'number').map((x: any) =>
+                        turf.point([
+                            x.center ? x.center.lon : x.lon,
+                            x.center ? x.center.lat : x.lat,
+                        ]),
+                    ),
+                ),
+            ).features[0],
+        ];
     }
     return [turf.multiPolygon([])] as any;
 };
@@ -170,13 +161,7 @@ export const calculateMeasureDistance = async (
         }
         default: {
             const place = PLACES.find(p => p.id === question.type);
-            if (place && place.type === "specific" && place.specificLocation) {
-                const points = await findPlacesSpecificInZone(place.specificLocation);
-                if (!points || !points.features || points.features.length === 0)
-                    return null;
-                const nearest = turf.nearestPoint(seeker, points as any);
-                return turf.distance(seeker, nearest, { units: "kilometers" });
-            } else if (place) {
+            if (place) {
                 const boundaryData = await determineMeasureBoundary(question);
                 if (
                     !boundaryData ||
