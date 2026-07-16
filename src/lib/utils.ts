@@ -157,3 +157,17 @@ export async function shareOrFallback(
             return shareOrFallback(data, true);
         });
 }
+
+export function encodeBase64Unicode(str: string): string {
+    const bytes = new TextEncoder().encode(str);
+    const binString = Array.from(bytes, (byte) =>
+        String.fromCodePoint(byte),
+    ).join("");
+    return btoa(binString);
+}
+
+export function decodeBase64Unicode(base64: string): string {
+    const binString = atob(base64);
+    const bytes = Uint8Array.from(binString, (m) => m.codePointAt(0)!);
+    return new TextDecoder().decode(bytes);
+}

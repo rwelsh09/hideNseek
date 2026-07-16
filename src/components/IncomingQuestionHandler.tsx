@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 
 import { editingQuestionId } from "@/components/DraggableMarkers";
 import { addQuestion } from "@/lib/context";
+import { decodeBase64Unicode } from "@/lib/utils";
 import { questionSchema } from "@/maps/schema";
 
 export const IncomingQuestionHandler = () => {
@@ -19,7 +20,7 @@ export const IncomingQuestionHandler = () => {
 
 
             try {
-                const decodedText = decodeURIComponent(escape(window.atob(qParam)));
+                const decodedText = decodeBase64Unicode(qParam);
                 const parsed = JSON.parse(decodedText);
                 delete parsed.key; // Ensure a new key is generated
                 const key = Math.random();
