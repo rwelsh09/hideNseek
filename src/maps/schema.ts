@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { PLACES } from "./placesConfig";
 
-export const determineUnionizedStrings = (
+const determineUnionizedStrings = (
     obj:
         | z.ZodUnion<any>
         | z.ZodLiteral<any>
