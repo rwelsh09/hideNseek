@@ -23,14 +23,12 @@ import {
     SidebarContent,
 } from "@/components/ui/sidebar";
 import {
-    addQuestion,
     isLoading,
     lockedActiveStationIds, lockedRecommendedStart,
     penaltyMinutes,
     questions,
     triggerLocalRefresh,
 } from "@/lib/context";
-import { questionSchema } from "@/maps/schema";
 
 import { AddQuestionDialog } from "./AddQuestionDialog";
 import { PasteQuestionButton } from "./PasteQuestionButton";

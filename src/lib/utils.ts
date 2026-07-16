@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+
 import calgaryRapidTransitData from "@/data/calgary_rapid_transit_network.json";
 
 export const STATION_IDS_INDEX = (calgaryRapidTransitData.features as any[])
@@ -155,4 +156,18 @@ export async function shareOrFallback(
             // Try again with clipboard
             return shareOrFallback(data, true);
         });
+}
+
+export function encodeBase64Unicode(str: string): string {
+    const bytes = new TextEncoder().encode(str);
+    const binString = Array.from(bytes, (byte) =>
+        String.fromCodePoint(byte),
+    ).join("");
+    return btoa(binString);
+}
+
+export function decodeBase64Unicode(base64: string): string {
+    const binString = atob(base64);
+    const bytes = Uint8Array.from(binString, (m) => m.codePointAt(0)!);
+    return new TextDecoder().decode(bytes);
 }

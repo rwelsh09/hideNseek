@@ -103,6 +103,7 @@ export const findClosestLocations = async (
 };
 
 let boundaryPromise: Promise<FeatureCollection<MultiPolygon>> | null = null;
+let cachedOfflineData: any[] | null = null;
 
 const ensureElementCenter = (el: any) => {
     let lon = el.center ? el.center.lon : el.lon;
@@ -166,8 +167,11 @@ export const findPlacesInZone = async (
     }
 
 
-    const dataModule = await import('@/data/offline_places.json');
-    const offlineData = dataModule.default?.elements || dataModule.elements || [];
+    if (!cachedOfflineData) {
+        const dataModule = await import('@/data/offline_places.json');
+        cachedOfflineData = dataModule.default?.elements || dataModule.elements || [];
+    }
+    const offlineData = cachedOfflineData;
 
     // Parse filter using regex `/\["?([^"\]=~]+)"?(=|~)"?([^"\]]+)"?\]/g`
     const extractFilters = (queryStr: string) => {
@@ -211,7 +215,7 @@ export const findPlacesInZone = async (
         return matchesPrimary || matchesAnyAlt;
     });
 
-    const data = { elements: JSON.parse(JSON.stringify(matchedElements)) };
+    const data = { elements: matchedElements.map((el: any) => ({ ...el })) };
 
     if (data && data.elements) {
         data.elements.forEach(ensureElementCenter);
