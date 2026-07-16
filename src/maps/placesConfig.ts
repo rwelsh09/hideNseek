@@ -12,4 +12,4 @@ export const PLACES = [
     { id: "pizza", label: "Pizza Place", labelPlural: "Pizza Places", icon: "Pizza", tag: "cuisine", type: "specific", specificLocation: '["cuisine"="pizza"]' },
 ] as const;
 
-export type PlaceId = typeof PLACES[number]["id"];
+type PlaceId = typeof PLACES[number]["id"];
