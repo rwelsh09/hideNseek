@@ -484,8 +484,9 @@ function styleStations(
             if (circles.length > 1) {
                 let voronoiPoints = circles;
                 if (lockedActiveStationIds && allStations) {
+                    const lockedActiveStationIdsSet = new Set(lockedActiveStationIds);
                     voronoiPoints = allStations.filter((s) =>
-                        lockedActiveStationIds.includes(
+                        lockedActiveStationIdsSet.has(
                             extractStationId(s) as string,
                         ),
                     );
