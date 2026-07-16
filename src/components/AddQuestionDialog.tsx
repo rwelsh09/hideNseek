@@ -149,7 +149,7 @@ export function AddQuestionDialog({ iconOnly = false }: { iconOnly?: boolean }) 
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <Button
-                    className={iconOnly ? "flex items-center justify-center gap-2 h-10 w-10 p-0" : "w-full flex items-center justify-center gap-2 h-10"}
+                    className={iconOnly ? "flex items-center justify-center gap-2 h-11 w-11 md:h-10 md:w-10 p-0" : "w-full flex items-center justify-center gap-2 h-10"}
                     data-tutorial-id="add-question-btn"
                 >
                     <Plus className="w-5 h-5" /> {!iconOnly && "Add Question"}
