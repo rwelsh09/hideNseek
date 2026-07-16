@@ -3,6 +3,7 @@ import { ClipboardPasteIcon } from "lucide-react";
 import { toast } from "react-toastify";
 
 import { addQuestion, isLoading } from "@/lib/context";
+import { decodeBase64Unicode } from "@/lib/utils";
 import { questionSchema } from "@/maps/schema";
 
 import { Button } from "./ui/button";
@@ -27,7 +28,7 @@ export const PasteQuestionButton = ({ iconOnly = false }: { iconOnly?: boolean }
                             const urlMatch = text.match(/q=([^&\s]+)/);
                             if (urlMatch && urlMatch[1]) {
                                 try {
-                                    jsonText = decodeURIComponent(escape(window.atob(decodeURIComponent(urlMatch[1]))));
+                                    jsonText = decodeBase64Unicode(decodeURIComponent(urlMatch[1]));
                                 } catch {
                                     // if decoding fails, jsonText remains as original text which will fail parsing below
                                 }
