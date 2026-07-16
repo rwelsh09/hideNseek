@@ -88,7 +88,7 @@ const ordinaryBaseQuestionSchema = z.object({
         .min(-180, "Longitude must not overlap with the antemeridian")
         .max(180, "Longitude must not overlap with the antemeridian"),
     locked: z.boolean().default(false),
-    colour: iconColourSchema.default("blue"),
+    colour: iconColourSchema.optional(),
     doubledPenalty: z.boolean().default(false),
 });
 
