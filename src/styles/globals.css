@@ -241,11 +241,3 @@ body.driver-active:has(
 div.driver-popover, div.driver-overlay {
     z-index: 1000000 !important;
 }
-
-@media (max-width: 768px) {
-    .leaflet-bar a {
-        width: 44px !important;
-        height: 44px !important;
-        line-height: 44px !important;
-    }
-}
