@@ -39,7 +39,7 @@ type SidebarContextType = {
     toggleSidebar: () => void;
 };
 
-export const SidebarSideContext = React.createContext<"left" | "right">("left");
+const SidebarSideContext = React.createContext<"left" | "right">("left");
 
 export const LeftSidebarContext = atom<SidebarContextType>({
     state: "expanded",
@@ -61,7 +61,7 @@ export const RightSidebarContext = atom<SidebarContextType>({
     toggleSidebar: () => {},
 });
 
-export const useSidebar = (sideProp?: "left" | "right") => {
+const useSidebar = (sideProp?: "left" | "right") => {
     const contextSide = React.useContext(SidebarSideContext);
     const side = sideProp ?? contextSide;
     return useStore(side === "left" ? LeftSidebarContext : RightSidebarContext);
@@ -833,24 +833,10 @@ export {
     RightSidebarTrigger,
     Sidebar,
     SidebarContent,
-    SidebarFooter,
     SidebarGroup,
-    SidebarGroupAction,
     SidebarGroupContent,
     SidebarGroupLabel,
-    SidebarHeader,
-    SidebarInput,
-    SidebarInset,
     SidebarMenu,
-    SidebarMenuAction,
-    SidebarMenuBadge,
-    SidebarMenuButton,
     SidebarMenuItem,
-    SidebarMenuSkeleton,
-    SidebarMenuSub,
-    SidebarMenuSubButton,
-    SidebarMenuSubItem,
     SidebarProvider,
-    SidebarRail,
-    SidebarSeparator,
 };
