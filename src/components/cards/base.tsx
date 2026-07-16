@@ -28,7 +28,7 @@ import {
 import { getQuestionShareText } from "@/lib/question-text";
 import { lockRecommendedStartIfNeeded } from "@/lib/recommended-start";
 import { QUESTION_RULES } from "@/lib/rules";
-import { cn, shareOrFallback } from "@/lib/utils";
+import { cn, encodeBase64Unicode, shareOrFallback } from "@/lib/utils";
 import { PLACES } from "@/maps/placesConfig";
 
 const TYPE_MAPPINGS: Record<string, string> = {
@@ -230,7 +230,7 @@ export const QuestionCard = ({
                                     onClick={async (e) => {
                                         e.stopPropagation();
 
-                                        const payload = btoa(unescape(encodeURIComponent(JSON.stringify(question))));
+                                        const payload = encodeBase64Unicode(JSON.stringify(question));
                                         const url = new URL(window.location.href);
                                         url.searchParams.set("q", payload);
 
