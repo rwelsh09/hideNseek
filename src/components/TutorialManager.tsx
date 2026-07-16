@@ -2,9 +2,6 @@ import "driver.js/dist/driver.css";
 
 import { useStore } from "@nanostores/react";
 import { driver } from "driver.js";
-import { getHiderSteps } from "./tutorials/hiderTutorial";
-import { getSeekerSteps } from "./tutorials/seekerTutorial";
-
 import { useEffect, useState } from "react";
 
 import {
@@ -26,6 +23,9 @@ import {
     showTutorial,
     tutorialDriver,
 } from "@/lib/context";
+
+import { getHiderSteps } from "./tutorials/hiderTutorial";
+import { getSeekerSteps } from "./tutorials/seekerTutorial";
 
 export const TutorialManager = () => {
     const $showTutorial = useStore(showTutorial);
