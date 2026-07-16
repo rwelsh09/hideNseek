@@ -17,7 +17,7 @@ import type { PhotoQuestion } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
 
-export const PHOTO_LABELS: Record<string, string> = {
+const PHOTO_LABELS: Record<string, string> = {
     camera: "Hider Selfie",
     tree: "Unique Tree",
     car: "Widest Street",
