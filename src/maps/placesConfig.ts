@@ -11,5 +11,3 @@ export const PLACES = [
     { id: "pub", label: "Pub / Bar", labelPlural: "Pubs / Bars", icon: "Beer", tag: "amenity", type: "specific", specificLocation: '["amenity"~"^(pub|bar)$"]' },
     { id: "pizza", label: "Pizza Place", labelPlural: "Pizza Places", icon: "Pizza", tag: "cuisine", type: "specific", specificLocation: '["cuisine"="pizza"]' },
 ] as const;
-
-type PlaceId = typeof PLACES[number]["id"];

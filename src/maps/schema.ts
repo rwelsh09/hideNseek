@@ -114,8 +114,6 @@ const closestLocationsOne = z.union(
     PLACES.filter(p => p.type === "specific").map(p => z.literal(p.id).describe(p.labelPlural)) as any
 );
 
-const apiLocationSchema = closestLocationsOne;
-
 const baseClosestQuestionSchema = ordinaryBaseQuestionSchema.extend({
     radius: z.number().min(0, "You cannot have a negative radius").default(2),
     unit: unitsSchema.default(getDefaultUnit),
@@ -145,11 +143,6 @@ const closestQuestionSpecificSchemaOne = baseClosestQuestionSchema.extend({
     places: z.array(z.any()).optional(),
 });
 
-const encompassingClosestQuestionSchema =
-    baseClosestQuestionSchema.extend({
-        locationType: apiLocationSchema,
-        places: z.array(z.any()).optional(),
-    });
 
 export const closestQuestionSchema = closestQuestionSpecificSchemaOne;
 
@@ -231,8 +224,6 @@ export const questionSchema = z.union([
 
 export const questionsSchema = z.array(questionSchema);
 
-type APILocations = z.infer<typeof apiLocationSchema>;
-
 export type Units = z.infer<typeof unitsSchema>;
 export type RadarQuestion = z.infer<typeof radarQuestionSchema>;
 export type HotColdQuestion = z.infer<typeof hotColdQuestionSchema>;
@@ -245,6 +236,3 @@ export type Questions = z.infer<typeof questionsSchema>;
 export type DeepPartial<T> = {
     [P in keyof T]?: T[P] extends object ? DeepPartial<T[P]> : T[P];
 };
-export type EncompassingClosestQuestionSchema = z.infer<
-    typeof encompassingClosestQuestionSchema
->;

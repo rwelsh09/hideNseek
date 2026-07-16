@@ -42,7 +42,7 @@ export const getQuestionShareText = async (question: any, questionData: any): Pr
                         if (type === "same-neighbourhood") return `Are we in the same Neighbourhood (${name})?`;
                         return `Does your Neighbourhood start with the same letter as ours (${name[0].toUpperCase()})?`;
                     }
-                } catch (e) {
+                } catch {
                     // Fallback
                 }
                 if (type === "same-neighbourhood") return "Are we in the same Neighbourhood?";
@@ -68,7 +68,7 @@ export const getQuestionShareText = async (question: any, questionData: any): Pr
                     const rounded = Math.round(distance * 1000) / 1000;
                     distanceStr = `${rounded}km`;
                 }
-            } catch (e) {
+            } catch {
                 // Ignore and use fallback
             }
 

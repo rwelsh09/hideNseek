@@ -9,7 +9,6 @@ import {
 import { PLACES } from "@/maps/placesConfig";
 
 import { LOCATION_FIRST_TAG } from "./constants";
-import type { EncompassingClosestQuestionSchema } from "./types";
 
 const getLocationTypeName = (location: string) => {
     const place = PLACES.find(p => p.id === location);
@@ -17,7 +16,7 @@ const getLocationTypeName = (location: string) => {
 };
 
 export const findClosestLocations = async (
-    question: EncompassingClosestQuestionSchema,
+    question: any,
     text?: string,
 ) => {
     const loadingText =
