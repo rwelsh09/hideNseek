@@ -73,7 +73,7 @@
         "@types/geojson": "^7946.0.16",
         "@types/leaflet": "^1.9.16",
         "@types/lodash": "^4.17.15",
-        "@types/node": "^26.0.1",
+        "@types/node": "^26.1.1",
         "@types/react": "19.1.6",
         "@types/react-dom": "19.0.3",
         "@types/terraformer__arcgis": "^2.0.5",
