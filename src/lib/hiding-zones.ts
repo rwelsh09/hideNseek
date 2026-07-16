@@ -70,17 +70,19 @@ export const initializeHidingZonesLogic = async () => {
 
         // Reset disabled stations since we are recalculating
         const currentDisabledForReset = disabledStations.get();
+        const previousQuestionDisabledSet = new Set(previousQuestionDisabled);
         const manuallyDisabled = currentDisabledForReset.filter(
-            (id) => !previousQuestionDisabled.includes(id),
+            (id) => !previousQuestionDisabledSet.has(id),
         );
         disabledStations.set(manuallyDisabled);
         const newlyDisabledStations: string[] = [];
+        const manuallyDisabledSet = new Set(manuallyDisabled);
 
         circles.forEach((circle) => {
             const diff = turf.difference(turf.featureCollection([circle, unionized]));
             if (!diff || turf.area(diff) < 1) {
                 const id = extractStationId(circle);
-                if (!manuallyDisabled.includes(id)) {
+                if (!manuallyDisabledSet.has(id)) {
                     newlyDisabledStations.push(id);
                 }
             }
@@ -164,11 +166,11 @@ export const initializeHidingZonesLogic = async () => {
                     });
                 }
 
-                const remainingIds = circles.map((c) => extractStationId(c));
+                const remainingIds = new Set(circles.map((c) => extractStationId(c)));
                 const newlyDisabled = originalIds.filter(
                     (id) =>
-                        !remainingIds.includes(id) &&
-                        !manuallyDisabled.includes(id),
+                        !remainingIds.has(id) &&
+                        !manuallyDisabledSet.has(id),
                 );
                 newlyDisabledStations.push(...newlyDisabled);
 
