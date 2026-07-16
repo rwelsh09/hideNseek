@@ -178,7 +178,15 @@ export const findPlacesInZone = async (
         const matches = [];
         let match;
         while ((match = regex.exec(queryStr)) !== null) {
-            matches.push({ key: match[1], op: match[2], val: match[3] });
+            let re;
+            if (match[2] === "~") {
+                try {
+                    re = new RegExp(match[3]);
+                } catch {
+                    // Ignore invalid regex, handled later by falling back to false if no re is present
+                }
+            }
+            matches.push({ key: match[1], op: match[2], val: match[3], re });
         }
         return matches;
     };
@@ -197,12 +205,10 @@ export const findPlacesInZone = async (
                 if (f.op === "=") {
                     return tagVal === f.val;
                 } else if (f.op === "~") {
-                    try {
-                        const re = new RegExp(f.val);
-                        return re.test(tagVal);
-                    } catch {
-                        return false;
+                    if (f.re) {
+                        return f.re.test(tagVal);
                     }
+                    return false;
                 }
                 return false;
             });
