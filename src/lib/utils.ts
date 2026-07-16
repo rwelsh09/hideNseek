@@ -16,6 +16,7 @@ export const STATION_IDS_INDEX = (calgaryRapidTransitData.features as any[])
     .sort();
 
 export function encodeDisabledStations(stations: string[]): string {
+    if (stations.length === 0) return "0";
     const numBytes = Math.ceil(STATION_IDS_INDEX.length / 8);
     const bytes = new Uint8Array(numBytes);
     for (const stationId of stations) {
@@ -34,6 +35,7 @@ export function encodeDisabledStations(stations: string[]): string {
 }
 
 export function decodeDisabledStations(encoded: string): string[] {
+    if (encoded === "0") return [];
     const regularBase64 = encoded.replace(/-/g, "+").replace(/_/g, "/");
     const paddedBase64 =
         regularBase64 + "=".repeat((4 - (regularBase64.length % 4)) % 4);
