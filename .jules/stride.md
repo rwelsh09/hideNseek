@@ -7,3 +7,8 @@
 
 **Learning:** Attempted to increase critical map controls and interactive overlay triggers to a minimum of 44x44px on mobile devices. This mobile UI change was rejected by the owner after review.
 **Action:** Do not blindly increase all map control/sidebar trigger tap targets to 44x44px without further context on the preferred design system or specific usability tests.
+
+## 2026-07-30 - [Mobile Tap Target Feedback]
+
+**Learning:** Hover states do not provide immediate tap feedback on mobile devices, leading to multiple frustrating taps on interactive elements.
+**Action:** Apply `active:scale-95 transition-all` classes (or `active:bg-...` if scaling is inappropriate) on critical buttons to provide immediate tactile visual feedback on touch devices, improving perceived responsiveness in a mobile context.
