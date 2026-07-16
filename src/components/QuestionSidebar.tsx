@@ -30,7 +30,6 @@ import {
     questions,
     triggerLocalRefresh,
 } from "@/lib/context";
-import { questionSchema } from "@/maps/schema";
 
 import { AddQuestionDialog } from "./AddQuestionDialog";
 import { PasteQuestionButton } from "./PasteQuestionButton";
