@@ -13,7 +13,7 @@ vi.mock('@turf/turf', () => ({
 vi.mock('@/maps/placesConfig', () => ({
     PLACES: [
         { id: 'park', label: 'Park', labelPlural: 'Parks' },
-        { id: 'school', label: 'School' }, // no plural
+        { id: 'hospital', label: 'Hospital' }, // missing plural for test case
     ]
 }));
 
@@ -149,8 +149,8 @@ describe('getQuestionShareText', () => {
 
         it('uses fallback text when distance calculation fails', async () => {
             vi.mocked(calculateMeasureDistance).mockRejectedValue(new Error('Failed'));
-            const result = await getQuestionShareText({ id: 'measure' }, { type: 'school' });
-            expect(result).toBe('We are [distance] from a School. Are you closer or further to your nearest School?');
+            const result = await getQuestionShareText({ id: 'measure' }, { type: 'hospital' });
+            expect(result).toBe('We are [distance] from a Hospital. Are you closer or further to your nearest Hospital?');
         });
     });
 
@@ -161,8 +161,8 @@ describe('getQuestionShareText', () => {
         });
 
         it('uses singular label if plural is missing', async () => {
-            const result = await getQuestionShareText({ id: 'closest' }, { locationType: 'school' });
-            expect(result).toBe('Which of these School is closest to you?');
+            const result = await getQuestionShareText({ id: 'closest' }, { locationType: 'hospital' });
+            expect(result).toBe('Which of these Hospital is closest to you?');
         });
     });
 

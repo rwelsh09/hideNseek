@@ -4,7 +4,6 @@ export const PLACES = [
     { id: "cinema", label: "Cinema", labelPlural: "Movie Theaters", icon: "Film", tag: "amenity", type: "generic" },
     { id: "library", label: "Library", labelPlural: "Libraries", icon: "Library", tag: "amenity", type: "generic" },
     { id: "fire_station", label: "Fire Station", labelPlural: "Fire Stations", icon: "Flame", tag: "amenity", type: "generic" },
-    { id: "school", label: "School", labelPlural: "Schools", icon: "School", tag: "amenity", type: "generic" },
     { id: "mcdonalds", label: "McDonald's", labelPlural: "McDonald's", icon: "Hamburger", tag: "amenity", type: "specific", specificLocation: '["brand:wikidata"="Q38076"]' },
     { id: "seven11", label: "7-Eleven", labelPlural: "7-Elevens", icon: "Store", tag: "amenity", type: "specific", specificLocation: '["brand:wikidata"="Q259340"]' },
     { id: "timhortons", label: "Tim Hortons", labelPlural: "Tim Hortons", icon: "Coffee", tag: "amenity", type: "specific", specificLocation: '["brand:wikidata"="Q175106"]' },
