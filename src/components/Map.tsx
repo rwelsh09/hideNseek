@@ -39,7 +39,7 @@ import { LeafletActionButtons } from "./LeafletActionButtons";
 import { OfflineTileLayer } from "./OfflineTileLayer";
 import { HIDING_ZONE_COMPRESSED_URL_PARAM } from "./OptionDrawers";
 import { PasteQuestionButton } from "./PasteQuestionButton";
-import { PlaytestPlaces } from "./PlaytestPlaces";
+import { VisualizedPlaces } from "./VisualizedPlaces";
 import { RecommendedStartMarker } from "./RecommendedStartMarker";
 import { TransitLinesOverlay } from "./TransitLinesOverlay";
 import { Button } from "./ui/button";
@@ -246,7 +246,7 @@ export const Map = ({ className }: { className?: string }) => {
                 <TransitLinesOverlay />
                 <DraggableMarkers />
                 <ClosestPlaces />
-                <PlaytestPlaces />
+                <VisualizedPlaces />
                 <RecommendedStartMarker />
                 <div className="leaflet-top leaflet-right">
                     <div
