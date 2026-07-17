@@ -72,14 +72,19 @@ export const RecommendedStartMarker: React.FC = () => {
         const centroid = turf.centroid(featureCollection);
 
         return centroid;
-    }, [$showRecommendedStart, $trainStations, $disabledStations, $lockedRecommendedStart]);
+    }, [
+        $showRecommendedStart,
+        $trainStations,
+        $disabledStations,
+        $lockedRecommendedStart,
+    ]);
 
     if (!centerPoint) return null;
 
     const [lng, lat] = centerPoint.geometry.coordinates;
 
     return (
-        <Marker position={[lat, lng]} icon={startIcon}>
+        <Marker position={[lat, lng]} icon={startIcon} zIndexOffset={-1000}>
             <Tooltip
                 direction="top"
                 offset={TOOLTIP_OFFSET}
