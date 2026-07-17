@@ -137,7 +137,7 @@ export const PlaytestPlaces = () => {
                             return e;
                         }),
                     };
-                    const features = osm2geojson(processedData);
+                    const features = osm2geojson(processedData, { completeFeature: true });
 
                     if (features && features.features) {
                         features.features.forEach((f: any) => {
@@ -184,7 +184,7 @@ export const PlaytestPlaces = () => {
                             return e;
                         }),
                     };
-                    const features = osm2geojson(processedData);
+                    const features = osm2geojson(processedData, { completeFeature: true });
 
                     if (features && features.features) {
                         features.features.forEach((f: any) => {
