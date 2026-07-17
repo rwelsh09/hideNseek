@@ -14,3 +14,8 @@
 ## 2024-05-27 - Unrelated Prettier formatting on pnpm lint
 **Learning:** Running `pnpm lint` in this project's configuration executes `eslint --fix src && prettier . --write`. This will automatically rewrite and stage unrelated files and lines of code across the whole repository, violating Pruner's strict deletion-only boundary.
 **Action:** When pruning, verify changes using `npx eslint <target-file>` instead of `pnpm lint`, or use `git restore --staged` on unrelated files and `git restore -p` to specifically unstaged unrelated formatting changes within the target file before creating a commit.
+
+## 2026-06-29 - [pwa.ts knip flag]
+
+**Learning:** `knip` will falsely flag `src/pwa.ts` as an unused file because it is explicitly included in `src/layouts/Layout.astro` via a `<script src="/src/pwa.ts"></script>` tag, which knip's static analysis misses.
+**Action:** Always verify if a script file reported as unused by knip is actually loaded in an Astro layout or HTML template before deleting it.
