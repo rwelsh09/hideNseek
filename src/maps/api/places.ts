@@ -2,27 +2,21 @@ import * as turf from "@turf/turf";
 import type { Feature, FeatureCollection, MultiPolygon } from "geojson";
 
 import calgaryBoundaryData from "@/data/calgary_boundary.json";
-import {
-    mapGeoJSON,
-        polyGeoJSON,
-} from "@/lib/context";
+import { mapGeoJSON, polyGeoJSON } from "@/lib/context";
 import { PLACES } from "@/maps/placesConfig";
 
 import { LOCATION_FIRST_TAG } from "./constants";
 
 const getLocationTypeName = (location: string) => {
-    const place = PLACES.find(p => p.id === location);
+    const place = PLACES.find((p) => p.id === location);
     return place ? place.labelPlural : "Locations";
 };
 
-export const findClosestLocations = async (
-    question: any,
-    text?: string,
-) => {
+export const findClosestLocations = async (question: any, text?: string) => {
     const loadingText =
         text ?? `Finding all ${getLocationTypeName(question.locationType)}...`;
 
-    const place = PLACES.find(p => p.id === question.locationType);
+    const place = PLACES.find((p) => p.id === question.locationType);
     let data;
     if (place && place.type === "specific" && place.specificLocation) {
         data = await findPlacesInZone(place.specificLocation, loadingText);
@@ -43,8 +37,9 @@ export const findClosestLocations = async (
 
     elements.forEach((element: any) => {
         if (!element.tags) return;
-        const place = PLACES.find(p => p.id === question.locationType);
-        const fallbackName = place && place.type === "specific" ? place.label : null;
+        const place = PLACES.find((p) => p.id === question.locationType);
+        const fallbackName =
+            place && place.type === "specific" ? place.label : null;
 
         if (
             !element.tags["name"] &&
@@ -103,6 +98,8 @@ export const findClosestLocations = async (
 
 let boundaryPromise: Promise<FeatureCollection<MultiPolygon>> | null = null;
 let cachedOfflineData: any[] | null = null;
+let offlineDataPromise: Promise<any[]> | null = null;
+const queryCache = new Map<string, Promise<any>>();
 
 const ensureElementCenter = (el: any) => {
     let lon = el.center ? el.center.lon : el.lon;
@@ -126,7 +123,7 @@ const ensureElementCenter = (el: any) => {
             lat = el.bounds.minlat;
         } else if (el.members && el.members.length > 0) {
             const memberWithGeom = el.members.find(
-                (m: any) => m.geometry && m.geometry.length > 0
+                (m: any) => m.geometry && m.geometry.length > 0,
             );
             if (memberWithGeom) {
                 lon = memberWithGeom.geometry[0].lon;
@@ -141,14 +138,20 @@ const ensureElementCenter = (el: any) => {
         }
     } else {
         if (el.center) {
-            if (typeof el.center.lon !== "number" || typeof el.center.lat !== "number") {
+            if (
+                typeof el.center.lon !== "number" ||
+                typeof el.center.lat !== "number"
+            ) {
                 delete el.center;
             }
         }
     }
 };
 
-export const checkFilters = (filtersToMatch: any[], tags: Record<string, string>) => {
+export const checkFilters = (
+    filtersToMatch: any[],
+    tags: Record<string, string>,
+) => {
     if (filtersToMatch.length === 0) return true;
     return filtersToMatch.every((f) => {
         const tagVal = tags[f.key];
@@ -172,69 +175,93 @@ export const findPlacesInZone = async (
     loadingText?: string,
     alternatives: string[] = [],
 ) => {
-    let $polyGeoJSON = polyGeoJSON.get();
+    const cacheKey = JSON.stringify({ filter, alternatives });
+    if (queryCache.has(cacheKey)) {
+        return queryCache.get(cacheKey);
+    }
 
-    if (!$polyGeoJSON) {
-        if (!boundaryPromise) {
-            boundaryPromise = determineMapBoundaries();
+    const fetchPromise = (async () => {
+        let $polyGeoJSON = polyGeoJSON.get();
+
+        if (!$polyGeoJSON) {
+            if (!boundaryPromise) {
+                boundaryPromise = determineMapBoundaries();
+            }
+            $polyGeoJSON = await boundaryPromise;
+            polyGeoJSON.set($polyGeoJSON);
+            mapGeoJSON.set($polyGeoJSON);
+            boundaryPromise = null;
         }
-        $polyGeoJSON = await boundaryPromise;
-        polyGeoJSON.set($polyGeoJSON);
-        mapGeoJSON.set($polyGeoJSON);
-        boundaryPromise = null;
-    }
 
-
-    if (!cachedOfflineData) {
-        const dataModule = await import('@/data/offline_places.json');
-        cachedOfflineData = dataModule.default?.elements || dataModule.elements || [];
-    }
-    const offlineData = cachedOfflineData;
-
-    // Parse filter using regex `/\["?([^"\]=~]+)"?(=|~)"?([^"\]]+)"?\]/g`
-    const extractFilters = (queryStr: string) => {
-        const regex = /\["?([^"\]=~]+)"?(=|~)"?([^"\]]+)"?\]/g;
-        const matches = [];
-        let match;
-        while ((match = regex.exec(queryStr)) !== null) {
-            matches.push({ key: match[1], op: match[2], val: match[3] });
+        if (!cachedOfflineData) {
+            if (!offlineDataPromise) {
+                offlineDataPromise = import("@/data/offline_places.json").then(
+                    (dataModule) => {
+                        cachedOfflineData =
+                            dataModule.default?.elements ||
+                            dataModule.elements ||
+                            [];
+                        return cachedOfflineData;
+                    },
+                );
+            }
+            await offlineDataPromise;
         }
-        return matches;
-    };
+        const offlineData = cachedOfflineData;
 
-    const primaryFilters = extractFilters(filter);
-    const altFilters = alternatives.map(extractFilters);
+        // Parse filter using regex `/\["?([^"\]=~]+)"?(=|~)"?([^"\]]+)"?\]/g`
+        const extractFilters = (queryStr: string) => {
+            const regex = /\["?([^"\]=~]+)"?(=|~)"?([^"\]]+)"?\]/g;
+            const matches = [];
+            let match;
+            while ((match = regex.exec(queryStr)) !== null) {
+                matches.push({ key: match[1], op: match[2], val: match[3] });
+            }
+            return matches;
+        };
 
-    const matchedElements = offlineData.filter((el: any) => {
-        if (!el.tags) return false;
+        const primaryFilters = extractFilters(filter);
+        const altFilters = alternatives.map(extractFilters);
 
-        const matchesPrimary = checkFilters(primaryFilters, el.tags);
-        const matchesAnyAlt = altFilters.length > 0 ? altFilters.some(f => checkFilters(f, el.tags)) : false;
+        const matchedElements = offlineData!.filter((el: any) => {
+            if (!el.tags) return false;
 
-        return matchesPrimary || matchesAnyAlt;
-    });
+            const matchesPrimary = checkFilters(primaryFilters, el.tags);
+            const matchesAnyAlt =
+                altFilters.length > 0
+                    ? altFilters.some((f) => checkFilters(f, el.tags))
+                    : false;
 
-    const data = { elements: matchedElements.map((el: any) => ({ ...el })) };
-
-    if (data && data.elements) {
-        data.elements.forEach(ensureElementCenter);
-    }
-
-    if ($polyGeoJSON && data && data.elements) {
-        data.elements = data.elements.filter((el: any) => {
-            const lon = el.center ? el.center.lon : el.lon;
-            const lat = el.center ? el.center.lat : el.lat;
-
-            if (typeof lon !== "number" || typeof lat !== "number")
-                return false;
-            const pt = turf.point([lon, lat]);
-            return $polyGeoJSON.features.some((poly) =>
-                turf.booleanPointInPolygon(pt, poly as any),
-            );
+            return matchesPrimary || matchesAnyAlt;
         });
-    }
 
-    return data;
+        const data = {
+            elements: matchedElements.map((el: any) => ({ ...el })),
+        };
+
+        if (data && data.elements) {
+            data.elements.forEach(ensureElementCenter);
+        }
+
+        if ($polyGeoJSON && data && data.elements) {
+            data.elements = data.elements.filter((el: any) => {
+                const lon = el.center ? el.center.lon : el.lon;
+                const lat = el.center ? el.center.lat : el.lat;
+
+                if (typeof lon !== "number" || typeof lat !== "number")
+                    return false;
+                const pt = turf.point([lon, lat]);
+                return $polyGeoJSON.features.some((poly) =>
+                    turf.booleanPointInPolygon(pt, poly as any),
+                );
+            });
+        }
+
+        return data;
+    })();
+
+    queryCache.set(cacheKey, fetchPromise);
+    return fetchPromise;
 };
 
 export const determineMapBoundaries = async () => {
