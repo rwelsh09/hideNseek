@@ -83,7 +83,7 @@ export const StartScreen = () => {
                     <AlertDialogHeader>
                     <AlertDialogTitle className="text-3xl font-bold mb-2">Welcome to Hide & Seek</AlertDialogTitle>
                     <AlertDialogDescription className="text-base leading-relaxed">
-                        One player takes the transit network to hide anywhere in Calgary. The other players work together to narrow down the Hider's location by asking map-based questions until they can pinpoint exactly where they are hiding!
+                        One player (Hider) uses CTrain and MAX buses to hide. The other players (Seekers) work together to find the Hider by taking transit and asking questions!
                     </AlertDialogDescription>
                 </AlertDialogHeader>
                 <div className="flex flex-col gap-4 sm:gap-6 py-4 mt-4 sm:mt-8">
