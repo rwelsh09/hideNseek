@@ -43,7 +43,7 @@ export function MatchSection({
                                 onClick={() =>
                                     handleQuestionSelect("match", place.id)
                                 }
-                                className={`bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("match", place.id) ? "opacity-50 grayscale" : ""}`}
+                                className={`bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-all active:scale-95 rounded-sm sm:rounded-none ${isQuestionLocked("match", place.id) ? "opacity-50 grayscale" : ""}`}
                             >
                                 <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                                 <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
@@ -85,7 +85,7 @@ export function MatchSection({
                             onClick={() =>
                                 handleQuestionSelect("match", place.id)
                             }
-                            className={`bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("match", place.id) ? "opacity-50 grayscale" : ""}`}
+                            className={`bg-red-500 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-red-600 overflow-hidden aspect-square transition-all active:scale-95 rounded-sm sm:rounded-none ${isQuestionLocked("match", place.id) ? "opacity-50 grayscale" : ""}`}
                         >
                             <Icon className="w-5 h-5 sm:w-5 sm:h-5 shrink-0" />
                             <span className="text-[9px] sm:text-[10px] leading-tight text-center w-full px-0.5 line-clamp-2">
