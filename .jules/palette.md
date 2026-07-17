@@ -15,3 +15,8 @@
 
 **Learning:** When using dynamic map iteration to generate complex interactive elements (like the grid of location selection buttons in `MatchSection` and `MeasureSection`), standard `aria-label`s and `title`s are often overlooked in favor of purely visual rendering. This creates identical, unlabelled interaction targets for screen readers, masking the unique action each button performs.
 **Action:** When rendering arrays of interactive components based on configuration data (such as `PLACES`), always inject the dynamically generated semantic descriptor (e.g., `place.label` or hardcoded label context) directly into `aria-label` and `title` attributes on every clickable item to provide clear, accessible, and distinct interactions for all users.
+
+## 2026-08-11 - [Focus States on Icon Buttons]
+
+**Learning:** When using Radix UI components (like `PopoverTrigger` or `AlertDialogTrigger`) or standard generic `<button>` elements for icon-only actions (like in question cards or help dialogs), they often lack explicit focus indicators in this project's default Tailwind setup. This makes keyboard navigation (tabbing) extremely difficult as users cannot see which interactive element currently has focus. Additionally, these triggers sometimes omit the explicit `type="button"` attribute, which can lead to unintended form submissions if they are later wrapped in a `<form>`.
+**Action:** Consistently apply `focus-visible` utility classes (e.g., `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2`) to all interactive buttons, especially those containing only SVG icons. Always explicitly set `type="button"` on non-submit buttons to ensure robust accessibility and behavior predictability.
