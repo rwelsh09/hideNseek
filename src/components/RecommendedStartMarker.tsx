@@ -82,7 +82,7 @@ export const RecommendedStartMarker: React.FC = () => {
     const positionArray = useMemo(() => [lat, lng] as [number, number], [lat, lng]);
 
     return (
-        <Marker position={positionArray} icon={startIcon}>
+        <Marker position={positionArray} icon={startIcon} zIndexOffset={-1000}>
             <Tooltip
                 direction="top"
                 offset={TOOLTIP_OFFSET}
