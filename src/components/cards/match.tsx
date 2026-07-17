@@ -98,7 +98,7 @@ export const MatchQuestionComponent = ({
                             "text-center",
                     )}
                 >
-                    Result
+                    Answer
                 </Label>
                 {data.type === "same-length-station" ? (
                     <ToggleGroup
