@@ -135,6 +135,9 @@ export const Map = ({ className }: { className?: string }) => {
         isRefreshingRef.current = true;
         isLoading.set(true);
 
+        // Yield to the browser to render the loading state
+        await new Promise((resolve) => setTimeout(resolve, 10));
+
         try {
 
             let mapGeoData = mapGeoJSON.get();

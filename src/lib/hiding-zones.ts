@@ -33,6 +33,9 @@ export const initializeHidingZonesLogic = async () => {
 
     isLoading.set(true);
 
+    // Yield to the browser to render the loading state
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
     try {
         const places: StationPlace[] = [];
 
