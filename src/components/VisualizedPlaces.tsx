@@ -27,7 +27,7 @@ const getPathOptions = (colour: string) => {
 
 const TOOLTIP_OFFSET: [number, number] = [0, -10];
 
-const PlaytestPlaceMarker = ({
+const VisualizedPlaceMarker = ({
     coords,
     colour,
     name,
@@ -54,7 +54,7 @@ const PlaytestPlaceMarker = ({
     );
 };
 
-export const PlaytestPlaces = () => {
+export const VisualizedPlaces = () => {
     const $questions = useStore(questions);
 
     const [places, setPlaces] = useState<any[]>([]);
@@ -146,12 +146,12 @@ export const PlaytestPlaces = () => {
                             features.features.forEach((f: any) => {
                                 allPlaces.push({
                                     ...f,
-                                    customColour: "purple", // distinct colour for playtest
+                                    customColour: "purple", // distinct colour for visualized
                                 });
                             });
                         }
                     } catch (e) {
-                        console.error("Failed to load playtest places", e);
+                        console.error("Failed to load visualized places", e);
                     }
                 })());
             }
@@ -200,7 +200,7 @@ export const PlaytestPlaces = () => {
                             });
                         }
                     } catch (e) {
-                        console.error("Failed to load specific playtest places", e);
+                        console.error("Failed to load specific visualized places", e);
                     }
                 })());
             }
@@ -233,7 +233,7 @@ export const PlaytestPlaces = () => {
                 const colour = place?.customColour ?? "orange";
 
                 return (
-                    <PlaytestPlaceMarker
+                    <VisualizedPlaceMarker
                         key={i}
                         coords={coords}
                         colour={colour}
