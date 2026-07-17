@@ -73,10 +73,6 @@ export const MatchQuestionComponent = ({
                 latitude={data.lat}
                 longitude={data.lng}
                 colourName={data.colour}
-                onChangeColour={(colour: any) => {
-                    data.colour = colour;
-                    questionModified();
-                }}
                 onChange={(lat, lng) => {
                     if (lat !== null) {
                         data.lat = lat;

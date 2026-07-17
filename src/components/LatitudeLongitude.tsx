@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { LocateIcon, PaletteIcon } from "lucide-react";
+import { LocateIcon } from "lucide-react";
 import { toast } from "react-toastify";
 
 import { geolocationPermission, isLoading } from "@/lib/context";
@@ -7,15 +7,6 @@ import { cn } from "@/lib/utils";
 import { ICON_COLOURS } from "@/maps/api";
 
 import { Button } from "./ui/button";
-import {
-    Dialog,
-    DialogClose,
-    DialogContent,
-    DialogFooter,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "./ui/dialog";
 
 export const LatitudeLongitude = ({
     latitude,
@@ -23,7 +14,6 @@ export const LatitudeLongitude = ({
     onChange,
     label = "Location",
     colourName,
-    onChangeColour,
     className,
     disabled,
 }: {
@@ -32,7 +22,6 @@ export const LatitudeLongitude = ({
     onChange: (lat: number | null, lng: number | null) => void;
     label?: React.ReactNode;
     colourName?: keyof typeof ICON_COLOURS;
-    onChangeColour?: (colour: keyof typeof ICON_COLOURS) => void;
     className?: string;
     disabled?: boolean;
 }) => {
@@ -147,66 +136,6 @@ export const LatitudeLongitude = ({
                         </div>
                     </div>
                 </div>
-
-                {onChangeColour && (
-                    <div className="flex gap-1 justify-end">
-                        <Dialog>
-                            <DialogTrigger asChild>
-                                <Button
-                                    disabled={disabled}
-                                    variant="outline"
-                                    size="sm"
-                                    title="Change marker colour"
-                                    aria-label="Change marker colour"
-                                    className="w-full flex gap-2"
-                                >
-                                    <PaletteIcon className="w-4 h-4"/>
-                                    Change Colour
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="z-[1060]" overlayClassName="z-[1060]">
-                                <DialogHeader>
-                                    <DialogTitle className="text-2xl">
-                                        Change Colour
-                                    </DialogTitle>
-                                </DialogHeader>
-                                <div className="grid grid-cols-4 gap-4 py-4">
-                                    {(
-                                        Object.entries(ICON_COLOURS) as [
-                                            keyof typeof ICON_COLOURS,
-                                            string,
-                                        ][]
-                                    ).map(([colourKey, hexCode]) => (
-                                        <Button
-                                            key={colourKey}
-                                            variant="outline"
-                                            size="icon"
-                                            className={cn(
-                                                "h-16 w-full rounded-md border-2",
-                                                colourName === colourKey
-                                                    ? "border-primary"
-                                                    : "border-transparent",
-                                            )}
-                                            style={{ backgroundColor: hexCode }}
-                                            onClick={() =>
-                                                onChangeColour(
-                                                    colourKey as keyof typeof ICON_COLOURS,
-                                                )
-                                            }
-                                            title={`Set colour to ${colourKey}`}
-                                            aria-label={`Set colour to ${colourKey}`}
-                                        />
-                                    ))}
-                                </div>
-                                <DialogFooter>
-                                    <DialogClose asChild>
-                                        <Button>Done</Button>
-                                    </DialogClose>
-                                </DialogFooter>
-                            </DialogContent>
-                        </Dialog>
-                    </div>
-                )}
             </div>
         </>
     );
