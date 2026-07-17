@@ -71,9 +71,38 @@ jobs:
 
                   BRANCH="${{ steps.extract_branch.outputs.branch }}"
 
+                  # Get active branches before modifying directories
+                  git ls-remote --heads origin | awk -F'refs/heads/' '{print $2}' > active_branches.txt
+                  # Clean carriage returns just in case
+                  sed -i 's/\r$//' active_branches.txt
+
                   # 2. Copy the built site to the target directory
                   if [ "$BRANCH" == "master" ]; then
-                      # Ensure we don't accidentally remove branch subdirectories
+                      # Clean up obsolete files and deleted branches in gh-pages root
+                      # We preserve active branches and the .git directory
+
+                      cd gh-pages-dir
+                      for item in * .[!.]* ..?*; do
+                          # Skip special directories
+                          if [ "$item" = "." ] || [ "$item" = ".." ] || [ "$item" = ".git" ]; then
+                              continue
+                          fi
+
+                          # If it's a directory, check if it's an active branch
+                          if [ -d "$item" ]; then
+                              if ! grep -q "^${item}$" ../active_branches.txt; then
+                                  echo "Removing obsolete branch directory: $item"
+                                  rm -rf "$item"
+                              fi
+                          else
+                              # It's a file, remove it so fresh master build replaces it
+                              echo "Removing obsolete file: $item"
+                              rm -f "$item"
+                          fi
+                      done
+                      cd ..
+
+                      # Copy the new master build
                       cp -R ./dist/* gh-pages-dir/
                   else
                       mkdir -p "gh-pages-dir/$BRANCH"
@@ -88,12 +117,6 @@ jobs:
                   echo "<!DOCTYPE html><html><head><title>Deployed Branches</title><style>body{font-family:sans-serif;margin:2rem;background:#1F2F3F;color:#fff;}a{color:#4da6ff;text-decoration:none;}a:hover{text-decoration:underline;}ul{list-style-type:none;padding:0;}li{margin:0.5rem 0;padding:1rem;background:#2a3f54;border-radius:8px;}</style></head><body>" > ./gh-pages-dir/branches.html
                   echo "<h1>Hide and Seek - Deployed Branches</h1><ul>" >> ./gh-pages-dir/branches.html
                   echo "<li><a href='./'>master (Root)</a></li>" >> ./gh-pages-dir/branches.html
-
-                  git ls-remote --heads origin | awk -F'refs/heads/' '{print $2}' > active_branches.txt
-
-                  # Clean carriage returns just in case
-                  sed -i 's/\r$//' active_branches.txt
-
                   if [ -d "gh-pages-dir" ]; then
                       while IFS= read -r branch; do
                           # Ignore master and gh-pages
