@@ -108,7 +108,7 @@ export const MeasureQuestionComponent = ({
                         $isLoading && "text-muted-foreground",
                     )}
                 >
-                    Result
+                    Answer
                 </Label>
                 <ToggleGroup
                     className="grow"

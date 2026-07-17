@@ -2,6 +2,7 @@ import { useStore } from "@nanostores/react";
 import { useEffect, useState } from "react";
 
 import { LatitudeLongitude } from "@/components/LatitudeLongitude";
+import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import {
     MENU_ITEM_CLASSNAME,
@@ -13,7 +14,7 @@ import {
     questionModified,
     triggerLocalRefresh,
 } from "@/lib/context";
-import { mapToObj } from "@/lib/utils";
+import { cn, mapToObj } from "@/lib/utils";
 import { fetchClosestLocationsWithGrowth, filterPointsWithinRadius } from "@/maps/questions/closest";
 import {
     type ClosestQuestion,
@@ -74,12 +75,22 @@ export const ClosestQuestionComponent = ({
                 }}
                 disabled={data.locked || $isLoading}
             />
-            <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
-                <ClosestLocationSelector
-                    data={data}
-                    disabled={data.locked || $isLoading}
-                />
-            </SidebarMenuItem>
+            <div className="flex gap-2 items-center p-2 flex-wrap">
+                <Label
+                    className={cn(
+                        "font-semibold text-lg",
+                        $isLoading && "text-muted-foreground",
+                    )}
+                >
+                    Answer
+                </Label>
+                <div className="grow">
+                    <ClosestLocationSelector
+                        data={data}
+                        disabled={data.locked || $isLoading}
+                    />
+                </div>
+            </div>
         </QuestionCard>
     );
 };

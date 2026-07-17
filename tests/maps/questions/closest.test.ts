@@ -91,7 +91,6 @@ describe('closest question logic', () => {
         });
 
         it('sorts points by distance and filters out beyond top 5 max distance (or target radius)', () => {
-            const center = turf.point([-114.0, 51.0]);
             // Create points at various distances
             // Roughly 1 deg lat is ~111km, so 0.01 deg is ~1.1km
             const points = turf.featureCollection([
