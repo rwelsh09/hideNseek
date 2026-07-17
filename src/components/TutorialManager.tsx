@@ -44,6 +44,7 @@ export const TutorialManager = () => {
         if (isHiderMode && $showHiderTutorial && !$showTutorial) {
             const hiderDriverObj = driver({
                 showProgress: true,
+                showButtons: ["next", "close"],
                 overlayClickBehavior: () => {},
                 onDestroyStarted: () => {
                     hiderDriverObj.destroy();
@@ -71,6 +72,7 @@ export const TutorialManager = () => {
         if ($showTutorial && $hasSeenWelcome) {
             const driverObj = driver({
                 showProgress: true,
+                showButtons: ["next", "close"],
                 overlayClickBehavior: () => {},
                 onDestroyStarted: () => {
                     const isRulesPhase =

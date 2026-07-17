@@ -49,7 +49,7 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
             description: "Add a question by clicking here.",
             side: "right",
             align: "start",
-            showButtons: ["previous"],
+            showButtons: [],
             onPopoverRender: () => {
                 const btn = document.querySelector(
                     '[data-tutorial-id="add-question-btn"]',
@@ -82,7 +82,7 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
                 "Let's ask a 5 km Radar question. Click here to add it to the map.",
             side: "right",
             align: "start",
-            showButtons: ["previous"],
+            showButtons: [],
             onPopoverRender: () => {
                 const btn = document.querySelector(
                     '[data-tutorial-id="tutorial-add-radar-5"]',
@@ -161,7 +161,7 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
                 "Once you receive your answer from the Hider, lock the question using this button. (Try it now!)",
             side: "bottom",
             align: "end",
-            showButtons: ["previous"],
+            showButtons: [],
             onPopoverRender: () => {
                 driverObj.setConfig({
                     ...driverObj.getConfig(),
@@ -190,7 +190,7 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
             description: "Click here to close the question panel.",
             side: "bottom",
             align: "end",
-            showButtons: ["previous"],
+            showButtons: [],
             onPopoverRender: () => {
                 driverObj.setConfig({
                     ...driverObj.getConfig(),
@@ -246,7 +246,7 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
             description: "Click here to manage your questions.",
             side: "right",
             align: "start",
-            showButtons: ["previous"],
+            showButtons: [],
             onPopoverRender: () => {
                 driverObj.setConfig({
                     ...driverObj.getConfig(),
@@ -317,7 +317,7 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
             description: "Made a mistake? Click the lock to unlock it.",
             side: "bottom",
             align: "end",
-            showButtons: ["previous"],
+            showButtons: [],
             onPopoverRender: () => {
                 driverObj.setConfig({
                     ...driverObj.getConfig(),
@@ -349,7 +349,7 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
                 "Click the delete button to remove this test question and finish the tutorial.",
             side: "bottom",
             align: "end",
-            showButtons: ["previous"],
+            showButtons: [],
             onPopoverRender: () => {
                 driverObj.setConfig({
                     ...driverObj.getConfig(),
