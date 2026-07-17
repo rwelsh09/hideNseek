@@ -88,7 +88,7 @@ export const RadarQuestionComponent = ({
                         $isLoading && "text-muted-foreground",
                     )}
                 >
-                    Result
+                    Answer
                 </Label>
                 <ToggleGroup
                     className="grow"
