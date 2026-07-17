@@ -72,14 +72,22 @@ export const RecommendedStartMarker: React.FC = () => {
         const centroid = turf.centroid(featureCollection);
 
         return centroid;
-    }, [$showRecommendedStart, $trainStations, $disabledStations, $lockedRecommendedStart]);
+    }, [
+        $showRecommendedStart,
+        $trainStations,
+        $disabledStations,
+        $lockedRecommendedStart,
+    ]);
 
     if (!centerPoint) return null;
 
     const [lng, lat] = centerPoint.geometry.coordinates;
 
     // Memoize the position array to prevent React-Leaflet from unnecessary re-renders
-    const positionArray = useMemo(() => [lat, lng] as [number, number], [lat, lng]);
+    const positionArray = useMemo(
+        () => [lat, lng] as [number, number],
+        [lat, lng],
+    );
 
     return (
         <Marker position={positionArray} icon={startIcon} zIndexOffset={-1000}>
