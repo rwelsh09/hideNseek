@@ -1,5 +1,5 @@
-import { Network } from "lucide-react";
 import * as icons from "lucide-react";
+import { Network } from "lucide-react";
 
 import { TIME_PENALTIES } from "@/lib/context";
 import { PLACES } from "@/maps/placesConfig";

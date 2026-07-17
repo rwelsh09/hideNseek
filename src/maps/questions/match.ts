@@ -1,7 +1,7 @@
 import * as turf from "@turf/turf";
 import type { FeatureCollection, MultiPolygon, Point, Polygon } from "geojson";
 import _ from "lodash";
-import osmtogeojson from "osmtogeojson";
+import osm2geojson from "osm2geojson-lite";
 import { toast } from "react-toastify";
 
 import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
@@ -11,10 +11,7 @@ import {
     mapGeoLocation,
     polyGeoJSON,
 } from "@/lib/context";
-import {
-    findPlacesInZone,
-    LOCATION_FIRST_TAG,
-} from "@/maps/api";
+import { findPlacesInZone, LOCATION_FIRST_TAG } from "@/maps/api";
 import {
     extractStationLines,
     extractStationName,
@@ -26,12 +23,15 @@ import { PLACES } from "@/maps/placesConfig";
 import type { MatchQuestion } from "@/maps/schema";
 
 export const findMatchPlaces = async (question: MatchQuestion) => {
-    const place = PLACES.find(p => p.id === question.type);
+    const place = PLACES.find((p) => p.id === question.type);
     if (place) {
         const location = place.id;
         let data;
         if (place.type === "specific" && place.specificLocation) {
-            data = await findPlacesInZone(place.specificLocation, `Finding ${place.labelPlural.toLowerCase()}...`);
+            data = await findPlacesInZone(
+                place.specificLocation,
+                `Finding ${place.labelPlural.toLowerCase()}...`,
+            );
         } else {
             data = await findPlacesInZone(
                 `[${LOCATION_FIRST_TAG[location]}=${location}]`,
@@ -47,12 +47,18 @@ export const findMatchPlaces = async (question: MatchQuestion) => {
         }
 
         return turf.featureCollection(
-            data.elements.filter((x: any) => typeof (x.center?.lon ?? x.lon) === 'number' && typeof (x.center?.lat ?? x.lat) === 'number').map((x: any) =>
-                turf.point([
-                    x.center ? x.center.lon : x.lon,
-                    x.center ? x.center.lat : x.lat,
-                ]),
-            )
+            data.elements
+                .filter(
+                    (x: any) =>
+                        typeof (x.center?.lon ?? x.lon) === "number" &&
+                        typeof (x.center?.lat ?? x.lat) === "number",
+                )
+                .map((x: any) =>
+                    turf.point([
+                        x.center ? x.center.lon : x.lon,
+                        x.center ? x.center.lat : x.lat,
+                    ]),
+                ),
         );
     }
 };
@@ -64,12 +70,12 @@ export const determineMatchBoundary = _.memoize(
         switch (question.type) {
             case "same-neighbourhood":
             case "same-first-letter-neighbourhood": {
-                const data = osmtogeojson(
-                    await findPlacesInZone(
-                        '["admin_level"="10"]',
-                        "Finding neighbourhoods...",
-                    ),
-                ) as FeatureCollection<Polygon | MultiPolygon>;
+                const rawData = await findPlacesInZone(
+                    '["admin_level"="10"]',
+                    "Finding neighbourhoods...",
+                );
+
+                const data = osm2geojson(rawData, { completeFeature: true }) as FeatureCollection<Polygon | MultiPolygon>;
 
                 if (!data.features || data.features.length === 0) {
                     toast.error("No neighbourhood polygons found in this map");
@@ -159,7 +165,7 @@ export const determineMatchBoundary = _.memoize(
                 return false;
             }
             default: {
-                const place = PLACES.find(p => p.id === question.type);
+                const place = PLACES.find((p) => p.id === question.type);
                 if (place) {
                     const data = await findMatchPlaces(question);
                     if (!data) break;

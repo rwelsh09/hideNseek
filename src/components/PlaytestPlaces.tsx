@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import osmtogeojson from "osmtogeojson";
+import osm2geojson from "osm2geojson-lite";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 
@@ -80,9 +80,15 @@ export const PlaytestPlaces = () => {
 
                 if (data.type) {
                     const type = data.type;
-                    const place = PLACES.find(p => p.id === type || p.id === type.replace("-full", ""));
+                    const place = PLACES.find(
+                        (p) =>
+                            p.id === type || p.id === type.replace("-full", ""),
+                    );
                     if (place) {
-                        if (place.type === "specific" && place.specificLocation) {
+                        if (
+                            place.type === "specific" &&
+                            place.specificLocation
+                        ) {
                             specificTypesSet.add(place.specificLocation);
                         } else {
                             typesSet.add(place.id);
@@ -112,7 +118,26 @@ export const PlaytestPlaces = () => {
                         alternatives,
                     );
 
-                    const features = osmtogeojson(rawData);
+                    const processedData = {
+                        ...rawData,
+                        elements: rawData.elements.map((e: any) => {
+                            if (
+                                (e.type === "way" || e.type === "relation") &&
+                                e.center
+                            ) {
+                                return {
+                                    ...e,
+                                    type: "node",
+                                    lat: e.center.lat,
+                                    lon: e.center.lon,
+                                    id: e.id,
+                                    tags: e.tags,
+                                };
+                            }
+                            return e;
+                        }),
+                    };
+                    const features = osm2geojson(processedData, { completeFeature: true });
 
                     if (features && features.features) {
                         features.features.forEach((f: any) => {
@@ -140,7 +165,26 @@ export const PlaytestPlaces = () => {
                         specificAlternatives,
                     );
 
-                    const features = osmtogeojson(rawData);
+                    const processedData = {
+                        ...rawData,
+                        elements: rawData.elements.map((e: any) => {
+                            if (
+                                (e.type === "way" || e.type === "relation") &&
+                                e.center
+                            ) {
+                                return {
+                                    ...e,
+                                    type: "node",
+                                    lat: e.center.lat,
+                                    lon: e.center.lon,
+                                    id: e.id,
+                                    tags: e.tags,
+                                };
+                            }
+                            return e;
+                        }),
+                    };
+                    const features = osm2geojson(processedData, { completeFeature: true });
 
                     if (features && features.features) {
                         features.features.forEach((f: any) => {
