@@ -84,7 +84,7 @@ export const RecommendedStartMarker: React.FC = () => {
     const [lng, lat] = centerPoint.geometry.coordinates;
 
     return (
-        <Marker position={[lat, lng]} icon={startIcon}>
+        <Marker position={[lat, lng]} icon={startIcon} zIndexOffset={-1000}>
             <Tooltip
                 direction="top"
                 offset={TOOLTIP_OFFSET}
