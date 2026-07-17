@@ -12,6 +12,8 @@ import {
 } from "@/lib/context";
 import { extractStationId } from "@/maps/geo-utils";
 
+const TOOLTIP_OFFSET: [number, number] = [0, -10];
+
 // Create a custom icon for the recommended start point
 const startIcon = L.icon({
     iconUrl:
@@ -76,11 +78,14 @@ export const RecommendedStartMarker: React.FC = () => {
 
     const [lng, lat] = centerPoint.geometry.coordinates;
 
+    // Memoize the position array to prevent React-Leaflet from unnecessary re-renders
+    const positionArray = useMemo(() => [lat, lng] as [number, number], [lat, lng]);
+
     return (
-        <Marker position={[lat, lng]} icon={startIcon}>
+        <Marker position={positionArray} icon={startIcon}>
             <Tooltip
                 direction="top"
-                offset={[0, -10]}
+                offset={TOOLTIP_OFFSET}
                 opacity={0.9}
                 permanent
                 className="font-bold shadow-md bg-primary text-primary-foreground border-none px-3 py-1.5"
