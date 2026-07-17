@@ -78,11 +78,8 @@ export const RecommendedStartMarker: React.FC = () => {
 
     const [lng, lat] = centerPoint.geometry.coordinates;
 
-    // Memoize the position array to prevent React-Leaflet from unnecessary re-renders
-    const positionArray = useMemo(() => [lat, lng] as [number, number], [lat, lng]);
-
     return (
-        <Marker position={positionArray} icon={startIcon}>
+        <Marker position={[lat, lng]} icon={startIcon}>
             <Tooltip
                 direction="top"
                 offset={TOOLTIP_OFFSET}
