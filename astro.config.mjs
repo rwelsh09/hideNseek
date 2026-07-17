@@ -76,4 +76,9 @@ export default defineConfig({
     build: {
         format: "directory",
     },
+    vite: {
+        build: {
+            chunkSizeWarningLimit: 3000,
+        },
+    },
 });
