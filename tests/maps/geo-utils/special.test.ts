@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
     extractStationLabel,
     extractStationLines,
+    extractStationId,
     extractStationName,
     getFeatureProperties,
     lngLatToText,
@@ -169,5 +170,31 @@ describe("extractStationLines", () => {
             }
         };
         expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
+    });
+});
+
+describe("extractStationId", () => {
+    it("should return the id from top-level properties", () => {
+        const place = { properties: { id: "station-123" } };
+        expect(extractStationId(place)).toBe("station-123");
+    });
+
+    it("should return the id from nested tags if present", () => {
+        const place = {
+            properties: {
+                tags: { id: "nested-station-123" }
+            }
+        };
+        expect(extractStationId(place)).toBe("nested-station-123");
+    });
+
+    it("should return the id from the base feature if properties is absent", () => {
+        const place = { id: "base-station-123", type: "Feature" };
+        expect(extractStationId(place)).toBe("base-station-123");
+    });
+
+    it("should return undefined if id is missing", () => {
+        const place = { properties: { name: "Station Alpha" } };
+        expect(extractStationId(place)).toBeUndefined();
     });
 });

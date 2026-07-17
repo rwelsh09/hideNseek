@@ -52,34 +52,27 @@ jobs:
                       echo "Running manual bulk cleanup..."
                       cd gh-pages-dir
 
-                      # Iterate through predefined branch prefixes
-                      PREFIXES=("feat" "fix" "chore" "bug" "scout" "palette" "bolt")
+                      # Find all sw.js files to identify deployed branch roots
+                      # The extra sed 's|^sw\.js$||' ensures the root master deployment turns into an empty string
+                      find . -name "sw.js" | sed 's|^\./||' | sed 's|/sw\.js$||' | sed 's|^sw\.js$||' > ../deployed_branches.txt
 
-                      for prefix in "${PREFIXES[@]}"; do
-                          if [ -d "$prefix" ]; then
-                              echo "Checking branch prefix directory: $prefix"
-                              # Iterate through subdirectories (branch names under the prefix)
-                              for d in "$prefix"/*/; do
-                                  # If no matching directories, it expands to "$prefix/*/" which isn't a dir
-                                  [ -d "$d" ] || continue
-
-                                  # Strip trailing slash
-                                  DIRPATH="${d%/}"
-
-                                  # Check if DIRPATH (e.g. feat/my-branch) is in active_branches.txt
-                                  if ! grep -xq "$DIRPATH" ../active_branches.txt; then
-                                      echo "Directory '$DIRPATH' does not match any active branch. Removing..."
-                                      rm -rf "$DIRPATH"
-                                  else
-                                      echo "Keeping active branch directory '$DIRPATH'."
-                                  fi
-                              done
-
-                              # Try to remove the prefix directory if it's empty
-                              # rmdir will fail silently if the directory is not empty
-                              rmdir "$prefix" 2>/dev/null || true
+                      while IFS= read -r DIRPATH; do
+                          # Skip the root deployment (master branch) which evaluates to empty string
+                          if [ -z "$DIRPATH" ]; then
+                              continue
                           fi
-                      done
+
+                          # Check if DIRPATH is in active_branches.txt
+                          if ! grep -xq "$DIRPATH" ../active_branches.txt; then
+                              echo "Directory '$DIRPATH' does not match any active branch. Removing..."
+                              rm -rf "$DIRPATH"
+                          else
+                              echo "Keeping active branch directory '$DIRPATH'."
+                          fi
+                      done < ../deployed_branches.txt
+
+                      # Clean up any empty directories left behind
+                      find . -type d -empty -not -path "./.git/*" -delete || true
                       cd ..
                   fi
 
