@@ -1,3 +1,5 @@
+import { getFeatureCoords } from "./index";
+
 export const lngLatToText = (coordinates: [number, number]) => {
     /**
      * @param coordinates - Should be in longitude, latitude order
@@ -15,7 +17,7 @@ export const getFeatureProperties = (feature: any): Record<string, any> => {
     if (feature.properties?.properties) {
         return {
             ...feature.properties,
-            ...feature.properties.properties
+            ...feature.properties.properties,
         };
     }
 
@@ -31,16 +33,27 @@ export const extractStationName = (stationPlace: any) => {
     return props["name:en"] || props.name;
 };
 
-export const extractStationLabel = (stationPlace: any) =>
-    extractStationName(stationPlace) ||
-    lngLatToText(stationPlace.geometry.coordinates);
+export const extractStationLabel = (stationPlace: any) => {
+    const name = extractStationName(stationPlace);
+    if (name) return name;
+
+    const coords =
+        getFeatureCoords(stationPlace) ||
+        getFeatureCoords(stationPlace.properties);
+    if (coords) return lngLatToText(coords as [number, number]);
+
+    return "Unknown Station";
+};
 
 export const extractStationLines = (stationPlace: any): string[] => {
     const props = getFeatureProperties(stationPlace);
     if (Array.isArray(props.lines)) {
         return props.lines;
     }
-    return (props.route_ref || props.ref || "").split(/[;,]/).map((r: string) => r.trim()).filter(Boolean);
+    return (props.route_ref || props.ref || "")
+        .split(/[;,]/)
+        .map((r: string) => r.trim())
+        .filter(Boolean);
 };
 
 export const extractStationId = (stationPlace: any): string => {
