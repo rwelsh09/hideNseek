@@ -53,6 +53,10 @@ import {
     AlertDialogTitle,
 } from "./ui/alert-dialog";
 import { Input } from "./ui/input";
+
+interface HidingZoneLayer extends L.GeoJSON {
+    hidingZones?: boolean;
+}
 import { Label } from "./ui/label";
 import { ScrollToTop } from "./ui/scroll-to-top";
 import { MENU_ITEM_CLASSNAME } from "./ui/sidebar";
@@ -82,8 +86,8 @@ export const ZoneSidebar = () => {
 
     const removeHidingZones = () => {
         if (!map) return;
-        map.eachLayer((layer: any) => {
-            if (layer.hidingZones) {
+        map.eachLayer((layer: L.Layer) => {
+            if ((layer as HidingZoneLayer).hidingZones) {
                 map.removeLayer(layer);
             }
         });
@@ -177,8 +181,7 @@ export const ZoneSidebar = () => {
             ...additionalOptions,
         });
 
-        // @ts-expect-error This is intentionally added as a check
-        geoJsonLayer.hidingZones = true;
+        (geoJsonLayer as HidingZoneLayer).hidingZones = true;
         geoJsonLayer.addTo(map);
         geoJsonLayer.bringToBack();
     };
@@ -484,7 +487,9 @@ function styleStations(
             if (circles.length > 1) {
                 let voronoiPoints = circles;
                 if (lockedActiveStationIds && allStations) {
-                    const lockedActiveStationIdsSet = new Set(lockedActiveStationIds);
+                    const lockedActiveStationIdsSet = new Set(
+                        lockedActiveStationIds,
+                    );
                     voronoiPoints = allStations.filter((s) =>
                         lockedActiveStationIdsSet.has(
                             extractStationId(s) as string,
