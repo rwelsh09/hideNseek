@@ -25,7 +25,6 @@ export const LatitudeLongitude = ({
     colourName,
     onChangeColour,
     className,
-    children,
     disabled,
 }: {
     latitude: number;
@@ -35,7 +34,6 @@ export const LatitudeLongitude = ({
     colourName?: keyof typeof ICON_COLOURS;
     onChangeColour?: (colour: keyof typeof ICON_COLOURS) => void;
     className?: string;
-    children?: React.ReactNode;
     disabled?: boolean;
 }) => {
     const $isLoading = useStore(isLoading);
@@ -210,7 +208,6 @@ export const LatitudeLongitude = ({
                     </div>
                 )}
             </div>
-            {children}
         </>
     );
 };
