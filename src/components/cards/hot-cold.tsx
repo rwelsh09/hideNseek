@@ -98,7 +98,7 @@ export const HotColdQuestionComponent = ({
                         $isLoading && "text-muted-foreground",
                     )}
                 >
-                    Result
+                    Answer
                 </Label>
                 <ToggleGroup
                     className="grow"
