@@ -1,6 +1,86 @@
 import { describe, expect, it } from "vitest";
 
-import { fastDistance } from "../../../src/maps/geo-utils/index";
+import { fastDistance, getFeatureCoords } from "../../../src/maps/geo-utils/index";
+
+describe("getFeatureCoords", () => {
+    it("should return coordinates for a Polygon using properties", () => {
+        const feature = {
+            geometry: { type: "Polygon" },
+            properties: { lon: -114.07, lat: 51.05 }
+        };
+        expect(getFeatureCoords(feature)).toEqual([-114.07, 51.05]);
+    });
+
+    it("should return coordinates for a Polygon using center fallback", () => {
+        const feature = {
+            geometry: { type: "Polygon" },
+            center: { lon: -114.05, lat: 51.04 }
+        };
+        expect(getFeatureCoords(feature)).toEqual([-114.05, 51.04]);
+    });
+
+    it("should return coordinates for a MultiPolygon using properties", () => {
+        const feature = {
+            geometry: { type: "MultiPolygon" },
+            properties: { lon: -114.06, lat: 51.06 }
+        };
+        expect(getFeatureCoords(feature)).toEqual([-114.06, 51.06]);
+    });
+
+    it("should return coordinates for a Point using geometry coordinates", () => {
+        const feature = {
+            geometry: { type: "Point", coordinates: [-114.08, 51.08] }
+        };
+        expect(getFeatureCoords(feature)).toEqual([-114.08, 51.08]);
+    });
+
+    it("should return coordinates for a Point using properties fallback", () => {
+        const feature = {
+            geometry: { type: "Point" },
+            properties: { lon: -114.09, lat: 51.09 }
+        };
+        expect(getFeatureCoords(feature)).toEqual([-114.09, 51.09]);
+    });
+
+    it("should return null when feature is null or undefined", () => {
+        expect(getFeatureCoords(null)).toBeNull();
+        expect(getFeatureCoords(undefined)).toBeNull();
+    });
+
+    it("should return null for Polygon lacking properties and center lon/lat", () => {
+        const feature = { geometry: { type: "Polygon" } };
+        expect(getFeatureCoords(feature)).toBeNull();
+
+        const feature2 = { geometry: { type: "Polygon" }, properties: { name: "test" } };
+        expect(getFeatureCoords(feature2)).toBeNull();
+    });
+
+    it("should return null for Point lacking geometry coordinates and properties lon/lat", () => {
+        const feature = { geometry: { type: "Point" } };
+        expect(getFeatureCoords(feature)).toBeNull();
+
+        const feature2 = { properties: { name: "test" } };
+        expect(getFeatureCoords(feature2)).toBeNull();
+    });
+
+    it("should return null when extracted coordinates contain non-numbers", () => {
+        const feature1 = {
+            geometry: { type: "Polygon" },
+            properties: { lon: "not a number", lat: 51.05 }
+        };
+        expect(getFeatureCoords(feature1)).toBeNull();
+
+        const feature2 = {
+            geometry: { type: "Point", coordinates: [-114.08, "51.08"] }
+        };
+        expect(getFeatureCoords(feature2)).toBeNull();
+
+        const feature3 = {
+            geometry: { type: "Point", coordinates: [undefined, 51.08] }
+        };
+        expect(getFeatureCoords(feature3)).toBeNull();
+    });
+});
 
 describe("fastDistance", () => {
     it("should return 0 when the coordinates are identical", () => {
