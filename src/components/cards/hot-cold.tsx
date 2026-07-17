@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { distance, point } from "@turf/turf";
 
-import { LatitudeLongitude } from "@/components/LatLngPicker";
+import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Label } from "@/components/ui/label";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {

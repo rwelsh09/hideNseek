@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 
-import { LatitudeLongitude } from "@/components/LatLngPicker";
+import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {

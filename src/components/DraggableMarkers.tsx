@@ -15,7 +15,7 @@ import {
 } from "@/lib/context";
 import type { ICON_COLOURS } from "@/maps/api";
 
-import { LatitudeLongitude } from "./LatLngPicker";
+import { LatitudeLongitude } from "./LatitudeLongitude";
 import {
     ClosestQuestionComponent,
     HotColdQuestionComponent,

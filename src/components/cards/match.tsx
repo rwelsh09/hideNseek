@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
 import * as React from "react";
 
-import { LatitudeLongitude } from "@/components/LatLngPicker";
+import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import {

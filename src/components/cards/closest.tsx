@@ -1,7 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { useEffect, useState } from "react";
 
-import { LatitudeLongitude } from "@/components/LatLngPicker";
+import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Select } from "@/components/ui/select";
 import {
     MENU_ITEM_CLASSNAME,
