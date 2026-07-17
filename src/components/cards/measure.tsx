@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/react";
 import { Label } from "@radix-ui/react-label";
 import * as React from "react";
 
-import { LatitudeLongitude } from "@/components/LatLngPicker";
+import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Select } from "@/components/ui/select";
 import {
     MENU_ITEM_CLASSNAME,
