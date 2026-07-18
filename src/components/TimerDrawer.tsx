@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import confetti from "canvas-confetti";
-import { Clock, Play, Square, Timer, Trash2, Trophy } from "lucide-react";
+import { Clock, Play, Pause, Flag, Timer, Trash2, Trophy } from "lucide-react";
 import * as React from "react";
 import { toast } from "react-toastify";
 
@@ -92,16 +92,21 @@ export const TimerDrawer = () => {
             isTimerRunning.set(false);
             // Clear timestamp so it recalculates on next start based on elapsed
             timerStartTimestamp.set(null);
-
-            if ($timerElapsedSeconds > 0) {
-                setShowRoundOverModal(true);
-                triggerConfetti();
-            }
         } else {
             // Recalculate start timestamp to account for already elapsed time
             timerStartTimestamp.set(Date.now() - $timerElapsedSeconds * 1000);
             isTimerRunning.set(true);
             lockRecommendedStartIfNeeded();
+        }
+    };
+
+    const finishGame = () => {
+        isTimerRunning.set(false);
+        timerStartTimestamp.set(null);
+
+        if ($timerElapsedSeconds > 0) {
+            setShowRoundOverModal(true);
+            triggerConfetti();
         }
     };
 
@@ -231,10 +236,46 @@ export const TimerDrawer = () => {
                     <div className="flex flex-col md:flex-row gap-6 w-full max-w-4xl mx-auto h-full">
                         {/* --- LEFT SIDE: TIMER --- */}
                         <div className="flex-1 rounded-xl border bg-card shadow-sm p-5 space-y-4">
-                            <h2 className="text-xl font-bold font-poppins flex items-center gap-2">
-                                <Timer className="w-6 h-6 text-blue-400" />
-                                Timer
-                            </h2>
+                            <div className="flex justify-between items-center">
+                                <h2 className="text-xl font-bold font-poppins flex items-center gap-2">
+                                    <Timer className="w-6 h-6 text-blue-400" />
+                                    Timer
+                                </h2>
+                                <div className="flex gap-2">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => manipulateTimer(-5)}
+                                        className="bg-slate-800 border-slate-700 h-8"
+                                    >
+                                        -5m
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => manipulateTimer(-1)}
+                                        className="bg-slate-800 border-slate-700 h-8"
+                                    >
+                                        -1m
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => manipulateTimer(1)}
+                                        className="bg-slate-800 border-slate-700 h-8"
+                                    >
+                                        +1m
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => manipulateTimer(5)}
+                                        className="bg-slate-800 border-slate-700 h-8"
+                                    >
+                                        +5m
+                                    </Button>
+                                </div>
+                            </div>
 
                             <div className="bg-slate-800/50 rounded-xl p-4 shadow-inner border border-slate-700/50 flex flex-col items-center justify-center gap-2 py-8">
                                 <div className="text-5xl font-mono font-bold text-white">
@@ -259,7 +300,7 @@ export const TimerDrawer = () => {
                                 <Button
                                     variant={
                                         $isTimerRunning
-                                            ? "destructive"
+                                            ? "secondary"
                                             : "default"
                                     }
                                     size="lg"
@@ -268,20 +309,31 @@ export const TimerDrawer = () => {
                                 >
                                     {$isTimerRunning ? (
                                         <>
-                                            <Square className="w-5 h-5" /> Stop
+                                            <Pause className="w-5 h-5" /> Pause
                                         </>
                                     ) : (
                                         <>
-                                            <Play className="w-5 h-5" /> Start
+                                            <Play className="w-5 h-5" /> {$timerElapsedSeconds !== 0 ? "Resume" : "Start"}
                                         </>
                                     )}
                                 </Button>
+                                <Button
+                                    variant="destructive"
+                                    size="lg"
+                                    onClick={finishGame}
+                                    className="w-full flex items-center justify-center gap-2 text-lg"
+                                >
+                                    <Flag className="w-5 h-5" /> Finish
+                                </Button>
+                            </div>
+
+                            <div className="flex justify-center mt-3">
                                 <AlertDialog>
                                     <AlertDialogTrigger asChild>
                                         <Button
-                                            variant="outline"
-                                            size="lg"
-                                            className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white text-lg"
+                                            variant="ghost"
+                                            size="sm"
+                                            className="text-slate-400 hover:text-white"
                                         >
                                             Reset
                                         </Button>
@@ -311,46 +363,6 @@ export const TimerDrawer = () => {
                                 </AlertDialog>
                             </div>
 
-                            <div className="flex flex-col items-center gap-2 mt-4">
-                                <span className="text-sm text-slate-400">
-                                    Adjust Time
-                                </span>
-                                <div className="flex gap-2">
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => manipulateTimer(-5)}
-                                        className="bg-slate-800 border-slate-700"
-                                    >
-                                        -5m
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => manipulateTimer(-1)}
-                                        className="bg-slate-800 border-slate-700"
-                                    >
-                                        -1m
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => manipulateTimer(1)}
-                                        className="bg-slate-800 border-slate-700"
-                                    >
-                                        +1m
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => manipulateTimer(5)}
-                                        className="bg-slate-800 border-slate-700"
-                                    >
-                                        +5m
-                                    </Button>
-                                </div>
-                            </div>
-
                             {!$isTimerRunning &&
                                 $timerElapsedSeconds - $headStartMinutes * 60 >
                                     0 && (
@@ -367,6 +379,11 @@ export const TimerDrawer = () => {
                                                 placeholder="Hider Name"
                                                 className="h-10 bg-slate-800 border-slate-600 text-white"
                                                 required
+                                                autoCapitalize="words"
+                                                autoComplete="off"
+                                                autoCorrect="off"
+                                                spellCheck={false}
+                                                enterKeyHint="send"
                                             />
                                             <Button
                                                 type="submit"
