@@ -241,3 +241,11 @@ body.driver-active:has(
 div.driver-popover, div.driver-overlay {
     z-index: 1000000 !important;
 }
+
+/* Ensure toasts are clickable even when Radix modals disable body pointer events */
+.Toastify__toast-container {
+    pointer-events: none !important;
+}
+.Toastify__toast {
+    pointer-events: auto !important;
+}
