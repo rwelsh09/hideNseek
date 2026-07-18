@@ -21,6 +21,3 @@
 
 **Learning:** `knip` will falsely flag `src/pwa.ts` as an unused file because it is explicitly included in `src/layouts/Layout.astro` via a `<script src="/src/pwa.ts"></script>` tag, which knip's static analysis misses.
 **Action:** Always verify if a script file reported as unused by knip is actually loaded in an Astro layout or HTML template before deleting it.
-## 2026-07-20 - Unused APIs and their tests
-**Learning:** Functions like `geocode`, `convertToLongLat`, `prettifyLocation`, `determineName` were entirely unused in the app code but were tested in `tests/`.
-**Action:** When deleting dead exports, make sure to also remove their associated tests to keep the test suite clean and prevent broken imports.
