@@ -39,10 +39,10 @@ import { LeafletActionButtons } from "./LeafletActionButtons";
 import { OfflineTileLayer } from "./OfflineTileLayer";
 import { HIDING_ZONE_COMPRESSED_URL_PARAM } from "./OptionDrawers";
 import { PasteQuestionButton } from "./PasteQuestionButton";
-import { VisualizedPlaces } from "./VisualizedPlaces";
 import { RecommendedStartMarker } from "./RecommendedStartMarker";
 import { TransitLinesOverlay } from "./TransitLinesOverlay";
 import { Button } from "./ui/button";
+import { VisualizedPlaces } from "./VisualizedPlaces";
 
 const getTileLayer = (tileLayer: string) => {
     switch (tileLayer) {

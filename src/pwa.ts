@@ -1,6 +1,6 @@
 /// <reference types="vite-plugin-pwa/client" />
-import { registerSW } from "virtual:pwa-register";
 import { toast } from "react-toastify";
+import { registerSW } from "virtual:pwa-register";
 
 const updateSW = registerSW({
     immediate: true,
