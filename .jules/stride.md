@@ -12,3 +12,8 @@
 
 **Learning:** Attempted to apply `active:scale-95 transition-all` classes on critical buttons to provide immediate tactile visual feedback on touch devices. This mobile UI change was rejected by the owner after review.
 **Action:** Do not apply `active:scale-95 transition-all` classes.
+
+## 2026-07-18 - [Mobile GPS Options and Keyboard Hints]
+
+**Learning:** `navigator.geolocation.getCurrentPosition` without `{ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }` can result in inaccurate locations or silent failures outdoors. Adding these options improves accuracy and reliability for on-the-go users. Additionally, HTML `<Input />` elements for names or text that do not use `enterKeyHint="send"` and auto-correct disable properties provide terrible mobile keyboard UX, as the user battles their own phones spellchecker in a fast paced game.
+**Action:** Used `useState` to introduce an `isLocating` flag for a better loading state when tapping the "Focus on your location" button. Add `autoCapitalize="words"`, `autoComplete="off"`, `autoCorrect="off"`, `spellCheck={false}`, and `enterKeyHint="send"` to standard text inputs where auto-correct gets in the way of fast-paced game typing.
