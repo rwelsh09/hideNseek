@@ -236,10 +236,46 @@ export const TimerDrawer = () => {
                     <div className="flex flex-col md:flex-row gap-6 w-full max-w-4xl mx-auto h-full">
                         {/* --- LEFT SIDE: TIMER --- */}
                         <div className="flex-1 rounded-xl border bg-card shadow-sm p-5 space-y-4">
-                            <h2 className="text-xl font-bold font-poppins flex items-center gap-2">
-                                <Timer className="w-6 h-6 text-blue-400" />
-                                Timer
-                            </h2>
+                            <div className="flex justify-between items-center">
+                                <h2 className="text-xl font-bold font-poppins flex items-center gap-2">
+                                    <Timer className="w-6 h-6 text-blue-400" />
+                                    Timer
+                                </h2>
+                                <div className="flex gap-2">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => manipulateTimer(-5)}
+                                        className="bg-slate-800 border-slate-700 h-8"
+                                    >
+                                        -5m
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => manipulateTimer(-1)}
+                                        className="bg-slate-800 border-slate-700 h-8"
+                                    >
+                                        -1m
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => manipulateTimer(1)}
+                                        className="bg-slate-800 border-slate-700 h-8"
+                                    >
+                                        +1m
+                                    </Button>
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={() => manipulateTimer(5)}
+                                        className="bg-slate-800 border-slate-700 h-8"
+                                    >
+                                        +5m
+                                    </Button>
+                                </div>
+                            </div>
 
                             <div className="bg-slate-800/50 rounded-xl p-4 shadow-inner border border-slate-700/50 flex flex-col items-center justify-center gap-2 py-8">
                                 <div className="text-5xl font-mono font-bold text-white">
@@ -325,46 +361,6 @@ export const TimerDrawer = () => {
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
                                 </AlertDialog>
-                            </div>
-
-                            <div className="flex flex-col items-center gap-2 mt-4">
-                                <span className="text-sm text-slate-400">
-                                    Adjust Time
-                                </span>
-                                <div className="flex gap-2">
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => manipulateTimer(-5)}
-                                        className="bg-slate-800 border-slate-700"
-                                    >
-                                        -5m
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => manipulateTimer(-1)}
-                                        className="bg-slate-800 border-slate-700"
-                                    >
-                                        -1m
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => manipulateTimer(1)}
-                                        className="bg-slate-800 border-slate-700"
-                                    >
-                                        +1m
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => manipulateTimer(5)}
-                                        className="bg-slate-800 border-slate-700"
-                                    >
-                                        +5m
-                                    </Button>
-                                </div>
                             </div>
 
                             {!$isTimerRunning &&
