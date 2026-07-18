@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import confetti from "canvas-confetti";
-import { Clock, Play, Square, Timer, Trash2, Trophy } from "lucide-react";
+import { Clock, Play, Pause, Flag, Timer, Trash2, Trophy } from "lucide-react";
 import * as React from "react";
 import { toast } from "react-toastify";
 
@@ -92,16 +92,21 @@ export const TimerDrawer = () => {
             isTimerRunning.set(false);
             // Clear timestamp so it recalculates on next start based on elapsed
             timerStartTimestamp.set(null);
-
-            if ($timerElapsedSeconds > 0) {
-                setShowRoundOverModal(true);
-                triggerConfetti();
-            }
         } else {
             // Recalculate start timestamp to account for already elapsed time
             timerStartTimestamp.set(Date.now() - $timerElapsedSeconds * 1000);
             isTimerRunning.set(true);
             lockRecommendedStartIfNeeded();
+        }
+    };
+
+    const finishGame = () => {
+        isTimerRunning.set(false);
+        timerStartTimestamp.set(null);
+
+        if ($timerElapsedSeconds > 0) {
+            setShowRoundOverModal(true);
+            triggerConfetti();
         }
     };
 
@@ -259,7 +264,7 @@ export const TimerDrawer = () => {
                                 <Button
                                     variant={
                                         $isTimerRunning
-                                            ? "destructive"
+                                            ? "secondary"
                                             : "default"
                                     }
                                     size="lg"
@@ -268,20 +273,31 @@ export const TimerDrawer = () => {
                                 >
                                     {$isTimerRunning ? (
                                         <>
-                                            <Square className="w-5 h-5" /> Stop
+                                            <Pause className="w-5 h-5" /> Pause
                                         </>
                                     ) : (
                                         <>
-                                            <Play className="w-5 h-5" /> Start
+                                            <Play className="w-5 h-5" /> {$timerElapsedSeconds !== 0 ? "Resume" : "Start"}
                                         </>
                                     )}
                                 </Button>
+                                <Button
+                                    variant="destructive"
+                                    size="lg"
+                                    onClick={finishGame}
+                                    className="w-full flex items-center justify-center gap-2 text-lg"
+                                >
+                                    <Flag className="w-5 h-5" /> Finish
+                                </Button>
+                            </div>
+
+                            <div className="flex justify-center mt-3">
                                 <AlertDialog>
                                     <AlertDialogTrigger asChild>
                                         <Button
-                                            variant="outline"
-                                            size="lg"
-                                            className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white text-lg"
+                                            variant="ghost"
+                                            size="sm"
+                                            className="text-slate-400 hover:text-white"
                                         >
                                             Reset
                                         </Button>
