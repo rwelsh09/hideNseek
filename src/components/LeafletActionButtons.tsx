@@ -1,6 +1,8 @@
 import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
 import * as L from "leaflet";
+import { Loader2 } from "lucide-react";
+import { useState } from "react";
 import { FaGlobe } from "react-icons/fa";
 import { MdMyLocation, MdZoomInMap } from "react-icons/md";
 import { useMap } from "react-leaflet";
@@ -30,6 +32,7 @@ import { flyToWithOffset } from "@/maps/ui-utils";
 
 export const LeafletActionButtons = () => {
     const map = useMap();
+    const [isLocating, setIsLocating] = useState(false);
     const $mapGeoLocation = useStore(mapGeoLocation);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
     const $showTutorial = useStore(showTutorial);
@@ -37,7 +40,7 @@ export const LeafletActionButtons = () => {
     const $geolocationPermission = useStore(geolocationPermission);
 
     const buttonClass =
-        "leaflet-full-screen-specific-name bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] p-0 rounded-[4px] flex items-center justify-center border-[2px] border-[rgba(0,0,0,0.2)] bg-clip-padding cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2";
+        "leaflet-full-screen-specific-name bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] p-0 rounded-[4px] flex items-center justify-center border-[2px] border-[rgba(0,0,0,0.2)] bg-clip-padding cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
 
     const handleLocationFocus = () => {
         if (!navigator.geolocation) {
@@ -52,14 +55,17 @@ export const LeafletActionButtons = () => {
             return;
         }
 
+        setIsLocating(true);
         navigator.geolocation.getCurrentPosition(
             (pos) => {
+                setIsLocating(false);
                 geolocationPermission.set("granted");
                 followMe.set(true);
                 const { latitude, longitude } = pos.coords;
                 flyToWithOffset(map, L.latLng(latitude, longitude), 12);
             },
             (error) => {
+                setIsLocating(false);
                 if (error.code === error.PERMISSION_DENIED) {
                     geolocationPermission.set("denied");
                     toast.error("Location access denied.", {
@@ -69,6 +75,11 @@ export const LeafletActionButtons = () => {
                     toast.error("Unable to access your location.");
                 }
             },
+            {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 0,
+            }
         );
     };
 
@@ -91,8 +102,13 @@ export const LeafletActionButtons = () => {
                             className={buttonClass}
                             title="Focus on your location"
                             aria-label="Focus on your location"
+                            disabled={isLocating}
                         >
-                            <MdMyLocation className="w-5 h-5 text-black" />
+                            {isLocating ? (
+                                <Loader2 className="w-5 h-5 text-black animate-spin" />
+                            ) : (
+                                <MdMyLocation className="w-5 h-5 text-black" />
+                            )}
                         </button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
@@ -120,8 +136,13 @@ export const LeafletActionButtons = () => {
                     title="Focus on your location"
                     aria-label="Focus on your location"
                     onClick={handleLocationFocus}
+                    disabled={isLocating}
                 >
-                    <MdMyLocation className="w-5 h-5 text-black" />
+                    {isLocating ? (
+                        <Loader2 className="w-5 h-5 text-black animate-spin" />
+                    ) : (
+                        <MdMyLocation className="w-5 h-5 text-black" />
+                    )}
                 </button>
             )}
 

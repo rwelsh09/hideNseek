@@ -367,6 +367,11 @@ export const TimerDrawer = () => {
                                                 placeholder="Hider Name"
                                                 className="h-10 bg-slate-800 border-slate-600 text-white"
                                                 required
+                                                autoCapitalize="words"
+                                                autoComplete="off"
+                                                autoCorrect="off"
+                                                spellCheck={false}
+                                                enterKeyHint="send"
                                             />
                                             <Button
                                                 type="submit"
