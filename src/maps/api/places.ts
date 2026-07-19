@@ -103,6 +103,7 @@ export const findClosestLocations = async (
 
 let boundaryPromise: Promise<FeatureCollection<MultiPolygon>> | null = null;
 let cachedOfflineData: any[] | null = null;
+let offlineDataPromise: Promise<any[]> | null = null;
 
 const ensureElementCenter = (el: any) => {
     let lon = el.center ? el.center.lon : el.lon;
@@ -186,8 +187,20 @@ export const findPlacesInZone = async (
 
 
     if (!cachedOfflineData) {
-        const dataModule = await import('@/data/offline_places.json');
-        cachedOfflineData = dataModule.default?.elements || dataModule.elements || [];
+        if (!offlineDataPromise) {
+            // Bolt ⚡: Cache the promise to prevent duplicate loading requests if
+            // this function is called concurrently before the import completes.
+            offlineDataPromise = import('@/data/offline_places.json')
+                .then((dataModule) => {
+                    return dataModule.default?.elements || dataModule.elements || [];
+                })
+                .catch((err) => {
+                    // Reset promise so a subsequent call can retry
+                    offlineDataPromise = null;
+                    throw err;
+                });
+        }
+        cachedOfflineData = await offlineDataPromise;
     }
     const offlineData = cachedOfflineData;
 
