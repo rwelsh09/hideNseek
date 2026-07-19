@@ -27,3 +27,6 @@
 
 **Learning:** `Math.random()` is used throughout the codebase for non-cryptographic purposes such as generating random temporary numerical IDs (`key`), UI cache breaking, and styling (e.g., color selection, random widths).
 **Action:** Do not replace `Math.random()` with `crypto.randomUUID()` or similar secure alternatives. Doing so would introduce string-based IDs which break existing Zod validation schemas that strictly type `key` as a `number`.
+## 2026-07-19 - [Pool concurrent dynamic imports for offline places]
+**Learning:** When dynamically importing large local JSON datasets (like `offline_places.json`), if `import()` is called concurrently multiple times before the first import completes, it can cause memory spikes and redundant processing.
+**Action:** Use a module-level Promise variable to pool concurrent requests and prevent redundant reads. Always include a `.catch()` block to reset this promise to `null` on failure, allowing subsequent calls to retry and avoiding permanent cache locking on transient errors.
