@@ -2,6 +2,7 @@ import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import calgaryRapidTransitData from "@/data/calgary_rapid_transit_network.json";
+import { extractStationId } from "@/maps/geo-utils";
 
 export const STATION_IDS_INDEX = (calgaryRapidTransitData.features as any[])
     .filter(
@@ -10,9 +11,7 @@ export const STATION_IDS_INDEX = (calgaryRapidTransitData.features as any[])
             f.properties?.transit_type === "MAX Station" ||
             f.properties?.transit_type === "CTrain & MAX Hub"
     )
-    .map((f) =>
-        (f.properties?.["@id"] || f.id || `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`) as string
-    )
+    .map((f) => extractStationId(f) as string)
     .sort();
 
 export function encodeDisabledStations(stations: string[]): string {
