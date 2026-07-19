@@ -333,10 +333,11 @@ export const AdvancedStationManagement = () => {
                     </Popover>
                 </div>
                 <div className="flex items-center justify-between p-2 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                    <Label className="text-sm font-medium mr-4">
+                    <Label className="text-sm font-medium mr-4" htmlFor="overlap-threshold-input">
                         Overlap Threshold
                     </Label>
                     <Input
+                        id="overlap-threshold-input"
                         type="number"
                         inputMode="decimal"
                         className="rounded-md p-1 w-16 h-8 bg-background text-sm"
