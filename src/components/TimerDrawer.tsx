@@ -106,12 +106,14 @@ export const TimerDrawer = () => {
 
         if ($timerElapsedSeconds > 0) {
             setShowRoundOverModal(true);
-            triggerConfetti();
+            if (getTotalSeconds() > 0) {
+                triggerConfetti();
+            }
         }
     };
 
     const triggerConfetti = () => {
-        const duration = 3 * 1000;
+        const duration = 1 * 1000;
         const end = Date.now() + duration;
 
         const frame = () => {
@@ -397,20 +399,15 @@ export const TimerDrawer = () => {
                         </div>
 
                         {/* --- RIGHT SIDE: LEADERBOARD --- */}
-                        <div className="flex-1 rounded-xl border bg-card shadow-sm p-5 h-full min-h-[300px] flex flex-col gap-4">
-                            <h2 className="text-xl font-bold font-poppins flex items-center gap-2">
-                                <Trophy className="w-6 h-6 text-yellow-400" />
-                                Leaderboard
-                            </h2>
+                        {$leaderboard.length > 0 && (
+                            <div className="flex-1 rounded-xl border bg-card shadow-sm p-5 h-full min-h-[300px] flex flex-col gap-4">
+                                <h2 className="text-xl font-bold font-poppins flex items-center gap-2">
+                                    <Trophy className="w-6 h-6 text-yellow-400" />
+                                    Leaderboard
+                                </h2>
 
-                            <div className="flex-1 overflow-y-auto pr-2 flex flex-col gap-3">
-                                {$leaderboard.length === 0 ? (
-                                    <div className="text-slate-500 text-center py-10 italic">
-                                        No records yet. Stop the timer and save
-                                        to add one!
-                                    </div>
-                                ) : (
-                                    $leaderboard.map((entry, idx) => (
+                                <div className="flex-1 overflow-y-auto pr-2 flex flex-col gap-3">
+                                    {$leaderboard.map((entry, idx) => (
                                         <div
                                             key={entry.id}
                                             className="flex flex-col bg-slate-800 p-3 rounded-lg border border-slate-700"
@@ -477,10 +474,10 @@ export const TimerDrawer = () => {
                                                 </AlertDialog>
                                             </div>
                                         </div>
-                                    ))
-                                )}
+                                    ))}
+                                </div>
                             </div>
-                        </div>
+                        )}
                     </div>
 
                     <AlertDialog
