@@ -21,3 +21,7 @@
 
 **Learning:** `knip` will falsely flag `src/pwa.ts` as an unused file because it is explicitly included in `src/layouts/Layout.astro` via a `<script src="/src/pwa.ts"></script>` tag, which knip's static analysis misses.
 **Action:** Always verify if a script file reported as unused by knip is actually loaded in an Astro layout or HTML template before deleting it.
+## 2026-07-17 - [persistentJsonAtom Export]
+
+**Learning:** `knip` will flag `persistentJsonAtom` in `src/lib/context.ts` as an unused export. However, the function is used internally within that file.
+**Action:** When pruning "dead" exports, if the export is still used within the file, restrict its scope by simply removing the `export` keyword rather than deleting the function entirely, and ensure it is not used elsewhere in the project before doing so.

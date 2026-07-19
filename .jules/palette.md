@@ -15,3 +15,8 @@
 
 **Learning:** When using dynamic map iteration to generate complex interactive elements (like the grid of location selection buttons in `MatchSection` and `MeasureSection`), standard `aria-label`s and `title`s are often overlooked in favor of purely visual rendering. This creates identical, unlabelled interaction targets for screen readers, masking the unique action each button performs.
 **Action:** When rendering arrays of interactive components based on configuration data (such as `PLACES`), always inject the dynamically generated semantic descriptor (e.g., `place.label` or hardcoded label context) directly into `aria-label` and `title` attributes on every clickable item to provide clear, accessible, and distinct interactions for all users.
+
+## 2026-08-01 - [Accessible Form Inputs in Complex Layouts]
+
+**Learning:** When using standard UI components (like `Input` and `Label` from Radix UI or generic design systems) within complex nested layouts such as accordions (e.g., `AdvancedStationManagement`), the explicit association between a label and its input (`htmlFor` and `id`) is often overlooked. Without it, users clicking the label won't focus the input, and screen readers will fail to announce the context of the input field.
+**Action:** Always ensure any `<Label>` is bound to its associated `<Input>` using matching `htmlFor` and `id` properties, especially in newly added settings or configuration panels, to guarantee robust keyboard accessibility and screen reader support.

@@ -88,8 +88,7 @@ export const findClosestLocations = async (
                 seenNames.add(name);
             }
 
-            // Add a unique identifier for chain restaurants so they can be distinguished visually if needed,
-            // or at least not be identical in properties if standard logic expects it.
+            // Add a unique identifier for chain restaurants so they can be distinguished.
             response.features.push(
                 turf.point([ptLon, ptLat], {
                     name: isChain ? `${name} (${element.id})` : name,
@@ -103,6 +102,7 @@ export const findClosestLocations = async (
 
 let boundaryPromise: Promise<FeatureCollection<MultiPolygon>> | null = null;
 let cachedOfflineData: any[] | null = null;
+let offlineDataPromise: Promise<any[]> | null = null;
 
 const ensureElementCenter = (el: any) => {
     let lon = el.center ? el.center.lon : el.lon;
@@ -186,8 +186,17 @@ export const findPlacesInZone = async (
 
 
     if (!cachedOfflineData) {
-        const dataModule = await import('@/data/offline_places.json');
-        cachedOfflineData = dataModule.default?.elements || dataModule.elements || [];
+        if (!offlineDataPromise) {
+            offlineDataPromise = import('@/data/offline_places.json')
+                .then((dataModule) => {
+                    return dataModule.default?.elements || dataModule.elements || [];
+                })
+                .catch((err) => {
+                    offlineDataPromise = null;
+                    throw err;
+                });
+        }
+        cachedOfflineData = await offlineDataPromise;
     }
     const offlineData = cachedOfflineData;
 
