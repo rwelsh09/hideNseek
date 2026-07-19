@@ -205,6 +205,7 @@ export const TimerDrawer = () => {
                     app with a donation (open Options).{" "}
                 </span>
             </div>,
+            { autoClose: 5000, position: "bottom-center" }
         );
     };
 
@@ -499,7 +500,7 @@ export const TimerDrawer = () => {
                                         !
                                     </span>
                                     <span className="text-sm">
-                                        Check out the leaderboard below to save
+                                        Add the Hider's name to the leaderboard below to save
                                         your record.
                                     </span>
                                 </AlertDialogDescription>
