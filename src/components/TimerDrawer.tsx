@@ -284,16 +284,16 @@ export const TimerDrawer = () => {
                                             $headStartMinutes * 60,
                                     )}
                                 </div>
-                                <div className="text-slate-400 text-sm mt-2">
-                                    Total with{" "}
-                                    {$penaltyMinutes > 0
-                                        ? "+" + $penaltyMinutes
-                                        : $penaltyMinutes}
-                                    m Penalty
-                                </div>
-                                <div className="text-3xl text-blue-400 font-mono font-bold">
-                                    {formatTime(getTotalSeconds())}
-                                </div>
+                                {$penaltyMinutes > 0 && (
+                                    <>
+                                        <div className="text-slate-400 text-sm mt-2">
+                                            with Time Penalty:
+                                        </div>
+                                        <div className="text-3xl text-blue-400 font-mono font-bold">
+                                            {formatTime(getTotalSeconds())}
+                                        </div>
+                                    </>
+                                )}
                             </div>
 
                             <div className="grid grid-cols-2 gap-3 mt-2">
@@ -345,8 +345,7 @@ export const TimerDrawer = () => {
                                             </AlertDialogTitle>
                                             <AlertDialogDescription>
                                                 Are you sure you want to reset
-                                                the timer? This will reset your
-                                                elapsed time to 0.
+                                                the timer?
                                             </AlertDialogDescription>
                                         </AlertDialogHeader>
                                         <AlertDialogFooter>
