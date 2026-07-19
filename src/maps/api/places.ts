@@ -88,8 +88,7 @@ export const findClosestLocations = async (
                 seenNames.add(name);
             }
 
-            // Add a unique identifier for chain restaurants so they can be distinguished visually if needed,
-            // or at least not be identical in properties if standard logic expects it.
+            // Add a unique identifier for chain restaurants so they can be distinguished.
             response.features.push(
                 turf.point([ptLon, ptLat], {
                     name: isChain ? `${name} (${element.id})` : name,
@@ -188,14 +187,11 @@ export const findPlacesInZone = async (
 
     if (!cachedOfflineData) {
         if (!offlineDataPromise) {
-            // Bolt ⚡: Cache the promise to prevent duplicate loading requests if
-            // this function is called concurrently before the import completes.
             offlineDataPromise = import('@/data/offline_places.json')
                 .then((dataModule) => {
                     return dataModule.default?.elements || dataModule.elements || [];
                 })
                 .catch((err) => {
-                    // Reset promise so a subsequent call can retry
                     offlineDataPromise = null;
                     throw err;
                 });
