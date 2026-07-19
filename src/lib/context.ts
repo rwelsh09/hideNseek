@@ -21,7 +21,7 @@ import {
  * A wrapper for persistentAtom that automatically handles standard JSON serialization.
  * This reduces boilerplate and highlights atoms that require custom validation (e.g., Zod).
  */
-export const persistentJsonAtom = <T>(name: string, initialValue: T) =>
+const persistentJsonAtom = <T>(name: string, initialValue: T) =>
     persistentAtom<T>(name, initialValue, {
         encode: JSON.stringify,
         decode: JSON.parse,
