@@ -493,7 +493,7 @@ export const TimerDrawer = () => {
                                 </AlertDialogTitle>
                                 <AlertDialogDescription className="text-center text-lg mt-2 flex flex-col gap-2">
                                     <span>
-                                        You survived for{" "}
+                                        Hider survived for{" "}
                                         <strong className="text-white text-xl">
                                             {formatTime(getTotalSeconds())}
                                         </strong>
