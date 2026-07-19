@@ -110,6 +110,11 @@ describe("radius", () => {
             const newArea = turf.area(result!);
             expect(newArea).toBeLessThan(originalArea);
             expect(newArea).toBeGreaterThan(0);
+
+            // The center of the radar should have been removed
+            const centerPoint = turf.point([questionOutside.lng, questionOutside.lat]);
+            const pointInResult = turf.booleanPointInPolygon(centerPoint, result!.geometry as Polygon | MultiPolygon);
+            expect(pointInResult).toBe(false);
         });
 
         it("should return undefined if mapData is null", async () => {
