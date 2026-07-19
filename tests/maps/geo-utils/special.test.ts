@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
 
 import {
+    extractStationId,
     extractStationLabel,
     extractStationLines,
-    extractStationId,
     extractStationName,
     getFeatureProperties,
     lngLatToText,
@@ -179,6 +179,11 @@ describe("extractStationId", () => {
         expect(extractStationId(place)).toBe("station-123");
     });
 
+    it("should return the @id from top-level properties", () => {
+        const place = { properties: { "@id": "station-123" } };
+        expect(extractStationId(place)).toBe("station-123");
+    });
+
     it("should return the id from nested tags if present", () => {
         const place = {
             properties: {
@@ -193,7 +198,17 @@ describe("extractStationId", () => {
         expect(extractStationId(place)).toBe("base-station-123");
     });
 
-    it("should return undefined if id is missing", () => {
+    it("should return fallback coordinates string if explicit ID is missing", () => {
+        const place = { properties: {}, geometry: { type: "Point", coordinates: [-114.1, 51.1] } };
+        expect(extractStationId(place)).toBe("51.1,-114.1");
+    });
+
+    it("should return fallback coordinates string for a nested turf circle format", () => {
+        const place = { properties: { geometry: { type: "Point", coordinates: [-114.1, 51.1] } }, geometry: { type: "Polygon", coordinates: [] } };
+        expect(extractStationId(place)).toBe("51.1,-114.1");
+    });
+
+    it("should return undefined if id and coordinates are missing", () => {
         const place = { properties: { name: "Station Alpha" } };
         expect(extractStationId(place)).toBeUndefined();
     });

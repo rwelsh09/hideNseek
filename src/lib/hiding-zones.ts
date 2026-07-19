@@ -45,10 +45,7 @@ export const initializeHidingZonesLogic = async () => {
                 geometry: f.geometry,
                 properties: {
                     ...f.properties,
-                    id:
-                        f.properties?.["@id"] ||
-                        f.id ||
-                        `${f.geometry.coordinates[1]},${f.geometry.coordinates[0]}`,
+                    id: extractStationId(f),
                     name: f.properties?.name,
                 },
             }),
