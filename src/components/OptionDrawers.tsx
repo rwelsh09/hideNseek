@@ -1,5 +1,4 @@
 import { useStore } from "@nanostores/react";
-import { CircleHelp } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 
@@ -38,7 +37,6 @@ import {
     mapGeoLocation,
     polyGeoJSON,
     questions,
-    showHiderTutorial,
     showRecommendedStart,
     showTutorial,
     triggerLocalRefresh,
@@ -231,31 +229,6 @@ export const OptionDrawers = () => {
                                         >
                                             Hider Mode
                                         </Label>
-                                        <div
-                                            className="flex items-center justify-center cursor-pointer text-muted-foreground hover:text-foreground transition-colors mr-3"
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                toast.info(
-                                                    <div className="flex flex-col gap-2">
-                                                        <p>Hider Mode provides specialized tools for the Hider, including setting your location and answering Seeker questions.</p>
-                                                        <button
-                                                            className="text-sm bg-primary text-primary-foreground py-1 px-3 rounded-md hover:bg-primary/90 transition-colors w-fit"
-                                                            onClick={() => {
-                                                                isOptionsOpenStore.set(false);
-                                                                showHiderTutorial.set(true);
-                                                                toast.dismiss();
-                                                            }}
-                                                        >
-                                                            Start Tutorial
-                                                        </button>
-                                                    </div>,
-                                                    { autoClose: false, closeOnClick: false }
-                                                );
-                                            }}
-                                            title="What is Hider Mode?"
-                                        >
-                                            <CircleHelp size={20} />
-                                        </div>
                                         <Checkbox
                                             id="hider-mode-toggle"
                                             checked={!!$hiderMode}

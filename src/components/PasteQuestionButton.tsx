@@ -14,10 +14,9 @@ export const PasteQuestionButton = ({ iconOnly = false }: { iconOnly?: boolean }
     return (
         <Button
             variant="secondary"
-            className={iconOnly ? "font-semibold font-poppins flex items-center justify-center gap-2 h-10 w-10 p-0 shadow-md" : "w-full font-semibold font-poppins flex items-center justify-center gap-2 h-10"}
+            className={iconOnly ? "font-semibold font-poppins flex items-center justify-center gap-2 h-10 w-10 p-0" : "w-full font-semibold font-poppins flex items-center justify-center gap-2 h-10"}
             data-tutorial-id="tutorial-paste-question-btn"
             aria-label="Paste Question"
-            title={iconOnly ? "Paste Question" : undefined}
             onClick={() => {
                 navigator.clipboard
                     .readText()

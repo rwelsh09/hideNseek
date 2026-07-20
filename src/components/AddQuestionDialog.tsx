@@ -156,12 +156,10 @@ export function AddQuestionDialog({
                 <Button
                     className={
                         iconOnly
-                            ? "flex items-center justify-center gap-2 h-10 w-10 p-0 shadow-md"
+                            ? "flex items-center justify-center gap-2 h-10 w-10 p-0"
                             : "w-full flex items-center justify-center gap-2 h-10"
                     }
                     data-tutorial-id="add-question-btn"
-                    aria-label="Add Question"
-                    title={iconOnly ? "Add Question" : undefined}
                 >
                     <Plus className="w-5 h-5" /> {!iconOnly && "Add Question"}
                 </Button>

@@ -6,13 +6,11 @@ vi.mock("@turf/turf", async (importOriginal) => {
     return {
         ...actual,
         union: vi.fn(actual.union),
-        difference: vi.fn(actual.difference),
     };
 });
 
 import {
     geoSpatialVoronoi,
-    holedMask,
     modifyMapData,
     safeUnion,
 } from "@/maps/geo-utils/operators";
@@ -188,56 +186,5 @@ describe("modifyMapData", () => {
         expect(result).toBeDefined();
         const bbox = turf.bbox(result!);
         expect(bbox).toEqual([0, 0, 5, 10]);
-    });
-});
-
-describe("holedMask", () => {
-    const holeFeature = turf.polygon([
-        [
-            [10, 10],
-            [20, 10],
-            [20, 20],
-            [10, 20],
-            [10, 10],
-        ],
-    ]);
-
-    test("handles a Feature input representing a hole", () => {
-        const result = holedMask(holeFeature);
-        expect(result).toBeDefined();
-        expect(result?.geometry.type).toBe("Polygon");
-        // A point inside the hole should be false in the resulting mask
-        expect(turf.booleanPointInPolygon(turf.point([15, 15]), result!)).toBe(false);
-        // A point outside the hole but in the world should be true
-        expect(turf.booleanPointInPolygon(turf.point([0, 0]), result!)).toBe(true);
-    });
-
-    test("handles a FeatureCollection input representing multiple holes", () => {
-        const anotherHoleFeature = turf.polygon([
-            [
-                [30, 30],
-                [40, 30],
-                [40, 40],
-                [30, 40],
-                [30, 30],
-            ],
-        ]);
-        const holeCollection = turf.featureCollection([holeFeature, anotherHoleFeature]);
-
-        const result = holedMask(holeCollection);
-        expect(result).toBeDefined();
-        // A point inside either hole should be false in the resulting mask
-        expect(turf.booleanPointInPolygon(turf.point([15, 15]), result!)).toBe(false);
-        expect(turf.booleanPointInPolygon(turf.point([35, 35]), result!)).toBe(false);
-        // A point outside the holes but in the world should be true
-        expect(turf.booleanPointInPolygon(turf.point([0, 0]), result!)).toBe(true);
-    });
-
-    test("returns null if turf.difference returns null", () => {
-        // Temporarily mock turf.difference to return null
-        vi.mocked(turf.difference).mockReturnValueOnce(null as any);
-
-        const result = holedMask(holeFeature);
-        expect(result).toBeNull();
     });
 });

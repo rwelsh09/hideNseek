@@ -30,8 +30,3 @@
 ## 2026-07-19 - [Pool concurrent dynamic imports for offline places]
 **Learning:** When dynamically importing large local JSON datasets (like `offline_places.json`), if `import()` is called concurrently multiple times before the first import completes, it can cause memory spikes and redundant processing.
 **Action:** Use a module-level Promise variable to pool concurrent requests and prevent redundant reads. Always include a `.catch()` block to reset this promise to `null` on failure, allowing subsequent calls to retry and avoiding permanent cache locking on transient errors.
-
-## 2026-07-20 - [Optimize useEffect triggers for nanostores]
-
-**Learning:** Passing a full reactive store object (like `$questions`) to a `useEffect` dependency array can trigger excessive and expensive side-effects (e.g., redundant API requests or map data processing) during rapid state changes like dragging a map marker.
-**Action:** Use `useMemo` to extract a stable primitive representation of the exact required state (like a stringified hash of active types) and use that hash as the `useEffect` dependency. This ensures the expensive effect only runs when the strictly necessary data requirements actually change.
