@@ -164,7 +164,7 @@ export function RulesAccordion() {
         <AccordionContent className="text-base text-slate-300 space-y-4 pt-2">
           <ul className="space-y-3 list-disc pl-5">
             <li>
-              <strong>Install the App:</strong> For the best experience, including faster load times, full-screen mode, and offline functionality, install this app on your device! 
+              <strong>Install the App:</strong> For the best experience, including faster load times, full-screen mode, and offline functionality, install this app on your device!
               <ul className="list-none p-0 m-0 w-full inline-block">
                 <PwaInstallTip client:only="react" />
               </ul>
