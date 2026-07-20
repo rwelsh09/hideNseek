@@ -43,8 +43,8 @@ export default defineConfig({
                 globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,json}'],
             },
             manifest: {
-                name: "Hide and Seek Map",
-                short_name: "Hide and Seek - Calgary",
+                name: "Hide 'n' Seek Map",
+                short_name: "Hide 'n' Seek - Calgary",
                 description:
                     "The map automatically eliminates possible hiding areas based on your questions!",
                 icons: [
