@@ -127,7 +127,7 @@ export const PwaInstallTip = () => {
                     ★
                 </span>
                 <span className="text-indigo-900/90 dark:text-indigo-200/90">
-                    Install this app! Look for "Add to Home Screen" in your browser menu or under share (iOS).
+                    Install this app! Look for &quot;Add to Home Screen&quot; in your browser menu or under share (iOS).
                 </span>
             </li>
         );

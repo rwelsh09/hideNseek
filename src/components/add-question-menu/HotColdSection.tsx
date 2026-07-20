@@ -29,8 +29,8 @@ export function HotColdSection({
             <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mt-2">
                 <button
                     type="button"
-                    aria-label="Add hotCold question for 1 km"
-                    title="Add hotCold question for 1 km"
+                    aria-label="Add Hot/Cold question for 1 km"
+                    title="Add Hot/Cold question for 1 km"
                     onClick={() => handleQuestionSelect("hot/cold", "1")}
                     className={`bg-rose-500 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-rose-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("hot/cold", "1") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -38,8 +38,8 @@ export function HotColdSection({
                 </button>
                 <button
                     type="button"
-                    aria-label="Add hotCold question for 5 km"
-                    title="Add hotCold question for 5 km"
+                    aria-label="Add Hot/Cold question for 5 km"
+                    title="Add Hot/Cold question for 5 km"
                     onClick={() => handleQuestionSelect("hot/cold", "5")}
                     className={`bg-rose-500 text-white text-[10px] sm:text-xs font-bold flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-rose-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("hot/cold", "5") ? "opacity-50 grayscale" : ""}`}
                 >

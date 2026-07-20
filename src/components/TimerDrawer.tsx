@@ -500,7 +500,7 @@ export const TimerDrawer = () => {
                                         !
                                     </span>
                                     <span className="text-sm">
-                                        Add the Hider's name to the leaderboard below.
+                                        Add the Hider&apos;s name to the leaderboard below.
                                     </span>
                                 </AlertDialogDescription>
                             </AlertDialogHeader>

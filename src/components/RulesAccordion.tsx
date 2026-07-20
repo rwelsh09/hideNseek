@@ -181,7 +181,7 @@ export function RulesAccordion() {
             <li>
               <strong>Too many Hiding Zones?</strong> Before starting the game, in the right sidebar, view Hiding Zones then click the ones in the list that you don&apos;t want to use. Share this new game state with the other players.
               <small className="ml-1 text-slate-400">
-                (I recommned doing this from a PC or other large screen device.)
+                (I recommend doing this from a PC or other large screen device.)
               </small>
             </li>
             <li>

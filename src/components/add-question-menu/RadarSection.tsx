@@ -29,8 +29,8 @@ export function RadarSection({
             <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mt-2">
                 <button
                     type="button"
-                    aria-label="Add radar question for 0.5 km"
-                    title="Add radar question for 0.5 km"
+                    aria-label="Add Radar question for 0.5 km"
+                    title="Add Radar question for 0.5 km"
                     onClick={() => handleQuestionSelect("radar", "0.5")}
                     className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "0.5") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -38,8 +38,8 @@ export function RadarSection({
                 </button>
                 <button
                     type="button"
-                    aria-label="Add radar question for 1 km"
-                    title="Add radar question for 1 km"
+                    aria-label="Add Radar question for 1 km"
+                    title="Add Radar question for 1 km"
                     onClick={() => handleQuestionSelect("radar", "1")}
                     className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "1") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -47,8 +47,8 @@ export function RadarSection({
                 </button>
                 <button
                     type="button"
-                    aria-label="Add radar question for 2 km"
-                    title="Add radar question for 2 km"
+                    aria-label="Add Radar question for 2 km"
+                    title="Add Radar question for 2 km"
                     onClick={() => handleQuestionSelect("radar", "2")}
                     className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "2") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -56,8 +56,8 @@ export function RadarSection({
                 </button>
                 <button
                     type="button"
-                    aria-label="Add radar question for 5 km"
-                    title="Add radar question for 5 km"
+                    aria-label="Add Radar question for 5 km"
+                    title="Add Radar question for 5 km"
                     data-tutorial-id="tutorial-add-radar-5"
                     onClick={() => handleQuestionSelect("radar", "5")}
                     className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "5") ? "opacity-50 grayscale" : ""}`}
@@ -66,8 +66,8 @@ export function RadarSection({
                 </button>
                 <button
                     type="button"
-                    aria-label="Add radar question for 10 km"
-                    title="Add radar question for 10 km"
+                    aria-label="Add Radar question for 10 km"
+                    title="Add Radar question for 10 km"
                     onClick={() => handleQuestionSelect("radar", "10")}
                     className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "10") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -75,8 +75,8 @@ export function RadarSection({
                 </button>
                 <button
                     type="button"
-                    aria-label="Add radar question for 15 km"
-                    title="Add radar question for 15 km"
+                    aria-label="Add Radar question for 15 km"
+                    title="Add Radar question for 15 km"
                     onClick={() => handleQuestionSelect("radar", "15")}
                     className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "15") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -84,8 +84,8 @@ export function RadarSection({
                 </button>
                 <button
                     type="button"
-                    aria-label="Add radar question for unknown size"
-                    title="Add radar question for unknown size"
+                    aria-label="Add Radar question for unknown size"
+                    title="Add Radar question for unknown size"
                     onClick={() => handleQuestionSelect("radar", "unknown")}
                     className={`bg-orange-500 text-white text-xs sm:text-sm font-bold flex justify-center items-center hover:bg-orange-600 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("radar", "unknown") ? "opacity-50 grayscale" : ""}`}
                 >
