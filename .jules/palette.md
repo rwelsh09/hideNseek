@@ -11,12 +11,17 @@
 **Action:** Always ensure that any interactive visual element or icon-only click target is wrapped in a semantic `<button type="button">` element. Critically, these elements must possess a descriptive, contextual `aria-label` (e.g., distinguishing *which* list entry it removes), a native browser `title` for hover context, and explicit, consistent `focus-visible` utility classes (e.g., `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2` or similar `ring-ring`) to guarantee predictable and accessible keyboard navigation patterns across all UI layers.
 
 
-## 2026-07-28 - [Accessible Form Buttons inside Dynamic Grid Components]
+## 2026-07-16 - [Accessible Form Buttons inside Dynamic Grid Components]
 
 **Learning:** When using dynamic map iteration to generate complex interactive elements (like the grid of location selection buttons in `MatchSection` and `MeasureSection`), standard `aria-label`s and `title`s are often overlooked in favor of purely visual rendering. This creates identical, unlabelled interaction targets for screen readers, masking the unique action each button performs.
 **Action:** When rendering arrays of interactive components based on configuration data (such as `PLACES`), always inject the dynamically generated semantic descriptor (e.g., `place.label` or hardcoded label context) directly into `aria-label` and `title` attributes on every clickable item to provide clear, accessible, and distinct interactions for all users.
 
-## 2026-08-01 - [Accessible Form Inputs in Complex Layouts]
+## 2026-07-18 - [Accessible Form Inputs in Complex Layouts]
 
 **Learning:** When using standard UI components (like `Input` and `Label` from Radix UI or generic design systems) within complex nested layouts such as accordions (e.g., `AdvancedStationManagement`), the explicit association between a label and its input (`htmlFor` and `id`) is often overlooked. Without it, users clicking the label won't focus the input, and screen readers will fail to announce the context of the input field.
 **Action:** Always ensure any `<Label>` is bound to its associated `<Input>` using matching `htmlFor` and `id` properties, especially in newly added settings or configuration panels, to guarantee robust keyboard accessibility and screen reader support.
+
+## 2026-07-20 - [Icon-Only Map Floating Controls & Unnoticeable Animations]
+
+**Learning:** When trying to add global tactile feedback like `active:scale-95 transition-all` to standard buttons, the effect can be imperceptible if the resulting interaction or state change happens too quickly. Additionally, responsive button components that strip out their text labels to render as 'icon-only' based on viewport/layout context (e.g., floating map action buttons) inherently lose their screen reader name if `aria-label`s are not explicitly defined or updated.
+**Action:** Avoid micro-interactions that are swallowed by fast application state changes; stick to clear hover states and focus rings instead of active scale animations unless the action is artificially delayed. However, when a component toggles text rendering via an `iconOnly` prop, *always* ensure an explicit `aria-label` is present and conditionally render a native `title` attribute so the icon's purpose remains accessible to both screen readers and pointer-device users.
