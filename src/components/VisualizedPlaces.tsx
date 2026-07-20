@@ -158,7 +158,6 @@ export const VisualizedPlaces = () => {
             }
 
             // Fetch specific types
-            const specificTypesArray = Array.from(specificTypesSet);
             if (specificTypesArray.length > 0) {
                 promises.push((async () => {
                     try {
