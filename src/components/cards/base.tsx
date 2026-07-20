@@ -293,7 +293,7 @@ export const QuestionCard = ({
                                         e.stopPropagation();
                                         const shareData = {
                                             url: "",
-                                            text: `Tell the Seekers: ${resultStr}`,
+                                            text: `Answer: ${resultStr}`,
                                             title: "Share Answer"
                                         };
                                         await shareOrFallback(shareData).then((result) => {
