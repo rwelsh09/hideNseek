@@ -32,7 +32,7 @@ import { cn, encodeBase64Unicode, shareOrFallback } from "@/lib/utils";
 import { PLACES } from "@/maps/placesConfig";
 
 const TYPE_MAPPINGS: Record<string, string> = {
-    ...Object.fromEntries(PLACES.map((p) => [p.id, p.label])),
+    ...Object.fromEntries(PLACES.map(p => [p.id, p.label])),
     "same-neighbourhood": "Neighbourhood (Same As Me)",
     "same-first-letter-neighbourhood": "Neighbourhood (Same First Letter)",
     "same-first-letter-station": "Station Starts With Same Letter",
@@ -75,21 +75,15 @@ export const QuestionCard = ({
         if (wasUnlocked) {
             // We are locking it now
             penaltyMinutes.set(
-                penaltyMinutes.get() +
-                    TIME_PENALTIES[penaltyId] *
-                        (questionData.doubledPenalty ? 2 : 1),
+                penaltyMinutes.get() + TIME_PENALTIES[penaltyId] * (questionData.doubledPenalty ? 2 : 1),
             );
         } else {
             // We are unlocking it now
             penaltyMinutes.set(
-                Math.max(
-                    0,
-                    penaltyMinutes.get() -
-                        TIME_PENALTIES[penaltyId] *
-                            (questionData.doubledPenalty ? 2 : 1),
-                ),
+                Math.max(0, penaltyMinutes.get() - TIME_PENALTIES[penaltyId] * (questionData.doubledPenalty ? 2 : 1)),
             );
         }
+
 
         setIsCollapsed(wasUnlocked);
     };
@@ -114,9 +108,7 @@ export const QuestionCard = ({
                 resultStr = questionData.same ? "Same" : "Different";
             }
         } else if (question.id === "measure") {
-            resultStr = questionData.hiderCloser
-                ? "Hider Closer"
-                : "Hider Further";
+            resultStr = questionData.hiderCloser ? "Hider Closer" : "Hider Further";
         } else if (question.id === "closest") {
             resultStr = questionData.location
                 ? questionData.location.properties?.name
@@ -171,10 +163,7 @@ export const QuestionCard = ({
             let noteSuffix = "";
             if (questionData.notes) {
                 const note = questionData.notes as string;
-                noteSuffix =
-                    note.length > 30
-                        ? ` - ${note.substring(0, 30)}...`
-                        : ` - ${note}`;
+                noteSuffix = note.length > 30 ? ` - ${note.substring(0, 30)}...` : ` - ${note}`;
             }
             displayLabel = `Photo - ${label}${noteSuffix}`;
         }
@@ -183,7 +172,7 @@ export const QuestionCard = ({
     return (
         <>
             <SidebarGroup className={className}>
-                <div className="relative">
+            <div className="relative">
                     <button
                         type="button"
                         data-tutorial-id="tutorial-lock-btn"
@@ -210,15 +199,10 @@ export const QuestionCard = ({
                         {displayLabel} {sub && `(${sub})`}
                     </SidebarGroupLabel>
 
-                    <div
-                        className="absolute right-1.5 top-1.5 flex gap-1 z-10"
-                        onClick={(e) => e.stopPropagation()}
-                    >
+                    <div className="absolute right-1.5 top-1.5 flex gap-1 z-10" onClick={(e) => e.stopPropagation()}>
                         {!questionData.locked && (
                             <>
-                                {QUESTION_RULES[
-                                    question?.id as keyof typeof QUESTION_RULES
-                                ] && (
+                                {QUESTION_RULES[question?.id as keyof typeof QUESTION_RULES] && (
                                     <Popover>
                                         <PopoverTrigger asChild>
                                             <button
@@ -231,15 +215,9 @@ export const QuestionCard = ({
                                             </button>
                                         </PopoverTrigger>
                                         <PopoverContent className="w-80 p-4 z-[9999]">
-                                            <h4 className="font-semibold mb-2">
-                                                How it works
-                                            </h4>
+                                            <h4 className="font-semibold mb-2">How it works</h4>
                                             <p className="text-sm text-muted-foreground">
-                                                {
-                                                    QUESTION_RULES[
-                                                        question?.id as keyof typeof QUESTION_RULES
-                                                    ]
-                                                }
+                                                {QUESTION_RULES[question?.id as keyof typeof QUESTION_RULES]}
                                             </p>
                                         </PopoverContent>
                                     </Popover>
@@ -252,38 +230,25 @@ export const QuestionCard = ({
                                     onClick={async (e) => {
                                         e.stopPropagation();
 
-                                        const payload = encodeBase64Unicode(
-                                            JSON.stringify(question),
-                                        );
-                                        const url = new URL(
-                                            window.location.href,
-                                        );
+                                        const payload = encodeBase64Unicode(JSON.stringify(question));
+                                        const url = new URL(window.location.href);
                                         url.searchParams.set("q", payload);
 
                                         const shareData = {
                                             url: url.toString(),
-                                            text: await getQuestionShareText(
-                                                question,
-                                                questionData,
-                                            ),
-                                            title: "Share Question",
+                                            text: await getQuestionShareText(question, questionData),
+                                            title: "Share Question"
                                         };
 
-                                        await shareOrFallback(shareData).then(
-                                            (result) => {
-                                                if (result === false) {
-                                                    return toast.error(
-                                                        "Sharing failed and clipboard API not supported in your browser",
-                                                    );
-                                                }
+                                        await shareOrFallback(shareData).then((result) => {
+                                            if (result === false) {
+                                                return toast.error("Sharing failed and clipboard API not supported in your browser");
+                                            }
 
-                                                if (result === "clipboard") {
-                                                    toast.success(
-                                                        "Copied Link to Clipboard!",
-                                                    );
-                                                }
-                                            },
-                                        );
+                                            if (result === "clipboard") {
+                                                toast.success("Copied Link to Clipboard!");
+                                            }
+                                        });
                                     }}
                                 >
                                     <VscShare className="w-4 h-4" />
@@ -296,23 +261,12 @@ export const QuestionCard = ({
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         const qList = questions.get();
-                                        const currentQ = qList.find(
-                                            (q) => q.key === questionKey,
-                                        );
+                                        const currentQ = qList.find((q) => q.key === questionKey);
                                         if (currentQ && !currentQ.data.locked) {
-                                            questions.set(
-                                                qList.filter(
-                                                    (q) =>
-                                                        q.key !== questionKey,
-                                                ),
-                                            );
+                                            questions.set(qList.filter((q) => q.key !== questionKey));
                                             if (questions.get().length === 0) {
-                                                lockedRecommendedStart.set(
-                                                    null,
-                                                );
-                                                lockedActiveStationIds.set(
-                                                    null,
-                                                );
+                                                lockedRecommendedStart.set(null);
+                                                lockedActiveStationIds.set(null);
                                             }
                                         }
                                     }}
@@ -340,29 +294,21 @@ export const QuestionCard = ({
                                         const shareData = {
                                             url: "",
                                             text: `Answer: ${resultStr}`,
-                                            title: "Share Answer",
+                                            title: "Share Answer"
                                         };
-                                        await shareOrFallback(shareData).then(
-                                            (result) => {
-                                                if (result === false) {
-                                                    return toast.error(
-                                                        "Sharing failed and clipboard API not supported in your browser",
-                                                    );
-                                                }
-                                                if (result === "clipboard") {
-                                                    toast.success(
-                                                        "Copied Answer to Clipboard!",
-                                                    );
-                                                }
-                                            },
-                                        );
+                                        await shareOrFallback(shareData).then((result) => {
+                                            if (result === false) {
+                                                return toast.error("Sharing failed and clipboard API not supported in your browser");
+                                            }
+                                            if (result === "clipboard") {
+                                                toast.success("Copied Answer to Clipboard!");
+                                            }
+                                        });
                                     }}
                                 >
                                     <div>
                                         Tell the Seekers:{" "}
-                                        <span className="text-primary">
-                                            {resultStr}
-                                        </span>
+                                        <span className="text-primary">{resultStr}</span>
                                     </div>
                                 </div>
                             )}

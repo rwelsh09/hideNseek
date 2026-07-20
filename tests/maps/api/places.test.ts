@@ -1,10 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 
-import {
-    checkFilters,
-    findPlacesInZone,
-    determineMapBoundaries,
-} from "@/maps/api/places";
+import { checkFilters, findPlacesInZone, determineMapBoundaries } from "@/maps/api/places";
 import { polyGeoJSON, mapGeoJSON } from "@/lib/context";
 
 // Mock boundaries
@@ -14,21 +10,11 @@ vi.mock("@/data/calgary_boundary.json", () => ({
             type: "Feature",
             geometry: {
                 type: "MultiPolygon",
-                coordinates: [
-                    [
-                        [
-                            [-114.1, 51.0],
-                            [-114.1, 51.1],
-                            [-114.0, 51.1],
-                            [-114.0, 51.0],
-                            [-114.1, 51.0],
-                        ],
-                    ],
-                ],
+                coordinates: [[[[ -114.1, 51.0 ], [ -114.1, 51.1 ], [ -114.0, 51.1 ], [ -114.0, 51.0 ], [ -114.1, 51.0 ]]]]
             },
-            properties: {},
-        },
-    ],
+            properties: {}
+        }
+    ]
 }));
 
 // Use hoisted vi.mock for context
@@ -50,58 +36,47 @@ vi.mock("@/data/offline_places.json", () => ({
                 id: 1,
                 lat: 51.05,
                 lon: -114.05,
-                tags: { amenity: "cafe", name: "Central Cafe" },
+                tags: { amenity: "cafe", name: "Central Cafe" }
             },
             {
                 type: "way",
                 id: 2,
                 center: { lat: 51.06, lon: -114.06 },
-                tags: { amenity: "fast_food", name: "Burger Place" },
+                tags: { amenity: "fast_food", name: "Burger Place" }
             },
             {
                 type: "node",
                 id: 3,
                 lat: 51.5, // Outside boundary
                 lon: -114.5,
-                tags: { amenity: "cafe", name: "Faraway Cafe" },
+                tags: { amenity: "cafe", name: "Faraway Cafe" }
             },
             {
                 type: "relation",
                 id: 4,
-                bounds: {
-                    minlat: 51.04,
-                    minlon: -114.04,
-                    maxlat: 51.045,
-                    maxlon: -114.035,
-                },
-                tags: { shop: "convenience", name: "Corner Store" },
+                bounds: { minlat: 51.04, minlon: -114.04, maxlat: 51.045, maxlon: -114.035 },
+                tags: { shop: "convenience", name: "Corner Store" }
             },
             {
                 type: "way",
                 id: 5,
                 geometry: [{ lat: 51.07, lon: -114.07 }], // Test fallback to geometry
-                tags: { leisure: "park", name: "City Park" },
+                tags: { leisure: "park", name: "City Park" }
             },
             {
                 type: "relation",
                 id: 6,
-                members: [
-                    {
-                        type: "way",
-                        ref: 10,
-                        geometry: [{ lat: 51.08, lon: -114.08 }],
-                    },
-                ],
-                tags: { leisure: "park", name: "Another Park" },
+                members: [{ type: "way", ref: 10, geometry: [{ lat: 51.08, lon: -114.08 }] }],
+                tags: { leisure: "park", name: "Another Park" }
             },
             {
                 type: "node",
                 id: 7,
                 // Missing location entirely
-                tags: { amenity: "cafe", name: "Nowhere Cafe" },
+                tags: { amenity: "cafe", name: "Nowhere Cafe" }
             },
-        ],
-    },
+        ]
+    }
 }));
 
 describe("checkFilters", () => {
@@ -196,21 +171,11 @@ describe("findPlacesInZone", () => {
                     type: "Feature",
                     geometry: {
                         type: "MultiPolygon",
-                        coordinates: [
-                            [
-                                [
-                                    [-114.1, 51.0],
-                                    [-114.1, 51.1],
-                                    [-114.0, 51.1],
-                                    [-114.0, 51.0],
-                                    [-114.1, 51.0],
-                                ],
-                            ],
-                        ],
+                        coordinates: [[[[ -114.1, 51.0 ], [ -114.1, 51.1 ], [ -114.0, 51.1 ], [ -114.0, 51.0 ], [ -114.1, 51.0 ]]]]
                     },
-                    properties: {},
-                },
-            ],
+                    properties: {}
+                }
+            ]
         });
 
         const data = await findPlacesInZone('["amenity"="cafe"]');
@@ -230,11 +195,7 @@ describe("findPlacesInZone", () => {
     });
 
     it("filters offline places and includes those matching alternative filters", async () => {
-        const data = await findPlacesInZone(
-            '["amenity"="fast_food"]',
-            undefined,
-            ['["shop"="convenience"]'],
-        );
+        const data = await findPlacesInZone('["amenity"="fast_food"]', undefined, ['["shop"="convenience"]']);
 
         expect(data.elements).toHaveLength(2);
         const ids = data.elements.map((el: any) => el.id).sort();

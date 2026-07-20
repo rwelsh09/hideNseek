@@ -3,7 +3,10 @@ import { useStore } from "@nanostores/react";
 import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { MENU_ITEM_CLASSNAME, SidebarMenuItem } from "@/components/ui/sidebar";
+import {
+    MENU_ITEM_CLASSNAME,
+    SidebarMenuItem,
+} from "@/components/ui/sidebar";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { UnitSelect } from "@/components/UnitSelect";
 import {
@@ -98,19 +101,12 @@ export const RadarQuestionComponent = ({
                     disabled={!!$hiderMode || data.locked || $isLoading}
                     data-tutorial-id="tutorial-question-result-toggle"
                 >
-                    <ToggleGroupItem
-                        value="outside"
-                        className="data-[state=on]:bg-blue-500 data-[state=on]:text-white"
-                    >
+                    <ToggleGroupItem value="outside" className="data-[state=on]:bg-blue-500 data-[state=on]:text-white">
                         Outside
                     </ToggleGroupItem>
-                    <ToggleGroupItem
-                        value="inside"
-                        className="data-[state=on]:bg-rose-500 data-[state=on]:text-white"
-                    >
-                        Inside
-                    </ToggleGroupItem>
+                    <ToggleGroupItem value="inside" className="data-[state=on]:bg-rose-500 data-[state=on]:text-white">Inside</ToggleGroupItem>
                 </ToggleGroup>
+
             </div>
         </QuestionCard>
     );

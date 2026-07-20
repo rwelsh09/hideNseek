@@ -17,7 +17,7 @@ export const getFeatureProperties = (feature: any): Record<string, any> => {
     if (feature.properties?.properties) {
         return {
             ...feature.properties,
-            ...feature.properties.properties,
+            ...feature.properties.properties
         };
     }
 
@@ -42,10 +42,7 @@ export const extractStationLines = (stationPlace: any): string[] => {
     if (Array.isArray(props.lines)) {
         return props.lines;
     }
-    return (props.route_ref || props.ref || "")
-        .split(/[;,]/)
-        .map((r: string) => r.trim())
-        .filter(Boolean);
+    return (props.route_ref || props.ref || "").split(/[;,]/).map((r: string) => r.trim()).filter(Boolean);
 };
 
 export const extractStationId = (stationPlace: any): string | undefined => {
@@ -55,22 +52,14 @@ export const extractStationId = (stationPlace: any): string | undefined => {
     if (explicitId) return explicitId as string;
 
     const coords = getFeatureCoords(stationPlace);
-    if (
-        coords &&
-        typeof coords[0] === "number" &&
-        typeof coords[1] === "number"
-    ) {
+    if (coords && typeof coords[0] === 'number' && typeof coords[1] === 'number') {
         return `${coords[1]},${coords[0]}`;
     }
 
     // Try to handle nested feature structures (e.g. Turf circle enclosing original Point feature)
     if (props.geometry?.coordinates) {
         const nestedCoords = props.geometry.coordinates;
-        if (
-            nestedCoords &&
-            typeof nestedCoords[0] === "number" &&
-            typeof nestedCoords[1] === "number"
-        ) {
+        if (nestedCoords && typeof nestedCoords[0] === 'number' && typeof nestedCoords[1] === 'number') {
             return `${nestedCoords[1]},${nestedCoords[0]}`;
         }
     }

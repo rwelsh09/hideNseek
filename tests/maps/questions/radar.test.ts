@@ -1,5 +1,5 @@
 import * as turf from "@turf/turf";
-import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
+import type { FeatureCollection, MultiPolygon,Polygon } from "geojson";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { hiderMode } from "@/lib/context";
@@ -112,14 +112,8 @@ describe("radius", () => {
             expect(newArea).toBeGreaterThan(0);
 
             // The center of the radar should have been removed
-            const centerPoint = turf.point([
-                questionOutside.lng,
-                questionOutside.lat,
-            ]);
-            const pointInResult = turf.booleanPointInPolygon(
-                centerPoint,
-                result!.geometry as Polygon | MultiPolygon,
-            );
+            const centerPoint = turf.point([questionOutside.lng, questionOutside.lat]);
+            const pointInResult = turf.booleanPointInPolygon(centerPoint, result!.geometry as Polygon | MultiPolygon);
             expect(pointInResult).toBe(false);
         });
 

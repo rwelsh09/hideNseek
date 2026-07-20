@@ -106,29 +106,27 @@ const QUIZ_QUESTIONS = [
             "Yes, if they don't want to walk there.",
             "Only if the Hider agrees to it.",
             "No, Seekers must physically go to places to search for the Hider's photos.",
-            "Yes, but it costs a time penalty.",
+            "Yes, but it costs a time penalty."
         ],
         correct: 2,
     },
     {
-        question:
-            "Should players other than the Hider share their live location?",
+        question: "Should players other than the Hider share their live location?",
         options: [
             "No, that ruins the surprise.",
             "Yes, all players other than the Hider must share their location with the group.",
             "Only when they find the Hider.",
-            "Yes, but only with the Seekers, not the Hider.",
+            "Yes, but only with the Seekers, not the Hider."
         ],
         correct: 1,
     },
     {
-        question:
-            "If you want to play a practice round, what is highly encouraged?",
+        question: "If you want to play a practice round, what is highly encouraged?",
         options: [
             "To not do it, practice makes imperfect.",
             "To choose a Hiding Spot together and discuss the different answers one would give.",
             "To only play in an area you know well.",
-            "To limit the time to 10 minutes.",
+            "To limit the time to 10 minutes."
         ],
         correct: 1,
     },
@@ -260,19 +258,19 @@ export const RulesQuiz = () => {
             </div>
 
             {currentQuestionIndex + 1 !== QUIZ_QUESTIONS.length && (
-                <div className="flex justify-end mt-4 min-h-[40px]">
-                    <Button
-                        onClick={handleNextQuestion}
-                        disabled={!isAnswered}
-                        className={`text-white transition-opacity duration-200 ${
-                            isAnswered
-                                ? "bg-blue-600 hover:bg-blue-700 opacity-100"
-                                : "bg-slate-600 opacity-50 cursor-not-allowed"
-                        }`}
-                    >
-                        Next Question
-                    </Button>
-                </div>
+            <div className="flex justify-end mt-4 min-h-[40px]">
+                <Button
+                    onClick={handleNextQuestion}
+                    disabled={!isAnswered}
+                    className={`text-white transition-opacity duration-200 ${
+                        isAnswered
+                            ? "bg-blue-600 hover:bg-blue-700 opacity-100"
+                            : "bg-slate-600 opacity-50 cursor-not-allowed"
+                    }`}
+                >
+                    Next Question
+                </Button>
+            </div>
             )}
         </div>
     );
