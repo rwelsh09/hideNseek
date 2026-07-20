@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import confetti from "canvas-confetti";
-import { Clock, Play, Pause, Flag, Timer, Trash2, Trophy } from "lucide-react";
+import { Clock, Flag, Pause, Play, Timer, Trash2, Trophy } from "lucide-react";
 import * as React from "react";
 import { toast } from "react-toastify";
 
