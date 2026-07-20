@@ -3,10 +3,7 @@ import type { FeatureCollection, MultiPolygon, Polygon } from "geojson";
 import type { Map } from "leaflet";
 import { atom, computed, onSet } from "nanostores";
 
-import type {
-    OpenStreetMap,
-    StationCircle,
-} from "@/maps/api";
+import type { OpenStreetMap, StationCircle } from "@/maps/api";
 import { extractStationLabel } from "@/maps/geo-utils";
 import {
     type DeepPartial,
@@ -27,7 +24,6 @@ const persistentJsonAtom = <T>(name: string, initialValue: T) =>
         decode: JSON.parse,
     });
 
-
 export const mapGeoLocation = persistentJsonAtom<OpenStreetMap>(
     "mapGeoLocation",
     {
@@ -47,16 +43,25 @@ export const mapGeoLocation = persistentJsonAtom<OpenStreetMap>(
             name: "Calgary",
             type: "city",
         },
-    }
+    },
 );
 
-export const hasSeenWelcome = persistentJsonAtom<boolean>("hasSeenWelcome", false);
+export const hasSeenWelcome = persistentJsonAtom<boolean>(
+    "hasSeenWelcome",
+    false,
+);
 
-export const showHiderTutorial = persistentJsonAtom<boolean>("showHiderTutorial", true);
+export const showHiderTutorial = persistentJsonAtom<boolean>(
+    "showHiderTutorial",
+    true,
+);
 
 export const tutorialDriver = atom<any>(null);
 
-export const headStartMinutes = persistentJsonAtom<number>("headStartMinutes", 45);
+export const headStartMinutes = persistentJsonAtom<number>(
+    "headStartMinutes",
+    45,
+);
 export const mapGeoJSON = atom<FeatureCollection<
     Polygon | MultiPolygon
 > | null>(null);
@@ -92,11 +97,15 @@ export const hiderMode = persistentJsonAtom<
 >("isHiderMode", false);
 export const triggerLocalRefresh = atom<number>(0);
 
-export const displayHidingZonesStyle = persistentAtom<
-    "zones" | "no-display"
->("displayHidingZonesStyle", "no-display");
+export const displayHidingZonesStyle = persistentAtom<"zones" | "no-display">(
+    "displayHidingZonesStyle",
+    "no-display",
+);
 
-export const displayTransitLines = persistentJsonAtom<boolean>("displayTransitLines", true);
+export const displayTransitLines = persistentJsonAtom<boolean>(
+    "displayTransitLines",
+    true,
+);
 
 export const questionFinishedMapData = atom<any>(null);
 
@@ -110,8 +119,14 @@ onSet(trainStations, ({ newValue }) => {
 });
 
 export const hidingRadius = persistentJsonAtom<number>("hidingRadius", 0.8);
-export const hidingRadiusUnits = persistentJsonAtom<Units>("hidingRadiusUnits", "kilometers");
-export const disabledStations = persistentJsonAtom<string[]>("disabledStations", []);
+export const hidingRadiusUnits = persistentJsonAtom<Units>(
+    "hidingRadiusUnits",
+    "kilometers",
+);
+export const disabledStations = persistentJsonAtom<string[]>(
+    "disabledStations",
+    [],
+);
 
 export const hidingZone = computed(
     [
@@ -187,7 +202,10 @@ export const followMe = persistentJsonAtom<boolean>("followMe", false);
 
 export const showTutorial = persistentJsonAtom<boolean>("showTutorials", true);
 
-export const showNextStepsChecklist = persistentJsonAtom<boolean>("showNextStepsChecklist", false);
+export const showNextStepsChecklist = persistentJsonAtom<boolean>(
+    "showNextStepsChecklist",
+    false,
+);
 
 export const hasSeenRules = persistentJsonAtom<boolean>("hasSeenRules", false);
 
@@ -203,9 +221,18 @@ export const TIME_PENALTIES: Record<string, number> = {
 
 export const penaltyMinutes = persistentJsonAtom<number>("penaltyMinutes", 0);
 
-export const timerStartTimestamp = persistentJsonAtom<number | null>("timerStartTimestamp", null);
-export const timerElapsedSeconds = persistentJsonAtom<number>("timerElapsedSeconds", 0);
-export const isTimerRunning = persistentJsonAtom<boolean>("isTimerRunning", false);
+export const timerStartTimestamp = persistentJsonAtom<number | null>(
+    "timerStartTimestamp",
+    null,
+);
+export const timerElapsedSeconds = persistentJsonAtom<number>(
+    "timerElapsedSeconds",
+    0,
+);
+export const isTimerRunning = persistentJsonAtom<boolean>(
+    "isTimerRunning",
+    false,
+);
 
 export type LeaderboardEntry = {
     id: string;
@@ -214,12 +241,26 @@ export type LeaderboardEntry = {
     penaltyMinutes: number;
 };
 
-export const leaderboard = persistentJsonAtom<LeaderboardEntry[]>("leaderboard", []);
+export const leaderboard = persistentJsonAtom<LeaderboardEntry[]>(
+    "leaderboard",
+    [],
+);
 
-export const lockedActiveStationIds = persistentJsonAtom<string[] | null>("lockedActiveStationIds", null);
+export const lockedActiveStationIds = persistentJsonAtom<string[] | null>(
+    "lockedActiveStationIds",
+    null,
+);
 
-export const lockedRecommendedStart = persistentJsonAtom<[number, number] | null>("lockedRecommendedStart", null);
+export const lockedRecommendedStart = persistentJsonAtom<
+    [number, number] | null
+>("lockedRecommendedStart", null);
 
-export const showRecommendedStart = persistentJsonAtom<boolean>("showRecommendedStart", false);
+export const showRecommendedStart = persistentJsonAtom<boolean>(
+    "showRecommendedStart",
+    false,
+);
 
-export const hasSeenPerformanceWarning = persistentJsonAtom<boolean>("hasSeenPerformanceWarning", false);
+export const hasSeenPerformanceWarning = persistentJsonAtom<boolean>(
+    "hasSeenPerformanceWarning",
+    false,
+);

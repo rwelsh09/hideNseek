@@ -110,12 +110,19 @@ export const HotColdQuestionComponent = ({
                     }}
                     disabled={!!$hiderMode || data.locked || $isLoading}
                 >
-                    <ToggleGroupItem value="colder" className="data-[state=on]:bg-blue-500 data-[state=on]:text-white">
+                    <ToggleGroupItem
+                        value="colder"
+                        className="data-[state=on]:bg-blue-500 data-[state=on]:text-white"
+                    >
                         Colder
                     </ToggleGroupItem>
-                    <ToggleGroupItem value="warmer" className="data-[state=on]:bg-rose-500 data-[state=on]:text-white">Warmer</ToggleGroupItem>
+                    <ToggleGroupItem
+                        value="warmer"
+                        className="data-[state=on]:bg-rose-500 data-[state=on]:text-white"
+                    >
+                        Warmer
+                    </ToggleGroupItem>
                 </ToggleGroup>
-
             </div>
         </QuestionCard>
     );

@@ -275,8 +275,7 @@ export const DraggableMarkers = () => {
                                     onChange={(latitude, longitude) => {
                                         hiderMode.set({
                                             latitude:
-                                                latitude ??
-                                                $hiderMode.latitude,
+                                                latitude ?? $hiderMode.latitude,
                                             longitude:
                                                 longitude ??
                                                 $hiderMode.longitude,

@@ -91,9 +91,7 @@ describe("Measure Questions", () => {
 
         it("calculates distance for regular place types", async () => {
             vi.mocked(findPlacesInZone).mockResolvedValueOnce({
-                elements: [
-                    { lat: 51.06, lon: -114.06 },
-                ],
+                elements: [{ lat: 51.06, lon: -114.06 }],
             });
             const question: MeasureQuestion = {
                 id: "measure",
@@ -138,7 +136,7 @@ describe("Measure Questions", () => {
                     // BUT calculateMeasureDistance itself checks feature.geometry.type === "Polygon" etc.
                     // Let's look at `determineMeasureBoundary`. It always returns points!
                     // So how could it ever be a Polygon? Oh, wait... if `boundaryData` is the return of `determineMeasureBoundary`, it's an array of Points.
-                    { center: { lat: 51.05, lon: -114.05 } }
+                    { center: { lat: 51.05, lon: -114.05 } },
                 ],
             });
 
@@ -166,7 +164,10 @@ describe("Measure Questions", () => {
 
     describe("adjustPerMeasure", () => {
         it("returns undefined if mapData is null", async () => {
-            const result = await adjustPerMeasure({ type: "rail-measure" } as any, null);
+            const result = await adjustPerMeasure(
+                { type: "rail-measure" } as any,
+                null,
+            );
             expect(result).toBeUndefined();
         });
 
@@ -241,21 +242,37 @@ describe("Measure Questions", () => {
     describe("hiderifyMeasure", () => {
         it("returns unmodified if hiderMode is false", async () => {
             vi.mocked(hiderMode.get).mockReturnValue(false);
-            const question: MeasureQuestion = { type: "rail-measure", hiderCloser: true, lat: 51.03, lng: -114.03 } as any;
+            const question: MeasureQuestion = {
+                type: "rail-measure",
+                hiderCloser: true,
+                lat: 51.03,
+                lng: -114.03,
+            } as any;
             const result = await hiderifyMeasure(question);
             expect(result).toEqual(question);
         });
 
         it("returns unmodified if mapGeoJSON is null", async () => {
-            vi.mocked(hiderMode.get).mockReturnValue({ latitude: 51.05, longitude: -114.05 });
+            vi.mocked(hiderMode.get).mockReturnValue({
+                latitude: 51.05,
+                longitude: -114.05,
+            });
             vi.mocked(mapGeoJSON.get).mockReturnValue(null as any);
-            const question: MeasureQuestion = { type: "rail-measure", hiderCloser: true, lat: 51.04, lng: -114.04 } as any;
+            const question: MeasureQuestion = {
+                type: "rail-measure",
+                hiderCloser: true,
+                lat: 51.04,
+                lng: -114.04,
+            } as any;
             const result = await hiderifyMeasure(question);
             expect(result).toEqual(question);
         });
 
         it("sets hiderCloser to true if hider is within the buffer", async () => {
-            vi.mocked(hiderMode.get).mockReturnValue({ latitude: 51.05, longitude: -114.05 });
+            vi.mocked(hiderMode.get).mockReturnValue({
+                latitude: 51.05,
+                longitude: -114.05,
+            });
             vi.mocked(mapGeoJSON.get).mockReturnValue({} as any);
             const question: MeasureQuestion = {
                 id: "measure",
@@ -271,7 +288,10 @@ describe("Measure Questions", () => {
         });
 
         it("sets hiderCloser to false if hider is outside the buffer", async () => {
-            vi.mocked(hiderMode.get).mockReturnValue({ latitude: 51.2, longitude: -114.2 });
+            vi.mocked(hiderMode.get).mockReturnValue({
+                latitude: 51.2,
+                longitude: -114.2,
+            });
             vi.mocked(mapGeoJSON.get).mockReturnValue({} as any);
             const question: MeasureQuestion = {
                 id: "measure",
@@ -289,7 +309,11 @@ describe("Measure Questions", () => {
 
     describe("measurePlanningPolygon", () => {
         it("returns LineString representation of the buffer", async () => {
-            const question: MeasureQuestion = { type: "rail-measure", lat: 51.07, lng: -114.07 } as any;
+            const question: MeasureQuestion = {
+                type: "rail-measure",
+                lat: 51.07,
+                lng: -114.07,
+            } as any;
             const result = await measurePlanningPolygon(question);
             expect(result).not.toBe(false);
             if (result !== false) {
@@ -299,8 +323,14 @@ describe("Measure Questions", () => {
         });
 
         it("returns false on error", async () => {
-            vi.mocked(arcBufferToPoint).mockRejectedValueOnce(new Error("Test Error"));
-            const question: MeasureQuestion = { type: "rail-measure", lat: 51.08, lng: -114.08 } as any;
+            vi.mocked(arcBufferToPoint).mockRejectedValueOnce(
+                new Error("Test Error"),
+            );
+            const question: MeasureQuestion = {
+                type: "rail-measure",
+                lat: 51.08,
+                lng: -114.08,
+            } as any;
             const result = await measurePlanningPolygon(question);
             expect(result).toBe(false);
         });

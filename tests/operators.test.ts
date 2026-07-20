@@ -124,8 +124,14 @@ test("voronoi diagram", () => {
             return; // A glitch with turf where overlapping polygons can cause this
         }
 
-        const expectedDistance = turf.distance(point, basePoints.features[basePointIndex]);
-        const actualDistance = turf.distance(point, basePoints.features[voronoiIndex]);
+        const expectedDistance = turf.distance(
+            point,
+            basePoints.features[basePointIndex],
+        );
+        const actualDistance = turf.distance(
+            point,
+            basePoints.features[voronoiIndex],
+        );
         expect(actualDistance).toBeCloseTo(expectedDistance, 0);
     });
 });
@@ -207,9 +213,13 @@ describe("holedMask", () => {
         expect(result).toBeDefined();
         expect(result?.geometry.type).toBe("Polygon");
         // A point inside the hole should be false in the resulting mask
-        expect(turf.booleanPointInPolygon(turf.point([15, 15]), result!)).toBe(false);
+        expect(turf.booleanPointInPolygon(turf.point([15, 15]), result!)).toBe(
+            false,
+        );
         // A point outside the hole but in the world should be true
-        expect(turf.booleanPointInPolygon(turf.point([0, 0]), result!)).toBe(true);
+        expect(turf.booleanPointInPolygon(turf.point([0, 0]), result!)).toBe(
+            true,
+        );
     });
 
     test("handles a FeatureCollection input representing multiple holes", () => {
@@ -222,15 +232,24 @@ describe("holedMask", () => {
                 [30, 30],
             ],
         ]);
-        const holeCollection = turf.featureCollection([holeFeature, anotherHoleFeature]);
+        const holeCollection = turf.featureCollection([
+            holeFeature,
+            anotherHoleFeature,
+        ]);
 
         const result = holedMask(holeCollection);
         expect(result).toBeDefined();
         // A point inside either hole should be false in the resulting mask
-        expect(turf.booleanPointInPolygon(turf.point([15, 15]), result!)).toBe(false);
-        expect(turf.booleanPointInPolygon(turf.point([35, 35]), result!)).toBe(false);
+        expect(turf.booleanPointInPolygon(turf.point([15, 15]), result!)).toBe(
+            false,
+        );
+        expect(turf.booleanPointInPolygon(turf.point([35, 35]), result!)).toBe(
+            false,
+        );
         // A point outside the holes but in the world should be true
-        expect(turf.booleanPointInPolygon(turf.point([0, 0]), result!)).toBe(true);
+        expect(turf.booleanPointInPolygon(turf.point([0, 0]), result!)).toBe(
+            true,
+        );
     });
 
     test("returns null if turf.difference returns null", () => {

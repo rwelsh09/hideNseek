@@ -89,9 +89,9 @@ export const VisualizedPlaces = () => {
         });
 
         return JSON.stringify({
-            standard: Array.from(typesSet).filter(
-                (type) => (LOCATION_FIRST_TAG as any)[type],
-            ).sort(),
+            standard: Array.from(typesSet)
+                .filter((type) => (LOCATION_FIRST_TAG as any)[type])
+                .sort(),
             specific: Array.from(specificTypesSet).sort(),
         });
     }, [$questions]);
@@ -101,108 +101,130 @@ export const VisualizedPlaces = () => {
 
         const loadPlaces = async () => {
             const allPlaces: any[] = [];
-            const { standard: standardTypesArray, specific: specificTypesArray } = JSON.parse(typesHash);
+            const {
+                standard: standardTypesArray,
+                specific: specificTypesArray,
+            } = JSON.parse(typesHash);
 
             const promises: Promise<void>[] = [];
 
             if (standardTypesArray.length > 0) {
-                promises.push((async () => {
-                    const firstType = standardTypesArray[0];
-                    const firstTag = (LOCATION_FIRST_TAG as any)[firstType];
+                promises.push(
+                    (async () => {
+                        const firstType = standardTypesArray[0];
+                        const firstTag = (LOCATION_FIRST_TAG as any)[firstType];
 
-                    const alternatives = standardTypesArray.slice(1).map((type) => {
-                        const tag = (LOCATION_FIRST_TAG as any)[type];
-                        return `[${tag}=${type}]`;
-                    });
-
-                    try {
-                        const rawData = await findPlacesInZone(
-                            `[${firstTag}=${firstType}]`,
-                            undefined,
-                            alternatives,
-                        );
-
-                        const processedData = {
-                            ...rawData,
-                            elements: rawData.elements.map((e: any) => {
-                                if (
-                                    (e.type === "way" || e.type === "relation") &&
-                                    e.center
-                                ) {
-                                    return {
-                                        ...e,
-                                        type: "node",
-                                        lat: e.center.lat,
-                                        lon: e.center.lon,
-                                        id: e.id,
-                                        tags: e.tags,
-                                    };
-                                }
-                                return e;
-                            }),
-                        };
-                        const features = osm2geojson(processedData, { completeFeature: true });
-
-                        if (features && features.features) {
-                            features.features.forEach((f: any) => {
-                                allPlaces.push({
-                                    ...f,
-                                    customColour: "purple", // distinct colour for visualized
-                                });
+                        const alternatives = standardTypesArray
+                            .slice(1)
+                            .map((type) => {
+                                const tag = (LOCATION_FIRST_TAG as any)[type];
+                                return `[${tag}=${type}]`;
                             });
+
+                        try {
+                            const rawData = await findPlacesInZone(
+                                `[${firstTag}=${firstType}]`,
+                                undefined,
+                                alternatives,
+                            );
+
+                            const processedData = {
+                                ...rawData,
+                                elements: rawData.elements.map((e: any) => {
+                                    if (
+                                        (e.type === "way" ||
+                                            e.type === "relation") &&
+                                        e.center
+                                    ) {
+                                        return {
+                                            ...e,
+                                            type: "node",
+                                            lat: e.center.lat,
+                                            lon: e.center.lon,
+                                            id: e.id,
+                                            tags: e.tags,
+                                        };
+                                    }
+                                    return e;
+                                }),
+                            };
+                            const features = osm2geojson(processedData, {
+                                completeFeature: true,
+                            });
+
+                            if (features && features.features) {
+                                features.features.forEach((f: any) => {
+                                    allPlaces.push({
+                                        ...f,
+                                        customColour: "purple", // distinct colour for visualized
+                                    });
+                                });
+                            }
+                        } catch (e) {
+                            console.error(
+                                "Failed to load visualized places",
+                                e,
+                            );
                         }
-                    } catch (e) {
-                        console.error("Failed to load visualized places", e);
-                    }
-                })());
+                    })(),
+                );
             }
 
             // Fetch specific types
             if (specificTypesArray.length > 0) {
-                promises.push((async () => {
-                    try {
-                        const firstSpecific = specificTypesArray[0];
-                        const specificAlternatives = specificTypesArray.slice(1);
+                promises.push(
+                    (async () => {
+                        try {
+                            const firstSpecific = specificTypesArray[0];
+                            const specificAlternatives =
+                                specificTypesArray.slice(1);
 
-                        const rawData = await findPlacesInZone(
-                            firstSpecific,
-                            undefined,
-                            specificAlternatives,
-                        );
+                            const rawData = await findPlacesInZone(
+                                firstSpecific,
+                                undefined,
+                                specificAlternatives,
+                            );
 
-                        const processedData = {
-                            ...rawData,
-                            elements: rawData.elements.map((e: any) => {
-                                if (
-                                    (e.type === "way" || e.type === "relation") &&
-                                    e.center
-                                ) {
-                                    return {
-                                        ...e,
-                                        type: "node",
-                                        lat: e.center.lat,
-                                        lon: e.center.lon,
-                                        id: e.id,
-                                        tags: e.tags,
-                                    };
-                                }
-                                return e;
-                            }),
-                        };
-                        const features = osm2geojson(processedData, { completeFeature: true });
-
-                        if (features && features.features) {
-                            features.features.forEach((f: any) => {
-                                allPlaces.push({
-                                    ...f,
-                                    customColour: "green",
-                                });
+                            const processedData = {
+                                ...rawData,
+                                elements: rawData.elements.map((e: any) => {
+                                    if (
+                                        (e.type === "way" ||
+                                            e.type === "relation") &&
+                                        e.center
+                                    ) {
+                                        return {
+                                            ...e,
+                                            type: "node",
+                                            lat: e.center.lat,
+                                            lon: e.center.lon,
+                                            id: e.id,
+                                            tags: e.tags,
+                                        };
+                                    }
+                                    return e;
+                                }),
+                            };
+                            const features = osm2geojson(processedData, {
+                                completeFeature: true,
                             });
+
+                            if (features && features.features) {
+                                features.features.forEach((f: any) => {
+                                    allPlaces.push({
+                                        ...f,
+                                        customColour: "green",
+                                    });
+                                });
+                            }
+                        } catch (e) {
+                            console.error(
+                                "Failed to load specific visualized places",
+                                e,
+                            );
                         }
-                    } catch (e) {
-                        console.error("Failed to load specific visualized places", e);
-                    }
-                })());
+                    })(),
+                );
             }
 
             await Promise.all(promises);
@@ -242,9 +264,5 @@ export const VisualizedPlaces = () => {
         });
     }, [places]);
 
-    return (
-        <>
-            {markers}
-        </>
-    );
+    return <>{markers}</>;
 };

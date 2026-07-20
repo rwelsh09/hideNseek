@@ -9,10 +9,7 @@ import {
     mapGeoLocation,
     polyGeoJSON,
 } from "@/lib/context";
-import {
-    findPlacesInZone,
-    LOCATION_FIRST_TAG,
-} from "@/maps/api";
+import { findPlacesInZone, LOCATION_FIRST_TAG } from "@/maps/api";
 import { arcBufferToPoint, modifyMapData, safeUnion } from "@/maps/geo-utils";
 import { PLACES } from "@/maps/placesConfig";
 import type { MeasureQuestion } from "@/maps/schema";
@@ -31,7 +28,7 @@ const determineMeasureBoundary = async (question: MeasureQuestion) => {
         return fc.features as any;
     }
 
-    const place = PLACES.find(p => p.id === question.type);
+    const place = PLACES.find((p) => p.id === question.type);
     if (place) {
         const location = place.id;
         const data = await findPlacesInZone(
@@ -49,12 +46,18 @@ const determineMeasureBoundary = async (question: MeasureQuestion) => {
         return [
             turf.combine(
                 turf.featureCollection(
-                    data.elements.filter((x: any) => typeof (x.center?.lon ?? x.lon) === 'number' && typeof (x.center?.lat ?? x.lat) === 'number').map((x: any) =>
-                        turf.point([
-                            x.center ? x.center.lon : x.lon,
-                            x.center ? x.center.lat : x.lat,
-                        ]),
-                    ),
+                    data.elements
+                        .filter(
+                            (x: any) =>
+                                typeof (x.center?.lon ?? x.lon) === "number" &&
+                                typeof (x.center?.lat ?? x.lat) === "number",
+                        )
+                        .map((x: any) =>
+                            turf.point([
+                                x.center ? x.center.lon : x.lon,
+                                x.center ? x.center.lat : x.lat,
+                            ]),
+                        ),
                 ),
             ).features[0],
         ];
@@ -160,7 +163,7 @@ export const calculateMeasureDistance = async (
             });
         }
         default: {
-            const place = PLACES.find(p => p.id === question.type);
+            const place = PLACES.find((p) => p.id === question.type);
             if (place) {
                 const boundaryData = await determineMeasureBoundary(question);
                 if (
