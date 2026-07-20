@@ -7,7 +7,7 @@ export const getHiderSteps = (hiderDriverObj: any): DriveStep[] => [
             description: "",
             side: "top",
             align: "center",
-            showButtons: ["next"],
+            showButtons: ["next", "close"],
             onPopoverRender: () => {
                 hiderDriverObj.setConfig({
                     ...hiderDriverObj.getConfig(),
@@ -57,7 +57,7 @@ export const getHiderSteps = (hiderDriverObj: any): DriveStep[] => [
             description: "When you've arrived in your Hiding Zone, click the GPS button to set your hiding location. This is required for accurate question answering.",
             side: "bottom",
             align: "center",
-            showButtons: ["next"],
+            showButtons: ["next", "close"],
             onPopoverRender: () => {
                 hiderDriverObj.setConfig({
                     ...hiderDriverObj.getConfig(),
@@ -105,7 +105,7 @@ export const getHiderSteps = (hiderDriverObj: any): DriveStep[] => [
             description: "When a Seeker shares a question with you, you can click this button to paste it onto the map and see the answer.",
             side: "right",
             align: "end",
-            showButtons: ["next"]
+            showButtons: ["next", "close"]
         },
     }
 ];
