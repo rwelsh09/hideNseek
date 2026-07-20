@@ -287,8 +287,24 @@ export const QuestionCard = ({
                             {children}
                             {!!$hiderMode && resultStr && (
                                 <div
-                                    className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md mx-2 mb-2 flex flex-col gap-2"
+                                    className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md mx-2 mb-2 flex flex-col gap-2 cursor-pointer hover:bg-slate-700 transition-colors active:scale-95"
                                     style={{ width: "calc(100% - 1rem)" }}
+                                    onClick={async (e) => {
+                                        e.stopPropagation();
+                                        const shareData = {
+                                            url: "",
+                                            text: `Answer: ${resultStr}`,
+                                            title: "Share Answer"
+                                        };
+                                        await shareOrFallback(shareData).then((result) => {
+                                            if (result === false) {
+                                                return toast.error("Sharing failed and clipboard API not supported in your browser");
+                                            }
+                                            if (result === "clipboard") {
+                                                toast.success("Copied Answer to Clipboard!");
+                                            }
+                                        });
+                                    }}
                                 >
                                     <div>
                                         Tell the Seekers:{" "}
