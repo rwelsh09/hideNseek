@@ -40,7 +40,7 @@ export const NextStepsChecklist = () => {
         <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-[1020] rounded-xl border bg-card shadow-xl p-5 space-y-4 w-80 sm:w-96 font-poppins">
             <div className="flex justify-between items-center mb-1 pb-2">
                 <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                    Are You Ready!?
+                    Are you ready!?
                 </h3>
                 <button
                     type="button"

@@ -38,8 +38,8 @@ export function MatchSection({
                             <button
                                 key={`match-${place.id}`}
                                 type="button"
-                                aria-label={`Add match question for ${place.label}`}
-                                title={`Add match question for ${place.label}`}
+                                aria-label={`Add Match question for ${place.label}`}
+                                title={`Add Match question for ${place.label}`}
                                 onClick={() =>
                                     handleQuestionSelect("match", place.id)
                                 }
@@ -80,8 +80,8 @@ export function MatchSection({
                         <button
                             key={`match-${place.id}`}
                             type="button"
-                            aria-label={`Add match question for ${place.label}`}
-                            title={`Add match question for ${place.label}`}
+                            aria-label={`Add Match question for ${place.label}`}
+                            title={`Add Match question for ${place.label}`}
                             onClick={() =>
                                 handleQuestionSelect("match", place.id)
                             }

@@ -38,8 +38,8 @@ export function ClosestSection({
                             <button
                                 key={`closest-${place.id}`}
                                 type="button"
-                                aria-label={`Add closest question for ${place.id}`}
-                                title={`Add closest question for ${place.id}`}
+                                aria-label={`Add Closest question for ${place.id}`}
+                                title={`Add Closest question for ${place.id}`}
                                 onClick={() =>
                                     handleQuestionSelect("closest", place.id)
                                 }

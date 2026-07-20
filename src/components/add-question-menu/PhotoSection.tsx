@@ -40,8 +40,8 @@ export function PhotoSection({
             <div className="grid grid-cols-5 gap-1.5 sm:gap-2 mt-2">
                 <button
                     type="button"
-                    aria-label="Add photo question for camera"
-                    title="Add photo question for camera"
+                    aria-label="Add Photo question for camera"
+                    title="Add Photo question for camera"
                     onClick={() => handleQuestionSelect("photo", "camera")}
                     className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "camera") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -52,8 +52,8 @@ export function PhotoSection({
                 </button>
                 <button
                     type="button"
-                    aria-label="Add photo question for tree"
-                    title="Add photo question for tree"
+                    aria-label="Add Photo question for tree"
+                    title="Add Photo question for tree"
                     onClick={() => handleQuestionSelect("photo", "tree")}
                     className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "tree") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -65,8 +65,8 @@ export function PhotoSection({
 
                 <button
                     type="button"
-                    aria-label="Add photo question for car"
-                    title="Add photo question for car"
+                    aria-label="Add Photo question for car"
+                    title="Add Photo question for car"
                     onClick={() => handleQuestionSelect("photo", "car")}
                     className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "car") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -78,8 +78,8 @@ export function PhotoSection({
 
                 <button
                     type="button"
-                    aria-label="Add photo question for building"
-                    title="Add photo question for building"
+                    aria-label="Add Photo question for building"
+                    title="Add Photo question for building"
                     onClick={() => handleQuestionSelect("photo", "building")}
                     className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "building") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -91,8 +91,8 @@ export function PhotoSection({
 
                 <button
                     type="button"
-                    aria-label="Add photo question for restaurant"
-                    title="Add photo question for restaurant"
+                    aria-label="Add Photo question for restaurant"
+                    title="Add Photo question for restaurant"
                     onClick={() => handleQuestionSelect("photo", "restaurant")}
                     className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "restaurant") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -104,8 +104,8 @@ export function PhotoSection({
 
                 <button
                     type="button"
-                    aria-label="Add photo question for park"
-                    title="Add photo question for park"
+                    aria-label="Add Photo question for park"
+                    title="Add Photo question for park"
                     onClick={() => handleQuestionSelect("photo", "park")}
                     className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "park") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -117,8 +117,8 @@ export function PhotoSection({
 
                 <button
                     type="button"
-                    aria-label="Add photo question for place of worship"
-                    title="Add photo question for place of worship"
+                    aria-label="Add Photo question for place of worship"
+                    title="Add Photo question for place of worship"
                     onClick={() => handleQuestionSelect("photo", "worship")}
                     className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "worship") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -130,8 +130,8 @@ export function PhotoSection({
 
                 <button
                     type="button"
-                    aria-label="Add photo question for train platform"
-                    title="Add photo question for train platform"
+                    aria-label="Add Photo question for train platform"
+                    title="Add Photo question for train platform"
                     onClick={() => handleQuestionSelect("photo", "train")}
                     className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "train") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -143,8 +143,8 @@ export function PhotoSection({
 
                 <button
                     type="button"
-                    aria-label="Add photo question for route"
-                    title="Add photo question for route"
+                    aria-label="Add Photo question for route"
+                    title="Add Photo question for route"
                     onClick={() => handleQuestionSelect("photo", "route")}
                     className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "route") ? "opacity-50 grayscale" : ""}`}
                 >
@@ -156,8 +156,8 @@ export function PhotoSection({
 
                 <button
                     type="button"
-                    aria-label="Add photo question for body of water"
-                    title="Add photo question for body of water"
+                    aria-label="Add Photo question for body of water"
+                    title="Add Photo question for body of water"
                     onClick={() => handleQuestionSelect("photo", "water")}
                     className={`bg-sky-400 text-white flex flex-col gap-0.5 p-0.5 justify-center items-center hover:bg-sky-500 overflow-hidden aspect-square transition-colors rounded-sm sm:rounded-none ${isQuestionLocked("photo", "water") ? "opacity-50 grayscale" : ""}`}
                 >
