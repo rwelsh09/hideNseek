@@ -345,6 +345,12 @@ export const AdvancedStationManagement = () => {
                         step={0.1}
                         min={0}
                         max={3}
+                        enterKeyHint="done"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                e.currentTarget.blur();
+                            }
+                        }}
                         onChange={(e) =>
                             setOverlapThreshold(
                                 parseFloat(
