@@ -29,7 +29,7 @@ import type { Question, Questions } from "./schema";
 
 export * from "./geo-utils";
 
-export const QUESTION_HANDLERS: Record<
+const QUESTION_HANDLERS: Record<
     Question["id"],
     {
         hiderify: (data: any) => any;
