@@ -208,7 +208,9 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
                     if (!closeBtn) {
                         clearInterval(checkInterval);
                         setTimeout(() => driverObj.moveNext(), 300);
-                    } else if (!closeBtn.hasAttribute("data-listener-attached")) {
+                    } else if (
+                        !closeBtn.hasAttribute("data-listener-attached")
+                    ) {
                         closeBtn.setAttribute("data-listener-attached", "true");
                         closeBtn.addEventListener(
                             "click",
@@ -224,9 +226,9 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
             },
         },
         onDeselected: () => {
-                if ((driverObj as any)._closeCheckInterval) {
-                    clearInterval((driverObj as any)._closeCheckInterval);
-                }
+            if ((driverObj as any)._closeCheckInterval) {
+                clearInterval((driverObj as any)._closeCheckInterval);
+            }
         },
     },
     {
@@ -253,7 +255,9 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
                     disableActiveInteraction: false,
                 });
 
-                const sidebarL = document.querySelector('.peer[data-side="left"]');
+                const sidebarL = document.querySelector(
+                    '.peer[data-side="left"]',
+                );
                 if (
                     sidebarL &&
                     sidebarL.getAttribute("data-state") === "expanded"
@@ -283,9 +287,9 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
             },
         },
         onDeselected: () => {
-                if ((driverObj as any)._openSidebarCheckInterval) {
-                    clearInterval((driverObj as any)._openSidebarCheckInterval);
-                }
+            if ((driverObj as any)._openSidebarCheckInterval) {
+                clearInterval((driverObj as any)._openSidebarCheckInterval);
+            }
         },
     },
     {
@@ -304,10 +308,10 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
             },
         },
         onDeselected: () => {
-                driverObj.setConfig({
-                    ...driverObj.getConfig(),
-                    disableActiveInteraction: false,
-                });
+            driverObj.setConfig({
+                ...driverObj.getConfig(),
+                disableActiveInteraction: false,
+            });
         },
     },
     {

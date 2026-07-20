@@ -40,7 +40,9 @@ export default defineConfig({
                     /\/bug\//,
                 ],
                 maximumFileSizeToCacheInBytes: 10485760,
-                globPatterns: ['**/*.{js,css,html,ico,png,svg,webmanifest,json}'],
+                globPatterns: [
+                    "**/*.{js,css,html,ico,png,svg,webmanifest,json}",
+                ],
             },
             manifest: {
                 name: "Hide and Seek Map",

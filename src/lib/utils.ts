@@ -9,7 +9,7 @@ export const STATION_IDS_INDEX = (calgaryRapidTransitData.features as any[])
         (f) =>
             f.properties?.transit_type === "CTrain Station" ||
             f.properties?.transit_type === "MAX Station" ||
-            f.properties?.transit_type === "CTrain & MAX Hub"
+            f.properties?.transit_type === "CTrain & MAX Hub",
     )
     .map((f) => extractStationId(f) as string)
     .sort();
@@ -30,7 +30,10 @@ export function encodeDisabledStations(stations: string[]): string {
     for (let i = 0; i < bytes.length; i++) {
         binary += String.fromCharCode(bytes[i]);
     }
-    return btoa(binary).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+    return btoa(binary)
+        .replace(/\+/g, "-")
+        .replace(/\//g, "_")
+        .replace(/=+$/, "");
 }
 
 export function decodeDisabledStations(encoded: string): string[] {
@@ -148,7 +151,9 @@ export async function shareOrFallback(
 
     if (!navigator.share) return shareOrFallback(data, true); // Fallback to clipboard
 
-    const sharePayload = text ? { text: clipboardContent, title } : { url, title };
+    const sharePayload = text
+        ? { text: clipboardContent, title }
+        : { url, title };
 
     return await navigator
         .share(sharePayload)

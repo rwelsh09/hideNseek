@@ -1,6 +1,6 @@
 import { useStore } from "@nanostores/react";
 import confetti from "canvas-confetti";
-import { Clock, Play, Pause, Flag, Timer, Trash2, Trophy } from "lucide-react";
+import { Clock, Flag, Pause, Play, Timer, Trash2, Trophy } from "lucide-react";
 import * as React from "react";
 import { toast } from "react-toastify";
 
@@ -205,7 +205,7 @@ export const TimerDrawer = () => {
                     app with a donation (open Options).{" "}
                 </span>
             </div>,
-            { autoClose: 5000, position: "bottom-center" }
+            { autoClose: 5000, position: "bottom-center" },
         );
     };
 
@@ -316,7 +316,10 @@ export const TimerDrawer = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <Play className="w-5 h-5" /> {$timerElapsedSeconds !== 0 ? "Resume" : "Start"}
+                                            <Play className="w-5 h-5" />{" "}
+                                            {$timerElapsedSeconds !== 0
+                                                ? "Resume"
+                                                : "Start"}
                                         </>
                                     )}
                                 </Button>
@@ -500,7 +503,8 @@ export const TimerDrawer = () => {
                                         !
                                     </span>
                                     <span className="text-sm">
-                                        Add the Hider's name to the leaderboard below.
+                                        Add the Hider&apos;s name to the
+                                        leaderboard below.
                                     </span>
                                 </AlertDialogDescription>
                             </AlertDialogHeader>

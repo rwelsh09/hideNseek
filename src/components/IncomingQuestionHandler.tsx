@@ -7,7 +7,6 @@ import { decodeBase64Unicode } from "@/lib/utils";
 import { questionSchema } from "@/maps/schema";
 
 export const IncomingQuestionHandler = () => {
-
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
         const qParam = urlParams.get("q");
@@ -17,7 +16,6 @@ export const IncomingQuestionHandler = () => {
             const newUrl = new URL(window.location.href);
             newUrl.searchParams.delete("q");
             window.history.replaceState({}, document.title, newUrl.toString());
-
 
             try {
                 const decodedText = decodeBase64Unicode(qParam);
@@ -34,10 +32,11 @@ export const IncomingQuestionHandler = () => {
 
                 // Open the dialog for the newly pasted question
                 editingQuestionId.set(key);
-
             } catch (e) {
                 console.error("Failed to parse incoming question from URL", e);
-                toast.error("Failed to process the question link. The link might be invalid or corrupted.");
+                toast.error(
+                    "Failed to process the question link. The link might be invalid or corrupted.",
+                );
             }
         }
     }, []); // Only run once on mount

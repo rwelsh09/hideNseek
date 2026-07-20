@@ -4,10 +4,7 @@ import * as React from "react";
 import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
-import {
-    MENU_ITEM_CLASSNAME,
-    SidebarMenuItem,
-} from "@/components/ui/sidebar";
+import { MENU_ITEM_CLASSNAME, SidebarMenuItem } from "@/components/ui/sidebar";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
     hiderMode,
@@ -94,8 +91,7 @@ export const MatchQuestionComponent = ({
                     className={cn(
                         "font-semibold text-lg",
                         $isLoading && "text-muted-foreground",
-                        data.type === "same-length-station" &&
-                            "text-center",
+                        data.type === "same-length-station" && "text-center",
                     )}
                 >
                     Answer
@@ -108,17 +104,13 @@ export const MatchQuestionComponent = ({
                             data.lengthComparison
                                 ? data.lengthComparison
                                 : data.same === true
-                                    ? "same"
-                                    : data.same === false
+                                  ? "same"
+                                  : data.same === false
                                     ? "different"
                                     : "same"
                         }
                         onValueChange={(
-                            value:
-                                | "shorter"
-                                | "same"
-                                | "longer"
-                                | "different",
+                            value: "shorter" | "same" | "longer" | "different",
                         ) => {
                             if (value === "shorter" || value === "longer") {
                                 data.lengthComparison = value;
@@ -134,11 +126,22 @@ export const MatchQuestionComponent = ({
                         }}
                         disabled={!!$hiderMode || data.locked || $isLoading}
                     >
-                        <ToggleGroupItem value="shorter" className="data-[state=on]:bg-blue-500 data-[state=on]:text-white">
+                        <ToggleGroupItem
+                            value="shorter"
+                            className="data-[state=on]:bg-blue-500 data-[state=on]:text-white"
+                        >
                             Shorter
                         </ToggleGroupItem>
-                        <ToggleGroupItem value="same" className="data-[state=on]:bg-rose-500 data-[state=on]:text-white">Same</ToggleGroupItem>
-                        <ToggleGroupItem value="longer" className="data-[state=on]:bg-blue-500 data-[state=on]:text-white">
+                        <ToggleGroupItem
+                            value="same"
+                            className="data-[state=on]:bg-rose-500 data-[state=on]:text-white"
+                        >
+                            Same
+                        </ToggleGroupItem>
+                        <ToggleGroupItem
+                            value="longer"
+                            className="data-[state=on]:bg-blue-500 data-[state=on]:text-white"
+                        >
                             Longer
                         </ToggleGroupItem>
                     </ToggleGroup>
@@ -158,13 +161,20 @@ export const MatchQuestionComponent = ({
                         }}
                         disabled={!!$hiderMode || data.locked || $isLoading}
                     >
-                        <ToggleGroupItem value="different" className="data-[state=on]:bg-blue-500 data-[state=on]:text-white">
+                        <ToggleGroupItem
+                            value="different"
+                            className="data-[state=on]:bg-blue-500 data-[state=on]:text-white"
+                        >
                             Different
                         </ToggleGroupItem>
-                        <ToggleGroupItem value="same" className="data-[state=on]:bg-rose-500 data-[state=on]:text-white">Same</ToggleGroupItem>
+                        <ToggleGroupItem
+                            value="same"
+                            className="data-[state=on]:bg-rose-500 data-[state=on]:text-white"
+                        >
+                            Same
+                        </ToggleGroupItem>
                     </ToggleGroup>
                 )}
-
             </div>
         </QuestionCard>
     );

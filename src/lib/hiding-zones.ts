@@ -12,9 +12,7 @@ import {
     questions,
     trainStations,
 } from "@/lib/context";
-import {
-    type StationPlace,
-} from "@/maps/api";
+import { type StationPlace } from "@/maps/api";
 import {
     extractStationId,
     extractStationLines,
@@ -79,7 +77,9 @@ export const initializeHidingZonesLogic = async () => {
         const manuallyDisabledSet = new Set(manuallyDisabled);
 
         circles.forEach((circle) => {
-            const diff = turf.difference(turf.featureCollection([circle, unionized]));
+            const diff = turf.difference(
+                turf.featureCollection([circle, unionized]),
+            );
             if (!diff || turf.area(diff) < 1) {
                 const id = extractStationId(circle);
                 if (!manuallyDisabledSet.has(id)) {
@@ -166,11 +166,12 @@ export const initializeHidingZonesLogic = async () => {
                     });
                 }
 
-                const remainingIds = new Set(circles.map((c) => extractStationId(c)));
+                const remainingIds = new Set(
+                    circles.map((c) => extractStationId(c)),
+                );
                 const newlyDisabled = originalIds.filter(
                     (id) =>
-                        !remainingIds.has(id) &&
-                        !manuallyDisabledSet.has(id),
+                        !remainingIds.has(id) && !manuallyDisabledSet.has(id),
                 );
                 newlyDisabledStations.push(...newlyDisabled);
 

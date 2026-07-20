@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 
 import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Input } from "@/components/ui/input";
-import {
-    MENU_ITEM_CLASSNAME,
-    SidebarMenuItem,
-} from "@/components/ui/sidebar";
+import { MENU_ITEM_CLASSNAME, SidebarMenuItem } from "@/components/ui/sidebar";
 import {
     isLoading,
     questionModified,

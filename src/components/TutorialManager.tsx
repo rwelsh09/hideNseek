@@ -50,7 +50,7 @@ export const TutorialManager = () => {
                     hiderDriverObj.destroy();
                     showHiderTutorial.set(false);
                 },
-                });
+            });
             hiderDriverObj.setSteps(getHiderSteps(hiderDriverObj));
             tutorialDriver.set(hiderDriverObj);
             setTimeout(() => {
@@ -92,7 +92,7 @@ export const TutorialManager = () => {
                         }
                     }
                 },
-                });
+            });
             driverObj.setSteps(getSeekerSteps(driverObj));
 
             tutorialDriver.set(driverObj);
