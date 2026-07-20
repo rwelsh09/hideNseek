@@ -51,6 +51,12 @@ export const RadarQuestionComponent = ({
                         className="rounded-md p-2 w-16"
                         value={data.radius}
                         disabled={!data.isCustom || data.locked || $isLoading}
+                        enterKeyHint="done"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                e.currentTarget.blur();
+                            }
+                        }}
                         onChange={(e) => {
                             data.radius = parseFloat(e.target.value);
                             questionModified();

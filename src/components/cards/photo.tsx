@@ -82,6 +82,12 @@ export const PhotoQuestionComponent = ({
                         className="rounded-md p-2 w-full"
                         value={localNotes}
                         disabled={data.locked || $isLoading}
+                        enterKeyHint="done"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                e.currentTarget.blur();
+                            }
+                        }}
                         onChange={(e) => setLocalNotes(e.target.value)}
                         onBlur={() => {
                             if (data.notes !== localNotes) {
