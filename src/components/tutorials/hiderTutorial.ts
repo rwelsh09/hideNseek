@@ -102,7 +102,7 @@ export const getHiderSteps = (hiderDriverObj: any): DriveStep[] => [
         element: '[data-tutorial-id="tutorial-paste-question-btn"]',
         popover: {
             title: "Answering Questions",
-            description: "When a Seeker shares a question with you, you can click this button to paste it onto the map and see the answer.",
+            description: "When a Seeker shares a question with you, their link will load the question and show the answer. If you're offline, copy it and click this button to paste it onto the map and see the answer.",
             side: "right",
             align: "end",
             showButtons: ["next", "close"]

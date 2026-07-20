@@ -29,24 +29,51 @@ import type { Question, Questions } from "./schema";
 
 export * from "./geo-utils";
 
+export const QUESTION_HANDLERS: Record<
+    Question["id"],
+    {
+        hiderify: (data: any) => any;
+        planningPolygon: (data: any) => any;
+        adjust: (data: any, mapGeoData: any) => any;
+    }
+> = {
+    radar: {
+        hiderify: hiderifyRadar,
+        planningPolygon: radarPlanningPolygon,
+        adjust: adjustPerRadar,
+    },
+    "hot/cold": {
+        hiderify: hiderifyHotCold,
+        planningPolygon: hotColdPlanningPolygon,
+        adjust: adjustPerHotCold,
+    },
+    closest: {
+        hiderify: hiderifyClosest,
+        planningPolygon: closestPlanningPolygon,
+        adjust: async (data, mapGeoData) => {
+            if (data.location === false) {
+                return adjustPerRadar({ ...data, within: false }, mapGeoData);
+            }
+            return adjustPerClosest(data, mapGeoData);
+        },
+    },
+    match: {
+        hiderify: hiderifyMatch,
+        planningPolygon: matchPlanningPolygon,
+        adjust: adjustPerMatch,
+    },
+    measure: {
+        hiderify: hiderifyMeasure,
+        planningPolygon: measurePlanningPolygon,
+        adjust: adjustPerMeasure,
+    },
+};
+
 export const hiderifyQuestion = async (question: Question) => {
     if (!question.data.locked) {
-        switch (question.id) {
-            case "radar":
-                question.data = hiderifyRadar(question.data);
-                break;
-            case "hot/cold":
-                question.data = hiderifyHotCold(question.data);
-                break;
-            case "closest":
-                question.data = await hiderifyClosest(question.data);
-                break;
-            case "match":
-                question.data = await hiderifyMatch(question.data);
-                break;
-            case "measure":
-                question.data = await hiderifyMeasure(question.data);
-                break;
+        const handler = QUESTION_HANDLERS[question.id as Question["id"]];
+        if (handler) {
+            question.data = await handler.hiderify(question.data);
         }
     }
 
@@ -55,43 +82,20 @@ export const hiderifyQuestion = async (question: Question) => {
 
 const determinePlanningPolygon = async (question: Question) => {
     if (!question.data.locked) {
-        switch (question.id) {
-            case "radar":
-                return radarPlanningPolygon(question.data);
-            case "hot/cold":
-                return hotColdPlanningPolygon(question.data);
-            case "closest":
-                return closestPlanningPolygon(question.data);
-            case "match":
-                return matchPlanningPolygon(question.data);
-            case "measure":
-                return measurePlanningPolygon(question.data);
+        const handler = QUESTION_HANDLERS[question.id as Question["id"]];
+        if (handler) {
+            return handler.planningPolygon(question.data);
         }
     }
 };
 
 async function adjustMapGeoDataForQuestion(question: any, mapGeoData: any) {
     try {
-        switch (question?.id) {
-            case "radar":
-                return await adjustPerRadar(question.data, mapGeoData);
-            case "hot/cold":
-                return adjustPerHotCold(question.data, mapGeoData);
-            case "closest":
-                if (question.data.location === false) {
-                    return adjustPerRadar(
-                        { ...question.data, within: false },
-                        mapGeoData,
-                    );
-                }
-                return await adjustPerClosest(question.data, mapGeoData);
-            case "match":
-                return await adjustPerMatch(question.data, mapGeoData);
-            case "measure":
-                return await adjustPerMeasure(question.data, mapGeoData);
-            default:
-                return mapGeoData;
+        const handler = QUESTION_HANDLERS[question?.id as Question["id"]];
+        if (handler) {
+            return await handler.adjust(question.data, mapGeoData);
         }
+        return mapGeoData;
     } catch {
         return mapGeoData;
     }
