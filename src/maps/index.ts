@@ -29,14 +29,6 @@ import type { Question, Questions } from "./schema";
 
 export * from "./geo-utils";
 
-/**
- * Registry mapping each question type to its respective processor functions.
- *
- * WHY: This centralizes dispatch logic that was previously scattered across multiple parallel
- * `switch` statements. By using this registry, adding a new question type only requires adding
- * a new entry here, rather than tracking down and updating every switch statement in the file,
- * reducing the risk of missed implementations (Open-Closed Principle).
- */
 export const QUESTION_HANDLERS: Record<
     Question["id"],
     {
