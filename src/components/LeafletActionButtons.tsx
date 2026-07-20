@@ -79,7 +79,7 @@ export const LeafletActionButtons = () => {
                 enableHighAccuracy: true,
                 timeout: 10000,
                 maximumAge: 0,
-            },
+            }
         );
     };
 

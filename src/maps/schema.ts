@@ -111,9 +111,7 @@ const radarQuestionSchema = ordinaryBaseQuestionSchema.extend({
 });
 
 const closestLocationsOne = z.union(
-    PLACES.filter((p) => p.type === "specific").map((p) =>
-        z.literal(p.id).describe(p.labelPlural),
-    ) as any,
+    PLACES.filter(p => p.type === "specific").map(p => z.literal(p.id).describe(p.labelPlural)) as any
 );
 
 const baseClosestQuestionSchema = ordinaryBaseQuestionSchema.extend({
@@ -145,6 +143,7 @@ const closestQuestionSpecificSchemaOne = baseClosestQuestionSchema.extend({
     places: z.array(z.any()).optional(),
 });
 
+
 export const closestQuestionSchema = closestQuestionSpecificSchemaOne;
 
 const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
@@ -156,9 +155,7 @@ const baseMatchQuestionSchema = ordinaryBaseQuestionSchema.extend({
 const ordinaryMatchQuestionSchema = baseMatchQuestionSchema.extend({
     type: z
         .union([
-            ...PLACES.filter((p) => p.type === "generic").map((p) =>
-                z.literal(p.id).describe(p.label),
-            ),
+            ...PLACES.filter(p => p.type === "generic").map(p => z.literal(p.id).describe(p.label)),
             z
                 .literal("same-neighbourhood")
                 .describe("Neighbourhood (Same As Me)"),
@@ -183,9 +180,7 @@ const baseMeasureQuestionSchema = ordinaryBaseQuestionSchema.extend({
 const ordinaryMeasureQuestionSchema = baseMeasureQuestionSchema.extend({
     type: z
         .union([
-            ...PLACES.filter((p) => p.type === "generic").map((p) =>
-                z.literal(p.id).describe(p.label),
-            ),
+            ...PLACES.filter(p => p.type === "generic").map(p => z.literal(p.id).describe(p.label)),
             z.literal("rail-measure").describe("Train Station"),
         ] as any)
         .default("museum"),

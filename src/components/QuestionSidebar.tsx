@@ -1,5 +1,9 @@
 import { useStore } from "@nanostores/react";
-import { Clock, SidebarCloseIcon, Trash2 } from "lucide-react";
+import {
+    Clock,
+    SidebarCloseIcon,
+    Trash2,
+} from "lucide-react";
 import { toast } from "react-toastify";
 
 import {
@@ -20,8 +24,7 @@ import {
 } from "@/components/ui/sidebar";
 import {
     isLoading,
-    lockedActiveStationIds,
-    lockedRecommendedStart,
+    lockedActiveStationIds, lockedRecommendedStart,
     penaltyMinutes,
     questions,
     triggerLocalRefresh,

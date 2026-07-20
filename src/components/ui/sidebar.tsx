@@ -161,25 +161,25 @@ const SidebarProvider = React.forwardRef<
 
         return (
             <SidebarSideContext.Provider value={side}>
-                <TooltipProvider delayDuration={0}>
-                    <div
-                        style={
-                            {
-                                "--sidebar-width": SIDEBAR_WIDTH,
-                                "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
-                                ...style,
-                            } as React.CSSProperties
-                        }
-                        className={cn(
-                            "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar",
-                            className,
-                        )}
-                        ref={ref}
-                        {...props}
-                    >
-                        {children}
-                    </div>
-                </TooltipProvider>
+            <TooltipProvider delayDuration={0}>
+                <div
+                    style={
+                        {
+                            "--sidebar-width": SIDEBAR_WIDTH,
+                            "--sidebar-width-icon": SIDEBAR_WIDTH_ICON,
+                            ...style,
+                        } as React.CSSProperties
+                    }
+                    className={cn(
+                        "group/sidebar-wrapper flex min-h-svh w-full has-[[data-variant=inset]]:bg-sidebar",
+                        className,
+                    )}
+                    ref={ref}
+                    {...props}
+                >
+                    {children}
+                </div>
+            </TooltipProvider>
             </SidebarSideContext.Provider>
         );
     },
@@ -205,23 +205,22 @@ const Sidebar = React.forwardRef<
         },
         ref,
     ) => {
-        const { isMobile, state, openMobile, setOpenMobile } = useStore(
-            side === "left" ? LeftSidebarContext : RightSidebarContext,
-        );
+        const { isMobile, state, openMobile, setOpenMobile } =
+            useStore(side === "left" ? LeftSidebarContext : RightSidebarContext);
 
         if (collapsible === "none") {
             return (
                 <SidebarSideContext.Provider value={side}>
-                    <div
-                        className={cn(
-                            "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground",
-                            className,
-                        )}
-                        ref={ref}
-                        {...props}
-                    >
-                        {children}
-                    </div>
+                <div
+                    className={cn(
+                        "flex h-full w-[--sidebar-width] flex-col bg-sidebar text-sidebar-foreground",
+                        className,
+                    )}
+                    ref={ref}
+                    {...props}
+                >
+                    {children}
+                </div>
                 </SidebarSideContext.Provider>
             );
         }

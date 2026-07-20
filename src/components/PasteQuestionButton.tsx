@@ -8,21 +8,13 @@ import { questionSchema } from "@/maps/schema";
 
 import { Button } from "./ui/button";
 
-export const PasteQuestionButton = ({
-    iconOnly = false,
-}: {
-    iconOnly?: boolean;
-}) => {
+export const PasteQuestionButton = ({ iconOnly = false }: { iconOnly?: boolean }) => {
     const $isLoading = useStore(isLoading);
 
     return (
         <Button
             variant="secondary"
-            className={
-                iconOnly
-                    ? "font-semibold font-poppins flex items-center justify-center gap-2 h-10 w-10 p-0"
-                    : "w-full font-semibold font-poppins flex items-center justify-center gap-2 h-10"
-            }
+            className={iconOnly ? "font-semibold font-poppins flex items-center justify-center gap-2 h-10 w-10 p-0" : "w-full font-semibold font-poppins flex items-center justify-center gap-2 h-10"}
             data-tutorial-id="tutorial-paste-question-btn"
             aria-label="Paste Question"
             onClick={() => {
@@ -36,9 +28,7 @@ export const PasteQuestionButton = ({
                             const urlMatch = text.match(/q=([^&\s]+)/);
                             if (urlMatch && urlMatch[1]) {
                                 try {
-                                    jsonText = decodeBase64Unicode(
-                                        decodeURIComponent(urlMatch[1]),
-                                    );
+                                    jsonText = decodeBase64Unicode(decodeURIComponent(urlMatch[1]));
                                 } catch {
                                     // if decoding fails, jsonText remains as original text which will fail parsing below
                                 }
@@ -46,9 +36,12 @@ export const PasteQuestionButton = ({
 
                             const parsed = JSON.parse(jsonText);
                             delete parsed.key; // Ensure a new key is generated
-                            const validated = questionSchema.parse(parsed);
+                            const validated =
+                                questionSchema.parse(parsed);
                             addQuestion(validated);
-                            toast.success("Question pasted successfully!");
+                            toast.success(
+                                "Question pasted successfully!",
+                            );
                         } catch {
                             toast.error(
                                 "Failed to paste question. Try copying it again.",
@@ -56,7 +49,9 @@ export const PasteQuestionButton = ({
                         }
                     })
                     .catch(() => {
-                        toast.error("Failed to read from clipboard");
+                        toast.error(
+                            "Failed to read from clipboard",
+                        );
                     });
             }}
             disabled={$isLoading}

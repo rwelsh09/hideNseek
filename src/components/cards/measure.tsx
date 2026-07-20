@@ -4,7 +4,10 @@ import * as React from "react";
 
 import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Select } from "@/components/ui/select";
-import { MENU_ITEM_CLASSNAME, SidebarMenuItem } from "@/components/ui/sidebar";
+import {
+    MENU_ITEM_CLASSNAME,
+    SidebarMenuItem,
+} from "@/components/ui/sidebar";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import {
     hiderMode,
@@ -117,19 +120,14 @@ export const MeasureQuestionComponent = ({
                     }}
                     disabled={!!$hiderMode || data.locked || $isLoading}
                 >
-                    <ToggleGroupItem
-                        value="further"
-                        className="data-[state=on]:bg-blue-500 data-[state=on]:text-white"
-                    >
+                    <ToggleGroupItem value="further" className="data-[state=on]:bg-blue-500 data-[state=on]:text-white">
                         Hider Further
                     </ToggleGroupItem>
-                    <ToggleGroupItem
-                        value="closer"
-                        className="data-[state=on]:bg-rose-500 data-[state=on]:text-white"
-                    >
+                    <ToggleGroupItem value="closer" className="data-[state=on]:bg-rose-500 data-[state=on]:text-white">
                         Hider Closer
                     </ToggleGroupItem>
                 </ToggleGroup>
+
             </div>
         </QuestionCard>
     );
