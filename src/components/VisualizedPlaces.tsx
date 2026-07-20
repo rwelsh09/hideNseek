@@ -27,15 +27,15 @@ const getPathOptions = (colour: string) => {
 
 const TOOLTIP_OFFSET: [number, number] = [0, -10];
 
-const VisualizedPlaceMarker = ({
+const VisualizedPlaceMarker = React.memo(function VisualizedPlaceMarker({
     coords,
     colour,
     name,
 }: {
     coords: number[];
-    color: string;
+    colour: string;
     name: string;
-}) => {
+}) {
     const centerArray = React.useMemo(
         () => [coords[1], coords[0]] as [number, number],
         [coords[1], coords[0]],
@@ -52,55 +52,56 @@ const VisualizedPlaceMarker = ({
             </Tooltip>
         </CircleMarker>
     );
-};
+});
 
 export const VisualizedPlaces = () => {
     const $questions = useStore(questions);
 
     const [places, setPlaces] = useState<any[]>([]);
 
+    const typesHash = React.useMemo(() => {
+        const typesSet = new Set<string>();
+        const specificTypesSet = new Set<string>();
+
+        $questions.forEach((q) => {
+            const data = q.data as any;
+
+            const isLocked = data.locked;
+            if (isLocked || q.id === "closest") return;
+
+            if (data.locationType) {
+                typesSet.add(data.locationType);
+            }
+
+            if (data.type) {
+                const type = data.type;
+                const place = PLACES.find(
+                    (p) => p.id === type || p.id === type.replace("-full", ""),
+                );
+                if (place) {
+                    if (place.type === "specific" && place.specificLocation) {
+                        specificTypesSet.add(place.specificLocation);
+                    } else {
+                        typesSet.add(place.id);
+                    }
+                }
+            }
+        });
+
+        return JSON.stringify({
+            standard: Array.from(typesSet).filter(
+                (type) => (LOCATION_FIRST_TAG as any)[type],
+            ).sort(),
+            specific: Array.from(specificTypesSet).sort(),
+        });
+    }, [$questions]);
+
     useEffect(() => {
         let isMounted = true;
 
         const loadPlaces = async () => {
             const allPlaces: any[] = [];
-            const typesSet = new Set<string>();
-            const specificTypesSet = new Set<string>();
-
-            // Collect required location types from questions
-            $questions.forEach((q) => {
-                const data = q.data as any;
-
-                const isLocked = data.locked;
-                if (isLocked || q.id === "closest") return;
-
-                if (data.locationType) {
-                    typesSet.add(data.locationType);
-                }
-
-                if (data.type) {
-                    const type = data.type;
-                    const place = PLACES.find(
-                        (p) =>
-                            p.id === type || p.id === type.replace("-full", ""),
-                    );
-                    if (place) {
-                        if (
-                            place.type === "specific" &&
-                            place.specificLocation
-                        ) {
-                            specificTypesSet.add(place.specificLocation);
-                        } else {
-                            typesSet.add(place.id);
-                        }
-                    }
-                }
-            });
-
-            // Fetch standard location types
-            const standardTypesArray = Array.from(typesSet).filter(
-                (type) => (LOCATION_FIRST_TAG as any)[type],
-            );
+            const { standard: standardTypesArray, specific: specificTypesArray } = JSON.parse(typesHash);
 
             const promises: Promise<void>[] = [];
 
@@ -217,30 +218,34 @@ export const VisualizedPlaces = () => {
         return () => {
             isMounted = false;
         };
-    }, [$questions]);
+    }, [typesHash]);
+
+    const markers = React.useMemo(() => {
+        return places.map((place, i) => {
+            const coords = getFeatureCoords(place);
+
+            if (!coords) return null;
+
+            const name =
+                place?.properties?.name ??
+                place?.properties?.["name:en"] ??
+                "Unknown Place";
+            const colour = place?.customColour ?? "orange";
+
+            return (
+                <VisualizedPlaceMarker
+                    key={i}
+                    coords={coords}
+                    colour={colour}
+                    name={name}
+                />
+            );
+        });
+    }, [places]);
 
     return (
         <>
-            {places.map((place, i) => {
-                const coords = getFeatureCoords(place);
-
-                if (!coords) return null;
-
-                const name =
-                    place?.properties?.name ??
-                    place?.properties?.["name:en"] ??
-                    "Unknown Place";
-                const colour = place?.customColour ?? "orange";
-
-                return (
-                    <VisualizedPlaceMarker
-                        key={i}
-                        coords={coords}
-                        colour={colour}
-                        name={name}
-                    />
-                );
-            })}
+            {markers}
         </>
     );
 };
