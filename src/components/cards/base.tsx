@@ -108,7 +108,7 @@ export const QuestionCard = ({
                 resultStr = questionData.same ? "Same" : "Different";
             }
         } else if (question.id === "measure") {
-            resultStr = questionData.hiderCloser ? "Hider Closer" : "Hider Further";
+            resultStr = questionData.hiderCloser ? "Hider Closer" : "Hider Farther";
         } else if (question.id === "closest") {
             resultStr = questionData.location
                 ? questionData.location.properties?.name
