@@ -15,16 +15,19 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     Drawer,
     DrawerTrigger,
     TopDrawerContent,
 } from "@/components/ui/drawer";
+import { Label } from "@/components/ui/label";
 import {
     headStartMinutes,
     isTimerRunning,
     leaderboard,
     penaltyMinutes,
+    showTimer,
     timerElapsedSeconds,
     timerStartTimestamp,
 } from "@/lib/context";
@@ -40,6 +43,7 @@ export const TimerDrawer = () => {
     const $timerStartTimestamp = useStore(timerStartTimestamp);
     const $leaderboard = useStore(leaderboard);
     const $headStartMinutes = useStore(headStartMinutes);
+    const $showTimer = useStore(showTimer);
     const [showRoundOverModal, setShowRoundOverModal] = React.useState(false);
 
     const formatTime = (totalSecs: number) => {
@@ -156,15 +160,6 @@ export const TimerDrawer = () => {
         timerElapsedSeconds.set(0);
     };
 
-    const manipulateTimer = (minutes: number) => {
-        const newSeconds = timerElapsedSeconds.get() + minutes * 60;
-        timerElapsedSeconds.set(newSeconds);
-        
-        if (timerStartTimestamp.get()) {
-            timerStartTimestamp.set(Date.now() - newSeconds * 1000);
-        }
-    };
-
     const addLeaderboardEntry = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
@@ -197,7 +192,7 @@ export const TimerDrawer = () => {
                     app with a donation (open Options).{" "}
                 </span>
             </div>,
-            { autoClose: 5000, position: "bottom-center" }
+            { autoClose: 5000, position: "bottom-center" },
         );
     };
 
@@ -210,12 +205,22 @@ export const TimerDrawer = () => {
             <DrawerTrigger asChild>
                 <button
                     type="button"
-                    className="bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
+                    className={`bg-white hover:bg-[#f4f4f4] h-[34px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 ${
+                        $showTimer
+                            ? "px-2 font-mono font-bold text-black"
+                            : "w-[34px]"
+                    }`}
                     title="Timer & Leaderboard"
                     aria-label="Timer & Leaderboard"
                     data-tutorial-id="timer-drawer-trigger"
                 >
-                    <Clock className="w-5 h-5 text-black" />
+                    {$showTimer ? (
+                        formatTime(
+                            $timerElapsedSeconds - $headStartMinutes * 60,
+                        )
+                    ) : (
+                        <Clock className="w-5 h-5 text-black" />
+                    )}
                     {$penaltyMinutes > 0 && (
                         <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1 rounded-full leading-tight">
                             +{$penaltyMinutes}
@@ -236,39 +241,20 @@ export const TimerDrawer = () => {
                                     <Timer className="w-6 h-6 text-blue-400" />
                                     Timer
                                 </h2>
-                                <div className="flex gap-2">
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => manipulateTimer(-5)}
-                                        className="bg-slate-800 border-slate-700 h-8"
+                                <div className="flex items-center gap-2 pr-2">
+                                    <Label
+                                        htmlFor="show-timer-toggle"
+                                        className="cursor-pointer text-sm font-medium text-slate-300"
                                     >
-                                        -5m
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => manipulateTimer(-1)}
-                                        className="bg-slate-800 border-slate-700 h-8"
-                                    >
-                                        -1m
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => manipulateTimer(1)}
-                                        className="bg-slate-800 border-slate-700 h-8"
-                                    >
-                                        +1m
-                                    </Button>
-                                    <Button
-                                        variant="outline"
-                                        size="sm"
-                                        onClick={() => manipulateTimer(5)}
-                                        className="bg-slate-800 border-slate-700 h-8"
-                                    >
-                                        +5m
-                                    </Button>
+                                        Show on Map
+                                    </Label>
+                                    <Checkbox
+                                        id="show-timer-toggle"
+                                        checked={$showTimer}
+                                        onCheckedChange={() =>
+                                            showTimer.set(!$showTimer)
+                                        }
+                                    />
                                 </div>
                             </div>
 
@@ -308,7 +294,10 @@ export const TimerDrawer = () => {
                                         </>
                                     ) : (
                                         <>
-                                            <Play className="w-5 h-5" /> {$timerElapsedSeconds !== 0 ? "Resume" : "Start"}
+                                            <Play className="w-5 h-5" />{" "}
+                                            {$timerElapsedSeconds !== 0
+                                                ? "Resume"
+                                                : "Start"}
                                         </>
                                     )}
                                 </Button>
@@ -492,7 +481,8 @@ export const TimerDrawer = () => {
                                         !
                                     </span>
                                     <span className="text-sm">
-                                        Add the Hider&apos;s name to the leaderboard below.
+                                        Add the Hider&apos;s name to the
+                                        leaderboard below.
                                     </span>
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
