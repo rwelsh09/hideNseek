@@ -41,7 +41,6 @@ import {
     showHiderTutorial,
     showRecommendedStart,
     showTutorial,
-    showTimer,
     triggerLocalRefresh,
 } from "@/lib/context";
 import { decodeDisabledStations, decompress } from "@/lib/utils";
@@ -63,7 +62,6 @@ export const OptionDrawers = () => {
     const $followMe = useStore(followMe);
     const $displayTransitLines = useStore(displayTransitLines);
     const $showRecommendedStart = useStore(showRecommendedStart);
-    const $showTimer = useStore(showTimer);
     const $isOptionsOpenStore = useStore(isOptionsOpenStore);
 
     useEffect(() => {
@@ -303,23 +301,6 @@ export const OptionDrawers = () => {
                                                 showRecommendedStart.set(
                                                     !$showRecommendedStart,
                                                 )
-                                            }
-                                        />
-                                    </div>
-
-                                    {/* Show Timer Toggle */}
-                                    <div className="flex items-center justify-between p-4 hover:bg-slate-50 dark:hover:bg-slate-900/50 transition-colors">
-                                        <Label
-                                            htmlFor="show-timer-toggle"
-                                            className="flex-1 cursor-pointer text-base font-medium"
-                                        >
-                                            Show Timer on Map
-                                        </Label>
-                                        <Checkbox
-                                            id="show-timer-toggle"
-                                            checked={$showTimer}
-                                            onCheckedChange={() =>
-                                                showTimer.set(!$showTimer)
                                             }
                                         />
                                     </div>
