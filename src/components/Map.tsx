@@ -5,7 +5,7 @@ import "leaflet-doubletapdragzoom";
 import { useStore } from "@nanostores/react";
 import * as L from "leaflet";
 import { Loader2 } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { MapContainer, ScaleControl } from "react-leaflet";
 import { toast } from "react-toastify";
 
@@ -49,7 +49,7 @@ const getTileLayer = (tileLayer: string) => {
         case "satellite":
             return (
                 <OfflineTileLayer
-                    attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EAP, and the GIS User Community"
+                    attribution='Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EAP, and the GIS User Community'
                     url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                     maxZoom={19}
                     minZoom={2}
@@ -123,19 +123,6 @@ export const Map = ({ className }: { className?: string }) => {
 
     const planningLayersRef = useRef<L.Layer[]>([]);
     const eliminationLayerRef = useRef<L.Layer | null>(null);
-    const [showLoading, setShowLoading] = useState(false);
-
-    useEffect(() => {
-        let timeout: NodeJS.Timeout;
-        if ($isLoading) {
-            timeout = setTimeout(() => {
-                setShowLoading(true);
-            }, 100);
-        } else {
-            setShowLoading(false);
-        }
-        return () => clearTimeout(timeout);
-    }, [$isLoading]);
 
     const refreshQuestions = async () => {
         if (!map) return;
@@ -152,6 +139,7 @@ export const Map = ({ className }: { className?: string }) => {
         await new Promise((resolve) => setTimeout(resolve, 10));
 
         try {
+
             let mapGeoData = mapGeoJSON.get();
 
             if (!mapGeoData) {
@@ -172,17 +160,13 @@ export const Map = ({ className }: { className?: string }) => {
 
             if (hiderMode.get() !== false) {
                 await Promise.all(
-                    questions
-                        .get()
-                        .map((question) => hiderifyQuestion(question)),
+                    questions.get().map((question) => hiderifyQuestion(question)),
                 );
 
                 triggerLocalRefresh.set(Math.random()); // Refresh the question sidebar with new information but not this map
             }
 
-            planningLayersRef.current.forEach((layer) =>
-                map.removeLayer(layer),
-            );
+            planningLayersRef.current.forEach(layer => map.removeLayer(layer));
             planningLayersRef.current = [];
 
             mapGeoData = await applyQuestionsToMapGeoData(
@@ -207,6 +191,7 @@ export const Map = ({ className }: { className?: string }) => {
                 eliminationLayerRef.current = null;
             }
 
+
             if (!map.getPane("eliminationPane")) {
                 map.createPane("eliminationPane");
                 map.getPane("eliminationPane")!.style.zIndex = "400";
@@ -214,7 +199,7 @@ export const Map = ({ className }: { className?: string }) => {
 
             const g = L.geoJSON(mapGeoData, {
                 interactive: false,
-                pane: "eliminationPane",
+                pane: "eliminationPane"
             });
 
             g.addTo(map);
@@ -253,7 +238,7 @@ export const Map = ({ className }: { className?: string }) => {
                 className={cn(
                     "w-[500px] h-[500px]",
                     className,
-                    showLoading && "is-loading",
+                    $isLoading && "is-loading",
                 )}
                 ref={leafletMapContext.set}
             >
@@ -282,56 +267,36 @@ export const Map = ({ className }: { className?: string }) => {
                 </div>
                 <div className="leaflet-bottom leaflet-right">
                     <div className="leaflet-control pointer-events-auto !mb-10 mr-[10px] flex justify-end gap-2 max-[340px]:flex-col">
-                        <Button
-                            className="shadow-md"
-                            data-tutorial-id="tutorial-share-state-btn"
-                            onClick={async () => {
-                                const props =
-                                    $hidingZone.properties || $hidingZone;
-                                const disabledStationsArray =
-                                    props.disabledStations ??
-                                    $hidingZone.disabledStations;
-                                const minimalSettings = {
-                                    isGameSettings: true,
-                                    questions:
-                                        props.questions ??
-                                        $hidingZone.questions,
-                                    disabledStations:
-                                        Array.isArray(disabledStationsArray) &&
-                                        disabledStationsArray.length > 0
-                                            ? encodeDisabledStations(
-                                                  disabledStationsArray,
-                                              )
+                            <Button
+                                className="shadow-md"
+                                data-tutorial-id="tutorial-share-state-btn"
+                                onClick={async () => {
+                                    const props = $hidingZone.properties || $hidingZone;
+                                    const disabledStationsArray = props.disabledStations ?? $hidingZone.disabledStations;
+                                    const minimalSettings = {
+                                        isGameSettings: true,
+                                        questions: props.questions ?? $hidingZone.questions,
+                                        disabledStations: Array.isArray(disabledStationsArray) && disabledStationsArray.length > 0
+                                            ? encodeDisabledStations(disabledStationsArray)
                                             : disabledStationsArray,
-                                    hidingRadius:
-                                        props.hidingRadius ??
-                                        $hidingZone.hidingRadius,
-                                    hidingRadiusUnits:
-                                        props.hidingRadiusUnits ??
-                                        $hidingZone.hidingRadiusUnits,
-                                    headStartMinutes:
-                                        props.headStartMinutes ??
-                                        $hidingZone.headStartMinutes,
-                                };
-                                const hidingZoneString =
-                                    JSON.stringify(minimalSettings);
-                                let compressedData;
-                                try {
-                                    compressedData =
-                                        await compress(hidingZoneString);
-                                } catch (error) {
-                                    console.error("Compression failed:", error);
-                                    toast.error(
-                                        `Failed to prepare data for sharing`,
-                                    );
-                                    return;
-                                }
+                                        hidingRadius: props.hidingRadius ?? $hidingZone.hidingRadius,
+                                        hidingRadiusUnits: props.hidingRadiusUnits ?? $hidingZone.hidingRadiusUnits,
+                                        headStartMinutes: props.headStartMinutes ?? $hidingZone.headStartMinutes,
+                                    };
+                                    const hidingZoneString = JSON.stringify(minimalSettings);
+                                    let compressedData;
+                                    try {
+                                        compressedData = await compress(hidingZoneString);
+                                    } catch (error) {
+                                        console.error("Compression failed:", error);
+                                        toast.error(`Failed to prepare data for sharing`);
+                                        return;
+                                    }
 
-                                const baseUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
-                                const shareUrl = `${baseUrl}?${HIDING_ZONE_COMPRESSED_URL_PARAM}=${compressedData}`;
+                                    const baseUrl = `${window.location.protocol}//${window.location.host}${window.location.pathname}`;
+                                    const shareUrl = `${baseUrl}?${HIDING_ZONE_COMPRESSED_URL_PARAM}=${compressedData}`;
 
-                                await shareOrFallback(shareUrl).then(
-                                    (result) => {
+                                    await shareOrFallback(shareUrl).then((result) => {
                                         if (result === false) {
                                             return toast.error(
                                                 `Clipboard not supported. Try manually copying/pasting: ${shareUrl}`,
@@ -347,23 +312,22 @@ export const Map = ({ className }: { className?: string }) => {
                                                 },
                                             );
                                         }
-                                    },
-                                );
-                            }}
-                        >
-                            Share
-                        </Button>
-                        <Button
-                            className="w-24 shadow-md"
-                            data-tutorial-id="tutorial-options-btn"
-                            onClick={() => isOptionsOpenStore.set(true)}
-                        >
-                            Options
-                        </Button>
-                    </div>
+                                    });
+                                }}
+                            >
+                                Share
+                            </Button>
+                            <Button
+                                className="w-24 shadow-md"
+                                data-tutorial-id="tutorial-options-btn"
+                                onClick={() => isOptionsOpenStore.set(true)}
+                            >
+                                Options
+                            </Button>
+                        </div>
                 </div>
-                {showLoading && (
-                    <div className="absolute top-[20%] left-1/2 -translate-x-1/2 z-[9999] pointer-events-none">
+                {$isLoading && (
+                    <div className="absolute top-[20%] left-1/2 -translate-x-1/2 z-[9999] pointer-events-none delayed-loader">
                         <div
                             className="bg-white/90 backdrop-blur-md shadow-md w-auto h-[36px] px-3 rounded-full flex items-center justify-center border border-slate-300"
                             title="Loading..."
@@ -379,7 +343,7 @@ export const Map = ({ className }: { className?: string }) => {
                 <ScaleControl position="bottomleft" />
             </MapContainer>
         ),
-        [map, $baseTileLayer, showLoading],
+        [map, $baseTileLayer, $isLoading],
     );
 
     useEffect(() => {
@@ -387,6 +351,8 @@ export const Map = ({ className }: { className?: string }) => {
 
         refreshQuestions();
     }, [$questions, map, $hiderMode]);
+
+
 
     useEffect(() => {
         const handleFullscreenChange = () => {
