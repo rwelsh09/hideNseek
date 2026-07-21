@@ -130,7 +130,7 @@ export const Map = ({ className }: { className?: string }) => {
         if ($isLoading) {
             timeout = setTimeout(() => {
                 setShowLoading(true);
-            }, 200);
+            }, 100);
         } else {
             setShowLoading(false);
         }
