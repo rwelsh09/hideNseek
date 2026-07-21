@@ -346,11 +346,17 @@ export const Map = ({ className }: { className?: string }) => {
         [map, $baseTileLayer, $isLoading],
     );
 
+    const lockedQuestionsHash = useMemo(() => {
+        return JSON.stringify(
+            $questions.filter((q) => q.data.locked)
+        );
+    }, [$questions]);
+
     useEffect(() => {
         if (!map) return;
 
         refreshQuestions();
-    }, [$questions, map, $hiderMode]);
+    }, [lockedQuestionsHash, map, $hiderMode]);
 
 
 

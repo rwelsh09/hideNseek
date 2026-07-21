@@ -35,3 +35,6 @@
 
 **Learning:** Passing a full reactive store object (like `$questions`) to a `useEffect` dependency array can trigger excessive and expensive side-effects (e.g., redundant API requests or map data processing) during rapid state changes like dragging a map marker.
 **Action:** Use `useMemo` to extract a stable primitive representation of the exact required state (like a stringified hash of active types) and use that hash as the `useEffect` dependency. This ensures the expensive effect only runs when the strictly necessary data requirements actually change.
+## 2026-07-21 - [Optimize useEffect triggers using locked state hash]
+**Learning:** Extracting complex nanostore state (like $questions) via `JSON.stringify($questions.filter(q => q.data.locked))` instead of `JSON.stringify($questions)` significantly optimizes map component rendering when only locked questions affect rendering state. This reduces heavy operations on map marker dragging.
+**Action:** When filtering objects for useMemo hashes in React component dependencies, apply precise property filters that represent the necessary trigger conditions rather than just stringifying the whole store.

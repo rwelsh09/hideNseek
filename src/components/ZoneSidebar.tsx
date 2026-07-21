@@ -3,7 +3,7 @@ import * as turf from "@turf/turf";
 import type { Feature, FeatureCollection } from "geojson";
 import * as L from "leaflet";
 import { AlertTriangle, SidebarCloseIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
 import { Accordion } from "@/components/ui/accordion";
@@ -186,6 +186,12 @@ export const ZoneSidebar = () => {
         geoJsonLayer.bringToBack();
     };
 
+    const lockedQuestionsHash = useMemo(() => {
+        return JSON.stringify(
+            $questions.filter((q) => q.data.locked)
+        );
+    }, [$questions]);
+
     useEffect(() => {
         if (!map || isLoading.get()) return;
 
@@ -202,7 +208,7 @@ export const ZoneSidebar = () => {
         $questionFinishedMapData,
         $showRecommendedStart,
         $hidingRadius,
-        $questions,
+        lockedQuestionsHash,
     ]);
 
     useEffect(() => {
