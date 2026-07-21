@@ -11,3 +11,6 @@
 ## 2026-06-25 - [Testing GeoJSON Measure Bounds]
 **Learning:** In the `measure.ts` question logic, `findPlacesInZone` returns raw OSM elements, not standard Turf Features. The helper `determineMeasureBoundary` internally converts these into points and merges them into a `MultiPoint` geometry using `turf.combine`. Consequently, when writing tests for `calculateMeasureDistance`, the mock for `findPlacesInZone` must return raw OSM objects (e.g., `{ center: { lat: 51, lon: -114 } }` or `{ lat: 51, lon: -114 }`), as providing pre-formatted GeoJSON features will result in parsing errors down the line.
 **Action:** When mocking `findPlacesInZone` for non-station Measure questions, supply an array of raw OSM node objects, never Turf features.
+## 2026-06-25 - [Git Merge Diff Tool]
+**Learning:** When applying code edits using search/replace conflict markers (`<<<<<<< SEARCH`, `=======`, `>>>>>>> REPLACE`), use the agent`s internal `replace_with_git_merge_diff` tool directly. Do not output this syntax into a temporary `.diff` file and run the bash `patch` utility, as bash `patch` only accepts standard unified diffs and will fail with a "garbage was found" error.
+**Action:** Use `replace_with_git_merge_diff` for all search/replace file edits instead of creating patch files.
