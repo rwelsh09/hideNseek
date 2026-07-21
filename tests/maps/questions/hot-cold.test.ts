@@ -77,6 +77,15 @@ describe("hot-cold", () => {
             expect(result).toBeDefined();
             expect(result?.type).toBe("Feature");
             // voronoi.features[1] is point B, so this should intersect with that half
+
+            // Asserts behavior instead of just returning a feature
+            expect(turf.area(result!)).toBeLessThan(turf.area(mapData));
+            expect(turf.area(result!)).toBeGreaterThan(0);
+
+            // If warmer is true, it intersects with point B's voronoi polygon
+            expect(turf.booleanPointInPolygon(turf.point([-114.1, 51.1]), result!)).toBe(true);
+            // And point A should be excluded
+            expect(turf.booleanPointInPolygon(turf.point([-114.0, 51.0]), result!)).toBe(false);
         });
 
         test("should intersect mapData with colder voronoi polygon", () => {
@@ -98,6 +107,15 @@ describe("hot-cold", () => {
             );
             expect(result).toBeDefined();
             expect(result?.type).toBe("Feature");
+
+            // Asserts behavior instead of just returning a feature
+            expect(turf.area(result!)).toBeLessThan(turf.area(mapData));
+            expect(turf.area(result!)).toBeGreaterThan(0);
+
+            // If warmer is false (colder), it intersects with point A's voronoi polygon
+            expect(turf.booleanPointInPolygon(turf.point([-114.0, 51.0]), result!)).toBe(true);
+            // And point B should be excluded
+            expect(turf.booleanPointInPolygon(turf.point([-114.1, 51.1]), result!)).toBe(false);
         });
     });
 
