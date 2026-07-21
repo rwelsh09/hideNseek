@@ -25,6 +25,7 @@ import {
     isTimerRunning,
     leaderboard,
     penaltyMinutes,
+    showTimer,
     timerElapsedSeconds,
     timerStartTimestamp,
 } from "@/lib/context";
@@ -40,6 +41,7 @@ export const TimerDrawer = () => {
     const $timerStartTimestamp = useStore(timerStartTimestamp);
     const $leaderboard = useStore(leaderboard);
     const $headStartMinutes = useStore(headStartMinutes);
+    const $showTimer = useStore(showTimer);
     const [showRoundOverModal, setShowRoundOverModal] = React.useState(false);
 
     const formatTime = (totalSecs: number) => {
@@ -212,12 +214,20 @@ export const TimerDrawer = () => {
             <DrawerTrigger asChild>
                 <button
                     type="button"
-                    className="bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
+                    className={`bg-white hover:bg-[#f4f4f4] h-[34px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 ${
+                        $showTimer && $isTimerRunning
+                            ? "px-2 font-mono font-bold text-black"
+                            : "w-[34px]"
+                    }`}
                     title="Timer & Leaderboard"
                     aria-label="Timer & Leaderboard"
                     data-tutorial-id="timer-drawer-trigger"
                 >
-                    <Clock className="w-5 h-5 text-black" />
+                    {$showTimer && $isTimerRunning ? (
+                        formatTime(getTotalSeconds())
+                    ) : (
+                        <Clock className="w-5 h-5 text-black" />
+                    )}
                     {$penaltyMinutes > 0 && (
                         <div className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold px-1 rounded-full leading-tight">
                             +{$penaltyMinutes}

@@ -206,6 +206,7 @@ export const penaltyMinutes = persistentJsonAtom<number>("penaltyMinutes", 0);
 export const timerStartTimestamp = persistentJsonAtom<number | null>("timerStartTimestamp", null);
 export const timerElapsedSeconds = persistentJsonAtom<number>("timerElapsedSeconds", 0);
 export const isTimerRunning = persistentJsonAtom<boolean>("isTimerRunning", false);
+export const showTimer = persistentJsonAtom<boolean>("showTimer", false);
 
 export type LeaderboardEntry = {
     id: string;
