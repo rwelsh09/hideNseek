@@ -8,7 +8,7 @@ on:
     workflow_dispatch:
 
 concurrency:
-    group: "pages"
+    group: "deploy"
     cancel-in-progress: false
 
 permissions:
@@ -140,4 +140,8 @@ jobs:
                   git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
                   git add .
                   git commit -m "Deploy branch $BRANCH" || echo "No changes to commit"
-                  git push origin gh-pages
+                  for i in {1..5}; do
+                      git pull --rebase origin gh-pages && git push origin gh-pages && break
+                      if [ $i -eq 5 ]; then exit 1; fi
+                      sleep 5
+                  done

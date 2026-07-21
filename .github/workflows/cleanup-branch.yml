@@ -5,7 +5,7 @@ on:
     workflow_dispatch:
 
 concurrency:
-    group: "pages"
+    group: "cleanup"
     cancel-in-progress: false
 
 permissions:
@@ -110,4 +110,8 @@ jobs:
                       git commit -m "Bulk cleanup of orphaned deployed branches and update branches.html" || echo "No changes to commit"
                   fi
 
-                  git push origin gh-pages
+                  for i in {1..5}; do
+                      git pull --rebase origin gh-pages && git push origin gh-pages && break
+                      if [ $i -eq 5 ]; then exit 1; fi
+                      sleep 5
+                  done
