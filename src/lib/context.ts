@@ -260,8 +260,3 @@ export const showRecommendedStart = persistentJsonAtom<boolean>(
     "showRecommendedStart",
     false,
 );
-
-export const hasSeenPerformanceWarning = persistentJsonAtom<boolean>(
-    "hasSeenPerformanceWarning",
-    false,
-);

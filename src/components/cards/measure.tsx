@@ -121,7 +121,7 @@ export const MeasureQuestionComponent = ({
                     disabled={!!$hiderMode || data.locked || $isLoading}
                 >
                     <ToggleGroupItem value="further" className="data-[state=on]:bg-blue-500 data-[state=on]:text-white">
-                        Hider Further
+                        Hider Farther
                     </ToggleGroupItem>
                     <ToggleGroupItem value="closer" className="data-[state=on]:bg-rose-500 data-[state=on]:text-white">
                         Hider Closer

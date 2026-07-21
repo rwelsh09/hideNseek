@@ -103,11 +103,9 @@ export const TimerDrawer = () => {
         isTimerRunning.set(false);
         timerStartTimestamp.set(null);
 
-        if ($timerElapsedSeconds > 0) {
+        if (getTotalSeconds() > 0) {
             setShowRoundOverModal(true);
-            if (getTotalSeconds() > 0) {
-                triggerConfetti();
-            }
+            triggerConfetti();
         }
     };
 
