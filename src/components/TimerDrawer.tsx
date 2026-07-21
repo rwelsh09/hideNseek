@@ -67,15 +67,12 @@ export const TimerDrawer = () => {
     React.useEffect(() => {
         let interval: NodeJS.Timeout;
         if ($isTimerRunning) {
-            // Set start timestamp if none exists
             if (!$timerStartTimestamp) {
                 timerStartTimestamp.set(
                     Date.now() - $timerElapsedSeconds * 1000,
                 );
             }
 
-            // We use Date.now() difference instead of incrementing elapsed seconds directly
-            // to prevent the timer from drifting due to JavaScript event loop delays.
             interval = setInterval(() => {
                 const start = timerStartTimestamp.get();
                 if (start) {
@@ -90,10 +87,8 @@ export const TimerDrawer = () => {
     const toggleTimer = () => {
         if ($isTimerRunning) {
             isTimerRunning.set(false);
-            // Clear timestamp so it recalculates on next start based on elapsed
             timerStartTimestamp.set(null);
         } else {
-            // Recalculate start timestamp to account for already elapsed time
             timerStartTimestamp.set(Date.now() - $timerElapsedSeconds * 1000);
             isTimerRunning.set(true);
             lockRecommendedStartIfNeeded();
@@ -166,7 +161,7 @@ export const TimerDrawer = () => {
     const manipulateTimer = (minutes: number) => {
         const newSeconds = timerElapsedSeconds.get() + minutes * 60;
         timerElapsedSeconds.set(newSeconds);
-        // Adjust the timestamp to reflect the new elapsed time
+        
         if (timerStartTimestamp.get()) {
             timerStartTimestamp.set(Date.now() - newSeconds * 1000);
         }
@@ -191,7 +186,6 @@ export const TimerDrawer = () => {
             ),
         );
 
-        // Reset after saving
         isTimerRunning.set(false);
         timerStartTimestamp.set(null);
         timerElapsedSeconds.set(0);
