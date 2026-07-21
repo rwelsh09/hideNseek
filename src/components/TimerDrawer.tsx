@@ -42,7 +42,6 @@ export const TimerDrawer = () => {
     const $headStartMinutes = useStore(headStartMinutes);
     const [showRoundOverModal, setShowRoundOverModal] = React.useState(false);
 
-    // Format seconds into MM:SS
     const formatTime = (totalSecs: number) => {
         const isNegative = totalSecs < 0;
         const absSecs = Math.abs(totalSecs);
@@ -59,7 +58,6 @@ export const TimerDrawer = () => {
         return `${sign}${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
     };
 
-    // Calculate total seconds including penalty
     const getTotalSeconds = () => {
         return (
             $timerElapsedSeconds - $headStartMinutes * 60 + $penaltyMinutes * 60
@@ -69,7 +67,6 @@ export const TimerDrawer = () => {
     React.useEffect(() => {
         let interval: NodeJS.Timeout;
         if ($isTimerRunning) {
-            // Set start timestamp if none exists
             if (!$timerStartTimestamp) {
                 timerStartTimestamp.set(
                     Date.now() - $timerElapsedSeconds * 1000,
@@ -90,10 +87,8 @@ export const TimerDrawer = () => {
     const toggleTimer = () => {
         if ($isTimerRunning) {
             isTimerRunning.set(false);
-            // Clear timestamp so it recalculates on next start based on elapsed
             timerStartTimestamp.set(null);
         } else {
-            // Recalculate start timestamp to account for already elapsed time
             timerStartTimestamp.set(Date.now() - $timerElapsedSeconds * 1000);
             isTimerRunning.set(true);
             lockRecommendedStartIfNeeded();
@@ -166,7 +161,7 @@ export const TimerDrawer = () => {
     const manipulateTimer = (minutes: number) => {
         const newSeconds = timerElapsedSeconds.get() + minutes * 60;
         timerElapsedSeconds.set(newSeconds);
-        // Adjust the timestamp to reflect the new elapsed time
+        
         if (timerStartTimestamp.get()) {
             timerStartTimestamp.set(Date.now() - newSeconds * 1000);
         }
@@ -191,7 +186,6 @@ export const TimerDrawer = () => {
             ),
         );
 
-        // Reset after saving
         isTimerRunning.set(false);
         timerStartTimestamp.set(null);
         timerElapsedSeconds.set(0);
