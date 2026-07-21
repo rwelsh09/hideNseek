@@ -16,14 +16,7 @@ import {
 import type { ICON_COLOURS } from "@/maps/api";
 
 import { LatitudeLongitude } from "./LatitudeLongitude";
-import {
-    ClosestQuestionComponent,
-    HotColdQuestionComponent,
-    MatchQuestionComponent,
-    MeasureQuestionComponent,
-    PhotoQuestionComponent,
-    RadarQuestionComponent,
-} from "./QuestionCards";
+import { QuestionCardComponent } from "./QuestionCards";
 import { Button } from "./ui/button";
 
 // Global state for which marker is currently being edited
@@ -275,8 +268,7 @@ export const DraggableMarkers = () => {
                                     onChange={(latitude, longitude) => {
                                         hiderMode.set({
                                             latitude:
-                                                latitude ??
-                                                $hiderMode.latitude,
+                                                latitude ?? $hiderMode.latitude,
                                             longitude:
                                                 longitude ??
                                                 $hiderMode.longitude,
@@ -287,44 +279,9 @@ export const DraggableMarkers = () => {
                             )}
 
                             {activeQuestion && (
-                                <Fragment>
-                                    {activeQuestion.id === "radar" && (
-                                        <RadarQuestionComponent
-                                            data={activeQuestion.data as any}
-                                            questionKey={activeQuestion.key}
-                                        />
-                                    )}
-                                    {activeQuestion.id === "closest" && (
-                                        <ClosestQuestionComponent
-                                            data={activeQuestion.data as any}
-                                            questionKey={activeQuestion.key}
-                                        />
-                                    )}
-                                    {activeQuestion.id === "hot/cold" && (
-                                        <HotColdQuestionComponent
-                                            data={activeQuestion.data as any}
-                                            questionKey={activeQuestion.key}
-                                        />
-                                    )}
-                                    {activeQuestion.id === "match" && (
-                                        <MatchQuestionComponent
-                                            data={activeQuestion.data as any}
-                                            questionKey={activeQuestion.key}
-                                        />
-                                    )}
-                                    {activeQuestion.id === "measure" && (
-                                        <MeasureQuestionComponent
-                                            data={activeQuestion.data as any}
-                                            questionKey={activeQuestion.key}
-                                        />
-                                    )}
-                                    {activeQuestion.id === "photo" && (
-                                        <PhotoQuestionComponent
-                                            data={activeQuestion.data as any}
-                                            questionKey={activeQuestion.key}
-                                        />
-                                    )}
-                                </Fragment>
+                                <QuestionCardComponent
+                                    question={activeQuestion as any}
+                                />
                             )}
 
                             {isHiderActive && (
