@@ -233,6 +233,7 @@ export const isTimerRunning = persistentJsonAtom<boolean>(
     "isTimerRunning",
     false,
 );
+export const showTimer = persistentJsonAtom<boolean>("showTimer", false);
 
 export type LeaderboardEntry = {
     id: string;
