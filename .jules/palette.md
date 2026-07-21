@@ -4,12 +4,10 @@
 
 **Action:** Leveraged `LatitudeLongitude` to expose a colour-changing button for `ICON_COLOURS` palette without rewriting boilerplate UI per question card type. Updated all question components (`radius.tsx`, `thermometer.tsx` (for A & B), `tentacles.tsx`, `measuring.tsx`, `matching.tsx`, `photo.tsx`) to pass an `onChangeColour` prop that mutates their local store state. Used pure JS evaluation `document.querySelectorAll('button')` based on title during Playwright testing to bypass obscure selector mismatches.
 
-
 ## 2026-07-15 - [Comprehensive Accessible Interactive Elements]
 
 **Learning:** Across the application (e.g., `DraggableMarkers`, `SidebarCloseIcon`, `TimerDrawer` leaderboards, `sidebar-l`/`sidebar-r`, floating map controls, `LatLngPicker` hemispheres, `AddQuestionDialog` categories), purely visual SVGs or abbreviated text toggles were frequently implemented with `onClick` handlers but lacked fundamental accessibility markers. This prevented keyboard focus, blocked screen reader context (lacking semantic roles), or rendered elements completely invisible to keyboard navigation. Static `title` attributes alone on repeated list items or abbreviated texts are insufficient for robust accessibility.
-**Action:** Always ensure that any interactive visual element or icon-only click target is wrapped in a semantic `<button type="button">` element. Critically, these elements must possess a descriptive, contextual `aria-label` (e.g., distinguishing *which* list entry it removes), a native browser `title` for hover context, and explicit, consistent `focus-visible` utility classes (e.g., `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2` or similar `ring-ring`) to guarantee predictable and accessible keyboard navigation patterns across all UI layers.
-
+**Action:** Always ensure that any interactive visual element or icon-only click target is wrapped in a semantic `<button type="button">` element. Critically, these elements must possess a descriptive, contextual `aria-label` (e.g., distinguishing _which_ list entry it removes), a native browser `title` for hover context, and explicit, consistent `focus-visible` utility classes (e.g., `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2` or similar `ring-ring`) to guarantee predictable and accessible keyboard navigation patterns across all UI layers.
 
 ## 2026-07-16 - [Accessible Form Buttons inside Dynamic Grid Components]
 
@@ -24,4 +22,9 @@
 ## 2026-07-20 - [Icon-Only Map Floating Controls & Unnoticeable Animations]
 
 **Learning:** When trying to add global tactile feedback like `active:scale-95 transition-all` to standard buttons, the effect can be imperceptible if the resulting interaction or state change happens too quickly. Additionally, responsive button components that strip out their text labels to render as 'icon-only' based on viewport/layout context (e.g., floating map action buttons) inherently lose their screen reader name if `aria-label`s are not explicitly defined or updated.
-**Action:** Avoid micro-interactions that are swallowed by fast application state changes; stick to clear hover states and focus rings instead of active scale animations unless the action is artificially delayed. However, when a component toggles text rendering via an `iconOnly` prop, *always* ensure an explicit `aria-label` is present and conditionally render a native `title` attribute so the icon's purpose remains accessible to both screen readers and pointer-device users.
+**Action:** Avoid micro-interactions that are swallowed by fast application state changes; stick to clear hover states and focus rings instead of active scale animations unless the action is artificially delayed. However, when a component toggles text rendering via an `iconOnly` prop, _always_ ensure an explicit `aria-label` is present and conditionally render a native `title` attribute so the icon's purpose remains accessible to both screen readers and pointer-device users.
+
+## 2025-02-14 - Missing ARIA labels in form inputs and interactive elements
+
+**Learning:** Found that customized `<Input>` tags (used for numeric and text entry in Zone Sidebar and question cards) and some nested buttons within modals/drawers lacked explicit `aria-label` attributes. Screen readers would fail to correctly contextualize these inputs despite adjacent labels.
+**Action:** When creating or modifying inputs or icon-heavy buttons inside sidebars, cards, or accordions, ensure `aria-label` is always explicitly added, particularly when a `<label>` element isn't directly wrapping or linking via `id` to the input.
