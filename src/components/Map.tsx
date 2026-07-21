@@ -5,7 +5,7 @@ import "leaflet-doubletapdragzoom";
 import { useStore } from "@nanostores/react";
 import * as L from "leaflet";
 import { Loader2 } from "lucide-react";
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MapContainer, ScaleControl } from "react-leaflet";
 import { toast } from "react-toastify";
 
@@ -123,6 +123,19 @@ export const Map = ({ className }: { className?: string }) => {
 
     const planningLayersRef = useRef<L.Layer[]>([]);
     const eliminationLayerRef = useRef<L.Layer | null>(null);
+    const [showLoading, setShowLoading] = useState(false);
+
+    useEffect(() => {
+        let timeout: NodeJS.Timeout;
+        if ($isLoading) {
+            timeout = setTimeout(() => {
+                setShowLoading(true);
+            }, 200);
+        } else {
+            setShowLoading(false);
+        }
+        return () => clearTimeout(timeout);
+    }, [$isLoading]);
 
     const refreshQuestions = async () => {
         if (!map) return;
@@ -238,7 +251,7 @@ export const Map = ({ className }: { className?: string }) => {
                 className={cn(
                     "w-[500px] h-[500px]",
                     className,
-                    $isLoading && "is-loading",
+                    showLoading && "is-loading",
                 )}
                 ref={leafletMapContext.set}
             >
@@ -326,7 +339,7 @@ export const Map = ({ className }: { className?: string }) => {
                             </Button>
                         </div>
                 </div>
-                {$isLoading && (
+                {showLoading && (
                     <div className="absolute top-[20%] left-1/2 -translate-x-1/2 z-[9999] pointer-events-none">
                         <div
                             className="bg-white/90 backdrop-blur-md shadow-md w-auto h-[36px] px-3 rounded-full flex items-center justify-center border border-slate-300"
@@ -343,7 +356,7 @@ export const Map = ({ className }: { className?: string }) => {
                 <ScaleControl position="bottomleft" />
             </MapContainer>
         ),
-        [map, $baseTileLayer, $isLoading],
+        [map, $baseTileLayer, showLoading],
     );
 
     useEffect(() => {
