@@ -1,3 +1,0 @@
-## 2026-07-21 - Replace redundant "What" comments with clarifying "Why" comments
-**Learning:** When calculating elapsed time, using `setInterval` tick counts causes timer drift due to JavaScript event loop delays. We must use `Date.now() - start` instead, and this is a non-obvious business domain detail that warrants a "Why" comment to prevent future refactors from re-introducing the drift. Redundant "What" comments restating obvious code behaviors should always be removed.
-**Action:** Remove noisy comments that just restate code function (e.g., `// Add to map` above `addQuestion()`), and add concise comments explaining the business constraints for weird edge cases.
