@@ -1,0 +1,6 @@
+1. **Update Schema**: Add `minDistance: z.number().optional()` to `hotColdQuestionSchema` in `src/maps/schema.ts`.
+2. **Update Question Creation**: In `src/components/AddQuestionDialog.tsx`, explicitly set `minDistance` to `parseFloat(detail || "5")` when creating a new "Hot/Cold" question.
+3. **Add Validation Prop to Base Card**: In `src/components/cards/base.tsx`, add a `validateLock?: () => string | true` prop to `QuestionCard`. Invoke this function in `toggleLockAndCollapse` before locking (when `!questionData.locked`). If it returns a string, show it using `toast.error(validation)` and exit early.
+4. **Implement Validation for Hot/Cold Card**: In `src/components/cards/hot-cold.tsx`, define a `validateLock` function that checks if `distanceValue` is greater than or equal to `data.minDistance` (falling back to 0 if not present). Account for small floating-point variations (e.g. `distanceValue < minDistance - 0.001`). If invalid, return an error message like `"Distance must be at least Xkm."`. Pass this function to the `QuestionCard`.
+5. **Complete pre commit steps to ensure proper testing, verification, review, and reflection are done.**
+6. **Submit Changes**: Submit after verifying.

@@ -76,6 +76,7 @@ const hotColdQuestionSchema = z.object({
     colourB: iconColourSchema.default("red"),
     locked: z.boolean().default(false),
     doubledPenalty: z.boolean().default(false),
+    minDistance: z.number().optional(),
 });
 
 const ordinaryBaseQuestionSchema = z.object({

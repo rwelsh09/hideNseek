@@ -49,6 +49,7 @@ export const QuestionCard = ({
     sub,
     questionData,
     penaltyId,
+    validateLock,
 }: {
     children: React.ReactNode;
     questionKey: number;
@@ -57,6 +58,7 @@ export const QuestionCard = ({
     sub?: string;
     questionData: { locked: boolean; [key: string]: any };
     penaltyId: keyof typeof TIME_PENALTIES;
+    validateLock?: () => string | true;
 }) => {
     const [isCollapsed, setIsCollapsed] = useState(
         questionData.locked ?? false,
@@ -66,9 +68,18 @@ export const QuestionCard = ({
     const $hiderMode = useStore(hiderMode);
 
     const toggleLockAndCollapse = () => {
+        const wasUnlocked = !questionData.locked;
+
+        if (wasUnlocked && validateLock) {
+            const validation = validateLock();
+            if (typeof validation === "string") {
+                toast.error(validation);
+                return;
+            }
+        }
+
         lockRecommendedStartIfNeeded();
 
-        const wasUnlocked = !questionData.locked;
         questionData.locked = wasUnlocked;
         questionModified();
 

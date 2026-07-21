@@ -122,6 +122,7 @@ export function AddQuestionDialog({
                 colourA: "gold",
                 colourB: "blue",
                 doubledPenalty: isQuestionLocked(type, detail),
+                minDistance: parseFloat(detail || "5"),
             };
         } else if (type === "closest") {
             qData.locationType = detail || "museum";
