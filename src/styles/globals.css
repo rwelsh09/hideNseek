@@ -250,9 +250,9 @@ div.driver-popover, div.driver-overlay {
     pointer-events: auto !important;
 }
 
-/* Delay loading indicator by 200ms to prevent flickering on fast operations */
+/* Delay loading indicator to prevent flickering on fast operations */
 .delayed-loader {
-    animation: delayed-fade-in 0s linear 0.2s forwards;
+    animation: delayed-fade-in 0s linear 0.025s forwards;
     opacity: 0;
 }
 
