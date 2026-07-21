@@ -42,7 +42,6 @@ export const TimerDrawer = () => {
     const $headStartMinutes = useStore(headStartMinutes);
     const [showRoundOverModal, setShowRoundOverModal] = React.useState(false);
 
-    // Format seconds into MM:SS
     const formatTime = (totalSecs: number) => {
         const isNegative = totalSecs < 0;
         const absSecs = Math.abs(totalSecs);
@@ -59,7 +58,6 @@ export const TimerDrawer = () => {
         return `${sign}${m.toString().padStart(2, "0")}:${s.toString().padStart(2, "0")}`;
     };
 
-    // Calculate total seconds including penalty
     const getTotalSeconds = () => {
         return (
             $timerElapsedSeconds - $headStartMinutes * 60 + $penaltyMinutes * 60
@@ -76,6 +74,8 @@ export const TimerDrawer = () => {
                 );
             }
 
+            // We use Date.now() difference instead of incrementing elapsed seconds directly
+            // to prevent the timer from drifting due to JavaScript event loop delays.
             interval = setInterval(() => {
                 const start = timerStartTimestamp.get();
                 if (start) {
