@@ -48,6 +48,17 @@ export const HotColdQuestionComponent = ({
 
     const unitLabel = "km";
 
+    const validateLock = () => {
+        if (!hasCoords || distanceValue === null) {
+            return "Please select both Start and End locations.";
+        }
+        const requiredMin = data.minDistance || 0;
+        if (distanceValue < requiredMin - 0.001) {
+            return `Distance must be at least ${requiredMin}${unitLabel}.`;
+        }
+        return true;
+    };
+
     return (
         <QuestionCard
             questionKey={questionKey}
@@ -55,6 +66,7 @@ export const HotColdQuestionComponent = ({
             className={className}
             questionData={data}
             penaltyId={"hot/cold"}
+            validateLock={validateLock}
         >
             <LatitudeLongitude
                 latitude={data.latA}
