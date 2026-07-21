@@ -3,10 +3,7 @@ import { useEffect, useState } from "react";
 
 import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Input } from "@/components/ui/input";
-import {
-    MENU_ITEM_CLASSNAME,
-    SidebarMenuItem,
-} from "@/components/ui/sidebar";
+import { MENU_ITEM_CLASSNAME, SidebarMenuItem } from "@/components/ui/sidebar";
 import {
     isLoading,
     questionModified,
@@ -77,11 +74,18 @@ export const PhotoQuestionComponent = ({
             <SidebarMenuItem>
                 <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-col")}>
                     <Input
+                        aria-label="Photo notes"
                         type="text"
                         placeholder="Enter information about the photo..."
                         className="rounded-md p-2 w-full"
                         value={localNotes}
                         disabled={data.locked || $isLoading}
+                        enterKeyHint="done"
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                e.currentTarget.blur();
+                            }
+                        }}
                         onChange={(e) => setLocalNotes(e.target.value)}
                         onBlur={() => {
                             if (data.notes !== localNotes) {

@@ -1,9 +1,5 @@
 import { useStore } from "@nanostores/react";
-import {
-    Clock,
-    SidebarCloseIcon,
-    Trash2,
-} from "lucide-react";
+import { Clock, SidebarCloseIcon, Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
 
 import {
@@ -24,7 +20,8 @@ import {
 } from "@/components/ui/sidebar";
 import {
     isLoading,
-    lockedActiveStationIds, lockedRecommendedStart,
+    lockedActiveStationIds,
+    lockedRecommendedStart,
     penaltyMinutes,
     questions,
     triggerLocalRefresh,
@@ -32,14 +29,7 @@ import {
 
 import { AddQuestionDialog } from "./AddQuestionDialog";
 import { PasteQuestionButton } from "./PasteQuestionButton";
-import {
-    ClosestQuestionComponent,
-    HotColdQuestionComponent,
-    MatchQuestionComponent,
-    MeasureQuestionComponent,
-    PhotoQuestionComponent,
-    RadarQuestionComponent,
-} from "./QuestionCards";
+import { QuestionCardComponent } from "./QuestionCards";
 import { Button } from "./ui/button";
 
 export const QuestionSidebar = () => {
@@ -135,60 +125,12 @@ export const QuestionSidebar = () => {
                     </div>
                 )}
 
-                {$questions.map((question) => {
-                    switch (question.id) {
-                        case "radar":
-                            return (
-                                <RadarQuestionComponent
-                                    data={question.data}
-                                    key={question.key}
-                                    questionKey={question.key}
-                                />
-                            );
-                        case "hot/cold":
-                            return (
-                                <HotColdQuestionComponent
-                                    data={question.data}
-                                    key={question.key}
-                                    questionKey={question.key}
-                                />
-                            );
-                        case "closest":
-                            return (
-                                <ClosestQuestionComponent
-                                    data={question.data}
-                                    key={question.key}
-                                    questionKey={question.key}
-                                />
-                            );
-                        case "match":
-                            return (
-                                <MatchQuestionComponent
-                                    data={question.data}
-                                    key={question.key}
-                                    questionKey={question.key}
-                                />
-                            );
-                        case "measure":
-                            return (
-                                <MeasureQuestionComponent
-                                    data={question.data}
-                                    key={question.key}
-                                    questionKey={question.key}
-                                />
-                            );
-                        case "photo":
-                            return (
-                                <PhotoQuestionComponent
-                                    data={question.data as any}
-                                    key={question.key}
-                                    questionKey={question.key}
-                                />
-                            );
-                        default:
-                            return null;
-                    }
-                })}
+                {$questions.map((question) => (
+                    <QuestionCardComponent
+                        key={question.key}
+                        question={question as any}
+                    />
+                ))}
             </SidebarContent>
 
             <div className="px-4 pb-4">

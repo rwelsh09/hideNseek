@@ -292,10 +292,17 @@ export const ZoneSidebar = () => {
                             </Label>
                             <div className="w-[100px]">
                                 <Input
+                                    aria-label="Head Start (Minutes)"
                                     type="number"
                                     inputMode="decimal"
                                     className="rounded-md p-2 w-full bg-background"
                                     value={$headStartMinutes}
+                                    enterKeyHint="done"
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            e.currentTarget.blur();
+                                        }
+                                    }}
                                     onChange={(e) => {
                                         headStartMinutes.set(
                                             parseInt(e.target.value) || 0,
@@ -312,10 +319,17 @@ export const ZoneSidebar = () => {
                             </Label>
                             <div className="flex gap-2 items-center">
                                 <Input
+                                    aria-label="Hiding Zone Radius"
                                     type="number"
                                     inputMode="decimal"
                                     className="rounded-md p-2 w-16 bg-background"
                                     value={$hidingRadius}
+                                    enterKeyHint="done"
+                                    onKeyDown={(e) => {
+                                        if (e.key === "Enter") {
+                                            e.currentTarget.blur();
+                                        }
+                                    }}
                                     onChange={(e) => {
                                         hidingRadius.set(
                                             parseFloat(e.target.value),

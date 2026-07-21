@@ -36,4 +36,3 @@ interface StationPlaceProperties {
 
 export type StationPlace = Feature<Point, StationPlaceProperties>;
 export type StationCircle = Feature<Polygon, StationPlace>;
-
