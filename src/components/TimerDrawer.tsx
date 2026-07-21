@@ -217,7 +217,9 @@ export const TimerDrawer = () => {
                     data-tutorial-id="timer-drawer-trigger"
                 >
                     {$showTimer ? (
-                        formatTime($timerElapsedSeconds)
+                        formatTime(
+                            $timerElapsedSeconds - $headStartMinutes * 60,
+                        )
                     ) : (
                         <Clock className="w-5 h-5 text-black" />
                     )}
