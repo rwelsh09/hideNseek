@@ -1,3 +1,4 @@
 ## 2026-07-19 - Asserting Geometric Differences in Turf.js
-**Learning:** When testing geometric difference operations (e.g., subtracting a circle from a larger polygon), asserting that the resulting area is smaller than the original area provides false confidence. An incorrect implementation returning the *intersection* instead of the difference will also result in a smaller area, causing the test to falsely pass.
-**Action:** When testing geometric differences, explicitly verify that a point unique to the subtracted geometry (like the center of a subtracted circle) is *not* present in the resulting polygon using `turf.booleanPointInPolygon`.
+
+**Learning:** When testing geometric difference operations (e.g., subtracting a circle from a larger polygon), asserting that the resulting area is smaller than the original area provides false confidence. An incorrect implementation returning the _intersection_ instead of the difference will also result in a smaller area, causing the test to falsely pass.
+**Action:** When testing geometric differences, explicitly verify that a point unique to the subtracted geometry (like the center of a subtracted circle) is _not_ present in the resulting polygon using `turf.booleanPointInPolygon`.
