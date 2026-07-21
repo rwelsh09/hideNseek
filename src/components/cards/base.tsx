@@ -57,6 +57,7 @@ export const QuestionCard = ({
     sub?: string;
     questionData: { locked: boolean; [key: string]: any };
     penaltyId: keyof typeof TIME_PENALTIES;
+    canLock?: () => boolean;
 }) => {
     const [isCollapsed, setIsCollapsed] = useState(
         questionData.locked ?? false,
@@ -66,9 +67,14 @@ export const QuestionCard = ({
     const $hiderMode = useStore(hiderMode);
 
     const toggleLockAndCollapse = () => {
+        const wasUnlocked = !questionData.locked;
+
+        if (wasUnlocked && canLock && !canLock()) {
+            return;
+        }
+
         lockRecommendedStartIfNeeded();
 
-        const wasUnlocked = !questionData.locked;
         questionData.locked = wasUnlocked;
         questionModified();
 

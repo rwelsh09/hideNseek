@@ -1,5 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { distance, point } from "@turf/turf";
+import { toast } from "react-toastify";
 
 import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Label } from "@/components/ui/label";
@@ -48,6 +49,17 @@ export const HotColdQuestionComponent = ({
 
     const unitLabel = "km";
 
+    const canLock = () => {
+        if (data.minDistance !== undefined && distanceValue !== null) {
+            // Give a tiny bit of epsilon for floating point errors just in case
+            if (distanceValue < data.minDistance - 0.001) {
+                toast.error(`Distance must be at least ${data.minDistance} km`);
+                return false;
+            }
+        }
+        return true;
+    };
+
     return (
         <QuestionCard
             questionKey={questionKey}
@@ -55,6 +67,7 @@ export const HotColdQuestionComponent = ({
             className={className}
             questionData={data}
             penaltyId={"hot/cold"}
+            canLock={canLock}
         >
             <LatitudeLongitude
                 latitude={data.latA}

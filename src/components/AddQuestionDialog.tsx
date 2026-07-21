@@ -45,6 +45,11 @@ export function AddQuestionDialog({
                 return q.data.radius === radius && !q.data.isCustom;
             }
             if (type === "hot/cold" && q.id === "hot/cold") {
+                const detailDist = parseFloat(detail || "5");
+                if (q.data.minDistance !== undefined) {
+                    return q.data.minDistance === detailDist;
+                }
+
                 if (
                     !q.data.lngA ||
                     !q.data.latA ||
@@ -57,7 +62,6 @@ export function AddQuestionDialog({
                     [q.data.lngB, q.data.latB],
                     { units: "kilometers" },
                 );
-                const detailDist = parseFloat(detail || "5");
                 return Math.abs(dist - detailDist) < 0.1;
             }
             if (type === "match" && q.id === "match") {
@@ -122,6 +126,7 @@ export function AddQuestionDialog({
                 colourA: "gold",
                 colourB: "blue",
                 doubledPenalty: isQuestionLocked(type, detail),
+                minDistance: parseFloat(detail || "5"),
             };
         } else if (type === "closest") {
             qData.locationType = detail || "museum";
