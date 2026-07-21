@@ -23,3 +23,8 @@
 
 **Learning:** When trying to add global tactile feedback like `active:scale-95 transition-all` to standard buttons, the effect can be imperceptible if the resulting interaction or state change happens too quickly. Additionally, responsive button components that strip out their text labels to render as 'icon-only' based on viewport/layout context (e.g., floating map action buttons) inherently lose their screen reader name if `aria-label`s are not explicitly defined or updated.
 **Action:** Avoid micro-interactions that are swallowed by fast application state changes; stick to clear hover states and focus rings instead of active scale animations unless the action is artificially delayed. However, when a component toggles text rendering via an `iconOnly` prop, _always_ ensure an explicit `aria-label` is present and conditionally render a native `title` attribute so the icon's purpose remains accessible to both screen readers and pointer-device users.
+
+## 2026-07-21 - Missing ARIA labels in form inputs and interactive elements
+
+**Learning:** Found that customized `<Input>` tags (used for numeric and text entry in Zone Sidebar and question cards) and some nested buttons within modals/drawers lacked explicit `aria-label` attributes. Screen readers would fail to correctly contextualize these inputs despite adjacent labels.
+**Action:** When creating or modifying inputs or icon-heavy buttons inside sidebars, cards, or accordions, ensure `aria-label` is always explicitly added, particularly when a `<label>` element isn't directly wrapping or linking via `id` to the input.
