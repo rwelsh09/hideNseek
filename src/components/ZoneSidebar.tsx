@@ -187,9 +187,7 @@ export const ZoneSidebar = () => {
     };
 
     const lockedQuestionsHash = useMemo(() => {
-        return JSON.stringify(
-            $questions.filter((q) => q.data.locked)
-        );
+        return JSON.stringify($questions.filter((q) => q.data.locked));
     }, [$questions]);
 
     useEffect(() => {

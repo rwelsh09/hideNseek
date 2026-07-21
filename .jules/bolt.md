@@ -27,7 +27,9 @@
 
 **Learning:** `Math.random()` is used throughout the codebase for non-cryptographic purposes such as generating random temporary numerical IDs (`key`), UI cache breaking, and styling (e.g., color selection, random widths).
 **Action:** Do not replace `Math.random()` with `crypto.randomUUID()` or similar secure alternatives. Doing so would introduce string-based IDs which break existing Zod validation schemas that strictly type `key` as a `number`.
+
 ## 2026-07-19 - [Pool concurrent dynamic imports for offline places]
+
 **Learning:** When dynamically importing large local JSON datasets (like `offline_places.json`), if `import()` is called concurrently multiple times before the first import completes, it can cause memory spikes and redundant processing.
 **Action:** Use a module-level Promise variable to pool concurrent requests and prevent redundant reads. Always include a `.catch()` block to reset this promise to `null` on failure, allowing subsequent calls to retry and avoiding permanent cache locking on transient errors.
 
@@ -35,6 +37,8 @@
 
 **Learning:** Passing a full reactive store object (like `$questions`) to a `useEffect` dependency array can trigger excessive and expensive side-effects (e.g., redundant API requests or map data processing) during rapid state changes like dragging a map marker.
 **Action:** Use `useMemo` to extract a stable primitive representation of the exact required state (like a stringified hash of active types) and use that hash as the `useEffect` dependency. This ensures the expensive effect only runs when the strictly necessary data requirements actually change.
-## 2026-07-21 - [Optimize useEffect triggers using locked state hash]
-**Learning:** Extracting complex nanostore state (like $questions) via `JSON.stringify($questions.filter(q => q.data.locked))` instead of `JSON.stringify($questions)` significantly optimizes map component rendering when only locked questions affect rendering state. This reduces heavy operations on map marker dragging.
-**Action:** When filtering objects for useMemo hashes in React component dependencies, apply precise property filters that represent the necessary trigger conditions rather than just stringifying the whole store.
+
+## 2026-07-21 - [Optimize useEffect triggers for map markers]
+
+**Learning:** Extracting complex nanostore state (like $questions) using precise hashing strategies instead of just the object significantly optimizes map component rendering. Specifically, for components like `ZoneSidebar.tsx` that only need to react when a question is 'locked', we filter for `locked` questions. But for `Map.tsx`, which requires drawing 'planning polygons' during marker drag, it needs to react to coordinate changes (e.g. `lat`, `lng`) even when unlocked, so extracting just those properties ensures smooth rendering.
+**Action:** When creating dependency hashes for `useMemo` or `useEffect`, explicitly map over the properties necessary for the specific component's functionality rather than filtering entire items if their partial updates are still needed.
