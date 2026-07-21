@@ -292,6 +292,7 @@ export const ZoneSidebar = () => {
                             </Label>
                             <div className="w-[100px]">
                                 <Input
+                                    aria-label="Head Start (Minutes)"
                                     type="number"
                                     inputMode="decimal"
                                     className="rounded-md p-2 w-full bg-background"
@@ -318,6 +319,7 @@ export const ZoneSidebar = () => {
                             </Label>
                             <div className="flex gap-2 items-center">
                                 <Input
+                                    aria-label="Hiding Zone Radius"
                                     type="number"
                                     inputMode="decimal"
                                     className="rounded-md p-2 w-16 bg-background"

@@ -135,18 +135,14 @@ export function AddQuestionDialog({
             qData.colour = "blue";
         }
 
-        // Add to map
         addQuestion({ id: qId as any, key, data: qData });
 
-        // Trigger the floating panel to open in DraggableMarkers
         editingQuestionId.set(key);
         draftQuestionId.set(key);
         draftQuestionType.set(type);
 
-        // Close this grid menu
         setOpen(false);
 
-        // Force the mobile sidebar to close so the map is completely visible
         LeftSidebarContext.get().setOpenMobile(false);
     };
 

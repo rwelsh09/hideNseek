@@ -27,12 +27,10 @@ export const PwaInstallTip = () => {
     useEffect(() => {
         setIsMounted(true);
 
-        // Check if already installed
         if (window.matchMedia("(display-mode: standalone)").matches) {
             setIsInstalled(true);
         }
 
-        // Check if Apple device
         if (/Mac|iPhone|iPod|iPad/i.test(navigator.userAgent)) {
             setIsApple(true);
         }
