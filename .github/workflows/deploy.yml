@@ -8,7 +8,7 @@ on:
     workflow_dispatch:
 
 concurrency:
-    group: "pages"
+    group: "deploy-and-cleanup"
     cancel-in-progress: false
 
 permissions:
