@@ -138,19 +138,19 @@ describe('getQuestionShareText', () => {
         it('calculates distance and formats for rail-measure', async () => {
             vi.mocked(calculateMeasureDistance).mockResolvedValue(1.2345);
             const result = await getQuestionShareText({ id: 'measure' }, { type: 'rail-measure' });
-            expect(result).toBe('We are 1.235km from a Train Station. Are you closer to or further from your nearest Train Station?');
+            expect(result).toBe('We are 1.235km from a Train Station. Are you closer to or farther from your nearest Train Station?');
         });
 
         it('calculates distance and formats for generic place', async () => {
             vi.mocked(calculateMeasureDistance).mockResolvedValue(0.5);
             const result = await getQuestionShareText({ id: 'measure' }, { type: 'park' });
-            expect(result).toBe('We are 0.5km from a Park. Are you closer to or further from your nearest Park?');
+            expect(result).toBe('We are 0.5km from a Park. Are you closer to or farther from your nearest Park?');
         });
 
         it('uses fallback text when distance calculation fails', async () => {
             vi.mocked(calculateMeasureDistance).mockRejectedValue(new Error('Failed'));
             const result = await getQuestionShareText({ id: 'measure' }, { type: 'hospital' });
-            expect(result).toBe('We are [distance] from a Hospital. Are you closer to or further from your nearest Hospital?');
+            expect(result).toBe('We are [distance] from a Hospital. Are you closer to or farther from your nearest Hospital?');
         });
     });
 
