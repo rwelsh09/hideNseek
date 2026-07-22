@@ -53,6 +53,7 @@ export const QuestionSidebar = () => {
                     type="button"
                     className="mr-2 visible text-white cursor-pointer hover:bg-slate-800 rounded-md p-1 focus:outline-none focus:ring-2 focus:ring-slate-400"
                     aria-label="Close sidebar"
+                    title="Close sidebar"
                     onClick={() => {
                         LeftSidebarContext.get().toggleSidebar();
                     }}
