@@ -11,7 +11,6 @@ import {
     type Questions,
     questionSchema,
     questionsSchema,
-    type Units,
 } from "@/maps/schema";
 
 /**
@@ -119,10 +118,6 @@ onSet(trainStations, ({ newValue }) => {
 });
 
 export const hidingRadius = persistentJsonAtom<number>("hidingRadius", 0.8);
-export const hidingRadiusUnits = persistentJsonAtom<Units>(
-    "hidingRadiusUnits",
-    "kilometers",
-);
 export const disabledStations = persistentJsonAtom<string[]>(
     "disabledStations",
     [],
@@ -135,25 +130,15 @@ export const hidingZone = computed(
         mapGeoLocation,
         disabledStations,
         hidingRadius,
-        hidingRadiusUnits,
         headStartMinutes,
     ],
-    (
-        q,
-        geo,
-        loc,
-        disabledStations,
-        radius,
-        hidingRadiusUnits,
-        $headStartMinutes,
-    ) => {
+    (q, geo, loc, disabledStations, radius, $headStartMinutes) => {
         if (geo !== null) {
             return {
                 ...geo,
                 questions: q,
                 disabledStations: disabledStations,
                 hidingRadius: radius,
-                hidingRadiusUnits,
                 headStartMinutes: $headStartMinutes,
             };
         } else {
@@ -164,7 +149,6 @@ export const hidingZone = computed(
                 ...$loc,
                 disabledStations: disabledStations,
                 hidingRadius: radius,
-                hidingRadiusUnits,
                 headStartMinutes: $headStartMinutes,
             };
         }

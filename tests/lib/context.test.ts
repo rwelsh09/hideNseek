@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
-import { isLoading } from '../../src/lib/context';
+import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
+import { isLoading } from "../../src/lib/context";
 
-describe('isLoading', () => {
+describe("isLoading", () => {
     beforeEach(() => {
         vi.useFakeTimers();
         // Reset state
@@ -14,12 +14,12 @@ describe('isLoading', () => {
         vi.useRealTimers();
     });
 
-    it('sets immediately when true', () => {
+    it("sets immediately when true", () => {
         isLoading.set(true);
         expect(isLoading.get()).toBe(true);
     });
 
-    it('waits for MINIMUM_LOADING_TIME before setting to false if less time has passed', () => {
+    it("waits for MINIMUM_LOADING_TIME before setting to false if less time has passed", () => {
         isLoading.set(true);
         expect(isLoading.get()).toBe(true);
 
@@ -39,7 +39,7 @@ describe('isLoading', () => {
         expect(isLoading.get()).toBe(false);
     });
 
-    it('sets to false immediately if more than MINIMUM_LOADING_TIME has passed', () => {
+    it("sets to false immediately if more than MINIMUM_LOADING_TIME has passed", () => {
         isLoading.set(true);
 
         // Let 400ms pass
@@ -49,7 +49,7 @@ describe('isLoading', () => {
         expect(isLoading.get()).toBe(false);
     });
 
-    it('cancels pending hide timeout if set to true again', () => {
+    it("cancels pending hide timeout if set to true again", () => {
         isLoading.set(true);
         vi.advanceTimersByTime(100);
         isLoading.set(false); // Schedules a timeout to hide after 200ms

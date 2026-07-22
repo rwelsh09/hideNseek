@@ -19,7 +19,6 @@ import {
     displayHidingZonesStyle,
     headStartMinutes,
     hidingRadius,
-    hidingRadiusUnits,
     isLoading,
     leafletMapContext,
     lockedActiveStationIds,
@@ -49,14 +48,12 @@ interface HidingZoneLayer extends L.GeoJSON {
 import { Label } from "./ui/label";
 import { ScrollToTop } from "./ui/scroll-to-top";
 import { MENU_ITEM_CLASSNAME } from "./ui/sidebar";
-import { UnitSelect } from "./UnitSelect";
 
 export const ZoneSidebar = () => {
     const $showRecommendedStart = useStore(showRecommendedStart);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
     const $displayHidingZonesStyle = useStore(displayHidingZonesStyle);
     const $hidingRadius = useStore(hidingRadius);
-    const $hidingRadiusUnits = useStore(hidingRadiusUnits);
     const $headStartMinutes = useStore(headStartMinutes);
     const $isLoading = useStore(isLoading);
     const $questions = useStore(questions);
@@ -321,13 +318,7 @@ export const ZoneSidebar = () => {
                                     }}
                                     disabled={$isLoading}
                                 />
-                                <UnitSelect
-                                    unit={$hidingRadiusUnits}
-                                    disabled={$isLoading}
-                                    onChange={(unit) => {
-                                        hidingRadiusUnits.set(unit);
-                                    }}
-                                />
+                                <span className="flex items-center">km</span>
                             </div>
                         </div>
                     </div>

@@ -5,16 +5,13 @@ import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
     disabledStations,
     hidingRadius,
-    hidingRadiusUnits,
     isLoading,
     lockedActiveStationIds,
     questionFinishedMapData,
     questions,
     trainStations,
 } from "@/lib/context";
-import {
-    type StationPlace,
-} from "@/maps/api";
+import { type StationPlace } from "@/maps/api";
 import {
     extractStationId,
     extractStationLines,
@@ -26,7 +23,6 @@ let previousQuestionDisabled: string[] = [];
 
 export const initializeHidingZonesLogic = async () => {
     const $hidingRadius = hidingRadius.get();
-    const $hidingRadiusUnits = hidingRadiusUnits.get();
     const $questionFinishedMapData = questionFinishedMapData.get();
 
     if (!$questionFinishedMapData) return;
@@ -63,7 +59,7 @@ export const initializeHidingZonesLogic = async () => {
             const center = turf.getCoord(place);
             return turf.circle(center, radius, {
                 steps: 32,
-                units: $hidingRadiusUnits,
+                units: "kilometers",
                 properties: place,
             });
         });
@@ -79,7 +75,9 @@ export const initializeHidingZonesLogic = async () => {
         const manuallyDisabledSet = new Set(manuallyDisabled);
 
         circles.forEach((circle) => {
-            const diff = turf.difference(turf.featureCollection([circle, unionized]));
+            const diff = turf.difference(
+                turf.featureCollection([circle, unionized]),
+            );
             if (!diff || turf.area(diff) < 1) {
                 const id = extractStationId(circle);
                 if (!manuallyDisabledSet.has(id)) {
@@ -166,11 +164,12 @@ export const initializeHidingZonesLogic = async () => {
                     });
                 }
 
-                const remainingIds = new Set(circles.map((c) => extractStationId(c)));
+                const remainingIds = new Set(
+                    circles.map((c) => extractStationId(c)),
+                );
                 const newlyDisabled = originalIds.filter(
                     (id) =>
-                        !remainingIds.has(id) &&
-                        !manuallyDisabledSet.has(id),
+                        !remainingIds.has(id) && !manuallyDisabledSet.has(id),
                 );
                 newlyDisabledStations.push(...newlyDisabled);
 

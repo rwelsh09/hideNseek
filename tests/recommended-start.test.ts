@@ -1,26 +1,41 @@
 import { describe, expect, test, beforeEach } from "vitest";
-import { getRecommendedStartCoords, lockRecommendedStartIfNeeded } from "../src/lib/recommended-start";
-import { trainStations, disabledStations, lockedRecommendedStart, lockedActiveStationIds } from "../src/lib/context";
+import {
+    getRecommendedStartCoords,
+    lockRecommendedStartIfNeeded,
+} from "../src/lib/recommended-start";
+import {
+    trainStations,
+    disabledStations,
+    lockedRecommendedStart,
+    lockedActiveStationIds,
+} from "../src/lib/context";
 
 // Helper function to create mock stations
-const createMockStation = (id: string, lon: number, lat: number, isPoint: boolean = true): any => {
+const createMockStation = (
+    id: string,
+    lon: number,
+    lat: number,
+    isPoint: boolean = true,
+): any => {
     return {
         type: "Feature",
         geometry: {
             type: "Polygon",
-            coordinates: []
+            coordinates: [],
         },
         properties: {
             id,
             name: id,
-            geometry: isPoint ? {
-                type: "Point",
-                coordinates: [lon, lat]
-            } : {
-                type: "Polygon",
-                coordinates: []
-            }
-        }
+            geometry: isPoint
+                ? {
+                      type: "Point",
+                      coordinates: [lon, lat],
+                  }
+                : {
+                      type: "Polygon",
+                      coordinates: [],
+                  },
+        },
     };
 };
 
@@ -38,9 +53,7 @@ describe("recommended-start", () => {
         });
 
         test("returns null when all stations are disabled", () => {
-            trainStations.set([
-                createMockStation("station1", -114.0, 51.0),
-            ]);
+            trainStations.set([createMockStation("station1", -114.0, 51.0)]);
             disabledStations.set(["station1"]);
             expect(getRecommendedStartCoords()).toBeNull();
         });
@@ -87,7 +100,10 @@ describe("recommended-start", () => {
             lockRecommendedStartIfNeeded();
 
             expect(lockedRecommendedStart.get()).toEqual([-114.0, 51.1]);
-            expect(lockedActiveStationIds.get()).toEqual(["station1", "station2"]);
+            expect(lockedActiveStationIds.get()).toEqual([
+                "station1",
+                "station2",
+            ]);
         });
 
         test("does not overwrite if already locked", () => {
