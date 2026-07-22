@@ -3,19 +3,37 @@ export * from "./special";
 
 export const getFeatureCoords = (feature: any) => {
     let coords = null;
-    if (feature?.geometry?.type === 'Polygon' || feature?.geometry?.type === 'MultiPolygon') {
-        coords = [feature.properties?.lon ?? feature.center?.lon, feature.properties?.lat ?? feature.center?.lat];
+    if (
+        feature?.geometry?.type === "Polygon" ||
+        feature?.geometry?.type === "MultiPolygon"
+    ) {
+        coords = [
+            feature.properties?.lon ?? feature.center?.lon,
+            feature.properties?.lat ?? feature.center?.lat,
+        ];
     } else {
-        coords = feature?.geometry?.coordinates ?? (feature?.properties?.lon && feature?.properties?.lat ? [feature.properties.lon, feature.properties.lat] : null);
+        coords =
+            feature?.geometry?.coordinates ??
+            (feature?.properties?.lon && feature?.properties?.lat
+                ? [feature.properties.lon, feature.properties.lat]
+                : null);
     }
 
-    if (coords && typeof coords[0] === 'number' && typeof coords[1] === 'number') {
+    if (
+        coords &&
+        typeof coords[0] === "number" &&
+        typeof coords[1] === "number"
+    ) {
         return coords;
     }
     return null;
-}
+};
 
-export const fastDistance = (c1: [number, number], c2: [number, number], units: "kilometers" | "miles"): number => {
+export const fastDistance = (
+    c1: [number, number],
+    c2: [number, number],
+    units: "kilometers" | "miles",
+): number => {
     const DEG_TO_RAD = Math.PI / 180;
     const EARTH_RADIUS = units === "kilometers" ? 6371.0088 : 3958.7613;
 
@@ -27,9 +45,12 @@ export const fastDistance = (c1: [number, number], c2: [number, number], units: 
     const dLat = lat2 - lat1;
     const dLon = lon2 - lon1;
 
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-              Math.cos(lat1) * Math.cos(lat2) *
-              Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const a =
+        Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(lat1) *
+            Math.cos(lat2) *
+            Math.sin(dLon / 2) *
+            Math.sin(dLon / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return EARTH_RADIUS * c;
 };

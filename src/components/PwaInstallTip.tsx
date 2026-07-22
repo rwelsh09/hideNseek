@@ -55,7 +55,6 @@ export const PwaInstallTip = () => {
 
         const handleAppInstalled = () => {
             setIsInstalled(true);
-
         };
 
         window.addEventListener(
@@ -92,7 +91,6 @@ export const PwaInstallTip = () => {
         if (outcome === "accepted") {
             setDeferredPrompt(null);
             setIsInstalled(true);
-
         }
     };
 
@@ -125,7 +123,8 @@ export const PwaInstallTip = () => {
                     ★
                 </span>
                 <span className="text-indigo-900/90 dark:text-indigo-200/90">
-                    Install this app! Look for &quot;Add to Home Screen&quot; in your browser menu or under share (iOS).
+                    Install this app! Look for &quot;Add to Home Screen&quot; in
+                    your browser menu or under share (iOS).
                 </span>
             </li>
         );
@@ -136,7 +135,8 @@ export const PwaInstallTip = () => {
         <li className="flex gap-2 items-start mt-4 pt-4 border-t border-border">
             <span className="font-bold text-indigo-400 w-5 shrink-0">★</span>
             <span className="text-indigo-900/90 dark:text-indigo-200/90">
-                Install this app! Look for &quot;Add to Home Screen&quot; or install icon in your browser.
+                Install this app! Look for &quot;Add to Home Screen&quot; or
+                install icon in your browser.
             </span>
         </li>
     );
