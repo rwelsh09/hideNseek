@@ -5,5 +5,5 @@
 
 ## 2026-07-22 - [Tautological Spatial Differences in Turf.js]
 
-**Learning:** When testing geometric difference operations (e.g., subtracting a circle from a larger polygon), asserting that the resulting area is smaller than the original area provides false confidence. An incorrect implementation returning the _intersection_ instead of the difference will also result in a smaller area, causing the test to falsely pass.
+**Learning:** When testing geometric difference operations (e.g., subtracting a circle from a larger polygon), checking that a resulting area is less than the original area (`newArea < originalArea`) provides false confidence. An incorrect implementation returning the _intersection_ instead of the difference will also reduce the area, causing the test to falsely pass.
 **Action:** When testing geometric subtractions (like `turf.difference` or manual clipping), explicitly verify that a point unique to the subtracted geometry (like the center of a subtracted circle) is _not_ present in the resulting polygon using `turf.booleanPointInPolygon`.
