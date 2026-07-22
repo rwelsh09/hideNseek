@@ -38,10 +38,7 @@ export const getSchemaOptions = (
     return options;
 };
 
-const unitsSchema = z.preprocess(
-    (val) => (val === "miles" ? "kilometers" : val),
-    z.union([z.literal("kilometers"), z.literal("meters")]),
-);
+const unitsSchema = z.union([z.literal("kilometers"), z.literal("meters")]);
 
 const iconColourSchema = z.union([
     z.literal("green"),
