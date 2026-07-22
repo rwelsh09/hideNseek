@@ -13,3 +13,7 @@
 ## 2026-07-20 - [Testing GeoJSON Measure Bounds]
 **Learning:** In the `measure.ts` question logic, `findPlacesInZone` returns raw OSM elements, not standard Turf Features. The helper `determineMeasureBoundary` internally converts these into points and merges them into a `MultiPoint` geometry using `turf.combine`. Consequently, when writing tests for `calculateMeasureDistance`, the mock for `findPlacesInZone` must return raw OSM objects (e.g., `{ center: { lat: 51, lon: -114 } }` or `{ lat: 51, lon: -114 }`), as providing pre-formatted GeoJSON features will result in parsing errors down the line.
 **Action:** When mocking `findPlacesInZone` for non-station Measure questions, supply an array of raw OSM node objects, never Turf features.
+
+## 2024-07-22 - Testing nanostores atom setter and DOM window matching
+**Learning:** Testing nanostores `atom` logic with custom setters using timeouts requires explicitly flushing fake timers `vi.runAllTimers()` and stepping through with `vi.advanceTimersByTime()`. Testing `matchMedia` requires a manual mock of `window.matchMedia` maintaining an internal list of listeners to manually call when triggering simulated DOM resize events.
+**Action:** Reuse this `mockMatchMedia` pattern when testing other responsive hooks. Use `vi.useFakeTimers()` systematically for any state variables applying throttling/debouncing.
