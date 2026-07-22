@@ -17,7 +17,7 @@ export const getQuestionShareText = async (question: any, questionData: any): Pr
 
     switch (question.id) {
         case "radar":
-            return `Are you within ${questionData.radius}${questionData.unit === "kilometers" ? "km" : "m"} of us?`;
+            return `Are you within ${questionData.radius}km of us?`;
 
         case "hot/cold":
             if (questionData.latA && questionData.lngA && questionData.latB && questionData.lngB) {

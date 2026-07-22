@@ -36,7 +36,7 @@ export const findClosestLocations = async (
     const response = turf.points([]);
     const centerPoint = turf.point([question.lng, question.lat]);
 
-    const radiusInMeters = 50000;
+    const radiusInKilometers = 50;
 
     const seenNames = new Set<string>();
     const seenCoords = new Set<string>();
@@ -71,13 +71,13 @@ export const findClosestLocations = async (
 
         const pt = turf.point([ptLon, ptLat]);
         const distance = turf.distance(centerPoint, pt, {
-            units: "meters",
+            units: "kilometers",
         });
 
         const coordKey = `${ptLon.toFixed(4)},${ptLat.toFixed(4)}`;
         if (seenCoords.has(coordKey)) return;
 
-        if (distance <= radiusInMeters) {
+        if (distance <= radiusInKilometers) {
             seenCoords.add(coordKey);
             const name =
                 element.tags["name:en"] ?? element.tags["name"] ?? fallbackName;

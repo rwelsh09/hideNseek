@@ -141,7 +141,7 @@ export const QuestionCard = ({
 
             if (locked) {
                 if (question.id === "radar") {
-                    displayLabel = `Radar - ${questionData.radius}${questionData.unit === "kilometers" ? "km" : "m"} - ${resultStr}`;
+                    displayLabel = `Radar - ${questionData.radius}km - ${resultStr}`;
                 } else if (question.id === "match") {
                     const typeStr =
                         TYPE_MAPPINGS[questionData.type] || questionData.type;
