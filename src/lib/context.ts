@@ -197,6 +197,10 @@ const MINIMUM_LOADING_TIME = 300; // ms
 
 export const isLoading = {
     ..._isLoading,
+    get: () => _isLoading.get(),
+    subscribe: (cb: any) => _isLoading.subscribe(cb),
+    listen: (cb: any) => _isLoading.listen(cb),
+    off: () => _isLoading.off(),
     set: (value: boolean) => {
         if (value) {
             if (loadingTimeout) {
