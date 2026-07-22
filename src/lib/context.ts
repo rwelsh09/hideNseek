@@ -193,7 +193,7 @@ if (typeof window !== "undefined" && navigator.permissions) {
 const _isLoading = atom<boolean>(false);
 let loadingTimeout: ReturnType<typeof setTimeout> | null = null;
 let lastLoadingStartTime = 0;
-const MINIMUM_LOADING_TIME = 400; // ms
+const MINIMUM_LOADING_TIME = 125; // ms
 
 export const isLoading = {
     ..._isLoading,
