@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/react";
 import * as turf from "@turf/turf";
 import type { Feature, FeatureCollection } from "geojson";
 import * as L from "leaflet";
-import { AlertTriangle, SidebarCloseIcon } from "lucide-react";
+import { SidebarCloseIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -17,7 +17,6 @@ import {
 import {
     disabledStations,
     displayHidingZonesStyle,
-    hasSeenPerformanceWarning,
     headStartMinutes,
     hidingRadius,
     hidingRadiusUnits,
@@ -42,16 +41,6 @@ import {
 } from "@/maps/geo-utils";
 
 import { AdvancedStationManagement } from "./AdvancedStationManagement";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-} from "./ui/alert-dialog";
 import { Input } from "./ui/input";
 
 interface HidingZoneLayer extends L.GeoJSON {
@@ -66,7 +55,6 @@ export const ZoneSidebar = () => {
     const $showRecommendedStart = useStore(showRecommendedStart);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
     const $displayHidingZonesStyle = useStore(displayHidingZonesStyle);
-    const $hasSeenPerformanceWarning = useStore(hasSeenPerformanceWarning);
     const $hidingRadius = useStore(hidingRadius);
     const $hidingRadiusUnits = useStore(hidingRadiusUnits);
     const $headStartMinutes = useStore(headStartMinutes);
@@ -79,10 +67,6 @@ export const ZoneSidebar = () => {
     const [hidingZoneModeStationID, setHidingZoneModeStationID] =
         useState<string>("");
     const sidebarRef = useRef<HTMLDivElement>(null);
-    const [isWarningDialogOpen, setIsWarningDialogOpen] = useState(false);
-    const [pendingStyle, setPendingStyle] = useState<"zones" | "no-display">(
-        "no-display",
-    );
 
     const removeHidingZones = () => {
         if (!map) return;
@@ -354,43 +338,6 @@ export const ZoneSidebar = () => {
                         Hiding Zone Display Options
                     </h3>
                     <div className="rounded-xl border bg-card shadow-sm overflow-hidden divide-y divide-border">
-                        <AlertDialog
-                            open={isWarningDialogOpen}
-                            onOpenChange={setIsWarningDialogOpen}
-                        >
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle className="flex items-center text-orange-500">
-                                        <AlertTriangle className="mr-2 inline-block h-5 w-5" />
-                                        Warning: Performance Impact
-                                    </AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        This feature may slow down your device.
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel
-                                        onClick={() =>
-                                            setIsWarningDialogOpen(false)
-                                        }
-                                    >
-                                        Cancel
-                                    </AlertDialogCancel>
-                                    <AlertDialogAction
-                                        onClick={() => {
-                                            hasSeenPerformanceWarning.set(true);
-                                            displayHidingZonesStyle.set(
-                                                pendingStyle,
-                                            );
-                                            setIsWarningDialogOpen(false);
-                                        }}
-                                    >
-                                        Enable
-                                    </AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
-
                         <SidebarMenu className="gap-0 border-0 bg-transparent p-0 m-0 w-full rounded-none">
                             <SidebarMenuItem
                                 className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
@@ -405,13 +352,8 @@ export const ZoneSidebar = () => {
                             <SidebarMenuItem
                                 className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
                                 onClick={() => {
-                                    if (!$hasSeenPerformanceWarning) {
-                                        setPendingStyle("zones");
-                                        setIsWarningDialogOpen(true);
-                                    } else {
-                                        setHidingZoneModeStationID("");
-                                        displayHidingZonesStyle.set("zones");
-                                    }
+                                    setHidingZoneModeStationID("");
+                                    displayHidingZonesStyle.set("zones");
                                 }}
                                 disabled={$isLoading}
                             >

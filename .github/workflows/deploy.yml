@@ -5,10 +5,11 @@ on:
         branches:
             - master
             - "**"
+    delete:
     workflow_dispatch:
 
 concurrency:
-    group: "pages"
+    group: "deploy-and-cleanup"
     cancel-in-progress: false
 
 permissions:
@@ -17,7 +18,8 @@ permissions:
     id-token: write
 
 jobs:
-    build:
+    build-and-deploy:
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch' || (github.event_name == 'delete' && github.event.ref_type == 'branch')
         runs-on: ubuntu-latest
         steps:
             - name: Checkout your repository using git
@@ -25,7 +27,12 @@ jobs:
 
             - name: Extract branch name
               shell: bash
-              run: echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+              run: |
+                  if [ "${{ github.event_name }}" == "delete" ]; then
+                      echo "branch=${{ github.event.ref }}" >> $GITHUB_OUTPUT
+                  else
+                      echo "branch=${GITHUB_HEAD_REF:-${GITHUB_REF#refs/heads/}}" >> $GITHUB_OUTPUT
+                  fi
               id: extract_branch
 
             - name: Setup pnpm
@@ -40,12 +47,15 @@ jobs:
                   cache: "pnpm"
 
             - name: Install dependencies
+              if: github.event_name != 'delete'
               run: pnpm install --frozen-lockfile
 
             - name: Run tests
+              if: github.event_name != 'delete'
               run: pnpm test
 
             - name: Build site
+              if: github.event_name != 'delete'
               env:
                   BRANCH_NAME: ${{ steps.extract_branch.outputs.branch }}
               run: pnpm run build
@@ -77,38 +87,56 @@ jobs:
                   sed -i 's/\r$//' active_branches.txt
 
                   # 2. Copy the built site to the target directory
-                  if [ "$BRANCH" == "master" ]; then
-                      # Clean up obsolete files and deleted branches in gh-pages root
-                      # We preserve active branches and the .git directory
-
+                  if [ "${{ github.event_name }}" == "delete" ]; then
+                      if [ -d "gh-pages-dir/$BRANCH" ]; then
+                          echo "Removing directory for deleted branch: $BRANCH"
+                          rm -rf "gh-pages-dir/$BRANCH"
+                      fi
+                  elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+                      echo "Running manual bulk cleanup..."
                       cd gh-pages-dir
-                      for item in * .[!.]* ..?*; do
-                          # Skip special directories
-                          if [ "$item" = "." ] || [ "$item" = ".." ] || [ "$item" = ".git" ]; then
-                              continue
+                      find . -name "sw.js" | sed 's|^\./||' | sed 's|/sw\.js$||' | sed 's|^sw\.js$||' > ../deployed_branches.txt
+                      while IFS= read -r DIRPATH; do
+                          if [ -z "$DIRPATH" ]; then continue; fi
+                          if ! grep -xq "$DIRPATH" ../active_branches.txt; then
+                              echo "Directory '$DIRPATH' does not match any active branch. Removing..."
+                              rm -rf "$DIRPATH"
                           fi
-
-                          # If it's a directory, check if it's an active branch
-                          if [ -d "$item" ]; then
-                              if ! grep -q "^${item}$" ../active_branches.txt; then
-                                  echo "Removing obsolete branch directory: $item"
-                                  rm -rf "$item"
-                              fi
-                          else
-                              # It's a file, remove it so fresh master build replaces it
-                              echo "Removing obsolete file: $item"
-                              rm -f "$item"
-                          fi
-                      done
+                      done < ../deployed_branches.txt
+                      find . -type d -empty -not -path "./.git/*" -delete || true
                       cd ..
-
-                      # Copy the new master build
-                      cp -R ./dist/* gh-pages-dir/
                   else
-                      mkdir -p "gh-pages-dir/$BRANCH"
-                      # Remove old files for this branch specifically
-                      rm -rf "gh-pages-dir/$BRANCH"/*
-                      cp -R ./dist/* "gh-pages-dir/$BRANCH/"
+                      if [ "$BRANCH" == "master" ]; then
+                          # Clean up obsolete files and deleted branches in gh-pages root
+                          # We preserve active branches and the .git directory
+                          mkdir -p safe_branches
+                          while IFS= read -r active_branch; do
+                              if [ "$active_branch" != "master" ] && [ "$active_branch" != "gh-pages" ]; then
+                                  if [ -d "gh-pages-dir/$active_branch" ]; then
+                                      mkdir -p "safe_branches/$(dirname "$active_branch")"
+                                      mv "gh-pages-dir/$active_branch" "safe_branches/$(dirname "$active_branch")/"
+                                  fi
+                              fi
+                          done < active_branches.txt
+
+                          cd gh-pages-dir
+                          find . -maxdepth 1 -mindepth 1 ! -name '.git' -exec rm -rf {} +
+                          cd ..
+
+                          # Copy the new master build
+                          cp -R ./dist/* gh-pages-dir/
+
+                          # Restore active branches
+                          if [ -d "safe_branches" ] && [ "$(ls -A safe_branches)" ]; then
+                              cp -R safe_branches/* gh-pages-dir/
+                              rm -rf safe_branches
+                          fi
+                      else
+                          mkdir -p "gh-pages-dir/$BRANCH"
+                          # Remove old files for this branch specifically
+                          rm -rf "gh-pages-dir/$BRANCH"/*
+                          cp -R ./dist/* "gh-pages-dir/$BRANCH/"
+                      fi
                   fi
 
                   touch gh-pages-dir/.nojekyll
@@ -139,5 +167,14 @@ jobs:
                   git config user.name "github-actions[bot]"
                   git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
                   git add .
-                  git commit -m "Deploy branch $BRANCH" || echo "No changes to commit"
+
+                  if [ "${{ github.event_name }}" == "delete" ]; then
+                      git commit -m "Cleanup deployed files for deleted branch: $BRANCH" || echo "No changes to commit"
+                  elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+                      git commit -m "Bulk cleanup of orphaned deployed branches" || echo "No changes to commit"
+                  else
+                      git commit -m "Deploy branch $BRANCH" || echo "No changes to commit"
+                  fi
+
+                  git pull --rebase origin gh-pages || true
                   git push origin gh-pages
