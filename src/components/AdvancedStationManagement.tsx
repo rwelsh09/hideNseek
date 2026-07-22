@@ -164,8 +164,7 @@ export const AdvancedStationManagement = () => {
                                                                 precomputed[
                                                                     j
                                                                 ]
-                                                                    .coords,
-                                                                ($hidingRadiusUnits as any),
+                                                                    .coords
                                                             );
                                                         if (
                                                             d <

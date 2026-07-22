@@ -18,10 +18,8 @@ interface OpenStreetMapProperties {
     osm_type: "W" | "R" | "N";
     osm_id: number;
     extent?: number[];
-    country?: string;
     state?: string;
     osm_key: string;
-    countrycode: string;
     osm_value: string;
     name: string;
     type: string;
