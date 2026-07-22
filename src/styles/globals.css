@@ -249,15 +249,3 @@ div.driver-popover, div.driver-overlay {
 .Toastify__toast {
     pointer-events: auto !important;
 }
-
-/* Delay loading indicator to prevent flickering on fast operations */
-.delayed-loader {
-    animation: delayed-fade-in 0s linear 0.025s forwards;
-    opacity: 0;
-}
-
-@keyframes delayed-fade-in {
-    to {
-        opacity: 1;
-    }
-}
