@@ -235,6 +235,9 @@ describe("Measure Questions", () => {
             const originalArea = turf.area(mapData);
             const newArea = turf.area(result!);
             expect(newArea).toBeLessThan(originalArea);
+            const centerPoint = turf.point([-114.02, 51.02]);
+            const pointInResult = turf.booleanPointInPolygon(centerPoint, result! as any);
+            expect(pointInResult).toBe(false);
         });
     });
 

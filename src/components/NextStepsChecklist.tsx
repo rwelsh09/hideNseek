@@ -45,6 +45,7 @@ export const NextStepsChecklist = () => {
                 <button
                     type="button"
                     aria-label="Dismiss checklist"
+                    title="Dismiss checklist"
                     onClick={() => hasDismissedNextStepsChecklist.set(true)}
                     className="text-muted-foreground hover:text-foreground transition-colors rounded-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                 >
