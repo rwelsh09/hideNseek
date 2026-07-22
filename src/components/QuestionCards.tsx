@@ -1,15 +1,9 @@
 import { ClosestQuestionComponent } from "./cards/closest";
-export { ClosestQuestionComponent };
 import { HotColdQuestionComponent } from "./cards/hot-cold";
-export { HotColdQuestionComponent };
 import { MatchQuestionComponent } from "./cards/match";
-export { MatchQuestionComponent };
 import { MeasureQuestionComponent } from "./cards/measure";
-export { MeasureQuestionComponent };
 import { PhotoQuestionComponent } from "./cards/photo";
-export { PhotoQuestionComponent };
 import { RadarQuestionComponent } from "./cards/radar";
-export { RadarQuestionComponent };
 
 import type { Question } from "@/maps/schema";
 
