@@ -1,19 +1,19 @@
 ## 2026-07-17 - [Testing Context Mocks]
+
 **Learning:** In this project, `context.ts` uses nanostores. To cleanly mock global state such as `hiderMode` or `mapGeoJSON`, we can mock the entire `src/lib/context` module using `vi.mock()` and explicitly define the `.get()` methods rather than relying on actual nanostore implementations in unit tests, ensuring robust isolated testing for geospatial rules.
 **Action:** Always use `vi.mock('../src/lib/context', () => ({ storeName: { get: vi.fn() } }))` for state dependencies inside non-UI logic testing.
 
 ## 2026-07-18 - [ArcGIS Geometry in Testing]
+
 **Learning:** `arcBufferToPoint` heavily relies on `@arcgis/core` which creates significant overhead/issues in a pure JS test environment due to its complex inner structures. We can test the wrapping business logic by safely mocking `arcBufferToPoint` to return raw GeoJSON standard polygons directly.
 **Action:** When testing spatial utility consumers, aggressively mock geospatial transformers (`src/maps/geo-utils/operators`) that depend on arcgis logic to return deterministic GeoJSON fixtures.
 
-## 2026-07-19 - [Testing GeoJSON Measure Bounds]
-**Learning:** In the  question logic,  returns raw OSM elements, not standard Turf Features. The helper  internally converts these into points and merges them into a  geometry using . Consequently, when writing tests for , the mock for  must return raw OSM objects (e.g.,  or ), as providing pre-formatted GeoJSON features will result in parsing errors down the line.
-**Action:** When mocking  for non-station Measure questions, supply an array of raw OSM node objects, never Turf features.
-
 ## 2026-07-20 - [Testing GeoJSON Measure Bounds]
-**Learning:** In the `measure.ts` question logic, `findPlacesInZone` returns raw OSM elements, not standard Turf Features. The helper `determineMeasureBoundary` internally converts these into points and merges them into a `MultiPoint` geometry using `turf.combine`. Consequently, when writing tests for `calculateMeasureDistance`, the mock for `findPlacesInZone` must return raw OSM objects (e.g., `{ center: { lat: 51, lon: -114 } }` or `{ lat: 51, lon: -114 }`), as providing pre-formatted GeoJSON features will result in parsing errors down the line.
+
+**Learning:** In the `src/maps/questions/measure.ts` question logic, `findPlacesInZone` returns raw OSM elements, not standard Turf Features. The helper `determineMeasureBoundary` internally converts these into points and merges them into a `MultiPoint` geometry using `turf.combine`. Consequently, when writing tests for `calculateMeasureDistance`, the mock for `findPlacesInZone` must return raw OSM objects (e.g., `{ center: { lat: 51, lon: -114 } }` or `{ lat: 51, lon: -114 }`), as providing pre-formatted GeoJSON features will result in parsing errors down the line.
 **Action:** When mocking `findPlacesInZone` for non-station Measure questions, supply an array of raw OSM node objects, never Turf features.
 
-## 2024-07-22 - Testing nanostores atom setter and DOM window matching
+## 2026-07-22 - [Testing nanostores atom setter and DOM window matching]
+
 **Learning:** Testing nanostores `atom` logic with custom setters using timeouts requires explicitly flushing fake timers `vi.runAllTimers()` and stepping through with `vi.advanceTimersByTime()`. Testing `matchMedia` requires a manual mock of `window.matchMedia` maintaining an internal list of listeners to manually call when triggering simulated DOM resize events.
 **Action:** Reuse this `mockMatchMedia` pattern when testing other responsive hooks. Use `vi.useFakeTimers()` systematically for any state variables applying throttling/debouncing.
