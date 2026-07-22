@@ -1,9 +1,3 @@
-## 2026-06-24 - [Map marker colour functionality]
-
-**Learning:** Integrating a colour selector directly into a commonly shared spatial UI component `LatitudeLongitude` effectively delegates styling logic from multiple question types while maintaining React unidirectional state flow via an `onChangeColour` callback prop. Overcomplicating Playwright UI verification tests with overly specific selectors on dynamic layouts can lead to failures when testing complex nested dialogues.
-
-**Action:** Leveraged `LatitudeLongitude` to expose a colour-changing button for `ICON_COLOURS` palette without rewriting boilerplate UI per question card type. Updated all question components (`radius.tsx`, `thermometer.tsx` (for A & B), `tentacles.tsx`, `measuring.tsx`, `matching.tsx`, `photo.tsx`) to pass an `onChangeColour` prop that mutates their local store state. Used pure JS evaluation `document.querySelectorAll('button')` based on title during Playwright testing to bypass obscure selector mismatches.
-
 ## 2026-07-15 - [Comprehensive Accessible Interactive Elements]
 
 **Learning:** Across the application (e.g., `DraggableMarkers`, `SidebarCloseIcon`, `TimerDrawer` leaderboards, `sidebar-l`/`sidebar-r`, floating map controls, `LatLngPicker` hemispheres, `AddQuestionDialog` categories), purely visual SVGs or abbreviated text toggles were frequently implemented with `onClick` handlers but lacked fundamental accessibility markers. This prevented keyboard focus, blocked screen reader context (lacking semantic roles), or rendered elements completely invisible to keyboard navigation. Static `title` attributes alone on repeated list items or abbreviated texts are insufficient for robust accessibility.
@@ -28,3 +22,8 @@
 
 **Learning:** Found that customized `<Input>` tags (used for numeric and text entry in Zone Sidebar and question cards) and some nested buttons within modals/drawers lacked explicit `aria-label` attributes. Screen readers would fail to correctly contextualize these inputs despite adjacent labels.
 **Action:** When creating or modifying inputs or icon-heavy buttons inside sidebars, cards, or accordions, ensure `aria-label` is always explicitly added, particularly when a `<label>` element isn't directly wrapping or linking via `id` to the input.
+
+## 2024-07-22 - Native Tooltips for Icon-Only Buttons
+
+**Learning:** Icon-only buttons with `aria-label` attributes are accessible to screen readers but can be confusing for sighted users, particularly mouse users, who rely on visual cues or tooltips to understand their purpose. Adding a `title` attribute matching the `aria-label` provides an immediate, accessible native hover tooltip for icon-only actions without the need to introduce additional DOM elements or tooltip libraries.
+**Action:** When adding or modifying icon-only buttons, always explicitly include a `title` attribute along with the `aria-label` so that users hovering with a mouse receive descriptive feedback on the action they're about to take.
