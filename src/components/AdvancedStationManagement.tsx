@@ -132,37 +132,14 @@ export const AdvancedStationManagement = () => {
                                                     overlapThreshold *
                                                         $hidingRadius
                                                 ) {
-                                                    for (
-                                                        let j =
-                                                            i +
-                                                            1;
-                                                        j <
-                                                        precomputed.length;
-                                                        j++
-                                                    ) {
-                                                        const d =
-                                                            fastDistance(
-                                                                precomputed[
-                                                                    i
-                                                                ]
-                                                                    .coords,
-                                                                precomputed[
-                                                                    j
-                                                                ]
-                                                                    .coords,
-                                                                "kilometers",
-                                                            );
-                                                        if (
-                                                            d <
-                                                            overlapThreshold *
-                                                                $hidingRadius
-                                                        ) {
-                                                            precomputed[i].neighbors.push(j);
-                                                            precomputed[j].neighbors.push(i);
-                                                            precomputed[i].degree++;
-                                                            precomputed[j].degree++;
-                                                        }
-                                                    }
+                                                    precomputed[
+                                                        i
+                                                    ].neighbors.push(j);
+                                                    precomputed[
+                                                        j
+                                                    ].neighbors.push(i);
+                                                    precomputed[i].degree++;
+                                                    precomputed[j].degree++;
                                                 }
                                             }
                                         }
