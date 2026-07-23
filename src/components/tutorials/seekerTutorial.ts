@@ -17,7 +17,7 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
         popover: {
             title: "Game Setup",
             description:
-                "This opens the right sidebar, where you can adjust the Hider's head start time and toggle & adjust Hiding Zones.",
+                "This opens the right sidebar, where you can adjust the Hider's Head Start time and toggle & adjust Hiding Zones.",
             side: "left",
             align: "start",
         },
