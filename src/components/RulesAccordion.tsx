@@ -193,6 +193,9 @@ export function RulesAccordion() {
             <li>
               <strong>Preparation:</strong> Bring water, snacks, a battery pack for your phone, and wear comfortable walking shoes!
             </li>
+            <li>
+              <strong>Transit Day Pass:</strong> Depending on how long the game lasts, it may be more cost-effective to purchase a day pass for public transit.
+            </li>
           </ul>
         </AccordionContent>
       </AccordionItem>
