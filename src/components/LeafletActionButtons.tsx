@@ -79,7 +79,7 @@ export const LeafletActionButtons = () => {
                 enableHighAccuracy: true,
                 timeout: 10000,
                 maximumAge: 0,
-            }
+            },
         );
     };
 
@@ -149,11 +149,11 @@ export const LeafletActionButtons = () => {
             <button
                 type="button"
                 className={buttonClass}
-                title="Zoom to hider area"
-                aria-label="Zoom to hider area"
+                title="Zoom to Hider area"
+                aria-label="Zoom to Hider area"
                 onClick={() => {
                     if (!$questionFinishedMapData) {
-                        toast.error("No hider area to zoom to");
+                        toast.error("No Hider area to zoom to");
                         return;
                     }
 
@@ -171,7 +171,7 @@ export const LeafletActionButtons = () => {
 
                         flyToWithOffset(map, center, zoom);
                     } catch {
-                        toast.error("Error calculating bounds for hider area");
+                        toast.error("Error calculating bounds for Hider area");
                     }
                 }}
             >
