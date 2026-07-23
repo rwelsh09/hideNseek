@@ -290,7 +290,7 @@ export function RulesAccordion() {
                             mode, and offline functionality, install this app on
                             your device!
                             <ul className="list-none p-0 m-0 w-full inline-block">
-                                <PwaInstallTip client:only="react" />
+                                <PwaInstallTip client:only="react" className="mt-2 pt-0 border-t-0" />
                             </ul>
                         </li>
                         <li>
