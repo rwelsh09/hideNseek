@@ -200,7 +200,7 @@ export const QuestionCard = ({
                         }
                         aria-expanded={!isCollapsed}
                         disabled={$isLoading}
-                        className="absolute top-1.5 left-1.5 p-1 text-white border rounded-md transition-all duration-500 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:opacity-50"
+                        className="absolute top-1.5 left-1.5 p-1 text-white border rounded-md transition-colors bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:opacity-50"
                     >
                         {questionData.locked ? (
                             <LockIcon className="w-4 h-4 text-foreground" />

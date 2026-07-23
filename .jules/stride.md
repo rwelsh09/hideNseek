@@ -26,3 +26,7 @@
 ## 2026-07-21 - [Mobile Autocorrect on Command Inputs]
 **Learning:** `CommandPrimitive.Input` components (often used for searches like station names or hiding zones) suffer from mobile autocorrect trying to fix proper nouns, creating friction for users trying to quickly search for game locations.
 **Action:** Add `autoCapitalize="none"`, `autoComplete="off"`, `autoCorrect="off"`, and `spellCheck={false}` to `CommandPrimitive.Input` wrappers (like in `src/components/ui/command.tsx`) to prevent mobile keyboards from interfering with fast-paced game typing.
+
+## 2026-07-22 - [Mobile CSS Transition and Fast-Toggling Stores]
+**Learning:** Tying a component's disabled state to a fast-toggling global loading state (like `$isLoading`) causes visual flickering when combined with long CSS transitions (e.g., `transition-all duration-500` with `disabled:opacity-50`). The opacity fades slowly while the state might change rapidly.
+**Action:** Avoid `transition-all` with long durations for disabled states. Use `transition-colors` so opacity changes are instantaneous. Additionally, enforce a minimum display duration (e.g., 400ms) directly in the global loading nanostore's setter using `setTimeout` and `Date.now()` to stabilize the UI.

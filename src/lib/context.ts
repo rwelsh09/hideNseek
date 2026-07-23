@@ -190,7 +190,37 @@ if (typeof window !== "undefined" && navigator.permissions) {
         });
 }
 
-export const isLoading = atom<boolean>(false);
+const _isLoading = atom<boolean>(false);
+let _isLoadingTimeout: ReturnType<typeof setTimeout> | null = null;
+let _isLoadingStartTime = 0;
+
+export const isLoading = {
+    get: _isLoading.get,
+    listen: _isLoading.listen,
+    subscribe: _isLoading.subscribe,
+    set: (value: boolean) => {
+        if (value) {
+            if (_isLoadingTimeout) {
+                clearTimeout(_isLoadingTimeout);
+                _isLoadingTimeout = null;
+            }
+            _isLoadingStartTime = Date.now();
+            _isLoading.set(true);
+        } else {
+            const elapsed = Date.now() - _isLoadingStartTime;
+            if (elapsed < 400) {
+                if (!_isLoadingTimeout) {
+                    _isLoadingTimeout = setTimeout(() => {
+                        _isLoading.set(false);
+                        _isLoadingTimeout = null;
+                    }, 400 - elapsed);
+                }
+            } else {
+                _isLoading.set(false);
+            }
+        }
+    },
+};
 
 export const isOptionsOpenStore = atom<boolean>(false);
 
