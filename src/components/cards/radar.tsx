@@ -3,6 +3,7 @@ import { useStore } from "@nanostores/react";
 import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Select } from "@/components/ui/select";
 import { MENU_ITEM_CLASSNAME, SidebarMenuItem } from "@/components/ui/sidebar";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { UnitSelect } from "@/components/UnitSelect";
@@ -16,6 +17,16 @@ import { cn } from "@/lib/utils";
 import type { RadarQuestion } from "@/maps/schema";
 
 import { QuestionCard } from "./base";
+
+const RADAR_OPTIONS = {
+    "0.5": "0.5 km",
+    "1": "1 km",
+    "2": "2 km",
+    "5": "5 km",
+    "10": "10 km",
+    "15": "15 km",
+    custom: "Custom",
+};
 
 export const RadarQuestionComponent = ({
     data,
@@ -40,36 +51,55 @@ export const RadarQuestionComponent = ({
             questionData={data}
             penaltyId={"radar"}
         >
-            <SidebarMenuItem>
-                <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-row")}>
-                    <Input
-                        aria-label="Radius"
-                        type="number"
-                        inputMode="decimal"
-                        className="rounded-md p-2 w-16"
-                        value={data.radius}
-                        disabled={!data.isCustom || data.locked || $isLoading}
-                        enterKeyHint="done"
-                        onKeyDown={(e) => {
-                            if (e.key === "Enter") {
-                                e.currentTarget.blur();
-                            }
-                        }}
-                        onChange={(e) => {
-                            data.radius = parseFloat(e.target.value);
-                            questionModified();
-                        }}
-                    />
-                    <UnitSelect
-                        unit={data.unit}
-                        disabled={!data.isCustom || data.locked || $isLoading}
-                        onChange={(unit) => {
-                            data.unit = unit;
-                            questionModified();
-                        }}
-                    />
-                </div>
+            <SidebarMenuItem className={MENU_ITEM_CLASSNAME}>
+                <Select
+                    trigger="Radar Size"
+                    options={RADAR_OPTIONS}
+                    value={data.isCustom ? "custom" : data.radius.toString()}
+                    onValueChange={(value) => {
+                        if (value === "custom") {
+                            data.isCustom = true;
+                        } else {
+                            data.isCustom = false;
+                            data.radius = parseFloat(value);
+                        }
+                        questionModified();
+                    }}
+                    disabled={data.locked || $isLoading}
+                />
             </SidebarMenuItem>
+            {data.isCustom && (
+                <SidebarMenuItem>
+                    <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-row")}>
+                        <Input
+                            aria-label="Radius"
+                            type="number"
+                            inputMode="decimal"
+                            className="rounded-md p-2 w-16"
+                            value={data.radius}
+                            disabled={data.locked || $isLoading}
+                            enterKeyHint="done"
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    e.currentTarget.blur();
+                                }
+                            }}
+                            onChange={(e) => {
+                                data.radius = parseFloat(e.target.value);
+                                questionModified();
+                            }}
+                        />
+                        <UnitSelect
+                            unit={data.unit}
+                            disabled={data.locked || $isLoading}
+                            onChange={(unit) => {
+                                data.unit = unit;
+                                questionModified();
+                            }}
+                        />
+                    </div>
+                </SidebarMenuItem>
+            )}
             <LatitudeLongitude
                 latitude={data.lat}
                 longitude={data.lng}
