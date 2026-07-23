@@ -6,7 +6,6 @@ import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
 import { MENU_ITEM_CLASSNAME, SidebarMenuItem } from "@/components/ui/sidebar";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { UnitSelect } from "@/components/UnitSelect";
 import {
     hiderMode,
     isLoading,
@@ -70,7 +69,7 @@ export const RadarQuestionComponent = ({
             </SidebarMenuItem>
             {data.isCustom && (
                 <SidebarMenuItem>
-                    <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-row")}>
+                    <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-row items-center")}>
                         <Input
                             aria-label="Radius"
                             type="number"
@@ -89,14 +88,7 @@ export const RadarQuestionComponent = ({
                                 questionModified();
                             }}
                         />
-                        <UnitSelect
-                            unit={data.unit}
-                            disabled={data.locked || $isLoading}
-                            onChange={(unit) => {
-                                data.unit = unit;
-                                questionModified();
-                            }}
-                        />
+                        <span className="text-sm font-medium">km</span>
                     </div>
                 </SidebarMenuItem>
             )}
