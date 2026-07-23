@@ -339,8 +339,7 @@ export function RulesAccordion() {
                             <strong>Group Chat & Location Sharing:</strong> All
                             players need to be in a group chat where they can
                             share their live locations (e.g., WhatsApp,
-                            iMessage, Google Maps). All players{" "}
-                            <em>other than the Hider</em> must share their
+                            iMessage, Google Maps). The Seekers must share their
                             location with the group so the Hider can monitor
                             their progress and know exactly when the Seekers
                             enter their Hiding Zone.
@@ -349,6 +348,13 @@ export function RulesAccordion() {
                             <strong>Preparation:</strong> Bring water, snacks, a
                             battery pack for your phone, and wear comfortable
                             walking shoes!
+                        </li>
+                        <li>
+                            <strong>Transit Passes:</strong> Save yourself time,
+                            money, and frustration by purchasing a transit day pass.
+                            Not having to worry about buying individual tickets
+                            while on the move makes the game much smoother and more
+                            enjoyable!
                         </li>
                     </ul>
                 </AccordionContent>
