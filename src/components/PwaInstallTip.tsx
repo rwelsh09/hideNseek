@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 
+import { cn } from "@/lib/utils";
+
 import { Button } from "./ui/button";
 
 interface BeforeInstallPromptEvent extends Event {
@@ -17,7 +19,7 @@ declare global {
     }
 }
 
-export const PwaInstallTip = () => {
+export const PwaInstallTip = ({ className }: { className?: string }) => {
     const [deferredPrompt, setDeferredPrompt] =
         useState<BeforeInstallPromptEvent | null>(null);
     const [isApple, setIsApple] = useState(false);
@@ -105,7 +107,7 @@ export const PwaInstallTip = () => {
     // If we have a prompt, render the button version
     if (deferredPrompt) {
         return (
-            <li className="flex gap-2 items-start mt-4 pt-4 border-t border-border flex-col sm:flex-row">
+            <li className={cn("flex gap-2 items-start mt-4 pt-4 border-t border-border flex-col sm:flex-row", className)}>
                 <Button
                     onClick={handleInstallClick}
                     className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white shrink-0 mt-2 sm:mt-0"
@@ -120,7 +122,7 @@ export const PwaInstallTip = () => {
     // If Apple device (and no prompt), render the text instructions
     if (isApple) {
         return (
-            <li className="flex gap-2 items-start mt-4 pt-4 border-t border-border">
+            <li className={cn("flex gap-2 items-start mt-4 pt-4 border-t border-border", className)}>
                 <span className="font-bold text-indigo-400 w-5 shrink-0">
                     ★
                 </span>
@@ -133,7 +135,7 @@ export const PwaInstallTip = () => {
 
     // Default fallback (e.g. Firefox Desktop which doesn't support beforeinstallprompt)
     return (
-        <li className="flex gap-2 items-start mt-4 pt-4 border-t border-border">
+        <li className={cn("flex gap-2 items-start mt-4 pt-4 border-t border-border", className)}>
             <span className="font-bold text-indigo-400 w-5 shrink-0">★</span>
             <span className="text-indigo-900/90 dark:text-indigo-200/90">
                 Install this app! Look for &quot;Add to Home Screen&quot; or install icon in your browser.
