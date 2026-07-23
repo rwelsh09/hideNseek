@@ -192,6 +192,35 @@ if (typeof window !== "undefined" && navigator.permissions) {
 
 export const isLoading = atom<boolean>(false);
 
+const originalIsLoadingSet = isLoading.set;
+let loadingTimeout: ReturnType<typeof setTimeout> | null = null;
+let loadingStartTime = 0;
+
+isLoading.set = (value: boolean) => {
+    if (value) {
+        if (loadingTimeout) {
+            clearTimeout(loadingTimeout);
+            loadingTimeout = null;
+        }
+        if (!isLoading.get()) {
+            loadingStartTime = Date.now();
+            originalIsLoadingSet.call(isLoading, true);
+        }
+    } else {
+        const elapsed = Date.now() - loadingStartTime;
+        if (elapsed < 400) {
+            if (!loadingTimeout) {
+                loadingTimeout = setTimeout(() => {
+                    originalIsLoadingSet.call(isLoading, false);
+                    loadingTimeout = null;
+                }, 400 - elapsed);
+            }
+        } else {
+            originalIsLoadingSet.call(isLoading, false);
+        }
+    }
+};
+
 export const isOptionsOpenStore = atom<boolean>(false);
 
 export const baseTileLayer = persistentAtom<

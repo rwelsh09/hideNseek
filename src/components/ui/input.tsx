@@ -57,4 +57,4 @@ const Input = React.forwardRef<HTMLInputElement, DebouncedInputProps>(
 );
 Input.displayName = "Input";
 
-export { Input, };
+export { Input };

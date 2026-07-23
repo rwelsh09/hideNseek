@@ -351,10 +351,10 @@ export function RulesAccordion() {
                         </li>
                         <li>
                             <strong>Transit Passes:</strong> Save yourself time,
-                            money, and frustration by purchasing a transit day pass.
-                            Not having to worry about buying individual tickets
-                            while on the move makes the game much smoother and more
-                            enjoyable!
+                            money, and frustration by purchasing a transit day
+                            pass. Not having to worry about buying individual
+                            tickets while on the move makes the game much
+                            smoother and more enjoyable!
                         </li>
                     </ul>
                 </AccordionContent>

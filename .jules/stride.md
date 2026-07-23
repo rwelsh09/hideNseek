@@ -24,5 +24,10 @@
 **Action:** For standalone configuration inputs, add `enterKeyHint="done"` and an `onKeyDown` handler to call `e.currentTarget.blur()` if `e.key === "Enter"`. This dismisses the keyboard and correctly fires any associated `onBlur` save actions. Avoid disabling spellcheck on free-text note fields.
 
 ## 2026-07-21 - [Mobile Autocorrect on Command Inputs]
+
 **Learning:** `CommandPrimitive.Input` components (often used for searches like station names or hiding zones) suffer from mobile autocorrect trying to fix proper nouns, creating friction for users trying to quickly search for game locations.
 **Action:** Add `autoCapitalize="none"`, `autoComplete="off"`, `autoCorrect="off"`, and `spellCheck={false}` to `CommandPrimitive.Input` wrappers (like in `src/components/ui/command.tsx`) to prevent mobile keyboards from interfering with fast-paced game typing.
+
+## 2026-07-23 - [Mobile UI Flickering with Loading States]
+**Learning:** Tying a component's disabled state to a fast-toggling global loading state (like `$isLoading`) while using `transition-all` with long durations (e.g., `duration-500`) alongside `disabled:opacity-50` causes severe visual flickering. The opacity slowly fades during rapid state changes. Also, preventing rapid toggles in UI requires enforcing a minimum display duration (e.g., 400ms) for loading states directly at the state store level (e.g., in a custom nanostores setter using a timeout) rather than relying on CSS delays.
+**Action:** Replaced `transition-all duration-500` with `transition-colors` on buttons tied to `$isLoading` to make opacity changes instantaneous. Modified the `$isLoading` nanostore setter in `src/lib/context.ts` to enforce a minimum 400ms display duration to prevent rapid toggling of loading UI.
