@@ -14,7 +14,7 @@ export const adjustPerRadar = async (
     const circle = await arcBuffer(
         turf.featureCollection([point]),
         question.radius,
-        question.unit,
+        "kilometers",
     );
 
     return modifyMapData(mapData, circle, question.within);
@@ -29,7 +29,7 @@ export const hiderifyRadar = (question: RadarQuestion) => {
     const distance = turf.distance(
         turf.point([question.lng, question.lat]),
         turf.point([$hiderMode.longitude, $hiderMode.latitude]),
-        { units: question.unit },
+        { units: "kilometers" },
     );
 
     if (distance <= question.radius) {
@@ -46,7 +46,7 @@ export const radarPlanningPolygon = async (question: RadarQuestion) => {
     const circle = await arcBuffer(
         turf.featureCollection([point]),
         question.radius,
-        question.unit,
+        "kilometers",
     );
 
     return turf.polygonToLine(circle);

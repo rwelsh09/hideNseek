@@ -29,7 +29,6 @@ import {
     headStartMinutes,
     hiderMode,
     hidingRadius,
-    hidingRadiusUnits,
     isOptionsOpenStore,
     leafletMapContext,
     lockedActiveStationIds,
@@ -105,10 +104,6 @@ export const OptionDrawers = () => {
                     questions.set([]);
                     lockedRecommendedStart.set(null);
                     lockedActiveStationIds.set(null);
-                }
-
-                if (geojson.hidingRadiusUnits) {
-                    hidingRadiusUnits.set(geojson.hidingRadiusUnits);
                 }
 
                 if (geojson.disabledStations !== null && geojson.disabledStations !== undefined) {

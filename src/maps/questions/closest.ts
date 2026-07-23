@@ -19,7 +19,7 @@ export const fetchClosestLocationsWithGrowth = async (
     }
 
     let searchRadius = question.radius;
-    const maxAllowedRadius = question.unit === "kilometers" ? 50 : 30;
+    const maxAllowedRadius = 50;
 
     // Safety guard: if initial radius is already above max, clamp it to avoid huge queries
     if (searchRadius > maxAllowedRadius) {
@@ -64,7 +64,7 @@ export const filterPointsWithinRadius = (points: any, question: ClosestQuestion)
         if (!coords) return { feature, dist: Infinity };
 
         const pt = turf.point(coords);
-        const dist = turf.distance(center, pt, { units: question.unit });
+        const dist = turf.distance(center, pt, { units: "kilometers" });
         return { feature, dist };
     });
 
@@ -76,7 +76,7 @@ export const filterPointsWithinRadius = (points: any, question: ClosestQuestion)
     // If we have at least one point, evaluate target radius
     if (closest5.length > 0) {
         const maxDistInTop5 = closest5[closest5.length - 1].dist;
-        const maxAllowedRadius = question.unit === "kilometers" ? 50 : 30; // Safety guard: max 50km or 30miles
+        const maxAllowedRadius = 50; // Safety guard: max 50km
 
         let targetRadius = maxDistInTop5;
         if (targetRadius > maxAllowedRadius) {
@@ -126,7 +126,7 @@ export const adjustPerClosest = async (
     const circle = await arcBuffer(
         turf.featureCollection([turf.point([question.lng, question.lat])]),
         question.radius,
-        question.unit,
+        "kilometers",
     );
 
     return turf.intersect(
@@ -150,7 +150,7 @@ export const hiderifyClosest = async (question: ClosestQuestion) => {
     const location = turf.point([question.lng, question.lat]);
 
     if (
-        turf.distance(hider, location, { units: question.unit }) >
+        turf.distance(hider, location, { units: "kilometers" }) >
         question.radius
     ) {
         question.location = false;
@@ -188,7 +188,7 @@ export const closestPlanningPolygon = async (question: ClosestQuestion) => {
     const circle = await arcBuffer(
         turf.featureCollection([turf.point([question.lng, question.lat])]),
         question.radius,
-        question.unit,
+        "kilometers",
     );
 
     const interiorVoronoi = voronoi.features

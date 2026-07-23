@@ -49,7 +49,6 @@ interface HidingZoneLayer extends L.GeoJSON {
 import { Label } from "./ui/label";
 import { ScrollToTop } from "./ui/scroll-to-top";
 import { MENU_ITEM_CLASSNAME } from "./ui/sidebar";
-import { UnitSelect } from "./UnitSelect";
 
 export const ZoneSidebar = () => {
     const $showRecommendedStart = useStore(showRecommendedStart);
@@ -321,13 +320,7 @@ export const ZoneSidebar = () => {
                                     }}
                                     disabled={$isLoading}
                                 />
-                                <UnitSelect
-                                    unit={$hidingRadiusUnits}
-                                    disabled={$isLoading}
-                                    onChange={(unit) => {
-                                        hidingRadiusUnits.set(unit);
-                                    }}
-                                />
+                                <span className="text-sm font-medium">km</span>
                             </div>
                         </div>
                     </div>

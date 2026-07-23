@@ -5,7 +5,6 @@ import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
     disabledStations,
     hidingRadius,
-    hidingRadiusUnits,
     isLoading,
     lockedActiveStationIds,
     questionFinishedMapData,
@@ -26,7 +25,6 @@ let previousQuestionDisabled: string[] = [];
 
 export const initializeHidingZonesLogic = async () => {
     const $hidingRadius = hidingRadius.get();
-    const $hidingRadiusUnits = hidingRadiusUnits.get();
     const $questionFinishedMapData = questionFinishedMapData.get();
 
     if (!$questionFinishedMapData) return;
@@ -63,7 +61,7 @@ export const initializeHidingZonesLogic = async () => {
             const center = turf.getCoord(place);
             return turf.circle(center, radius, {
                 steps: 32,
-                units: $hidingRadiusUnits,
+                units: "kilometers",
                 properties: place,
             });
         });

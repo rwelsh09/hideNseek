@@ -5,7 +5,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { MENU_ITEM_CLASSNAME, SidebarMenuItem } from "@/components/ui/sidebar";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { UnitSelect } from "@/components/UnitSelect";
 import {
     hiderMode,
     isLoading,
@@ -60,14 +59,7 @@ export const RadarQuestionComponent = ({
                             questionModified();
                         }}
                     />
-                    <UnitSelect
-                        unit={data.unit}
-                        disabled={!data.isCustom || data.locked || $isLoading}
-                        onChange={(unit) => {
-                            data.unit = unit;
-                            questionModified();
-                        }}
-                    />
+                    <span className="text-sm font-medium">km</span>
                 </div>
             </SidebarMenuItem>
             <LatitudeLongitude

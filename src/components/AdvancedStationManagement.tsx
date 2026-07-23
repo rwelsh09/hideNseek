@@ -17,7 +17,6 @@ import { SidebarMenuItem } from "@/components/ui/sidebar";
 import {
     disabledStations,
     hidingRadius,
-    hidingRadiusUnits,
     isLoading,
     leafletMapContext,
     trainStations,
@@ -43,7 +42,6 @@ import { Label } from "./ui/label";
 export const AdvancedStationManagement = () => {
     const $isLoading = useStore(isLoading);
     const $hidingRadius = useStore(hidingRadius);
-    const $hidingRadiusUnits = useStore(hidingRadiusUnits);
     const map = useStore(leafletMapContext);
     const stations = useStore(trainStations);
     const $disabledStations = useStore(disabledStations);
@@ -165,7 +163,7 @@ export const AdvancedStationManagement = () => {
                                                                     j
                                                                 ]
                                                                     .coords,
-                                                                ($hidingRadiusUnits as any),
+                                                                "kilometers",
                                                             );
                                                         if (
                                                             d <

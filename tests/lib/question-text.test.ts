@@ -49,18 +49,10 @@ describe('getQuestionShareText', () => {
     });
 
     describe('radar', () => {
-        it('formats correctly for meters', async () => {
-            const result = await getQuestionShareText(
-                { id: 'radar' },
-                { radius: 500, unit: 'meters' }
-            );
-            expect(result).toBe('Are you within 500m of us?');
-        });
-
         it('formats correctly for kilometers', async () => {
             const result = await getQuestionShareText(
                 { id: 'radar' },
-                { radius: 5, unit: 'kilometers' }
+                { radius: 5 }
             );
             expect(result).toBe('Are you within 5km of us?');
         });

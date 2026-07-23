@@ -5,7 +5,6 @@ import { initializeHidingZonesLogic } from "@/lib/hiding-zones";
 import {
     disabledStations,
     hidingRadius,
-    hidingRadiusUnits,
     isLoading,
     lockedActiveStationIds,
     questionFinishedMapData,
@@ -98,7 +97,6 @@ vi.mock("@/maps/geo-utils", async (importOriginal) => {
 // Mock nanostores following journal learnings
 vi.mock("@/lib/context", () => {
     let _hidingRadius = 1;
-    let _hidingRadiusUnits = "kilometers";
     let _questionFinishedMapData: any = null;
     let _disabledStations: string[] = [];
     let _questions: any[] = [];
@@ -110,10 +108,6 @@ vi.mock("@/lib/context", () => {
         hidingRadius: {
             get: vi.fn(() => _hidingRadius),
             set: vi.fn((val) => { _hidingRadius = val; })
-        },
-        hidingRadiusUnits: {
-            get: vi.fn(() => _hidingRadiusUnits),
-            set: vi.fn((val) => { _hidingRadiusUnits = val; })
         },
         questionFinishedMapData: {
             get: vi.fn(() => _questionFinishedMapData),
@@ -152,7 +146,6 @@ describe("initializeHidingZonesLogic", () => {
     beforeEach(() => {
         vi.clearAllMocks();
         hidingRadius.set(1);
-        hidingRadiusUnits.set("kilometers");
         questionFinishedMapData.set(null);
         disabledStations.set([]);
         questions.set([]);

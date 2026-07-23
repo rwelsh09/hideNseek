@@ -94,7 +94,6 @@ export function AddQuestionDialog({
             qId = "radar";
             qData.radius = detail === "unknown" ? 5 : parseFloat(detail || "5");
             qData.isCustom = detail === "unknown";
-            qData.unit = "kilometers";
             qData.within = true;
             qData.colour = "orange";
         } else if (type === "match") {
@@ -127,7 +126,6 @@ export function AddQuestionDialog({
         } else if (type === "closest") {
             qData.locationType = detail || "museum";
             qData.radius = 2;
-            qData.unit = "kilometers";
             qData.colour = "violet";
         } else if (type === "photo") {
             qId = "photo";

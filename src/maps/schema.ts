@@ -38,7 +38,7 @@ export const getSchemaOptions = (
     return options;
 };
 
-const unitsSchema = z.union([z.literal("kilometers"), z.literal("meters")]);
+const unitsSchema = z.string().catch("kilometers").transform(() => "kilometers" as const);
 
 const iconColourSchema = z.union([
     z.literal("green"),
@@ -91,7 +91,7 @@ const ordinaryBaseQuestionSchema = z.object({
 });
 
 const getDefaultUnit = () => {
-    return "kilometers";
+    return "kilometers" as const;
 };
 
 const photoQuestionSchema = ordinaryBaseQuestionSchema.extend({
@@ -222,7 +222,7 @@ export const questionSchema = z.union([
 
 export const questionsSchema = z.array(questionSchema);
 
-export type Units = z.infer<typeof unitsSchema>;
+export type Units = "kilometers";
 export type RadarQuestion = z.infer<typeof radarQuestionSchema>;
 export type HotColdQuestion = z.infer<typeof hotColdQuestionSchema>;
 export type ClosestQuestion = z.infer<typeof closestQuestionSchema>;

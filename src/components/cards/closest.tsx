@@ -130,7 +130,6 @@ const ClosestLocationSelector = ({
         data.lat,
         data.lng,
         data.radius,
-        data.unit,
         data.places,
     ]);
 

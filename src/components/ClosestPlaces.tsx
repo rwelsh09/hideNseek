@@ -48,7 +48,6 @@ const ClosestPlacesForQuestion = ({
         question.data.lat,
         question.data.lng,
         question.data.radius,
-        question.data.unit,
         question.data.places,
     ]);
 

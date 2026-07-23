@@ -280,7 +280,6 @@ export const Map = ({ className }: { className?: string }) => {
                                             ? encodeDisabledStations(disabledStationsArray)
                                             : disabledStationsArray,
                                         hidingRadius: props.hidingRadius ?? $hidingZone.hidingRadius,
-                                        hidingRadiusUnits: props.hidingRadiusUnits ?? $hidingZone.hidingRadiusUnits,
                                         headStartMinutes: props.headStartMinutes ?? $hidingZone.headStartMinutes,
                                     };
                                     const hidingZoneString = JSON.stringify(minimalSettings);
