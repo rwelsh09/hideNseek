@@ -5,6 +5,7 @@ on:
         branches:
             - master
             - "**"
+            - "!dependabot/**"
     delete:
     workflow_dispatch:
 
@@ -151,8 +152,8 @@ jobs:
                           if [ "$branch" != "master" ] && [ "$branch" != "gh-pages" ]; then
                               # Check if directory exists for this active branch
                               if [ -d "gh-pages-dir/$branch" ]; then
-                                  # Also ignore if branch name starts with _ or ~
-                                  if [[ ! "$branch" == _* && ! "$branch" == ~* ]]; then
+                                  # Also ignore if branch name starts with _ or ~ or dependabot/
+                                  if [[ ! "$branch" == _* && ! "$branch" == ~* && ! "$branch" == dependabot/* ]]; then
                                       echo "<li><a href='./$branch/'>$branch</a></li>" >> ./gh-pages-dir/branches.html
                                   fi
                               fi
