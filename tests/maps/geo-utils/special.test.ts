@@ -20,14 +20,14 @@ describe("getFeatureProperties", () => {
             properties: {
                 tags: {
                     name: "Test Tag",
-                    amenity: "cafe",
-                },
-            },
+                    amenity: "cafe"
+                }
+            }
         };
 
         expect(getFeatureProperties(feature)).toEqual({
             name: "Test Tag",
-            amenity: "cafe",
+            amenity: "cafe"
         });
     });
 
@@ -36,9 +36,9 @@ describe("getFeatureProperties", () => {
             properties: {
                 baseProp: "base",
                 properties: {
-                    nestedProp: "nested",
-                },
-            },
+                    nestedProp: "nested"
+                }
+            }
         };
 
         const result = getFeatureProperties(feature);
@@ -46,9 +46,9 @@ describe("getFeatureProperties", () => {
         expect(result).toEqual({
             baseProp: "base",
             properties: {
-                nestedProp: "nested",
+                nestedProp: "nested"
             },
-            nestedProp: "nested",
+            nestedProp: "nested"
         });
     });
 
@@ -56,25 +56,25 @@ describe("getFeatureProperties", () => {
         const feature = {
             properties: {
                 a: 1,
-                b: 2,
-            },
+                b: 2
+            }
         };
 
         expect(getFeatureProperties(feature)).toEqual({
             a: 1,
-            b: 2,
+            b: 2
         });
     });
 
     it("should return the feature itself if feature.properties does not exist", () => {
         const feature = {
             id: 123,
-            type: "Feature",
+            type: "Feature"
         };
 
         expect(getFeatureProperties(feature)).toEqual({
             id: 123,
-            type: "Feature",
+            type: "Feature"
         });
     });
 });
@@ -145,16 +145,11 @@ describe("extractStationLines", () => {
 
     it("should fallback to ref if route_ref is missing", () => {
         const place = { properties: { ref: "Green Line, Orange Line" } };
-        expect(extractStationLines(place)).toEqual([
-            "Green Line",
-            "Orange Line",
-        ]);
+        expect(extractStationLines(place)).toEqual(["Green Line", "Orange Line"]);
     });
 
     it("should trim whitespace from extracted lines", () => {
-        const place = {
-            properties: { route_ref: "  Blue Line  ,   Red Line   " },
-        };
+        const place = { properties: { route_ref: "  Blue Line  ,   Red Line   " } };
         expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
     });
 
@@ -171,8 +166,8 @@ describe("extractStationLines", () => {
     it("should work with nested properties.properties structure", () => {
         const place = {
             properties: {
-                properties: { route_ref: "Blue Line, Red Line" },
-            },
+                properties: { route_ref: "Blue Line, Red Line" }
+            }
         };
         expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
     });
@@ -192,8 +187,8 @@ describe("extractStationId", () => {
     it("should return the id from nested tags if present", () => {
         const place = {
             properties: {
-                tags: { id: "nested-station-123" },
-            },
+                tags: { id: "nested-station-123" }
+            }
         };
         expect(extractStationId(place)).toBe("nested-station-123");
     });
@@ -204,20 +199,12 @@ describe("extractStationId", () => {
     });
 
     it("should return fallback coordinates string if explicit ID is missing", () => {
-        const place = {
-            properties: {},
-            geometry: { type: "Point", coordinates: [-114.1, 51.1] },
-        };
+        const place = { properties: {}, geometry: { type: "Point", coordinates: [-114.1, 51.1] } };
         expect(extractStationId(place)).toBe("51.1,-114.1");
     });
 
     it("should return fallback coordinates string for a nested turf circle format", () => {
-        const place = {
-            properties: {
-                geometry: { type: "Point", coordinates: [-114.1, 51.1] },
-            },
-            geometry: { type: "Polygon", coordinates: [] },
-        };
+        const place = { properties: { geometry: { type: "Point", coordinates: [-114.1, 51.1] } }, geometry: { type: "Polygon", coordinates: [] } };
         expect(extractStationId(place)).toBe("51.1,-114.1");
     });
 

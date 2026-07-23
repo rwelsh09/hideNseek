@@ -46,19 +46,13 @@ export const LatitudeLongitude = ({
                         $isLoading && "opacity-50",
                     )}
                     style={{
-                        color:
-                            colourName === "gold"
-                                ? "black"
-                                : colourName && colourName !== "transparent"
-                                  ? "white"
-                                  : undefined,
+                        color: colourName === "gold" ? "black" : (colourName && colourName !== "transparent" ? "white" : undefined),
                     }}
                 >
                     <Button
                         variant="outline"
                         size="icon"
-                        className="shrink-0 text-foreground"
-                        style={{ color: "hsl(var(--foreground))" }}
+                        className="shrink-0 text-foreground" style={{ color: "hsl(var(--foreground))" }}
                         onClick={() => {
                             if (!navigator || !navigator.geolocation) {
                                 toast.error("Geolocation not supported");
@@ -89,14 +83,20 @@ export const LatitudeLongitude = ({
                                 (error) => {
                                     isLoading.set(false);
                                     if (
-                                        error.code === error.PERMISSION_DENIED
+                                        error.code ===
+                                        error.PERMISSION_DENIED
                                     ) {
                                         geolocationPermission.set("denied");
-                                        toast.error("Location access denied.", {
-                                            toastId: "location-denied",
-                                        });
+                                        toast.error(
+                                            "Location access denied.",
+                                            {
+                                                toastId: "location-denied",
+                                            },
+                                        );
                                     } else {
-                                        toast.error("Could not fetch location");
+                                        toast.error(
+                                            "Could not fetch location",
+                                        );
                                     }
                                 },
                                 {
