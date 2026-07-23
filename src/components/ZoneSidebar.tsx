@@ -19,7 +19,6 @@ import {
     displayHidingZonesStyle,
     headStartMinutes,
     hidingRadius,
-    hidingRadiusUnits,
     isLoading,
     leafletMapContext,
     lockedActiveStationIds,
@@ -55,7 +54,6 @@ export const ZoneSidebar = () => {
     const $questionFinishedMapData = useStore(questionFinishedMapData);
     const $displayHidingZonesStyle = useStore(displayHidingZonesStyle);
     const $hidingRadius = useStore(hidingRadius);
-    const $hidingRadiusUnits = useStore(hidingRadiusUnits);
     const $headStartMinutes = useStore(headStartMinutes);
     const $isLoading = useStore(isLoading);
     const $questions = useStore(questions);
