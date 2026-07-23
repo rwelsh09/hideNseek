@@ -18,12 +18,12 @@ import type { RadarQuestion } from "@/maps/schema";
 import { QuestionCard } from "./base";
 
 const RADAR_OPTIONS = {
-    "0.5": "0.5 km",
-    "1": "1 km",
-    "2": "2 km",
-    "5": "5 km",
-    "10": "10 km",
-    "15": "15 km",
+    "0.5km": "0.5 km",
+    "1km": "1 km",
+    "2km": "2 km",
+    "5km": "5 km",
+    "10km": "10 km",
+    "15km": "15 km",
     custom: "Custom",
 };
 
@@ -54,7 +54,7 @@ export const RadarQuestionComponent = ({
                 <Select
                     trigger="Radar Size"
                     options={RADAR_OPTIONS}
-                    value={data.isCustom ? "custom" : data.radius.toString()}
+                    value={data.isCustom ? "custom" : `${data.radius}km`}
                     onValueChange={(value) => {
                         if (value === "custom") {
                             data.isCustom = true;
