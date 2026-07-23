@@ -15,7 +15,7 @@ export const getFeatureCoords = (feature: any) => {
     return null;
 }
 
-export const fastDistance = (c1: [number, number], c2: [number, number], units: "kilometers" = "kilometers"): number => {
+export const fastDistance = (c1: [number, number], c2: [number, number]): number => {
     const DEG_TO_RAD = Math.PI / 180;
     const EARTH_RADIUS = 6371.0088;
 

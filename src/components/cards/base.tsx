@@ -239,38 +239,40 @@ export const QuestionCard = ({
                                         </PopoverContent>
                                     </Popover>
                                 )}
-                                <button
-                                    type="button"
-                                    aria-label="Share Question"
-                                    title="Share Question"
-                                    data-tutorial-id="tutorial-share-question-btn"
-                                    className="p-1 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors"
-                                    onClick={async (e) => {
-                                        e.stopPropagation();
+                                {!$hiderMode && (
+                                    <button
+                                        type="button"
+                                        aria-label="Share Question"
+                                        title="Share Question"
+                                        data-tutorial-id="tutorial-share-question-btn"
+                                        className="p-1 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors"
+                                        onClick={async (e) => {
+                                            e.stopPropagation();
 
-                                        const payload = encodeBase64Unicode(JSON.stringify(question));
-                                        const url = new URL(window.location.href);
-                                        url.searchParams.set("q", payload);
+                                            const payload = encodeBase64Unicode(JSON.stringify(question));
+                                            const url = new URL(window.location.href);
+                                            url.searchParams.set("q", payload);
 
-                                        const shareData = {
-                                            url: url.toString(),
-                                            text: await getQuestionShareText(question, questionData),
-                                            title: "Share Question"
-                                        };
+                                            const shareData = {
+                                                url: url.toString(),
+                                                text: await getQuestionShareText(question, questionData),
+                                                title: "Share Question"
+                                            };
 
-                                        await shareOrFallback(shareData).then((result) => {
-                                            if (result === false) {
-                                                return toast.error("Sharing failed and clipboard API not supported in your browser");
-                                            }
+                                            await shareOrFallback(shareData).then((result) => {
+                                                if (result === false) {
+                                                    return toast.error("Sharing failed and clipboard API not supported in your browser");
+                                                }
 
-                                            if (result === "clipboard") {
-                                                toast.success("Copied Link to Clipboard!");
-                                            }
-                                        });
-                                    }}
-                                >
-                                    <VscShare className="w-4 h-4" />
-                                </button>
+                                                if (result === "clipboard") {
+                                                    toast.success("Copied Link to Clipboard!");
+                                                }
+                                            });
+                                        }}
+                                    >
+                                        <VscShare className="w-4 h-4" />
+                                    </button>
+                                )}
                                 <button
                                     type="button"
                                     aria-label="Delete Question"
