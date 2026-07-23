@@ -54,7 +54,7 @@ describe('getQuestionShareText', () => {
                 { id: 'radar' },
                 { radius: 5 }
             );
-            expect(result).toBe('Are you within 5km of us?');
+            expect(result).toBe('Are you inside or outside our 5km Radar?');
         });
     });
 
