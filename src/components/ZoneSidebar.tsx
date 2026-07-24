@@ -177,7 +177,7 @@ export const ZoneSidebar = () => {
             initializeHidingZonesLogic().catch((err) => {
                 console.error(err);
                 toast.error(
-                    "An error occurred during hiding zone initialization",
+                    "An error occurred during Hiding Zone initialization",
                     { toastId: "hiding-zone-initialization-error" },
                 );
             });

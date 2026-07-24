@@ -306,7 +306,7 @@ export const Map = ({ className }: { className?: string }) => {
 
                                         if (result === "clipboard") {
                                             toast.success(
-                                                "Hiding zone URL copied to clipboard",
+                                                "Hiding Zone URL copied to clipboard",
                                                 {
                                                     autoClose: 2000,
                                                 },
