@@ -177,5 +177,15 @@ jobs:
                       git commit -m "Deploy branch $BRANCH" || echo "No changes to commit"
                   fi
 
-                  git pull --rebase origin gh-pages || true
-                  git push origin gh-pages
+                  for i in 1 2 3 4 5; do
+                      git pull --rebase origin gh-pages || true
+                      if git push origin gh-pages; then
+                          break
+                      fi
+                      if [ $i -eq 5 ]; then
+                          echo "Failed to push after 5 attempts."
+                          exit 1
+                      fi
+                      echo "Push failed, retrying in 5 seconds..."
+                      sleep 5
+                  done
