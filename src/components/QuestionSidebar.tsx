@@ -158,7 +158,7 @@ export const QuestionSidebar = () => {
                                 </AlertDialogTitle>
                                 <AlertDialogDescription>
                                     This will unlock and delete ALL questions,
-                                    and reset your time penalty to 0. This
+                                    and reset your Time Penalty to 0. This
                                     action cannot be undone.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
@@ -171,7 +171,7 @@ export const QuestionSidebar = () => {
                                         lockedActiveStationIds.set(null);
                                         penaltyMinutes.set(0);
                                         toast.success(
-                                            "Cleared all questions and time penalty.",
+                                            "Cleared all questions and Time Penalty.",
                                         );
                                     }}
                                 >

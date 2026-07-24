@@ -76,7 +76,7 @@ export const OptionDrawers = () => {
                 loadHidingZone(atob(hidingZoneOld));
                 window.history.replaceState({}, "", window.location.pathname);
             } catch (e) {
-                toast.error(`Invalid hiding zone settings: ${e}`);
+                toast.error(`Invalid Hiding Zone settings: ${e}`);
             }
         } else if (hidingZoneCompressed !== null) {
             decompress(hidingZoneCompressed).then((data) => {
@@ -88,7 +88,7 @@ export const OptionDrawers = () => {
                         window.location.pathname,
                     );
                 } catch (e) {
-                    toast.error(`Invalid hiding zone settings: ${e}`);
+                    toast.error(`Invalid Hiding Zone settings: ${e}`);
                 }
             });
         }
@@ -189,11 +189,11 @@ export const OptionDrawers = () => {
                 headStartMinutes.set(geojson.headStartMinutes);
             }
 
-            toast.success("Hiding zone loaded successfully", {
+            toast.success("Hiding Zone loaded successfully", {
                 autoClose: 2000,
             });
         } catch (e) {
-            toast.error(`Invalid hiding zone settings: ${e}`);
+            toast.error(`Invalid Hiding Zone settings: ${e}`);
         }
     };
 

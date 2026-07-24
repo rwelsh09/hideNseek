@@ -88,7 +88,7 @@ export function RulesAccordion() {
                         <li>
                             <strong>The Head Start:</strong> Before the Seekers
                             can begin their pursuit, the Hider is granted a
-                            designated head start period (e.g. 45 minutes).
+                            designated Head Start period (e.g. 45 minutes).
                         </li>
                         <li>
                             <strong>Transit Only:</strong> During the game, all
@@ -110,7 +110,7 @@ export function RulesAccordion() {
                 </AccordionTrigger>
                 <AccordionContent className="text-base text-slate-300 space-y-4 pt-2">
                     <p>
-                        Once the head start concludes, the station nearest to
+                        Once the Head Start concludes, the station nearest to
                         the Hider is their Hiding Zone. The Hider must be within
                         a designated Hiding Zone before the timer runs out.
                     </p>
@@ -268,7 +268,7 @@ export function RulesAccordion() {
                         </li>
                         <li>
                             <strong>Next Round:</strong> A new Hider is chosen
-                            and the next head start begins.
+                            and the next Head Start begins.
                         </li>
                     </ul>
                 </AccordionContent>
