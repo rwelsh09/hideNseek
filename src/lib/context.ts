@@ -194,33 +194,30 @@ const _isLoading = atom<boolean>(false);
 let _isLoadingTimeout: ReturnType<typeof setTimeout> | null = null;
 let _isLoadingStartTime = 0;
 
-export const isLoading = {
-    get: _isLoading.get,
-    get value() { return _isLoading.get(); },
-    listen: _isLoading.listen,
-    subscribe: _isLoading.subscribe,
-    set: (value: boolean) => {
+export const isLoading = _isLoading;
+const _originalSet = _isLoading.set.bind(_isLoading);
+
+_isLoading.set = (value: boolean) => {
         if (value) {
             if (_isLoadingTimeout) {
                 clearTimeout(_isLoadingTimeout);
                 _isLoadingTimeout = null;
             }
             _isLoadingStartTime = Date.now();
-            _isLoading.set(true);
+            _originalSet(true);
         } else {
             const elapsed = Date.now() - _isLoadingStartTime;
             if (elapsed < 400) {
                 if (!_isLoadingTimeout) {
                     _isLoadingTimeout = setTimeout(() => {
-                        _isLoading.set(false);
+                        _originalSet(false);
                         _isLoadingTimeout = null;
                     }, 400 - elapsed);
                 }
             } else {
-                _isLoading.set(false);
+                _originalSet(false);
             }
         }
-    },
 };
 
 export const isOptionsOpenStore = atom<boolean>(false);
