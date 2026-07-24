@@ -353,11 +353,15 @@ export const TimerDrawer = () => {
                                         onSubmit={addLeaderboardEntry}
                                         className="flex flex-col gap-3 mt-auto border-t border-slate-700 pt-4"
                                     >
-                                        <div className="text-sm text-slate-300 font-semibold">
+                                        <Label
+                                            htmlFor="hider-name-input"
+                                            className="text-sm text-slate-300 font-semibold block mb-1"
+                                        >
                                             Save Record to Leaderboard
-                                        </div>
+                                        </Label>
                                         <div className="flex gap-2">
                                             <Input
+                                                id="hider-name-input"
                                                 name="names"
                                                 placeholder="Hider Name"
                                                 className="h-10 bg-slate-800 border-slate-600 text-white"
