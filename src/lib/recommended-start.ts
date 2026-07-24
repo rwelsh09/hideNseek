@@ -1,11 +1,6 @@
 import * as turf from "@turf/turf";
 
-import {
-    disabledStations,
-    lockedActiveStationIds,
-    lockedRecommendedStart,
-    trainStations,
-} from "@/lib/context";
+import { disabledStations, lockedActiveStationIds, lockedRecommendedStart,trainStations } from "@/lib/context";
 import { extractStationId } from "@/maps/geo-utils";
 
 export const getRecommendedStartCoords = (): [number, number] | null => {
@@ -49,9 +44,7 @@ export const lockRecommendedStartIfNeeded = () => {
                 const id = extractStationId(station);
                 return id && !disabledStations.get().includes(id);
             });
-            lockedActiveStationIds.set(
-                activeStations.map((s) => extractStationId(s) as string),
-            );
+            lockedActiveStationIds.set(activeStations.map(s => extractStationId(s) as string));
         }
     }
 };

@@ -1,5 +1,5 @@
 import * as turf from "@turf/turf";
-import { beforeEach, describe, expect, test, vi } from "vitest";
+import { beforeEach,describe, expect, test, vi } from "vitest";
 
 import {
     adjustPerHotCold,
@@ -83,13 +83,9 @@ describe("hot-cold", () => {
             expect(turf.area(result!)).toBeGreaterThan(0);
 
             // If warmer is true, it intersects with point B's voronoi polygon
-            expect(
-                turf.booleanPointInPolygon(turf.point([-114.1, 51.1]), result!),
-            ).toBe(true);
+            expect(turf.booleanPointInPolygon(turf.point([-114.1, 51.1]), result!)).toBe(true);
             // And point A should be excluded
-            expect(
-                turf.booleanPointInPolygon(turf.point([-114.0, 51.0]), result!),
-            ).toBe(false);
+            expect(turf.booleanPointInPolygon(turf.point([-114.0, 51.0]), result!)).toBe(false);
         });
 
         test("should intersect mapData with colder voronoi polygon", () => {
@@ -117,13 +113,9 @@ describe("hot-cold", () => {
             expect(turf.area(result!)).toBeGreaterThan(0);
 
             // If warmer is false (colder), it intersects with point A's voronoi polygon
-            expect(
-                turf.booleanPointInPolygon(turf.point([-114.0, 51.0]), result!),
-            ).toBe(true);
+            expect(turf.booleanPointInPolygon(turf.point([-114.0, 51.0]), result!)).toBe(true);
             // And point B should be excluded
-            expect(
-                turf.booleanPointInPolygon(turf.point([-114.1, 51.1]), result!),
-            ).toBe(false);
+            expect(turf.booleanPointInPolygon(turf.point([-114.1, 51.1]), result!)).toBe(false);
         });
     });
 

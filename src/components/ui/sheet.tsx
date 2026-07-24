@@ -44,8 +44,7 @@ const sheetVariants = cva(
 );
 
 interface SheetContentProps
-    extends
-        React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
+    extends React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>,
         VariantProps<typeof sheetVariants> {}
 
 const SheetContent = React.forwardRef<
@@ -121,4 +120,7 @@ const SheetDescription = React.forwardRef<
 ));
 SheetDescription.displayName = SheetPrimitive.Description.displayName;
 
-export { Sheet, SheetContent };
+export {
+    Sheet,
+    SheetContent,
+};

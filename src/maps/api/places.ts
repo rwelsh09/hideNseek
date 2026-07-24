@@ -2,21 +2,27 @@ import * as turf from "@turf/turf";
 import type { Feature, FeatureCollection, MultiPolygon } from "geojson";
 
 import calgaryBoundaryData from "@/data/calgary_boundary.json";
-import { mapGeoJSON, polyGeoJSON } from "@/lib/context";
+import {
+    mapGeoJSON,
+        polyGeoJSON,
+} from "@/lib/context";
 import { PLACES } from "@/maps/placesConfig";
 
 import { LOCATION_FIRST_TAG } from "./constants";
 
 const getLocationTypeName = (location: string) => {
-    const place = PLACES.find((p) => p.id === location);
+    const place = PLACES.find(p => p.id === location);
     return place ? place.labelPlural : "Locations";
 };
 
-export const findClosestLocations = async (question: any, text?: string) => {
+export const findClosestLocations = async (
+    question: any,
+    text?: string,
+) => {
     const loadingText =
         text ?? `Finding all ${getLocationTypeName(question.locationType)}...`;
 
-    const place = PLACES.find((p) => p.id === question.locationType);
+    const place = PLACES.find(p => p.id === question.locationType);
     let data;
     if (place && place.type === "specific" && place.specificLocation) {
         data = await findPlacesInZone(place.specificLocation, loadingText);
@@ -37,9 +43,8 @@ export const findClosestLocations = async (question: any, text?: string) => {
 
     elements.forEach((element: any) => {
         if (!element.tags) return;
-        const place = PLACES.find((p) => p.id === question.locationType);
-        const fallbackName =
-            place && place.type === "specific" ? place.label : null;
+        const place = PLACES.find(p => p.id === question.locationType);
+        const fallbackName = place && place.type === "specific" ? place.label : null;
 
         if (
             !element.tags["name"] &&
@@ -121,7 +126,7 @@ const ensureElementCenter = (el: any) => {
             lat = el.bounds.minlat;
         } else if (el.members && el.members.length > 0) {
             const memberWithGeom = el.members.find(
-                (m: any) => m.geometry && m.geometry.length > 0,
+                (m: any) => m.geometry && m.geometry.length > 0
             );
             if (memberWithGeom) {
                 lon = memberWithGeom.geometry[0].lon;
@@ -136,20 +141,14 @@ const ensureElementCenter = (el: any) => {
         }
     } else {
         if (el.center) {
-            if (
-                typeof el.center.lon !== "number" ||
-                typeof el.center.lat !== "number"
-            ) {
+            if (typeof el.center.lon !== "number" || typeof el.center.lat !== "number") {
                 delete el.center;
             }
         }
     }
 };
 
-export const checkFilters = (
-    filtersToMatch: any[],
-    tags: Record<string, string>,
-) => {
+export const checkFilters = (filtersToMatch: any[], tags: Record<string, string>) => {
     if (filtersToMatch.length === 0) return true;
     return filtersToMatch.every((f) => {
         const tagVal = tags[f.key];
@@ -185,15 +184,12 @@ export const findPlacesInZone = async (
         boundaryPromise = null;
     }
 
+
     if (!cachedOfflineData) {
         if (!offlineDataPromise) {
-            offlineDataPromise = import("@/data/offline_places.json")
+            offlineDataPromise = import('@/data/offline_places.json')
                 .then((dataModule) => {
-                    return (
-                        dataModule.default?.elements ||
-                        dataModule.elements ||
-                        []
-                    );
+                    return dataModule.default?.elements || dataModule.elements || [];
                 })
                 .catch((err) => {
                     offlineDataPromise = null;
@@ -222,10 +218,7 @@ export const findPlacesInZone = async (
         if (!el.tags) return false;
 
         const matchesPrimary = checkFilters(primaryFilters, el.tags);
-        const matchesAnyAlt =
-            altFilters.length > 0
-                ? altFilters.some((f) => checkFilters(f, el.tags))
-                : false;
+        const matchesAnyAlt = altFilters.length > 0 ? altFilters.some(f => checkFilters(f, el.tags)) : false;
 
         return matchesPrimary || matchesAnyAlt;
     });

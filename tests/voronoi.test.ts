@@ -23,9 +23,7 @@ describe("geoSpatialVoronoi edge cases", () => {
 
         // Assert that the massive polygon logic actually reduced the area
         // to be no larger than the 255000000000000 threshold
-        expect(turf.area(voronoi.features[0])).toBeLessThanOrEqual(
-            255000000000000,
-        );
+        expect(turf.area(voronoi.features[0])).toBeLessThanOrEqual(255000000000000);
     });
 
     test("2 points should return 2 polygons", () => {

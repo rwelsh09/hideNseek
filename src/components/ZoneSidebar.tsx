@@ -386,7 +386,8 @@ export const ZoneSidebar = () => {
                                         ) as string;
                                         const coords = selected?.properties
                                             ?.geometry?.coordinates as
-                                            [number, number] | undefined;
+                                            | [number, number]
+                                            | undefined;
                                         const href = id?.includes("/")
                                             ? `https://www.openstreetmap.org/${id}`
                                             : coords

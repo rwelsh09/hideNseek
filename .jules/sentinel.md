@@ -17,8 +17,6 @@
 
 **Learning:** Testing nanostores `atom` logic with custom setters using timeouts requires explicitly flushing fake timers `vi.runAllTimers()` and stepping through with `vi.advanceTimersByTime()`. Testing `matchMedia` requires a manual mock of `window.matchMedia` maintaining an internal list of listeners to manually call when triggering simulated DOM resize events.
 **Action:** Reuse this `mockMatchMedia` pattern when testing other responsive hooks. Use `vi.useFakeTimers()` systematically for any state variables applying throttling/debouncing.
-
 ## 2026-07-23 - Leaflet Testing in Vitest
-
 **Learning:** Leaflet requires `window` to be defined to load without crashing, even if we are only using its math functions like `L.point` or `L.latLng`.
 **Action:** Add `// @vitest-environment jsdom` to the top of any test file importing `leaflet`.

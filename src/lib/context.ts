@@ -221,7 +221,7 @@ function createLoadingStore() {
         },
         get: () => store.get(),
         listen: store.listen.bind(store),
-        subscribe: store.subscribe.bind(store),
+        subscribe: store.subscribe.bind(store)
     };
 }
 

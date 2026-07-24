@@ -1,11 +1,11 @@
-import type { Question } from "@/maps/schema";
-
 import { ClosestQuestionComponent } from "./cards/closest";
 import { HotColdQuestionComponent } from "./cards/hot-cold";
 import { MatchQuestionComponent } from "./cards/match";
 import { MeasureQuestionComponent } from "./cards/measure";
 import { PhotoQuestionComponent } from "./cards/photo";
 import { RadarQuestionComponent } from "./cards/radar";
+
+import type { Question } from "@/maps/schema";
 
 const QUESTION_COMPONENTS: Record<string, React.FC<any>> = {
     radar: RadarQuestionComponent,
