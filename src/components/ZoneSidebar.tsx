@@ -187,6 +187,7 @@ export const ZoneSidebar = () => {
         $showRecommendedStart,
         $hidingRadius,
         $questions,
+        $isLoading,
     ]);
 
     useEffect(() => {
@@ -246,6 +247,7 @@ export const ZoneSidebar = () => {
         $questionFinishedMapData,
         hidingZoneModeStationID,
         stations,
+        $isLoading,
     ]);
 
     return (
