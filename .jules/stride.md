@@ -26,3 +26,7 @@
 ## 2026-07-21 - [Mobile Autocorrect on Command Inputs]
 **Learning:** `CommandPrimitive.Input` components (often used for searches like station names or hiding zones) suffer from mobile autocorrect trying to fix proper nouns, creating friction for users trying to quickly search for game locations.
 **Action:** Add `autoCapitalize="none"`, `autoComplete="off"`, `autoCorrect="off"`, and `spellCheck={false}` to `CommandPrimitive.Input` wrappers (like in `src/components/ui/command.tsx`) to prevent mobile keyboards from interfering with fast-paced game typing.
+
+## 2026-07-22 - [Prevent Mobile Input Text Inflation]
+**Learning:** On mobile devices (specifically iOS Safari), when the font size of an input element (`input`, `select`, `textarea`) is smaller than `16px` (or `1rem`/`text-base` in Tailwind), the browser automatically zooms in on the page when the input is focused, causing layout friction.
+**Action:** Use `text-base md:text-sm` on input components to ensure a 16px minimum font size on mobile while preserving the intended 14px size on desktop.
