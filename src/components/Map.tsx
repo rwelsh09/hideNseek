@@ -346,11 +346,21 @@ export const Map = ({ className }: { className?: string }) => {
         [map, $baseTileLayer, $isLoading],
     );
 
+    const questionsHash = useMemo(() => {
+        return JSON.stringify(
+            $questions.map((q) => ({
+                id: q.id,
+                key: q.key,
+                data: q.data,
+            }))
+        );
+    }, [$questions]);
+
     useEffect(() => {
         if (!map) return;
 
         refreshQuestions();
-    }, [$questions, map, $hiderMode]);
+    }, [questionsHash, map, $hiderMode]);
 
 
 
