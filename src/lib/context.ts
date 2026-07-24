@@ -202,6 +202,8 @@ function createLoadingStore() {
             if (!store.get()) {
                 originalSet(true);
                 turnOnTime = Date.now();
+            } else if (timeout) {
+                turnOnTime = Date.now();
             }
             if (timeout) {
                 clearTimeout(timeout);
@@ -213,6 +215,7 @@ function createLoadingStore() {
             if (timeout) clearTimeout(timeout);
             timeout = setTimeout(() => {
                 originalSet(false);
+                timeout = null;
             }, remaining);
         }
     };
