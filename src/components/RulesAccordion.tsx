@@ -290,7 +290,10 @@ export function RulesAccordion() {
                             mode, and offline functionality, install this app on
                             your device!
                             <ul className="list-none p-0 m-0 w-full inline-block">
-                                <PwaInstallTip client:only="react" className="mt-2 pt-0 border-t-0" />
+                                <PwaInstallTip
+                                    client:only="react"
+                                    className="mt-2 pt-0 border-t-0"
+                                />
                             </ul>
                         </li>
                         <li>
@@ -351,10 +354,10 @@ export function RulesAccordion() {
                         </li>
                         <li>
                             <strong>Transit Passes:</strong> Save yourself time,
-                            money, and frustration by purchasing a transit day pass.
-                            Not having to worry about buying individual tickets
-                            while on the move makes the game much smoother and more
-                            enjoyable!
+                            money, and frustration by purchasing a transit day
+                            pass. Not having to worry about buying individual
+                            tickets while on the move makes the game much
+                            smoother and more enjoyable!
                         </li>
                     </ul>
                 </AccordionContent>

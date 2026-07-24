@@ -69,7 +69,12 @@ export const RadarQuestionComponent = ({
             </SidebarMenuItem>
             {data.isCustom && (
                 <SidebarMenuItem>
-                    <div className={cn(MENU_ITEM_CLASSNAME, "gap-2 flex flex-row items-center")}>
+                    <div
+                        className={cn(
+                            MENU_ITEM_CLASSNAME,
+                            "gap-2 flex flex-row items-center",
+                        )}
+                    >
                         <Input
                             aria-label="Radius"
                             type="number"

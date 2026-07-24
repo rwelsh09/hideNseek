@@ -25,51 +25,51 @@ vi.mock("@/data/calgary_rapid_transit_network.json", () => ({
                 id: "station-central",
                 properties: {
                     name: "Central",
-                    route_ref: "Red Line"
+                    route_ref: "Red Line",
                 },
                 geometry: {
                     type: "Point",
-                    coordinates: [-114.07, 51.05]
-                }
+                    coordinates: [-114.07, 51.05],
+                },
             },
             {
                 type: "Feature",
                 id: "station-brentwood",
                 properties: {
                     name: "Brentwood",
-                    route_ref: "Red Line"
+                    route_ref: "Red Line",
                 },
                 geometry: {
                     type: "Point",
-                    coordinates: [-114.13, 51.08]
-                }
+                    coordinates: [-114.13, 51.08],
+                },
             },
             {
                 type: "Feature",
                 id: "station-bridgeland",
                 properties: {
                     name: "Bridgeland",
-                    route_ref: "Blue Line"
+                    route_ref: "Blue Line",
                 },
                 geometry: {
                     type: "Point",
-                    coordinates: [-114.04, 51.05]
-                }
+                    coordinates: [-114.04, 51.05],
+                },
             },
             {
                 type: "Feature",
                 id: "station-banff-trail",
                 properties: {
                     name: "Banff Trail",
-                    route_ref: "Red Line"
+                    route_ref: "Red Line",
                 },
                 geometry: {
                     type: "Point",
-                    coordinates: [-114.11, 51.07]
-                }
-            }
-        ]
-    }
+                    coordinates: [-114.11, 51.07],
+                },
+            },
+        ],
+    },
 }));
 
 // Mock geospatial utils safely according to learnings
@@ -79,16 +79,27 @@ vi.mock("@/maps/geo-utils", async (importOriginal) => {
         ...actual,
         extractStationId: (place: any) => {
             // Because turf embeds place inside properties.properties if wrapped in a feature, or just properties if direct
-            return place?.properties?.id || place?.properties?.properties?.id || place?.id;
+            return (
+                place?.properties?.id ||
+                place?.properties?.properties?.id ||
+                place?.id
+            );
         },
         extractStationName: (place: any) => {
-            return place?.properties?.name || place?.properties?.properties?.name || place?.name;
+            return (
+                place?.properties?.name ||
+                place?.properties?.properties?.name ||
+                place?.name
+            );
         },
         extractStationLines: (place: any) => {
-            const ref = place?.properties?.route_ref || place?.properties?.properties?.route_ref || "";
+            const ref =
+                place?.properties?.route_ref ||
+                place?.properties?.properties?.route_ref ||
+                "";
             return ref ? ref.split(",").map((s: string) => s.trim()) : [];
-        }
-    }
+        },
+    };
 });
 
 // Helper to reset module-level variables in the actual file
@@ -109,43 +120,59 @@ vi.mock("@/lib/context", () => {
     return {
         hidingRadius: {
             get: vi.fn(() => _hidingRadius),
-            set: vi.fn((val) => { _hidingRadius = val; })
+            set: vi.fn((val) => {
+                _hidingRadius = val;
+            }),
         },
         hidingRadiusUnits: {
             get: vi.fn(() => _hidingRadiusUnits),
-            set: vi.fn((val) => { _hidingRadiusUnits = val; })
+            set: vi.fn((val) => {
+                _hidingRadiusUnits = val;
+            }),
         },
         questionFinishedMapData: {
             get: vi.fn(() => _questionFinishedMapData),
-            set: vi.fn((val) => { _questionFinishedMapData = val; })
+            set: vi.fn((val) => {
+                _questionFinishedMapData = val;
+            }),
         },
         disabledStations: {
             get: vi.fn(() => _disabledStations),
-            set: vi.fn((val) => { _disabledStations = val; })
+            set: vi.fn((val) => {
+                _disabledStations = val;
+            }),
         },
         questions: {
             get: vi.fn(() => _questions),
-            set: vi.fn((val) => { _questions = val; })
+            set: vi.fn((val) => {
+                _questions = val;
+            }),
         },
         lockedActiveStationIds: {
             get: vi.fn(() => _lockedActiveStationIds),
-            set: vi.fn((val) => { _lockedActiveStationIds = val; })
+            set: vi.fn((val) => {
+                _lockedActiveStationIds = val;
+            }),
         },
         trainStations: {
             get: vi.fn(() => _trainStations),
-            set: vi.fn((val) => { _trainStations = val; })
+            set: vi.fn((val) => {
+                _trainStations = val;
+            }),
         },
         isLoading: {
             get: vi.fn(() => _isLoading),
-            set: vi.fn((val) => { _isLoading = val; })
-        }
+            set: vi.fn((val) => {
+                _isLoading = val;
+            }),
+        },
     };
 });
 
 vi.mock("react-toastify", () => ({
     toast: {
-        error: vi.fn()
-    }
+        error: vi.fn(),
+    },
 }));
 
 describe("initializeHidingZonesLogic", () => {
@@ -183,13 +210,15 @@ describe("initializeHidingZonesLogic", () => {
             // We need a large enough polygon so `turf.difference` results in < 1 area or no diff
             // when the circle is entirely inside the map polygon.
             // A circle around [-114.07, 51.05] with 1km radius is roughly +/- 0.01 degrees.
-            const mockPolygon = turf.polygon([[
-                [-114.09, 51.03],
-                [-114.05, 51.03],
-                [-114.05, 51.07],
-                [-114.09, 51.07],
-                [-114.09, 51.03]
-            ]]);
+            const mockPolygon = turf.polygon([
+                [
+                    [-114.09, 51.03],
+                    [-114.05, 51.03],
+                    [-114.05, 51.07],
+                    [-114.09, 51.07],
+                    [-114.09, 51.03],
+                ],
+            ]);
 
             questionFinishedMapData.set(turf.featureCollection([mockPolygon]));
 
@@ -220,13 +249,15 @@ describe("initializeHidingZonesLogic", () => {
         it("should maintain manually disabled stations during recalculation", async () => {
             // Provide a map polygon that covers NO stations (so none are auto-disabled)
             // A tiny polygon far away
-            const mockPolygon = turf.polygon([[
-                [-110.0, 50.0],
-                [-109.0, 50.0],
-                [-109.0, 51.0],
-                [-110.0, 51.0],
-                [-110.0, 50.0]
-            ]]);
+            const mockPolygon = turf.polygon([
+                [
+                    [-110.0, 50.0],
+                    [-109.0, 50.0],
+                    [-109.0, 51.0],
+                    [-110.0, 51.0],
+                    [-110.0, 50.0],
+                ],
+            ]);
 
             questionFinishedMapData.set(turf.featureCollection([mockPolygon]));
 
@@ -248,13 +279,15 @@ describe("initializeHidingZonesLogic", () => {
     describe("Match Question Filters", () => {
         // Shared base map for match tests that covers NO stations so none are disabled by geometry alone
         beforeEach(() => {
-            const mockPolygon = turf.polygon([[
-                [-110.0, 50.0],
-                [-109.0, 50.0],
-                [-109.0, 51.0],
-                [-110.0, 51.0],
-                [-110.0, 50.0]
-            ]]);
+            const mockPolygon = turf.polygon([
+                [
+                    [-110.0, 50.0],
+                    [-109.0, 50.0],
+                    [-109.0, 51.0],
+                    [-110.0, 51.0],
+                    [-110.0, 50.0],
+                ],
+            ]);
             questionFinishedMapData.set(turf.featureCollection([mockPolygon]));
             lockedActiveStationIds.set(["station-central"]); // Has to be non-null to trigger locked questions restoring logic safely
         });
@@ -262,16 +295,18 @@ describe("initializeHidingZonesLogic", () => {
         it("should filter by same-train-line", async () => {
             // Suppose Seeker is closest to Central (Red Line)
             // They asked: Is the hider on the SAME train line? Yes.
-            questions.set([{
-                id: "match",
-                data: {
-                    locked: true,
-                    type: "same-train-line",
-                    lat: 51.05,
-                    lng: -114.07, // Central
-                    same: true
-                }
-            } as any]);
+            questions.set([
+                {
+                    id: "match",
+                    data: {
+                        locked: true,
+                        type: "same-train-line",
+                        lat: 51.05,
+                        lng: -114.07, // Central
+                        same: true,
+                    },
+                } as any,
+            ]);
 
             await initializeHidingZonesLogic();
 
@@ -287,16 +322,18 @@ describe("initializeHidingZonesLogic", () => {
         it("should filter by same-first-letter-station", async () => {
             // Suppose Seeker is closest to Brentwood (B)
             // They asked: Does the station start with the SAME letter? No.
-            questions.set([{
-                id: "match",
-                data: {
-                    locked: true,
-                    type: "same-first-letter-station",
-                    lat: 51.08,
-                    lng: -114.13, // Brentwood
-                    same: false
-                }
-            } as any]);
+            questions.set([
+                {
+                    id: "match",
+                    data: {
+                        locked: true,
+                        type: "same-first-letter-station",
+                        lat: 51.08,
+                        lng: -114.13, // Brentwood
+                        same: false,
+                    },
+                } as any,
+            ]);
 
             await initializeHidingZonesLogic();
 
@@ -314,17 +351,19 @@ describe("initializeHidingZonesLogic", () => {
             // Let's test `longer`.
             // Seeker is at Central (length 7).
             // They asked: Is the station length LONGER? same: true (meaning yes, it is longer)
-            questions.set([{
-                id: "match",
-                data: {
-                    locked: true,
-                    type: "same-length-station",
-                    lat: 51.05,
-                    lng: -114.07, // Central (7 chars)
-                    same: true,
-                    lengthComparison: "longer"
-                }
-            } as any]);
+            questions.set([
+                {
+                    id: "match",
+                    data: {
+                        locked: true,
+                        type: "same-length-station",
+                        lat: 51.05,
+                        lng: -114.07, // Central (7 chars)
+                        same: true,
+                        lengthComparison: "longer",
+                    },
+                } as any,
+            ]);
 
             await initializeHidingZonesLogic();
 
@@ -342,17 +381,19 @@ describe("initializeHidingZonesLogic", () => {
             // Since same is false, the ones that ARE shorter (Central) should be disabled.
             // The ones that are NOT shorter (Bridgeland(10), Banff Trail(11), Brentwood(9)) should NOT be disabled.
             disabledStations.set([]);
-            questions.set([{
-                id: "match",
-                data: {
-                    locked: true,
-                    type: "same-length-station",
-                    lat: 51.08,
-                    lng: -114.13, // Brentwood (9 chars)
-                    same: false,
-                    lengthComparison: "shorter"
-                }
-            } as any]);
+            questions.set([
+                {
+                    id: "match",
+                    data: {
+                        locked: true,
+                        type: "same-length-station",
+                        lat: 51.08,
+                        lng: -114.13, // Brentwood (9 chars)
+                        same: false,
+                        lengthComparison: "shorter",
+                    },
+                } as any,
+            ]);
 
             await initializeHidingZonesLogic();
 
@@ -364,17 +405,19 @@ describe("initializeHidingZonesLogic", () => {
 
             // Let's test `same` with same: true
             disabledStations.set([]);
-            questions.set([{
-                id: "match",
-                data: {
-                    locked: true,
-                    type: "same-length-station",
-                    lat: 51.05,
-                    lng: -114.07, // Central (7 chars)
-                    same: true,
-                    lengthComparison: "same"
-                }
-            } as any]);
+            questions.set([
+                {
+                    id: "match",
+                    data: {
+                        locked: true,
+                        type: "same-length-station",
+                        lat: 51.05,
+                        lng: -114.07, // Central (7 chars)
+                        same: true,
+                        lengthComparison: "same",
+                    },
+                } as any,
+            ]);
 
             await initializeHidingZonesLogic();
 
