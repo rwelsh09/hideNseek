@@ -195,34 +195,29 @@ function createLoadingStore() {
     let timeout: ReturnType<typeof setTimeout> | null = null;
     let turnOnTime = 0;
 
-    return {
-        ...store,
-        get value() {
-            return store.get();
-        },
-        set: (value: boolean) => {
-            if (value) {
-                if (!store.get()) {
-                    store.set(true);
-                    turnOnTime = Date.now();
-                }
-                if (timeout) {
-                    clearTimeout(timeout);
-                    timeout = null;
-                }
-            } else {
-                const elapsed = Date.now() - turnOnTime;
-                const remaining = Math.max(0, 400 - elapsed);
-                if (timeout) clearTimeout(timeout);
-                timeout = setTimeout(() => {
-                    store.set(false);
-                }, remaining);
+    const originalSet = store.set;
+
+    store.set = (value: boolean) => {
+        if (value) {
+            if (!store.get()) {
+                originalSet(true);
+                turnOnTime = Date.now();
             }
-        },
-        get: () => store.get(),
-        listen: store.listen.bind(store),
-        subscribe: store.subscribe.bind(store)
+            if (timeout) {
+                clearTimeout(timeout);
+                timeout = null;
+            }
+        } else {
+            const elapsed = Date.now() - turnOnTime;
+            const remaining = Math.max(0, 400 - elapsed);
+            if (timeout) clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                originalSet(false);
+            }, remaining);
+        }
     };
+
+    return store;
 }
 
 export const isLoading = createLoadingStore();
