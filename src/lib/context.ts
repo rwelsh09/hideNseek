@@ -190,7 +190,40 @@ if (typeof window !== "undefined" && navigator.permissions) {
         });
 }
 
-export const isLoading = atom<boolean>(false);
+function createLoadingStore() {
+    const store = atom<boolean>(false);
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+    let turnOnTime = 0;
+
+    const originalSet = store.set;
+
+    store.set = (value: boolean) => {
+        if (value) {
+            if (!store.get()) {
+                originalSet(true);
+                turnOnTime = Date.now();
+            } else if (timeout) {
+                turnOnTime = Date.now();
+            }
+            if (timeout) {
+                clearTimeout(timeout);
+                timeout = null;
+            }
+        } else {
+            const elapsed = Date.now() - turnOnTime;
+            const remaining = Math.max(0, 400 - elapsed);
+            if (timeout) clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                originalSet(false);
+                timeout = null;
+            }, remaining);
+        }
+    };
+
+    return store;
+}
+
+export const isLoading = createLoadingStore();
 
 export const isOptionsOpenStore = atom<boolean>(false);
 
