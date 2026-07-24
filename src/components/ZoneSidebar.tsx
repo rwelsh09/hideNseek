@@ -171,7 +171,7 @@ export const ZoneSidebar = () => {
     };
 
     useEffect(() => {
-        if (!map || isLoading.get()) return;
+        if (!map || $isLoading) return;
 
         if ($questionFinishedMapData) {
             initializeHidingZonesLogic().catch((err) => {
@@ -187,10 +187,12 @@ export const ZoneSidebar = () => {
         $showRecommendedStart,
         $hidingRadius,
         $questions,
+        $isLoading,
+        map,
     ]);
 
     useEffect(() => {
-        if (!map || isLoading.get()) return;
+        if (!map || $isLoading) return;
 
         if ($displayHidingZonesStyle !== "no-display") {
             const activeStations = stations.filter(
@@ -246,6 +248,8 @@ export const ZoneSidebar = () => {
         $questionFinishedMapData,
         hidingZoneModeStationID,
         stations,
+        $isLoading,
+        map,
     ]);
 
     return (
