@@ -37,3 +37,8 @@
 
 **Learning:** Passing a full reactive store object (like `$questions`) to a `useEffect` dependency array can trigger excessive and expensive side-effects (e.g., redundant API requests or map data processing) during rapid state changes like dragging a map marker.
 **Action:** Use `useMemo` to extract a stable primitive representation of the exact required state (like a stringified hash of active types) and use that hash as the `useEffect` dependency. This ensures the expensive effect only runs when the strictly necessary data requirements actually change.
+
+## 2026-07-24 - [Optimize useEffect triggers for nanostores via hash mapping]
+
+**Learning:** When using `useMemo` to extract primitive dependencies from a nanostore object (like `$questions`) to prevent excessive `useEffect` executions in React components, ensure that you explicitly map the store to ONLY the required attributes _before_ stringifying. Calling `JSON.stringify` directly on `$questions` still causes re-renders if unrelated transient properties (like a temporary marker dragging coordinate or an arbitrary ID) are mutated, defeating the optimization.
+**Action:** Extract a stable string hash from complex objects by mapping to specific, immutable fields (e.g., `id`, `key`, `data`) and running `JSON.stringify` on the mapped subset, then use that `hash` variable in the `useEffect` dependency array.
