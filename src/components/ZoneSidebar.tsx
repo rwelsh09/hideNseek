@@ -171,7 +171,7 @@ export const ZoneSidebar = () => {
     };
 
     useEffect(() => {
-        if (!map || isLoading.get()) return;
+        if (!map) return;
 
         if ($questionFinishedMapData) {
             initializeHidingZonesLogic().catch((err) => {
