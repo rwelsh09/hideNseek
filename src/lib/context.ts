@@ -196,6 +196,7 @@ let _isLoadingStartTime = 0;
 
 export const isLoading = {
     get: _isLoading.get,
+    get value() { return _isLoading.get(); },
     listen: _isLoading.listen,
     subscribe: _isLoading.subscribe,
     set: (value: boolean) => {
