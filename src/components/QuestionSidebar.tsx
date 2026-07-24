@@ -158,7 +158,7 @@ export const QuestionSidebar = () => {
                                 </AlertDialogTitle>
                                 <AlertDialogDescription>
                                     This will unlock and delete ALL questions,
-                                    and reset your Time Penalty to 0. This
+                                    and reset the Time Penalty. This
                                     action cannot be undone.
                                 </AlertDialogDescription>
                             </AlertDialogHeader>
