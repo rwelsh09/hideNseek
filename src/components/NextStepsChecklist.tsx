@@ -1,16 +1,14 @@
-import { persistentAtom } from "@nanostores/persistent";
 import { useStore } from "@nanostores/react";
 import { XIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
-import { hiderMode,showHiderTutorial, showNextStepsChecklist, showTutorial } from "@/lib/context";
+import { hiderMode, persistentJsonAtom, showHiderTutorial, showNextStepsChecklist, showTutorial } from "@/lib/context";
 
 import { PwaInstallTip } from "./PwaInstallTip";
 
-const hasDismissedNextStepsChecklist = persistentAtom<boolean>(
+const hasDismissedNextStepsChecklist = persistentJsonAtom<boolean>(
     "hasDismissedNextStepsChecklist",
     false,
-    { encode: JSON.stringify, decode: JSON.parse },
 );
 
 export const NextStepsChecklist = () => {

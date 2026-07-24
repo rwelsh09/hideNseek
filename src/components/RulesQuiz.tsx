@@ -1,31 +1,20 @@
-import { persistentAtom } from "@nanostores/persistent";
 import { useStore } from "@nanostores/react";
 import React, { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
+import { persistentJsonAtom } from "@/lib/context";
 
-const quizCurrentQuestionIndex = persistentAtom<number>(
+const quizCurrentQuestionIndex = persistentJsonAtom<number>(
     "quizCurrentQuestionIndex",
     0,
-    { encode: JSON.stringify, decode: JSON.parse },
 );
-const quizScore = persistentAtom<number>("quizScore", 0, {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-});
-const quizShowResults = persistentAtom<boolean>("quizShowResults", false, {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-});
-const quizSelectedOption = persistentAtom<number | null>(
+const quizScore = persistentJsonAtom<number>("quizScore", 0);
+const quizShowResults = persistentJsonAtom<boolean>("quizShowResults", false);
+const quizSelectedOption = persistentJsonAtom<number | null>(
     "quizSelectedOption",
     null,
-    { encode: JSON.stringify, decode: JSON.parse },
 );
-const quizIsAnswered = persistentAtom<boolean>("quizIsAnswered", false, {
-    encode: JSON.stringify,
-    decode: JSON.parse,
-});
+const quizIsAnswered = persistentJsonAtom<boolean>("quizIsAnswered", false);
 
 const QUIZ_QUESTIONS = [
     {
