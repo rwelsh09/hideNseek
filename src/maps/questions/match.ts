@@ -75,7 +75,9 @@ export const determineMatchBoundary = _.memoize(
                     "Finding neighbourhoods...",
                 );
 
-                const data = osm2geojson(rawData, { completeFeature: true }) as FeatureCollection<Polygon | MultiPolygon>;
+                const data = osm2geojson(rawData, {
+                    completeFeature: true,
+                }) as FeatureCollection<Polygon | MultiPolygon>;
 
                 if (!data.features || data.features.length === 0) {
                     toast.error("No neighbourhood polygons found in this map");
