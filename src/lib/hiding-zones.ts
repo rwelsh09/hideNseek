@@ -28,7 +28,7 @@ export const initializeHidingZonesLogic = async () => {
 
     if (!$questionFinishedMapData) return;
 
-    // Yield to the browser to render the next frame (improves INP)
+    // Yield to the browser to render the loading state
     await new Promise((resolve) => setTimeout(resolve, 10));
 
     const places: StationPlace[] = [];
