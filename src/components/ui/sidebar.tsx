@@ -838,6 +838,7 @@ export {
     SidebarGroupContent,
     SidebarGroupLabel,
     SidebarMenu,
+    SidebarMenuButton,
     SidebarMenuItem,
     SidebarProvider,
 };
