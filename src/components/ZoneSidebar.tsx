@@ -12,6 +12,7 @@ import {
     Sidebar,
     SidebarContent,
     SidebarMenu,
+    SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar";
 import {
@@ -31,7 +32,6 @@ import {
     trainStations,
 } from "@/lib/context";
 import { initializeHidingZonesLogic } from "@/lib/hiding-zones";
-import { cn } from "@/lib/utils";
 import { type StationCircle } from "@/maps/api";
 import {
     extractStationId,
@@ -54,7 +54,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { Label } from "./ui/label";
 import { ScrollToTop } from "./ui/scroll-to-top";
-import { MENU_ITEM_CLASSNAME } from "./ui/sidebar";
 import { UnitSelect } from "./UnitSelect";
 
 export const ZoneSidebar = () => {
@@ -418,85 +417,92 @@ export const ZoneSidebar = () => {
                     <h3 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider px-1">
                         Hiding Zone Display Options
                     </h3>
-                    <div className="rounded-xl border bg-card shadow-sm overflow-hidden divide-y divide-border">
+                    <div className="rounded-xl border bg-card shadow-sm overflow-hidden p-2">
                         <SidebarMenu className="gap-0 border-0 bg-transparent p-0 m-0 w-full rounded-none">
-                            <SidebarMenuItem
-                                className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                onClick={() => {
-                                    setHidingZoneModeStationID("");
-                                    displayHidingZonesStyle.set("no-display");
-                                }}
-                                disabled={$isLoading}
-                            >
-                                Hide Zones
+                            <SidebarMenuItem>
+                                <SidebarMenuButton
+                                    onClick={() => {
+                                        setHidingZoneModeStationID("");
+                                        displayHidingZonesStyle.set(
+                                            "no-display",
+                                        );
+                                    }}
+                                    disabled={$isLoading}
+                                    isActive={
+                                        $displayHidingZonesStyle ===
+                                        "no-display"
+                                    }
+                                >
+                                    Hide Zones
+                                </SidebarMenuButton>
                             </SidebarMenuItem>
-                            <SidebarMenuItem
-                                className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"
-                                onClick={() => {
-                                    setHidingZoneModeStationID("");
-                                    displayHidingZonesStyle.set("zones");
-                                }}
-                                disabled={$isLoading}
-                            >
-                                Show All Zones
+                            <SidebarMenuItem>
+                                <SidebarMenuButton
+                                    onClick={() => {
+                                        setHidingZoneModeStationID("");
+                                        displayHidingZonesStyle.set("zones");
+                                    }}
+                                    disabled={$isLoading}
+                                    isActive={
+                                        $displayHidingZonesStyle === "zones"
+                                    }
+                                >
+                                    Show All Zones
+                                </SidebarMenuButton>
                             </SidebarMenuItem>
                             {hidingZoneModeStationID && (
-                                <SidebarMenuItem
-                                    className={cn(
-                                        MENU_ITEM_CLASSNAME,
-                                        "bg-popover hover:bg-accent",
-                                    )}
-                                    disabled={$isLoading}
-                                >
-                                    Current:{" "}
-                                    {(() => {
-                                        const selected = stations.find(
-                                            (x) =>
-                                                extractStationId(x) ===
-                                                hidingZoneModeStationID,
-                                        );
-                                        const displayName = selected
-                                            ? extractStationLabel(
-                                                  selected?.properties,
-                                              )
-                                            : "Unknown";
-                                        const id = (
-                                            selected
-                                                ? extractStationId(selected)
-                                                : ""
-                                        ) as string;
-                                        const coords = selected?.properties
-                                            ?.geometry?.coordinates as
-                                            [number, number] | undefined;
-                                        const href = id?.includes("/")
-                                            ? `https://www.openstreetmap.org/${id}`
-                                            : coords
-                                              ? `https://www.openstreetmap.org/?mlat=${coords[1]}&mlon=${coords[0]}#map=17/${coords[1]}/${coords[0]}`
-                                              : "#";
-                                        return (
-                                            <a
-                                                href={href}
-                                                target="_blank"
-                                                rel="noopener noreferrer"
-                                                className="text-blue-500"
-                                            >
-                                                {displayName}
-                                            </a>
-                                        );
-                                    })()}
+                                <SidebarMenuItem>
+                                    <SidebarMenuButton disabled={$isLoading}>
+                                        Current:{" "}
+                                        {(() => {
+                                            const selected = stations.find(
+                                                (x) =>
+                                                    extractStationId(x) ===
+                                                    hidingZoneModeStationID,
+                                            );
+                                            const displayName = selected
+                                                ? extractStationLabel(
+                                                      selected?.properties,
+                                                  )
+                                                : "Unknown";
+                                            const id = (
+                                                selected
+                                                    ? extractStationId(selected)
+                                                    : ""
+                                            ) as string;
+                                            const coords = selected?.properties
+                                                ?.geometry?.coordinates as
+                                                [number, number] | undefined;
+                                            const href = id?.includes("/")
+                                                ? `https://www.openstreetmap.org/${id}`
+                                                : coords
+                                                  ? `https://www.openstreetmap.org/?mlat=${coords[1]}&mlon=${coords[0]}#map=17/${coords[1]}/${coords[0]}`
+                                                  : "#";
+                                            return (
+                                                <a
+                                                    href={href}
+                                                    target="_blank"
+                                                    rel="noopener noreferrer"
+                                                    className="text-blue-500"
+                                                >
+                                                    {displayName}
+                                                </a>
+                                            );
+                                        })()}
+                                    </SidebarMenuButton>
                                 </SidebarMenuItem>
                             )}
                             <Accordion
                                 type="single"
                                 collapsible
-                                className="w-full"
+                                className="w-full mt-2"
                             >
                                 <AdvancedStationManagement />
                             </Accordion>
-                            <SidebarMenuItem className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center justify-between rounded-sm px-4 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50">
+                            <div className="flex items-center justify-between pt-4 mt-2 border-t px-2">
                                 <Label
                                     htmlFor="recommended-starting-point-toggle"
-                                    className="flex-1 cursor-pointer text-base font-medium m-0"
+                                    className="flex-1 cursor-pointer text-sm font-medium text-muted-foreground mr-4"
                                 >
                                     Starting Point
                                 </Label>
@@ -509,7 +515,7 @@ export const ZoneSidebar = () => {
                                         )
                                     }
                                 />
-                            </SidebarMenuItem>
+                            </div>
                         </SidebarMenu>
                     </div>
                 </div>

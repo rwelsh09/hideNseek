@@ -1,0 +1,18 @@
+
+> Hide 'n' Seek Map@1.0 dev /app
+> astro dev
+
+20:27:12 [vite] connected.
+20:27:14 [types] Generated 1ms
+20:27:14 [vite] connected.
+20:27:14 [vite] Re-optimizing dependencies because vite config has changed
+ astro  v7.1.0 ready in 3181 ms
+┃ Local    http://localhost:4321/hideNseek/
+┃ Network  use --host to expose
+20:27:14 watching for file changes...
+20:27:16 [vite] [optimizer] bundling dependencies...
+20:27:31 [200] / 65ms
+20:31:44 [200] / 9ms
+20:31:47 [200] / 5ms
+20:32:13 [200] / 10ms
+ ELIFECYCLE  Command failed with exit code 143.
