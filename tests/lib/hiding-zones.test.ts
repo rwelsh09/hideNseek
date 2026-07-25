@@ -195,8 +195,6 @@ describe("initializeHidingZonesLogic", () => {
 
             await initializeHidingZonesLogic();
 
-            expect(isLoading.set).toHaveBeenCalledWith(true);
-
             // Train stations should be created
             const stations = trainStations.get();
             expect(stations).toHaveLength(4);
@@ -213,8 +211,6 @@ describe("initializeHidingZonesLogic", () => {
             expect(disabled).not.toContain("station-brentwood"); // Outside = not disabled
             expect(disabled).not.toContain("station-banff-trail");
             expect(disabled).not.toContain("station-bridgeland");
-
-            expect(isLoading.set).toHaveBeenCalledWith(false);
         });
 
         it("should maintain manually disabled stations during recalculation", async () => {

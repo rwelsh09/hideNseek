@@ -31,11 +31,6 @@ export const initializeHidingZonesLogic = async () => {
 
     if (!$questionFinishedMapData) return;
 
-    isLoading.set(true);
-
-    // Yield to the browser to render the loading state
-    await new Promise((resolve) => setTimeout(resolve, 10));
-
     try {
         const places: StationPlace[] = [];
 
@@ -193,6 +188,6 @@ export const initializeHidingZonesLogic = async () => {
         }
         previousQuestionDisabled = newlyDisabledStations;
     } finally {
-        isLoading.set(false);
+        // no-op
     }
 };
