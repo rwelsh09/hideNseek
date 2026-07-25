@@ -301,7 +301,7 @@ export const OptionDrawers = () => {
                                     }}
                                     className="w-full h-11"
                                 >
-                                    Seeker Tutorial
+                                    App Tutorial
                                 </Button>
                                 <Button
                                     variant="secondary"

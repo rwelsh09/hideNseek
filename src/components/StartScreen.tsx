@@ -96,10 +96,10 @@ export const StartScreen = () => {
                         >
                             <div className="flex flex-col items-start gap-1">
                                 <span className="font-semibold text-xl">
-                                    Start Tutorial
+                                    Start App Tutorial
                                 </span>
                                 <span className="text-sm font-normal opacity-90">
-                                    An extensive interactive guide
+                                    An extensive interactive guide for the app
                                 </span>
                             </div>
                         </Button>
