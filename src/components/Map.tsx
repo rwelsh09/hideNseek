@@ -333,8 +333,7 @@ export const Map = ({ className }: { className?: string }) => {
                             title="Loading..."
                             aria-label="Loading"
                         >
-                            <Loader2 className="w-5 h-5 animate-spin text-slate-700" />
-                            <span className="ml-2 text-sm font-semibold text-slate-700 uppercase tracking-wider">
+                            <span className="text-sm font-semibold text-slate-700 uppercase tracking-wider">
                                 Loading...
                             </span>
                         </div>
