@@ -6,7 +6,6 @@ import {
     disabledStations,
     hidingRadius,
     hidingRadiusUnits,
-    isLoading,
     lockedActiveStationIds,
     questionFinishedMapData,
     questions,
@@ -29,171 +28,156 @@ export const initializeHidingZonesLogic = async () => {
 
     if (!$questionFinishedMapData) return;
 
-    isLoading.set(true);
-
     // Yield to the browser to render the loading state
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    try {
-        const places: StationPlace[] = [];
+    const places: StationPlace[] = [];
 
-        const transitFeatures = (calgaryTransitData as any).features.map(
-            (f: any) => ({
-                type: "Feature",
-                geometry: f.geometry,
-                properties: {
-                    ...f.properties,
-                    id: extractStationId(f),
-                    name: f.properties?.name,
-                },
-            }),
-        );
-        places.push(...transitFeatures);
+    const transitFeatures = (calgaryTransitData as any).features.map(
+        (f: any) => ({
+            type: "Feature",
+            geometry: f.geometry,
+            properties: {
+                ...f.properties,
+                id: extractStationId(f),
+                name: f.properties?.name,
+            },
+        }),
+    );
+    places.push(...transitFeatures);
 
-        const unionized = safeUnion(
-            turf.simplify($questionFinishedMapData, {
-                tolerance: 0.001,
-            }),
-        );
+    const unionized = safeUnion(
+        turf.simplify($questionFinishedMapData, {
+            tolerance: 0.001,
+        }),
+    );
 
-        let circles = places.map((place) => {
-            const radius = $hidingRadius;
-            const center = turf.getCoord(place);
-            return turf.circle(center, radius, {
-                steps: 32,
-                units: $hidingRadiusUnits,
-                properties: place,
-            });
+    let circles = places.map((place) => {
+        const radius = $hidingRadius;
+        const center = turf.getCoord(place);
+        return turf.circle(center, radius, {
+            steps: 32,
+            units: $hidingRadiusUnits,
+            properties: place,
         });
+    });
 
-        // Reset disabled stations since we are recalculating
-        const currentDisabledForReset = disabledStations.get();
-        const previousQuestionDisabledSet = new Set(previousQuestionDisabled);
-        const manuallyDisabled = currentDisabledForReset.filter(
-            (id) => !previousQuestionDisabledSet.has(id),
+    // Reset disabled stations since we are recalculating
+    const currentDisabledForReset = disabledStations.get();
+    const previousQuestionDisabledSet = new Set(previousQuestionDisabled);
+    const manuallyDisabled = currentDisabledForReset.filter(
+        (id) => !previousQuestionDisabledSet.has(id),
+    );
+    disabledStations.set(manuallyDisabled);
+    const newlyDisabledStations: string[] = [];
+    const manuallyDisabledSet = new Set(manuallyDisabled);
+
+    circles.forEach((circle) => {
+        const diff = turf.difference(
+            turf.featureCollection([circle, unionized]),
         );
-        disabledStations.set(manuallyDisabled);
-        const newlyDisabledStations: string[] = [];
-        const manuallyDisabledSet = new Set(manuallyDisabled);
+        if (!diff || turf.area(diff) < 1) {
+            const id = extractStationId(circle);
+            if (!manuallyDisabledSet.has(id)) {
+                newlyDisabledStations.push(id);
+            }
+        }
+    });
 
-        circles.forEach((circle) => {
-            const diff = turf.difference(
-                turf.featureCollection([circle, unionized]),
+    const lockedIds = lockedActiveStationIds.get();
+    for (const question of questions.get()) {
+        if (circles.length === 0) break;
+
+        if (!question.data.locked) {
+            continue;
+        }
+
+        if (
+            question.id === "match" &&
+            (question.data.type === "same-first-letter-station" ||
+                question.data.type === "same-length-station" ||
+                question.data.type === "same-train-line")
+        ) {
+            const location = turf.point([question.data.lng, question.data.lat]);
+            const nearestTrainStation = turf.nearestPoint(
+                location,
+                turf.featureCollection(places) as any,
             );
-            if (!diff || turf.area(diff) < 1) {
-                const id = extractStationId(circle);
-                if (!manuallyDisabledSet.has(id)) {
-                    newlyDisabledStations.push(id);
+
+            const originalIds = circles.map((c) => extractStationId(c));
+            const originalCirclesState = [...circles];
+
+            if (question.data.type === "same-train-line") {
+                const seekerLines = extractStationLines(nearestTrainStation);
+
+                if (seekerLines.length > 0) {
+                    circles = circles.filter((circle) => {
+                        const hiderLines = extractStationLines(circle);
+
+                        const intersects = seekerLines.some((l) =>
+                            hiderLines.includes(l),
+                        );
+
+                        return question.data.same ? intersects : !intersects;
+                    });
                 }
             }
-        });
 
-        const lockedIds = lockedActiveStationIds.get();
-        for (const question of questions.get()) {
-            if (circles.length === 0) break;
-
-            if (!question.data.locked) {
-                continue;
+            const englishName = extractStationName(nearestTrainStation);
+            if (!englishName) {
+                toast.error("No English name found");
+                return;
             }
 
-            if (
-                question.id === "match" &&
-                (question.data.type === "same-first-letter-station" ||
-                    question.data.type === "same-length-station" ||
-                    question.data.type === "same-train-line")
-            ) {
-                const location = turf.point([
-                    question.data.lng,
-                    question.data.lat,
-                ]);
-                const nearestTrainStation = turf.nearestPoint(
-                    location,
-                    turf.featureCollection(places) as any,
-                );
-
-                const originalIds = circles.map((c) => extractStationId(c));
-                const originalCirclesState = [...circles];
-
-                if (question.data.type === "same-train-line") {
-                    const seekerLines =
-                        extractStationLines(nearestTrainStation);
-
-                    if (seekerLines.length > 0) {
-                        circles = circles.filter((circle) => {
-                            const hiderLines = extractStationLines(circle);
-
-                            const intersects = seekerLines.some((l) =>
-                                hiderLines.includes(l),
-                            );
-
-                            return question.data.same
-                                ? intersects
-                                : !intersects;
-                        });
+            if (question.data.type === "same-first-letter-station") {
+                const letter = englishName[0].toUpperCase();
+                circles = circles.filter((circle) => {
+                    const name = extractStationName(circle.properties);
+                    if (!name) return false;
+                    return question.data.same
+                        ? name[0].toUpperCase() === letter
+                        : name[0].toUpperCase() !== letter;
+                });
+            } else if (question.data.type === "same-length-station") {
+                const seekerLength = englishName.length;
+                const comparison = question.data.lengthComparison;
+                circles = circles.filter((circle) => {
+                    const name = extractStationName(circle.properties);
+                    if (!name) return false;
+                    let isMatch = false;
+                    if (comparison === "same") {
+                        isMatch = name.length === seekerLength;
+                    } else if (comparison === "shorter") {
+                        isMatch = name.length < seekerLength;
+                    } else if (comparison === "longer") {
+                        isMatch = name.length > seekerLength;
                     }
-                }
+                    return question.data.same ? isMatch : !isMatch;
+                });
+            }
 
-                const englishName = extractStationName(nearestTrainStation);
-                if (!englishName) {
-                    toast.error("No English name found");
-                    return;
-                }
+            const remainingIds = new Set(
+                circles.map((c) => extractStationId(c)),
+            );
+            const newlyDisabled = originalIds.filter(
+                (id) => !remainingIds.has(id) && !manuallyDisabledSet.has(id),
+            );
+            newlyDisabledStations.push(...newlyDisabled);
 
-                if (question.data.type === "same-first-letter-station") {
-                    const letter = englishName[0].toUpperCase();
-                    circles = circles.filter((circle) => {
-                        const name = extractStationName(circle.properties);
-                        if (!name) return false;
-                        return question.data.same
-                            ? name[0].toUpperCase() === letter
-                            : name[0].toUpperCase() !== letter;
-                    });
-                } else if (question.data.type === "same-length-station") {
-                    const seekerLength = englishName.length;
-                    const comparison = question.data.lengthComparison;
-                    circles = circles.filter((circle) => {
-                        const name = extractStationName(circle.properties);
-                        if (!name) return false;
-                        let isMatch = false;
-                        if (comparison === "same") {
-                            isMatch = name.length === seekerLength;
-                        } else if (comparison === "shorter") {
-                            isMatch = name.length < seekerLength;
-                        } else if (comparison === "longer") {
-                            isMatch = name.length > seekerLength;
-                        }
-                        return question.data.same ? isMatch : !isMatch;
-                    });
-                }
-
-                const remainingIds = new Set(
-                    circles.map((c) => extractStationId(c)),
-                );
-                const newlyDisabled = originalIds.filter(
-                    (id) =>
-                        !remainingIds.has(id) && !manuallyDisabledSet.has(id),
-                );
-                newlyDisabledStations.push(...newlyDisabled);
-
-                if (lockedIds) {
-                    // Restore circles array if it's locked so base shapes do not change
-                    circles = originalCirclesState;
-                }
+            if (lockedIds) {
+                // Restore circles array if it's locked so base shapes do not change
+                circles = originalCirclesState;
             }
         }
-
-        trainStations.set(circles);
-
-        if (newlyDisabledStations.length > 0) {
-            const currentDisabled = disabledStations.get();
-            disabledStations.set(
-                Array.from(
-                    new Set([...currentDisabled, ...newlyDisabledStations]),
-                ),
-            );
-        }
-        previousQuestionDisabled = newlyDisabledStations;
-    } finally {
-        isLoading.set(false);
     }
+
+    trainStations.set(circles);
+
+    if (newlyDisabledStations.length > 0) {
+        const currentDisabled = disabledStations.get();
+        disabledStations.set(
+            Array.from(new Set([...currentDisabled, ...newlyDisabledStations])),
+        );
+    }
+    previousQuestionDisabled = newlyDisabledStations;
 };
