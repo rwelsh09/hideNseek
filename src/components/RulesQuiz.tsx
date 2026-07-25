@@ -19,7 +19,7 @@ const quizIsAnswered = persistentJsonAtom<boolean>("quizIsAnswered", false);
 const QUIZ_QUESTIONS = [
     {
         question:
-            "During the head start, what is the Hider's primary mode of transportation?",
+            "During the Head Start, what is the Hider's primary mode of transportation?",
         options: [
             "An Uber or taxi to get as far away as possible.",
             "A bicycle they brought from home.",
@@ -32,7 +32,7 @@ const QUIZ_QUESTIONS = [
         question: "What happens when the Seekers enter your Hiding Zone?",
         options: [
             "The end game begins! You must stay completely stationary in a publicly accessible spot.",
-            "You get an extra 10-minute head start.",
+            "You get an extra 10-minute Head Start.",
             "You have to start running to a new station.",
             "You must loudly announce your location.",
         ],
@@ -95,7 +95,7 @@ const QUIZ_QUESTIONS = [
             "Yes, if they don't want to walk there.",
             "Only if the Hider agrees to it.",
             "No, Seekers must physically go to places to search for the Hider's photos.",
-            "Yes, but it costs a time penalty.",
+            "Yes, but it costs a Time Penalty.",
         ],
         correct: 2,
     },
