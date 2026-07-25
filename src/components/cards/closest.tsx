@@ -4,10 +4,7 @@ import { useEffect, useState } from "react";
 import { LatitudeLongitude } from "@/components/LatitudeLongitude";
 import { Label } from "@/components/ui/label";
 import { Select } from "@/components/ui/select";
-import {
-    MENU_ITEM_CLASSNAME,
-    SidebarMenuItem,
-} from "@/components/ui/sidebar";
+import { MENU_ITEM_CLASSNAME, SidebarMenuItem } from "@/components/ui/sidebar";
 import {
     hiderMode,
     isLoading,
@@ -15,7 +12,10 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn, mapToObj } from "@/lib/utils";
-import { fetchClosestLocationsWithGrowth, filterPointsWithinRadius } from "@/maps/questions/closest";
+import {
+    fetchClosestLocationsWithGrowth,
+    filterPointsWithinRadius,
+} from "@/maps/questions/closest";
 import {
     type ClosestQuestion,
     closestQuestionSchema,
@@ -207,7 +207,6 @@ const ClosestLocationSelector = ({
                 }}
                 disabled={!!$hiderMode || disabled}
             />
-
         </div>
     );
 };

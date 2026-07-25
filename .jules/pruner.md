@@ -27,6 +27,8 @@
 
 **Learning:** `knip` will flag `persistentJsonAtom` in `src/lib/context.ts` as an unused export. However, the function is used internally within that file.
 **Action:** When pruning "dead" exports, if the export is still used within the file, restrict its scope by simply removing the `export` keyword rather than deleting the function entirely, and ensure it is not used elsewhere in the project before doing so.
+
 ## 2026-06-25 - Unused QuestionCard exports
+
 **Learning:** `knip` reported `ClosestQuestionComponent` etc. as unused exports in `src/components/QuestionCards.tsx`. Looking at the code, they were indeed exported for no reason. I removed the export statements but kept the imports since they are used inside `QUESTION_COMPONENTS`. This didn't trigger any cascading unused import issues.
 **Action:** Always carefully check if an export is really unused, and make sure that removing an export doesn't leave an unused import behind, unless the imported item is used in the same file.

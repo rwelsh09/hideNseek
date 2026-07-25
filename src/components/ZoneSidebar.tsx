@@ -18,6 +18,7 @@ import {
     disabledStations,
     displayHidingZonesStyle,
     headStartMinutes,
+    hiderMode,
     hidingRadius,
     hidingRadiusUnits,
     isLoading,
@@ -25,6 +26,7 @@ import {
     lockedActiveStationIds,
     questionFinishedMapData,
     questions,
+    showHiderTutorial,
     showRecommendedStart,
     trainStations,
 } from "@/lib/context";
@@ -46,6 +48,10 @@ import { Input } from "./ui/input";
 interface HidingZoneLayer extends L.GeoJSON {
     hidingZones?: boolean;
 }
+import { CircleHelp } from "lucide-react";
+
+import { Checkbox } from "@/components/ui/checkbox";
+
 import { Label } from "./ui/label";
 import { ScrollToTop } from "./ui/scroll-to-top";
 import { MENU_ITEM_CLASSNAME } from "./ui/sidebar";
@@ -53,6 +59,7 @@ import { UnitSelect } from "./UnitSelect";
 
 export const ZoneSidebar = () => {
     const $showRecommendedStart = useStore(showRecommendedStart);
+    const $hiderMode = useStore(hiderMode);
     const $questionFinishedMapData = useStore(questionFinishedMapData);
     const $displayHidingZonesStyle = useStore(displayHidingZonesStyle);
     const $hidingRadius = useStore(hidingRadius);
@@ -330,6 +337,80 @@ export const ZoneSidebar = () => {
                                 />
                             </div>
                         </div>
+
+                        {/* Hider Mode Toggle */}
+                        <div className="flex items-center justify-between p-4 bg-slate-50/30 dark:bg-slate-900/30 border-t">
+                            <Label
+                                htmlFor="hider-mode-toggle"
+                                className="flex-1 cursor-pointer text-base font-medium text-muted-foreground mr-4"
+                            >
+                                Hider Mode
+                            </Label>
+                            <div className="flex items-center">
+                                <div
+                                    className="flex items-center justify-center cursor-pointer text-muted-foreground hover:text-foreground transition-colors mr-3"
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        toast.info(
+                                            <div className="flex flex-col gap-2">
+                                                <p>
+                                                    Hider Mode provides
+                                                    specialized tools for the
+                                                    Hider, including setting
+                                                    your location and answering
+                                                    Seeker questions.
+                                                </p>
+                                                <button
+                                                    className="text-sm bg-primary text-primary-foreground py-1 px-3 rounded-md hover:bg-primary/90 transition-colors w-fit"
+                                                    onClick={() => {
+                                                        RightSidebarContext.get().toggleSidebar();
+                                                        showHiderTutorial.set(
+                                                            true,
+                                                        );
+                                                        toast.dismiss();
+                                                    }}
+                                                >
+                                                    Start Tutorial
+                                                </button>
+                                            </div>,
+                                            {
+                                                autoClose: false,
+                                                closeOnClick: false,
+                                            },
+                                        );
+                                    }}
+                                    title="What is Hider Mode?"
+                                >
+                                    <CircleHelp size={20} />
+                                </div>
+                                <Checkbox
+                                    id="hider-mode-toggle"
+                                    checked={!!$hiderMode}
+                                    onCheckedChange={() => {
+                                        if ($hiderMode === false) {
+                                            RightSidebarContext.get().toggleSidebar();
+                                            const $leafletMapContext =
+                                                leafletMapContext.get();
+                                            if ($leafletMapContext) {
+                                                const center =
+                                                    $leafletMapContext.getCenter();
+                                                hiderMode.set({
+                                                    latitude: center.lat,
+                                                    longitude: center.lng,
+                                                });
+                                            } else {
+                                                hiderMode.set({
+                                                    latitude: 0,
+                                                    longitude: 0,
+                                                });
+                                            }
+                                        } else {
+                                            hiderMode.set(false);
+                                        }
+                                    }}
+                                />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -386,8 +467,7 @@ export const ZoneSidebar = () => {
                                         ) as string;
                                         const coords = selected?.properties
                                             ?.geometry?.coordinates as
-                                            | [number, number]
-                                            | undefined;
+                                            [number, number] | undefined;
                                         const href = id?.includes("/")
                                             ? `https://www.openstreetmap.org/${id}`
                                             : coords
@@ -413,6 +493,23 @@ export const ZoneSidebar = () => {
                             >
                                 <AdvancedStationManagement />
                             </Accordion>
+                            <SidebarMenuItem className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center justify-between rounded-sm px-4 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50">
+                                <Label
+                                    htmlFor="recommended-starting-point-toggle"
+                                    className="flex-1 cursor-pointer text-base font-medium m-0"
+                                >
+                                    Starting Point
+                                </Label>
+                                <Checkbox
+                                    id="recommended-starting-point-toggle"
+                                    checked={$showRecommendedStart}
+                                    onCheckedChange={() =>
+                                        showRecommendedStart.set(
+                                            !$showRecommendedStart,
+                                        )
+                                    }
+                                />
+                            </SidebarMenuItem>
                         </SidebarMenu>
                     </div>
                 </div>
