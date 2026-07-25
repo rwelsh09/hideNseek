@@ -18,6 +18,7 @@ import {
     disabledStations,
     displayHidingZonesStyle,
     headStartMinutes,
+    hiderMode,
     hidingRadius,
     hidingRadiusUnits,
     isLoading,
@@ -25,6 +26,7 @@ import {
     lockedActiveStationIds,
     questionFinishedMapData,
     questions,
+    showHiderTutorial,
     showRecommendedStart,
     trainStations,
 } from "@/lib/context";
