@@ -4,7 +4,6 @@ import "leaflet-doubletapdragzoom";
 
 import { useStore } from "@nanostores/react";
 import * as L from "leaflet";
-import { Loader2 } from "lucide-react";
 import { useEffect, useMemo, useRef } from "react";
 import { MapContainer, ScaleControl } from "react-leaflet";
 import { toast } from "react-toastify";
