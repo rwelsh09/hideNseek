@@ -28,6 +28,9 @@ export const initializeHidingZonesLogic = async () => {
 
     if (!$questionFinishedMapData) return;
 
+    // Yield to the browser to render the next frame (improves INP)
+    await new Promise((resolve) => setTimeout(resolve, 10));
+
     const places: StationPlace[] = [];
 
     const transitFeatures = (calgaryTransitData as any).features.map(
