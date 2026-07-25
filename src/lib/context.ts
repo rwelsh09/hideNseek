@@ -206,7 +206,7 @@ const createLoadingStore = (initial: boolean) => {
             originalSet.call(store, true);
         } else {
             const timePassed = Date.now() - turnOnTime;
-            const minTime = 200;
+            const minTime = 100;
 
             if (timePassed >= minTime) {
                 originalSet.call(store, false);
