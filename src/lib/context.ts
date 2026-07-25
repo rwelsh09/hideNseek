@@ -211,7 +211,7 @@ function createLoadingStore() {
             }
         } else {
             const elapsed = Date.now() - turnOnTime;
-            const remaining = Math.max(0, 400 - elapsed);
+            const remaining = Math.max(0, 200 - elapsed);
             if (timeout) clearTimeout(timeout);
             timeout = setTimeout(() => {
                 originalSet(false);
