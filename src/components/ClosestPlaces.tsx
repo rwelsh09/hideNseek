@@ -106,7 +106,7 @@ const ClosestPlaceMarker = React.memo(function ClosestPlaceMarker({
     coords: number[];
     isSelected: boolean | "" | 0 | null | undefined;
     question: Extract<Question, { id: "closest" }>;
-}) => {
+}) {
     const eventHandlers = React.useMemo(
         () => ({
             click: () => {

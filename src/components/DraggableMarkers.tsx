@@ -57,7 +57,7 @@ const ColouredMarker = React.memo(function ColouredMarker({
     latitude: number;
     longitude: number;
     colour: keyof typeof ICON_COLOURS;
-}) => {
+}) {
     const handlersRef = useRef({ onChange, onClick });
 
     useEffect(() => {
