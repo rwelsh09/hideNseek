@@ -2,7 +2,7 @@ import { useStore } from "@nanostores/react";
 import { type DragEndEvent, Icon } from "leaflet";
 import { Target, X } from "lucide-react";
 import { atom } from "nanostores";
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
 import { createPortal } from "react-dom";
 import { Marker } from "react-leaflet";
@@ -45,7 +45,7 @@ const getIcon = (colour: keyof typeof ICON_COLOURS) => {
     return iconCache[colour];
 };
 
-const ColouredMarker = ({
+const ColouredMarker = React.memo(function ColouredMarker({
     latitude,
     longitude,
     colour,
@@ -97,7 +97,13 @@ const ColouredMarker = ({
             eventHandlers={eventHandlers}
         />
     );
-};
+}, (prevProps, nextProps) => {
+    return (
+        prevProps.latitude === nextProps.latitude &&
+        prevProps.longitude === nextProps.longitude &&
+        prevProps.colour === nextProps.colour
+    );
+});
 
 export const DraggableMarkers = () => {
     useStore(triggerLocalRefresh);

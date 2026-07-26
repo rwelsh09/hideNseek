@@ -96,7 +96,7 @@ const PATH_OPTIONS_UNSELECTED = {
 
 const TOOLTIP_OFFSET: [number, number] = [0, -10];
 
-const ClosestPlaceMarker = ({
+const ClosestPlaceMarker = React.memo(function ClosestPlaceMarker({
     f,
     coords,
     isSelected,
@@ -136,4 +136,11 @@ const ClosestPlaceMarker = ({
             </Tooltip>
         </CircleMarker>
     );
-};
+}, (prevProps, nextProps) => {
+    return (
+        prevProps.isSelected === nextProps.isSelected &&
+        prevProps.f.properties?.id === nextProps.f.properties?.id &&
+        prevProps.coords[0] === nextProps.coords[0] &&
+        prevProps.coords[1] === nextProps.coords[1]
+    );
+});

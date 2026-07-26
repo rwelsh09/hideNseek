@@ -42,3 +42,8 @@
 
 **Learning:** When using `useMemo` to extract primitive dependencies from a nanostore object (like `$questions`) to prevent excessive `useEffect` executions in React components, ensure that you explicitly map the store to ONLY the required attributes _before_ stringifying. Calling `JSON.stringify` directly on `$questions` still causes re-renders if unrelated transient properties (like a temporary marker dragging coordinate or an arbitrary ID) are mutated, defeating the optimization.
 **Action:** Extract a stable string hash from complex objects by mapping to specific, immutable fields (e.g., `id`, `key`, `data`) and running `JSON.stringify` on the mapped subset, then use that `hash` variable in the `useEffect` dependency array.
+
+## 2026-07-26 - [Custom Equality Checks for React.memo with Inline Props]
+
+**Learning:** When applying `React.memo` to components (like `ClosestPlaceMarker` or `ColouredMarker`) to prevent unnecessary re-renders, if the parent component passes newly allocated objects, arrays (like coordinates from `getFeatureCoords`), or inline functions, `React.memo`'s default shallow comparison will fail, causing the component to still re-render on every parent update.
+**Action:** Always verify if a memoized component receives dynamic or inline props. If so, implement a custom equality comparison function as the second argument to `React.memo` (e.g., `(prev, next) => prev.coords[0] === next.coords[0]`) to correctly intercept and prevent unnecessary updates based on actual primitive values.
