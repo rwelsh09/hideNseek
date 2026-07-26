@@ -6,48 +6,82 @@ import { PLACES } from "@/maps/placesConfig";
 import { determineMatchBoundary } from "@/maps/questions/match";
 import { calculateMeasureDistance } from "@/maps/questions/measure";
 
-export const getQuestionShareText = async (
-    question: any,
-    questionData: any,
-): Promise<string> => {
-    if (!question) return "Incoming question from a Seeker!";
+export const TYPE_MAPPINGS: Record<string, string> = {
+    ...Object.fromEntries(PLACES.map((p) => [p.id, p.label])),
+    "same-neighbourhood": "Neighbourhood (Same As Me)",
+    "same-first-letter-neighbourhood": "Neighbourhood (Same First Letter)",
+    "same-first-letter-station": "Station Starts With Same Letter",
+    "same-length-station": "Station Has Same Length",
+    "same-train-line": "Station On Same Train Line",
+    "rail-measure": "Train Station",
+};
 
-    const getPlaceLabel = (id: string, plural = false) => {
-        const place = PLACES.find((p) => p.id === id);
-        if (!place) return id;
-        return plural && place.labelPlural ? place.labelPlural : place.label;
-    };
+export const getPlaceLabel = (id: string, plural = false) => {
+    const place = PLACES.find((p) => p.id === id);
+    if (!place) return id;
+    return plural && place.labelPlural ? place.labelPlural : place.label;
+};
 
-    switch (question.id) {
-        case "radar":
-            return `Are you within ${questionData.radius}${questionData.unit === "kilometers" ? "km" : "m"} of us?`;
+/**
+ * Using a Strategy Pattern (Registry) for question text generation
+ * prevents massive switch/if-else chains scattered across UI components.
+ * This makes the codebase more resilient because adding a new question type
+ * only requires adding a single handler here, satisfying the Open-Closed Principle.
+ */
+export interface QuestionTextHandler {
+    getResultStr: (questionData: any) => string;
+    getLockedLabel: (questionData: any, resultStr: string) => string;
+    getShareText: (questionData: any) => Promise<string>;
+}
 
-        case "hot/cold":
-            if (
-                questionData.latA &&
-                questionData.lngA &&
-                questionData.latB &&
-                questionData.lngB
-            ) {
+export const QUESTION_TEXT_HANDLERS: Record<string, QuestionTextHandler> = {
+    radar: {
+        getResultStr: (data) => (data.within ? "Inside" : "Outside"),
+        getLockedLabel: (data, result) =>
+            `Radar - ${data.radius}${data.unit === "kilometers" ? "km" : "m"} - ${result}`,
+        getShareText: async (data) =>
+            `Are you within ${data.radius}${data.unit === "kilometers" ? "km" : "m"} of us?`,
+    },
+    "hot/cold": {
+        getResultStr: (data) => (data.warmer ? "Warmer" : "Colder"),
+        getLockedLabel: (data, result) => `Hot/Cold - ${result}`,
+        getShareText: async (data) => {
+            if (data.latA && data.lngA && data.latB && data.lngB) {
                 const dist = turf.distance(
-                    [questionData.lngA, questionData.latA],
-                    [questionData.lngB, questionData.latB],
+                    [data.lngA, data.latA],
+                    [data.lngB, data.latB],
                     { units: "kilometers" },
                 );
                 const roundedDist = Math.round(dist * 100) / 100;
                 return `We just moved ${roundedDist}km are we warmer or colder?`;
             }
             return `We just moved [distance]km are we warmer or colder?`;
-
-        case "match": {
-            const type = questionData.type;
+        },
+    },
+    match: {
+        getResultStr: (data) => {
+            if (data.type === "same-length-station") {
+                return data.lengthComparison === "shorter"
+                    ? "Shorter"
+                    : data.lengthComparison === "longer"
+                      ? "Longer"
+                      : "Same";
+            }
+            return data.same ? "Same" : "Different";
+        },
+        getLockedLabel: (data, result) => {
+            const typeStr = TYPE_MAPPINGS[data.type] || data.type;
+            return `Match - ${typeStr} - ${result}`;
+        },
+        getShareText: async (data) => {
+            const type = data.type;
 
             if (
                 type === "same-neighbourhood" ||
                 type === "same-first-letter-neighbourhood"
             ) {
                 try {
-                    const boundary = await determineMatchBoundary(questionData);
+                    const boundary = await determineMatchBoundary(data);
                     const name = extractStationName(boundary);
                     if (name) {
                         if (type === "same-neighbourhood")
@@ -71,16 +105,22 @@ export const getQuestionShareText = async (
 
             const label = getPlaceLabel(type);
             return `Are you near the same ${label} as us?`;
-        }
-
-        case "measure": {
-            const type = questionData.type;
+        },
+    },
+    measure: {
+        getResultStr: (data) =>
+            data.hiderCloser ? "Hider Closer" : "Hider Farther",
+        getLockedLabel: (data, result) => {
+            const typeStr = TYPE_MAPPINGS[data.type] || data.type;
+            return `Measure - ${typeStr} - ${result}`;
+        },
+        getShareText: async (data) => {
+            const type = data.type;
             let distanceStr = "[distance]";
 
             try {
-                const distance = await calculateMeasureDistance(questionData);
+                const distance = await calculateMeasureDistance(data);
                 if (distance !== null) {
-                    // Round to 3 decimal places
                     const rounded = Math.round(distance * 1000) / 1000;
                     distanceStr = `${rounded}km`;
                 }
@@ -93,23 +133,44 @@ export const getQuestionShareText = async (
             }
             const label = getPlaceLabel(type);
             return `We are ${distanceStr} from a ${label}. Are you closer to or farther from your nearest ${label}?`;
-        }
-
-        case "closest": {
-            const labelPlural = getPlaceLabel(questionData.locationType, true);
+        },
+    },
+    closest: {
+        getResultStr: (data) =>
+            data.location ? data.location.properties?.name : "None",
+        getLockedLabel: (data, result) => {
+            const typeStr =
+                TYPE_MAPPINGS[data.locationType] || data.locationType;
+            return `Closest - ${typeStr} - ${result}`;
+        },
+        getShareText: async (data) => {
+            const labelPlural = getPlaceLabel(data.locationType, true);
             return `Which of these ${labelPlural} is closest to you?`;
-        }
-
-        case "photo": {
-            if (questionData.notes)
-                return `Photo challenge: ${questionData.notes}`;
+        },
+    },
+    photo: {
+        getResultStr: () => "",
+        getLockedLabel: () => "Photo", // Overridden in base.tsx with notes/label logic
+        getShareText: async (data) => {
+            if (data.notes) return `Photo challenge: ${data.notes}`;
             return (
-                PHOTO_DESCRIPTIONS[questionData.type] ||
-                `Send us a photo of a ${questionData.type}!`
+                PHOTO_DESCRIPTIONS[data.type] ||
+                `Send us a photo of a ${data.type}!`
             );
-        }
+        },
+    },
+};
 
-        default:
-            return "Incoming question from a Seeker!";
+export const getQuestionShareText = async (
+    question: any,
+    questionData: any,
+): Promise<string> => {
+    if (!question) return "Incoming question from a Seeker!";
+
+    const handler = QUESTION_TEXT_HANDLERS[question.id];
+    if (handler) {
+        return handler.getShareText(questionData);
     }
+
+    return "Incoming question from a Seeker!";
 };
