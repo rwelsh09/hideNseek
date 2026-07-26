@@ -1,5 +1,5 @@
 import { useStore } from "@nanostores/react";
-import { Clock, SidebarCloseIcon, Trash2 } from "lucide-react";
+import { Clock, Map, SidebarCloseIcon, Trash2 } from "lucide-react";
 import { toast } from "react-toastify";
 
 import {
@@ -85,6 +85,7 @@ export const QuestionSidebar = () => {
                         <Button
                             variant="outline"
                             size="sm"
+                            aria-label="Subtract 5 minutes"
                             onClick={() => addTime(-5)}
                             className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white h-8"
                         >
@@ -93,6 +94,7 @@ export const QuestionSidebar = () => {
                         <Button
                             variant="outline"
                             size="sm"
+                            aria-label="Add 5 minutes"
                             onClick={() => addTime(5)}
                             className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white h-8"
                         >
@@ -101,6 +103,7 @@ export const QuestionSidebar = () => {
                         <Button
                             variant="outline"
                             size="sm"
+                            aria-label="Add 10 minutes"
                             onClick={() => addTime(10)}
                             className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white h-8"
                         >
@@ -109,6 +112,7 @@ export const QuestionSidebar = () => {
                         <Button
                             variant="outline"
                             size="sm"
+                            aria-label="Add 15 minutes"
                             onClick={() => addTime(15)}
                             className="bg-slate-900 border-slate-700 text-slate-300 hover:bg-slate-700 hover:text-white h-8"
                         >
@@ -118,20 +122,30 @@ export const QuestionSidebar = () => {
                 </div>
 
                 {/* --- ACTIVE MAP ZONES --- */}
-                {$questions.length > 0 && (
-                    <div className="flex items-center gap-2 mt-1 px-1">
-                        <h3 className="text-slate-400 font-bold uppercase tracking-wider text-xs">
-                            Active Map Zones
-                        </h3>
-                    </div>
-                )}
+                <div className="flex items-center gap-2 mt-1 px-1">
+                    <h3 className="text-slate-400 font-bold uppercase tracking-wider text-xs">
+                        Active Map Zones
+                    </h3>
+                </div>
 
-                {$questions.map((question) => (
-                    <QuestionCardComponent
-                        key={question.key}
-                        question={question as any}
-                    />
-                ))}
+                {$questions.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-8 px-4 text-center border-2 border-dashed border-slate-700/50 rounded-xl bg-slate-900/20 mt-2">
+                        <Map className="w-8 h-8 text-slate-600 mb-3" />
+                        <p className="text-sm font-medium text-slate-400">
+                            No active zones
+                        </p>
+                        <p className="text-xs text-slate-500 mt-1">
+                            Add a question below to begin
+                        </p>
+                    </div>
+                ) : (
+                    $questions.map((question) => (
+                        <QuestionCardComponent
+                            key={question.key}
+                            question={question as any}
+                        />
+                    ))
+                )}
             </SidebarContent>
 
             <div className="px-4 pb-4">
