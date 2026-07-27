@@ -27,10 +27,6 @@ const getPathOptions = (colour: string) => {
 
 const TOOLTIP_OFFSET: [number, number] = [0, -10];
 
-// ⚡ Bolt Optimization: Use React.memo with a custom equality function.
-// React-Leaflet's CircleMarker re-renders when parent components update if object/array props (like center)
-// change by reference. We prevent this by ensuring the marker only re-renders when the actual primitive
-// values (lat/lng, color, name) change.
 const VisualizedPlaceMarker = React.memo(
     function VisualizedPlaceMarker({
         coords,
