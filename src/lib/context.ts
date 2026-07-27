@@ -269,7 +269,7 @@ export const isTimerRunning = persistentJsonAtom<boolean>(
 );
 export const showTimer = persistentJsonAtom<boolean>("showTimer", false);
 
-export type LeaderboardEntry = {
+type LeaderboardEntry = {
     id: string;
     names: string;
     totalSeconds: number;

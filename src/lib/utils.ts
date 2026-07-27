@@ -116,7 +116,7 @@ export const decompress = async (
     return new TextDecoder().decode(arrayBuffer);
 };
 
-export interface ShareDataOptions {
+interface ShareDataOptions {
     url: string;
     text?: string;
     title?: string;
