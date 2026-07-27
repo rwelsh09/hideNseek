@@ -205,7 +205,7 @@ export const TimerDrawer = () => {
             <DrawerTrigger asChild>
                 <button
                     type="button"
-                    className={`bg-white hover:bg-[#f4f4f4] h-[34px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 transition-all active:scale-95 ${
+                    className={`bg-white hover:bg-[#f4f4f4] h-[34px] rounded-sm flex items-center justify-center border-2 border-black border-opacity-30 cursor-pointer relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 ${
                         $showTimer
                             ? "px-2 font-mono font-bold text-black"
                             : "w-[34px]"
@@ -421,7 +421,7 @@ export const TimerDrawer = () => {
                                                     <AlertDialogTrigger asChild>
                                                         <button
                                                             type="button"
-                                                            className="text-slate-500 hover:text-red-400 transition-all active:scale-95 p-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-800"
+                                                            className="text-slate-500 hover:text-red-400 transition-colors p-1 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-1 focus-visible:ring-offset-slate-800"
                                                             title={`Remove leaderboard entry for ${entry.names}`}
                                                             aria-label={`Remove leaderboard entry for ${entry.names}`}
                                                         >

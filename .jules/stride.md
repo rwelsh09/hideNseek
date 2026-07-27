@@ -1,3 +1,38 @@
-## 2025-02-09 - [Mobile Tactile Feedback]
-**Learning:** Hover states don't work reliably on touchscreens, which can lead to users wondering if their tap registered, especially when moving or outdoors. Standard HTML buttons and even Shadcn UI buttons lack active press states by default.
-**Action:** Always add `active:scale-95` (or similar active transform) alongside `transition-all` to buttons and other highly interactive elements to provide immediate, tactile visual feedback that mimics native mobile applications.
+## 2026-07-15 - [Mobile inputs and viewport optimizations]
+
+**Learning:** The previous implementation used standard HTML inputs and default viewport meta tags which resulted in suboptimal mobile user experience, such as small alphanumeric keyboards for number fields, text inflation zooming, and browser pull-to-refresh interfering with game actions.
+**Action:** Modified globals.css to disable pull-to-refresh with `overscroll-behavior: none` and `-webkit-tap-highlight-color: transparent`, added `inputMode="decimal"` to type="number" inputs to trigger the larger native numeric keypad, and restricted viewport zooming via the meta tag to fix these mobile friction points.
+
+## 2026-07-16 - [Mobile Tap Targets Rejected]
+
+**Learning:** Attempted to increase critical map controls and interactive overlay triggers to a minimum of 44x44px on mobile devices. This mobile UI change was rejected by the owner after review.
+**Action:** Do not increase all map control/sidebar trigger tap targets to 44x44px.
+
+## 2026-07-17 - [Mobile Tap Target Feedback Rejected]
+
+**Learning:** Attempted to apply `active:scale-95 transition-all` classes on critical buttons to provide immediate tactile visual feedback on touch devices. This mobile UI change was rejected by the owner after review.
+**Action:** Do not apply `active:scale-95 transition-all` classes.
+
+## 2026-07-18 - [Mobile GPS Options and Keyboard Hints]
+
+**Learning:** `navigator.geolocation.getCurrentPosition` without `{ enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }` can result in inaccurate locations or silent failures outdoors. Adding these options improves accuracy and reliability for on-the-go users. Additionally, HTML `<Input />` elements for names or text that do not use `enterKeyHint="send"` and auto-correct disable properties provide terrible mobile keyboard UX, as the user battles their own phones spellchecker in a fast paced game.
+**Action:** Used `useState` to introduce an `isLocating` flag for a better loading state when tapping the "Focus on your location" button. Add `autoCapitalize="words"`, `autoComplete="off"`, `autoCorrect="off"`, `spellCheck={false}`, and `enterKeyHint="send"` to standard text inputs where auto-correct gets in the way of fast-paced game typing.
+
+## 2026-07-20 - [Mobile Keyboard Dismissal on Standalone Inputs]
+
+**Learning:** Standalone HTML `<Input>` elements that are not part of a formal `<form>` do not naturally dismiss the mobile virtual keyboard when the user presses "Enter" or "Done". This leaves the screen obscured. Also, applying strict disabling attributes like `autoCorrect="off"` and `spellCheck={false}` to free-form notes fields degrades UX, as users expect those tools when writing notes.
+**Action:** For standalone configuration inputs, add `enterKeyHint="done"` and an `onKeyDown` handler to call `e.currentTarget.blur()` if `e.key === "Enter"`. This dismisses the keyboard and correctly fires any associated `onBlur` save actions. Avoid disabling spellcheck on free-text note fields.
+
+## 2026-07-21 - [Mobile Autocorrect on Command Inputs]
+
+**Learning:** `CommandPrimitive.Input` components (often used for searches like station names or hiding zones) suffer from mobile autocorrect trying to fix proper nouns, creating friction for users trying to quickly search for game locations.
+**Action:** Add `autoCapitalize="none"`, `autoComplete="off"`, `autoCorrect="off"`, and `spellCheck={false}` to `CommandPrimitive.Input` wrappers (like in `src/components/ui/command.tsx`) to prevent mobile keyboards from interfering with fast-paced game typing.
+
+## 2026-07-22 - [Prevent Mobile Input Text Inflation]
+
+**Learning:** On mobile devices (specifically iOS Safari), when the font size of an input element (`input`, `select`, `textarea`) is smaller than `16px` (or `1rem`/`text-base` in Tailwind), the browser automatically zooms in on the page when the input is focused, causing layout friction.
+**Action:** Use `text-base md:text-sm` on input components to ensure a 16px minimum font size on mobile while preserving the intended 14px size on desktop.
+
+## 2026-07-23 - [Mobile Native Map Zoom]
+**Learning:** Default Leaflet `+/-` zoom controls are often clunky and occupy valuable screen real estate on mobile devices. Native mobile maps rely heavily on pinch-to-zoom gestures instead of on-screen buttons.
+**Action:** When initializing a `<MapContainer>`, explicitly disable the default zoom controls with `zoomControl={false}` to maximize screen space and rely on native-feeling pinch-to-zoom for mobile users, while scroll wheel and double-click still gracefully degrade for desktop users.

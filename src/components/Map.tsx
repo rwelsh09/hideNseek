@@ -231,6 +231,8 @@ export const Map = ({ className }: { className?: string }) => {
                 ]}
                 zoom={10}
                 minZoom={10}
+                // Disabled default zoom controls to maximize screen space and rely on native-feeling pinch-to-zoom on mobile
+                zoomControl={false}
                 maxBounds={[
                     [50.3427, -114.8158],
                     [51.7124, -113.3599],
