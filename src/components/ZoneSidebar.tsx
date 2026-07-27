@@ -543,18 +543,18 @@ function styleStations(
             return { type: "FeatureCollection", features: [] };
         case "zones":
         default:
-            if (circles.length > 1) {
-                let voronoiPoints = circles;
-                if (lockedActiveStationIds && allStations) {
-                    const lockedActiveStationIdsSet = new Set(
-                        lockedActiveStationIds,
-                    );
-                    voronoiPoints = allStations.filter((s) =>
-                        lockedActiveStationIdsSet.has(
-                            extractStationId(s) as string,
-                        ),
-                    );
-                }
+            let voronoiPoints = circles;
+            if (lockedActiveStationIds && allStations) {
+                const lockedActiveStationIdsSet = new Set(
+                    lockedActiveStationIds,
+                );
+                voronoiPoints = allStations.filter((s) =>
+                    lockedActiveStationIdsSet.has(
+                        extractStationId(s) as string,
+                    ),
+                );
+            }
+            if (voronoiPoints.length > 1) {
                 const points = turf.featureCollection(
                     voronoiPoints.map((c) => c.properties),
                 );
