@@ -22,3 +22,7 @@
 
 **Learning:** The project previously relied on multiple parallel `switch` statements across different functions (e.g., in `src/maps/index.ts`) to handle question-specific logic, which violated the Open-Closed Principle and made adding new questions error-prone.
 **Action:** When adding or managing dispatch logic that varies by question type, use a centralized registry pattern (like `QUESTION_HANDLERS`) to encapsulate all related handler functions in a single object mapping.
+
+## 2023-10-25 - [Centralized Strategy Pattern for Question Types]
+**Learning:** The codebase heavily relies on a centralized Registry (Strategy) pattern to manage logic that varies by map question type, mapping `question.id` to specific handlers or components (e.g., `QUESTION_HANDLERS` in `maps/index.ts`, `QUESTION_COMPONENTS` in `components/QuestionCards.tsx`).
+**Action:** When extending functionality that varies by question type, avoid using scattered `switch` or `if/else` statements. Instead, extend or create a corresponding registry dictionary to map the `question.id` to the appropriate logic, ensuring a single source of truth and reducing cognitive complexity.
