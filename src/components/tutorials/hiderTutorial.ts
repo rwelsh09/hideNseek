@@ -3,7 +3,7 @@ import type { DriveStep } from "driver.js";
 export const getHiderSteps = (hiderDriverObj: any): DriveStep[] => [
     {
         popover: {
-            title: "Welcome Hider!",
+            title: "Welcome, Hider!",
             description: "",
             side: "top",
             align: "center",
