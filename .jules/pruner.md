@@ -32,3 +32,13 @@
 
 **Learning:** `knip` reported `ClosestQuestionComponent` etc. as unused exports in `src/components/QuestionCards.tsx`. Looking at the code, they were indeed exported for no reason. I removed the export statements but kept the imports since they are used inside `QUESTION_COMPONENTS`. This didn't trigger any cascading unused import issues.
 **Action:** Always carefully check if an export is really unused, and make sure that removing an export doesn't leave an unused import behind, unless the imported item is used in the same file.
+
+## 2026-07-26 - [Safe Dependency Removal]
+
+**Learning:** When removing a potentially unused `devDependency` (e.g., `workbox-window`), explicitly verify it's unused using tools like `grep` and ensure the full test suite (`pnpm test`) continues to pass. Wait for user confirmation before deleting dependencies, as they may be used in un-scanned builds.
+**Action:** Use `pnpm remove <package>` instead of manual `package.json` deletion to keep the lockfile correctly synchronized.
+
+## 2026-07-26 - [Removing Internal Export Keywords]
+
+**Learning:** `ts-prune` correctly identifies exported types and interfaces (like `LeaderboardEntry` in `src/lib/context.ts` or `ShareDataOptions` in `src/lib/utils.ts`) that are only ever used internally within the declaring file.
+**Action:** Do not delete these types. Instead, remove the `export` keyword to restrict their scope and minimize the public API surface safely.
