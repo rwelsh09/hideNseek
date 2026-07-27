@@ -22,12 +22,6 @@ export const getPlaceLabel = (id: string, plural = false) => {
     return plural && place.labelPlural ? place.labelPlural : place.label;
 };
 
-/**
- * Using a Strategy Pattern (Registry) for question text generation
- * prevents massive switch/if-else chains scattered across UI components.
- * This makes the codebase more resilient because adding a new question type
- * only requires adding a single handler here, satisfying the Open-Closed Principle.
- */
 export interface QuestionTextHandler {
     getResultStr: (questionData: any) => string;
     getLockedLabel: (questionData: any, resultStr: string) => string;
