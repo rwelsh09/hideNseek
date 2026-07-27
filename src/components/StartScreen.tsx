@@ -82,7 +82,7 @@ export const StartScreen = () => {
                             Welcome to Hide & Seek
                         </AlertDialogTitle>
                         <AlertDialogDescription className="text-base leading-relaxed">
-                            One player (Hider) uses CTrain and MAX buses to
+                            One player (the Hider) uses CTrain and MAX buses to
                             hide. The other players (Seekers) work together to
                             find the Hider by taking transit and asking
                             questions!
@@ -127,7 +127,7 @@ export const StartScreen = () => {
                             >
                                 <div className="flex flex-col items-start gap-1">
                                     <span className="font-semibold text-xl">
-                                        Start as Seeker
+                                        Start as a Seeker
                                     </span>
                                     <span className="text-sm font-normal opacity-80">
                                         Find the Hider
@@ -142,7 +142,7 @@ export const StartScreen = () => {
                             >
                                 <div className="flex flex-col items-start gap-1">
                                     <span className="font-semibold text-xl">
-                                        Start as Hider
+                                        Start as a Hider
                                     </span>
                                     <span className="text-sm font-normal opacity-80">
                                         Hide from Seekers

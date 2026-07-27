@@ -6,7 +6,7 @@ export const getSeekerSteps = (driverObj: any): DriveStep[] => [
         popover: {
             title: "Map Controls",
             description:
-                "Use these buttons to re-center the map on your location, zoom to the potential hiding areas or view the entire map.",
+                "Use these buttons to recenter the map on your location, zoom to the potential hiding areas, or view the entire map.",
             side: "left",
             align: "start",
             showButtons: ["next"],
