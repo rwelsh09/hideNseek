@@ -542,7 +542,7 @@ function styleStations(
         case "no-display":
             return { type: "FeatureCollection", features: [] };
         case "zones":
-        default:
+        default: {
             let voronoiPoints = circles;
             if (lockedActiveStationIds && allStations) {
                 const lockedActiveStationIdsSet = new Set(
@@ -601,5 +601,6 @@ function styleStations(
                 }
             }
             return applyMask(turf.featureCollection(circles));
+        }
     }
 }
