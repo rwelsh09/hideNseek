@@ -253,7 +253,7 @@ export const AdvancedStationManagement = () => {
                         id="overlap-threshold-input"
                         type="number"
                         inputMode="decimal"
-                        className="rounded-md p-1 w-16 h-8 bg-background text-sm"
+                        className="rounded-md p-1 w-16 h-8 bg-background text-base md:text-sm"
                         value={overlapThreshold}
                         step={0.1}
                         min={0}
