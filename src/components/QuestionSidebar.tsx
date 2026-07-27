@@ -117,15 +117,6 @@ export const QuestionSidebar = () => {
                     </div>
                 </div>
 
-                {/* --- ACTIVE MAP ZONES --- */}
-                {$questions.length > 0 && (
-                    <div className="flex items-center gap-2 mt-1 px-1">
-                        <h3 className="text-slate-400 font-bold uppercase tracking-wider text-xs">
-                            Active Map Zones
-                        </h3>
-                    </div>
-                )}
-
                 {$questions.map((question) => (
                     <QuestionCardComponent
                         key={question.key}
