@@ -9,7 +9,6 @@ const determineUnionizedStrings = (
         | z.ZodDefault<any>
         | z.ZodEffects<any>,
 ): z.ZodLiteral<any>[] => {
-    if (typeof obj !== 'object' || obj === null) return [];
     if (obj instanceof z.ZodUnion) {
         return obj.options.flatMap((option: any) =>
             determineUnionizedStrings(option),
@@ -18,7 +17,7 @@ const determineUnionizedStrings = (
         return [obj];
     } else if (obj instanceof z.ZodDefault) {
         return determineUnionizedStrings(obj._def.innerType);
-    } else if (obj instanceof z.ZodEffects) {
+    } else if (obj?.constructor?.name === "ZodEffects" || obj?._def?.typeName === "ZodEffects") {
         return determineUnionizedStrings(obj.innerType());
     }
     return [];
