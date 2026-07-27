@@ -9,6 +9,7 @@ const determineUnionizedStrings = (
         | z.ZodDefault<any>
         | z.ZodEffects<any>,
 ): z.ZodLiteral<any>[] => {
+    if (typeof obj !== 'object' || obj === null) return [];
     if (obj instanceof z.ZodUnion) {
         return obj.options.flatMap((option: any) =>
             determineUnionizedStrings(option),
