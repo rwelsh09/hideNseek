@@ -26,20 +26,10 @@ import {
     TIME_PENALTIES,
 } from "@/lib/context";
 import { getQuestionShareText } from "@/lib/question-text";
+import { QUESTION_TEXT_HANDLERS } from "@/lib/question-text";
 import { lockRecommendedStartIfNeeded } from "@/lib/recommended-start";
 import { QUESTION_RULES } from "@/lib/rules";
 import { cn, encodeBase64Unicode, shareOrFallback } from "@/lib/utils";
-import { PLACES } from "@/maps/placesConfig";
-
-const TYPE_MAPPINGS: Record<string, string> = {
-    ...Object.fromEntries(PLACES.map((p) => [p.id, p.label])),
-    "same-neighbourhood": "Neighbourhood (Same As Me)",
-    "same-first-letter-neighbourhood": "Neighbourhood (Same First Letter)",
-    "same-first-letter-station": "Station Starts With Same Letter",
-    "same-length-station": "Station Has Same Length",
-    "same-train-line": "Station On Same Train Line",
-    "rail-measure": "Train Station",
-};
 
 export const QuestionCard = ({
     children,
@@ -111,29 +101,9 @@ export const QuestionCard = ({
 
     let resultStr = "";
     if (question) {
-        if (question.id === "radar") {
-            resultStr = questionData.within ? "Inside" : "Outside";
-        } else if (question.id === "match") {
-            if (questionData.type === "same-length-station") {
-                resultStr =
-                    questionData.lengthComparison === "shorter"
-                        ? "Shorter"
-                        : questionData.lengthComparison === "longer"
-                          ? "Longer"
-                          : "Same";
-            } else {
-                resultStr = questionData.same ? "Same" : "Different";
-            }
-        } else if (question.id === "measure") {
-            resultStr = questionData.hiderCloser
-                ? "Hider Closer"
-                : "Hider Farther";
-        } else if (question.id === "closest") {
-            resultStr = questionData.location
-                ? questionData.location.properties?.name
-                : "None";
-        } else if (question.id === "hot/cold") {
-            resultStr = questionData.warmer ? "Warmer" : "Colder";
+        const handler = QUESTION_TEXT_HANDLERS[question.id];
+        if (handler) {
+            resultStr = handler.getResultStr(questionData);
         }
     }
 
@@ -148,30 +118,17 @@ export const QuestionCard = ({
             typeName = typeName.charAt(0).toUpperCase() + typeName.slice(1);
 
             if (locked) {
-                if (question.id === "radar") {
-                    displayLabel = `Radar - ${questionData.radius}${questionData.unit === "kilometers" ? "km" : "m"} - ${resultStr}`;
-                } else if (question.id === "match") {
-                    const typeStr =
-                        TYPE_MAPPINGS[questionData.type] || questionData.type;
-                    displayLabel = `Match - ${typeStr} - ${resultStr}`;
-                } else if (question.id === "measure") {
-                    const typeStr =
-                        TYPE_MAPPINGS[questionData.type] || questionData.type;
-                    displayLabel = `Measure - ${typeStr} - ${resultStr}`;
-                } else if (question.id === "closest") {
-                    const typeStr =
-                        TYPE_MAPPINGS[questionData.locationType] ||
-                        questionData.locationType;
-                    displayLabel = `Closest - ${typeStr} - ${resultStr}`;
-                } else if (question.id === "hot/cold") {
-                    displayLabel = `Hot/Cold - ${resultStr}`;
+                const handler = QUESTION_TEXT_HANDLERS[question.id];
+                if (handler) {
+                    displayLabel = handler.getLockedLabel(
+                        questionData,
+                        resultStr,
+                    );
                 } else {
-                    displayLabel = `${typeName}
-    ${index}`;
+                    displayLabel = `${typeName}\n    ${index}`;
                 }
             } else {
-                displayLabel = `${typeName}
-    ${index}`;
+                displayLabel = `${typeName}\n    ${index}`;
             }
         } else {
             displayLabel = "Question";
