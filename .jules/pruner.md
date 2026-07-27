@@ -35,8 +35,8 @@
 
 ## 2026-07-26 - [Safe Dependency Removal]
 
-**Learning:** When removing a potentially unused `devDependency` (e.g., `workbox-window`), explicitly verify it's unused using tools like `grep` and ensure the full test suite (`pnpm test`) continues to pass. Wait for user confirmation before deleting dependencies, as they may be used in un-scanned builds.
-**Action:** Use `pnpm remove <package>` instead of manual `package.json` deletion to keep the lockfile correctly synchronized.
+**Learning:** When removing a potentially unused `devDependency` (e.g., `workbox-window`), explicitly verify it's unused using tools like `grep` and ensure the full test suite (`pnpm test`) continues to pass. Wait for user confirmation before deleting dependencies, as they may be used in un-scanned builds. Furthermore, Astro's `vite-plugin-pwa` runtime relies on `workbox-window` during the production `astro build`, causing CI to fail if removed.
+**Action:** Do not blindly delete `workbox-window`. If a `devDependency` is flagged as unused but seems related to a framework integration (like PWA), always verify it by running the production build (`pnpm run build`) in addition to unit tests before declaring it dead.
 
 ## 2026-07-26 - [Removing Internal Export Keywords]
 
