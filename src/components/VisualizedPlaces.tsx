@@ -27,32 +27,42 @@ const getPathOptions = (colour: string) => {
 
 const TOOLTIP_OFFSET: [number, number] = [0, -10];
 
-const VisualizedPlaceMarker = React.memo(function VisualizedPlaceMarker({
-    coords,
-    colour,
-    name,
-}: {
-    coords: number[];
-    colour: string;
-    name: string;
-}) {
-    const centerArray = React.useMemo(
-        () => [coords[1], coords[0]] as [number, number],
-        [coords[1], coords[0]],
-    );
+const VisualizedPlaceMarker = React.memo(
+    function VisualizedPlaceMarker({
+        coords,
+        colour,
+        name,
+    }: {
+        coords: number[];
+        colour: string;
+        name: string;
+    }) {
+        const centerArray = React.useMemo(
+            () => [coords[1], coords[0]] as [number, number],
+            [coords[1], coords[0]],
+        );
 
-    return (
-        <CircleMarker
-            center={centerArray}
-            radius={5}
-            pathOptions={getPathOptions(colour)}
-        >
-            <Tooltip direction="top" offset={TOOLTIP_OFFSET}>
-                {name}
-            </Tooltip>
-        </CircleMarker>
-    );
-});
+        return (
+            <CircleMarker
+                center={centerArray}
+                radius={5}
+                pathOptions={getPathOptions(colour)}
+            >
+                <Tooltip direction="top" offset={TOOLTIP_OFFSET}>
+                    {name}
+                </Tooltip>
+            </CircleMarker>
+        );
+    },
+    (prevProps, nextProps) => {
+        return (
+            prevProps.coords[0] === nextProps.coords[0] &&
+            prevProps.coords[1] === nextProps.coords[1] &&
+            prevProps.colour === nextProps.colour &&
+            prevProps.name === nextProps.name
+        );
+    },
+);
 
 export const VisualizedPlaces = () => {
     const $questions = useStore(questions);

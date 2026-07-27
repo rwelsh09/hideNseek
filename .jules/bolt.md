@@ -42,3 +42,7 @@
 
 **Learning:** When using `useMemo` to extract primitive dependencies from a nanostore object (like `$questions`) to prevent excessive `useEffect` executions in React components, ensure that you explicitly map the store to ONLY the required attributes _before_ stringifying. Calling `JSON.stringify` directly on `$questions` still causes re-renders if unrelated transient properties (like a temporary marker dragging coordinate or an arbitrary ID) are mutated, defeating the optimization.
 **Action:** Extract a stable string hash from complex objects by mapping to specific, immutable fields (e.g., `id`, `key`, `data`) and running `JSON.stringify` on the mapped subset, then use that `hash` variable in the `useEffect` dependency array.
+## 2026-07-27 - [Optimize React.memo with custom equality for newly allocated arrays]
+
+**Learning:** When a child component receives a newly allocated array as a prop (e.g., from `getFeatureCoords` which returns a new coordinate array every time), wrapping the component in `React.memo` will not prevent unnecessary re-renders. This is because React uses shallow reference equality by default.
+**Action:** Always provide a custom equality comparison function to `React.memo` that explicitly compares the primitive values (like `lat`/`lng` coordinates) when a component receives props that are newly allocated objects or arrays, ensuring memoization functions correctly.

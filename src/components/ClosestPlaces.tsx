@@ -96,44 +96,55 @@ const PATH_OPTIONS_UNSELECTED = {
 
 const TOOLTIP_OFFSET: [number, number] = [0, -10];
 
-const ClosestPlaceMarker = ({
-    f,
-    coords,
-    isSelected,
-    question,
-}: {
-    f: Feature<Point, any>;
-    coords: number[];
-    isSelected: boolean | "" | 0 | null | undefined;
-    question: Extract<Question, { id: "closest" }>;
-}) => {
-    const eventHandlers = React.useMemo(
-        () => ({
-            click: () => {
-                question.data.location = f;
-                questionModified();
-            },
-        }),
-        [f, question],
-    );
+const ClosestPlaceMarker = React.memo(
+    function ClosestPlaceMarker({
+        f,
+        coords,
+        isSelected,
+        question,
+    }: {
+        f: Feature<Point, any>;
+        coords: number[];
+        isSelected: boolean | "" | 0 | null | undefined;
+        question: Extract<Question, { id: "closest" }>;
+    }) {
+        const eventHandlers = React.useMemo(
+            () => ({
+                click: () => {
+                    question.data.location = f;
+                    questionModified();
+                },
+            }),
+            [f, question],
+        );
 
-    const centerArray = React.useMemo(
-        () => [coords[1], coords[0]] as [number, number],
-        [coords[1], coords[0]],
-    );
+        const centerArray = React.useMemo(
+            () => [coords[1], coords[0]] as [number, number],
+            [coords[1], coords[0]],
+        );
 
-    return (
-        <CircleMarker
-            center={centerArray}
-            radius={8}
-            pathOptions={
-                isSelected ? PATH_OPTIONS_SELECTED : PATH_OPTIONS_UNSELECTED
-            }
-            eventHandlers={eventHandlers}
-        >
-            <Tooltip direction="top" offset={TOOLTIP_OFFSET}>
-                {f.properties?.name || "Unknown Location"}
-            </Tooltip>
-        </CircleMarker>
-    );
-};
+        return (
+            <CircleMarker
+                center={centerArray}
+                radius={8}
+                pathOptions={
+                    isSelected ? PATH_OPTIONS_SELECTED : PATH_OPTIONS_UNSELECTED
+                }
+                eventHandlers={eventHandlers}
+            >
+                <Tooltip direction="top" offset={TOOLTIP_OFFSET}>
+                    {f.properties?.name || "Unknown Location"}
+                </Tooltip>
+            </CircleMarker>
+        );
+    },
+    (prevProps, nextProps) => {
+        return (
+            prevProps.coords[0] === nextProps.coords[0] &&
+            prevProps.coords[1] === nextProps.coords[1] &&
+            prevProps.isSelected === nextProps.isSelected &&
+            prevProps.f.properties?.id === nextProps.f.properties?.id &&
+            prevProps.question === nextProps.question
+        );
+    },
+);
