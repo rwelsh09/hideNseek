@@ -2,7 +2,7 @@
     "version": 0.6,
     "generator": "Overpass API 0.7.62.11 87bfad18",
     "osm3s": {
-        "timestamp_osm_base": "2026-07-20T02:12:15Z",
+        "timestamp_osm_base": "2026-07-27T02:00:11Z",
         "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
     },
     "elements": [
@@ -309,26 +309,6 @@
         },
         {
             "type": "node",
-            "id": 300621249,
-            "lat": 51.0963905,
-            "lon": -114.062809,
-            "tags": {
-                "addr:city": "Calgary",
-                "addr:housenumber": "5003",
-                "addr:postcode": "T2K 0S9",
-                "addr:province": "Alberta",
-                "addr:street": "Centre Street N",
-                "brand": "7-Eleven",
-                "brand:wikidata": "Q259340",
-                "brand:wikipedia": "en:7-Eleven",
-                "name": "7-Eleven",
-                "opening_hours": "Mo-Su,PH 00:00+",
-                "shop": "convenience",
-                "website": "https://stores.7-eleven.ca/store/15482"
-            }
-        },
-        {
-            "type": "node",
             "id": 300626017,
             "lat": 51.1559947,
             "lon": -114.067592,
@@ -389,6 +369,23 @@
                 "name": "McDonald's",
                 "takeaway": "yes",
                 "website": "http://www.mcdonalds.ca/"
+            }
+        },
+        {
+            "type": "node",
+            "id": 301299599,
+            "lat": 51.0783543,
+            "lon": -114.1310654,
+            "tags": {
+                "amenity": "cafe",
+                "brand": "Tim Hortons",
+                "brand:wikidata": "Q175106",
+                "cuisine": "coffee_shop",
+                "level": "1",
+                "level:ref": "2",
+                "name": "Tim Hortons Express",
+                "opening_hours": "Mo-Fr 08:00-15:00; PH off",
+                "takeaway": "yes"
             }
         },
         {
@@ -549,24 +546,6 @@
                 "brand:wikipedia": "en:Papa John's Pizza",
                 "cuisine": "pizza",
                 "name": "Papa John's",
-                "takeaway": "yes"
-            }
-        },
-        {
-            "type": "node",
-            "id": 321906665,
-            "lat": 51.0883947,
-            "lon": -114.062756,
-            "tags": {
-                "amenity": "cafe",
-                "brand": "Tim Hortons",
-                "brand:wikidata": "Q175106",
-                "cuisine": "coffee_shop",
-                "delivery": "no",
-                "drive_through": "yes",
-                "name": "Tim Hortons",
-                "outdoor_seating": "yes",
-                "smoking": "outside",
                 "takeaway": "yes"
             }
         },
@@ -3900,9 +3879,11 @@
             "lat": 50.9366888,
             "lon": -114.0801138,
             "tags": {
+                "addr:postcode": "T2W 3P5",
                 "amenity": "fast_food",
+                "check_date": "2026-07-24",
                 "cuisine": "pizza",
-                "name": "Hojy's Pizza"
+                "name": "Bow Tie Pizza"
             }
         },
         {
@@ -4136,7 +4117,8 @@
                 "addr:street": "8 Avenue SW;Stephen Avenue",
                 "amenity": "bar",
                 "name": "The Bank & Baron",
-                "opening_hours": "Su-Th 11:00-23:00, Fr,Sa 11:00-24:00"
+                "opening_hours": "Su-Th 11:00-23:00, Fr,Sa 11:00-24:00",
+                "wheelchair": "limited"
             }
         },
         {
@@ -6020,7 +6002,7 @@
                 "brand:wikidata": "Q259340",
                 "brand:wikipedia": "en:7-Eleven",
                 "name": "7-Eleven",
-                "opening_hours": "Mo-Su 5:00-24:00",
+                "opening_hours": "Mo-Su 05:00-24:00",
                 "shop": "convenience",
                 "website": "https://stores.7-eleven.ca/store/14818"
             }
@@ -7648,7 +7630,10 @@
             "lon": -113.9458061,
             "tags": {
                 "amenity": "library",
-                "name": "Seton Calgary Public Library"
+                "check_date": "2026-07-26",
+                "check_date:opening_hours": "2026-07-26",
+                "name": "Seton Calgary Public Library",
+                "opening_hours": "Mo-Fr 09:00-21:00; Sa 09:00-17:00; Su 12:00-17:00"
             }
         },
         {
@@ -9636,6 +9621,63 @@
             }
         },
         {
+            "type": "node",
+            "id": 14029852022,
+            "lat": 51.0622818,
+            "lon": -114.0553794,
+            "tags": {
+                "addr:housenumber": "1114",
+                "addr:postcode": "T2E 3K4",
+                "addr:street": "Edmonton Trail NE",
+                "amenity": "restaurant",
+                "cuisine": "pizza",
+                "name": "Pizza Culture",
+                "opening_hours": "Mo-Th 11:30-14:00,17:00-21:00; Fr 11:30-14:00,17:00-22:00; Sa 13:00-22:00; Su 13:00-21:00",
+                "opening_hours:url": "https://pizzacultureyyc.ca/contact-us/",
+                "phone": "+1 403-277-4900",
+                "website": "https://pizzacultureyyc.ca/"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14044831633,
+            "lat": 50.8736784,
+            "lon": -114.0622865,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "40",
+                "addr:postcode": "T2X 6L5",
+                "addr:province": "Alberta",
+                "addr:street": "Belmont Drive SW",
+                "addr:unit": "230",
+                "amenity": "restaurant",
+                "cuisine": "pizza",
+                "description": "Not yet open, opening date to be announced.",
+                "name": "Big Lillo's Pizzeria",
+                "opening_hours": "closed"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14044831634,
+            "lat": 50.8738339,
+            "lon": -114.0625282,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "40",
+                "addr:postcode": "T2X 6L5",
+                "addr:province": "Alberta",
+                "addr:street": "Belmont Drive SW",
+                "addr:unit": "205",
+                "amenity": "cafe",
+                "brand": "Tim Hortons",
+                "brand:wikidata": "Q175106",
+                "cuisine": "coffee_shop",
+                "name": "Tim Hortons",
+                "takeaway": "yes"
+            }
+        },
+        {
             "type": "way",
             "id": 4814073,
             "bounds": {
@@ -10579,7 +10621,7 @@
                 "addr:street": "47 Street NE",
                 "building": "yes",
                 "name": "Calgary Police Discovery Centre",
-                "opening_hours": "Fr,Sa 10:00-16:00; SH Tu-Sa 10:00-16:00; ",
+                "opening_hours": "Fr,Sa 10:00-16:00; SH Tu-Sa 10:00-16:00",
                 "operator": "Calgary Police Service",
                 "operator:type": "government",
                 "tourism": "museum",
@@ -11801,10 +11843,10 @@
             "type": "way",
             "id": 88764331,
             "bounds": {
-                "minlat": 51.0384946,
-                "minlon": -114.0721393,
-                "maxlat": 51.0387086,
-                "maxlon": -114.0717603
+                "minlat": 51.0384934,
+                "minlon": -114.0721416,
+                "maxlat": 51.038711,
+                "maxlon": -114.0717619
             },
             "nodes": [
                 1030264933, 4972812866, 4972812867, 4972812868, 4972812869,
@@ -11814,72 +11856,72 @@
             ],
             "geometry": [
                 {
-                    "lat": 51.0385194,
-                    "lon": -114.0721393
+                    "lat": 51.038518,
+                    "lon": -114.0721416
                 },
                 {
-                    "lat": 51.0385182,
-                    "lon": -114.0720778
-                },
-                {
-                    "lat": 51.0384956,
-                    "lon": -114.0720794
+                    "lat": 51.0385169,
+                    "lon": -114.0720801
                 },
                 {
                     "lat": 51.0384946,
-                    "lon": -114.072023
+                    "lon": -114.0720812
                 },
                 {
-                    "lat": 51.038503,
-                    "lon": -114.0720216
+                    "lat": 51.0384934,
+                    "lon": -114.0720213
                 },
                 {
-                    "lat": 51.0384989,
-                    "lon": -114.0719444
+                    "lat": 51.0385025,
+                    "lon": -114.0720209
                 },
                 {
-                    "lat": 51.0385121,
-                    "lon": -114.071944
+                    "lat": 51.0385011,
+                    "lon": -114.0719475
                 },
                 {
-                    "lat": 51.0385085,
-                    "lon": -114.071778
+                    "lat": 51.0385141,
+                    "lon": -114.0719469
                 },
                 {
-                    "lat": 51.038645,
-                    "lon": -114.0717725
+                    "lat": 51.0385109,
+                    "lon": -114.0717816
                 },
                 {
-                    "lat": 51.038644,
-                    "lon": -114.0717603
+                    "lat": 51.0386466,
+                    "lon": -114.071775
                 },
                 {
-                    "lat": 51.0386889,
-                    "lon": -114.071762
+                    "lat": 51.0386464,
+                    "lon": -114.0717639
                 },
                 {
-                    "lat": 51.0386911,
-                    "lon": -114.0718249
+                    "lat": 51.038689,
+                    "lon": -114.0717619
                 },
                 {
-                    "lat": 51.0387086,
-                    "lon": -114.0718264
+                    "lat": 51.0386902,
+                    "lon": -114.0718263
                 },
                 {
-                    "lat": 51.0387084,
-                    "lon": -114.071917
+                    "lat": 51.0387092,
+                    "lon": -114.0718254
                 },
                 {
-                    "lat": 51.0386994,
-                    "lon": -114.0719176
+                    "lat": 51.038711,
+                    "lon": -114.071921
                 },
                 {
-                    "lat": 51.0387023,
-                    "lon": -114.0721269
+                    "lat": 51.038702,
+                    "lon": -114.0719215
                 },
                 {
-                    "lat": 51.0385194,
-                    "lon": -114.0721393
+                    "lat": 51.038706,
+                    "lon": -114.0721325
+                },
+                {
+                    "lat": 51.038518,
+                    "lon": -114.0721416
                 }
             ],
             "tags": {
@@ -11890,7 +11932,8 @@
                 "addr:street": "4 Street SW",
                 "amenity": "pub",
                 "building": "yes",
-                "name": "Elephant & Castle"
+                "name": "Elephant & Castle",
+                "website": "https://www.elephantcastle.com/en/locations/ab/calgary/1503-4th-street-sw"
             }
         },
         {
@@ -16763,6 +16806,7 @@
                 }
             ],
             "tags": {
+                "amenity": "restaurant",
                 "brand": "Pizza Hut",
                 "brand:wikidata": "Q191615",
                 "brand:wikipedia": "en:Pizza Hut",
@@ -17510,7 +17554,7 @@
                 "addr:housenumber": "2607",
                 "addr:street": "106 Avenue SW",
                 "amenity": "fire_station",
-                "building": "yes",
+                "building": "fire_station",
                 "building:levels": "2",
                 "check_date": "2025-08-20",
                 "name": "Fire Station 24 (Cedarbrae)",
@@ -19854,6 +19898,52 @@
                 "source": "City of Calgary Digital Aerial Survey building roof outlines",
                 "takeaway": "yes",
                 "website": "http://www.mcdonalds.ca/"
+            }
+        },
+        {
+            "type": "way",
+            "id": 433372844,
+            "bounds": {
+                "minlat": 51.0454104,
+                "minlon": -113.9574863,
+                "maxlat": 51.0456691,
+                "maxlon": -113.9571639
+            },
+            "nodes": [
+                5213404334, 4321680129, 4321680130, 4321680135, 5213404334
+            ],
+            "geometry": [
+                {
+                    "lat": 51.0454104,
+                    "lon": -113.9572814
+                },
+                {
+                    "lat": 51.0456247,
+                    "lon": -113.9571639
+                },
+                {
+                    "lat": 51.0456691,
+                    "lon": -113.9573689
+                },
+                {
+                    "lat": 51.0454548,
+                    "lon": -113.9574863
+                },
+                {
+                    "lat": 51.0454104,
+                    "lon": -113.9572814
+                }
+            ],
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "5320",
+                "addr:province": "Alberta",
+                "addr:street": "8 Avenue SE",
+                "brand": "7-Eleven",
+                "brand:wikidata": "Q259340",
+                "building": "yes",
+                "name": "7-Eleven",
+                "shop": "convenience"
             }
         },
         {
@@ -26884,6 +26974,54 @@
         },
         {
             "type": "way",
+            "id": 949549351,
+            "bounds": {
+                "minlat": 51.0963963,
+                "minlon": -114.0629844,
+                "maxlat": 51.0965405,
+                "maxlon": -114.0627518
+            },
+            "nodes": [300621249, 8790609882, 8790609883, 8790609884, 300621249],
+            "geometry": [
+                {
+                    "lat": 51.0965405,
+                    "lon": -114.0629818
+                },
+                {
+                    "lat": 51.096398,
+                    "lon": -114.0629844
+                },
+                {
+                    "lat": 51.0963963,
+                    "lon": -114.0627544
+                },
+                {
+                    "lat": 51.0965389,
+                    "lon": -114.0627518
+                },
+                {
+                    "lat": 51.0965405,
+                    "lon": -114.0629818
+                }
+            ],
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "5003",
+                "addr:postcode": "T2K 0S9",
+                "addr:province": "Alberta",
+                "addr:street": "Centre Street N",
+                "brand": "7-Eleven",
+                "brand:wikidata": "Q259340",
+                "brand:wikipedia": "en:7-Eleven",
+                "building": "yes",
+                "name": "7-Eleven",
+                "opening_hours": "Mo-Su,PH 00:00+",
+                "shop": "convenience",
+                "website": "https://stores.7-eleven.ca/store/15482"
+            }
+        },
+        {
+            "type": "way",
             "id": 953199132,
             "bounds": {
                 "minlat": 51.0670745,
@@ -31757,11 +31895,10 @@
             },
             "nodes": [
                 12372631146, 12372631145, 12372631144, 12372631143, 12372631142,
-                12372631141, 12372631140, 12372631139, 12372631138, 12372631137,
-                12372631136, 12372631135, 12372631134, 12372631133, 12372631132,
-                12372631131, 12372631130, 12372631129, 12372631128, 12372631127,
-                12372631126, 12372631125, 12372631124, 12372631123, 12372631122,
-                12372631146
+                12372631141, 12372631140, 12372631138, 12372631137, 12372631136,
+                12372631135, 12372631134, 12372631133, 12372631132, 12372631131,
+                12372631130, 12372631129, 12372631128, 12372631127, 12372631126,
+                12372631125, 12372631124, 12372631123, 12372631122, 12372631146
             ],
             "geometry": [
                 {
@@ -31793,12 +31930,8 @@
                     "lon": -114.1638433
                 },
                 {
-                    "lat": 51.0717778,
-                    "lon": -114.163895
-                },
-                {
-                    "lat": 51.0717776,
-                    "lon": -114.1638948
+                    "lat": 51.0717777,
+                    "lon": -114.1638949
                 },
                 {
                     "lat": 51.0717749,
@@ -32069,6 +32202,106 @@
                 "operator": "City of Calgary",
                 "operator:wikidata": "Q5019670",
                 "operator:wikipedia": "en:Calgary Fire Department"
+            }
+        },
+        {
+            "type": "way",
+            "id": 1338555314,
+            "bounds": {
+                "minlat": 51.088353,
+                "minlon": -114.0629054,
+                "maxlat": 51.088582,
+                "maxlon": -114.0627339
+            },
+            "nodes": [
+                321906665, 12381845512, 12381845511, 12381845510, 12381845509,
+                12381845508, 12381845507, 12381845506, 12381845505, 12381845504,
+                12381845503, 12381845502, 12381845501, 12381827300, 12381827299,
+                12381827298, 321906665
+            ],
+            "geometry": [
+                {
+                    "lat": 51.088536,
+                    "lon": -114.0627339
+                },
+                {
+                    "lat": 51.0885465,
+                    "lon": -114.062734
+                },
+                {
+                    "lat": 51.0885604,
+                    "lon": -114.0627559
+                },
+                {
+                    "lat": 51.0885727,
+                    "lon": -114.0627561
+                },
+                {
+                    "lat": 51.088582,
+                    "lon": -114.0627705
+                },
+                {
+                    "lat": 51.088582,
+                    "lon": -114.0628649
+                },
+                {
+                    "lat": 51.0885715,
+                    "lon": -114.06288
+                },
+                {
+                    "lat": 51.0885051,
+                    "lon": -114.0628802
+                },
+                {
+                    "lat": 51.0884918,
+                    "lon": -114.0629005
+                },
+                {
+                    "lat": 51.0884886,
+                    "lon": -114.0629054
+                },
+                {
+                    "lat": 51.0884523,
+                    "lon": -114.0629053
+                },
+                {
+                    "lat": 51.0884524,
+                    "lon": -114.0629004
+                },
+                {
+                    "lat": 51.0883532,
+                    "lon": -114.0629007
+                },
+                {
+                    "lat": 51.0883531,
+                    "lon": -114.0628069
+                },
+                {
+                    "lat": 51.088353,
+                    "lon": -114.0627367
+                },
+                {
+                    "lat": 51.088536,
+                    "lon": -114.0627362
+                },
+                {
+                    "lat": 51.088536,
+                    "lon": -114.0627339
+                }
+            ],
+            "tags": {
+                "amenity": "cafe",
+                "brand": "Tim Hortons",
+                "brand:wikidata": "Q175106",
+                "building": "yes",
+                "cuisine": "coffee_shop",
+                "delivery": "no",
+                "drive_through": "yes",
+                "name": "Tim Hortons",
+                "note": "City of Calgary rooflines - aquisition date - 2024-06-12T22:39:34.000Z",
+                "outdoor_seating": "yes",
+                "smoking": "outside",
+                "takeaway": "yes"
             }
         },
         {
