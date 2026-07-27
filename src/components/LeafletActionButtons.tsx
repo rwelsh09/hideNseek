@@ -40,7 +40,7 @@ export const LeafletActionButtons = () => {
     const $geolocationPermission = useStore(geolocationPermission);
 
     const buttonClass =
-        "leaflet-full-screen-specific-name bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] p-0 rounded-[4px] flex items-center justify-center border-[2px] border-[rgba(0,0,0,0.2)] bg-clip-padding cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+        "leaflet-full-screen-specific-name bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] p-0 rounded-[4px] flex items-center justify-center border-[2px] border-[rgba(0,0,0,0.2)] bg-clip-padding cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-95";
 
     const handleLocationFocus = () => {
         if (!navigator.geolocation) {
