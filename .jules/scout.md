@@ -22,6 +22,8 @@
 
 **Learning:** The project previously relied on multiple parallel `switch` statements across different functions (e.g., in `src/maps/index.ts`) to handle question-specific logic, which violated the Open-Closed Principle and made adding new questions error-prone.
 **Action:** When adding or managing dispatch logic that varies by question type, use a centralized registry pattern (like `QUESTION_HANDLERS`) to encapsulate all related handler functions in a single object mapping.
+
 ## 2026-07-28 - [Centralized Text Handlers]
+
 **Learning:** Adding new question types previously required updating multiple distinct UI switch/if-else chains (e.g., in `base.tsx` and `question-text.ts`) for rendering card labels, share text, and result strings, violating the Open-Closed Principle.
 **Action:** The codebase uses a centralized Registry (Strategy) pattern to manage logic that varies by map question type. Use `QUESTION_HANDLERS` in `src/maps/index.ts` for geospatial logic and `QUESTION_TEXT_HANDLERS` in `src/lib/question-text.ts` for text and UI label generation, avoiding scattered `switch` or `if/else` statements branching on `question.id`.
