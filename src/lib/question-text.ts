@@ -6,7 +6,7 @@ import { PLACES } from "@/maps/placesConfig";
 import { determineMatchBoundary } from "@/maps/questions/match";
 import { calculateMeasureDistance } from "@/maps/questions/measure";
 
-export const TYPE_MAPPINGS: Record<string, string> = {
+const TYPE_MAPPINGS: Record<string, string> = {
     ...Object.fromEntries(PLACES.map((p) => [p.id, p.label])),
     "same-neighbourhood": "Neighbourhood (Same As Me)",
     "same-first-letter-neighbourhood": "Neighbourhood (Same First Letter)",
@@ -16,7 +16,7 @@ export const TYPE_MAPPINGS: Record<string, string> = {
     "rail-measure": "Train Station",
 };
 
-export const getPlaceLabel = (id: string, plural = false) => {
+const getPlaceLabel = (id: string, plural = false) => {
     const place = PLACES.find((p) => p.id === id);
     if (!place) return id;
     return plural && place.labelPlural ? place.labelPlural : place.label;
