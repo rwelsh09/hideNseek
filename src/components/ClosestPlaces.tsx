@@ -96,10 +96,6 @@ const PATH_OPTIONS_UNSELECTED = {
 
 const TOOLTIP_OFFSET: [number, number] = [0, -10];
 
-// ⚡ Bolt Optimization: Use React.memo with a custom equality function.
-// This prevents expensive Leaflet marker re-renders when unrelated parent state changes.
-// We explicitly check the underlying feature ID and question reference to maintain
-// correct marker behavior while avoiding re-renders triggered by newly allocated `coords` arrays.
 const ClosestPlaceMarker = React.memo(
     function ClosestPlaceMarker({
         f,
