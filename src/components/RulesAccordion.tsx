@@ -204,7 +204,7 @@ export function RulesAccordion() {
                     </p>
                     <p className="italic mt-4 text-sm text-slate-400">
                         <small>
-                            (Note: The webapp automatically calculates, tracks,
+                            (Note: The web app automatically calculates, tracks,
                             and applies all Time Penalties as questions are
                             locked).
                         </small>
@@ -323,7 +323,7 @@ export function RulesAccordion() {
                             <strong>Too many Hiding Zones?</strong> Before
                             starting the game, in the right sidebar, view Hiding
                             Zones then click the ones in the list that you
-                            don&apos;t want to use. Share this new game state
+                            don&apos;t want to use. Share this new Game State
                             with the other players.
                             <small className="ml-1 text-slate-400">
                                 (I recommend doing this from a PC or other large
@@ -335,8 +335,8 @@ export function RulesAccordion() {
                             menu and enable Hider Mode. Place the green Map
                             Marker on your Hiding Spot (or on your station if
                             you haven&apos;t found your final Hiding Spot yet)
-                            and the webapp will tell you what answer to give the
-                            Seekers.
+                            and the web app will tell you what answer to give
+                            the Seekers.
                         </li>
                         <li>
                             <strong>Group Chat & Location Sharing:</strong> All
