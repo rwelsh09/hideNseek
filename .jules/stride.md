@@ -32,6 +32,8 @@
 
 **Learning:** On mobile devices (specifically iOS Safari), when the font size of an input element (`input`, `select`, `textarea`) is smaller than `16px` (or `1rem`/`text-base` in Tailwind), the browser automatically zooms in on the page when the input is focused, causing layout friction.
 **Action:** Use `text-base md:text-sm` on input components to ensure a 16px minimum font size on mobile while preserving the intended 14px size on desktop.
+
 ## 2026-07-27 - [Mobile Input Text Inflation Fix]
+
 **Learning:** `className` overrides on components wrapping native inputs can inadvertently erase global mobile typography protections (like `text-base md:text-sm`). This leads to the iOS Safari auto-zoom glitch when inputs smaller than 16px are focused.
 **Action:** When manually styling Input components or wrappers using tailwind `cn`, always verify that `text-base md:text-sm` is explicitly carried forward if a `text-*` class is being applied that would override it.
