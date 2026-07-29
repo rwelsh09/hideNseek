@@ -323,3 +323,39 @@ export const createMatchDraft = (
         colour: "red",
     };
 };
+
+export const getMatchPlaceName = async (question: MatchQuestion) => {
+    if (
+        question.type === "same-first-letter-station" ||
+        question.type === "same-length-station" ||
+        question.type === "same-train-line"
+    ) {
+        const places =
+            calgaryTransitData as unknown as FeatureCollection<Point>;
+
+        const seekerPoint = turf.point([question.lng, question.lat]);
+        const nearestSeekerStation = turf.nearestPoint(seekerPoint, places);
+
+        const seekerEnglishName = extractStationName(nearestSeekerStation);
+
+        if (!seekerEnglishName) {
+            return null;
+        }
+
+        if (question.type === "same-train-line") {
+            const lines = extractStationLines(nearestSeekerStation);
+            return `${seekerEnglishName} (${lines.join(", ")})`;
+        }
+
+        return seekerEnglishName;
+    }
+
+    try {
+        const boundary = await determineMatchBoundary(question);
+        if (!boundary) return null;
+
+        return extractStationName(boundary) || null;
+    } catch {
+        return null;
+    }
+}
