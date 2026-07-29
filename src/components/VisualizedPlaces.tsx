@@ -3,10 +3,10 @@ import osm2geojson from "osm2geojson-lite";
 import React, { useEffect, useState } from "react";
 import { CircleMarker, Tooltip } from "react-leaflet";
 
-import { questions } from "@/lib/context";
+import { questions, trainStations } from "@/lib/context";
 import { findPlacesInZone } from "@/maps/api";
 import { LOCATION_FIRST_TAG } from "@/maps/api/constants";
-import { getFeatureCoords } from "@/maps/geo-utils";
+import { extractStationLabel, getFeatureCoords } from "@/maps/geo-utils";
 import { PLACES } from "@/maps/placesConfig";
 
 const pathOptionsCache: Record<
@@ -66,12 +66,14 @@ const VisualizedPlaceMarker = React.memo(
 
 export const VisualizedPlaces = () => {
     const $questions = useStore(questions);
+    const $trainStations = useStore(trainStations);
 
     const [places, setPlaces] = useState<any[]>([]);
 
     const typesHash = React.useMemo(() => {
         const typesSet = new Set<string>();
         const specificTypesSet = new Set<string>();
+        let shouldVisualizeStations = false;
 
         $questions.forEach((q) => {
             const data = q.data as any;
@@ -96,6 +98,13 @@ export const VisualizedPlaces = () => {
                     }
                 }
             }
+
+            if (
+                data.type === "same-first-letter-station" ||
+                data.type === "same-length-station"
+            ) {
+                shouldVisualizeStations = true;
+            }
         });
 
         return JSON.stringify({
@@ -103,6 +112,7 @@ export const VisualizedPlaces = () => {
                 .filter((type) => (LOCATION_FIRST_TAG as any)[type])
                 .sort(),
             specific: Array.from(specificTypesSet).sort(),
+            shouldVisualizeStations,
         });
     }, [$questions]);
 
@@ -252,7 +262,9 @@ export const VisualizedPlaces = () => {
     }, [typesHash]);
 
     const markers = React.useMemo(() => {
-        return places.map((place, i) => {
+        const { shouldVisualizeStations } = JSON.parse(typesHash);
+
+        const placesMarkers = places.map((place, i) => {
             const coords = getFeatureCoords(place);
 
             if (!coords) return null;
@@ -272,7 +284,29 @@ export const VisualizedPlaces = () => {
                 />
             );
         });
-    }, [places]);
+
+        const stationsMarkers = shouldVisualizeStations
+            ? $trainStations.map((station, i) => {
+                  const coords = getFeatureCoords(station);
+
+                  if (!coords) return null;
+
+                  const name = extractStationLabel(station);
+                  const colour = "purple";
+
+                  return (
+                      <VisualizedPlaceMarker
+                          key={`station-${i}`}
+                          coords={coords}
+                          colour={colour}
+                          name={name}
+                      />
+                  );
+              })
+            : [];
+
+        return [...placesMarkers, ...stationsMarkers];
+    }, [places, $trainStations, typesHash]);
 
     return <>{markers}</>;
 };
