@@ -355,16 +355,15 @@ const RightSidebarTrigger = React.forwardRef<
             )}
             onClick={(event) => {
                 if ($isTimerRunning || $timerStartTimestamp) {
-                    toast.error(
-                        "Cannot configure Game State after the game has started.",
+                    toast.warn(
+                        "Configuring Game State after the game has started is not recommended.",
                         {
-                            toastId: "configure-game-state-error",
+                            toastId: "configure-game-state-warning",
                         }
                     );
-                } else {
-                    onClick?.(event);
-                    toggleSidebar();
                 }
+                onClick?.(event);
+                toggleSidebar();
             }}
             {...props}
         >
