@@ -229,7 +229,7 @@ export const TimerDrawer = () => {
                 </button>
             </DrawerTrigger>
             <TopDrawerContent
-                className="bg-slate-900 border-slate-700 text-white h-[85vh] max-h-[600px] overflow-hidden flex flex-col"
+                className="bg-slate-900 border-slate-700 text-white h-[85dvh] max-h-[600px] overflow-hidden flex flex-col"
                 onPointerDown={(e) => e.stopPropagation()}
             >
                 <div className="p-4 flex-1 flex flex-col overflow-y-auto">

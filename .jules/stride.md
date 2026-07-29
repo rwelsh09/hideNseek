@@ -37,3 +37,8 @@
 
 **Learning:** `className` overrides on components wrapping native inputs can inadvertently erase global mobile typography protections (like `text-base md:text-sm`). This leads to the iOS Safari auto-zoom glitch when inputs smaller than 16px are focused.
 **Action:** When manually styling Input components or wrappers using tailwind `cn`, always verify that `text-base md:text-sm` is explicitly carried forward if a `text-*` class is being applied that would override it.
+
+## 2026-07-28 - [Mobile URL Bar Jank Fix with dvh]
+
+**Learning:** Using standard `vh` units for modal drawers or absolute positioned overlays on mobile browsers (like iOS Safari or Android Chrome) causes layout jank or content getting cut off. The `vh` unit doesn't dynamically adjust when the address bar expands or collapses during scrolling.
+**Action:** Replaced `vh` with `dvh` (dynamic viewport height) on drawer content classes (e.g., `h-[85vh]` to `h-[85dvh]`) to ensure the layout smoothly adapts to the address bar's presence without overflowing or jumping.
