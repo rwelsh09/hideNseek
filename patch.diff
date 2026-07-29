@@ -1,0 +1,40 @@
+--- src/components/ui/sidebar.tsx
++++ src/components/ui/sidebar.tsx
+@@ -19,6 +19,8 @@
+ } from "@/components/ui/tooltip";
+ import { useIsMobile } from "@/hooks/use-mobile";
+ import { cn } from "@/lib/utils";
++import { isTimerRunning, timerStartTimestamp } from "@/lib/context";
++import { toast } from "react-toastify";
+
+ const SIDEBAR_COOKIE_NAME = "sidebar:state";
+ const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
+@@ -335,6 +337,8 @@
+     React.ComponentProps<typeof Button>
+ >(({ className, onClick, ...props }, ref) => {
+     const { toggleSidebar } = useSidebar("right");
++    const $isTimerRunning = useStore(isTimerRunning);
++    const $timerStartTimestamp = useStore(timerStartTimestamp);
+
+     return (
+         <button
+@@ -351,8 +355,17 @@
+                 className,
+             )}
+             onClick={(event) => {
+-                onClick?.(event);
+-                toggleSidebar();
++                if ($isTimerRunning || $timerStartTimestamp) {
++                    toast.error(
++                        "Cannot configure Game State after the game has started.",
++                        {
++                            toastId: "configure-game-state-error",
++                        }
++                    );
++                } else {
++                    onClick?.(event);
++                    toggleSidebar();
++                }
+             }}
+             {...props}
+         >
