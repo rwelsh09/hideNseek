@@ -66,3 +66,40 @@ export const hotColdPlanningPolygon = (question: HotColdQuestion) => {
             ),
     );
 };
+
+export const isHotColdLocked = (question: any, detail?: string) => {
+    if (!question.lngA || !question.latA || !question.lngB || !question.latB)
+        return false;
+    const dist = turf.distance(
+        [question.lngA, question.latA],
+        [question.lngB, question.latB],
+        { units: "kilometers" },
+    );
+    const detailDist = parseFloat(detail || "5");
+    return Math.abs(dist - detailDist) < 0.1;
+};
+
+export const createHotColdDraft = (
+    center: any,
+    detail: string | undefined,
+    isLocked: boolean,
+) => {
+    const destination = turf.destination(
+        [center.lng, center.lat],
+        parseFloat(detail || "5"),
+        90,
+        { units: "kilometers" },
+    );
+    return {
+        latA: center.lat,
+        lngA: center.lng,
+        latB: destination.geometry.coordinates[1],
+        lngB: destination.geometry.coordinates[0],
+        warmer: true,
+        locked: false,
+        colourA: "gold",
+        colourB: "blue",
+        doubledPenalty: isLocked,
+        minDistance: parseFloat(detail || "5"),
+    };
+};

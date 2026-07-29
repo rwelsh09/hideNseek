@@ -303,3 +303,23 @@ export const matchPlanningPolygon = async (question: MatchQuestion) => {
         return false;
     }
 };
+
+export const isMatchLocked = (question: any, detail?: string) => {
+    return question.type === (detail || "museum");
+};
+
+export const createMatchDraft = (
+    center: any,
+    detail: string | undefined,
+    isLocked: boolean,
+) => {
+    return {
+        lat: center.lat,
+        lng: center.lng,
+        locked: false,
+        doubledPenalty: isLocked,
+        type: detail || "museum",
+        same: true,
+        colour: "red",
+    };
+};
