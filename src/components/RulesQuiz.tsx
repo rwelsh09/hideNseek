@@ -1,4 +1,5 @@
 import { useStore } from "@nanostores/react";
+import { CheckCircle2, XCircle } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -62,7 +63,7 @@ const QUIZ_QUESTIONS = [
         question:
             "How are Time Penalties calculated when Seekers ask questions?",
         options: [
-            "The webapp automatically calculates and applies them to the game clock.",
+            "The app automatically calculates and applies them to the game clock.",
             "The Seekers must manually subtract minutes on their phones.",
             "The Hider decides the penalty based on how helpful the answer is.",
             "There are no Time Penalties, ask away!",
@@ -242,7 +243,36 @@ export const RulesQuiz = () => {
                             onClick={() => handleOptionClick(index)}
                             disabled={isAnswered}
                         >
-                            {option}
+                            <div className="flex items-center justify-between w-full">
+                                <span className="text-left">{option}</span>
+                                {isAnswered &&
+                                    index === currentQuestion.correct && (
+                                        <>
+                                            <CheckCircle2
+                                                className="w-5 h-5 text-green-400 shrink-0 ml-3"
+                                                aria-hidden="true"
+                                            />
+                                            <span className="sr-only">
+                                                {" "}
+                                                - Correct answer
+                                            </span>
+                                        </>
+                                    )}
+                                {isAnswered &&
+                                    index === selectedOption &&
+                                    index !== currentQuestion.correct && (
+                                        <>
+                                            <XCircle
+                                                className="w-5 h-5 text-red-400 shrink-0 ml-3"
+                                                aria-hidden="true"
+                                            />
+                                            <span className="sr-only">
+                                                {" "}
+                                                - Incorrect answer
+                                            </span>
+                                        </>
+                                    )}
+                            </div>
                         </button>
                     );
                 })}

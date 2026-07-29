@@ -19,6 +19,8 @@ import {
 } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { cn } from "@/lib/utils";
+import { isTimerRunning, timerStartTimestamp } from "@/lib/context";
+import { toast } from "react-toastify";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -335,6 +337,8 @@ const RightSidebarTrigger = React.forwardRef<
     React.ComponentProps<typeof Button>
 >(({ className, onClick, ...props }, ref) => {
     const { toggleSidebar } = useSidebar("right");
+    const $isTimerRunning = useStore(isTimerRunning);
+    const $timerStartTimestamp = useStore(timerStartTimestamp);
 
     return (
         <button
@@ -350,6 +354,15 @@ const RightSidebarTrigger = React.forwardRef<
                 className,
             )}
             onClick={(event) => {
+                if ($isTimerRunning || $timerStartTimestamp) {
+                    toast.warn(
+                        "Configuring Game State after the game has started is not recommended.",
+                        {
+                            toastId: "configure-game-state-warning",
+                            autoClose: 4000,
+                        }
+                    );
+                }
                 onClick?.(event);
                 toggleSidebar();
             }}

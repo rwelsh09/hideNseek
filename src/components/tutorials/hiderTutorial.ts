@@ -4,7 +4,8 @@ export const getHiderSteps = (hiderDriverObj: any): DriveStep[] => [
     {
         popover: {
             title: "Welcome, Hider!",
-            description: "",
+            description:
+                "Follow this tutorial to learn how to play as the Hider.",
             side: "top",
             align: "center",
             showButtons: ["next", "close"],

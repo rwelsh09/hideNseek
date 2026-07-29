@@ -27,3 +27,8 @@
 
 **Learning:** Adding new question types previously required updating multiple distinct UI switch/if-else chains (e.g., in `base.tsx` and `question-text.ts`) for rendering card labels, share text, and result strings, violating the Open-Closed Principle.
 **Action:** The codebase uses a centralized Registry (Strategy) pattern to manage logic that varies by map question type. Use `QUESTION_HANDLERS` in `src/maps/index.ts` for geospatial logic and `QUESTION_TEXT_HANDLERS` in `src/lib/question-text.ts` for text and UI label generation, avoiding scattered `switch` or `if/else` statements branching on `question.id`.
+
+## 2025-02-26 - [Strategy Pattern for Question Instantiation]
+
+**Learning:** The initial setup for new map questions (setting defaults like `colour`, `radius`, `locked`) and checking their locked states was previously handled by massive `switch/if-else` blocks inside UI components like `AddQuestionDialog.tsx`, causing a leaky abstraction.
+**Action:** The codebase uses a centralized Registry (Strategy) pattern to manage logic that varies by map question type. Use `QUESTION_HANDLERS` in `src/maps/index.ts` for geospatial logic, draft creation (`createDraft`), and locked state checks (`isLocked`). Use `QUESTION_TEXT_HANDLERS` in `src/lib/question-text.ts` for text and UI label generation. Avoid scattered `switch` or `if/else` statements branching on `question.id`.
