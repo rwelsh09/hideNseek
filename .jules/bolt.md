@@ -48,7 +48,7 @@
 **Learning:** When a child component receives a newly allocated array as a prop (e.g., from `getFeatureCoords` which returns a new coordinate array every time), wrapping the component in `React.memo` will not prevent unnecessary re-renders. This is because React uses shallow reference equality by default.
 **Action:** Always provide a custom equality comparison function to `React.memo` that explicitly compares the primitive values (like `lat`/`lng` coordinates) when a component receives props that are newly allocated objects or arrays, ensuring memoization functions correctly.
 
-## 2024-05-24 - Avoid `turf.distance` and intermediate point creation in hot loops
+## 2026-07-28 - [Avoid `turf.distance` and intermediate point creation in hot loops]
 
 **Learning:** `turf.distance` requires creating valid GeoJSON `Point` features for every calculation. Inside hot loops (e.g., iterating through thousands of POI nodes during map zone initialization or closest-place lookups), allocating these intermediate objects causes excessive garbage collection and blocks the main thread, resulting in noticeable UI jank.
 **Action:** Replace `turf.distance` inside loops with the mathematical `fastDistance` utility (which accepts raw coordinate arrays) to skip object allocation, significantly reducing memory overhead and thread blocking.
