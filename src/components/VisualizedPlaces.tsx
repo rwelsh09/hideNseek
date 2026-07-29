@@ -288,7 +288,7 @@ export const VisualizedPlaces = () => {
 
         const stationsMarkers = shouldVisualizeStations
             ? $trainStations.map((station, i) => {
-                  const coords = getFeatureCoords(station);
+                  const coords = getFeatureCoords(station.properties);
 
                   if (!coords) return null;
 
