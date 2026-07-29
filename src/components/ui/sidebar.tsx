@@ -359,6 +359,7 @@ const RightSidebarTrigger = React.forwardRef<
                         "Configuring Game State after the game has started is not recommended.",
                         {
                             toastId: "configure-game-state-warning",
+                            autoClose: 4000,
                         }
                     );
                 }
