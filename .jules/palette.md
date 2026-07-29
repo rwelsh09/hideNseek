@@ -28,7 +28,7 @@
 **Learning:** Icon-only buttons with `aria-label` attributes are accessible to screen readers but can be confusing for sighted users, particularly mouse users, who rely on visual cues or tooltips to understand their purpose. Adding a `title` attribute matching the `aria-label` provides an immediate, accessible native hover tooltip for icon-only actions without the need to introduce additional DOM elements or tooltip libraries.
 **Action:** When adding or modifying icon-only buttons, always explicitly include a `title` attribute along with the `aria-label` so that users hovering with a mouse receive descriptive feedback on the action they're about to take.
 
-## 2026-07-28 - [Rules Quiz Accessibility Improvement]
+## 2024-06-25 - Rules Quiz Accessibility Improvement
 
 **Learning:** The quiz previously relied solely on color changes (green for correct, red for incorrect) to indicate the result of a selection. This violates WCAG 1.4.1 (Use of Color), causing accessibility issues for colorblind users and screen reader users who miss the purely visual state change.
 **Action:** Always ensure that critical state changes (like correct/incorrect validation feedback) are communicated through multiple channels: use color, but also include distinct icons (shape/symbol) and screen-reader only text (`sr-only`) to explicitly announce the state update to assistive technologies.

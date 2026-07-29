@@ -156,6 +156,10 @@ export const determineMatchBoundary = _.memoize(
                         boundary = safeUnion(
                             turf.featureCollection(matchPolygons as any),
                         );
+                        if (boundary) {
+                            if (!boundary.properties) boundary.properties = {};
+                            boundary.properties.letter = letter;
+                        }
                     }
                 }
                 break;
@@ -354,7 +358,13 @@ export const getMatchPlaceName = async (question: MatchQuestion) => {
         const boundary = await determineMatchBoundary(question);
         if (!boundary) return null;
 
-        const name = extractStationName(boundary) || (boundary.properties ? (boundary.properties.name || boundary.properties["name:en"]) : null);
+        let name = extractStationName(boundary) || (boundary.properties ? (boundary.properties.name || boundary.properties["name:en"]) : null);
+
+        if (!name && question.type === "same-first-letter-neighbourhood") {
+            const letter = boundary.properties?.letter;
+            if (letter) name = `Starts with ${letter}`;
+        }
+
         if (!name) return null;
 
         const place = PLACES.find((p) => p.id === question.type);

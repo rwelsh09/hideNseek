@@ -18,7 +18,17 @@
 **Learning:** Previously, state management (lock/collapse, penalties), derived state (`resultStr`, default labels), contextual display ("Tell the Seekers" `$hiderMode`), and question-specific actions (Rules, Share, Delete) were leaked into consumer components (like `closest`, `hot-cold`, etc.) or generic components (like `LatLngPicker`). This caused repetitive boilerplate and violated separation of concerns.
 **Action:** Always prefer to encapsulate shared UI state modifications, derived logic, and specific actions within the base component itself (`QuestionCard`) when the behavior is uniform across all its consumers or relies on shared context.
 
-## 2026-07-28 - [Registry Pattern for Map Questions]
+## 2026-07-20 - [Registry Pattern for Question Dispatch]
 
-**Learning:** The project previously relied on multiple parallel `switch` and `if-else` statements across different functions (e.g., in `src/maps/index.ts`, `base.tsx`, `question-text.ts`, `AddQuestionDialog.tsx`) to handle question-specific logic (dispatching, text handlers, state setup like `colour`, `radius`, `locked`), which violated the Open-Closed Principle and caused a leaky abstraction.
+**Learning:** The project previously relied on multiple parallel `switch` statements across different functions (e.g., in `src/maps/index.ts`) to handle question-specific logic, which violated the Open-Closed Principle and made adding new questions error-prone.
+**Action:** When adding or managing dispatch logic that varies by question type, use a centralized registry pattern (like `QUESTION_HANDLERS`) to encapsulate all related handler functions in a single object mapping.
+
+## 2026-07-28 - [Centralized Text Handlers]
+
+**Learning:** Adding new question types previously required updating multiple distinct UI switch/if-else chains (e.g., in `base.tsx` and `question-text.ts`) for rendering card labels, share text, and result strings, violating the Open-Closed Principle.
+**Action:** The codebase uses a centralized Registry (Strategy) pattern to manage logic that varies by map question type. Use `QUESTION_HANDLERS` in `src/maps/index.ts` for geospatial logic and `QUESTION_TEXT_HANDLERS` in `src/lib/question-text.ts` for text and UI label generation, avoiding scattered `switch` or `if/else` statements branching on `question.id`.
+
+## 2025-02-26 - [Strategy Pattern for Question Instantiation]
+
+**Learning:** The initial setup for new map questions (setting defaults like `colour`, `radius`, `locked`) and checking their locked states was previously handled by massive `switch/if-else` blocks inside UI components like `AddQuestionDialog.tsx`, causing a leaky abstraction.
 **Action:** The codebase uses a centralized Registry (Strategy) pattern to manage logic that varies by map question type. Use `QUESTION_HANDLERS` in `src/maps/index.ts` for geospatial logic, draft creation (`createDraft`), and locked state checks (`isLocked`). Use `QUESTION_TEXT_HANDLERS` in `src/lib/question-text.ts` for text and UI label generation. Avoid scattered `switch` or `if/else` statements branching on `question.id`.

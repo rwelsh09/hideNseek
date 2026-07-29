@@ -18,11 +18,11 @@
 **Learning:** Testing nanostores `atom` logic with custom setters using timeouts requires explicitly flushing fake timers `vi.runAllTimers()` and stepping through with `vi.advanceTimersByTime()`. Testing `matchMedia` requires a manual mock of `window.matchMedia` maintaining an internal list of listeners to manually call when triggering simulated DOM resize events.
 **Action:** Reuse this `mockMatchMedia` pattern when testing other responsive hooks. Use `vi.useFakeTimers()` systematically for any state variables applying throttling/debouncing.
 
-## 2026-07-23 - [Leaflet Testing in Vitest]
+## 2026-07-23 - Leaflet Testing in Vitest
 
 **Learning:** Leaflet requires `window` to be defined to load without crashing, even if we are only using its math functions like `L.point` or `L.latLng`.
 **Action:** Add `// @vitest-environment jsdom` to the top of any test file importing `leaflet`.
 
-## 2026-07-29 - [Zod Testing Gotchas]
+## 2024-07-29 - [Zod Testing Gotchas]
 **Learning:** `z.ZodEffects` is an interface/type in newer versions of Zod, not a runtime class, making `instanceof z.ZodEffects` fail with a `TypeError`. However, modifying the source code to fix this is forbidden when assigned to purely test a component as "Sentinel". Any runtime checks like that in the source must be left alone.
 **Action:** Only write tests for how the component actually behaves currently, and ensure to never patch or fix bugs in the source files during a strict Sentinel testing task unless explicitly authorized.
