@@ -204,9 +204,8 @@ export function RulesAccordion() {
                     </p>
                     <p className="italic mt-4 text-sm text-slate-400">
                         <small>
-                            (Note: The web app automatically calculates, tracks,
-                            and applies all Time Penalties as questions are
-                            locked).
+                            (Note: The app automatically calculates, tracks, and
+                            applies all Time Penalties as questions are locked).
                         </small>
                     </p>
                 </AccordionContent>
@@ -335,8 +334,8 @@ export function RulesAccordion() {
                             menu and enable Hider Mode. Place the green Map
                             Marker on your Hiding Spot (or on your station if
                             you haven&apos;t found your final Hiding Spot yet)
-                            and the web app will tell you what answer to give
-                            the Seekers.
+                            and the app will tell you what answer to give the
+                            Seekers.
                         </li>
                         <li>
                             <strong>Group Chat & Location Sharing:</strong> All

@@ -7,6 +7,6 @@ export const QUESTION_RULES: Record<string, string> = {
     measure:
         "Seekers ask if the Hider is closer to or farther from a specific type of place (e.g. Hospitals) than they are.",
     closest:
-        "Seekers select a category. The web app mathematically divides the map into distinct regions originating from the 5 closest locations to the Seekers' marker. The Hider must reveal which 'closest' (region) contains their location.",
+        "Seekers select a category. The app mathematically divides the map into distinct regions originating from the 5 closest locations to the Seekers' marker. The Hider must reveal which 'closest' (region) contains their location.",
     photo: "Seekers request a photograph from the Hider's current perspective. The photo must accurately represent their location without being intentionally misleading. The Hider may edit the photo to black out words.",
 };

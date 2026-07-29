@@ -63,7 +63,7 @@ const QUIZ_QUESTIONS = [
         question:
             "How are Time Penalties calculated when Seekers ask questions?",
         options: [
-            "The web app automatically calculates and applies them to the game clock.",
+            "The app automatically calculates and applies them to the game clock.",
             "The Seekers must manually subtract minutes on their phones.",
             "The Hider decides the penalty based on how helpful the answer is.",
             "There are no Time Penalties, ask away!",
