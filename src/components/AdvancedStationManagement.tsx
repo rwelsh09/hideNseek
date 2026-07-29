@@ -24,7 +24,7 @@ import {
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import { fastDistance, getFeatureCoords } from "@/maps/geo-utils";
-import { extractStationId, extractStationLabel } from "@/maps/geo-utils";
+import { extractStationId, extractStationLabel, extractStationLines } from "@/maps/geo-utils";
 
 import {
     Command,
@@ -56,6 +56,40 @@ export const AdvancedStationManagement = () => {
         [$disabledStations],
     );
 
+    const allLines = useMemo(() => {
+        const lines = new Set<string>();
+        stations.forEach((s) => {
+            const slines = extractStationLines(s);
+            slines.forEach((l) => lines.add(l));
+        });
+        return Array.from(lines).sort();
+    }, [stations]);
+
+    const disabledLines = useMemo(() => {
+        return allLines.filter((line) => {
+            const exclusiveStations = stations.filter((s) => {
+                const slines = extractStationLines(s);
+                return slines.length === 1 && slines[0] === line;
+            });
+            if (exclusiveStations.length === 0) {
+                const stationsOnLine = stations.filter((s) =>
+                    extractStationLines(s).includes(line),
+                );
+                return (
+                    stationsOnLine.length > 0 &&
+                    stationsOnLine.every((s) => {
+                        const id = extractStationId(s);
+                        return id && disabledStationsSet.has(id);
+                    })
+                );
+            }
+            return exclusiveStations.every((s) => {
+                const id = extractStationId(s);
+                return id && disabledStationsSet.has(id);
+            });
+        });
+    }, [allLines, stations, disabledStationsSet]);
+
     return (
         <AccordionItem value="advanced" className="border-none">
             <AccordionTrigger className="px-4 py-3 hover:bg-slate-50 dark:hover:bg-slate-900/50 text-sm font-medium">
@@ -84,6 +118,55 @@ export const AdvancedStationManagement = () => {
                 >
                     Disable All
                 </SidebarMenuItem>
+
+                {allLines.length > 0 && (
+                    <div className="flex flex-col mt-2 px-2 pb-2 border-b">
+                        <Label className="text-xs font-semibold text-muted-foreground uppercase mb-2">Transit Lines</Label>
+                        <div className="flex flex-col gap-1">
+                            {allLines.map((line) => {
+                                const isDisabled = disabledLines.includes(line);
+                                return (
+                                    <SidebarMenuItem
+                                        key={line}
+                                        className={cn(
+                                            "bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2 text-sm outline-none",
+                                            isDisabled && "line-through opacity-50"
+                                        )}
+                                        onClick={() => {
+                                            const isCurrentlyDisabled = disabledLines.includes(line);
+                                            const newDisabledLines = isCurrentlyDisabled
+                                                ? disabledLines.filter((l) => l !== line)
+                                                : [...disabledLines, line];
+
+                                            const newDisabledStationsSet = new Set(disabledStationsSet);
+
+                                            stations.forEach((station) => {
+                                                const stationLines = extractStationLines(station);
+                                                if (stationLines.length > 0 && stationLines.includes(line)) {
+                                                    const shouldBeDisabled = stationLines.every((l) => newDisabledLines.includes(l));
+                                                    const stationId = extractStationId(station);
+                                                    if (stationId) {
+                                                        if (shouldBeDisabled) {
+                                                            newDisabledStationsSet.add(stationId);
+                                                        } else {
+                                                            newDisabledStationsSet.delete(stationId);
+                                                        }
+                                                    }
+                                                }
+                                            });
+
+                                            disabledStations.set(Array.from(newDisabledStationsSet));
+                                        }}
+                                        disabled={$isLoading}
+                                    >
+                                        {line}
+                                    </SidebarMenuItem>
+                                );
+                            })}
+                        </div>
+                    </div>
+                )}
+
                 <div className="flex items-center gap-2 mt-2">
                     <SidebarMenuItem
                         className="bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2.5 text-sm outline-none data-[disabled=true]:pointer-events-none data-[selected='true']:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0"

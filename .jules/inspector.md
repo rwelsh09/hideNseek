@@ -17,3 +17,7 @@
 
 **Learning:** Some geospatial tests evaluate massive geometries (like a 1-point voronoi covering the earth) using absolute area comparisons with enormous integer thresholds (`turf.area(feature) <= 255000000000000`). These are brittle, hard to read, and can easily mask regressions where the function returns `0` or an unrelated shape.
 **Action:** Replace arbitrary area thresholds for global/massive shapes with bounding box assertions (`turf.bbox`) that assert the geometry actually spans the expected coordinates (e.g., `[-180, -90, 180, 90]`).
+
+## 2025-02-12 - Exposing Reference-Sharing Flaws in Nanostores Persistent Mocks
+**Learning:** When mocking `@nanostores/persistent` in Vitest to avoid writing to actual storage while preserving serialization checks, returning or internalizing the exact memory reference of the mutated object completely invalidates the test. It causes the test to pass even if the decoding logic is fundamentally broken, providing false confidence.
+**Action:** Always intercept the payload inside the mocked `set()` function, reassign `val = options.decode(options.encode(val))` to actually capture the transformation pipeline, and deeply clone the result (e.g., `JSON.parse(JSON.stringify(val))`) before committing it to the dummy store to simulate the natural boundaries of `localStorage`.

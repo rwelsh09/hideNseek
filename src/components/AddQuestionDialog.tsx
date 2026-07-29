@@ -1,10 +1,13 @@
 import { useStore } from "@nanostores/react";
-import * as turf from "@turf/turf";
 import { Plus } from "lucide-react";
 import { useState } from "react";
 
 import { LeftSidebarContext } from "@/components/ui/sidebar";
 import { addQuestion, leafletMapContext, questions } from "@/lib/context";
+import {
+    createDraftQuestionRegistry,
+    isQuestionLockedRegistry,
+} from "@/maps/index";
 
 import { ClosestSection } from "./add-question-menu/ClosestSection";
 import { HotColdSection } from "./add-question-menu/HotColdSection";
@@ -35,45 +38,7 @@ export function AddQuestionDialog({
 
     const $questions = useStore(questions);
     const isQuestionLocked = (type: string, detail?: string) => {
-        return $questions.some((q) => {
-            if (!q.data.locked) return false;
-
-            if (type === "radar" && q.id === "radar") {
-                const isCustom = detail === "unknown";
-                if (isCustom) return q.data.isCustom === true;
-                const radius = parseFloat(detail || "5");
-                return q.data.radius === radius && !q.data.isCustom;
-            }
-            if (type === "hot/cold" && q.id === "hot/cold") {
-                if (
-                    !q.data.lngA ||
-                    !q.data.latA ||
-                    !q.data.lngB ||
-                    !q.data.latB
-                )
-                    return false;
-                const dist = turf.distance(
-                    [q.data.lngA, q.data.latA],
-                    [q.data.lngB, q.data.latB],
-                    { units: "kilometers" },
-                );
-                const detailDist = parseFloat(detail || "5");
-                return Math.abs(dist - detailDist) < 0.1;
-            }
-            if (type === "match" && q.id === "match") {
-                return q.data.type === (detail || "museum");
-            }
-            if (type === "measure" && q.id === "measure") {
-                return q.data.type === (detail || "museum");
-            }
-            if (type === "closest" && q.id === "closest") {
-                return q.data.locationType === (detail || "museum");
-            }
-            if (type === "photo" && q.id === "photo") {
-                return q.data.type === (detail || "camera");
-            }
-            return false;
-        });
+        return isQuestionLockedRegistry($questions, type, detail);
     };
 
     const handleQuestionSelect = (type: string, detail?: string) => {
@@ -82,61 +47,16 @@ export function AddQuestionDialog({
         const center = map.getCenter();
         const key = Math.random();
 
-        let qId = type;
-        let qData: any = {
-            lat: center.lat,
-            lng: center.lng,
-            locked: false,
-            doubledPenalty: isQuestionLocked(type, detail),
-        };
+        const draft = createDraftQuestionRegistry(
+            type,
+            center,
+            detail,
+            isQuestionLocked(type, detail),
+        );
 
-        if (type === "radar") {
-            qId = "radar";
-            qData.radius = detail === "unknown" ? 5 : parseFloat(detail || "5");
-            qData.isCustom = detail === "unknown";
-            qData.unit = "kilometers";
-            qData.within = true;
-            qData.colour = "orange";
-        } else if (type === "match") {
-            qData.type = detail || "museum";
-            qData.same = true;
-            qData.colour = "red";
-        } else if (type === "measure") {
-            qData.type = detail || "museum";
-            qData.hiderCloser = true;
-            qData.colour = "green";
-        } else if (type === "hot/cold") {
-            const destination = turf.destination(
-                [center.lng, center.lat],
-                parseFloat(detail || "5"),
-                90,
-                { units: "kilometers" },
-            );
-            qData = {
-                latA: center.lat,
-                lngA: center.lng,
-                latB: destination.geometry.coordinates[1],
-                lngB: destination.geometry.coordinates[0],
-                warmer: true,
-                locked: false,
-                colourA: "gold",
-                colourB: "blue",
-                doubledPenalty: isQuestionLocked(type, detail),
-                minDistance: parseFloat(detail || "5"),
-            };
-        } else if (type === "closest") {
-            qData.locationType = detail || "museum";
-            qData.radius = 2;
-            qData.unit = "kilometers";
-            qData.colour = "violet";
-        } else if (type === "photo") {
-            qId = "photo";
-            qData.notes = "";
-            qData.type = detail || "camera";
-            qData.colour = "blue";
+        if (draft) {
+            addQuestion({ ...draft, key } as any);
         }
-
-        addQuestion({ id: qId as any, key, data: qData });
 
         editingQuestionId.set(key);
         draftQuestionId.set(key);

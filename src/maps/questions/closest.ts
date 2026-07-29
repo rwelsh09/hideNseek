@@ -215,3 +215,24 @@ export const closestPlanningPolygon = async (question: ClosestQuestion) => {
         ),
     );
 };
+
+export const isClosestLocked = (question: any, detail?: string) => {
+    return question.locationType === (detail || "museum");
+};
+
+export const createClosestDraft = (
+    center: any,
+    detail: string | undefined,
+    isLocked: boolean,
+) => {
+    return {
+        lat: center.lat,
+        lng: center.lng,
+        locked: false,
+        doubledPenalty: isLocked,
+        locationType: detail || "museum",
+        radius: 2,
+        unit: "kilometers",
+        colour: "violet",
+    };
+};
