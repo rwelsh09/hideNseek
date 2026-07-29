@@ -11,30 +11,40 @@ vi.mock("@/maps/questions/radar", () => ({
     adjustPerRadar: vi.fn(),
     hiderifyRadar: vi.fn(),
     radarPlanningPolygon: vi.fn(),
+    isRadarLocked: vi.fn(),
+    createRadarDraft: vi.fn(),
 }));
 
 vi.mock("@/maps/questions/closest", () => ({
     adjustPerClosest: vi.fn(),
     hiderifyClosest: vi.fn(),
     closestPlanningPolygon: vi.fn(),
+    isClosestLocked: vi.fn(),
+    createClosestDraft: vi.fn(),
 }));
 
 vi.mock("@/maps/questions/hot-cold", () => ({
     adjustPerHotCold: vi.fn(),
     hiderifyHotCold: vi.fn(),
     hotColdPlanningPolygon: vi.fn(),
+    isHotColdLocked: vi.fn(),
+    createHotColdDraft: vi.fn(),
 }));
 
 vi.mock("@/maps/questions/match", () => ({
     adjustPerMatch: vi.fn(),
     hiderifyMatch: vi.fn(),
     matchPlanningPolygon: vi.fn(),
+    isMatchLocked: vi.fn(),
+    createMatchDraft: vi.fn(),
 }));
 
 vi.mock("@/maps/questions/measure", () => ({
     adjustPerMeasure: vi.fn(),
     hiderifyMeasure: vi.fn(),
     measurePlanningPolygon: vi.fn(),
+    isMeasureLocked: vi.fn(),
+    createMeasureDraft: vi.fn(),
 }));
 
 describe("maps/index dispatcher", () => {
