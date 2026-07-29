@@ -3,6 +3,7 @@ import type { Feature, FeatureCollection, MultiPolygon } from "geojson";
 
 import calgaryBoundaryData from "@/data/calgary_boundary.json";
 import { mapGeoJSON, polyGeoJSON } from "@/lib/context";
+import { fastDistance } from "@/maps/geo-utils";
 import { PLACES } from "@/maps/placesConfig";
 
 import { LOCATION_FIRST_TAG } from "./constants";
@@ -28,7 +29,6 @@ export const findClosestLocations = async (question: any, text?: string) => {
     }
     const elements = data.elements || [];
     const response = turf.points([]);
-    const centerPoint = turf.point([question.lng, question.lat]);
 
     const radiusInMeters = 50000;
 
@@ -64,10 +64,8 @@ export const findClosestLocations = async (question: any, text?: string) => {
             return;
         }
 
-        const pt = turf.point([ptLon, ptLat]);
-        const distance = turf.distance(centerPoint, pt, {
-            units: "meters",
-        });
+        const distance =
+            fastDistance([question.lng, question.lat], [ptLon, ptLat]) * 1000;
 
         const coordKey = `${ptLon.toFixed(4)},${ptLat.toFixed(4)}`;
         if (seenCoords.has(coordKey)) return;

@@ -44,20 +44,16 @@ vi.mock("@nanostores/persistent", async () => {
                         try {
                             if (options?.encode) {
                                 // Encode then decode to test the full serialization cycle
-                                options.decode(options.encode(val));
+                                val = options.decode(options.encode(val));
                             } else {
-                                options.decode(
-                                    typeof val === "object"
-                                        ? JSON.stringify(val)
-                                        : val,
-                                );
+                                val = options.decode(typeof val === "object" ? JSON.stringify(val) : val);
                             }
                         } catch (e) {
                             // If it's the default empty array from init, ignore Zod schema validation
                             if (Array.isArray(val) && val.length > 0) throw e;
                         }
                     }
-                    internalStore.set(val);
+                    internalStore.set(val === undefined ? undefined : typeof val === "object" ? JSON.parse(JSON.stringify(val)) : val);
                 },
             };
         },
