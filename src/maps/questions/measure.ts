@@ -238,3 +238,23 @@ export const calculateMeasureDistance = async (
 
     return null;
 };
+
+export const isMeasureLocked = (question: any, detail?: string) => {
+    return question.type === (detail || "museum");
+};
+
+export const createMeasureDraft = (
+    center: any,
+    detail: string | undefined,
+    isLocked: boolean,
+) => {
+    return {
+        lat: center.lat,
+        lng: center.lng,
+        locked: false,
+        doubledPenalty: isLocked,
+        type: detail || "museum",
+        hiderCloser: true,
+        colour: "green",
+    };
+};
