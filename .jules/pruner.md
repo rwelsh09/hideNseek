@@ -28,7 +28,7 @@
 **Learning:** `knip` will flag `persistentJsonAtom` in `src/lib/context.ts` as an unused export. However, the function is used internally within that file.
 **Action:** When pruning "dead" exports, if the export is still used within the file, restrict its scope by simply removing the `export` keyword rather than deleting the function entirely, and ensure it is not used elsewhere in the project before doing so.
 
-## 2026-06-25 - Unused QuestionCard exports
+## 2026-07-28 - [Unused QuestionCard exports]
 
 **Learning:** `knip` reported `ClosestQuestionComponent` etc. as unused exports in `src/components/QuestionCards.tsx`. Looking at the code, they were indeed exported for no reason. I removed the export statements but kept the imports since they are used inside `QUESTION_COMPONENTS`. This didn't trigger any cascading unused import issues.
 **Action:** Always carefully check if an export is really unused, and make sure that removing an export doesn't leave an unused import behind, unless the imported item is used in the same file.
@@ -38,12 +38,7 @@
 **Learning:** When removing a potentially unused `devDependency` (e.g., `workbox-window`), explicitly verify it's unused using tools like `grep` and ensure the full test suite (`pnpm test`) continues to pass. Wait for user confirmation before deleting dependencies, as they may be used in un-scanned builds. Furthermore, Astro's `vite-plugin-pwa` runtime relies on `workbox-window` during the production `astro build`, causing CI to fail if removed.
 **Action:** Do not blindly delete `workbox-window`. If a `devDependency` is flagged as unused but seems related to a framework integration (like PWA), always verify it by running the production build (`pnpm run build`) in addition to unit tests before declaring it dead.
 
-## 2026-07-26 - [Removing Internal Export Keywords]
+## 2026-07-28 - [Removing Internal Export Keywords]
 
-**Learning:** `ts-prune` correctly identifies exported types and interfaces (like `LeaderboardEntry` in `src/lib/context.ts` or `ShareDataOptions` in `src/lib/utils.ts`) that are only ever used internally within the declaring file.
-**Action:** Do not delete these types. Instead, remove the `export` keyword to restrict their scope and minimize the public API surface safely.
-
-## 2026-07-27 - [Removing Internal Export Keywords]
-
-**Learning:** `knip` correctly identifies exported variables and functions (like `TYPE_MAPPINGS` and `getPlaceLabel` in `src/lib/question-text.ts`) that are only ever used internally within the declaring file.
-**Action:** Do not delete these functions. Instead, remove the `export` keyword to restrict their scope and minimize the public API surface safely.
+**Learning:** `ts-prune` and `knip` correctly identify exported variables, types, interfaces, and functions (like `LeaderboardEntry` in `src/lib/context.ts`, `ShareDataOptions` in `src/lib/utils.ts`, `TYPE_MAPPINGS`, and `getPlaceLabel` in `src/lib/question-text.ts`) that are only ever used internally within the declaring file.
+**Action:** Do not delete these functions, types, variables or interfaces. Instead, remove the `export` keyword to restrict their scope and minimize the public API surface safely.
