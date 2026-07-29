@@ -48,3 +48,28 @@ export const radarPlanningPolygon = async (question: RadarQuestion) => {
 
     return turf.polygonToLine(circle);
 };
+
+export const isRadarLocked = (question: any, detail?: string) => {
+    const isCustom = detail === "unknown";
+    if (isCustom) return question.isCustom === true;
+    const radius = parseFloat(detail || "5");
+    return question.radius === radius && !question.isCustom;
+};
+
+export const createRadarDraft = (
+    center: any,
+    detail: string | undefined,
+    isLocked: boolean,
+) => {
+    return {
+        lat: center.lat,
+        lng: center.lng,
+        locked: false,
+        doubledPenalty: isLocked,
+        radius: detail === "unknown" ? 5 : parseFloat(detail || "5"),
+        isCustom: detail === "unknown",
+        unit: "kilometers",
+        within: true,
+        colour: "orange",
+    };
+};
