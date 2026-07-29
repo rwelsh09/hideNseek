@@ -64,8 +64,6 @@ export const findClosestLocations = async (question: any, text?: string) => {
             return;
         }
 
-        // Optimization: Replace turf.distance and turf.point instantiation with fastDistance to avoid creating
-        // unused GeoJSON objects for thousands of points, significantly reducing main thread blocking and memory overhead.
         const distance =
             fastDistance([question.lng, question.lat], [ptLon, ptLat]) * 1000;
 

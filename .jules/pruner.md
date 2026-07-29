@@ -42,7 +42,6 @@
 
 **Learning:** `ts-prune` correctly identifies exported types and interfaces (like `LeaderboardEntry` in `src/lib/context.ts` or `ShareDataOptions` in `src/lib/utils.ts`) that are only ever used internally within the declaring file.
 **Action:** Do not delete these types. Instead, remove the `export` keyword to restrict their scope and minimize the public API surface safely.
-
 ## 2026-07-27 - [Removing Internal Export Keywords]
 
 **Learning:** `knip` correctly identifies exported variables and functions (like `TYPE_MAPPINGS` and `getPlaceLabel` in `src/lib/question-text.ts`) that are only ever used internally within the declaring file.
