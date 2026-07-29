@@ -7,41 +7,38 @@ describe("getSchemaOptions", () => {
         const schema = z.union([z.literal("a"), z.literal("b")]);
         expect(getSchemaOptions(schema)).toEqual({
             a: "a",
-            b: "b"
+            b: "b",
         });
     });
 
     it("should use the description if provided on literals", () => {
         const schema = z.union([
             z.literal("a").describe("Letter A"),
-            z.literal("b").describe("Letter B")
+            z.literal("b").describe("Letter B"),
         ]);
         expect(getSchemaOptions(schema)).toEqual({
             a: "Letter A",
-            b: "Letter B"
+            b: "Letter B",
         });
     });
 
     it("should handle nested unions", () => {
         const schema = z.union([
             z.union([z.literal("a"), z.literal("b")]),
-            z.literal("c")
+            z.literal("c"),
         ]);
         expect(getSchemaOptions(schema)).toEqual({
             a: "a",
             b: "b",
-            c: "c"
+            c: "c",
         });
     });
 
     it("should handle ZodDefault", () => {
-        const schema = z.union([
-            z.literal("a"),
-            z.literal("b")
-        ]).default("a");
+        const schema = z.union([z.literal("a"), z.literal("b")]).default("a");
         expect(getSchemaOptions(schema)).toEqual({
             a: "a",
-            b: "b"
+            b: "b",
         });
     });
 });

@@ -19,5 +19,6 @@
 **Action:** Replace arbitrary area thresholds for global/massive shapes with bounding box assertions (`turf.bbox`) that assert the geometry actually spans the expected coordinates (e.g., `[-180, -90, 180, 90]`).
 
 ## 2026-07-28 - [Exposing Reference-Sharing Flaws in Nanostores Persistent Mocks]
+
 **Learning:** When mocking `@nanostores/persistent` in Vitest to avoid writing to actual storage while preserving serialization checks, returning or internalizing the exact memory reference of the mutated object completely invalidates the test. It causes the test to pass even if the decoding logic is fundamentally broken, providing false confidence.
 **Action:** Always intercept the payload inside the mocked `set()` function, reassign `val = options.decode(options.encode(val))` to actually capture the transformation pipeline, and deeply clone the result (e.g., `JSON.parse(JSON.stringify(val))`) before committing it to the dummy store to simulate the natural boundaries of `localStorage`.
