@@ -101,7 +101,8 @@ export const VisualizedPlaces = () => {
 
             if (
                 data.type === "same-first-letter-station" ||
-                data.type === "same-length-station"
+                data.type === "same-length-station" ||
+                data.type === "rail-measure"
             ) {
                 shouldVisualizeStations = true;
             }
