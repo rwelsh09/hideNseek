@@ -8,7 +8,7 @@
 **Learning:** This project strictly uses Title Case for game-specific terms like "Hiding Zone", "Head Start", and "Time Penalty". Additionally, running the global `pnpm lint` command acts as a formatter (`prettier --write`) which aggressively modifies untargeted files (like `package.json`).
 **Action:** Capitalize game terms correctly across the codebase. When doing localized copy-editing, avoid running `pnpm lint` to prevent noisy, untargeted formatting diffs. Rely on `pnpm test` and targeted tools like `npx eslint src`.
 
-## 2024-07-27 - Consistency and Grammar Fixes
+## 2026-07-28 - [Consistency and Grammar Fixes]
 
 **Learning:** Fixed grammar, spelling, and missing commas in tutorials and rule text. Maintained Canadian spellings (colour, neighbourhood). Discovered that Start as Seeker should be Start as a Seeker.
 **Action:** Always verify if Canadian/British English spellings are correct based on the context before making changes. Avoid committing local development logs like pnpm_dev.log.
