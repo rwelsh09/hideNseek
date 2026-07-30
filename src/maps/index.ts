@@ -39,6 +39,19 @@ import type { Question, Questions } from "./schema";
 
 export * from "./geo-utils";
 
+const standardGetDraggablePoints = (data: any) => [
+    {
+        keySuffix: "",
+        lat: data.lat,
+        lng: data.lng,
+        colour: data.colour,
+        update: (d: any, lat: number, lng: number) => {
+            d.lat = lat;
+            d.lng = lng;
+        },
+    },
+];
+
 export const QUESTION_HANDLERS: Record<
     Question["id"],
     {
@@ -51,6 +64,13 @@ export const QUESTION_HANDLERS: Record<
             detail: string | undefined,
             isLocked: boolean,
         ) => any;
+        getDraggablePoints?: (data: any) => {
+            keySuffix: string;
+            lat: number;
+            lng: number;
+            colour: string;
+            update: (data: any, lat: number, lng: number) => void;
+        }[];
     }
 > = {
     radar: {
@@ -59,6 +79,7 @@ export const QUESTION_HANDLERS: Record<
         adjust: adjustPerRadar,
         isLocked: isRadarLocked,
         createDraft: createRadarDraft,
+        getDraggablePoints: standardGetDraggablePoints,
     },
     "hot/cold": {
         hiderify: hiderifyHotCold,
@@ -66,6 +87,28 @@ export const QUESTION_HANDLERS: Record<
         adjust: adjustPerHotCold,
         isLocked: isHotColdLocked,
         createDraft: createHotColdDraft,
+        getDraggablePoints: (data: any) => [
+            {
+                keySuffix: "a",
+                lat: data.latA,
+                lng: data.lngA,
+                colour: data.colourA,
+                update: (d: any, lat: number, lng: number) => {
+                    d.latA = lat;
+                    d.lngA = lng;
+                },
+            },
+            {
+                keySuffix: "b",
+                lat: data.latB,
+                lng: data.lngB,
+                colour: data.colourB,
+                update: (d: any, lat: number, lng: number) => {
+                    d.latB = lat;
+                    d.lngB = lng;
+                },
+            },
+        ],
     },
     closest: {
         hiderify: hiderifyClosest,
@@ -78,6 +121,7 @@ export const QUESTION_HANDLERS: Record<
         },
         isLocked: isClosestLocked,
         createDraft: createClosestDraft,
+        getDraggablePoints: standardGetDraggablePoints,
     },
     match: {
         hiderify: hiderifyMatch,
@@ -85,6 +129,7 @@ export const QUESTION_HANDLERS: Record<
         adjust: adjustPerMatch,
         isLocked: isMatchLocked,
         createDraft: createMatchDraft,
+        getDraggablePoints: standardGetDraggablePoints,
     },
     measure: {
         hiderify: hiderifyMeasure,
@@ -92,6 +137,7 @@ export const QUESTION_HANDLERS: Record<
         adjust: adjustPerMeasure,
         isLocked: isMeasureLocked,
         createDraft: createMeasureDraft,
+        getDraggablePoints: standardGetDraggablePoints,
     },
     photo: {
         hiderify: (data: any) => data,
@@ -112,7 +158,16 @@ export const QUESTION_HANDLERS: Record<
             type: detail || "camera",
             colour: "blue",
         }),
+        getDraggablePoints: standardGetDraggablePoints,
     },
+};
+
+export const getDraggablePointsRegistry = (question: any) => {
+    const handler = QUESTION_HANDLERS[question.id as Question["id"]];
+    if (handler && handler.getDraggablePoints) {
+        return handler.getDraggablePoints(question.data);
+    }
+    return [];
 };
 
 export const isQuestionLockedRegistry = (
