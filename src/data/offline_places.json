@@ -9436,7 +9436,7 @@
                 "addr:province": "AB",
                 "addr:street": "Ranchview Drive NW",
                 "amenity": "pub",
-                "description": "Welcome to Stonewall-Pub, Calgary! Your ultimate destination for all things fabulous. Whether you're seeking a night of celebration or a casual outing with friends, our pub is where you'll unwind and make unforgettable memories. Come experience the perfec",
+                "description": "Welcome to Stonewall-Pub, Calgary! Your ultimate destination for all things fabulous. Whether you're seeking a night of celebration or a casual outing with friends, our pub is where you'll unwind and make unforgettable memories. Come experience the perfect",
                 "email": "ramesh@stonewallpub.ca",
                 "food": "yes",
                 "name": "Stonewall Pub",
@@ -32009,7 +32009,7 @@
                 "building": "yes",
                 "cuisine": "coffee_shop",
                 "name": "Tim Hortons",
-                "note": "City of Calgary rooflines - aquisition date - 2024-06-12T22:39:34.000Z",
+                "note": "City of Calgary rooflines - acquisition date - 2024-06-12T22:39:34.000Z",
                 "takeaway": "yes"
             }
         },
@@ -32101,7 +32101,7 @@
                 "building": "retail",
                 "building:levels": "1",
                 "name": "7-Eleven",
-                "note": "City of Calgary rooflines - aquisition date - 2024-06-12T22:39:34.000Z",
+                "note": "City of Calgary rooflines - acquisition date - 2024-06-12T22:39:34.000Z",
                 "shop": "convenience",
                 "website": "https://stores.7-eleven.ca/store/26509"
             }
@@ -32198,7 +32198,7 @@
                 "amenity": "fire_station",
                 "building": "yes",
                 "name": "Fire Station 8 (Rosscarrock)",
-                "note": "City of Calgary rooflines - aquisition date - 2024-06-12T22:39:34.000Z",
+                "note": "City of Calgary rooflines - acquisition date - 2024-06-12T22:39:34.000Z",
                 "operator": "City of Calgary",
                 "operator:wikidata": "Q5019670",
                 "operator:wikipedia": "en:Calgary Fire Department"
@@ -32298,7 +32298,7 @@
                 "delivery": "no",
                 "drive_through": "yes",
                 "name": "Tim Hortons",
-                "note": "City of Calgary rooflines - aquisition date - 2024-06-12T22:39:34.000Z",
+                "note": "City of Calgary rooflines - acquisition date - 2024-06-12T22:39:34.000Z",
                 "outdoor_seating": "yes",
                 "smoking": "outside",
                 "takeaway": "yes"
