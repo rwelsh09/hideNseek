@@ -19,12 +19,16 @@ vi.mock("../../../src/maps/api", () => ({
     findClosestLocations: vi.fn(),
 }));
 
-vi.mock("../../../src/maps/geo-utils", () => ({
-    arcBuffer: vi.fn(),
-    geoSpatialVoronoi: vi.fn(),
-    getFeatureCoords: vi.fn((feature) => feature.geometry?.coordinates),
-    safeUnion: vi.fn((data) => data),
-}));
+vi.mock("../../../src/maps/geo-utils", async (importOriginal) => {
+    const actual = await importOriginal<typeof import("../../../src/maps/geo-utils")>();
+    return {
+        ...actual,
+        arcBuffer: vi.fn(),
+        geoSpatialVoronoi: vi.fn(),
+        getFeatureCoords: vi.fn((feature) => feature.geometry?.coordinates),
+        safeUnion: vi.fn((data) => data),
+    };
+});
 
 vi.mock("../../../src/lib/context", () => ({
     hiderMode: {
