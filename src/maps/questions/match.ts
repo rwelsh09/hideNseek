@@ -158,7 +158,7 @@ export const determineMatchBoundary = _.memoize(
                         );
                         if (boundary) {
                             if (!boundary.properties) boundary.properties = {};
-                            boundary.properties.letter = letter;
+                            boundary.properties.name = hiderEnglishName;
                         }
                     }
                 }
@@ -358,12 +358,7 @@ export const getMatchPlaceName = async (question: MatchQuestion) => {
         const boundary = await determineMatchBoundary(question);
         if (!boundary) return null;
 
-        let name = extractStationName(boundary) || (boundary.properties ? (boundary.properties.name || boundary.properties["name:en"]) : null);
-
-        if (!name && question.type === "same-first-letter-neighbourhood") {
-            const letter = boundary.properties?.letter;
-            if (letter) name = `Starts with ${letter}`;
-        }
+        const name = extractStationName(boundary) || (boundary.properties ? (boundary.properties.name || boundary.properties["name:en"]) : null);
 
         if (!name) return null;
 
