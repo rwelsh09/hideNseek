@@ -358,16 +358,24 @@ export const getMatchPlaceName = async (question: MatchQuestion) => {
         const boundary = await determineMatchBoundary(question);
         if (!boundary) return null;
 
-        const name = extractStationName(boundary) || (boundary.properties ? (boundary.properties.name || boundary.properties["name:en"]) : null);
+        const name =
+            extractStationName(boundary) ||
+            (boundary.properties
+                ? boundary.properties.name || boundary.properties["name:en"]
+                : null);
 
         if (!name) return null;
 
         const place = PLACES.find((p) => p.id === question.type);
-        if (place && question.type !== "same-neighbourhood" && question.type !== "same-first-letter-neighbourhood") {
+        if (
+            place &&
+            question.type !== "same-neighbourhood" &&
+            question.type !== "same-first-letter-neighbourhood"
+        ) {
             return `${name} (${place.label})`;
         }
         return name;
     } catch {
         return null;
     }
-}
+};
