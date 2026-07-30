@@ -5,6 +5,7 @@ import { atom } from "nanostores";
 import * as React from "react";
 import { GrConfigure } from "react-icons/gr";
 import { TbMessage2Question } from "react-icons/tb";
+import { toast } from "react-toastify";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -18,9 +19,8 @@ import {
     TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { useIsMobile } from "@/hooks/use-mobile";
-import { cn } from "@/lib/utils";
 import { isTimerRunning, timerStartTimestamp } from "@/lib/context";
-import { toast } from "react-toastify";
+import { cn } from "@/lib/utils";
 
 const SIDEBAR_COOKIE_NAME = "sidebar:state";
 const SIDEBAR_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
@@ -360,7 +360,7 @@ const RightSidebarTrigger = React.forwardRef<
                         {
                             toastId: "configure-game-state-warning",
                             autoClose: 4000,
-                        }
+                        },
                     );
                 }
                 onClick?.(event);

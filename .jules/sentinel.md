@@ -24,5 +24,6 @@
 **Action:** Add `// @vitest-environment jsdom` to the top of any test file importing `leaflet`.
 
 ## 2026-07-29 - [Zod Testing Gotchas]
+
 **Learning:** `z.ZodEffects` is an interface/type in newer versions of Zod, not a runtime class, making `instanceof z.ZodEffects` fail with a `TypeError`. However, modifying the source code to fix this is forbidden when assigned to purely test a component as "Sentinel". Any runtime checks like that in the source must be left alone.
 **Action:** Only write tests for how the component actually behaves currently, and ensure to never patch or fix bugs in the source files during a strict Sentinel testing task unless explicitly authorized.

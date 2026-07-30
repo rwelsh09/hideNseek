@@ -24,7 +24,11 @@ import {
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
 import { fastDistance, getFeatureCoords } from "@/maps/geo-utils";
-import { extractStationId, extractStationLabel, extractStationLines } from "@/maps/geo-utils";
+import {
+    extractStationId,
+    extractStationLabel,
+    extractStationLines,
+} from "@/maps/geo-utils";
 
 import {
     Command,
@@ -121,7 +125,9 @@ export const AdvancedStationManagement = () => {
 
                 {allLines.length > 0 && (
                     <div className="flex flex-col mt-2 px-2 pb-2 border-b">
-                        <Label className="text-xs font-semibold text-muted-foreground uppercase mb-2">Transit Lines</Label>
+                        <Label className="text-xs font-semibold text-muted-foreground uppercase mb-2">
+                            Transit Lines
+                        </Label>
                         <div className="flex flex-col gap-1">
                             {allLines.map((line) => {
                                 const isDisabled = disabledLines.includes(line);
@@ -130,32 +136,61 @@ export const AdvancedStationManagement = () => {
                                         key={line}
                                         className={cn(
                                             "bg-popover hover:bg-accent relative flex cursor-pointer gap-2 select-none items-center rounded-sm px-2 py-2 text-sm outline-none",
-                                            isDisabled && "line-through opacity-50"
+                                            isDisabled &&
+                                                "line-through opacity-50",
                                         )}
                                         onClick={() => {
-                                            const isCurrentlyDisabled = disabledLines.includes(line);
-                                            const newDisabledLines = isCurrentlyDisabled
-                                                ? disabledLines.filter((l) => l !== line)
-                                                : [...disabledLines, line];
+                                            const isCurrentlyDisabled =
+                                                disabledLines.includes(line);
+                                            const newDisabledLines =
+                                                isCurrentlyDisabled
+                                                    ? disabledLines.filter(
+                                                          (l) => l !== line,
+                                                      )
+                                                    : [...disabledLines, line];
 
-                                            const newDisabledStationsSet = new Set(disabledStationsSet);
+                                            const newDisabledStationsSet =
+                                                new Set(disabledStationsSet);
 
                                             stations.forEach((station) => {
-                                                const stationLines = extractStationLines(station);
-                                                if (stationLines.length > 0 && stationLines.includes(line)) {
-                                                    const shouldBeDisabled = stationLines.every((l) => newDisabledLines.includes(l));
-                                                    const stationId = extractStationId(station);
+                                                const stationLines =
+                                                    extractStationLines(
+                                                        station,
+                                                    );
+                                                if (
+                                                    stationLines.length > 0 &&
+                                                    stationLines.includes(line)
+                                                ) {
+                                                    const shouldBeDisabled =
+                                                        stationLines.every(
+                                                            (l) =>
+                                                                newDisabledLines.includes(
+                                                                    l,
+                                                                ),
+                                                        );
+                                                    const stationId =
+                                                        extractStationId(
+                                                            station,
+                                                        );
                                                     if (stationId) {
                                                         if (shouldBeDisabled) {
-                                                            newDisabledStationsSet.add(stationId);
+                                                            newDisabledStationsSet.add(
+                                                                stationId,
+                                                            );
                                                         } else {
-                                                            newDisabledStationsSet.delete(stationId);
+                                                            newDisabledStationsSet.delete(
+                                                                stationId,
+                                                            );
                                                         }
                                                     }
                                                 }
                                             });
 
-                                            disabledStations.set(Array.from(newDisabledStationsSet));
+                                            disabledStations.set(
+                                                Array.from(
+                                                    newDisabledStationsSet,
+                                                ),
+                                            );
                                         }}
                                         disabled={$isLoading}
                                     >
