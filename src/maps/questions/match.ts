@@ -156,6 +156,10 @@ export const determineMatchBoundary = _.memoize(
                         boundary = safeUnion(
                             turf.featureCollection(matchPolygons as any),
                         );
+                        if (boundary) {
+                            if (!boundary.properties) boundary.properties = {};
+                            boundary.properties.name = hiderEnglishName;
+                        }
                     }
                 }
                 break;
@@ -323,3 +327,47 @@ export const createMatchDraft = (
         colour: "red",
     };
 };
+
+export const getMatchPlaceName = async (question: MatchQuestion) => {
+    if (
+        question.type === "same-first-letter-station" ||
+        question.type === "same-length-station" ||
+        question.type === "same-train-line"
+    ) {
+        const places =
+            calgaryTransitData as unknown as FeatureCollection<Point>;
+
+        const seekerPoint = turf.point([question.lng, question.lat]);
+        const nearestSeekerStation = turf.nearestPoint(seekerPoint, places);
+
+        const seekerEnglishName = extractStationName(nearestSeekerStation);
+
+        if (!seekerEnglishName) {
+            return null;
+        }
+
+        if (question.type === "same-train-line") {
+            const lines = extractStationLines(nearestSeekerStation);
+            return `${seekerEnglishName} (${lines.join(", ")})`;
+        }
+
+        return seekerEnglishName;
+    }
+
+    try {
+        const boundary = await determineMatchBoundary(question);
+        if (!boundary) return null;
+
+        const name = extractStationName(boundary) || (boundary.properties ? (boundary.properties.name || boundary.properties["name:en"]) : null);
+
+        if (!name) return null;
+
+        const place = PLACES.find((p) => p.id === question.type);
+        if (place && question.type !== "same-neighbourhood" && question.type !== "same-first-letter-neighbourhood") {
+            return `${name} (${place.label})`;
+        }
+        return name;
+    } catch {
+        return null;
+    }
+}

@@ -13,6 +13,7 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import { cn } from "@/lib/utils";
+import { getMatchPlaceName } from "@/maps/questions/match";
 import {
     getSchemaOptions,
     type MatchQuestion,
@@ -35,6 +36,20 @@ export const MatchQuestionComponent = ({
     useStore(triggerLocalRefresh);
     const $hiderMode = useStore(hiderMode);
     const $isLoading = useStore(isLoading);
+    const [placeName, setPlaceName] = React.useState<string | null>(null);
+    React.useEffect(() => {
+        let active = true;
+        getMatchPlaceName(data)
+            .then((name) => {
+                if (active) setPlaceName(name);
+            })
+            .catch(() => {
+                if (active) setPlaceName(null);
+            });
+        return () => {
+            active = false;
+        };
+    }, [data.lat, data.lng, data.type]);
 
     return (
         <QuestionCard
@@ -81,6 +96,14 @@ export const MatchQuestionComponent = ({
                 }}
                 disabled={data.locked || $isLoading}
             />
+            {placeName !== null && (
+                <div className="px-2 text-sm text-muted-foreground">
+                    Name:{" "}
+                    <span className="font-medium text-foreground">
+                        {placeName}
+                    </span>
+                </div>
+            )}
             <div
                 className={cn(
                     "flex gap-2 items-center p-2 flex-wrap",
