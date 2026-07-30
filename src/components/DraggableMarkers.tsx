@@ -1,6 +1,7 @@
 import { useStore } from "@nanostores/react";
 import { type DragEndEvent, Icon } from "leaflet";
 import { Target, X } from "lucide-react";
+import { getDraggablePointsRegistry } from "@/maps/index";
 import { atom } from "nanostores";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
@@ -155,70 +156,33 @@ export const DraggableMarkers = () => {
             {$questions.map((question) => {
                 if (!question.data || question.data.locked) return null;
 
-                switch (question.id) {
-                    case "radar":
-                    case "closest":
-                    case "match":
-                    case "photo":
-                    case "measure":
-                        return (
+                const points = getDraggablePointsRegistry(question);
+
+                if (!points || points.length === 0) return null;
+
+                return (
+                    <Fragment key={question.key}>
+                        {points.map((point: any) => (
                             <ColouredMarker
-                                colour={question.data.colour}
-                                key={question.key}
-                                latitude={question.data.lat}
-                                longitude={question.data.lng}
+                                colour={point.colour}
+                                key={point.keySuffix + question.key.toString()}
+                                latitude={point.lat}
+                                longitude={point.lng}
                                 onClick={() =>
                                     editingQuestionId.set(question.key)
                                 }
                                 onChange={(e) => {
-                                    question.data.lat =
-                                        e.target.getLatLng().lat;
-                                    question.data.lng =
-                                        e.target.getLatLng().lng;
+                                    point.update(
+                                        question.data,
+                                        e.target.getLatLng().lat,
+                                        e.target.getLatLng().lng,
+                                    );
                                     questionModified();
                                 }}
                             />
-                        );
-                    case "hot/cold":
-                        return (
-                            <Fragment key={question.key}>
-                                <ColouredMarker
-                                    colour={question.data.colourA}
-                                    key={"a" + question.key.toString()}
-                                    latitude={question.data.latA}
-                                    longitude={question.data.lngA}
-                                    onClick={() =>
-                                        editingQuestionId.set(question.key)
-                                    }
-                                    onChange={(e) => {
-                                        question.data.latA =
-                                            e.target.getLatLng().lat;
-                                        question.data.lngA =
-                                            e.target.getLatLng().lng;
-                                        questionModified();
-                                    }}
-                                />
-                                <ColouredMarker
-                                    colour={question.data.colourB}
-                                    key={"b" + question.key.toString()}
-                                    latitude={question.data.latB}
-                                    longitude={question.data.lngB}
-                                    onClick={() =>
-                                        editingQuestionId.set(question.key)
-                                    }
-                                    onChange={(e) => {
-                                        question.data.latB =
-                                            e.target.getLatLng().lat;
-                                        question.data.lngB =
-                                            e.target.getLatLng().lng;
-                                        questionModified();
-                                    }}
-                                />
-                            </Fragment>
-                        );
-                    default:
-                        return null;
-                }
+                        ))}
+                    </Fragment>
+                );
             })}
 
             {/* 2. RENDER THE GLOBAL FLOATING PANEL (Replaces the blocking Dialog) */}
