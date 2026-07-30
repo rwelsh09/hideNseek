@@ -1,7 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { type DragEndEvent, Icon } from "leaflet";
 import { Target, X } from "lucide-react";
-import { getDraggablePointsRegistry } from "@/maps/index";
 import { atom } from "nanostores";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
@@ -156,33 +155,70 @@ export const DraggableMarkers = () => {
             {$questions.map((question) => {
                 if (!question.data || question.data.locked) return null;
 
-                const points = getDraggablePointsRegistry(question);
-
-                if (!points || points.length === 0) return null;
-
-                return (
-                    <Fragment key={question.key}>
-                        {points.map((point: any) => (
+                switch (question.id) {
+                    case "radar":
+                    case "closest":
+                    case "match":
+                    case "photo":
+                    case "measure":
+                        return (
                             <ColouredMarker
-                                colour={point.colour}
-                                key={point.keySuffix + question.key.toString()}
-                                latitude={point.lat}
-                                longitude={point.lng}
+                                colour={question.data.colour}
+                                key={question.key}
+                                latitude={question.data.lat}
+                                longitude={question.data.lng}
                                 onClick={() =>
                                     editingQuestionId.set(question.key)
                                 }
                                 onChange={(e) => {
-                                    point.update(
-                                        question.data,
-                                        e.target.getLatLng().lat,
-                                        e.target.getLatLng().lng,
-                                    );
+                                    question.data.lat =
+                                        e.target.getLatLng().lat;
+                                    question.data.lng =
+                                        e.target.getLatLng().lng;
                                     questionModified();
                                 }}
                             />
-                        ))}
-                    </Fragment>
-                );
+                        );
+                    case "hot/cold":
+                        return (
+                            <Fragment key={question.key}>
+                                <ColouredMarker
+                                    colour={question.data.colourA}
+                                    key={"a" + question.key.toString()}
+                                    latitude={question.data.latA}
+                                    longitude={question.data.lngA}
+                                    onClick={() =>
+                                        editingQuestionId.set(question.key)
+                                    }
+                                    onChange={(e) => {
+                                        question.data.latA =
+                                            e.target.getLatLng().lat;
+                                        question.data.lngA =
+                                            e.target.getLatLng().lng;
+                                        questionModified();
+                                    }}
+                                />
+                                <ColouredMarker
+                                    colour={question.data.colourB}
+                                    key={"b" + question.key.toString()}
+                                    latitude={question.data.latB}
+                                    longitude={question.data.lngB}
+                                    onClick={() =>
+                                        editingQuestionId.set(question.key)
+                                    }
+                                    onChange={(e) => {
+                                        question.data.latB =
+                                            e.target.getLatLng().lat;
+                                        question.data.lngB =
+                                            e.target.getLatLng().lng;
+                                        questionModified();
+                                    }}
+                                />
+                            </Fragment>
+                        );
+                    default:
+                        return null;
+                }
             })}
 
             {/* 2. RENDER THE GLOBAL FLOATING PANEL (Replaces the blocking Dialog) */}

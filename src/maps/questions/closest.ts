@@ -25,7 +25,7 @@ export const fetchClosestLocationsWithGrowth = async (
     }
 
     let searchRadius = question.radius;
-    const maxAllowedRadius = question.unit === "kilometers" ? 50 : 30;
+    const maxAllowedRadius = question.unit === "kilometers" ? 50 : 50000;
 
     // Safety guard: if initial radius is already above max, clamp it to avoid huge queries
     if (searchRadius > maxAllowedRadius) {
@@ -73,9 +73,7 @@ export const filterPointsWithinRadius = (
         if (!coords) return { feature, dist: Infinity };
 
         let dist = fastDistance(centerCoords, coords);
-        if (question.unit === "miles") {
-            dist = dist * 0.621371192;
-        } else if (question.unit !== "kilometers") {
+        if (question.unit !== "kilometers") {
             dist = turf.convertLength(dist, "kilometers", question.unit);
         }
 
@@ -90,7 +88,7 @@ export const filterPointsWithinRadius = (
     // If we have at least one point, evaluate target radius
     if (closest5.length > 0) {
         const maxDistInTop5 = closest5[closest5.length - 1].dist;
-        const maxAllowedRadius = question.unit === "kilometers" ? 50 : 30; // Safety guard: max 50km or 30miles
+        const maxAllowedRadius = question.unit === "kilometers" ? 50 : 50000; // Safety guard: max 50km or 50,000m
 
         let targetRadius = maxDistInTop5;
         if (targetRadius > maxAllowedRadius) {
