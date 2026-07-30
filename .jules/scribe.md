@@ -12,3 +12,7 @@
 
 **Learning:** Fixed grammar, spelling, and missing commas in tutorials and rule text. Maintained Canadian spellings (colour, neighbourhood). Discovered that Start as Seeker should be Start as a Seeker.
 **Action:** Always verify if Canadian/British English spellings are correct based on the context before making changes. Avoid committing local development logs like pnpm_dev.log.
+
+## 2026-07-28 - [Do not edit offline_places.json]
+**Learning:** The file `src/data/offline_places.json` is automatically generated using data from OpenStreetMap. Typos found within this file must not be fixed locally, as they stem from the source data and will be overwritten.
+**Action:** Never edit `src/data/offline_places.json` directly for copy-editing or typo fixes.
