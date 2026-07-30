@@ -1,7 +1,6 @@
 import { useStore } from "@nanostores/react";
 import { type DragEndEvent, Icon } from "leaflet";
 import { Target, X } from "lucide-react";
-import { getDraggablePointsRegistry } from "@/maps/index";
 import { atom } from "nanostores";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Fragment } from "react/jsx-runtime";
@@ -15,6 +14,7 @@ import {
     triggerLocalRefresh,
 } from "@/lib/context";
 import type { ICON_COLOURS } from "@/maps/api";
+import { getDraggablePointsRegistry } from "@/maps/index";
 
 import { LatitudeLongitude } from "./LatitudeLongitude";
 import { QuestionCardComponent } from "./QuestionCards";

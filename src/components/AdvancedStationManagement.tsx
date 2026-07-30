@@ -337,7 +337,8 @@ export const AdvancedStationManagement = () => {
                     <Popover modal={false}>
                         <PopoverTrigger asChild>
                             <button
-                                className="flex-shrink-0 flex items-center justify-center p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors h-[38px] w-[38px] border ml-2"
+                                type="button"
+                                className="flex-shrink-0 flex items-center justify-center p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors h-[38px] w-[38px] border ml-2 focus-visible:ring-2 focus-visible:ring-offset-2"
                                 aria-label="Auto Disable Overlap Information"
                                 title="Auto Disable Overlap Information"
                             >
