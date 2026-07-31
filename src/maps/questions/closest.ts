@@ -72,9 +72,6 @@ export const filterPointsWithinRadius = (
 
         if (!coords) return { feature, dist: Infinity };
 
-        // ⚡ Bolt Optimization: Use fastDistance instead of turf.distance in this hot loop.
-        // This avoids allocating intermediate GeoJSON Point objects, significantly reducing
-        // garbage collection overhead and preventing main thread blocking when processing hundreds of locations.
         let dist = fastDistance(centerCoords, coords);
         if (question.unit === "meters") {
             dist *= 1000;
