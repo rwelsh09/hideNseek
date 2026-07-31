@@ -1,14 +1,17 @@
+import { afterEach, beforeEach, describe, expect, test, vi } from "vitest";
+
 import {
     cn,
-    mapToObj,
     compress,
-    decompress,
-    shareOrFallback,
-    encodeDisabledStations,
+    decodeBase64Unicode,
     decodeDisabledStations,
+    decompress,
+    encodeBase64Unicode,
+    encodeDisabledStations,
+    mapToObj,
+    shareOrFallback,
     STATION_IDS_INDEX,
-} from "../src/lib/utils";
-import { expect, describe, test, vi, afterEach } from "vitest";
+} from "@/lib/utils";
 
 describe("utils", () => {
     describe("cn", () => {
@@ -95,4 +98,103 @@ describe("utils", () => {
             expect(decoded).toEqual([]);
         });
     });
+
+    describe("Base64 Unicode Encoding", () => {
+        test("should encode and decode standard text", () => {
+            const original = "Hello World!";
+            const encoded = encodeBase64Unicode(original);
+            expect(encoded).not.toBe(original);
+            const decoded = decodeBase64Unicode(encoded);
+            expect(decoded).toBe(original);
+        });
+
+        test("should encode and decode emojis and unicode characters", () => {
+            const original = "Hello 🌍! 🚀 Café ñ";
+            const encoded = encodeBase64Unicode(original);
+            expect(encoded).not.toBe(original);
+            const decoded = decodeBase64Unicode(encoded);
+            expect(decoded).toBe(original);
+        });
+    });
+
+    describe("shareOrFallback", () => {
+        let originalShare: any;
+        let originalClipboard: any;
+
+        beforeEach(() => {
+            originalShare = navigator.share;
+            originalClipboard = navigator.clipboard;
+        });
+
+        afterEach(() => {
+            Object.defineProperty(navigator, "share", { value: originalShare, writable: true, configurable: true });
+            Object.defineProperty(navigator, "clipboard", { value: originalClipboard, writable: true, configurable: true });
+            vi.restoreAllMocks();
+        });
+
+        test("should use native share if available and user doesn't force clipboard", async () => {
+            const shareMock = vi.fn().mockResolvedValue(undefined);
+            Object.defineProperty(navigator, "share", { value: shareMock, writable: true, configurable: true });
+
+            const result = await shareOrFallback({ url: "https://example.com", title: "Test" });
+
+            expect(shareMock).toHaveBeenCalledWith({ url: "https://example.com", title: "Test" });
+            expect(result).toBe(true);
+        });
+
+        test("should fallback to clipboard if share rejects", async () => {
+            const shareMock = vi.fn().mockRejectedValue(new Error("Share failed"));
+            Object.defineProperty(navigator, "share", { value: shareMock, writable: true, configurable: true });
+
+            Object.defineProperty(navigator, "clipboard", { value: { writeText: vi.fn() }, writable: true, configurable: true });
+
+            const result = await shareOrFallback("https://example.com");
+
+            expect(shareMock).toHaveBeenCalled();
+            expect(navigator.clipboard.writeText).toHaveBeenCalledWith("https://example.com");
+            expect(result).toBe("clipboard");
+        });
+
+        test("should use clipboard directly if share is not supported", async () => {
+            Object.defineProperty(navigator, "share", { value: undefined, writable: true, configurable: true });
+            Object.defineProperty(navigator, "clipboard", { value: { writeText: vi.fn() }, writable: true, configurable: true });
+
+            const result = await shareOrFallback("https://example.com");
+
+            expect(navigator.clipboard.writeText).toHaveBeenCalledWith("https://example.com");
+            expect(result).toBe("clipboard");
+        });
+
+        test("should force clipboard when forced", async () => {
+            const shareMock = vi.fn();
+            Object.defineProperty(navigator, "share", { value: shareMock, writable: true, configurable: true });
+
+            Object.defineProperty(navigator, "clipboard", { value: { writeText: vi.fn() }, writable: true, configurable: true });
+
+            const result = await shareOrFallback("https://example.com", true);
+
+            expect(shareMock).not.toHaveBeenCalled();
+            expect(navigator.clipboard.writeText).toHaveBeenCalledWith("https://example.com");
+            expect(result).toBe("clipboard");
+        });
+
+        test("should return false if neither share nor clipboard is supported", async () => {
+            Object.defineProperty(navigator, "share", { value: undefined, writable: true, configurable: true });
+            Object.defineProperty(navigator, "clipboard", { value: undefined, writable: true, configurable: true });
+
+            const result = await shareOrFallback("https://example.com");
+
+            expect(result).toBe(false);
+        });
+
+        test("should format clipboard content with text and url if provided", async () => {
+            Object.defineProperty(navigator, "share", { value: undefined, writable: true, configurable: true });
+            Object.defineProperty(navigator, "clipboard", { value: { writeText: vi.fn() }, writable: true, configurable: true });
+
+            await shareOrFallback({ url: "https://test.com", text: "Look at this" });
+
+            expect(navigator.clipboard.writeText).toHaveBeenCalledWith("Look at this\nhttps://test.com");
+        });
+    });
+
 });

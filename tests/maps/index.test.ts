@@ -37,6 +37,7 @@ vi.mock("@/maps/questions/match", () => ({
     matchPlanningPolygon: vi.fn(),
     isMatchLocked: vi.fn(),
     createMatchDraft: vi.fn(),
+    filterMatchHidingZones: vi.fn(),
 }));
 
 vi.mock("@/maps/questions/measure", () => ({

@@ -4,6 +4,7 @@ import { hiderMode } from "@/lib/context";
 import { findClosestLocations } from "@/maps/api";
 import {
     arcBuffer,
+    fastDistance,
     geoSpatialVoronoi,
     getFeatureCoords,
     safeUnion,
@@ -64,15 +65,18 @@ export const filterPointsWithinRadius = (
     ) {
         return points;
     }
-    const center = turf.point([question.lng, question.lat]);
+    const centerCoords: [number, number] = [question.lng, question.lat];
 
     const pointsWithDist = points.features.map((feature: any) => {
         const coords = getFeatureCoords(feature);
 
         if (!coords) return { feature, dist: Infinity };
 
-        const pt = turf.point(coords);
-        const dist = turf.distance(center, pt, { units: question.unit });
+        let dist = fastDistance(centerCoords, coords);
+        if (question.unit === "meters") {
+            dist *= 1000;
+        }
+
         return { feature, dist };
     });
 

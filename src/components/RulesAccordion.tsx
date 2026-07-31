@@ -243,7 +243,7 @@ export function RulesAccordion() {
                         businesses, even if they are open during all game hours.
                     </p>
                     <p>
-                        Your Hiding Spot must also be within 3 meters of a
+                        Your Hiding Spot must also be within 3 metres of a
                         marked path or road on Google Maps. Viable paths and
                         roads should be easy to discern, but if there&apos;s any
                         question as to whether one counts, the test is whether
