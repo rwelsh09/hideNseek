@@ -35,3 +35,8 @@
 ## 2026-07-30 - [Mocking Context State Safely]
 **Learning:** When mocking `@/lib/context` to manipulate state like `hiderMode` or `mapGeoJSON`, completely overwriting the module using `vi.mock("@/lib/context", () => ({...}))` can break tests if the SUT relies on other unmocked exports from that file.
 **Action:** Always use the `importActual` pattern (e.g., `vi.mock("@/lib/context", async (importOriginal) => { const actual = await importOriginal(); return { ...actual, mockTarget: ... }; })`) when mocking context state to preserve unmocked dependencies.
+
+## 2026-07-31 - [Mocking Read-Only Global Objects]
+
+**Learning:** When attempting to mock properties on the global `navigator` object (like `navigator.share` or `navigator.clipboard`) in Vitest/JSDOM, direct assignment (e.g., `navigator.share = vi.fn()`) will throw a `TypeError: Cannot set property navigator of #<Object> which has only a getter`.
+**Action:** Always use `Object.defineProperty(navigator, "propertyName", { value: mockValue, writable: true, configurable: true })` to safely mock and restore readonly global browser properties in unit tests.
