@@ -27,7 +27,7 @@ import {
     showTutorial,
     tutorialDriver,
 } from "@/lib/context";
-import { holedMask } from "@/maps";
+import { holedMask } from "@/maps/geo-utils/operators";
 import { flyToWithOffset } from "@/maps/ui-utils";
 
 export const LeafletActionButtons = () => {

@@ -52,3 +52,8 @@
 
 **Learning:** `turf.distance` requires creating valid GeoJSON `Point` features for every calculation. Inside hot loops (e.g., iterating through thousands of POI nodes during map zone initialization or closest-place lookups), allocating these intermediate objects causes excessive garbage collection and blocks the main thread, resulting in noticeable UI jank.
 **Action:** Replace `turf.distance` inside loops with the mathematical `fastDistance` utility (which accepts raw coordinate arrays) to skip object allocation, significantly reducing memory overhead and thread blocking.
+
+## 2026-07-31 - [Optimize closest-place distance loop with fastDistance]
+
+**Learning:** Using `turf.distance` in hot loops like `filterPointsWithinRadius` is very slow because it forces allocation of intermediate GeoJSON Point objects in memory. The codebase already implements a `fastDistance` function mathematically tailored for primitive coordinate arrays which avoids these allocations and garbage collection overhead. Furthermore, ensuring mocked modules use `importOriginal` accurately passes through unmodified exports such as `fastDistance` during Vitest runs.
+**Action:** Always replace `turf.distance` calls with `fastDistance` when iteratively checking distances inside a `map`, `filter`, or `for` loop, passing `[lng, lat]` coordinate arrays directly.

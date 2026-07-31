@@ -29,9 +29,16 @@
 **Action:** Only write tests for how the component actually behaves currently, and ensure to never patch or fix bugs in the source files during a strict Sentinel testing task unless explicitly authorized.
 
 ## 2026-07-30 - [Strict Assertions for Sentinel]
+
 **Learning:** Sentinel's philosophy ("If a test doesn't fail when the underlying business logic is broken, it is a useless test") mandates strict assertions. Using weak assertions like `expect(result.same).toBeDefined()` for boolean logic allows tests to pass even if the function erroneously returns the opposite value (e.g. `false` instead of `true`), rendering the test tautological and useless.
 **Action:** When testing boolean conditions or specific state outputs, always assert the exact expected value (e.g., `expect(result.same).toBe(true)`) based on the arranged mock data. Never use `.toBeDefined()` for core business logic validation.
 
 ## 2026-07-30 - [Mocking Context State Safely]
+
 **Learning:** When mocking `@/lib/context` to manipulate state like `hiderMode` or `mapGeoJSON`, completely overwriting the module using `vi.mock("@/lib/context", () => ({...}))` can break tests if the SUT relies on other unmocked exports from that file.
 **Action:** Always use the `importActual` pattern (e.g., `vi.mock("@/lib/context", async (importOriginal) => { const actual = await importOriginal(); return { ...actual, mockTarget: ... }; })`) when mocking context state to preserve unmocked dependencies.
+
+## 2026-07-31 - [Mocking Read-Only Global Objects]
+
+**Learning:** When attempting to mock properties on the global `navigator` object (like `navigator.share` or `navigator.clipboard`) in Vitest/JSDOM, direct assignment (e.g., `navigator.share = vi.fn()`) will throw a `TypeError: Cannot set property navigator of #<Object> which has only a getter`.
+**Action:** Always use `Object.defineProperty(navigator, "propertyName", { value: mockValue, writable: true, configurable: true })` to safely mock and restore readonly global browser properties in unit tests.
