@@ -43,7 +43,7 @@ const QUIZ_QUESTIONS = [
         question: "Which of these is a VALID final Hiding Spot?",
         options: [
             "A locked bathroom stall in a mall.",
-            "A park bench within 3 meters of a path on Google Maps.",
+            "A park bench within 3 metres of a path on Google Maps.",
             "Inside your friend's private apartment.",
             "In the middle of a busy highway.",
         ],
@@ -73,7 +73,7 @@ const QUIZ_QUESTIONS = [
     {
         question: "What defines the absolute boundaries of the game map?",
         options: [
-            "A 5-kilometer radius from where you started.",
+            "A 5-kilometre radius from where you started.",
             "The entire Earth, if you have enough time.",
             "Only places the Hider has visited before.",
             "The Calgary Rapid Transit Network.",
