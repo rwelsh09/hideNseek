@@ -38,8 +38,6 @@ import {
 } from "./questions/radar";
 import type { Question, Questions } from "./schema";
 
-export * from "./geo-utils";
-
 const standardGetDraggablePoints = (data: any) => [
     {
         keySuffix: "",
