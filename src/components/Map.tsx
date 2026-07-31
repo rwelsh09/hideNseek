@@ -26,9 +26,10 @@ import {
 } from "@/lib/context";
 import { compress, encodeDisabledStations, shareOrFallback } from "@/lib/utils";
 import { cn } from "@/lib/utils";
-import { applyQuestionsToMapGeoData, holedMask } from "@/maps";
+import { applyQuestionsToMapGeoData } from "@/maps";
 import { hiderifyQuestion } from "@/maps";
 import { determineMapBoundaries } from "@/maps/api";
+import { holedMask } from "@/maps/geo-utils/operators";
 import { flyToWithOffset } from "@/maps/ui-utils";
 
 import { AddQuestionDialog } from "./AddQuestionDialog";
