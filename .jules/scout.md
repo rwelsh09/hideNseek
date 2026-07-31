@@ -24,5 +24,11 @@
 **Action:** The codebase uses a centralized Registry (Strategy) pattern to manage logic that varies by map question type. Use `QUESTION_HANDLERS` in `src/maps/index.ts` for geospatial logic, draft creation (`createDraft`), and locked state checks (`isLocked`). Use `QUESTION_TEXT_HANDLERS` in `src/lib/question-text.ts` for text and UI label generation. Avoid scattered `switch` or `if/else` statements branching on `question.id`.
 
 ## 2026-08-15 - [Refactor DraggableMarkers switch statement]
+
 **Learning:** The `DraggableMarkers` component previously relied on a massive hardcoded `switch` statement over `question.id` to determine how many draggable points to render and what keys/colors they use. This created a leaky abstraction that forced the view layer to know intimate details about question properties (like `latA`/`lngA` for hot/cold questions) and required modifying this component every time a new map question was added, violating the Open-Closed Principle.
 **Action:** Extend the existing registry pattern (`QUESTION_HANDLERS` in `src/maps/index.ts`) by introducing a `getDraggablePoints` interface. This allows each question handler to define its own logic for extracting coordinate and color metadata, completely isolating map-specific property knowledge from the UI.
+
+## 2026-08-25 - [Filter Hiding Zones via Registry Pattern]
+
+**Learning:** Previously, `initializeHidingZonesLogic` in `src/lib/hiding-zones.ts` contained a hardcoded, tightly coupled `if (question.id === "match")` block handling specific sub-types like `same-train-line`. This leaked domain logic (map questions) into an orthogonal subsystem (hiding zones) and violated the Open-Closed Principle, forcing modifications to unrelated files when adding new questions.
+**Action:** Extended the central Registry Pattern (`QUESTION_HANDLERS` in `src/maps/index.ts`) with a `filterHidingZones` optional method. Now `hiding-zones.ts` delegates this filtering to the registry, completely decoupling hiding zones from specific question implementations.
