@@ -42,3 +42,13 @@
 
 **Learning:** `ts-prune` and `knip` correctly identify exported variables, types, interfaces, and functions (like `LeaderboardEntry` in `src/lib/context.ts`, `ShareDataOptions` in `src/lib/utils.ts`, `TYPE_MAPPINGS`, and `getPlaceLabel` in `src/lib/question-text.ts`) that are only ever used internally within the declaring file.
 **Action:** Do not delete these functions, types, variables or interfaces. Instead, remove the `export` keyword to restrict their scope and minimize the public API surface safely.
+
+## 2026-06-25 - Import sorting plugin
+
+**Learning:** The project uses `eslint-plugin-simple-import-sort`. When modifying, splitting, or updating imports (such as un-nesting barrel file exports), always run `npx eslint src --fix` to auto-sort the dependencies and prevent pipeline linting failures.
+**Action:** Run `npx eslint src --fix` after making any modifications to import statements in the codebase.
+
+## 2026-06-25 - ts-prune false positives with Astro
+
+**Learning:** Automated dead-code detection tools (like `ts-prune` and `knip`) can falsely flag components dynamically imported or used by `src/pages/index.astro` (like `IncomingQuestionHandler`, `SidebarProvider`).
+**Action:** Always verify with `grep` if an export flagged as unused is actually imported inside an `.astro` file before pruning.

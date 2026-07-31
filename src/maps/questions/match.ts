@@ -379,3 +379,74 @@ export const getMatchPlaceName = async (question: MatchQuestion) => {
         return null;
     }
 };
+
+export const filterMatchHidingZones = (
+    data: MatchQuestion,
+    circles: any[],
+    places: any[],
+) => {
+    if (
+        data.type !== "same-first-letter-station" &&
+        data.type !== "same-length-station" &&
+        data.type !== "same-train-line"
+    ) {
+        return circles;
+    }
+
+    const location = turf.point([data.lng, data.lat]);
+    const nearestTrainStation = turf.nearestPoint(
+        location,
+        turf.featureCollection(places) as any,
+    );
+
+    let filteredCircles = [...circles];
+
+    if (data.type === "same-train-line") {
+        const seekerLines = extractStationLines(nearestTrainStation);
+
+        if (seekerLines.length > 0) {
+            filteredCircles = filteredCircles.filter((circle) => {
+                const hiderLines = extractStationLines(circle);
+                const intersects = seekerLines.some((l) =>
+                    hiderLines.includes(l),
+                );
+                return data.same ? intersects : !intersects;
+            });
+        }
+    }
+
+    const englishName = extractStationName(nearestTrainStation);
+    if (!englishName) {
+        toast.error("No English name found");
+        return circles;
+    }
+
+    if (data.type === "same-first-letter-station") {
+        const letter = englishName[0].toUpperCase();
+        filteredCircles = filteredCircles.filter((circle) => {
+            const name = extractStationName(circle.properties);
+            if (!name) return false;
+            return data.same
+                ? name[0].toUpperCase() === letter
+                : name[0].toUpperCase() !== letter;
+        });
+    } else if (data.type === "same-length-station") {
+        const seekerLength = englishName.length;
+        const comparison = data.lengthComparison;
+        filteredCircles = filteredCircles.filter((circle) => {
+            const name = extractStationName(circle.properties);
+            if (!name) return false;
+            let isMatch = false;
+            if (comparison === "same") {
+                isMatch = name.length === seekerLength;
+            } else if (comparison === "shorter") {
+                isMatch = name.length < seekerLength;
+            } else if (comparison === "longer") {
+                isMatch = name.length > seekerLength;
+            }
+            return data.same ? isMatch : !isMatch;
+        });
+    }
+
+    return filteredCircles;
+};

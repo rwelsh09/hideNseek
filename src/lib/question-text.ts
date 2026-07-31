@@ -22,7 +22,7 @@ const getPlaceLabel = (id: string, plural = false) => {
     return plural && place.labelPlural ? place.labelPlural : place.label;
 };
 
-export interface QuestionTextHandler {
+interface QuestionTextHandler {
     getResultStr: (questionData: any) => string;
     getLockedLabel: (questionData: any, resultStr: string) => string;
     getShareText: (questionData: any) => Promise<string>;
