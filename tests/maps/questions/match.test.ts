@@ -17,8 +17,12 @@ import {
     createMatchDraft,
     getMatchPlaceName,
 } from "@/maps/questions/match";
-import { hiderMode, mapGeoJSON, polyGeoJSON, mapGeoLocation } from "@/lib/context";
-
+import {
+    hiderMode,
+    mapGeoJSON,
+    polyGeoJSON,
+    mapGeoLocation,
+} from "@/lib/context";
 
 vi.mock("@/maps/api", async (importOriginal) => {
     const actual = await importOriginal();
@@ -44,7 +48,6 @@ vi.mock("@/lib/context", async (importOriginal) => {
         mapGeoLocation: { get: vi.fn() },
     };
 });
-
 
 describe("Match Questions", () => {
     beforeEach(() => {
@@ -150,7 +153,11 @@ describe("Match Questions", () => {
 
     describe("createMatchDraft", () => {
         it("creates draft object", () => {
-            const draft = createMatchDraft({ lat: 51, lng: -114 }, "park", true);
+            const draft = createMatchDraft(
+                { lat: 51, lng: -114 },
+                "park",
+                true,
+            );
             expect(draft).toEqual({
                 lat: 51,
                 lng: -114,
@@ -169,7 +176,10 @@ describe("Match Questions", () => {
         });
 
         it("returns mapData if boundary is false", async () => {
-            const result = await adjustPerMatch({ type: "same-train-line" } as any, { mock: "data" });
+            const result = await adjustPerMatch(
+                { type: "same-train-line" } as any,
+                { mock: "data" },
+            );
             expect(result).toEqual({ mock: "data" });
         });
     });
@@ -183,7 +193,10 @@ describe("Match Questions", () => {
         });
 
         it("returns question if mapGeoJSON is null", async () => {
-            vi.mocked(hiderMode.get).mockReturnValue({ latitude: 51, longitude: -114 } as any);
+            vi.mocked(hiderMode.get).mockReturnValue({
+                latitude: 51,
+                longitude: -114,
+            } as any);
             vi.mocked(mapGeoJSON.get).mockReturnValue(null);
             const question = { type: "museum" };
             const result = await hiderifyMatch(question as any);
@@ -191,40 +204,82 @@ describe("Match Questions", () => {
         });
 
         it("handles station questions correctly", async () => {
-            vi.mocked(hiderMode.get).mockReturnValue({ latitude: 51.0478, longitude: -114.0593 } as any); // City Hall
-            vi.mocked(mapGeoJSON.get).mockReturnValue({ type: "FeatureCollection", features: [] } as any);
+            vi.mocked(hiderMode.get).mockReturnValue({
+                latitude: 51.0478,
+                longitude: -114.0593,
+            } as any); // City Hall
+            vi.mocked(mapGeoJSON.get).mockReturnValue({
+                type: "FeatureCollection",
+                features: [],
+            } as any);
 
             // seeker is at Victoria Park
-            const question = { type: "same-first-letter-station", lat: 51.0378, lng: -114.0593 } as any;
+            const question = {
+                type: "same-first-letter-station",
+                lat: 51.0378,
+                lng: -114.0593,
+            } as any;
             const result = await hiderifyMatch(question);
             expect(result.same).toBe(false);
         });
 
         it("handles length station questions", async () => {
-            vi.mocked(hiderMode.get).mockReturnValue({ latitude: 51.0478, longitude: -114.0593 } as any); // City Hall
-            vi.mocked(mapGeoJSON.get).mockReturnValue({ type: "FeatureCollection", features: [] } as any);
+            vi.mocked(hiderMode.get).mockReturnValue({
+                latitude: 51.0478,
+                longitude: -114.0593,
+            } as any); // City Hall
+            vi.mocked(mapGeoJSON.get).mockReturnValue({
+                type: "FeatureCollection",
+                features: [],
+            } as any);
 
-            const question = { type: "same-length-station", lengthComparison: "shorter", lat: 51.0378, lng: -114.0593 } as any;
+            const question = {
+                type: "same-length-station",
+                lengthComparison: "shorter",
+                lat: 51.0378,
+                lng: -114.0593,
+            } as any;
             const result = await hiderifyMatch(question);
             expect(result.same).toBe(false);
         });
 
         it("handles train line station questions", async () => {
-            vi.mocked(hiderMode.get).mockReturnValue({ latitude: 51.0478, longitude: -114.0593 } as any); // City Hall
-            vi.mocked(mapGeoJSON.get).mockReturnValue({ type: "FeatureCollection", features: [] } as any);
+            vi.mocked(hiderMode.get).mockReturnValue({
+                latitude: 51.0478,
+                longitude: -114.0593,
+            } as any); // City Hall
+            vi.mocked(mapGeoJSON.get).mockReturnValue({
+                type: "FeatureCollection",
+                features: [],
+            } as any);
 
-            const question = { type: "same-train-line", lat: 51.0378, lng: -114.0593 } as any;
+            const question = {
+                type: "same-train-line",
+                lat: 51.0378,
+                lng: -114.0593,
+            } as any;
             const result = await hiderifyMatch(question);
             expect(result.same).toBe(true);
         });
 
         it("handles boundary check when not a station question", async () => {
-            vi.mocked(hiderMode.get).mockReturnValue({ latitude: 51.15, longitude: -114.05 } as any);
-            vi.mocked(mapGeoJSON.get).mockReturnValue({ type: "FeatureCollection", features: [] } as any);
+            vi.mocked(hiderMode.get).mockReturnValue({
+                latitude: 51.15,
+                longitude: -114.05,
+            } as any);
+            vi.mocked(mapGeoJSON.get).mockReturnValue({
+                type: "FeatureCollection",
+                features: [],
+            } as any);
 
             vi.mocked(findPlacesInZone).mockResolvedValueOnce({
                 elements: [
-                    { type: "way", id: 1, nodes: [1, 2, 3, 4, 1], tags: { admin_level: "10" } },
+                    {
+                        type: "way",
+                        id: 1,
+                        nodes: [1, 2, 3, 4, 1],
+                        tags: { admin_level: "10" },
+                    },
                 ],
             });
             const mockPolygon = turf.polygon(
@@ -243,7 +298,11 @@ describe("Match Questions", () => {
                 turf.featureCollection([mockPolygon]) as any,
             );
 
-            const result = await hiderifyMatch({ type: "same-neighbourhood", lat: 51.15, lng: -114.05 } as any);
+            const result = await hiderifyMatch({
+                type: "same-neighbourhood",
+                lat: 51.15,
+                lng: -114.05,
+            } as any);
             expect(result.same).toBe(true);
         });
     });
@@ -252,7 +311,12 @@ describe("Match Questions", () => {
         it("returns line representation of boundary", async () => {
             vi.mocked(findPlacesInZone).mockResolvedValueOnce({
                 elements: [
-                    { type: "way", id: 1, nodes: [1, 2, 3, 4, 1], tags: { admin_level: "10" } },
+                    {
+                        type: "way",
+                        id: 1,
+                        nodes: [1, 2, 3, 4, 1],
+                        tags: { admin_level: "10" },
+                    },
                 ],
             });
             const mockPolygon = turf.polygon(
@@ -271,27 +335,42 @@ describe("Match Questions", () => {
                 turf.featureCollection([mockPolygon]) as any,
             );
 
-            const result = await matchPlanningPolygon({ type: "same-neighbourhood", lat: 51.15, lng: -114.05 } as any);
+            const result = await matchPlanningPolygon({
+                type: "same-neighbourhood",
+                lat: 51.15,
+                lng: -114.05,
+            } as any);
             expect(result).toBeDefined();
             expect((result as any).geometry.type).toBe("LineString");
         });
 
         it("returns false if determineMatchBoundary fails or is false", async () => {
-            const result = await matchPlanningPolygon({ type: "same-train-line" } as any);
+            const result = await matchPlanningPolygon({
+                type: "same-train-line",
+            } as any);
             expect(result).toBe(false);
         });
     });
 
     describe("getMatchPlaceName", () => {
         it("handles station questions", async () => {
-            const name = await getMatchPlaceName({ type: "same-train-line", lat: 51.0478, lng: -114.0593 } as any);
+            const name = await getMatchPlaceName({
+                type: "same-train-line",
+                lat: 51.0478,
+                lng: -114.0593,
+            } as any);
             expect(name).toContain("Centre Street");
         });
 
         it("handles other questions", async () => {
             vi.mocked(findPlacesInZone).mockResolvedValueOnce({
                 elements: [
-                    { type: "way", id: 1, nodes: [1, 2, 3, 4, 1], tags: { admin_level: "10" } },
+                    {
+                        type: "way",
+                        id: 1,
+                        nodes: [1, 2, 3, 4, 1],
+                        tags: { admin_level: "10" },
+                    },
                 ],
             });
             const mockPolygon = turf.polygon(
@@ -310,7 +389,11 @@ describe("Match Questions", () => {
                 turf.featureCollection([mockPolygon]) as any,
             );
 
-            const name = await getMatchPlaceName({ type: "same-neighbourhood", lat: 51.15, lng: -114.05 } as any);
+            const name = await getMatchPlaceName({
+                type: "same-neighbourhood",
+                lat: 51.15,
+                lng: -114.05,
+            } as any);
             expect(name).toBe("Testhood");
         });
     });
