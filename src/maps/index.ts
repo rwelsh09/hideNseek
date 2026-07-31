@@ -17,6 +17,7 @@ import {
 import {
     adjustPerMatch,
     createMatchDraft,
+    filterMatchHidingZones,
     hiderifyMatch,
     isMatchLocked,
     matchPlanningPolygon,
@@ -71,6 +72,7 @@ export const QUESTION_HANDLERS: Record<
             colour: string;
             update: (data: any, lat: number, lng: number) => void;
         }[];
+        filterHidingZones?: (data: any, circles: any[], places: any[]) => any[];
     }
 > = {
     radar: {
@@ -130,6 +132,7 @@ export const QUESTION_HANDLERS: Record<
         isLocked: isMatchLocked,
         createDraft: createMatchDraft,
         getDraggablePoints: standardGetDraggablePoints,
+        filterHidingZones: filterMatchHidingZones,
     },
     measure: {
         hiderify: hiderifyMeasure,
