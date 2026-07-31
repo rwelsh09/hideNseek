@@ -1,5 +1,4 @@
 import * as turf from "@turf/turf";
-import { toast } from "react-toastify";
 
 import calgaryTransitData from "@/data/calgary_rapid_transit_network.json";
 import {
@@ -12,12 +11,9 @@ import {
     trainStations,
 } from "@/lib/context";
 import { type StationPlace } from "@/maps/api";
-import {
-    extractStationId,
-    extractStationLines,
-    extractStationName,
-    safeUnion,
-} from "@/maps/geo-utils";
+import { extractStationId, safeUnion } from "@/maps/geo-utils";
+import { QUESTION_HANDLERS } from "@/maps/index";
+import type { Question } from "@/maps/schema";
 
 let previousQuestionDisabled: string[] = [];
 
@@ -92,81 +88,33 @@ export const initializeHidingZonesLogic = async () => {
             continue;
         }
 
-        if (
-            question.id === "match" &&
-            (question.data.type === "same-first-letter-station" ||
-                question.data.type === "same-length-station" ||
-                question.data.type === "same-train-line")
-        ) {
-            const location = turf.point([question.data.lng, question.data.lat]);
-            const nearestTrainStation = turf.nearestPoint(
-                location,
-                turf.featureCollection(places) as any,
-            );
-
+        const handler = QUESTION_HANDLERS[question.id as Question["id"]];
+        if (handler && handler.filterHidingZones) {
             const originalIds = circles.map((c) => extractStationId(c));
             const originalCirclesState = [...circles];
 
-            if (question.data.type === "same-train-line") {
-                const seekerLines = extractStationLines(nearestTrainStation);
+            const newCircles = handler.filterHidingZones(
+                question.data,
+                circles,
+                places,
+            );
 
-                if (seekerLines.length > 0) {
-                    circles = circles.filter((circle) => {
-                        const hiderLines = extractStationLines(circle);
+            if (newCircles !== circles) {
+                circles = newCircles;
 
-                        const intersects = seekerLines.some((l) =>
-                            hiderLines.includes(l),
-                        );
+                const remainingIds = new Set(
+                    circles.map((c) => extractStationId(c)),
+                );
+                const newlyDisabled = originalIds.filter(
+                    (id) =>
+                        !remainingIds.has(id) && !manuallyDisabledSet.has(id),
+                );
+                newlyDisabledStations.push(...newlyDisabled);
 
-                        return question.data.same ? intersects : !intersects;
-                    });
+                if (lockedIds) {
+                    // Restore circles array if it's locked so base shapes do not change
+                    circles = originalCirclesState;
                 }
-            }
-
-            const englishName = extractStationName(nearestTrainStation);
-            if (!englishName) {
-                toast.error("No English name found");
-                return;
-            }
-
-            if (question.data.type === "same-first-letter-station") {
-                const letter = englishName[0].toUpperCase();
-                circles = circles.filter((circle) => {
-                    const name = extractStationName(circle.properties);
-                    if (!name) return false;
-                    return question.data.same
-                        ? name[0].toUpperCase() === letter
-                        : name[0].toUpperCase() !== letter;
-                });
-            } else if (question.data.type === "same-length-station") {
-                const seekerLength = englishName.length;
-                const comparison = question.data.lengthComparison;
-                circles = circles.filter((circle) => {
-                    const name = extractStationName(circle.properties);
-                    if (!name) return false;
-                    let isMatch = false;
-                    if (comparison === "same") {
-                        isMatch = name.length === seekerLength;
-                    } else if (comparison === "shorter") {
-                        isMatch = name.length < seekerLength;
-                    } else if (comparison === "longer") {
-                        isMatch = name.length > seekerLength;
-                    }
-                    return question.data.same ? isMatch : !isMatch;
-                });
-            }
-
-            const remainingIds = new Set(
-                circles.map((c) => extractStationId(c)),
-            );
-            const newlyDisabled = originalIds.filter(
-                (id) => !remainingIds.has(id) && !manuallyDisabledSet.has(id),
-            );
-            newlyDisabledStations.push(...newlyDisabled);
-
-            if (lockedIds) {
-                // Restore circles array if it's locked so base shapes do not change
-                circles = originalCirclesState;
             }
         }
     }
