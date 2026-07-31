@@ -1,3 +1,7 @@
 export * from "./constants";
-export * from "./places";
+export {
+    determineMapBoundaries,
+    findClosestLocations,
+    findPlacesInZone,
+} from "./places";
 export * from "./types";
