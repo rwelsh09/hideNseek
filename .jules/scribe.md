@@ -19,5 +19,6 @@
 **Action:** Never edit `src/data/offline_places.json` directly for copy-editing or typo fixes.
 
 ## 2026-07-28 - [Distance Unit Consistency]
+
 **Learning:** The application uses metric units for distances. In user-facing UI text, use standard Canadian/British English spelling ("kilometres" and "metres") instead of the US spellings ("kilometers" and "meters").
 **Action:** Replace instances of "meters" with "metres" and "kilometers" with "kilometres" in JSX templates, labels, and quiz descriptions. Be careful not to replace literal strings that form parts of object keys or schema logic unless explicitly instructed.
