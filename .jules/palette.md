@@ -32,3 +32,8 @@
 
 **Learning:** The quiz previously relied solely on color changes (green for correct, red for incorrect) to indicate the result of a selection. This violates WCAG 1.4.1 (Use of Color), causing accessibility issues for colorblind users and screen reader users who miss the purely visual state change.
 **Action:** Always ensure that critical state changes (like correct/incorrect validation feedback) are communicated through multiple channels: use color, but also include distinct icons (shape/symbol) and screen-reader only text (`sr-only`) to explicitly announce the state update to assistive technologies.
+
+## 2026-08-01 - [Keyboard Focus Indicators for Question Card Actions]
+
+**Learning:** Icon-only action buttons (like lock, rules, share, and delete) inside `QuestionCard` headers lacked explicit `focus-visible` classes. While they had hover states and ARIA labels, keyboard users navigating via Tab could not easily distinguish which button currently held focus because the default browser outline was often unnoticeable or overridden by other styles.
+**Action:** Always append explicit focus rings (e.g., `focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2`) to all interactive icon buttons, particularly in repeating list elements like question cards, to ensure clear visual feedback for keyboard navigation.

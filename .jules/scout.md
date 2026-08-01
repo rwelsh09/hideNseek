@@ -32,6 +32,8 @@
 
 **Learning:** Previously, `initializeHidingZonesLogic` in `src/lib/hiding-zones.ts` contained a hardcoded, tightly coupled `if (question.id === "match")` block handling specific sub-types like `same-train-line`. This leaked domain logic (map questions) into an orthogonal subsystem (hiding zones) and violated the Open-Closed Principle, forcing modifications to unrelated files when adding new questions.
 **Action:** Extended the central Registry Pattern (`QUESTION_HANDLERS` in `src/maps/index.ts`) with a `filterHidingZones` optional method. Now `hiding-zones.ts` delegates this filtering to the registry, completely decoupling hiding zones from specific question implementations.
+
 ## 2026-06-25 - Fix @arcgis/core/unionTypes module resolution
+
 **Learning:** In newer `@arcgis/core` versions, wildcard importing `unionTypes.js` for type references (`import * as unionTypes from "@arcgis/core/unionTypes.js"`) breaks Vite/esbuild module resolution at runtime, as the file doesn't exist to be loaded. It must be explicitly imported as a type (`import type { GeometryUnion } from "@arcgis/core/geometry/types.js"`).
 **Action:** Always import types explicitly using `import type` to ensure the bundler strips them correctly and avoids runtime resolution errors for missing type files.

@@ -168,7 +168,7 @@ export const QuestionCard = ({
                         }
                         aria-expanded={!isCollapsed}
                         disabled={$isLoading}
-                        className="absolute top-1.5 left-1.5 p-1 text-white border rounded-md transition-all duration-500 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:opacity-50"
+                        className="absolute top-1.5 left-1.5 p-1 text-white border rounded-md transition-all duration-500 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 disabled:opacity-50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
                     >
                         {questionData.locked ? (
                             <LockIcon className="w-4 h-4 text-foreground" />
@@ -199,7 +199,7 @@ export const QuestionCard = ({
                                                 aria-label="Question Rules"
                                                 title="Question Rules"
                                                 data-tutorial-id="tutorial-question-rules-btn"
-                                                className="p-1 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors"
+                                                className="p-1 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
                                             >
                                                 <VscQuestion className="w-4 h-4" />
                                             </button>
@@ -224,7 +224,7 @@ export const QuestionCard = ({
                                         aria-label="Share Question"
                                         title="Share Question"
                                         data-tutorial-id="tutorial-share-question-btn"
-                                        className="p-1 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors"
+                                        className="p-1 text-slate-500 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-200 dark:hover:bg-slate-700 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
                                         onClick={async (e) => {
                                             e.stopPropagation();
 
@@ -270,7 +270,7 @@ export const QuestionCard = ({
                                     aria-label="Delete Question"
                                     title="Delete Question"
                                     data-tutorial-id="tutorial-delete-question-btn"
-                                    className="p-1 text-red-400 hover:text-red-600 hover:bg-red-100 dark:hover:bg-red-950 rounded-md transition-colors"
+                                    className="p-1 text-red-400 hover:text-red-600 hover:bg-red-100 dark:hover:bg-red-950 rounded-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-red-400 focus-visible:ring-offset-2"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         const qList = questions.get();
