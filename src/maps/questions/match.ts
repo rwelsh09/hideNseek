@@ -15,6 +15,7 @@ import { findPlacesInZone, LOCATION_FIRST_TAG } from "@/maps/api";
 import {
     extractStationLines,
     extractStationName,
+    fastDistance,
     geoSpatialVoronoi,
     modifyMapData,
     safeUnion,
@@ -117,7 +118,10 @@ export const determineMatchBoundary = _.memoize(
                             feature.properties.center = center;
                         }
 
-                        const d = turf.distance(point, center);
+                        const d = fastDistance(
+                            point.geometry.coordinates as [number, number],
+                            center.geometry.coordinates as [number, number],
+                        );
                         if (d < minDistance) {
                             minDistance = d;
                             nearest = feature;

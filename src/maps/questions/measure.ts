@@ -10,7 +10,12 @@ import {
     polyGeoJSON,
 } from "@/lib/context";
 import { findPlacesInZone, LOCATION_FIRST_TAG } from "@/maps/api";
-import { arcBufferToPoint, modifyMapData, safeUnion } from "@/maps/geo-utils";
+import {
+    arcBufferToPoint,
+    fastDistance,
+    modifyMapData,
+    safeUnion,
+} from "@/maps/geo-utils";
 import { PLACES } from "@/maps/placesConfig";
 import type { MeasureQuestion } from "@/maps/schema";
 
@@ -194,9 +199,10 @@ export const calculateMeasureDistance = async (
 
                     let dist = Infinity;
                     if (feature.geometry.type === "Point") {
-                        dist = turf.distance(seeker, feature, {
-                            units: "kilometers",
-                        });
+                        dist = fastDistance(
+                            seeker.geometry.coordinates as [number, number],
+                            feature.geometry.coordinates as [number, number],
+                        );
                     } else if (
                         feature.geometry.type === "Polygon" ||
                         feature.geometry.type === "MultiPolygon"
@@ -219,9 +225,13 @@ export const calculateMeasureDistance = async (
                         });
                     } else if (feature.geometry.type === "MultiPoint") {
                         for (const coord of feature.geometry.coordinates) {
-                            const d = turf.distance(seeker, turf.point(coord), {
-                                units: "kilometers",
-                            });
+                            const d = fastDistance(
+                                seeker.geometry.coordinates as [
+                                    number,
+                                    number,
+                                ],
+                                coord as [number, number],
+                            );
                             if (d < dist) dist = d;
                         }
                     }
