@@ -13,7 +13,7 @@ body {
 
 .leaflet-container {
     height: 100vh; /* Fallback for old browsers */
-    height: 100svh;
+    height: 100dvh;
 }
 
 .leaflet-bottom.leaflet-right {

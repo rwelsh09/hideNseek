@@ -42,3 +42,8 @@
 
 **Learning:** Using standard `vh` units for modal drawers or absolute positioned overlays on mobile browsers (like iOS Safari or Android Chrome) causes layout jank or content getting cut off. The `vh` unit doesn't dynamically adjust when the address bar expands or collapses during scrolling.
 **Action:** Replaced `vh` with `dvh` (dynamic viewport height) on drawer content classes (e.g., `h-[85vh]` to `h-[85dvh]`) to ensure the layout smoothly adapts to the address bar's presence without overflowing or jumping.
+
+## 2026-08-01 - [Replaced svh with dvh for sidebar layouts]
+
+**Learning:** Using `svh` (small viewport height) for layout containers on mobile browsers can result in layout jank when the URL bar expands or collapses, similar to `vh`. For resilient, adaptive mobile web applications, dynamic viewport height (`dvh`) is the preferred unit.
+**Action:** Replaced `svh` with `dvh` in `src/components/ui/sidebar.tsx` and `src/styles/globals.css` to fix URL bar UI bugs.
