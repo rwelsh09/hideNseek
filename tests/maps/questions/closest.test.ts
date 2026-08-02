@@ -1,19 +1,16 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import * as turf from "@turf/turf";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { hiderMode } from "@/lib/context";
+import { findClosestLocations } from "@/maps/api";
+import { arcBuffer, geoSpatialVoronoi, safeUnion } from "@/maps/geo-utils";
 import {
+    adjustPerClosest,
+    closestPlanningPolygon,
     fetchClosestLocationsWithGrowth,
     filterPointsWithinRadius,
-    adjustPerClosest,
     hiderifyClosest,
-    closestPlanningPolygon,
-} from "../../../src/maps/questions/closest";
-import { findClosestLocations } from "../../../src/maps/api";
-import { hiderMode } from "../../../src/lib/context";
-import {
-    geoSpatialVoronoi,
-    arcBuffer,
-    safeUnion,
-} from "../../../src/maps/geo-utils";
+} from "@/maps/questions/closest";
 
 vi.mock("../../../src/maps/api", () => ({
     findClosestLocations: vi.fn(),
@@ -63,7 +60,7 @@ describe("closest question logic", () => {
                 lng: -114,
                 lat: 51,
                 radius: 1,
-                unit: "kilometers",
+                unit: "kilometres",
                 locationType: "park",
             } as any;
 
@@ -103,7 +100,7 @@ describe("closest question logic", () => {
                 lng: -114,
                 lat: 51,
                 radius: 40,
-                unit: "kilometers",
+                unit: "kilometres",
                 locationType: "park",
             } as any;
 
@@ -155,7 +152,7 @@ describe("closest question logic", () => {
                 lng: -114.0,
                 lat: 51.0,
                 radius: 10,
-                unit: "kilometers",
+                unit: "kilometres",
             } as any;
 
             const result = filterPointsWithinRadius(points, question);
@@ -176,7 +173,7 @@ describe("closest question logic", () => {
                 lng: -114.0,
                 lat: 51.0,
                 radius: 10,
-                unit: "kilometers",
+                unit: "kilometres",
             } as any;
 
             const result = filterPointsWithinRadius(points, question);
@@ -207,7 +204,7 @@ describe("closest question logic", () => {
                 lng: -114,
                 lat: 51,
                 radius: 10,
-                unit: "kilometers",
+                unit: "kilometres",
                 location: { properties: { name: "TargetPlace" } },
             } as any;
 
@@ -228,7 +225,7 @@ describe("closest question logic", () => {
                 lng: -114,
                 lat: 51,
                 radius: 10,
-                unit: "kilometers",
+                unit: "kilometres",
                 location: {
                     properties: {
                         site: { properties: { name: "TargetPlace" } },
@@ -308,7 +305,7 @@ describe("closest question logic", () => {
                 lng: -114,
                 lat: 51,
                 radius: 10,
-                unit: "kilometers",
+                unit: "kilometres",
                 location: true,
             } as any;
 
@@ -329,7 +326,7 @@ describe("closest question logic", () => {
                 lng: -114,
                 lat: 51,
                 radius: 10,
-                unit: "kilometers",
+                unit: "kilometres",
                 location: true,
             } as any;
 
@@ -366,7 +363,7 @@ describe("closest question logic", () => {
                 lng: -114,
                 lat: 51,
                 radius: 10,
-                unit: "kilometers",
+                unit: "kilometres",
                 location: { id: "old" },
             } as any;
 
@@ -391,7 +388,7 @@ describe("closest question logic", () => {
                 lng: -114,
                 lat: 51,
                 radius: 10,
-                unit: "kilometers",
+                unit: "kilometres",
                 location: true,
             } as any;
 

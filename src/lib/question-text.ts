@@ -32,9 +32,9 @@ export const QUESTION_TEXT_HANDLERS: Record<string, QuestionTextHandler> = {
     radar: {
         getResultStr: (data) => (data.within ? "Inside" : "Outside"),
         getLockedLabel: (data, result) =>
-            `Radar - ${data.radius}${data.unit === "kilometers" ? "km" : "m"} - ${result}`,
+            `Radar - ${data.radius}${data.unit === "kilometres" ? "km" : "m"} - ${result}`,
         getShareText: async (data) =>
-            `Are you within ${data.radius}${data.unit === "kilometers" ? "km" : "m"} of us?`,
+            `Are you within ${data.radius}${data.unit === "kilometres" ? "km" : "m"} of us?`,
     },
     "hot/cold": {
         getResultStr: (data) => (data.warmer ? "Warmer" : "Colder"),
@@ -44,7 +44,7 @@ export const QUESTION_TEXT_HANDLERS: Record<string, QuestionTextHandler> = {
                 const dist = turf.distance(
                     [data.lngA, data.latA],
                     [data.lngB, data.latB],
-                    { units: "kilometers" },
+                    { units: "kilometres" },
                 );
                 const roundedDist = Math.round(dist * 100) / 100;
                 return `We just moved ${roundedDist}km are we warmer or colder?`;

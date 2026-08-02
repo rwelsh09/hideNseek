@@ -56,12 +56,12 @@ export function MatchSection({
                 {[
                     {
                         id: "same-neighbourhood",
-                        label: "Nhbd (Same)",
+                        label: "Neighbourhood (Same)",
                         icon: MapIcon,
                     },
                     {
                         id: "same-first-letter-neighbourhood",
-                        label: "Nhbd (Letter)",
+                        label: "Neighbourhood (Letter)",
                         icon: MapIcon,
                     },
                     {

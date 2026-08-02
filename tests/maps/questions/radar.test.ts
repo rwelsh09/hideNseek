@@ -48,7 +48,7 @@ describe("radius", () => {
         lat: 51.0447,
         lng: -114.0719,
         radius: 10,
-        unit: "kilometers",
+        unit: "kilometres",
         within: true,
         drag: true,
         color: "blue",

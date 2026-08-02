@@ -1,9 +1,10 @@
-import { describe, it, expect, vi, beforeEach } from "vitest";
 import * as turf from "@turf/turf";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
 import { getQuestionShareText } from "@/lib/question-text";
+import { extractStationName } from "@/maps/geo-utils";
 import { determineMatchBoundary } from "@/maps/questions/match";
 import { calculateMeasureDistance } from "@/maps/questions/measure";
-import { extractStationName } from "@/maps/geo-utils";
 
 // Mock dependencies
 vi.mock("@turf/turf", () => ({
@@ -53,18 +54,18 @@ describe("getQuestionShareText", () => {
     });
 
     describe("radar", () => {
-        it("formats correctly for meters", async () => {
+        it("formats correctly for metres", async () => {
             const result = await getQuestionShareText(
                 { id: "radar" },
-                { radius: 500, unit: "meters" },
+                { radius: 500, unit: "metres" },
             );
             expect(result).toBe("Are you within 500m of us?");
         });
 
-        it("formats correctly for kilometers", async () => {
+        it("formats correctly for kilometres", async () => {
             const result = await getQuestionShareText(
                 { id: "radar" },
-                { radius: 5, unit: "kilometers" },
+                { radius: 5, unit: "kilometres" },
             );
             expect(result).toBe("Are you within 5km of us?");
         });
@@ -81,7 +82,7 @@ describe("getQuestionShareText", () => {
                 "We just moved 2.35km are we warmer or colder?",
             );
             expect(turf.distance).toHaveBeenCalledWith([2, 1], [4, 3], {
-                units: "kilometers",
+                units: "kilometres",
             });
         });
 

@@ -121,7 +121,7 @@ onSet(trainStations, ({ newValue }) => {
 export const hidingRadius = persistentJsonAtom<number>("hidingRadius", 0.8);
 export const hidingRadiusUnits = persistentJsonAtom<Units>(
     "hidingRadiusUnits",
-    "kilometers",
+    "kilometres",
 );
 export const disabledStations = persistentJsonAtom<string[]>(
     "disabledStations",

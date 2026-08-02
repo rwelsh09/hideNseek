@@ -1,9 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import {
-    fastDistance,
-    getFeatureCoords,
-} from "../../../src/maps/geo-utils/index";
+import { fastDistance, getFeatureCoords } from "@/maps/geo-utils/index";
 
 describe("getFeatureCoords", () => {
     it("should return coordinates for a Polygon using properties", () => {
@@ -90,20 +87,20 @@ describe("getFeatureCoords", () => {
 
 describe("fastDistance", () => {
     it("should return 0 when the coordinates are identical", () => {
-        expect(fastDistance([0, 0], [0, 0], "kilometers")).toBe(0);
-        expect(fastDistance([10, 10], [10, 10], "kilometers")).toBe(0);
+        expect(fastDistance([0, 0], [0, 0], "kilometres")).toBe(0);
+        expect(fastDistance([10, 10], [10, 10], "kilometres")).toBe(0);
     });
 
-    it("should calculate distance correctly in kilometers", () => {
+    it("should calculate distance correctly in kilometres", () => {
         // Equator: 0,0 to 0,1
-        expect(fastDistance([0, 0], [0, 1], "kilometers")).toBeCloseTo(
+        expect(fastDistance([0, 0], [0, 1], "kilometres")).toBeCloseTo(
             111.1950802335329,
             5,
         );
 
         // London (-0.1278, 51.5074) to Paris (2.3522, 48.8566)
         expect(
-            fastDistance([-0.1278, 51.5074], [2.3522, 48.8566], "kilometers"),
+            fastDistance([-0.1278, 51.5074], [2.3522, 48.8566], "kilometres"),
         ).toBeCloseTo(343.5565348808832, 5);
     });
 
@@ -111,8 +108,8 @@ describe("fastDistance", () => {
         const c1: [number, number] = [-74.006, 40.7128];
         const c2: [number, number] = [-118.2437, 34.0522];
 
-        expect(fastDistance(c1, c2, "kilometers")).toBe(
-            fastDistance(c2, c1, "kilometers"),
+        expect(fastDistance(c1, c2, "kilometres")).toBe(
+            fastDistance(c2, c1, "kilometres"),
         );
     });
 
@@ -121,11 +118,11 @@ describe("fastDistance", () => {
         const nw: [number, number] = [-10, 10];
         const se: [number, number] = [10, -10];
 
-        expect(fastDistance(nw, se, "kilometers")).toBeCloseTo(
+        expect(fastDistance(nw, se, "kilometres")).toBeCloseTo(
             3137.045446662887,
             5,
         );
-        expect(fastDistance(se, nw, "kilometers")).toBeCloseTo(
+        expect(fastDistance(se, nw, "kilometres")).toBeCloseTo(
             3137.045446662887,
             5,
         );
@@ -134,7 +131,7 @@ describe("fastDistance", () => {
         const sw: [number, number] = [-10, -10];
         const ne: [number, number] = [10, 10];
 
-        expect(fastDistance(sw, ne, "kilometers")).toBeCloseTo(
+        expect(fastDistance(sw, ne, "kilometres")).toBeCloseTo(
             3137.045446662887,
             5,
         );

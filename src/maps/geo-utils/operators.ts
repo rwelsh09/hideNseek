@@ -66,7 +66,7 @@ export const modifyMapData = (
     return turf.rewind(differenced, { mutate: true });
 };
 
-const DEFAULT_BUFFER_UNIT = "kilometers";
+const DEFAULT_BUFFER_UNIT = "kilometres";
 
 export const arcBuffer = (
     geometry: FeatureCollection,

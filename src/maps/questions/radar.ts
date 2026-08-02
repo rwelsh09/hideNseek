@@ -68,7 +68,7 @@ export const createRadarDraft = (
         doubledPenalty: isLocked,
         radius: detail === "unknown" ? 5 : parseFloat(detail || "5"),
         isCustom: detail === "unknown",
-        unit: "kilometers",
+        unit: "kilometres",
         within: true,
         colour: "orange",
     };

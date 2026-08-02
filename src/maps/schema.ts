@@ -38,7 +38,7 @@ export const getSchemaOptions = (
     return options;
 };
 
-const unitsSchema = z.union([z.literal("kilometers"), z.literal("meters")]);
+const unitsSchema = z.union([z.literal("kilometres"), z.literal("metres")]);
 
 const iconColourSchema = z.union([
     z.literal("green"),
@@ -91,7 +91,7 @@ const ordinaryBaseQuestionSchema = z.object({
 });
 
 const getDefaultUnit = () => {
-    return "kilometers";
+    return "kilometres";
 };
 
 const photoQuestionSchema = ordinaryBaseQuestionSchema.extend({

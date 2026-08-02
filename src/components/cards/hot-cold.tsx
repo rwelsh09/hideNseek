@@ -30,7 +30,7 @@ export const HotColdQuestionComponent = ({
     const $hiderMode = useStore(hiderMode);
     const $isLoading = useStore(isLoading);
 
-    const DISTANCE_UNIT = "kilometers";
+    const DISTANCE_UNIT = "kilometres";
 
     const hasCoords =
         data.latA !== null &&

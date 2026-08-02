@@ -73,7 +73,7 @@ export const isHotColdLocked = (question: any, detail?: string) => {
     const dist = turf.distance(
         [question.lngA, question.latA],
         [question.lngB, question.latB],
-        { units: "kilometers" },
+        { units: "kilometres" },
     );
     const detailDist = parseFloat(detail || "5");
     return Math.abs(dist - detailDist) < 0.1;
@@ -88,7 +88,7 @@ export const createHotColdDraft = (
         [center.lng, center.lat],
         parseFloat(detail || "5"),
         90,
-        { units: "kilometers" },
+        { units: "kilometres" },
     );
     return {
         latA: center.lat,

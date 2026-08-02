@@ -164,7 +164,7 @@ export const calculateMeasureDistance = async (
                 ),
             );
             return turf.distance(seeker, nearestTrainStation, {
-                units: "kilometers",
+                units: "kilometres",
             });
         }
         default: {
@@ -211,7 +211,7 @@ export const calculateMeasureDistance = async (
                             seeker,
                             turf.polygonToLine(feature as any) as any,
                             {
-                                units: "kilometers",
+                                units: "kilometres",
                                 method: "geodesic",
                             },
                         );
@@ -220,16 +220,13 @@ export const calculateMeasureDistance = async (
                         feature.geometry.type === "MultiLineString"
                     ) {
                         dist = turf.pointToLineDistance(seeker, feature, {
-                            units: "kilometers",
+                            units: "kilometres",
                             method: "geodesic",
                         });
                     } else if (feature.geometry.type === "MultiPoint") {
                         for (const coord of feature.geometry.coordinates) {
                             const d = fastDistance(
-                                seeker.geometry.coordinates as [
-                                    number,
-                                    number,
-                                ],
+                                seeker.geometry.coordinates as [number, number],
                                 coord as [number, number],
                             );
                             if (d < dist) dist = d;

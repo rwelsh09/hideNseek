@@ -94,7 +94,7 @@ describe("context stores", () => {
         polyGeoJSON.set(null);
         disabledStations.set([]);
         hidingRadius.set(0.8);
-        hidingRadiusUnits.set("kilometers");
+        hidingRadiusUnits.set("kilometres");
         headStartMinutes.set(45);
     });
 
@@ -123,7 +123,7 @@ describe("context stores", () => {
                     lat: 51,
                     lng: -114,
                     isCustom: false,
-                    unit: "kilometers",
+                    unit: "kilometres",
                     within: false,
                     colour: "orange",
                     location: false,
@@ -254,7 +254,7 @@ describe("context stores", () => {
             disabledStations.set(["station-abc"]);
             questions.set([]);
             hidingRadius.set(2.0);
-            hidingRadiusUnits.set("kilometers");
+            hidingRadiusUnits.set("kilometres");
             headStartMinutes.set(15);
 
             let currentHidingZone;
@@ -269,7 +269,7 @@ describe("context stores", () => {
                 "station-abc",
             ]);
             expect(currentHidingZone?.hidingRadius).toBe(2.0);
-            expect(currentHidingZone?.hidingRadiusUnits).toBe("kilometers");
+            expect(currentHidingZone?.hidingRadiusUnits).toBe("kilometres");
             expect(currentHidingZone?.headStartMinutes).toBe(15);
             // It should not modify map location properties
             expect(currentHidingZone?.properties?.isHidingZone).toBeUndefined();

@@ -1,7 +1,7 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import * as turf from "@turf/turf";
+import {} from "react-toastify";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import { initializeHidingZonesLogic } from "@/lib/hiding-zones";
 import {
     disabledStations,
     hidingRadius,
@@ -11,7 +11,7 @@ import {
     questions,
     trainStations,
 } from "@/lib/context";
-import { toast } from "react-toastify";
+import { initializeHidingZonesLogic } from "@/lib/hiding-zones";
 
 // Mock JSON data
 // Use exact ID format for tests so it isn't parsed differently by extractStationId

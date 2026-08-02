@@ -22,3 +22,8 @@
 
 **Learning:** The application uses metric units for distances. In user-facing UI text, use standard Canadian/British English spelling ("kilometres" and "metres") instead of the US spellings ("kilometers" and "meters").
 **Action:** Replace instances of "meters" with "metres" and "kilometers" with "kilometres" in JSX templates, labels, and quiz descriptions. Be careful not to replace literal strings that form parts of object keys or schema logic unless explicitly instructed.
+
+## 2026-08-02 - [Spelling Constraints in Internal Logic]
+
+**Learning:** When enforcing Canadian/British English spelling (e.g., changing 'kilometers' to 'kilometres' or 'meters' to 'metres'), only modify user-facing rendered text. Internal string literals and API configurations (like Turf.js `units: "kilometers"`) must retain their American spellings, as changing them will break the application logic and cause test failures.
+**Action:** Always manually verify string replacements for unit spellings to ensure they are not modifying Zod schemas, internal `const` values, or object properties.
