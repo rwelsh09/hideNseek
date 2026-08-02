@@ -315,7 +315,7 @@ const LeftSidebarTrigger = React.forwardRef<
             aria-label="Toggle Sidebar"
             title="Toggle Sidebar"
             className={cn(
-                "bg-white hover:bg-[#f4f4f4] text-black w-[34px] h-[34px] rounded-[4px] border-[2px] border-[rgba(0,0,0,0.2)] bg-clip-padding cursor-pointer justify-center p-0",
+                "bg-white hover:bg-[#f4f4f4] text-black w-[44px] h-[44px] rounded-md border-[2px] border-[rgba(0,0,0,0.2)] bg-clip-padding cursor-pointer justify-center p-0",
                 "flex items-center gap-1",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 className,
@@ -326,7 +326,7 @@ const LeftSidebarTrigger = React.forwardRef<
             }}
             {...props}
         >
-            <TbMessage2Question className="w-5 h-5" />
+            <TbMessage2Question className="w-6 h-6" />
         </button>
     );
 });
@@ -348,7 +348,7 @@ const RightSidebarTrigger = React.forwardRef<
             aria-label="Toggle Sidebar"
             title="Toggle Sidebar"
             className={cn(
-                "bg-white hover:bg-[#f4f4f4] text-black w-[34px] h-[34px] rounded-[4px] border-[2px] border-[rgba(0,0,0,0.2)] bg-clip-padding cursor-pointer justify-center p-0",
+                "bg-white hover:bg-[#f4f4f4] text-black w-[44px] h-[44px] rounded-md border-[2px] border-[rgba(0,0,0,0.2)] bg-clip-padding cursor-pointer justify-center p-0",
                 "flex items-center gap-1",
                 "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
                 className,
@@ -368,7 +368,7 @@ const RightSidebarTrigger = React.forwardRef<
             }}
             {...props}
         >
-            <GrConfigure className="w-5 h-5" />
+            <GrConfigure className="w-6 h-6" />
         </button>
     );
 });

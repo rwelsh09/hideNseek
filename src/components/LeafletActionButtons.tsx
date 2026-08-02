@@ -40,7 +40,7 @@ export const LeafletActionButtons = () => {
     const $geolocationPermission = useStore(geolocationPermission);
 
     const buttonClass =
-        "leaflet-full-screen-specific-name bg-white hover:bg-[#f4f4f4] w-[34px] h-[34px] p-0 rounded-[4px] flex items-center justify-center border-[2px] border-[rgba(0,0,0,0.2)] bg-clip-padding cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
+        "leaflet-full-screen-specific-name bg-white hover:bg-[#f4f4f4] w-[44px] h-[44px] p-0 rounded-md flex items-center justify-center border-[2px] border-[rgba(0,0,0,0.2)] bg-clip-padding cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed";
 
     const handleLocationFocus = () => {
         if (!navigator.geolocation) {
@@ -105,9 +105,9 @@ export const LeafletActionButtons = () => {
                             disabled={isLocating}
                         >
                             {isLocating ? (
-                                <Loader2 className="w-5 h-5 text-black animate-spin" />
+                                <Loader2 className="w-6 h-6 text-black animate-spin" />
                             ) : (
-                                <MdMyLocation className="w-5 h-5 text-black" />
+                                <MdMyLocation className="w-6 h-6 text-black" />
                             )}
                         </button>
                     </AlertDialogTrigger>
@@ -139,9 +139,9 @@ export const LeafletActionButtons = () => {
                     disabled={isLocating}
                 >
                     {isLocating ? (
-                        <Loader2 className="w-5 h-5 text-black animate-spin" />
+                        <Loader2 className="w-6 h-6 text-black animate-spin" />
                     ) : (
-                        <MdMyLocation className="w-5 h-5 text-black" />
+                        <MdMyLocation className="w-6 h-6 text-black" />
                     )}
                 </button>
             )}
@@ -175,7 +175,7 @@ export const LeafletActionButtons = () => {
                     }
                 }}
             >
-                <MdZoomInMap className="w-5 h-5 text-black" />
+                <MdZoomInMap className="w-6 h-6 text-black" />
             </button>
 
             <button
@@ -213,7 +213,7 @@ export const LeafletActionButtons = () => {
                     }
                 }}
             >
-                <FaGlobe className="w-5 h-5 text-black" />
+                <FaGlobe className="w-6 h-6 text-black" />
             </button>
         </>
     );
