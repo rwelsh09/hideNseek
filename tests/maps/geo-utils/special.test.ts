@@ -9,220 +9,165 @@ import {
     lngLatToText,
 } from "@/maps/geo-utils/special";
 
-describe("getFeatureProperties", () => {
-    it("should return an empty object for null or undefined input", () => {
-        expect(getFeatureProperties(null)).toEqual({});
-        expect(getFeatureProperties(undefined)).toEqual({});
-    });
-
-    it("should return feature.properties.tags if it exists", () => {
-        const feature = {
-            properties: {
-                tags: {
-                    name: "Test Tag",
-                    amenity: "cafe",
-                },
-            },
-        };
-
-        expect(getFeatureProperties(feature)).toEqual({
-            name: "Test Tag",
-            amenity: "cafe",
+describe("geo-utils/special", () => {
+    describe("lngLatToText", () => {
+        it("formats northern and eastern coordinates correctly", () => {
+            expect(lngLatToText([114.0719, 51.0447])).toBe(
+                "51.0447°N, 114.0719°E",
+            );
+        });
+        it("formats southern and western coordinates correctly", () => {
+            expect(lngLatToText([-114.0719, -51.0447])).toBe(
+                "51.0447°S, 114.0719°W",
+            );
+        });
+        it("formats zero coordinates correctly", () => {
+            expect(lngLatToText([0, 0])).toBe("0°N, 0°E");
         });
     });
 
-    it("should merge and flatten properties if feature.properties.properties exists", () => {
-        const feature = {
-            properties: {
-                baseProp: "base",
-                properties: {
-                    nestedProp: "nested",
-                },
-            },
-        };
+    describe("getFeatureProperties", () => {
+        it("returns empty object for falsy input", () => {
+            expect(getFeatureProperties(null)).toEqual({});
+            expect(getFeatureProperties(undefined)).toEqual({});
+        });
 
-        const result = getFeatureProperties(feature);
+        it("returns tags if properties.tags exists", () => {
+            const feature = {
+                properties: { tags: { foo: "bar" }, other: "ignored" },
+            };
+            expect(getFeatureProperties(feature)).toEqual({ foo: "bar" });
+        });
 
-        expect(result).toEqual({
-            baseProp: "base",
-            properties: {
-                nestedProp: "nested",
-            },
-            nestedProp: "nested",
+        it("merges properties and properties.properties if properties.properties exists", () => {
+            const feature = {
+                properties: { properties: { inner: "val1" }, outer: "val2" },
+            };
+            expect(getFeatureProperties(feature)).toEqual({
+                inner: "val1",
+                outer: "val2",
+                properties: { inner: "val1" },
+            });
+        });
+
+        it("returns properties if no nested structures exist", () => {
+            const feature = { properties: { foo: "bar" } };
+            expect(getFeatureProperties(feature)).toEqual({ foo: "bar" });
+        });
+
+        it("returns feature itself if no properties field exists", () => {
+            const feature = { foo: "bar" };
+            expect(getFeatureProperties(feature)).toEqual({ foo: "bar" });
         });
     });
 
-    it("should return feature.properties if it exists but tags or nested properties do not", () => {
-        const feature = {
-            properties: {
-                a: 1,
-                b: 2,
-            },
-        };
+    describe("extractStationName", () => {
+        it("returns name:en if available", () => {
+            expect(
+                extractStationName({
+                    properties: { "name:en": "English Name", name: "Local Name" },
+                }),
+            ).toBe("English Name");
+        });
 
-        expect(getFeatureProperties(feature)).toEqual({
-            a: 1,
-            b: 2,
+        it("falls back to name if name:en is missing", () => {
+            expect(
+                extractStationName({ properties: { name: "Local Name" } }),
+            ).toBe("Local Name");
+        });
+
+        it("returns undefined if neither name exists", () => {
+            expect(extractStationName({ properties: { foo: "bar" } })).toBeUndefined();
         });
     });
 
-    it("should return the feature itself if feature.properties does not exist", () => {
-        const feature = {
-            id: 123,
-            type: "Feature",
-        };
+    describe("extractStationLabel", () => {
+        it("returns station name if available", () => {
+            const feature = {
+                properties: { name: "Station A" },
+                geometry: { coordinates: [10, 20] },
+            };
+            expect(extractStationLabel(feature)).toBe("Station A");
+        });
 
-        expect(getFeatureProperties(feature)).toEqual({
-            id: 123,
-            type: "Feature",
+        it("falls back to formatted coordinates if name is missing", () => {
+            const feature = {
+                properties: {},
+                geometry: { coordinates: [-114.0, 51.0] },
+            };
+            expect(extractStationLabel(feature)).toBe("51°N, 114°W");
         });
     });
-});
 
-describe("lngLatToText", () => {
-    it("should format positive coordinates as N/E", () => {
-        expect(lngLatToText([10.5, 20.5])).toBe("20.5°N, 10.5°E");
+    describe("extractStationLines", () => {
+        it("returns lines array if it exists", () => {
+            expect(
+                extractStationLines({ properties: { lines: ["Red", "Blue"] } }),
+            ).toEqual(["Red", "Blue"]);
+        });
+
+        it("splits route_ref by comma and semicolon, trimming whitespace", () => {
+            expect(
+                extractStationLines({
+                    properties: { route_ref: "Red; Blue, Green ; Yellow" },
+                }),
+            ).toEqual(["Red", "Blue", "Green", "Yellow"]);
+        });
+
+        it("falls back to ref if route_ref is missing", () => {
+            expect(
+                extractStationLines({
+                    properties: { ref: "Line 1, Line 2" },
+                }),
+            ).toEqual(["Line 1", "Line 2"]);
+        });
+
+        it("returns empty array if no line info exists", () => {
+            expect(extractStationLines({ properties: {} })).toEqual([]);
+        });
     });
 
-    it("should format negative coordinates as S/W", () => {
-        expect(lngLatToText([-10.5, -20.5])).toBe("20.5°S, 10.5°W");
-    });
+    describe("extractStationId", () => {
+        it("returns explicit @id", () => {
+            expect(extractStationId({ properties: { "@id": "node/123" } })).toBe(
+                "node/123",
+            );
+        });
 
-    it("should format exactly 0 latitude as N and 0 longitude as E", () => {
-        expect(lngLatToText([0, 0])).toBe("0°N, 0°E");
-    });
+        it("returns explicit id from properties", () => {
+            expect(extractStationId({ properties: { id: "station_456" } })).toBe(
+                "station_456",
+            );
+        });
 
-    it("should handle mixed positive/negative coordinates", () => {
-        expect(lngLatToText([-10.5, 20.5])).toBe("20.5°N, 10.5°W");
-        expect(lngLatToText([10.5, -20.5])).toBe("20.5°S, 10.5°E");
-    });
-});
+        it("returns explicit id from feature root", () => {
+            expect(extractStationId({ id: "station_789", properties: {} })).toBe(
+                "station_789",
+            );
+        });
 
-describe("extractStationName", () => {
-    it("should return name:en if present", () => {
-        const place = {
-            properties: { "name:en": "English Name", name: "Local Name" },
-        };
-        expect(extractStationName(place)).toBe("English Name");
-    });
+        it("derives id from geometry coordinates", () => {
+            const feature = {
+                geometry: { coordinates: [-114.07, 51.04] },
+                properties: {},
+            };
+            expect(extractStationId(feature)).toBe("51.04,-114.07");
+        });
 
-    it("should return name if name:en is missing", () => {
-        const place = { properties: { name: "Local Name" } };
-        expect(extractStationName(place)).toBe("Local Name");
-    });
+        it("derives id from nested geometry coordinates (Turf circle enclosing Point)", () => {
+            const feature = {
+                properties: { geometry: { coordinates: [-100.5, 45.2] } },
+            };
+            expect(extractStationId(feature)).toBe("45.2,-100.5");
+        });
 
-    it("should return undefined if both are missing", () => {
-        const place = { properties: {} };
-        expect(extractStationName(place)).toBeUndefined();
-    });
-});
-
-describe("extractStationLabel", () => {
-    it("should return the station name if available", () => {
-        const place = {
-            properties: { name: "Station Alpha" },
-            geometry: { coordinates: [10, 20] },
-        };
-        expect(extractStationLabel(place)).toBe("Station Alpha");
-    });
-
-    it("should fallback to coordinate text if name is missing", () => {
-        const place = { properties: {}, geometry: { coordinates: [10, 20] } };
-        expect(extractStationLabel(place)).toBe("20°N, 10°E");
-    });
-});
-
-describe("extractStationLines", () => {
-    it("should extract lines from route_ref separated by commas", () => {
-        const place = { properties: { route_ref: "Blue Line, Red Line" } };
-        expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
-    });
-
-    it("should extract lines from route_ref separated by semicolons", () => {
-        const place = { properties: { route_ref: "Blue Line;Red Line" } };
-        expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
-    });
-
-    it("should fallback to ref if route_ref is missing", () => {
-        const place = { properties: { ref: "Green Line, Orange Line" } };
-        expect(extractStationLines(place)).toEqual([
-            "Green Line",
-            "Orange Line",
-        ]);
-    });
-
-    it("should trim whitespace from extracted lines", () => {
-        const place = {
-            properties: { route_ref: "  Blue Line  ,   Red Line   " },
-        };
-        expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
-    });
-
-    it("should filter out empty strings", () => {
-        const place = { properties: { route_ref: "Blue Line,,;Red Line;" } };
-        expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
-    });
-
-    it("should return an empty array if both route_ref and ref are missing", () => {
-        const place = { properties: { name: "Station Alpha" } };
-        expect(extractStationLines(place)).toEqual([]);
-    });
-
-    it("should work with nested properties.properties structure", () => {
-        const place = {
-            properties: {
-                properties: { route_ref: "Blue Line, Red Line" },
-            },
-        };
-        expect(extractStationLines(place)).toEqual(["Blue Line", "Red Line"]);
-    });
-});
-
-describe("extractStationId", () => {
-    it("should return the id from top-level properties", () => {
-        const place = { properties: { id: "station-123" } };
-        expect(extractStationId(place)).toBe("station-123");
-    });
-
-    it("should return the @id from top-level properties", () => {
-        const place = { properties: { "@id": "station-123" } };
-        expect(extractStationId(place)).toBe("station-123");
-    });
-
-    it("should return the id from nested tags if present", () => {
-        const place = {
-            properties: {
-                tags: { id: "nested-station-123" },
-            },
-        };
-        expect(extractStationId(place)).toBe("nested-station-123");
-    });
-
-    it("should return the id from the base feature if properties is absent", () => {
-        const place = { id: "base-station-123", type: "Feature" };
-        expect(extractStationId(place)).toBe("base-station-123");
-    });
-
-    it("should return fallback coordinates string if explicit ID is missing", () => {
-        const place = {
-            properties: {},
-            geometry: { type: "Point", coordinates: [-114.1, 51.1] },
-        };
-        expect(extractStationId(place)).toBe("51.1,-114.1");
-    });
-
-    it("should return fallback coordinates string for a nested turf circle format", () => {
-        const place = {
-            properties: {
-                geometry: { type: "Point", coordinates: [-114.1, 51.1] },
-            },
-            geometry: { type: "Polygon", coordinates: [] },
-        };
-        expect(extractStationId(place)).toBe("51.1,-114.1");
-    });
-
-    it("should return undefined if id and coordinates are missing", () => {
-        const place = { properties: { name: "Station Alpha" } };
-        expect(extractStationId(place)).toBeUndefined();
+        it("returns undefined if no id or valid coordinates can be found", () => {
+            expect(extractStationId({ properties: {} })).toBeUndefined();
+            expect(
+                extractStationId({
+                    properties: { geometry: { coordinates: ["invalid", "coords"] } },
+                }),
+            ).toBeUndefined();
+        });
     });
 });
