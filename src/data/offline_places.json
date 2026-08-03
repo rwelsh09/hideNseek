@@ -2,7 +2,7 @@
     "version": 0.6,
     "generator": "Overpass API 0.7.62.11 87bfad18",
     "osm3s": {
-        "timestamp_osm_base": "2026-07-27T02:00:11Z",
+        "timestamp_osm_base": "2026-08-03T01:48:51Z",
         "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
     },
     "elements": [
@@ -272,39 +272,6 @@
                 "cuisine": "pizza",
                 "name": "Boston Pizza",
                 "url": "http://www.bostonpizza.com"
-            }
-        },
-        {
-            "type": "node",
-            "id": 298502205,
-            "lat": 50.9774509,
-            "lon": -114.0151013,
-            "tags": {
-                "amenity": "cafe",
-                "brand": "Tim Hortons",
-                "brand:wikidata": "Q175106",
-                "brand:wikipedia": "en:Tim Hortons",
-                "cuisine": "coffee_shop",
-                "drive_through": "yes",
-                "name": "Tim Hortons",
-                "takeaway": "yes"
-            }
-        },
-        {
-            "type": "node",
-            "id": 298502206,
-            "lat": 50.9760373,
-            "lon": -114.0151944,
-            "tags": {
-                "amenity": "fast_food",
-                "brand": "McDonald's",
-                "brand:wikidata": "Q38076",
-                "brand:wikipedia": "en:McDonald's",
-                "cuisine": "burger",
-                "drive_through": "yes",
-                "name": "McDonald's",
-                "takeaway": "yes",
-                "website": "http://www.mcdonalds.ca/"
             }
         },
         {
@@ -780,7 +747,7 @@
                 "addr:street": "MacEwan Drive NW",
                 "addr:unit": "3",
                 "amenity": "pub",
-                "name": "Brixton Neighborhood Pub",
+                "name": "Brixton Pub & Eatery",
                 "opening_hours": "Mo-Fr 15:00-22:00"
             }
         },
@@ -1302,23 +1269,16 @@
         },
         {
             "type": "node",
-            "id": 1320371435,
-            "lat": 50.9784342,
-            "lon": -114.015059,
-            "tags": {
-                "amenity": "restaurant",
-                "brand": "Boston Pizza",
-                "brand:wikidata": "Q894578",
-                "cuisine": "pizza",
-                "name": "Boston Pizza"
-            }
-        },
-        {
-            "type": "node",
             "id": 1320756068,
             "lat": 50.9769942,
             "lon": -114.013952,
             "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "8338",
+                "addr:postcode": "T2C 4E4",
+                "addr:province": "Alberta",
+                "addr:street": "18 Street SE",
+                "addr:unit": "362",
                 "amenity": "fast_food",
                 "brand": "Papa John's",
                 "brand:wikidata": "Q2759586",
@@ -4486,21 +4446,6 @@
                 "cuisine": "pizza",
                 "name": "Fast-Lane Pizza",
                 "website": "https://www.fastlanepizza.com/"
-            }
-        },
-        {
-            "type": "node",
-            "id": 5031183073,
-            "lat": 50.9332472,
-            "lon": -114.0173846,
-            "tags": {
-                "addr:city": "Calgary",
-                "addr:housenumber": "950",
-                "addr:postcode": "T2J 6E7",
-                "addr:street": "Queensland Drive SE",
-                "amenity": "pub",
-                "name": "The Brass Monkey",
-                "opening_hours": "Mo-Su 10:00-02:00"
             }
         },
         {
@@ -9678,6 +9623,69 @@
             }
         },
         {
+            "type": "node",
+            "id": 14056793798,
+            "lat": 50.9327013,
+            "lon": -114.0171755,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "950",
+                "addr:postcode": "T2J 6E7",
+                "addr:province": "AB",
+                "addr:street": "Queensland Drive SE",
+                "addr:unit": "102",
+                "amenity": "fast_food",
+                "cuisine": "pizza",
+                "delivery": "yes",
+                "drive_through": "no",
+                "name": "Canadian Pizza Unlimited & Fried Chicken",
+                "opening_hours": "Su-Th 11:00-23:00; Fr-Sa 11:00-24:00",
+                "phone": "+1-403-271-7712",
+                "website": "https://queenslanddrse.canadianpizzaunlimited.ca/",
+                "website:menu": "https://queenslanddrse.canadianpizzaunlimited.ca/"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14062555899,
+            "lat": 51.0520682,
+            "lon": -114.0446685,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "69",
+                "addr:postcode": "T2E 4E4",
+                "addr:province": "Alberta",
+                "addr:street": "7A Street NE",
+                "addr:unit": "110",
+                "amenity": "restaurant",
+                "branch": "Bridgeland",
+                "cuisine": "pizza",
+                "name": "Una Pizza + Wine",
+                "opening_hours": "Su-Th 11:30-22:00; Fr,Sa 11:30-23:00",
+                "phone": "+1-403-453-1183",
+                "website": "https://unapizzeria.com/"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14067475301,
+            "lat": 51.0381427,
+            "lon": -114.0692699,
+            "tags": {
+                "addr:housenumber": "308 B",
+                "addr:postcode": "T2S 0A8",
+                "addr:street": "17 Avenue SW",
+                "amenity": "bar",
+                "check_date": "2026-08-01",
+                "check_date:opening_hours": "2026-08-01",
+                "name": "The Texas Lounge",
+                "opening_hours": "Mo-Th 15:00-02:00; Fr 14:00-03:00; Sa-Su 11:00-03:00",
+                "phone": "+1 403 229 0911",
+                "website": "https://www.texaslounge.ca/",
+                "website:menu": "https://www.texaslounge.ca/Menu"
+            }
+        },
+        {
             "type": "way",
             "id": 4814073,
             "bounds": {
@@ -11271,6 +11279,134 @@
         },
         {
             "type": "way",
+            "id": 27203886,
+            "bounds": {
+                "minlat": 50.978297,
+                "minlon": -114.0152867,
+                "maxlat": 50.9785591,
+                "maxlon": -114.0148491
+            },
+            "nodes": [
+                12712272302, 14062538986, 298518022, 12712272301, 12712272300,
+                14062538985, 14062538984, 12712272282, 298518019, 298518017,
+                12712272302
+            ],
+            "geometry": [
+                {
+                    "lat": 50.9783199,
+                    "lon": -114.0150663
+                },
+                {
+                    "lat": 50.978323,
+                    "lon": -114.0150283
+                },
+                {
+                    "lat": 50.978297,
+                    "lon": -114.0150156
+                },
+                {
+                    "lat": 50.9783072,
+                    "lon": -114.0149691
+                },
+                {
+                    "lat": 50.9783322,
+                    "lon": -114.014976
+                },
+                {
+                    "lat": 50.9783421,
+                    "lon": -114.0149474
+                },
+                {
+                    "lat": 50.9783609,
+                    "lon": -114.0149264
+                },
+                {
+                    "lat": 50.9784636,
+                    "lon": -114.0148491
+                },
+                {
+                    "lat": 50.9785591,
+                    "lon": -114.0151532
+                },
+                {
+                    "lat": 50.9783883,
+                    "lon": -114.0152867
+                },
+                {
+                    "lat": 50.9783199,
+                    "lon": -114.0150663
+                }
+            ],
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "8338",
+                "addr:postcode": "T2C 4E4",
+                "addr:province": "Alberta",
+                "addr:street": "18 Street SE",
+                "addr:unit": "700",
+                "amenity": "restaurant",
+                "brand": "Boston Pizza",
+                "brand:wikidata": "Q894578",
+                "building": "commercial",
+                "cuisine": "pizza",
+                "name": "Boston Pizza",
+                "source": "City of Calgary Digital Aerial Survey building roof outlines"
+            }
+        },
+        {
+            "type": "way",
+            "id": 27203891,
+            "bounds": {
+                "minlat": 50.9773635,
+                "minlon": -114.0152294,
+                "maxlat": 50.9775266,
+                "maxlon": -114.0149987
+            },
+            "nodes": [298502205, 298518094, 298518093, 298518097, 298502205],
+            "geometry": [
+                {
+                    "lat": 50.977365,
+                    "lon": -114.0149987
+                },
+                {
+                    "lat": 50.9775266,
+                    "lon": -114.0150015
+                },
+                {
+                    "lat": 50.9775251,
+                    "lon": -114.0152294
+                },
+                {
+                    "lat": 50.9773635,
+                    "lon": -114.0152265
+                },
+                {
+                    "lat": 50.977365,
+                    "lon": -114.0149987
+                }
+            ],
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "8338",
+                "addr:postcode": "T2C 4E4",
+                "addr:province": "Alberta",
+                "addr:street": "18 Street SE",
+                "amenity": "cafe",
+                "brand": "Tim Hortons",
+                "brand:wikidata": "Q175106",
+                "brand:wikipedia": "en:Tim Hortons",
+                "building": "commercial",
+                "cuisine": "coffee_shop",
+                "drive_through": "yes",
+                "name": "Tim Hortons",
+                "phone": "+1-403-236-0291",
+                "source": "City of Calgary Digital Aerial Survey building roof outlines",
+                "takeaway": "yes",
+                "website": "https://locations.timhortons.ca/en/ab/calgary/8338-18th-st-se/"
+            }
+        },
+        {
+            "type": "way",
             "id": 28022330,
             "bounds": {
                 "minlat": 51.1487434,
@@ -12194,6 +12330,105 @@
                 "operator": "Restaurant Brands International Inc.",
                 "takeaway": "yes",
                 "website": "https://www.timhortons.com/"
+            }
+        },
+        {
+            "type": "way",
+            "id": 117223175,
+            "bounds": {
+                "minlat": 50.9759559,
+                "minlon": -114.0153654,
+                "maxlat": 50.9761527,
+                "maxlon": -114.0148469
+            },
+            "nodes": [
+                298502206, 12712272479, 12712272478, 1320371428, 12712272477,
+                12712272476, 1320371449, 12712272475, 12712272474, 12712272473,
+                12712272472, 1320371453, 1320371432, 12712272471, 12712272470,
+                12712272469, 298502206
+            ],
+            "geometry": [
+                {
+                    "lat": 50.9761316,
+                    "lon": -114.0151397
+                },
+                {
+                    "lat": 50.9761328,
+                    "lon": -114.0152799
+                },
+                {
+                    "lat": 50.976147,
+                    "lon": -114.0152795
+                },
+                {
+                    "lat": 50.9761477,
+                    "lon": -114.0153642
+                },
+                {
+                    "lat": 50.9760918,
+                    "lon": -114.0153654
+                },
+                {
+                    "lat": 50.9760916,
+                    "lon": -114.0153491
+                },
+                {
+                    "lat": 50.9760217,
+                    "lon": -114.0153506
+                },
+                {
+                    "lat": 50.9760211,
+                    "lon": -114.0152783
+                },
+                {
+                    "lat": 50.9759575,
+                    "lon": -114.0152796
+                },
+                {
+                    "lat": 50.9759559,
+                    "lon": -114.0150863
+                },
+                {
+                    "lat": 50.975975,
+                    "lon": -114.0150859
+                },
+                {
+                    "lat": 50.975973,
+                    "lon": -114.0148506
+                },
+                {
+                    "lat": 50.9761519,
+                    "lon": -114.0148469
+                },
+                {
+                    "lat": 50.9761527,
+                    "lon": -114.0149382
+                },
+                {
+                    "lat": 50.9761073,
+                    "lon": -114.0149392
+                },
+                {
+                    "lat": 50.976109,
+                    "lon": -114.0151402
+                },
+                {
+                    "lat": 50.9761316,
+                    "lon": -114.0151397
+                }
+            ],
+            "tags": {
+                "amenity": "fast_food",
+                "brand": "McDonald's",
+                "brand:wikidata": "Q38076",
+                "brand:wikipedia": "en:McDonald's",
+                "building": "commercial",
+                "cuisine": "burger",
+                "drive_through": "yes",
+                "name": "McDonald's",
+                "source": "City of Calgary Digital Aerial Survey building roof outlines",
+                "takeaway": "yes",
+                "website": "http://www.mcdonalds.ca/"
             }
         },
         {
@@ -15156,34 +15391,51 @@
             "type": "way",
             "id": 230870531,
             "bounds": {
-                "minlat": 51.010113,
-                "minlon": -114.0043143,
-                "maxlat": 51.0102935,
-                "maxlon": -114.0041722
+                "minlat": 51.0101105,
+                "minlon": -114.0043269,
+                "maxlat": 51.0103008,
+                "maxlon": -114.0041607
             },
             "nodes": [
-                2393041689, 2393041681, 2393041677, 2393041673, 2393041689
+                2393041689, 2393041681, 14064568995, 14064568996, 14064568997,
+                14064568994, 2393041677, 2393041673, 2393041689
             ],
             "geometry": [
                 {
-                    "lat": 51.0101147,
-                    "lon": -114.004309
+                    "lat": 51.0101107,
+                    "lon": -114.0043269
                 },
                 {
-                    "lat": 51.010113,
-                    "lon": -114.0041722
+                    "lat": 51.0101105,
+                    "lon": -114.004179
                 },
                 {
-                    "lat": 51.0102935,
-                    "lon": -114.0041722
+                    "lat": 51.0102005,
+                    "lon": -114.0041787
                 },
                 {
-                    "lat": 51.0102919,
-                    "lon": -114.0043143
+                    "lat": 51.0102005,
+                    "lon": -114.0041608
                 },
                 {
-                    "lat": 51.0101147,
-                    "lon": -114.004309
+                    "lat": 51.0102444,
+                    "lon": -114.0041607
+                },
+                {
+                    "lat": 51.0102444,
+                    "lon": -114.0041774
+                },
+                {
+                    "lat": 51.0103006,
+                    "lon": -114.0041772
+                },
+                {
+                    "lat": 51.0103008,
+                    "lon": -114.0043261
+                },
+                {
+                    "lat": 51.0101107,
+                    "lon": -114.0043269
                 }
             ],
             "tags": {
@@ -15198,6 +15450,7 @@
                 "cuisine": "coffee_shop",
                 "drive_through": "yes",
                 "name": "Tim Hortons",
+                "outdoor_seating": "no",
                 "takeaway": "yes"
             }
         },
@@ -27703,68 +27956,6 @@
         },
         {
             "type": "way",
-            "id": 1039733874,
-            "bounds": {
-                "minlat": 51.052037,
-                "minlon": -114.0448257,
-                "maxlat": 51.0520977,
-                "maxlon": -114.0446112
-            },
-            "nodes": [
-                9573976445, 9573976446, 9573976447, 9573976448, 9573976449,
-                9573976450, 9573976444, 9573976445
-            ],
-            "geometry": [
-                {
-                    "lat": 51.0520977,
-                    "lon": -114.0448257
-                },
-                {
-                    "lat": 51.052037,
-                    "lon": -114.0448257
-                },
-                {
-                    "lat": 51.052037,
-                    "lon": -114.0446423
-                },
-                {
-                    "lat": 51.0520391,
-                    "lon": -114.0446305
-                },
-                {
-                    "lat": 51.0520458,
-                    "lon": -114.0446187
-                },
-                {
-                    "lat": 51.0520512,
-                    "lon": -114.0446133
-                },
-                {
-                    "lat": 51.0520971,
-                    "lon": -114.0446112
-                },
-                {
-                    "lat": 51.0520977,
-                    "lon": -114.0448257
-                }
-            ],
-            "tags": {
-                "addr:city": "Calgary",
-                "addr:housenumber": "69",
-                "addr:postcode": "T2E 4E4",
-                "addr:province": "Alberta",
-                "addr:street": "7A Street NE",
-                "amenity": "restaurant",
-                "building": "yes",
-                "cuisine": "pizza",
-                "name": "Una Pizza + Wine Bridgeland",
-                "opening_hours": "Su-Th 11:30-22:00; Fr,Sa 11:30-23:00",
-                "phone": "+1-403-453-1183",
-                "website": "https://unapizzeria.com/"
-            }
-        },
-        {
-            "type": "way",
             "id": 1040332972,
             "bounds": {
                 "minlat": 51.0407885,
@@ -32199,7 +32390,7 @@
                 "building": "yes",
                 "name": "Fire Station 8 (Rosscarrock)",
                 "note": "City of Calgary rooflines - aquisition date - 2024-06-12T22:39:34.000Z",
-                "operator": "City of Calgary",
+                "operator": "Calgary Fire Department",
                 "operator:wikidata": "Q5019670",
                 "operator:wikipedia": "en:Calgary Fire Department"
             }
@@ -93776,8 +93967,8 @@
                 "maxlon": -114.2575945
             },
             "nodes": [
-                12452879565, 12452879564, 12452879563, 12452879562, 12452879561,
-                12452879560, 12452879559, 11339519151
+                12452879565, 12452879564, 12452879563, 12452879562, 2484410451,
+                2484410444, 2484426838, 11339519151
             ],
             "geometry": [
                 {
@@ -225047,6 +225238,10 @@
                             "lon": -114.2826681
                         },
                         {
+                            "lat": 51.1020937,
+                            "lon": -114.2826057
+                        },
+                        {
                             "lat": 51.1023618,
                             "lon": -114.2825554
                         },
@@ -225323,12 +225518,16 @@
                             "lon": -114.2959981
                         },
                         {
-                            "lat": 51.1230101,
-                            "lon": -114.2967397
+                            "lat": 51.1230755,
+                            "lon": -114.2962381
                         },
                         {
-                            "lat": 51.1230541,
-                            "lon": -114.2969908
+                            "lat": 51.1230568,
+                            "lon": -114.2967129
+                        },
+                        {
+                            "lat": 51.1230655,
+                            "lon": -114.2969411
                         },
                         {
                             "lat": 51.1230886,
@@ -225337,6 +225536,10 @@
                         {
                             "lat": 51.1231985,
                             "lon": -114.2973502
+                        },
+                        {
+                            "lat": 51.1232258,
+                            "lon": -114.2973856
                         },
                         {
                             "lat": 51.1232761,
@@ -225998,8 +226201,8 @@
                             "lon": -114.2806073
                         },
                         {
-                            "lat": 51.1250897,
-                            "lon": -114.280603
+                            "lat": 51.1250938,
+                            "lon": -114.2806019
                         },
                         {
                             "lat": 51.1250323,
@@ -226018,12 +226221,16 @@
                             "lon": -114.2805261
                         },
                         {
-                            "lat": 51.1175957,
-                            "lon": -114.2805759
+                            "lat": 51.1177439,
+                            "lon": -114.2806832
                         },
                         {
                             "lat": 51.1159054,
                             "lon": -114.2805525
+                        },
+                        {
+                            "lat": 51.1147683,
+                            "lon": -114.2805381
                         },
                         {
                             "lat": 51.1145202,
@@ -226042,12 +226249,28 @@
                             "lon": -114.2739945
                         },
                         {
+                            "lat": 51.1117,
+                            "lon": -114.2739974
+                        },
+                        {
                             "lat": 51.1110126,
                             "lon": -114.273999
                         },
                         {
                             "lat": 51.1105971,
                             "lon": -114.2740005
+                        },
+                        {
+                            "lat": 51.1105932,
+                            "lon": -114.2735292
+                        },
+                        {
+                            "lat": 51.1105907,
+                            "lon": -114.2732206
+                        },
+                        {
+                            "lat": 51.110586,
+                            "lon": -114.2726445
                         },
                         {
                             "lat": 51.1105565,
