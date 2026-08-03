@@ -88,7 +88,7 @@ export function RulesAccordion() {
                         <li>
                             <strong>The Head Start:</strong> Before the Seekers
                             can begin their pursuit, the Hider is granted a
-                            designated Head Start period (e.g. 45 minutes).
+                            designated Head Start period (e.g., 45 minutes).
                         </li>
                         <li>
                             <strong>Transit Only:</strong> During the game, all
@@ -225,8 +225,8 @@ export function RulesAccordion() {
                     </h3>
                     <p>
                         Once the Seekers have entered the Hider&apos;s Hiding
-                        Zone the end game has begun. The Hider must stay put in
-                        a single spot until found, this is their final Hiding
+                        Zone, the end game has begun. The Hider must stay put in
+                        a single spot until found; this is their final Hiding
                         Spot. Hiding Spots can be anywhere within their Hiding
                         Zone, but they must be somewhere that is{" "}
                         <strong>
@@ -239,7 +239,7 @@ export function RulesAccordion() {
                         someone&apos;s house. You should also make sure that
                         staying in your spot for an extended period of time will
                         not raise any suspicions or create the potential for you
-                        to get kicked out, for this reason avoid stores or other
+                        to get kicked out; for this reason, avoid stores or other
                         businesses, even if they are open during all game hours.
                     </p>
                     <p>
