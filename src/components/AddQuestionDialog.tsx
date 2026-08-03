@@ -73,7 +73,7 @@ export function AddQuestionDialog({
                 <Button
                     className={
                         iconOnly
-                            ? "flex items-center justify-center gap-2 h-10 w-10 p-0 shadow-md"
+                            ? "flex items-center justify-center gap-2 h-11 w-11 p-0 shadow-md"
                             : "w-full flex items-center justify-center gap-2 h-10"
                     }
                     data-tutorial-id="add-question-btn"
