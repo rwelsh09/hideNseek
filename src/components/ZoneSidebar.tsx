@@ -346,8 +346,10 @@ export const ZoneSidebar = () => {
                                 Hider Mode
                             </Label>
                             <div className="flex items-center">
-                                <div
-                                    className="flex items-center justify-center cursor-pointer text-muted-foreground hover:text-foreground transition-colors mr-3"
+                                <button
+                                    type="button"
+                                    aria-label="What is Hider Mode?"
+                                    className="flex items-center justify-center cursor-pointer text-muted-foreground hover:text-foreground transition-colors mr-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2 rounded-full"
                                     onClick={(e) => {
                                         e.stopPropagation();
                                         toast.info(
@@ -360,7 +362,8 @@ export const ZoneSidebar = () => {
                                                     Seeker questions.
                                                 </p>
                                                 <button
-                                                    className="text-sm bg-primary text-primary-foreground py-1 px-3 rounded-md hover:bg-primary/90 transition-colors w-fit"
+                                                    type="button"
+                                                    className="text-sm bg-primary text-primary-foreground py-1 px-3 rounded-md hover:bg-primary/90 transition-colors w-fit focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                                                     onClick={() => {
                                                         RightSidebarContext.get().toggleSidebar();
                                                         showHiderTutorial.set(
@@ -381,7 +384,7 @@ export const ZoneSidebar = () => {
                                     title="What is Hider Mode?"
                                 >
                                     <CircleHelp size={20} />
-                                </div>
+                                </button>
                                 <Checkbox
                                     id="hider-mode-toggle"
                                     checked={!!$hiderMode}
