@@ -206,7 +206,6 @@ export const ZoneSidebar = () => {
                 styleStations(
                     activeStations,
                     $displayHidingZonesStyle,
-                    $questionFinishedMapData,
                     $lockedActiveStationIds,
                     stations,
                 ),
@@ -527,17 +526,9 @@ export const ZoneSidebar = () => {
 function styleStations(
     circles: StationCircle[],
     style: string,
-
-    $questionFinishedMapData: any,
     lockedActiveStationIds?: string[] | null,
     allStations?: any[],
 ): FeatureCollection | Feature {
-    const applyMask = (
-        feature: FeatureCollection | Feature,
-    ): FeatureCollection | Feature => {
-        return feature;
-    };
-
     switch (style) {
         case "no-display":
             return { type: "FeatureCollection", features: [] };
@@ -592,15 +583,13 @@ function styleStations(
                             }
                             return circle;
                         });
-                        return applyMask(
-                            turf.featureCollection(intersectedCircles as any),
-                        );
+                        return turf.featureCollection(intersectedCircles as any);
                     }
                 } catch (e) {
                     console.error("Error generating voronoi for zones:", e);
                 }
             }
-            return applyMask(turf.featureCollection(circles));
+            return turf.featureCollection(circles);
         }
     }
 }
