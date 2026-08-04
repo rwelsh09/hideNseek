@@ -226,10 +226,7 @@ export const calculateMeasureDistance = async (
                     } else if (feature.geometry.type === "MultiPoint") {
                         for (const coord of feature.geometry.coordinates) {
                             const d = fastDistance(
-                                seeker.geometry.coordinates as [
-                                    number,
-                                    number,
-                                ],
+                                seeker.geometry.coordinates as [number, number],
                                 coord as [number, number],
                             );
                             if (d < dist) dist = d;
