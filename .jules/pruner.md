@@ -52,3 +52,8 @@
 
 **Learning:** Automated dead-code detection tools (like `ts-prune` and `knip`) can falsely flag components dynamically imported or used by `src/pages/index.astro` (like `IncomingQuestionHandler`, `SidebarProvider`).
 **Action:** Always verify with `grep` if an export flagged as unused is actually imported inside an `.astro` file before pruning.
+
+## 2026-06-25 - Redundant Wrapper Functions
+
+**Learning:** When pruning, you might find redundant wrapper functions inside components (like `applyMask` in `src/components/ZoneSidebar.tsx`) that simply return their input and are completely unnecessary.
+**Action:** Replace calls to the redundant wrapper function with the direct returned value and remove the wrapper function entirely, ensuring no unused parameters or variables are left behind.
