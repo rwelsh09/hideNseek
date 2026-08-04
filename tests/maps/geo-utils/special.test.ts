@@ -65,7 +65,10 @@ describe("geo-utils/special", () => {
         it("returns name:en if available", () => {
             expect(
                 extractStationName({
-                    properties: { "name:en": "English Name", name: "Local Name" },
+                    properties: {
+                        "name:en": "English Name",
+                        name: "Local Name",
+                    },
                 }),
             ).toBe("English Name");
         });
@@ -77,7 +80,9 @@ describe("geo-utils/special", () => {
         });
 
         it("returns undefined if neither name exists", () => {
-            expect(extractStationName({ properties: { foo: "bar" } })).toBeUndefined();
+            expect(
+                extractStationName({ properties: { foo: "bar" } }),
+            ).toBeUndefined();
         });
     });
 
@@ -129,21 +134,21 @@ describe("geo-utils/special", () => {
 
     describe("extractStationId", () => {
         it("returns explicit @id", () => {
-            expect(extractStationId({ properties: { "@id": "node/123" } })).toBe(
-                "node/123",
-            );
+            expect(
+                extractStationId({ properties: { "@id": "node/123" } }),
+            ).toBe("node/123");
         });
 
         it("returns explicit id from properties", () => {
-            expect(extractStationId({ properties: { id: "station_456" } })).toBe(
-                "station_456",
-            );
+            expect(
+                extractStationId({ properties: { id: "station_456" } }),
+            ).toBe("station_456");
         });
 
         it("returns explicit id from feature root", () => {
-            expect(extractStationId({ id: "station_789", properties: {} })).toBe(
-                "station_789",
-            );
+            expect(
+                extractStationId({ id: "station_789", properties: {} }),
+            ).toBe("station_789");
         });
 
         it("derives id from geometry coordinates", () => {
@@ -165,7 +170,9 @@ describe("geo-utils/special", () => {
             expect(extractStationId({ properties: {} })).toBeUndefined();
             expect(
                 extractStationId({
-                    properties: { geometry: { coordinates: ["invalid", "coords"] } },
+                    properties: {
+                        geometry: { coordinates: ["invalid", "coords"] },
+                    },
                 }),
             ).toBeUndefined();
         });
