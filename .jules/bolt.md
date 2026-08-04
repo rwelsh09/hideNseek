@@ -59,6 +59,7 @@
 **Action:** Always replace `turf.distance` calls with `fastDistance` when iteratively checking distances inside a `map`, `filter`, or `for` loop, passing `[lng, lat]` coordinate arrays directly.
 
 ## 2026-08-01 - [Replace turf.distance with fastDistance in hot loops for coordinate arrays]
+
 **Learning:** `turf.distance` has large overhead due to validation and parsing of GeoJSON features inside tight loops. Code paths in `measure.ts` and `match.ts` were repeatedly using `turf.distance` while iterating over `flattenedFeatures` or `MultiPoint` coordinates.
 **Action:** Replaced `turf.distance` with `fastDistance` in hot loops by extracting `feature.geometry.coordinates as [number, number]` and passing coordinate arrays directly to `fastDistance` to eliminate object allocation and improve lookup speed.
 
