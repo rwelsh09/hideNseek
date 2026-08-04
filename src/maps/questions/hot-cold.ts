@@ -1,7 +1,7 @@
 import * as turf from "@turf/turf";
 
 import { hiderMode } from "@/lib/context";
-import { safeUnion } from "@/maps/geo-utils";
+import { fastDistance, safeUnion } from "@/maps/geo-utils";
 import { geoSpatialVoronoi } from "@/maps/geo-utils/voronoi";
 import type { HotColdQuestion } from "@/maps/schema";
 
@@ -70,10 +70,11 @@ export const hotColdPlanningPolygon = (question: HotColdQuestion) => {
 export const isHotColdLocked = (question: any, detail?: string) => {
     if (!question.lngA || !question.latA || !question.lngB || !question.latB)
         return false;
-    const dist = turf.distance(
+    // Optimization: Use fastDistance instead of turf.distance to avoid allocating
+    // GeoJSON Point features for every calculation.
+    const dist = fastDistance(
         [question.lngA, question.latA],
-        [question.lngB, question.latB],
-        { units: "kilometers" },
+        [question.lngB, question.latB]
     );
     const detailDist = parseFloat(detail || "5");
     return Math.abs(dist - detailDist) < 0.1;

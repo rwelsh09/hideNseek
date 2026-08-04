@@ -1,7 +1,5 @@
-import * as turf from "@turf/turf";
-
 import { PHOTO_DESCRIPTIONS } from "@/components/cards/photo";
-import { extractStationName } from "@/maps/geo-utils";
+import { extractStationName, fastDistance } from "@/maps/geo-utils";
 import { PLACES } from "@/maps/placesConfig";
 import { determineMatchBoundary } from "@/maps/questions/match";
 import { calculateMeasureDistance } from "@/maps/questions/measure";
@@ -41,10 +39,11 @@ export const QUESTION_TEXT_HANDLERS: Record<string, QuestionTextHandler> = {
         getLockedLabel: (data, result) => `Hot/Cold - ${result}`,
         getShareText: async (data) => {
             if (data.latA && data.lngA && data.latB && data.lngB) {
-                const dist = turf.distance(
+                // Optimization: Use fastDistance instead of turf.distance to avoid allocating
+                // GeoJSON Point features for every calculation.
+                const dist = fastDistance(
                     [data.lngA, data.latA],
-                    [data.lngB, data.latB],
-                    { units: "kilometers" },
+                    [data.lngB, data.latB]
                 );
                 const roundedDist = Math.round(dist * 100) / 100;
                 return `We just moved ${roundedDist}km are we warmer or colder?`;

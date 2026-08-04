@@ -6,9 +6,13 @@ import { calculateMeasureDistance } from "@/maps/questions/measure";
 import { extractStationName } from "@/maps/geo-utils";
 
 // Mock dependencies
-vi.mock("@turf/turf", () => ({
-    distance: vi.fn(),
-}));
+vi.mock("@turf/turf", async (importOriginal) => {
+    const actual = await importOriginal<typeof import("@turf/turf")>();
+    return {
+        ...actual,
+        distance: vi.fn(),
+    };
+});
 
 vi.mock("@/maps/placesConfig", () => ({
     PLACES: [
@@ -25,9 +29,14 @@ vi.mock("@/maps/questions/measure", () => ({
     calculateMeasureDistance: vi.fn(),
 }));
 
-vi.mock("@/maps/geo-utils", () => ({
-    extractStationName: vi.fn(),
-}));
+vi.mock("@/maps/geo-utils", async (importOriginal) => {
+    const actual = await importOriginal<typeof import("@/maps/geo-utils")>();
+    return {
+        ...actual,
+        extractStationName: vi.fn(),
+        fastDistance: vi.fn(),
+    };
+});
 
 vi.mock("@/components/cards/photo", () => ({
     PHOTO_DESCRIPTIONS: {
@@ -72,7 +81,8 @@ describe("getQuestionShareText", () => {
 
     describe("hot/cold", () => {
         it("calculates distance when all coordinates are present", async () => {
-            vi.mocked(turf.distance).mockReturnValue(2.3456);
+            const { fastDistance } = await import("@/maps/geo-utils");
+            vi.mocked(fastDistance).mockReturnValue(2.3456);
             const result = await getQuestionShareText(
                 { id: "hot/cold" },
                 { latA: 1, lngA: 2, latB: 3, lngB: 4 },
@@ -80,9 +90,7 @@ describe("getQuestionShareText", () => {
             expect(result).toBe(
                 "We just moved 2.35km are we warmer or colder?",
             );
-            expect(turf.distance).toHaveBeenCalledWith([2, 1], [4, 3], {
-                units: "kilometers",
-            });
+            expect(fastDistance).toHaveBeenCalledWith([2, 1], [4, 3]);
         });
 
         it("uses fallback text when coordinates are missing", async () => {

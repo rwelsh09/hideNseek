@@ -1,7 +1,7 @@
 import * as turf from "@turf/turf";
 
 import { hiderMode } from "@/lib/context";
-import { arcBuffer, modifyMapData } from "@/maps/geo-utils";
+import { arcBuffer, fastDistance, modifyMapData } from "@/maps/geo-utils";
 import type { RadarQuestion } from "@/maps/schema";
 
 export const adjustPerRadar = async (question: RadarQuestion, mapData: any) => {
@@ -23,11 +23,15 @@ export const hiderifyRadar = (question: RadarQuestion) => {
         return question;
     }
 
-    const distance = turf.distance(
-        turf.point([question.lng, question.lat]),
-        turf.point([$hiderMode.longitude, $hiderMode.latitude]),
-        { units: question.unit },
+    // Optimization: Use fastDistance instead of turf.distance to avoid allocating
+    // GeoJSON Point features for every calculation.
+    let distance = fastDistance(
+        [question.lng, question.lat],
+        [$hiderMode.longitude, $hiderMode.latitude]
     );
+    if (question.unit === "meters") {
+        distance *= 1000;
+    }
 
     if (distance <= question.radius) {
         question.within = true;

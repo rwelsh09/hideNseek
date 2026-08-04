@@ -153,19 +153,22 @@ export const calculateMeasureDistance = async (
         case "rail-measure" as any: {
             const stations = (calgaryTransitData as any).features;
             if (stations.length === 0) return null;
-            const nearestTrainStation = turf.nearestPoint(
-                seeker,
-                turf.featureCollection(
-                    stations.map((x: any) => ({
-                        type: "Feature",
-                        properties: x.properties,
-                        geometry: x.geometry,
-                    })) as any,
-                ),
-            );
-            return turf.distance(seeker, nearestTrainStation, {
-                units: "kilometers",
-            });
+
+            // Optimization: Use fastDistance instead of turf.nearestPoint + turf.distance
+            // to avoid allocating GeoJSON Point features for every calculation.
+            let minDistance = Infinity;
+            for (const station of stations) {
+                if (station.geometry && station.geometry.coordinates) {
+                    const d = fastDistance(
+                        seeker.geometry.coordinates as [number, number],
+                        station.geometry.coordinates as [number, number],
+                    );
+                    if (d < minDistance) {
+                        minDistance = d;
+                    }
+                }
+            }
+            return minDistance === Infinity ? null : minDistance;
         }
         default: {
             const place = PLACES.find((p) => p.id === question.type);

@@ -159,10 +159,14 @@ export const hiderifyClosest = async (question: ClosestQuestion) => {
     const voronoi = geoSpatialVoronoi(points);
 
     const hider = turf.point([$hiderMode.longitude, $hiderMode.latitude]);
-    const location = turf.point([question.lng, question.lat]);
 
+    // Optimization: Use fastDistance instead of turf.distance to avoid allocating
+    // a GeoJSON Point for the location just for distance calculation.
+    const hiderCoords: [number, number] = [$hiderMode.longitude, $hiderMode.latitude];
+    const locationCoords: [number, number] = [question.lng, question.lat];
+    const distMultiplier = question.unit === "meters" ? 1000 : 1;
     if (
-        turf.distance(hider, location, { units: question.unit }) >
+        fastDistance(hiderCoords, locationCoords) * distMultiplier >
         question.radius
     ) {
         question.location = false;
