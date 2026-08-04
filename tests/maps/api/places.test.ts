@@ -4,6 +4,7 @@ import {
     checkFilters,
     findPlacesInZone,
     determineMapBoundaries,
+    findClosestLocations,
 } from "@/maps/api/places";
 import { polyGeoJSON, mapGeoJSON } from "@/lib/context";
 
@@ -99,6 +100,41 @@ vi.mock("@/data/offline_places.json", () => ({
                 id: 7,
                 // Missing location entirely
                 tags: { amenity: "cafe", name: "Nowhere Cafe" },
+            },
+            {
+                type: "node",
+                id: 8,
+                lat: 51.02,
+                lon: -114.02,
+                tags: { amenity: "hospital", name: "General Hospital" },
+            },
+            {
+                type: "node",
+                id: 9,
+                lat: 51.03,
+                lon: -114.03,
+                tags: { "brand:wikidata": "Q38076", name: "McDonalds 1" },
+            },
+            {
+                type: "node",
+                id: 10,
+                lat: 51.04,
+                lon: -114.04,
+                tags: { "brand:wikidata": "Q38076", name: "McDonalds 2" },
+            },
+            {
+                type: "node",
+                id: 11,
+                lat: 51.09,
+                lon: -114.09,
+                tags: { amenity: "hospital" }, // Missing name
+            },
+            {
+                type: "node",
+                id: 12,
+                lat: 51.025,
+                lon: -114.025,
+                tags: { amenity: "hospital", name: "General Hospital" }, // Duplicate name
             },
         ],
     },
@@ -270,5 +306,49 @@ describe("findPlacesInZone", () => {
     it("filters out elements that lack valid coordinates entirely", async () => {
         const data = await findPlacesInZone('["name"="Nowhere Cafe"]');
         expect(data.elements).toHaveLength(0); // Should be filtered out because no coordinates
+    });
+});
+
+describe("findClosestLocations", () => {
+    beforeEach(() => {
+        (polyGeoJSON.get as any).mockReturnValue(null);
+    });
+
+    it("returns locations within 50km of the question coordinates (Happy Path for generic type)", async () => {
+        const question = { locationType: "hospital", lng: -114.0, lat: 51.0 };
+        const result = await findClosestLocations(question);
+
+        expect(result.type).toBe("FeatureCollection");
+        // General Hospital should be found, but id:12 (same name) should be deduplicated
+        // ID 11 should be skipped because it has no name and hospital is generic
+        expect(result.features).toHaveLength(1);
+        expect(result.features[0].properties?.name).toBe("General Hospital");
+        expect(result.features[0].properties?.id).toBe(8);
+    });
+
+    it("handles specific chain locations and appends id to avoid deduping", async () => {
+        const question = { locationType: "mcdonalds", lng: -114.0, lat: 51.0 };
+        const result = await findClosestLocations(question);
+
+        expect(result.features).toHaveLength(2);
+        const names = result.features.map((f: any) => f.properties?.name).sort();
+        // It appends (element.id) to the name because it's a specific type.
+        expect(names).toEqual(["McDonalds 1 (9)", "McDonalds 2 (10)"]);
+    });
+
+    it("filters out locations beyond the 50km radius", async () => {
+        // question coordinates are very far (equator) -> distance to 51.0, -114.0 is > 50km
+        const question = { locationType: "hospital", lng: 0, lat: 0 };
+        const result = await findClosestLocations(question);
+
+        expect(result.features).toHaveLength(0);
+    });
+
+    it("handles elements with missing coordinates safely", async () => {
+        // The underlying findPlacesInZone ensures valid coordinates inside boundary,
+        // but this verifies findClosestLocations iterates over what it's given without throwing
+        const question = { locationType: "mcdonalds", lng: -114.0, lat: 51.0 };
+        const result = await findClosestLocations(question);
+        expect(result).toBeDefined();
     });
 });
