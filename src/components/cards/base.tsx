@@ -310,8 +310,10 @@ export const QuestionCard = ({
                         <SidebarMenu>
                             {children}
                             {!!$hiderMode && resultStr && (
-                                <div
-                                    className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md mx-2 mb-2 flex flex-col gap-2 cursor-pointer hover:bg-slate-700 transition-colors active:scale-95"
+                                <button
+                                    type="button"
+                                    aria-label="Share Answer"
+                                    className="w-full text-center text-sm font-medium mt-2 bg-slate-800 p-2 rounded-md mx-2 mb-2 flex flex-col gap-2 cursor-pointer hover:bg-slate-700 transition-colors active:scale-95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2"
                                     style={{ width: "calc(100% - 1rem)" }}
                                     onClick={async (e) => {
                                         e.stopPropagation();
@@ -342,7 +344,7 @@ export const QuestionCard = ({
                                             {resultStr}
                                         </span>
                                     </div>
-                                </div>
+                                </button>
                             )}
                         </SidebarMenu>
                     </SidebarGroupContent>
