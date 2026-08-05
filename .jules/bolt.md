@@ -33,11 +33,6 @@
 **Learning:** When dynamically importing large local JSON datasets (like `offline_places.json`), if `import()` is called concurrently multiple times before the first import completes, it can cause memory spikes and redundant processing.
 **Action:** Use a module-level Promise variable to pool concurrent requests and prevent redundant reads. Always include a `.catch()` block to reset this promise to `null` on failure, allowing subsequent calls to retry and avoiding permanent cache locking on transient errors.
 
-## 2026-07-20 - [Optimize useEffect triggers for nanostores]
-
-**Learning:** Passing a full reactive store object (like `$questions`) to a `useEffect` dependency array can trigger excessive and expensive side-effects (e.g., redundant API requests or map data processing) during rapid state changes like dragging a map marker.
-**Action:** Use `useMemo` to extract a stable primitive representation of the exact required state (like a stringified hash of active types) and use that hash as the `useEffect` dependency. This ensures the expensive effect only runs when the strictly necessary data requirements actually change.
-
 ## 2026-07-24 - [Optimize useEffect triggers for nanostores via hash mapping]
 
 **Learning:** When using `useMemo` to extract primitive dependencies from a nanostore object (like `$questions`) to prevent excessive `useEffect` executions in React components, ensure that you explicitly map the store to ONLY the required attributes _before_ stringifying. Calling `JSON.stringify` directly on `$questions` still causes re-renders if unrelated transient properties (like a temporary marker dragging coordinate or an arbitrary ID) are mutated, defeating the optimization.
@@ -48,20 +43,10 @@
 **Learning:** When a child component receives a newly allocated array as a prop (e.g., from `getFeatureCoords` which returns a new coordinate array every time), wrapping the component in `React.memo` will not prevent unnecessary re-renders. This is because React uses shallow reference equality by default.
 **Action:** Always provide a custom equality comparison function to `React.memo` that explicitly compares the primitive values (like `lat`/`lng` coordinates) when a component receives props that are newly allocated objects or arrays, ensuring memoization functions correctly.
 
-## 2026-07-28 - [Avoid `turf.distance` and intermediate point creation in hot loops]
-
-**Learning:** `turf.distance` requires creating valid GeoJSON `Point` features for every calculation. Inside hot loops (e.g., iterating through thousands of POI nodes during map zone initialization or closest-place lookups), allocating these intermediate objects causes excessive garbage collection and blocks the main thread, resulting in noticeable UI jank.
-**Action:** Replace `turf.distance` inside loops with the mathematical `fastDistance` utility (which accepts raw coordinate arrays) to skip object allocation, significantly reducing memory overhead and thread blocking.
-
-## 2026-07-31 - [Optimize closest-place distance loop with fastDistance]
-
-**Learning:** Using `turf.distance` in hot loops like `filterPointsWithinRadius` is very slow because it forces allocation of intermediate GeoJSON Point objects in memory. The codebase already implements a `fastDistance` function mathematically tailored for primitive coordinate arrays which avoids these allocations and garbage collection overhead. Furthermore, ensuring mocked modules use `importOriginal` accurately passes through unmodified exports such as `fastDistance` during Vitest runs.
-**Action:** Always replace `turf.distance` calls with `fastDistance` when iteratively checking distances inside a `map`, `filter`, or `for` loop, passing `[lng, lat]` coordinate arrays directly.
-
 ## 2026-08-01 - [Replace turf.distance with fastDistance in hot loops for coordinate arrays]
 
-**Learning:** `turf.distance` has large overhead due to validation and parsing of GeoJSON features inside tight loops. Code paths in `measure.ts` and `match.ts` were repeatedly using `turf.distance` while iterating over `flattenedFeatures` or `MultiPoint` coordinates.
-**Action:** Replaced `turf.distance` with `fastDistance` in hot loops by extracting `feature.geometry.coordinates as [number, number]` and passing coordinate arrays directly to `fastDistance` to eliminate object allocation and improve lookup speed.
+**Learning:** `turf.distance` has large overhead due to validation and parsing of GeoJSON `Point` features. Inside hot loops (e.g., iterating through thousands of POI nodes), allocating these intermediate objects causes excessive garbage collection and blocks the main thread, resulting in noticeable UI jank.
+**Action:** Always replace `turf.distance` calls with the mathematical `fastDistance` utility inside hot loops (like `map`, `filter`, or `for` loops). Extract `feature.geometry.coordinates as [number, number]` and pass the coordinate arrays directly to `fastDistance` to skip object allocation and improve lookup speed.
 
 ## 2026-08-03 - [Hoist array searching out of map rendering loop]
 **Learning:** When looping over large datasets, finding invariant objects via array methods like `.find()` inside the loop leads to O(N*M) time complexity. Code paths in `places.ts` were performing redundant `PLACES.find` calls for the same location type inside an `elements.forEach` loop.
