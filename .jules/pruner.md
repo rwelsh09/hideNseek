@@ -18,16 +18,6 @@
 **Learning:** Running `pnpm lint` in this project's configuration executes `eslint --fix src && prettier . --write`. This will automatically rewrite and stage unrelated files and lines of code across the whole repository, violating Pruner's strict deletion-only boundary.
 **Action:** When pruning, verify changes using `npx eslint <target-file>` instead of `pnpm lint`, or use `git restore --staged` on unrelated files and `git restore -p` to specifically unstaged unrelated formatting changes within the target file before creating a commit.
 
-## 2026-07-17 - [pwa.ts knip flag]
-
-**Learning:** `knip` will falsely flag `src/pwa.ts` as an unused file because it is explicitly included in `src/layouts/Layout.astro` via a `<script src="/src/pwa.ts"></script>` tag, which knip's static analysis misses.
-**Action:** Always verify if a script file reported as unused by knip is actually loaded in an Astro layout or HTML template before deleting it.
-
-## 2026-07-17 - [persistentJsonAtom Export]
-
-**Learning:** `knip` will flag `persistentJsonAtom` in `src/lib/context.ts` as an unused export. However, the function is used internally within that file.
-**Action:** When pruning "dead" exports, if the export is still used within the file, restrict its scope by simply removing the `export` keyword rather than deleting the function entirely, and ensure it is not used elsewhere in the project before doing so.
-
 ## 2026-07-28 - [Unused QuestionCard exports]
 
 **Learning:** `knip` reported `ClosestQuestionComponent` etc. as unused exports in `src/components/QuestionCards.tsx`. Looking at the code, they were indeed exported for no reason. I removed the export statements but kept the imports since they are used inside `QUESTION_COMPONENTS`. This didn't trigger any cascading unused import issues.
@@ -40,20 +30,20 @@
 
 ## 2026-07-28 - [Removing Internal Export Keywords]
 
-**Learning:** `ts-prune` and `knip` correctly identify exported variables, types, interfaces, and functions (like `LeaderboardEntry` in `src/lib/context.ts`, `ShareDataOptions` in `src/lib/utils.ts`, `TYPE_MAPPINGS`, and `getPlaceLabel` in `src/lib/question-text.ts`) that are only ever used internally within the declaring file.
+**Learning:** `ts-prune` and `knip` correctly identify exported variables, types, interfaces, and functions (like `LeaderboardEntry`, `persistentJsonAtom` in `src/lib/context.ts`, `ShareDataOptions` in `src/lib/utils.ts`, `TYPE_MAPPINGS`, and `getPlaceLabel` in `src/lib/question-text.ts`) that are only ever used internally within the declaring file.
 **Action:** Do not delete these functions, types, variables or interfaces. Instead, remove the `export` keyword to restrict their scope and minimize the public API surface safely.
 
-## 2026-06-25 - Import sorting plugin
+## 2026-06-25 - [Import sorting plugin]
 
 **Learning:** The project uses `eslint-plugin-simple-import-sort`. When modifying, splitting, or updating imports (such as un-nesting barrel file exports), always run `npx eslint src --fix` to auto-sort the dependencies and prevent pipeline linting failures.
 **Action:** Run `npx eslint src --fix` after making any modifications to import statements in the codebase.
 
-## 2026-06-25 - ts-prune false positives with Astro
+## 2026-06-25 - [Dead-code tool false positives with Astro]
 
-**Learning:** Automated dead-code detection tools (like `ts-prune` and `knip`) can falsely flag components dynamically imported or used by `src/pages/index.astro` (like `IncomingQuestionHandler`, `SidebarProvider`).
-**Action:** Always verify with `grep` if an export flagged as unused is actually imported inside an `.astro` file before pruning.
+**Learning:** Automated dead-code detection tools (like `ts-prune` and `knip`) can falsely flag components or scripts dynamically imported or used by Astro files (e.g., `src/pages/index.astro`, `src/layouts/Layout.astro`) because they miss `<script src=\"...\">` tags and dynamic layout imports (like `pwa.ts`, `IncomingQuestionHandler`, `SidebarProvider`).
+**Action:** Always verify with `grep` if a file or export flagged as unused is actually imported inside an `.astro` or HTML file before pruning.
 
-## 2026-06-25 - Redundant Wrapper Functions
+## 2026-06-25 - [Redundant Wrapper Functions]
 
 **Learning:** When pruning, you might find redundant wrapper functions inside components (like `applyMask` in `src/components/ZoneSidebar.tsx`) that simply return their input and are completely unnecessary.
 **Action:** Replace calls to the redundant wrapper function with the direct returned value and remove the wrapper function entirely, ensuring no unused parameters or variables are left behind.
