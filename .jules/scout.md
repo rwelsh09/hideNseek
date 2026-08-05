@@ -18,7 +18,7 @@
 **Learning:** Previously, state management (lock/collapse, penalties), derived state (`resultStr`, default labels), contextual display ("Tell the Seekers" `$hiderMode`), and question-specific actions (Rules, Share, Delete) were leaked into consumer components (like `closest`, `hot-cold`, etc.) or generic components (like `LatLngPicker`). This caused repetitive boilerplate and violated separation of concerns.
 **Action:** Always prefer to encapsulate shared UI state modifications, derived logic, and specific actions within the base component itself (`QuestionCard`) when the behavior is uniform across all its consumers or relies on shared context.
 
-## 2026-08-25 - [Registry Pattern for Map Questions]
+## 2026-08-05 - [Registry Pattern for Map Questions]
 
 **Learning:** The project previously relied on scattered `switch` and `if-else` statements across the codebase (e.g., `DraggableMarkers`, `hiding-zones.ts`, `question-text.ts`) to handle question-specific logic, which created a leaky abstraction and violated the Open-Closed Principle.
 **Action:** The codebase uses a centralized Registry (Strategy) pattern to manage logic that varies by map question type. Use `QUESTION_HANDLERS` in `src/maps/index.ts` for geospatial logic, draft creation (`createDraft`), locked state checks (`isLocked`), hiding zone filtering (`filterHidingZones`), and UI visualizer configurations (like `getDraggablePoints`). Use `QUESTION_TEXT_HANDLERS` in `src/lib/question-text.ts` for text and UI label generation. Avoid scattered `switch` or `if/else` statements branching on `question.id`.
