@@ -119,6 +119,7 @@ out geom;
                 headers: {
                     "Content-Type": "application/x-www-form-urlencoded",
                     "User-Agent": USER_AGENT,
+                    Accept: "*/*",
                 },
                 body: `data=${encodeURIComponent(overpassQuery)}`,
             },
