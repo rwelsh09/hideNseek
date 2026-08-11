@@ -398,6 +398,7 @@ export const AdvancedStationManagement = () => {
                     shouldFilter={isStationSearchActive}
                 >
                     <CommandInput
+                        aria-label="Search for a Hiding Zone"
                         placeholder="Search for a Hiding Zone..."
                         value={stationSearch}
                         onValueChange={setStationSearch}

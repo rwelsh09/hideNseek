@@ -49,5 +49,6 @@
 **Action:** Always replace `turf.distance` calls with the mathematical `fastDistance` utility inside hot loops (like `map`, `filter`, or `for` loops). Extract `feature.geometry.coordinates as [number, number]` and pass the coordinate arrays directly to `fastDistance` to skip object allocation and improve lookup speed.
 
 ## 2026-08-03 - [Hoist array searching out of map rendering loop]
+
 **Learning:** When looping over large datasets, finding invariant objects via array methods like `.find()` inside the loop leads to O(N*M) time complexity. Code paths in `places.ts` were performing redundant `PLACES.find` calls for the same location type inside an `elements.forEach` loop.
 **Action:** Always identify values that do not change during iteration (loop invariants) and hoist their calculation before the loop begins to improve hot-path performance.
