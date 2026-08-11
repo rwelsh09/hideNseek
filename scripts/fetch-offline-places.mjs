@@ -56,7 +56,15 @@ async function fetchWithRetry(url, options, maxRetries = 3) {
             console.log(
                 `Fetching from Overpass API (Attempt ${i + 1}/${maxRetries})...`,
             );
-            const response = await fetch(url, options);
+            // Deep clone options to prevent Node.js native fetch from dropping or mutating headers on retry
+            const fetchOptions = {
+                ...options,
+                headers: {
+                    ...options.headers,
+                    "Accept": "*/*", // Explicitly ensure Accept header is present for Overpass API
+                },
+            };
+            const response = await fetch(url, fetchOptions);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
