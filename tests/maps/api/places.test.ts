@@ -166,20 +166,20 @@ describe("checkFilters", () => {
     });
 
     it("returns true for regex match (~) when tags match", () => {
-        const filters = [{ key: "name", op: "~", val: "^Star.*" }];
+        const filters = [{ key: "name", op: "~", val: "^Star.*", regex: new RegExp("^Star.*") }];
         const tags = { amenity: "cafe", name: "Starbucks" };
         expect(checkFilters(filters, tags)).toBe(true);
     });
 
     it("returns false for regex match (~) when tags do not match", () => {
-        const filters = [{ key: "name", op: "~", val: "^Mc.*" }];
+        const filters = [{ key: "name", op: "~", val: "^Mc.*", regex: new RegExp("^Mc.*") }];
         const tags = { amenity: "cafe", name: "Starbucks" };
         expect(checkFilters(filters, tags)).toBe(false);
     });
 
     it("returns false for regex match (~) when regex is invalid", () => {
         // an invalid regex pattern (e.g. unclosed parenthesis) will throw an error in RegExp constructor
-        const filters = [{ key: "name", op: "~", val: "^Star(" }];
+        const filters = [{ key: "name", op: "~", val: "^Star(", regex: undefined }];
         const tags = { amenity: "cafe", name: "Starbucks" };
         expect(checkFilters(filters, tags)).toBe(false);
     });
@@ -193,7 +193,7 @@ describe("checkFilters", () => {
     it("returns true only if all filters match (AND logic)", () => {
         const filters = [
             { key: "amenity", op: "=", val: "cafe" },
-            { key: "name", op: "~", val: "Star.*" },
+            { key: "name", op: "~", val: "Star.*", regex: new RegExp("Star.*") },
         ];
         const tagsMatch = { amenity: "cafe", name: "Starbucks" };
         const tagsFail = { amenity: "cafe", name: "Tim Hortons" };

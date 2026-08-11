@@ -51,3 +51,7 @@
 ## 2026-08-03 - [Hoist array searching out of map rendering loop]
 **Learning:** When looping over large datasets, finding invariant objects via array methods like `.find()` inside the loop leads to O(N*M) time complexity. Code paths in `places.ts` were performing redundant `PLACES.find` calls for the same location type inside an `elements.forEach` loop.
 **Action:** Always identify values that do not change during iteration (loop invariants) and hoist their calculation before the loop begins to improve hot-path performance.
+
+## 2026-08-05 - [Precompile RegExp outside of dataset iteration loops]
+**Learning:** When filtering large datasets (like `offline_places.json`) using regular expressions, dynamically calling `new RegExp()` inside the iteration callback (e.g., inside `.filter()` or `.every()`) causes massive CPU and memory overhead as the RegExp engine must parse and compile the string pattern on every single element.
+**Action:** Always precompile regular expressions before the iteration begins and reuse the compiled `RegExp` object inside the loop to avoid redundant compilation overhead.
