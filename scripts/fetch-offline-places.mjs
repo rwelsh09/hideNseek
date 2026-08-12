@@ -56,7 +56,14 @@ async function fetchWithRetry(url, options, maxRetries = 3) {
             console.log(
                 `Fetching from Overpass API (Attempt ${i + 1}/${maxRetries})...`,
             );
-            const response = await fetch(url, options);
+            const fetchOptions = {
+                ...options,
+                headers: {
+                    ...options.headers,
+                    "Accept": "*/*", 
+                },
+            };
+            const response = await fetch(url, fetchOptions);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
