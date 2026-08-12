@@ -204,6 +204,7 @@ export const DraggableMarkers = () => {
                                     size="sm"
                                     onClick={closePanel}
                                     aria-label="Close panel"
+                                    title="Close panel"
                                     className="text-slate-300 hover:bg-slate-800 hover:text-white h-8 w-8 p-0 rounded-full"
                                     data-tutorial-id="tutorial-close-panel-btn"
                                 >
@@ -216,6 +217,7 @@ export const DraggableMarkers = () => {
                                 size="sm"
                                 onClick={closePanel}
                                 aria-label="Close panel"
+                                title="Close panel"
                                 className="absolute right-2 top-2 z-10 text-slate-400 hover:bg-slate-800 hover:text-white h-8 w-8 p-0 rounded-full"
                                 data-tutorial-id="tutorial-close-panel-btn"
                             >

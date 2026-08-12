@@ -331,7 +331,9 @@ describe("findClosestLocations", () => {
         const result = await findClosestLocations(question);
 
         expect(result.features).toHaveLength(2);
-        const names = result.features.map((f: any) => f.properties?.name).sort();
+        const names = result.features
+            .map((f: any) => f.properties?.name)
+            .sort();
         // It appends (element.id) to the name because it's a specific type.
         expect(names).toEqual(["McDonalds 1 (9)", "McDonalds 2 (10)"]);
     });
