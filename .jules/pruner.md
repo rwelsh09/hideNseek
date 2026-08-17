@@ -3,14 +3,14 @@
 **Learning:** `npx eslint src` can safely identify unused variables, but it emits warnings about ESLint configuration (`Cannot find package '@eslint/js'`). It is best to fix installation via `pnpm install` first. Be aware that `npx tsc --noEmit` might throw many errors related to unresolved icons or external libraries that are irrelevant to the removed unused code. Focus strictly on whether the _removed code_ introduces _new_ TS errors.
 **Action:** Always test if `npx tsc --noEmit` and `pnpm run test --run` pass despite existing environment issues, ensuring no _new_ regressions are introduced. Also note that some linting problems, such as unescaped quotes in `StartScreen.tsx`, are best ignored by Pruner to maintain the strict deletion-only policy.
 
-## 2026-07-15 - [Removed nearestToQuestion]
+## 2026-07-15 - [Verify Public API usage before sweeping]
 
-**Learning:** Successfully removed `nearestToQuestion` from `src/maps/api/places.ts`. It was totally unused and an orphaned export.
+**Learning:** Unused internal functions might still be exported, making them appear as orphaned exports. It's critical to verify if these are intended to be part of a public API or just legacy code.
 **Action:** Always check usages before removal, and ensure exports are not actually public API before sweeping.
 
-## 2026-07-16 - [Pruning ICON_COLOURS]
+## 2026-07-16 - [Pruning Shared Constants]
 
-**Learning:** `ICON_COLOURS` is exported from `src/maps/api/constants.ts` and heavily used throughout components (e.g. `DraggableMarkers.tsx`, `LatLngPicker.tsx`) to reference color hexes, so it cannot be fully removed from the codebase. However, `randomColour` in `src/maps/schema.ts` which relied on it was completely unused (since Zod schema extension overrides `.default` values, the default generator was never called).
+**Learning:** Constants exported from shared files (like `src/maps/api/constants.ts`) might be heavily used throughout components. Even if a specific dependent function (like a Zod schema generator) is completely unused, the core constant cannot be fully removed from the codebase if other components rely on it.
 **Action:** When pruning "dead" imports or constants in a Zod schema file, carefully check if the constant itself is a global definition used by other UI components before assuming it can be deleted project-wide.
 
 ## 2026-07-16 - [Unrelated Prettier formatting on pnpm lint]
