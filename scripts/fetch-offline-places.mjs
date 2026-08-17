@@ -3,7 +3,7 @@ import fs from "fs/promises";
 
 const OVERPASS_API = "https://overpass-api.de/api/interpreter";
 const USER_AGENT =
-    "HideNSeek-OfflineDataFetcher/1.0 (contact: info@example.com)";
+    "HideNSeek-OfflineDataFetcher/1.0 (contact: hidenseekappdonation@gmail.com)";
 
 import { readFileSync } from "fs";
 
