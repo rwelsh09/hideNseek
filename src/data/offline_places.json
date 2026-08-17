@@ -2,7 +2,7 @@
     "version": 0.6,
     "generator": "Overpass API 0.7.62.11 87bfad18",
     "osm3s": {
-        "timestamp_osm_base": "2026-08-03T01:48:51Z",
+        "timestamp_osm_base": "2026-08-17T01:44:20Z",
         "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
     },
     "elements": [
@@ -133,24 +133,6 @@
                 "amenity": "pub",
                 "created_by": "Potlatch 0.7b",
                 "name": "Toad and Turtle"
-            }
-        },
-        {
-            "type": "node",
-            "id": 252827957,
-            "lat": 51.0808654,
-            "lon": -114.0255451,
-            "tags": {
-                "amenity": "cafe",
-                "brand": "Tim Hortons",
-                "brand:wikidata": "Q175106",
-                "brand:wikipedia": "en:Tim Hortons",
-                "cuisine": "coffee_shop",
-                "drive_through": "yes",
-                "name": "Tim Hortons",
-                "operator": "Restaurant Brands International Inc.",
-                "takeaway": "yes",
-                "website": "https://www.timhortons.com/"
             }
         },
         {
@@ -1580,8 +1562,11 @@
                 "brand": "Pizza Hut",
                 "brand:wikidata": "Q191615",
                 "cuisine": "pizza",
+                "indoor_seating": "no",
                 "name": "Pizza Hut",
-                "opening_hours": "Su-Th 11:00-23:00, Fr,Sa 11:00-01:00"
+                "opening_hours": "Su-Th 11:00-23:00, Fr,Sa 11:00-01:00",
+                "outdoor_seating": "no",
+                "takeaway": "only"
             }
         },
         {
@@ -1602,11 +1587,13 @@
                 "check_date:opening_hours": "2025-08-14",
                 "cuisine": "pizza",
                 "drive_through": "no",
+                "indoor_seating": "no",
                 "name": "Little Caesars",
                 "opening_hours": "Mo-Su 11:00-23:00",
+                "outdoor_seating": "no",
                 "phone": "+1-403-252-3117",
                 "source": "Personal",
-                "takeaway": "yes",
+                "takeaway": "only",
                 "website": "https://littlecaesars.com/en-us/store/4046/",
                 "website:menu": "https://order.littlecaesars.com/en-us/order/pickup/stores/4046/order-time/"
             }
@@ -2008,8 +1995,10 @@
                 "brand:wikipedia": "en:McDonald's",
                 "cuisine": "burger",
                 "drive_through": "yes",
+                "indoor_seating": "yes",
                 "name": "McDonald's",
                 "opening_hours": "24/7",
+                "outdoor_seating": "yes",
                 "takeaway": "yes",
                 "website": "http://www.mcdonalds.ca/"
             }
@@ -2654,8 +2643,21 @@
             "lat": 50.9713984,
             "lon": -114.1192431,
             "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "2515",
+                "addr:postcode": "T2V 0L8",
+                "addr:province": "AB",
+                "addr:street": "90 Avenue SW",
+                "addr:unit": "187",
                 "amenity": "pub",
-                "name": "Point and Feather"
+                "email": "info@thepointpub.com",
+                "indoor_seating": "yes",
+                "name": "The Point Public House",
+                "opening_hours": "Mo-Th 11:00-01:00; Fr-Sa 11:00-02:00; Su 11:00-24:00",
+                "outdoor_seating": "no",
+                "phone": "+1 403-251-0868",
+                "website": "https://thepointpub.com/",
+                "website:menu": "https://thepointpub.com/menus/"
             }
         },
         {
@@ -4387,8 +4389,10 @@
                 "addr:housenumber": "10233",
                 "addr:street": "Elbow Drive SW",
                 "amenity": "pub",
+                "indoor_seating": "yes",
                 "name": "Bull & Finch",
                 "opening_hours": "Mo-Su 11:00-23:00",
+                "outdoor_seating": "yes",
                 "phone": "+1-403-259-5555",
                 "smoking": "outside"
             }
@@ -4880,11 +4884,18 @@
             "lat": 51.0799834,
             "lon": -114.1293137,
             "tags": {
+                "addr:housenumber": "2500",
+                "addr:postcode": "T2N 1N4",
+                "addr:street": "University Dr NW",
                 "amenity": "library",
+                "check_date": "2026-08-06",
+                "email": "gallagher@ucalgary.libanswers.com",
                 "name": "Gallagher Library",
                 "opening_hours": "Mo-Fr 07:00-19:00; Sa-Su 12:00-16:00; PH off",
                 "operator": "University of Calgary Department of Geoscience",
-                "ref:isil": "CA-ACU"
+                "phone": "+1-403-220-6042",
+                "ref:isil": "CA-ACU",
+                "website": "https://library.ucalgary.ca/branches/gallagher-library"
             }
         },
         {
@@ -8112,7 +8123,11 @@
             "lon": -113.9574029,
             "tags": {
                 "amenity": "fast_food",
-                "cuisine": "pizza"
+                "brand": "Pizza Depot",
+                "brand:wikidata": "Q133254934",
+                "cuisine": "pizza",
+                "name": "Pizza Depot",
+                "takeaway": "yes"
             }
         },
         {
@@ -8158,9 +8173,17 @@
             "lat": 51.0916118,
             "lon": -114.0942704,
             "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "4404",
+                "addr:postcode": "T2K 1J5",
+                "addr:province": "Alberta",
+                "addr:street": "14 Street NW",
+                "addr:unit": "2,3",
                 "amenity": "restaurant",
                 "cuisine": "pizza",
-                "name": "Chicago Deep Dish Pizza"
+                "name": "Chicago Deep Dish Pizza",
+                "phone": "+1-403-531-3131",
+                "website": "https://www.chicagodeepdishpizza.com/"
             }
         },
         {
@@ -8700,7 +8723,7 @@
                 "addr:postcode": "T2P 5M5",
                 "addr:street": "6 Avenue SW",
                 "addr:unit": "118",
-                "amenity": "resrestaurant",
+                "amenity": "fast_food",
                 "brand": "Freshslice Pizza",
                 "brand:wikidata": "Q5503082",
                 "cuisine": "pizza",
@@ -9416,8 +9439,10 @@
                 "brand:wikidata": "Q38076",
                 "cuisine": "burger",
                 "drive_through": "no",
+                "indoor_seating": "yes",
                 "name": "McDonald's",
                 "opening_hours": "Mo-Su 07:00-22:00",
+                "outdoor_seating": "no",
                 "takeaway": "yes"
             }
         },
@@ -9683,6 +9708,37 @@
                 "phone": "+1 403 229 0911",
                 "website": "https://www.texaslounge.ca/",
                 "website:menu": "https://www.texaslounge.ca/Menu"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14071690131,
+            "lat": 50.9718099,
+            "lon": -114.1202296,
+            "tags": {
+                "amenity": "restaurant",
+                "cuisine": "pizza",
+                "indoor_seating": "no",
+                "name": "Franca's Pizza",
+                "opening_hours": "Tu-Fr 16:00-21:00; Sa 16:00-20:00",
+                "outdoor_seating": "no",
+                "takeaway": "only"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14077527301,
+            "lat": 51.06618,
+            "lon": -114.13432,
+            "tags": {
+                "addr:housenumber": "3330",
+                "addr:postcode": "T2N 1N4",
+                "addr:street": "Hospital Drive NW",
+                "amenity": "library",
+                "check_date": "2026-08-06",
+                "name": "Health Sciences Library",
+                "phone": "+1-403-220-6855",
+                "website": "https://library.ucalgary.ca/hours/"
             }
         },
         {
@@ -12267,6 +12323,7 @@
                 "brand:wikidata": "Q175106",
                 "building": "yes",
                 "cuisine": "coffee_shop",
+                "drive_through": "yes",
                 "name": "Tim Hortons",
                 "takeaway": "yes"
             }
@@ -15381,6 +15438,7 @@
                 "brand:wikidata": "Q175106",
                 "brand:wikipedia": "en:Tim Hortons",
                 "building": "retail",
+                "check_date": "2026-08-15",
                 "cuisine": "coffee_shop",
                 "drive_through": "yes",
                 "name": "Tim Hortons",
@@ -16548,6 +16606,63 @@
                 "operator:wikidata": "Q5019670",
                 "operator:wikipedia": "en:Calgary Fire Department",
                 "website": "http://www.calgary.ca/CSPS/Fire/Pages/Fire-stations/Fire-Station-28.aspx"
+            }
+        },
+        {
+            "type": "way",
+            "id": 275860310,
+            "bounds": {
+                "minlat": 51.0807926,
+                "minlon": -114.0257061,
+                "maxlat": 51.0809751,
+                "maxlon": -114.0255212
+            },
+            "nodes": [
+                252827957, 2805220300, 2805220401, 2805220402, 2805220403,
+                2805220404, 252827957
+            ],
+            "geometry": [
+                {
+                    "lat": 51.0809751,
+                    "lon": -114.0256771
+                },
+                {
+                    "lat": 51.0809734,
+                    "lon": -114.0255424
+                },
+                {
+                    "lat": 51.0809552,
+                    "lon": -114.0255212
+                },
+                {
+                    "lat": 51.0807926,
+                    "lon": -114.0255212
+                },
+                {
+                    "lat": 51.0807926,
+                    "lon": -114.0257061
+                },
+                {
+                    "lat": 51.0809569,
+                    "lon": -114.0257061
+                },
+                {
+                    "lat": 51.0809751,
+                    "lon": -114.0256771
+                }
+            ],
+            "tags": {
+                "amenity": "cafe",
+                "brand": "Tim Hortons",
+                "brand:wikidata": "Q175106",
+                "brand:wikipedia": "en:Tim Hortons",
+                "building": "yes",
+                "cuisine": "coffee_shop",
+                "drive_through": "yes",
+                "name": "Tim Hortons",
+                "operator": "Restaurant Brands International Inc.",
+                "takeaway": "yes",
+                "website": "https://www.timhortons.com/"
             }
         },
         {
@@ -19872,12 +19987,15 @@
             "tags": {
                 "addr:city": "Calgary",
                 "addr:housenumber": "2727",
+                "addr:province": "AB",
                 "addr:street": "26 Avenue SE",
                 "amenity": "fire_station",
                 "building": "yes",
                 "name": "Fire Station 23 (Southview)",
                 "operator": "Calgary Fire Department",
-                "operator:wikidata": "Q5019670"
+                "operator:wikidata": "Q5019670",
+                "phone": "+1 403-268-2489",
+                "website": "https://www.calgary.ca/our-services/fire/station-locations.html"
             }
         },
         {
@@ -20307,39 +20425,51 @@
             "type": "way",
             "id": 437503880,
             "bounds": {
-                "minlat": 50.998634,
-                "minlon": -113.9825772,
-                "maxlat": 50.9987574,
-                "maxlon": -113.9821884
+                "minlat": 50.9986453,
+                "minlon": -113.9825997,
+                "maxlat": 50.9987623,
+                "maxlon": -113.982217
             },
             "nodes": [
-                4353195494, 4353195495, 4353195496, 4353195497, 4353195498,
-                4353195494
+                4353195494, 14085732169, 14085732168, 4353195495, 4353195496,
+                4353195497, 4353195498, 14085732170, 4353195494
             ],
             "geometry": [
                 {
-                    "lat": 50.9986981,
-                    "lon": -113.9825772
+                    "lat": 50.9987033,
+                    "lon": -113.9825997
                 },
                 {
-                    "lat": 50.9987253,
-                    "lon": -113.982534
+                    "lat": 50.9987163,
+                    "lon": -113.9825868
                 },
                 {
-                    "lat": 50.9987574,
-                    "lon": -113.9822101
+                    "lat": 50.9987208,
+                    "lon": -113.9825367
                 },
                 {
-                    "lat": 50.998671,
-                    "lon": -113.9821884
+                    "lat": 50.9987347,
+                    "lon": -113.9825399
                 },
                 {
-                    "lat": 50.998634,
-                    "lon": -113.9825611
+                    "lat": 50.9987623,
+                    "lon": -113.9822363
                 },
                 {
-                    "lat": 50.9986981,
-                    "lon": -113.9825772
+                    "lat": 50.9986778,
+                    "lon": -113.982217
+                },
+                {
+                    "lat": 50.9986453,
+                    "lon": -113.9825746
+                },
+                {
+                    "lat": 50.9986565,
+                    "lon": -113.9825897
+                },
+                {
+                    "lat": 50.9987033,
+                    "lon": -113.9825997
                 }
             ],
             "tags": {
@@ -37078,7 +37208,9 @@
                 "maxlat": 51.1021746,
                 "maxlon": -114.081747
             },
-            "nodes": [12448318169, 12448318153, 12448318152, 12448373721],
+            "nodes": [
+                12448318169, 12448318153, 12448318152, 14077419941, 12448373721
+            ],
             "geometry": [
                 {
                     "lat": 51.102158,
@@ -37091,6 +37223,10 @@
                 {
                     "lat": 51.10142,
                     "lon": -114.0906787
+                },
+                {
+                    "lat": 51.1014107,
+                    "lon": -114.0849719
                 },
                 {
                     "lat": 51.1014055,
@@ -93967,8 +94103,8 @@
                 "maxlon": -114.2575945
             },
             "nodes": [
-                12452879565, 12452879564, 12452879563, 12452879562, 2484410451,
-                2484410444, 2484426838, 11339519151
+                12452879565, 12452879564, 5141672379, 1839026194, 2484410451,
+                2484410444, 2484426838, 577465808
             ],
             "geometry": [
                 {
@@ -95042,8 +95178,10 @@
                 "brand:wikidata": "Q175106",
                 "building": "commercial",
                 "cuisine": "coffee_shop",
+                "indoor_seating": "yes",
                 "name": "Tim Hortons",
                 "opening_hours": "24/7",
+                "outdoor_seating": "yes",
                 "source": "City of Calgary Digital Aerial Survey building roof outlines",
                 "takeaway": "yes"
             }
@@ -115600,6 +115738,10 @@
                             "lon": -114.0906787
                         },
                         {
+                            "lat": 51.1014107,
+                            "lon": -114.0849719
+                        },
+                        {
                             "lat": 51.1014055,
                             "lon": -114.081747
                         }
@@ -115841,6 +115983,10 @@
                         {
                             "lat": 51.10142,
                             "lon": -114.0906787
+                        },
+                        {
+                            "lat": 51.1014107,
+                            "lon": -114.0849719
                         },
                         {
                             "lat": 51.1014055,
@@ -195553,7 +195699,8 @@
                 "boundary": "administrative",
                 "name": "Ranchlands",
                 "type": "boundary",
-                "wikidata": "Q7290810"
+                "wikidata": "Q7290810",
+                "wikipedia": "en:Ranchlands, Calgary"
             }
         },
         {
