@@ -58,11 +58,9 @@ async function fetchWithRetry(url, options, maxRetries = 3) {
             );
             const fetchOptions = {
                 ...options,
-                headers: {
-                    ...options.headers,
-                    "Accept": "*/*", 
-                },
+                headers: new Headers(options.headers || {}),
             };
+            fetchOptions.headers.set("Accept", "*/*");
             const response = await fetch(url, fetchOptions);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
