@@ -239,8 +239,9 @@ export function RulesAccordion() {
                         someone&apos;s house. You should also make sure that
                         staying in your spot for an extended period of time will
                         not raise any suspicions or create the potential for you
-                        to get kicked out; for this reason, avoid stores or other
-                        businesses, even if they are open during all game hours.
+                        to get kicked out; for this reason, avoid stores or
+                        other businesses, even if they are open during all game
+                        hours.
                     </p>
                     <p>
                         Your Hiding Spot must also be within 3 metres of a

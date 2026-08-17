@@ -37,7 +37,9 @@ export const findClosestLocations = async (question: any, text?: string) => {
 
     const fallbackPlace = PLACES.find((p) => p.id === question.locationType);
     const fallbackName =
-        fallbackPlace && fallbackPlace.type === "specific" ? fallbackPlace.label : null;
+        fallbackPlace && fallbackPlace.type === "specific"
+            ? fallbackPlace.label
+            : null;
 
     elements.forEach((element: any) => {
         if (!element.tags) return;
