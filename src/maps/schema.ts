@@ -7,7 +7,8 @@ const determineUnionizedStrings = (
         | z.ZodUnion<any>
         | z.ZodLiteral<any>
         | z.ZodDefault<any>
-        | z.ZodEffects<any>,
+        | z.ZodPipe<any>
+        | z.ZodPreprocess<any>,
 ): z.ZodLiteral<any>[] => {
     if (obj instanceof z.ZodUnion) {
         return obj.options.flatMap((option: any) =>
@@ -17,8 +18,10 @@ const determineUnionizedStrings = (
         return [obj];
     } else if (obj instanceof z.ZodDefault) {
         return determineUnionizedStrings(obj._def.innerType);
-    } else if (obj instanceof z.ZodEffects) {
-        return determineUnionizedStrings(obj.innerType());
+    } else if (obj instanceof z.ZodPipe) {
+        return determineUnionizedStrings(obj._def.in);
+    } else if (obj instanceof z.ZodPreprocess) {
+        return determineUnionizedStrings(obj._def.schema);
     }
     return [];
 };
@@ -28,7 +31,8 @@ export const getSchemaOptions = (
         | z.ZodUnion<any>
         | z.ZodLiteral<any>
         | z.ZodDefault<any>
-        | z.ZodEffects<any>,
+        | z.ZodPipe<any>
+        | z.ZodPreprocess<any>,
 ): Record<string, string> => {
     const options: Record<string, string> = {};
     const literals = determineUnionizedStrings(obj);
