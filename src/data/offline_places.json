@@ -2,7 +2,7 @@
     "version": 0.6,
     "generator": "Overpass API 0.7.62.11 87bfad18",
     "osm3s": {
-        "timestamp_osm_base": "2026-08-17T01:44:20Z",
+        "timestamp_osm_base": "2026-08-24T00:37:48Z",
         "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
     },
     "elements": [
@@ -450,7 +450,7 @@
                 "brand:wikipedia": "en:Domino's Pizza",
                 "cuisine": "pizza",
                 "name": "Domino's",
-                "opening_hours": "Su-Th 11:00-24:00; Fr-Sa 11:00-2:00",
+                "opening_hours": "Su-Th 11:00-24:00; Fr-Sa 11:00-02:00",
                 "phone": "+1-403-226-7400",
                 "short_name": "Domino's",
                 "takeaway": "yes",
@@ -4747,9 +4747,11 @@
                 "amenity": "restaurant",
                 "cuisine": "pizza",
                 "delivery": "yes",
+                "indoor_seating": "no",
                 "name": "Pizza 73",
+                "outdoor_seating": "no",
                 "smoking": "no",
-                "takeaway": "yes"
+                "takeaway": "only"
             }
         },
         {
@@ -5852,7 +5854,7 @@
                 "amenity": "pub",
                 "microbrewery": "yes",
                 "name": "Marda Loop Brewing",
-                "opening_hours": "Mo-Th 14:00-22:00; Fr 1:00-23:00; Sa 12:00-23:00; Su 12:00-19:00",
+                "opening_hours": "Mo-Th 14:00-22:00; Fr 13:00-23:00; Sa 12:00-23:00; Su 12:00-19:00",
                 "website": "https://www.mardaloopbrewing.com/"
             }
         },
@@ -9739,6 +9741,20 @@
                 "name": "Health Sciences Library",
                 "phone": "+1-403-220-6855",
                 "website": "https://library.ucalgary.ca/hours/"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14113679992,
+            "lat": 50.9970613,
+            "lon": -114.0707507,
+            "tags": {
+                "amenity": "restaurant",
+                "cuisine": "pizza",
+                "indoor_seating": "yes",
+                "name": "Famoso Pizzeria",
+                "opening_hours": "Mo-Th 11:00-21:00; Fr,Sa 11:00-22:00; Su 11:00-21:00",
+                "outdoor_seating": "no"
             }
         },
         {
@@ -114205,7 +114221,7 @@
             "type": "relation",
             "id": 18459622,
             "bounds": {
-                "minlat": 50.8484306,
+                "minlat": 50.8482409,
                 "minlon": -114.0381147,
                 "maxlat": 50.8667802,
                 "maxlon": -113.97199
@@ -114446,16 +114462,36 @@
                             "lon": -113.9839812
                         },
                         {
+                            "lat": 50.8484527,
+                            "lon": -113.9877148
+                        },
+                        {
+                            "lat": 50.8484519,
+                            "lon": -113.9879737
+                        },
+                        {
+                            "lat": 50.8484514,
+                            "lon": -113.9881092
+                        },
+                        {
+                            "lat": 50.8484507,
+                            "lon": -113.9883186
+                        },
+                        {
+                            "lat": 50.8484492,
+                            "lon": -113.988793
+                        },
+                        {
                             "lat": 50.8484383,
                             "lon": -113.9920793
                         },
                         {
-                            "lat": 50.8484329,
-                            "lon": -113.9937229
+                            "lat": 50.8482432,
+                            "lon": -113.9937873
                         },
                         {
-                            "lat": 50.8484306,
-                            "lon": -113.9945881
+                            "lat": 50.8482409,
+                            "lon": -113.9946525
                         },
                         {
                             "lat": 50.8484491,
@@ -114468,6 +114504,14 @@
                         {
                             "lat": 50.8484794,
                             "lon": -114.0037943
+                        },
+                        {
+                            "lat": 50.8483212,
+                            "lon": -114.0040999
+                        },
+                        {
+                            "lat": 50.8483213,
+                            "lon": -114.0041004
                         },
                         {
                             "lat": 50.8484779,
