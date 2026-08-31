@@ -2,7 +2,7 @@
     "version": 0.6,
     "generator": "Overpass API 0.7.62.11 87bfad18",
     "osm3s": {
-        "timestamp_osm_base": "2026-08-24T00:37:48Z",
+        "timestamp_osm_base": "2026-08-31T02:14:01Z",
         "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
     },
     "elements": [
@@ -2592,6 +2592,7 @@
                 "addr:housenumber": "360",
                 "addr:street": "8 Street SW",
                 "amenity": "fire_station",
+                "check_date": "2026-08-23",
                 "name": "Fire Station 6 (Eau Claire)",
                 "operator": "Calgary Fire Department",
                 "operator:wikidata": "Q5019670",
@@ -4382,8 +4383,8 @@
         {
             "type": "node",
             "id": 4952901029,
-            "lat": 50.962704,
-            "lon": -114.0874792,
+            "lat": 50.9627336,
+            "lon": -114.0874928,
             "tags": {
                 "addr:city": "Calgary",
                 "addr:housenumber": "10233",
@@ -8165,7 +8166,7 @@
                 "brand:wikidata": "Q2759586",
                 "cuisine": "pizza",
                 "name": "Papa John's",
-                "opening_hours": "Mo-Su 11:00-2:00",
+                "opening_hours": "Mo-Su 11:00-02:00",
                 "takeaway": "yes"
             }
         },
@@ -95105,13 +95106,13 @@
                 "minlat": 50.9626149,
                 "minlon": -114.0865619,
                 "maxlat": 50.9628254,
-                "maxlon": -114.0863164
+                "maxlon": -114.0863166
             },
             "nodes": [
                 12605559371, 12605559370, 12605559369, 12605559368, 12605559367,
-                12605559366, 12605559365, 12605559364, 12605559363, 12605559362,
-                12605559361, 12605559360, 12605559359, 12605559358, 12605559357,
-                12605559356, 12605559355, 12605559371
+                12605559366, 12605559364, 12605559363, 12605559362, 12605559361,
+                12605559360, 12605559359, 12605559358, 12605559357, 12605559356,
+                12605559355, 12605559371
             ],
             "geometry": [
                 {
@@ -95139,12 +95140,8 @@
                     "lon": -114.0863322
                 },
                 {
-                    "lat": 50.9626592,
-                    "lon": -114.0863167
-                },
-                {
                     "lat": 50.9626593,
-                    "lon": -114.0863164
+                    "lon": -114.0863166
                 },
                 {
                     "lat": 50.9626612,
