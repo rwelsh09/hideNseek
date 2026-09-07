@@ -2,7 +2,7 @@
     "version": 0.6,
     "generator": "Overpass API 0.7.62.11 87bfad18",
     "osm3s": {
-        "timestamp_osm_base": "2026-08-31T02:14:01Z",
+        "timestamp_osm_base": "2026-09-07T01:46:40Z",
         "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
     },
     "elements": [
@@ -3876,8 +3876,14 @@
             "lat": 50.9313334,
             "lon": -114.0635516,
             "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "380",
+                "addr:postcode": "T2J 7C3",
+                "addr:province": "AB",
+                "addr:street": "Canyon Meadows Drive SE",
+                "addr:unit": "3133",
                 "amenity": "pub",
-                "name": "Three Crowns"
+                "name": "403 Local"
             }
         },
         {
@@ -4742,14 +4748,21 @@
         {
             "type": "node",
             "id": 5227073243,
-            "lat": 50.9690603,
-            "lon": -114.0841758,
+            "lat": 50.9690576,
+            "lon": -114.0842447,
             "tags": {
-                "amenity": "restaurant",
+                "addr:city": "Calgary",
+                "addr:housenumber": "9620",
+                "addr:province": "AB",
+                "addr:street": "Elbow Drive SW",
+                "amenity": "fast_food",
+                "brand": "Pizza 73",
+                "brand:wikidata": "Q7199950",
                 "cuisine": "pizza",
                 "delivery": "yes",
                 "indoor_seating": "no",
                 "name": "Pizza 73",
+                "opening_hours": "Mo-Th 11:00-24:00, Fr,Sa 11:00-01:00, Su 11:00-24:00",
                 "outdoor_seating": "no",
                 "smoking": "no",
                 "takeaway": "only"
@@ -9756,6 +9769,42 @@
                 "name": "Famoso Pizzeria",
                 "opening_hours": "Mo-Th 11:00-21:00; Fr,Sa 11:00-22:00; Su 11:00-21:00",
                 "outdoor_seating": "no"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14138435565,
+            "lat": 50.9407915,
+            "lon": -114.1478795,
+            "tags": {
+                "amenity": "construction",
+                "brand": "McDonald's",
+                "brand:wikidata": "Q38076",
+                "construction": "fast_food",
+                "cuisine": "burger",
+                "name": "McDonald's",
+                "takeaway": "yes"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14141057657,
+            "lat": 51.0081468,
+            "lon": -114.0004834,
+            "tags": {
+                "addr:housenumber": "2515",
+                "addr:postcode": "T2B 3R8",
+                "addr:street": "50 Avenue SE",
+                "amenity": "fast_food",
+                "brand": "241 Pizza",
+                "brand:wikidata": "Q4631768",
+                "cuisine": "pizza",
+                "drive_through": "no",
+                "name": "241 Pizza",
+                "opening_hours": "Mo-Su 11:00-21:00",
+                "phone": "+1 403-433-0241",
+                "takeaway": "yes",
+                "website": "https://locations.241pizza.com/ll/CA/Alberta/Calgary/2515-50th-Avenue-South-East"
             }
         },
         {
@@ -16073,9 +16122,9 @@
                 "maxlon": -114.1213953
             },
             "nodes": [
-                2715516175, 2715516181, 2715516179, 2715516202, 2715516200,
-                2715516208, 2715516207, 2715516205, 2715516206, 2715516182,
-                2715516184, 2715516173, 2715516175
+                2715516175, 2715516181, 2715516179, 14156637676, 2715516202,
+                2715516200, 2715516208, 2715516207, 2715516205, 2715516206,
+                2715516182, 2715516184, 2715516173, 2715516175
             ],
             "geometry": [
                 {
@@ -16088,6 +16137,10 @@
                 },
                 {
                     "lat": 50.9617252,
+                    "lon": -114.1213953
+                },
+                {
+                    "lat": 50.9617583,
                     "lon": -114.1213953
                 },
                 {
@@ -84698,7 +84751,7 @@
             },
             "nodes": [
                 12452754118, 12452754106, 12452754105, 12452754104, 12452754103,
-                12452754102
+                5766693199, 12452754102
             ],
             "geometry": [
                 {
@@ -84720,6 +84773,10 @@
                 {
                     "lat": 51.067852,
                     "lon": -114.1411619
+                },
+                {
+                    "lat": 51.0674063,
+                    "lon": -114.1411656
                 },
                 {
                     "lat": 51.0663873,
@@ -163524,6 +163581,13 @@
                             "lon": -114.1294766
                         }
                     ]
+                },
+                {
+                    "type": "node",
+                    "ref": 12565886034,
+                    "role": "label",
+                    "lat": 51.1870029,
+                    "lon": -114.1235999
                 }
             ],
             "tags": {
@@ -200261,6 +200325,10 @@
                             "lon": -114.1411619
                         },
                         {
+                            "lat": 51.0674063,
+                            "lon": -114.1411656
+                        },
+                        {
                             "lat": 51.0663873,
                             "lon": -114.141174
                         }
@@ -201285,6 +201353,10 @@
                         {
                             "lat": 51.067852,
                             "lon": -114.1411619
+                        },
+                        {
+                            "lat": 51.0674063,
+                            "lon": -114.1411656
                         },
                         {
                             "lat": 51.0663873,
