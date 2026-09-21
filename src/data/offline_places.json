@@ -2,7 +2,7 @@
     "version": 0.6,
     "generator": "Overpass API 0.7.62.11 87bfad18",
     "osm3s": {
-        "timestamp_osm_base": "2026-09-14T02:16:39Z",
+        "timestamp_osm_base": "2026-09-21T02:15:25Z",
         "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
     },
     "elements": [
@@ -349,10 +349,12 @@
                 "brand:wikipedia": "en:Tim Hortons",
                 "cuisine": "coffee_shop",
                 "drive_through": "no",
+                "indoor_seating": "yes",
                 "level": "1",
                 "level:ref": "2",
                 "name": "Tim Hortons",
                 "opening_hours": "Mo-Th 07:00-19:00; Fr 07:00-15:00; Sa 08:00-14:00; Su off; PH off",
+                "outdoor_seating": "no",
                 "takeaway": "yes"
             }
         },
@@ -3941,8 +3943,8 @@
         {
             "type": "node",
             "id": 4854477637,
-            "lat": 50.9209631,
-            "lon": -114.1241474,
+            "lat": 50.9210304,
+            "lon": -114.1240017,
             "tags": {
                 "brand": "7-Eleven",
                 "brand:wikidata": "Q259340",
@@ -5477,6 +5479,7 @@
                 "addr:city": "Calgary",
                 "addr:housenumber": "464",
                 "addr:postcode": "T2W 5H7",
+                "addr:province": "AB",
                 "addr:street": "Woodbine Boulevard SW",
                 "addr:unit": "B",
                 "amenity": "restaurant",
@@ -5486,7 +5489,8 @@
                 "outdoor_seating": "no",
                 "phone": "+1-403-251-3329",
                 "takeaway": "yes",
-                "website": "https://www.crispycrust.ca/"
+                "website": "https://www.crispycrust.ca/",
+                "website:menu": "https://crispycrust.ca/#menu"
             }
         },
         {
@@ -6120,7 +6124,8 @@
                 "amenity": "bar",
                 "level": "-1",
                 "name": "Paper Lantern",
-                "phone": "+1-403-457-7765"
+                "phone": "+1-403-457-7765",
+                "website": "https://paperlantern.ca/"
             }
         },
         {
@@ -8040,8 +8045,10 @@
             "tags": {
                 "amenity": "fast_food",
                 "cuisine": "pizza",
+                "indoor_seating": "yes",
                 "level:ref": "2",
-                "name": "Canadian Pizza Express"
+                "name": "Canadian Pizza Express",
+                "outdoor_seating": "no"
             }
         },
         {
@@ -9526,8 +9533,8 @@
         {
             "type": "node",
             "id": 14022899142,
-            "lat": 51.116298,
-            "lon": -114.2062225,
+            "lat": 51.1162867,
+            "lon": -114.2062528,
             "tags": {
                 "brand": "7-Eleven",
                 "brand:wikidata": "Q259340",
@@ -9831,7 +9838,154 @@
                 "addr:street": "15 Avenue SW",
                 "amenity": "pub",
                 "name": "Mugs Pub",
-                "opening_hours": "Tu-Sa 11:00-02:00; Su 11:00-01:00; Mo 13:00-01:00"
+                "opening_hours": "Tu-Sa 11:00-02:00; Su 11:00-01:00; Mo 13:00-01:00",
+                "website": "https://mugspubyyc.com/"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14184209213,
+            "lat": 50.9205239,
+            "lon": -114.0759927,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "15",
+                "addr:province": "AB",
+                "addr:street": "Millrise Boulevard SW",
+                "addr:unit": "25",
+                "amenity": "pub",
+                "name": "Rip's Pub & Eatery",
+                "phone": "+1 403-254-0424",
+                "website": "https://www.ripspub.ca/",
+                "website:menu": "https://www.ripspub.ca/curbside-menu"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14184209216,
+            "lat": 50.9204763,
+            "lon": -114.0759175,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "15",
+                "addr:postcode": "T2Y 1X7",
+                "addr:province": "AB",
+                "addr:street": "Millrise Boulevard SW",
+                "addr:unit": "27",
+                "amenity": "fast_food",
+                "cuisine": "pizza",
+                "name": "Royal Pizza Millrise",
+                "phone": "+1-587-390-1858",
+                "website": "https://royalpizza.ca/",
+                "website:menu": "https://royalpizza.ca/menu/"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14185734791,
+            "lat": 51.0080794,
+            "lon": -114.0035568,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "2415",
+                "addr:postcode": "T3M 3N7",
+                "addr:province": "AB",
+                "addr:street": "50 Avenue SE",
+                "addr:unit": "110",
+                "brand": "7-Eleven",
+                "brand:wikidata": "Q259340",
+                "name": "7-Eleven",
+                "payment:credit_cards": "yes",
+                "shop": "convenience"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14185824322,
+            "lat": 51.1468493,
+            "lon": -113.9668335,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "10474",
+                "addr:province": "AB",
+                "addr:street": "Cityscape Drive NE",
+                "brand": "7-Eleven",
+                "brand:wikidata": "Q259340",
+                "name": "7-Eleven",
+                "opening_hours": "24/7",
+                "shop": "convenience"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14186978711,
+            "lat": 51.0408816,
+            "lon": -114.061303,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "1201",
+                "addr:province": "AB",
+                "addr:street": "1 Street SE",
+                "brand": "7-Eleven",
+                "brand:wikidata": "Q259340",
+                "name": "7-Eleven",
+                "payment:credit_cards": "yes",
+                "shop": "convenience"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14188554409,
+            "lat": 51.0625529,
+            "lon": -113.9577517,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "1440",
+                "addr:province": "AB",
+                "addr:street": "52 Street NE",
+                "addr:unit": "600",
+                "brand": "7-Eleven",
+                "brand:wikidata": "Q259340",
+                "name": "7-Eleven",
+                "shop": "convenience"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14188555015,
+            "lat": 50.9420339,
+            "lon": -114.0453893,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "759",
+                "addr:postcode": "T2J 0N2",
+                "addr:province": "AB",
+                "addr:street": "Lake Bonavista Drive SE",
+                "brand": "7-Eleven",
+                "brand:wikidata": "Q259340",
+                "name": "7-Eleven",
+                "payment:credit_cards": "yes",
+                "shop": "convenience"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14190030751,
+            "lat": 51.1756278,
+            "lon": -114.1330497,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "2971",
+                "addr:postcode": "T3P 1K3T3P 1K3",
+                "addr:province": "AB",
+                "addr:street": "136 Avenue NW",
+                "addr:unit": "140",
+                "brand": "7-Eleven",
+                "brand:wikidata": "Q259340",
+                "name": "7-Eleven",
+                "payment:credit_cards": "yes",
+                "shop": "convenience",
+                "source": "City of Calgary Digital Aerial Survey building roof outlines"
             }
         },
         {
@@ -17514,50 +17668,6 @@
         },
         {
             "type": "way",
-            "id": 292194641,
-            "bounds": {
-                "minlat": 51.0374312,
-                "minlon": -114.1418006,
-                "maxlat": 51.0375595,
-                "maxlon": -114.1415687
-            },
-            "nodes": [
-                2957313445, 2957313444, 2957313440, 2957313441, 2957313445
-            ],
-            "geometry": [
-                {
-                    "lat": 51.0375595,
-                    "lon": -114.1417995
-                },
-                {
-                    "lat": 51.0375587,
-                    "lon": -114.1415687
-                },
-                {
-                    "lat": 51.0374312,
-                    "lon": -114.1415698
-                },
-                {
-                    "lat": 51.037432,
-                    "lon": -114.1418006
-                },
-                {
-                    "lat": 51.0375595,
-                    "lon": -114.1417995
-                }
-            ],
-            "tags": {
-                "brand": "7-Eleven",
-                "brand:wikidata": "Q259340",
-                "building": "yes",
-                "building:levels": "1",
-                "height": "6",
-                "name": "7-Eleven",
-                "shop": "convenience"
-            }
-        },
-        {
-            "type": "way",
             "id": 299597727,
             "bounds": {
                 "minlat": 51.0253311,
@@ -22935,10 +23045,16 @@
                 }
             ],
             "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "7102",
+                "addr:postcode": "T2V 1K1",
+                "addr:province": "AB",
+                "addr:street": "Elbow Drive SW",
                 "brand": "7-Eleven",
                 "brand:wikidata": "Q259340",
                 "building": "yes",
                 "name": "7-Eleven",
+                "payment:credit_cards": "yes",
                 "shop": "convenience"
             }
         },
@@ -25826,66 +25942,6 @@
         },
         {
             "type": "way",
-            "id": 820454987,
-            "bounds": {
-                "minlat": 51.1755802,
-                "minlon": -114.1331401,
-                "maxlat": 51.1757371,
-                "maxlon": -114.1324843
-            },
-            "nodes": [
-                7661157865, 7661157864, 12744042639, 12744042638, 12744042637,
-                12744042636, 7661157863, 7661157866, 7661157865
-            ],
-            "geometry": [
-                {
-                    "lat": 51.1755802,
-                    "lon": -114.1324977
-                },
-                {
-                    "lat": 51.1757108,
-                    "lon": -114.1324843
-                },
-                {
-                    "lat": 51.1757159,
-                    "lon": -114.132612
-                },
-                {
-                    "lat": 51.1757112,
-                    "lon": -114.1326124
-                },
-                {
-                    "lat": 51.1757182,
-                    "lon": -114.1327854
-                },
-                {
-                    "lat": 51.1757233,
-                    "lon": -114.1327848
-                },
-                {
-                    "lat": 51.1757371,
-                    "lon": -114.1331268
-                },
-                {
-                    "lat": 51.175606,
-                    "lon": -114.1331401
-                },
-                {
-                    "lat": 51.1755802,
-                    "lon": -114.1324977
-                }
-            ],
-            "tags": {
-                "brand": "7-Eleven",
-                "brand:wikidata": "Q259340",
-                "building": "commercial",
-                "name": "7-Eleven",
-                "shop": "convenience",
-                "source": "City of Calgary Digital Aerial Survey building roof outlines"
-            }
-        },
-        {
-            "type": "way",
             "id": 847323768,
             "bounds": {
                 "minlat": 50.9347142,
@@ -28685,10 +28741,10 @@
             "type": "way",
             "id": 1167364225,
             "bounds": {
-                "minlat": 51.1272494,
-                "minlon": -114.139357,
-                "maxlat": 51.1273283,
-                "maxlon": -114.1391591
+                "minlat": 51.1272491,
+                "minlon": -114.1393574,
+                "maxlat": 51.1273314,
+                "maxlon": -114.1391612
             },
             "nodes": [
                 10856015644, 10856015643, 11651917938, 11651917937, 9590129337,
@@ -28696,40 +28752,40 @@
             ],
             "geometry": [
                 {
-                    "lat": 51.1273283,
+                    "lat": 51.1273313,
+                    "lon": -114.1393397
+                },
+                {
+                    "lat": 51.1273314,
+                    "lon": -114.1391795
+                },
+                {
+                    "lat": 51.127311,
+                    "lon": -114.1391789
+                },
+                {
+                    "lat": 51.1273111,
+                    "lon": -114.1391612
+                },
+                {
+                    "lat": 51.1272492,
+                    "lon": -114.1391612
+                },
+                {
+                    "lat": 51.1272491,
+                    "lon": -114.1393573
+                },
+                {
+                    "lat": 51.127312,
+                    "lon": -114.1393574
+                },
+                {
+                    "lat": 51.127312,
                     "lon": -114.1393403
                 },
                 {
-                    "lat": 51.1273274,
-                    "lon": -114.1391779
-                },
-                {
-                    "lat": 51.1273122,
-                    "lon": -114.1391771
-                },
-                {
-                    "lat": 51.1273124,
-                    "lon": -114.1391591
-                },
-                {
-                    "lat": 51.1272494,
-                    "lon": -114.1391615
-                },
-                {
-                    "lat": 51.1272503,
-                    "lon": -114.1393554
-                },
-                {
-                    "lat": 51.1273117,
-                    "lon": -114.139357
-                },
-                {
-                    "lat": 51.1273118,
-                    "lon": -114.13934
-                },
-                {
-                    "lat": 51.1273283,
-                    "lon": -114.1393403
+                    "lat": 51.1273313,
+                    "lon": -114.1393397
                 }
             ],
             "tags": {
@@ -29271,48 +29327,6 @@
                 "name": "50 Avenue SW",
                 "sidewalk:both": "separate",
                 "surface": "asphalt"
-            }
-        },
-        {
-            "type": "way",
-            "id": 1246082344,
-            "bounds": {
-                "minlat": 51.0079886,
-                "minlon": -114.0036419,
-                "maxlat": 51.0081238,
-                "maxlon": -114.0030588
-            },
-            "nodes": [
-                11584480398, 11584480397, 11584480396, 11584480395, 11584480398
-            ],
-            "geometry": [
-                {
-                    "lat": 51.0081238,
-                    "lon": -114.0036397
-                },
-                {
-                    "lat": 51.0081199,
-                    "lon": -114.0030588
-                },
-                {
-                    "lat": 51.0079886,
-                    "lon": -114.0030611
-                },
-                {
-                    "lat": 51.0079925,
-                    "lon": -114.0036419
-                },
-                {
-                    "lat": 51.0081238,
-                    "lon": -114.0036397
-                }
-            ],
-            "tags": {
-                "brand": "7-Eleven",
-                "brand:wikidata": "Q259340",
-                "building": "yes",
-                "name": "7-Eleven",
-                "shop": "convenience"
             }
         },
         {
@@ -37106,13 +37120,13 @@
             "type": "way",
             "id": 1345699805,
             "bounds": {
-                "minlat": 51.0546928,
+                "minlat": 51.0546884,
                 "minlon": -114.0236242,
                 "maxlat": 51.0596817,
                 "maxlon": -114.0016755
             },
             "nodes": [
-                12448348747, 12448379520, 88851137, 11385823930, 12448379518,
+                12448348747, 12448379520, 14197629128, 11978617448, 12448379518,
                 12448379517, 12448379516, 12448379515, 12448379514, 12448379513,
                 2184447635, 89447734, 11413647546, 89447721, 2184447547,
                 255979903, 2184447691, 12448379508, 12448379507, 12448379506,
@@ -37130,16 +37144,16 @@
                     "lon": -114.0045776
                 },
                 {
-                    "lat": 51.0547595,
-                    "lon": -114.0047152
+                    "lat": 51.0547103,
+                    "lon": -114.0047744
                 },
                 {
-                    "lat": 51.0547086,
-                    "lon": -114.0048197
+                    "lat": 51.0546957,
+                    "lon": -114.0088635
                 },
                 {
-                    "lat": 51.0546928,
-                    "lon": -114.0095846
+                    "lat": 51.0546884,
+                    "lon": -114.0094469
                 },
                 {
                     "lat": 51.0547674,
@@ -115086,16 +115100,16 @@
                             "lon": -114.0045776
                         },
                         {
-                            "lat": 51.0547595,
-                            "lon": -114.0047152
+                            "lat": 51.0547103,
+                            "lon": -114.0047744
                         },
                         {
-                            "lat": 51.0547086,
-                            "lon": -114.0048197
+                            "lat": 51.0546957,
+                            "lon": -114.0088635
                         },
                         {
-                            "lat": 51.0546928,
-                            "lon": -114.0095846
+                            "lat": 51.0546884,
+                            "lon": -114.0094469
                         },
                         {
                             "lat": 51.0547674,
@@ -115503,7 +115517,7 @@
             "type": "relation",
             "id": 18459648,
             "bounds": {
-                "minlat": 51.0546928,
+                "minlat": 51.0546884,
                 "minlon": -114.0272002,
                 "maxlat": 51.0669766,
                 "maxlon": -114.0016709
@@ -115639,16 +115653,16 @@
                             "lon": -114.0045776
                         },
                         {
-                            "lat": 51.0547595,
-                            "lon": -114.0047152
+                            "lat": 51.0547103,
+                            "lon": -114.0047744
                         },
                         {
-                            "lat": 51.0547086,
-                            "lon": -114.0048197
+                            "lat": 51.0546957,
+                            "lon": -114.0088635
                         },
                         {
-                            "lat": 51.0546928,
-                            "lon": -114.0095846
+                            "lat": 51.0546884,
+                            "lon": -114.0094469
                         },
                         {
                             "lat": 51.0547674,
