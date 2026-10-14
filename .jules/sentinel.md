@@ -23,11 +23,6 @@
 **Learning:** Leaflet requires `window` to be defined to load without crashing, even if we are only using its math functions like `L.point` or `L.latLng`.
 **Action:** Add `// @vitest-environment jsdom` to the top of any test file importing `leaflet`.
 
-## 2026-07-29 - [Zod Testing Gotchas]
-
-**Learning:** `z.ZodEffects` is an interface/type in newer versions of Zod, not a runtime class, making `instanceof z.ZodEffects` fail with a `TypeError`. However, modifying the source code to fix this is forbidden when assigned to purely test a component as "Sentinel". Any runtime checks like that in the source must be left alone.
-**Action:** Only write tests for how the component actually behaves currently, and ensure to never patch or fix bugs in the source files during a strict Sentinel testing task unless explicitly authorized.
-
 ## 2026-07-30 - [Strict Assertions for Sentinel]
 
 **Learning:** Sentinel's philosophy ("If a test doesn't fail when the underlying business logic is broken, it is a useless test") mandates strict assertions. Using weak assertions like `expect(result.same).toBeDefined()` for boolean logic allows tests to pass even if the function erroneously returns the opposite value (e.g. `false` instead of `true`), rendering the test tautological and useless.
