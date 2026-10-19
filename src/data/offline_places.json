@@ -2,7 +2,7 @@
     "version": 0.6,
     "generator": "Overpass API 0.7.62.11 87bfad18",
     "osm3s": {
-        "timestamp_osm_base": "2026-10-12T03:11:21Z",
+        "timestamp_osm_base": "2026-10-19T02:19:07Z",
         "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
     },
     "elements": [
@@ -36,16 +36,27 @@
         {
             "type": "node",
             "id": 196691118,
-            "lat": 51.1517607,
-            "lon": -114.2148482,
+            "lat": 51.1516781,
+            "lon": -114.2147715,
             "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "8888",
+                "addr:postcode": "T3G 5T4",
+                "addr:province": "Alberta",
+                "addr:street": "Country Hills Boulevard NW",
+                "addr:unit": "301",
                 "amenity": "fast_food",
                 "brand": "Pizza 73",
                 "brand:wikidata": "Q7199950",
                 "brand:wikipedia": "en:Pizza 73",
                 "cuisine": "pizza",
+                "delivery": "yes",
+                "drive_through": "no",
                 "name": "Pizza 73",
-                "takeaway": "yes"
+                "opening_hours": "Su-Th 11:00-23:59; Fr-Sa 11:00-01:00",
+                "phone": "+1-403-273-7373",
+                "takeaway": "yes",
+                "website": "https://www.pizza73.com/restaurant-locator/alberta/calgary/8888-country-hills-blvd-nw-unit-301-royal-oak/"
             }
         },
         {
@@ -583,16 +594,6 @@
         },
         {
             "type": "node",
-            "id": 574044277,
-            "lat": 51.1519461,
-            "lon": -114.2147774,
-            "tags": {
-                "amenity": "pub",
-                "name": "Blind Monk"
-            }
-        },
-        {
-            "type": "node",
             "id": 575696471,
             "lat": 51.0168548,
             "lon": -114.1688448,
@@ -1117,8 +1118,8 @@
         {
             "type": "node",
             "id": 1159433090,
-            "lat": 50.9611811,
-            "lon": -114.0722842,
+            "lat": 50.9611846,
+            "lon": -114.0723387,
             "tags": {
                 "amenity": "restaurant",
                 "brand": "Boston Pizza",
@@ -2258,6 +2259,7 @@
                 "amenity": "cinema",
                 "email": "info@cmcinemas.com",
                 "name": "Canyon Meadows Cinemas",
+                "opening_hours": "Mo-Su 12:30-22:00",
                 "screen": "10",
                 "website": "http://canyonmeadowscinemas.ca/",
                 "wikidata": "Q38375122"
@@ -2266,17 +2268,29 @@
         {
             "type": "node",
             "id": 2702959077,
-            "lat": 51.1515917,
-            "lon": -114.2116951,
+            "lat": 51.1515057,
+            "lon": -114.2117245,
             "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "8650",
+                "addr:province": "AB",
+                "addr:street": "112 Avenue NW",
+                "addr:unit": "8116",
+                "alt_name": "Tim's",
                 "amenity": "cafe",
+                "branch": "69414",
                 "brand": "Tim Hortons",
                 "brand:wikidata": "Q175106",
                 "brand:wikipedia": "en:Tim Hortons",
                 "cuisine": "coffee_shop",
                 "drive_through": "no",
+                "internet_access": "wlan",
+                "internet_access:fee": "customers",
                 "name": "Tim Hortons",
+                "opening_hours": "05:00-23:00",
                 "operator": "Restaurant Brands International Inc.",
+                "outdoor_seating": "yes",
+                "phone": "+1-403-239-4557",
                 "takeaway": "yes",
                 "website": "https://www.timhortons.com/"
             }
@@ -10051,6 +10065,36 @@
             }
         },
         {
+            "type": "node",
+            "id": 14289889301,
+            "lat": 50.8794648,
+            "lon": -113.9518532,
+            "tags": {
+                "addr:housenumber": "4025",
+                "addr:postcode": "T3M1M4",
+                "addr:street": "Market Street SE",
+                "amenity": "pub",
+                "check_date": "2026-10-15",
+                "check_date:opening_hours": "2026-10-15",
+                "level": "0",
+                "name": "Leopold's Tavern",
+                "opening_hours": "Mo-Su 11:00-02:00",
+                "phone": "+1-855-522-5367",
+                "website": "http://leopoldstavern.com"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14291831122,
+            "lat": 51.0914712,
+            "lon": -114.2481587,
+            "tags": {
+                "amenity": "fast_food",
+                "cuisine": "pizza",
+                "name": "Pizza Cottage"
+            }
+        },
+        {
             "type": "way",
             "id": 4814073,
             "bounds": {
@@ -11968,9 +12012,18 @@
                 "brand:wikidata": "Q839466",
                 "brand:wikipedia": "en:Domino's Pizza",
                 "building": "commercial",
+                "building:levels": "1",
+                "check_date": "2026-10-14",
                 "cuisine": "pizza",
+                "drive_through": "no",
+                "internet_access": "no",
                 "name": "Domino's",
-                "takeaway": "yes"
+                "payment:cash": "yes",
+                "payment:credit_cards": "yes",
+                "payment:debit_cards": "yes",
+                "roof:shape": "flat",
+                "takeaway": "yes",
+                "wheelchair": "limited"
             }
         },
         {
@@ -29529,22 +29582,14 @@
                 "maxlon": -114.099532
             },
             "nodes": [
-                2640117642, 2640117643, 2640117644, 2640117627, 2640117625,
-                2640117670, 2640117637, 1779748356, 1778789751, 2379528149,
-                1778789719, 2640117661, 2597903501, 31027700, 1584004982
+                2640117642, 2640117627, 2640117625, 2640117670, 2640117637,
+                1779748356, 1778789751, 2379528149, 1778789719, 2640117661,
+                2597903501, 31027700, 1584004982
             ],
             "geometry": [
                 {
                     "lat": 51.0391347,
                     "lon": -114.099532
-                },
-                {
-                    "lat": 51.0395566,
-                    "lon": -114.1002002
-                },
-                {
-                    "lat": 51.039618,
-                    "lon": -114.1002997
                 },
                 {
                     "lat": 51.0405246,
@@ -95912,146 +95957,6 @@
         },
         {
             "type": "way",
-            "id": 1364208837,
-            "bounds": {
-                "minlat": 50.906254,
-                "minlon": -114.0624202,
-                "maxlat": 50.9066134,
-                "maxlon": -114.0619792
-            },
-            "nodes": [
-                12632776435, 12632776434, 12632776433, 12632776432, 12632776431,
-                12632776430, 12632776429, 12632776428, 12632776427, 12632776426,
-                12632776425, 12632776424, 12632776423, 12632776422, 12632776421,
-                12632776420, 12632776419, 12632776418, 12632776417, 12632776416,
-                12632776415, 12632776414, 12632776413, 12632776412, 12632776411,
-                12632776410, 12632776435
-            ],
-            "geometry": [
-                {
-                    "lat": 50.9065632,
-                    "lon": -114.0623679
-                },
-                {
-                    "lat": 50.9065591,
-                    "lon": -114.0623653
-                },
-                {
-                    "lat": 50.9065536,
-                    "lon": -114.0623872
-                },
-                {
-                    "lat": 50.9065455,
-                    "lon": -114.062419
-                },
-                {
-                    "lat": 50.9064963,
-                    "lon": -114.0623879
-                },
-                {
-                    "lat": 50.9064881,
-                    "lon": -114.0624202
-                },
-                {
-                    "lat": 50.9064579,
-                    "lon": -114.0624011
-                },
-                {
-                    "lat": 50.9064561,
-                    "lon": -114.0624083
-                },
-                {
-                    "lat": 50.9063477,
-                    "lon": -114.0623398
-                },
-                {
-                    "lat": 50.9063489,
-                    "lon": -114.0623352
-                },
-                {
-                    "lat": 50.906254,
-                    "lon": -114.0622753
-                },
-                {
-                    "lat": 50.9062697,
-                    "lon": -114.062213
-                },
-                {
-                    "lat": 50.9062672,
-                    "lon": -114.0622115
-                },
-                {
-                    "lat": 50.9063096,
-                    "lon": -114.0620433
-                },
-                {
-                    "lat": 50.906312,
-                    "lon": -114.0620448
-                },
-                {
-                    "lat": 50.9063281,
-                    "lon": -114.0619809
-                },
-                {
-                    "lat": 50.9063464,
-                    "lon": -114.0619925
-                },
-                {
-                    "lat": 50.9063497,
-                    "lon": -114.0619792
-                },
-                {
-                    "lat": 50.9064182,
-                    "lon": -114.0620224
-                },
-                {
-                    "lat": 50.906422,
-                    "lon": -114.0620071
-                },
-                {
-                    "lat": 50.9064843,
-                    "lon": -114.0620464
-                },
-                {
-                    "lat": 50.9064812,
-                    "lon": -114.0620589
-                },
-                {
-                    "lat": 50.9066134,
-                    "lon": -114.0621423
-                },
-                {
-                    "lat": 50.9065995,
-                    "lon": -114.0621976
-                },
-                {
-                    "lat": 50.9066052,
-                    "lon": -114.0622012
-                },
-                {
-                    "lat": 50.9065752,
-                    "lon": -114.0623203
-                },
-                {
-                    "lat": 50.9065632,
-                    "lon": -114.0623679
-                }
-            ],
-            "tags": {
-                "addr:housenumber": "380",
-                "addr:postcode": "T2X 3S4",
-                "addr:street": "Midpark Way SE",
-                "amenity": "pub",
-                "building": "yes",
-                "fixme": "bad format for opening hours",
-                "name": "The Hideout Calgary South",
-                "opening_hours": "Su-Th 11:30-23:00; Fr,Sa 11:30-01:00",
-                "outdoor_seating": "yes",
-                "source": "City of Calgary Digital Aerial Survey building roof outlines"
-            }
-        },
-        {
-            "type": "way",
             "id": 1364286245,
             "bounds": {
                 "minlat": 51.0423573,
@@ -98744,14 +98649,6 @@
                         {
                             "lat": 51.0391347,
                             "lon": -114.099532
-                        },
-                        {
-                            "lat": 51.0395566,
-                            "lon": -114.1002002
-                        },
-                        {
-                            "lat": 51.039618,
-                            "lon": -114.1002997
                         },
                         {
                             "lat": 51.0405246,
@@ -101524,14 +101421,6 @@
                         {
                             "lat": 51.0391347,
                             "lon": -114.099532
-                        },
-                        {
-                            "lat": 51.0395566,
-                            "lon": -114.1002002
-                        },
-                        {
-                            "lat": 51.039618,
-                            "lon": -114.1002997
                         },
                         {
                             "lat": 51.0405246,
