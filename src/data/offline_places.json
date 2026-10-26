@@ -2,7 +2,7 @@
     "version": 0.6,
     "generator": "Overpass API 0.7.62.11 87bfad18",
     "osm3s": {
-        "timestamp_osm_base": "2026-10-19T02:19:07Z",
+        "timestamp_osm_base": "2026-10-26T02:13:55Z",
         "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
     },
     "elements": [
@@ -664,8 +664,20 @@
             "lat": 51.1236666,
             "lon": -114.2483151,
             "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "11300",
+                "addr:postcode": "T3L 2V7",
+                "addr:province": "Alberta",
+                "addr:street": "Tuscany Boulevard NW",
+                "addr:unit": "1010",
                 "amenity": "pub",
-                "name": "The Last Straw"
+                "food": "yes",
+                "microbrewery": "no",
+                "min_age": "18",
+                "name": "The Last Straw Ale House",
+                "outdoor_seating": "yes",
+                "smoking": "no",
+                "sport": "billiards"
             }
         },
         {
@@ -1980,20 +1992,6 @@
                 "operator": "Restaurant Brands International Inc.",
                 "takeaway": "yes",
                 "website": "https://www.timhortons.com/"
-            }
-        },
-        {
-            "type": "node",
-            "id": 1825042350,
-            "lat": 51.1419855,
-            "lon": -114.182506,
-            "tags": {
-                "addr:housenumber": "6510",
-                "addr:street": "Country Hills Boulevard NW",
-                "brand": "7-Eleven",
-                "brand:wikidata": "Q259340",
-                "name": "7-Eleven",
-                "shop": "convenience"
             }
         },
         {
@@ -4585,6 +4583,21 @@
                 "operator": "Calgary Fire Department",
                 "operator:wikidata": "Q5019670",
                 "operator:wikipedia": "en:Calgary Fire Department"
+            }
+        },
+        {
+            "type": "node",
+            "id": 5179161629,
+            "lat": 51.0852328,
+            "lon": -114.1570518,
+            "tags": {
+                "amenity": "cafe",
+                "brand": "Tim Hortons",
+                "brand:wikidata": "Q175106",
+                "cuisine": "coffee_shop",
+                "name": "Tim Hortons",
+                "outdoor_seating": "yes",
+                "takeaway": "yes"
             }
         },
         {
@@ -8815,6 +8828,7 @@
                 "brand:wikidata": "Q5503082",
                 "cuisine": "pizza",
                 "name": "Freshslice Pizza",
+                "opening_hours": "Mo,Tu 11:00-00:00; We-Sa 11:00-04:00; Su 11:00-24:00",
                 "phone": "+1 587 351 0085",
                 "takeaway": "yes"
             }
@@ -10095,6 +10109,44 @@
             }
         },
         {
+            "type": "node",
+            "id": 14302294568,
+            "lat": 50.9787786,
+            "lon": -114.0617818,
+            "tags": {
+                "addr:housenumber": "347",
+                "addr:street": "Heritage Drive SE",
+                "amenity": "fast_food",
+                "check_date": "2026-10-20",
+                "cuisine": "pizza",
+                "name": "Cosmic Pizza & Donair"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14316945460,
+            "lat": 51.064971,
+            "lon": -114.2099075,
+            "tags": {
+                "amenity": "fast_food",
+                "brand": "Domino's",
+                "brand:wikidata": "Q839466",
+                "cuisine": "pizza",
+                "name": "Domino's",
+                "takeaway": "yes"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14316967262,
+            "lat": 51.0649296,
+            "lon": -114.2105785,
+            "tags": {
+                "amenity": "bar",
+                "name": "The Candian Brewhouse"
+            }
+        },
+        {
             "type": "way",
             "id": 4814073,
             "bounds": {
@@ -11148,6 +11200,7 @@
                 "addr:postcode": "T3G 2R2",
                 "addr:province": "Alberta",
                 "addr:street": "Crowfoot Way NW",
+                "air_conditioning": "yes",
                 "amenity": "fast_food",
                 "brand": "McDonald's",
                 "brand:wikidata": "Q38076",
@@ -11156,9 +11209,11 @@
                 "check_date": "2025-07-13",
                 "cuisine": "burger",
                 "drive_through": "yes",
+                "indoor_seating": "yes",
                 "name": "McDonald's",
                 "opening_hours": "Mo-Su 05:00-24:00",
                 "opening_hours:drive_through": "24/7",
+                "outdoor_seating": "no",
                 "phone": "+1 403-241-1785",
                 "source": "City of Calgary Digital Aerial Survey building roof outlines",
                 "takeaway": "yes",
@@ -11971,10 +12026,10 @@
             "type": "way",
             "id": 45415069,
             "bounds": {
-                "minlat": 51.1242951,
-                "minlon": -114.2469653,
-                "maxlat": 51.1243812,
-                "maxlon": -114.2467496
+                "minlat": 51.1242807,
+                "minlon": -114.2470123,
+                "maxlat": 51.1243722,
+                "maxlon": -114.2467959
             },
             "nodes": [
                 9859606578, 9859606575, 574044217, 577458687, 9859606577,
@@ -11982,32 +12037,38 @@
             ],
             "geometry": [
                 {
-                    "lat": 51.1243315,
-                    "lon": -114.2469653
+                    "lat": 51.1243179,
+                    "lon": -114.2470123
                 },
                 {
-                    "lat": 51.1243409,
-                    "lon": -114.2469607
+                    "lat": 51.1243301,
+                    "lon": -114.2470056
                 },
                 {
-                    "lat": 51.1243812,
-                    "lon": -114.2469413
+                    "lat": 51.1243722,
+                    "lon": -114.2469825
                 },
                 {
-                    "lat": 51.1243448,
-                    "lon": -114.2467496
+                    "lat": 51.1243364,
+                    "lon": -114.2467959
                 },
                 {
-                    "lat": 51.1242951,
-                    "lon": -114.2467736
+                    "lat": 51.1242807,
+                    "lon": -114.2468202
                 },
                 {
-                    "lat": 51.1243315,
-                    "lon": -114.2469653
+                    "lat": 51.1243179,
+                    "lon": -114.2470123
                 }
             ],
             "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "11300",
+                "addr:postcode": "T3L 2V7",
+                "addr:province": "Alberta",
+                "addr:street": "Tuscany Boulevard NW",
                 "amenity": "fast_food",
+                "branch": "10144",
                 "brand": "Domino's",
                 "brand:wikidata": "Q839466",
                 "brand:wikipedia": "en:Domino's Pizza",
@@ -12018,9 +12079,11 @@
                 "drive_through": "no",
                 "internet_access": "no",
                 "name": "Domino's",
+                "opening_hours": "Su-Th 10:30-23:59; Fr-Sa 10:30-01:00",
                 "payment:cash": "yes",
                 "payment:credit_cards": "yes",
                 "payment:debit_cards": "yes",
+                "phone": "+1-403-662-8333",
                 "roof:shape": "flat",
                 "takeaway": "yes",
                 "wheelchair": "limited"
@@ -12130,7 +12193,9 @@
                 "building": "retail",
                 "cuisine": "burger",
                 "drive_through": "yes",
+                "indoor_seating": "yes",
                 "name": "McDonald's",
+                "outdoor_seating": "yes",
                 "takeaway": "yes",
                 "website": "http://www.mcdonalds.ca/"
             }
@@ -12646,6 +12711,51 @@
                 "source": "Yahoo",
                 "takeaway": "yes",
                 "website": "https://www.mcdonalds.com/ca/en-ca.html"
+            }
+        },
+        {
+            "type": "way",
+            "id": 95475480,
+            "bounds": {
+                "minlat": 51.1419134,
+                "minlon": -114.1827464,
+                "maxlat": 51.1420643,
+                "maxlon": -114.1823612
+            },
+            "nodes": [
+                1107043357, 1107043352, 1107043353, 1107043355, 1107043357
+            ],
+            "geometry": [
+                {
+                    "lat": 51.1420318,
+                    "lon": -114.1827464
+                },
+                {
+                    "lat": 51.1419134,
+                    "lon": -114.1827192
+                },
+                {
+                    "lat": 51.141946,
+                    "lon": -114.1823612
+                },
+                {
+                    "lat": 51.1420643,
+                    "lon": -114.1823884
+                },
+                {
+                    "lat": 51.1420318,
+                    "lon": -114.1827464
+                }
+            ],
+            "tags": {
+                "addr:housenumber": "6510",
+                "addr:street": "Country Hills Boulevard NW",
+                "brand": "7-Eleven",
+                "brand:wikidata": "Q259340",
+                "building": "commercial",
+                "name": "7-Eleven",
+                "shop": "convenience",
+                "source": "City of Calgary Digital Aerial Survey building roof outlines"
             }
         },
         {
@@ -18632,6 +18742,7 @@
                 "brand:wikidata": "Q259340",
                 "brand:wikipedia": "en:7-Eleven",
                 "building": "yes",
+                "diet:halal": "yes",
                 "layer": "1",
                 "name": "7-Eleven",
                 "opening_hours": "24/7",
@@ -24423,34 +24534,34 @@
             "type": "way",
             "id": 570371511,
             "bounds": {
-                "minlat": 50.9126426,
-                "minlon": -113.9501567,
-                "maxlat": 50.912844,
-                "maxlon": -113.9498676
+                "minlat": 50.9126544,
+                "minlon": -113.9501732,
+                "maxlat": 50.9128572,
+                "maxlon": -113.9498745
             },
             "nodes": [
-                5483518075, 5483518077, 5483518078, 5483518076, 5483518075
+                5483518075, 5483518077, 14319720043, 14319720042, 5483518075
             ],
             "geometry": [
                 {
-                    "lat": 50.9127873,
-                    "lon": -113.9501567
+                    "lat": 50.9127994,
+                    "lon": -113.9501732
                 },
                 {
-                    "lat": 50.912844,
-                    "lon": -113.9500387
+                    "lat": 50.9128572,
+                    "lon": -113.9500522
                 },
                 {
-                    "lat": 50.9126967,
-                    "lon": -113.9498676
+                    "lat": 50.9127127,
+                    "lon": -113.9498745
                 },
                 {
-                    "lat": 50.9126426,
-                    "lon": -113.949984
+                    "lat": 50.9126544,
+                    "lon": -113.9499967
                 },
                 {
-                    "lat": 50.9127873,
-                    "lon": -113.9501567
+                    "lat": 50.9127994,
+                    "lon": -113.9501732
                 }
             ],
             "tags": {
@@ -24463,7 +24574,6 @@
                 "brand": "Papa John's",
                 "brand:wikidata": "Q2759586",
                 "brand:wikipedia": "en:Papa John's Pizza",
-                "building": "yes",
                 "cuisine": "pizza",
                 "delivery": "yes",
                 "name": "Papa John's",
@@ -25567,6 +25677,7 @@
                 "building": "retail",
                 "cuisine": "burger",
                 "drive_through": "yes",
+                "height": "4",
                 "name": "McDonald's",
                 "takeaway": "yes"
             }
@@ -66891,7 +67002,7 @@
             "nodes": [
                 12451068707, 12451107065, 12451107064, 12451107063, 12451107060,
                 12451107062, 12451107059, 12451107058, 12451107061, 12451107057,
-                12451107056, 12451107055
+                12451107056, 14317088543, 12451107055
             ],
             "geometry": [
                 {
@@ -66937,6 +67048,10 @@
                 {
                     "lat": 51.1831899,
                     "lon": -114.1111761
+                },
+                {
+                    "lat": 51.1831886,
+                    "lon": -114.1114898
                 },
                 {
                     "lat": 51.1831631,
@@ -163780,6 +163895,10 @@
                             "lon": -114.1111761
                         },
                         {
+                            "lat": 51.1831886,
+                            "lon": -114.1114898
+                        },
+                        {
                             "lat": 51.1831631,
                             "lon": -114.1178978
                         }
@@ -171253,6 +171372,10 @@
                         {
                             "lat": 51.1831899,
                             "lon": -114.1111761
+                        },
+                        {
+                            "lat": 51.1831886,
+                            "lon": -114.1114898
                         },
                         {
                             "lat": 51.1831631,
