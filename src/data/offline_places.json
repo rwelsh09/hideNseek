@@ -2,7 +2,7 @@
     "version": 0.6,
     "generator": "Overpass API 0.7.62.11 87bfad18",
     "osm3s": {
-        "timestamp_osm_base": "2026-10-26T02:13:55Z",
+        "timestamp_osm_base": "2026-11-02T03:17:50Z",
         "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
     },
     "elements": [
@@ -2368,9 +2368,21 @@
                 "brand": "Papa John's",
                 "brand:wikidata": "Q2759586",
                 "brand:wikipedia": "en:Papa John's Pizza",
+                "changing_table": "no",
+                "check_date": "2026-10-29",
                 "cuisine": "pizza",
+                "delivery": "yes",
+                "highchair": "no",
+                "indoor_seating": "no",
+                "level": "0",
                 "name": "Papa John's",
-                "takeaway": "yes"
+                "outdoor_seating": "no",
+                "payment:cash": "yes",
+                "payment:contactless": "yes",
+                "payment:credit_cards": "yes",
+                "payment:debit_cards": "yes",
+                "takeaway": "yes",
+                "toilets": "no"
             }
         },
         {
@@ -2435,13 +2447,28 @@
             "lat": 51.1074335,
             "lon": -114.2401042,
             "tags": {
+                "addr:housenumber": "5029",
+                "addr:street": "Nose Hill Drive NW",
+                "addr:unit": "115",
                 "amenity": "cafe",
                 "brand": "Tim Hortons",
                 "brand:wikidata": "Q175106",
+                "check_date": "2026-10-30",
                 "cuisine": "coffee_shop",
                 "drive_through": "yes",
+                "internet_access": "wlan",
+                "internet_access:fee": "no",
                 "name": "Tim Hortons",
-                "takeaway": "yes"
+                "opening_hours": "05:00-23:00",
+                "opening_hours:drive_through": "05:00-23:00",
+                "outdoor_seating": "no",
+                "payment:cash": "yes",
+                "payment:credit_cards": "yes",
+                "payment:debit_cards": "yes",
+                "phone": "+1 403-374-8004",
+                "takeaway": "yes",
+                "website": "https://www.timhortons.ca",
+                "wheelchair": "no"
             }
         },
         {
@@ -8093,10 +8120,14 @@
             "lat": 51.0673185,
             "lon": -114.0920159,
             "tags": {
+                "addr:housenumber": "1340",
+                "addr:postcode": "T2M 0L1",
+                "addr:street": "16 Avenue NW",
                 "amenity": "fast_food",
                 "brand": "Domino's",
                 "brand:wikidata": "Q839466",
                 "cuisine": "pizza",
+                "drive_through": "no",
                 "name": "Domino's",
                 "takeaway": "yes"
             }
@@ -10128,12 +10159,23 @@
             "lat": 51.064971,
             "lon": -114.2099075,
             "tags": {
+                "addr:housenumber": "8526",
+                "addr:street": "Broadcast Avenue SW",
                 "amenity": "fast_food",
                 "brand": "Domino's",
                 "brand:wikidata": "Q839466",
+                "check_date": "2026-10-31",
                 "cuisine": "pizza",
+                "internet_access": "wlan",
+                "internet_access:fee": "no",
                 "name": "Domino's",
-                "takeaway": "yes"
+                "opening_hours": "Mo-We 10:30-24:30; Th,Su 10:30-01:00; Fr-Sa 10:30-01:30",
+                "payment:cash": "yes",
+                "payment:credit_cards": "yes",
+                "payment:debit_cards": "yes",
+                "phone": "+1 825-417-1717",
+                "takeaway": "yes",
+                "wheelchair": "yes"
             }
         },
         {
@@ -10142,8 +10184,39 @@
             "lat": 51.0649296,
             "lon": -114.2105785,
             "tags": {
+                "addr:housenumber": "8526",
+                "addr:street": "Broadcast Avenue SW",
                 "amenity": "bar",
-                "name": "The Candian Brewhouse"
+                "check_date": "2026-10-31",
+                "name": "The Candian Brewhouse",
+                "opening_hours": "Mo-Fr 11:30-02:00; Sa-Su 11:00-02:00",
+                "payment:cash": "yes",
+                "payment:credit_cards": "yes",
+                "payment:debit_cards": "yes",
+                "wheelchair": "yes"
+            }
+        },
+        {
+            "type": "node",
+            "id": 14335320907,
+            "lat": 51.0820973,
+            "lon": -114.2080425,
+            "tags": {
+                "addr:city": "Calgary",
+                "addr:housenumber": "455",
+                "addr:province": "AB",
+                "addr:street": "Na'a Common SW",
+                "amenity": "fast_food",
+                "brand": "Papa John's",
+                "brand:wikidata": "Q2759586",
+                "cuisine": "pizza",
+                "delivery": "yes",
+                "drive_through": "no",
+                "name": "Papa John's",
+                "opening_hours": "Su-Th 11:00-24:00; Fr-Sa 11:00-01:00",
+                "phone": "587-943-3397",
+                "takeaway": "yes",
+                "website": "https://locations.papajohns.com/canada/ab/t3h-6a3/calgary/455-naa-common-sw"
             }
         },
         {
@@ -25356,6 +25429,7 @@
                 "brand:wikidata": "Q175106",
                 "building": "yes",
                 "cuisine": "coffee_shop",
+                "height": "6",
                 "name": "Tim Hortons",
                 "takeaway": "yes"
             }
@@ -32985,6 +33059,172 @@
                 "outdoor_seating": "yes",
                 "smoking": "outside",
                 "takeaway": "yes"
+            }
+        },
+        {
+            "type": "way",
+            "id": 1340178358,
+            "bounds": {
+                "minlat": 51.0671185,
+                "minlon": -114.0913675,
+                "maxlat": 51.067384,
+                "maxlon": -114.0910894
+            },
+            "nodes": [
+                12396915782, 12396915781, 12396915780, 12396915779, 12396915778,
+                12396915777, 12396915776, 12396915775, 12396915774, 12396915773,
+                12396915772, 12396915771, 12396915770, 12396915769, 12396915768,
+                12396915767, 12396915766, 12396915765, 12396915764, 12396915763,
+                12396915762, 12396915761, 12396915760, 12396915759, 12396915758,
+                12396915757, 12396915756, 12396915755, 12396915754, 12396915753,
+                12396915752, 12396915751, 12396915782
+            ],
+            "geometry": [
+                {
+                    "lat": 51.067357,
+                    "lon": -114.0911182
+                },
+                {
+                    "lat": 51.0673784,
+                    "lon": -114.0911177
+                },
+                {
+                    "lat": 51.0673814,
+                    "lon": -114.0911176
+                },
+                {
+                    "lat": 51.067384,
+                    "lon": -114.0912321
+                },
+                {
+                    "lat": 51.0673838,
+                    "lon": -114.0913554
+                },
+                {
+                    "lat": 51.0673835,
+                    "lon": -114.0913675
+                },
+                {
+                    "lat": 51.0672789,
+                    "lon": -114.0913671
+                },
+                {
+                    "lat": 51.0672157,
+                    "lon": -114.0913668
+                },
+                {
+                    "lat": 51.067122,
+                    "lon": -114.0913664
+                },
+                {
+                    "lat": 51.0671197,
+                    "lon": -114.0913664
+                },
+                {
+                    "lat": 51.0671185,
+                    "lon": -114.0913341
+                },
+                {
+                    "lat": 51.0671188,
+                    "lon": -114.0911315
+                },
+                {
+                    "lat": 51.0671458,
+                    "lon": -114.0911313
+                },
+                {
+                    "lat": 51.067179,
+                    "lon": -114.091131
+                },
+                {
+                    "lat": 51.0671785,
+                    "lon": -114.0912205
+                },
+                {
+                    "lat": 51.0671947,
+                    "lon": -114.0912206
+                },
+                {
+                    "lat": 51.0671979,
+                    "lon": -114.0911906
+                },
+                {
+                    "lat": 51.0672026,
+                    "lon": -114.0911671
+                },
+                {
+                    "lat": 51.0672105,
+                    "lon": -114.0911455
+                },
+                {
+                    "lat": 51.0672205,
+                    "lon": -114.0911268
+                },
+                {
+                    "lat": 51.0672329,
+                    "lon": -114.0911082
+                },
+                {
+                    "lat": 51.0672485,
+                    "lon": -114.0910972
+                },
+                {
+                    "lat": 51.0672638,
+                    "lon": -114.0910899
+                },
+                {
+                    "lat": 51.0672802,
+                    "lon": -114.0910894
+                },
+                {
+                    "lat": 51.0672812,
+                    "lon": -114.0910957
+                },
+                {
+                    "lat": 51.0672827,
+                    "lon": -114.0910955
+                },
+                {
+                    "lat": 51.0672827,
+                    "lon": -114.0911044
+                },
+                {
+                    "lat": 51.0673145,
+                    "lon": -114.0911051
+                },
+                {
+                    "lat": 51.0673209,
+                    "lon": -114.0910941
+                },
+                {
+                    "lat": 51.0673346,
+                    "lon": -114.0910906
+                },
+                {
+                    "lat": 51.0673467,
+                    "lon": -114.0910966
+                },
+                {
+                    "lat": 51.0673556,
+                    "lon": -114.0911091
+                },
+                {
+                    "lat": 51.067357,
+                    "lon": -114.0911182
+                }
+            ],
+            "tags": {
+                "addr:housenumber": "1324",
+                "addr:postcode": "T2M 0L1",
+                "addr:street": "16 Avenue NW",
+                "amenity": "bar",
+                "building": "yes",
+                "email": "garylocolous@gmail.com",
+                "name": "Loco Lou's 2.0 Arcade Bar & Grill",
+                "note": "City of Calgary rooflines - aquisition date - 2024-06-12T22:39:34.000Z",
+                "opening_hours": "Su-Mo 10:30-23:00; Tu 10:30-24:00; We-Th 10:30-01:00; Fr-Sa 10:30-02:00",
+                "phone": "+1 403-284-3366",
+                "website": "https://locolous.ca/"
             }
         },
         {
@@ -97550,6 +97790,7 @@
                 "addr:unit": "110",
                 "amenity": "fire_station",
                 "area": "yes",
+                "height": "10",
                 "name": "Fire Station 27 (Stonegate Landing)",
                 "operator": "Calgary Fire Department",
                 "operator:wikidata": "Q5019670"
@@ -103610,7 +103851,7 @@
                 {
                     "type": "way",
                     "ref": 1413941383,
-                    "role": "",
+                    "role": "outer",
                     "geometry": [
                         {
                             "lat": 51.0239841,
@@ -224998,7 +225239,7 @@
                 {
                     "type": "way",
                     "ref": 1413941383,
-                    "role": "",
+                    "role": "outer",
                     "geometry": [
                         {
                             "lat": 51.0239841,
