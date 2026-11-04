@@ -10,12 +10,12 @@
 
 ## 2026-07-12 - [Zod internal options reflection]
 
-**Learning:** We previously used manual reflection into Zod schema internals (`_def.innerType`, `_def.value`) within UI components (like `ClosestQuestionComponent` and `MatchQuestionComponent`) to extract Select options. This was brittle and led to leaky abstractions.
+**Learning:** We previously used manual reflection into Zod schema internals (`_def.innerType`, `_def.value`) within UI components (like `ClosestQuestionComponent` in `src/components/cards/closest.tsx` and `MatchQuestionComponent`) to extract Select options. This was brittle and led to leaky abstractions.
 **Action:** Use the newly created `getSchemaOptions(schema)` function from `src/maps/schema.ts` when building options objects from Zod schema definitions to encapsulate all Zod internal traversals.
 
 ## 2026-07-13 - [Centralize State and Logic in QuestionCard]
 
-**Learning:** Previously, state management (lock/collapse, penalties), derived state (`resultStr`, default labels), contextual display ("Tell the Seekers" `$hiderMode`), and question-specific actions (Rules, Share, Delete) were leaked into consumer components (like `closest`, `hot-cold`, etc.) or generic components (like `LatLngPicker`). This caused repetitive boilerplate and violated separation of concerns.
+**Learning:** Previously, state management (lock/collapse, penalties), derived state (`resultStr`, default labels), contextual display ("Tell the Seekers" `$hiderMode`), and question-specific actions (Rules, Share, Delete) were leaked into consumer components (like the cards in `src/components/cards/`) or generic components (like `LatLngPicker`). This caused repetitive boilerplate and violated separation of concerns.
 **Action:** Always prefer to encapsulate shared UI state modifications, derived logic, and specific actions within the base component itself (`QuestionCard`) when the behavior is uniform across all its consumers or relies on shared context.
 
 ## 2026-08-02 - [Registry Pattern for Map Questions]

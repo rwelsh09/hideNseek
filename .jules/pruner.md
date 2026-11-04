@@ -20,12 +20,12 @@
 
 ## 2026-07-28 - [Unused QuestionCard exports]
 
-**Learning:** `knip` reported `ClosestQuestionComponent` etc. as unused exports in `src/components/QuestionCards.tsx`. Looking at the code, they were indeed exported for no reason. I removed the export statements but kept the imports since they are used inside `QUESTION_COMPONENTS`. This didn't trigger any cascading unused import issues.
+**Learning:** `knip` may report components (like `ClosestQuestionComponent`) as unused exports in `src/components/QuestionCards.tsx`. They may be exported for no reason. Removing the export statements but keeping the imports if they are used inside `QUESTION_COMPONENTS` won't trigger cascading unused import issues.
 **Action:** Always carefully check if an export is really unused, and make sure that removing an export doesn't leave an unused import behind, unless the imported item is used in the same file.
 
 ## 2026-07-28 - [Removing Internal Export Keywords]
 
-**Learning:** `ts-prune` and `knip` correctly identify exported variables, types, interfaces, and functions (like `LeaderboardEntry`, `persistentJsonAtom` in `src/lib/context.ts`, `ShareDataOptions` in `src/lib/utils.ts`, `TYPE_MAPPINGS`, and `getPlaceLabel` in `src/lib/question-text.ts`) that are only ever used internally within the declaring file.
+**Learning:** `ts-prune` and `knip` correctly identify exported variables, types, interfaces, and functions (like `ShareDataOptions` in `src/lib/utils.ts`, `TYPE_MAPPINGS`, and `getPlaceLabel` in `src/lib/question-text.ts`) that are only ever used internally within the declaring file.
 **Action:** Do not delete these functions, types, variables or interfaces. Instead, remove the `export` keyword to restrict their scope and minimize the public API surface safely.
 
 ## 2026-06-25 - [Import sorting plugin]
