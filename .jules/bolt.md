@@ -15,13 +15,13 @@
 
 ## 2026-06-18 - [Fix stuck Loading indicators during asynchronous Map operations]
 
-**Learning:** React component functions executing long asynchronous operations (like `refreshQuestions`) can cause two critical state bugs if not handled carefully: 1) Early failure in setup promises will cause subsequent `isLoading.set(false)` inside `catch` or `finally` blocks to be skipped if they are missing a wider `try...finally` block; 2) Using reactive hook variables (like `$questions` or `$isLoading`) directly inside asynchronous scopes leads to stale closures and race conditions.
-**Action:** Always wrap the entirety of asynchronous execution logic within an encompassing `try...finally` block to guarantee state cleanup (e.g., reverting `isLoading`). Read reactive store data explicitly using `.get()` (like `questions.get()`) to fetch fresh values after await boundaries. Utilize `useRef` for concurrency locks and implement request queuing to prevent dropped updates.
+**Learning:** React component functions executing long asynchronous operations can cause two critical state bugs if not handled carefully: 1) Early failure in setup promises will cause subsequent `isLoading.set(false)` inside `catch` or `finally` blocks to be skipped if they are missing a wider `try...finally` block; 2) Using reactive hook variables (like `$questions` or `$isLoading`) directly inside asynchronous scopes leads to stale closures and race conditions.
+**Action:** Always wrap the entirety of asynchronous execution logic within an encompassing `try...finally` block to guarantee state cleanup (e.g., reverting `isLoading`). Read reactive store data explicitly using `.get()` to fetch fresh values after await boundaries. Utilize `useRef` for concurrency locks and implement request queuing to prevent dropped updates.
 
 ## 2026-06-04 - [Dynamic Import for Large JSON Assets]
 
-**Learning:** The application was bundling a ~521KB JSON file (`calgary_transit_lines_clean.json`) into the main chunk (previously `Map.tsx`) even though it's only displayed when a user toggles an option (`$displayTransitLines`). Even if it's on by default, dynamic importing moves the ~500KB JSON file out of the critical rendering path for the main component, allowing the map to render sooner while the transit line data loads in the background!
-**Action:** Use dynamic `import()` for large JSON datasets that aren't critical to the initial render. By moving the import inside a `useEffect` that triggers when the feature is enabled, we saved ~270KB on the initial bundle size by extracting it into `TransitLinesOverlay.tsx` and dynamically importing it!
+**Learning:** The application bundles a ~521KB JSON file (`calgary_transit_lines_clean.json`) which is only displayed when a user toggles an option (`$displayTransitLines`). Dynamic importing moves the large JSON file out of the critical rendering path for the main component, allowing the map to render sooner while the transit line data loads in the background.
+**Action:** Use dynamic `import()` for large JSON datasets that aren't critical to the initial render. By moving the import inside a `useEffect` that triggers when the feature is enabled, we extract it into `TransitLinesOverlay.tsx` and dynamically import it to save on bundle size!
 
 ## 2026-07-16 - [Math.random() usage]
 

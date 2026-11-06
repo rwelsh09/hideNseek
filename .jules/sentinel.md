@@ -40,5 +40,5 @@
 
 ## 2026-08-01 - [Test File Placement Rules]
 
-**Learning:** The project strictly separates test files from source files. Instead of co-locating test files like `src/maps/geo-utils/special.test.ts` next to the source code, the project expects all test files to be placed in a top-level `tests/` directory mirroring the `src/` hierarchy (e.g., `tests/maps/geo-utils/special.test.ts`).
+**Learning:** The project strictly separates test files from source files. Instead of co-locating test files like `src/maps/schema.test.ts` next to the source code, the project expects all test files to be placed in a top-level `tests/` directory mirroring the `src/` hierarchy (e.g., `tests/maps/schema.test.ts`).
 **Action:** Always place new test files in the `tests/` directory mirroring the `src/` path structure to maintain the project's testing conventions.
