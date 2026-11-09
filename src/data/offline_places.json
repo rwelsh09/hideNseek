@@ -2,7 +2,7 @@
     "version": 0.6,
     "generator": "Overpass API 0.7.62.11 87bfad18",
     "osm3s": {
-        "timestamp_osm_base": "2026-11-02T03:17:50Z",
+        "timestamp_osm_base": "2026-11-09T03:35:36Z",
         "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
     },
     "elements": [
@@ -502,6 +502,17 @@
                 "amenity": "fast_food",
                 "cuisine": "pizza",
                 "name": "Loui's Pizza"
+            }
+        },
+        {
+            "type": "node",
+            "id": 308674374,
+            "lat": 51.1405855,
+            "lon": -114.0697844,
+            "tags": {
+                "amenity": "fast_food",
+                "cuisine": "pizza",
+                "name": "Canadian Pizza Unlimited"
             }
         },
         {
@@ -4111,7 +4122,9 @@
             "lon": -113.9619738,
             "tags": {
                 "amenity": "pub",
-                "name": "Toad 'n' Turtle"
+                "indoor_seating": "yes",
+                "name": "Toad 'n' Turtle",
+                "outdoor_seating": "yes"
             }
         },
         {
@@ -7615,29 +7628,6 @@
         },
         {
             "type": "node",
-            "id": 11287227588,
-            "lat": 50.9314386,
-            "lon": -113.9689908,
-            "tags": {
-                "addr:housenumber": "4307",
-                "addr:postcode": "T2Z 3V8",
-                "addr:street": "130 Avenue SE",
-                "addr:unit": "180",
-                "amenity": "fast_food",
-                "cuisine": "pizza",
-                "delivery": "yes",
-                "drive_through": "no",
-                "name": "Pink Door Pizza",
-                "opening_hours": "Mo off; Tu-Su 12:00-22:00+",
-                "operator": "Starbelly Group",
-                "phone": "+1-403-764-7465",
-                "phone:mnemonic": "+1-403-764-PINK",
-                "takeaway": "only",
-                "website": "https://www.pinkdoorpizza.com/"
-            }
-        },
-        {
-            "type": "node",
             "id": 11336373316,
             "lat": 51.0233972,
             "lon": -114.106173,
@@ -10214,7 +10204,7 @@
                 "drive_through": "no",
                 "name": "Papa John's",
                 "opening_hours": "Su-Th 11:00-24:00; Fr-Sa 11:00-01:00",
-                "phone": "587-943-3397",
+                "phone": "+1-587-943-3397",
                 "takeaway": "yes",
                 "website": "https://locations.papajohns.com/canada/ab/t3h-6a3/calgary/455-naa-common-sw"
             }
@@ -29747,6 +29737,7 @@
                 "building": "retail",
                 "cuisine": "pizza",
                 "description": "Casual neighbourhood spot for authentic Neapolitan pizzas, pasta & sandwiches, plus beer & cocktails.",
+                "indoor_seating": "yes",
                 "name": "Famoso Italian Pizzeria",
                 "opening_hours": "Mo-Su 12:00-22:00",
                 "outdoor_seating": "yes",
