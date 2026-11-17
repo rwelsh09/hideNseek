@@ -1,11 +1,15 @@
 import * as turf from "@turf/turf";
 import fs from "fs/promises";
+import { readFileSync } from "fs";
 
-const OVERPASS_API = "https://overpass-api.de/api/interpreter";
+const OVERPASS_ENDPOINTS = [
+    "https://overpass-api.de/api/interpreter",
+    "https://overpass.kumi.systems/api/interpreter",
+    "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
+];
+
 const USER_AGENT =
     "HideNSeek-OfflineDataFetcher/1.0 (contact: hidenseekappdonation@gmail.com)";
-
-import { readFileSync } from "fs";
 
 function getFilters() {
     const content = readFileSync("src/maps/placesConfig.ts", "utf8");
@@ -39,32 +43,46 @@ function getFilters() {
     });
 
     parsedFilters.push('["admin_level"="10"]');
-
     return parsedFilters;
 }
 
-const filters = getFilters();
+function chunkArray(arr, size) {
+    const chunks = [];
+    for (let i = 0; i < arr.length; i += size) {
+        chunks.push(arr.slice(i, i + size));
+    }
+    return chunks;
+}
 
 async function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function fetchWithRetry(url, options, maxRetries = 3) {
-    let delayMs = 15000;
+async function fetchWithRetry(query, maxRetries = 6) {
+    let delayMs = 5000;
+
     for (let i = 0; i < maxRetries; i++) {
+        // Rotate through mirrors on each attempt
+        const url = OVERPASS_ENDPOINTS[i % OVERPASS_ENDPOINTS.length];
         try {
             console.log(
-                `Fetching from Overpass API (Attempt ${i + 1}/${maxRetries})...`,
+                `Fetching from ${new URL(url).hostname} (Attempt ${i + 1}/${maxRetries})...`,
             );
-            const fetchOptions = {
-                ...options,
-                headers: new Headers(options.headers || {}),
-            };
-            fetchOptions.headers.set("Accept", "*/*");
-            const response = await fetch(url, fetchOptions);
+
+            const response = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "User-Agent": USER_AGENT,
+                    Accept: "*/*",
+                },
+                body: `data=${encodeURIComponent(query)}`,
+            });
+
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
+
             const data = await response.json();
 
             if (data.remark && data.remark.includes("runtime error")) {
@@ -75,10 +93,10 @@ async function fetchWithRetry(url, options, maxRetries = 3) {
             console.error(`Attempt ${i + 1} failed: ${error.message}`);
             if (i < maxRetries - 1) {
                 console.log(
-                    `Waiting ${delayMs / 1000} seconds before retrying...`,
+                    `Waiting ${delayMs / 1000} seconds before retrying next mirror...`,
                 );
                 await sleep(delayMs);
-                delayMs *= 2; // exponential backoff
+                delayMs = Math.min(delayMs * 1.5, 30000);
             } else {
                 throw error;
             }
@@ -94,54 +112,73 @@ async function main() {
         );
         const featureCollection = turf.featureCollection(boundaryData);
         const bbox = turf.bbox(featureCollection);
-        // Overpass bbox format is: south,west,north,east
         const bboxString = `${bbox[1]},${bbox[0]},${bbox[3]},${bbox[2]}`;
 
         console.log(`Calculated bbox: ${bboxString}`);
 
-        const queryStmts = filters
-            .map((f) => `nwr${f}(${bboxString});`)
-            .join("\n  ");
+        const filters = getFilters();
+        // Split into batches of 4 filters to avoid 502 memory/gateway timeouts
+        const batches = chunkArray(filters, 4);
+        const elementMap = new Map();
+        let baseResponseMeta = null;
 
-        const overpassQuery = `
-[out:json][timeout:90];
+        for (let b = 0; b < batches.length; b++) {
+            console.log(`\n--- Processing batch ${b + 1}/${batches.length} ---`);
+            const queryStmts = batches[b]
+                .map((f) => `nwr${f}(${bboxString});`)
+                .join("\n  ");
+
+            // Note: Swap `out geom;` to `out center;` below if full polygons aren't needed
+            const overpassQuery = `
+[out:json][timeout:180][maxsize:536870912];
 (
   ${queryStmts}
 );
 out geom;
 `;
 
-        console.log("Executing Overpass Query:");
-        console.log(overpassQuery);
+            const data = await fetchWithRetry(overpassQuery);
 
-        console.log("Applying pre-query delay of 15s...");
-        await sleep(15000);
+            if (!baseResponseMeta) {
+                const { elements, ...meta } = data;
+                baseResponseMeta = meta;
+            }
 
-        const data = await fetchWithRetry(
-            OVERPASS_API,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/x-www-form-urlencoded",
-                    "User-Agent": USER_AGENT,
-                    Accept: "*/*",
-                },
-                body: `data=${encodeURIComponent(overpassQuery)}`,
-            },
-            5,
-        );
+            if (data?.elements) {
+                for (const el of data.elements) {
+                    elementMap.set(`${el.type}/${el.id}`, el);
+                }
+                console.log(
+                    `Batch ${b + 1} returned ${data.elements.length} elements (Total unique: ${elementMap.size})`,
+                );
+            }
 
-        if (!data || !data.elements || data.elements.length === 0) {
+            // Polite pause between batches to avoid rate-limiting (429)
+            if (b < batches.length - 1) {
+                await sleep(5000);
+            }
+        }
+
+        const mergedElements = Array.from(elementMap.values());
+
+        if (mergedElements.length === 0) {
             throw new Error(
                 "No data or empty elements array returned from Overpass API.",
             );
         }
 
-        console.log(`Successfully fetched ${data.elements.length} elements.`);
+        const finalOutput = {
+            ...baseResponseMeta,
+            elements: mergedElements,
+        };
+
+        console.log(
+            `\nSuccessfully fetched ${mergedElements.length} unique elements.`,
+        );
 
         await fs.writeFile(
             "src/data/offline_places.json",
-            JSON.stringify(data, null, 2),
+            JSON.stringify(finalOutput, null, 2),
         );
         console.log("Saved to src/data/offline_places.json");
 
