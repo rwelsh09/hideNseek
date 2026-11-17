@@ -4,7 +4,7 @@ import { readFileSync } from "fs";
 
 const OVERPASS_ENDPOINTS = [
     "https://overpass-api.de/api/interpreter",
-    "https://overpass.kumi.systems/api/interpreter",
+    "https://overpass.private.coffee/api/interpreter",
     "https://maps.mail.ru/osm/tools/overpass/api/interpreter",
 ];
 
@@ -35,15 +35,12 @@ function getFilters() {
         places.push(item);
     }
 
-    const parsedFilters = places.map((p) => {
+    return places.map((p) => {
         if (p.specificLocation) {
             return p.specificLocation.replace(/^'|'$/g, "");
         }
         return `["${p.tag}"="${p.id}"]`;
     });
-
-    parsedFilters.push('["admin_level"="10"]');
-    return parsedFilters;
 }
 
 function chunkArray(arr, size) {
@@ -58,15 +55,15 @@ async function sleep(ms) {
     return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
-async function fetchWithRetry(query, maxRetries = 6) {
-    let delayMs = 5000;
+async function fetchWithRetry(query, maxRetries = 6, timeoutMs = 65000) {
+    let delayMs = 4000;
 
     for (let i = 0; i < maxRetries; i++) {
-        // Rotate through mirrors on each attempt
         const url = OVERPASS_ENDPOINTS[i % OVERPASS_ENDPOINTS.length];
+        const host = new URL(url).hostname;
         try {
             console.log(
-                `Fetching from ${new URL(url).hostname} (Attempt ${i + 1}/${maxRetries})...`,
+                `Fetching from ${host} (Attempt ${i + 1}/${maxRetries})...`,
             );
 
             const response = await fetch(url, {
@@ -77,6 +74,8 @@ async function fetchWithRetry(query, maxRetries = 6) {
                     Accept: "*/*",
                 },
                 body: `data=${encodeURIComponent(query)}`,
+                // Hard client-side timeout so dead mirrors cannot hang Node forever
+                signal: AbortSignal.timeout(timeoutMs),
             });
 
             if (!response.ok) {
@@ -90,13 +89,18 @@ async function fetchWithRetry(query, maxRetries = 6) {
             }
             return data;
         } catch (error) {
-            console.error(`Attempt ${i + 1} failed: ${error.message}`);
+            const msg =
+                error.name === "TimeoutError"
+                    ? `Request timed out after ${timeoutMs / 1000}s`
+                    : error.message;
+            console.error(`Attempt ${i + 1} (${host}) failed: ${msg}`);
+
             if (i < maxRetries - 1) {
                 console.log(
-                    `Waiting ${delayMs / 1000} seconds before retrying next mirror...`,
+                    `Waiting ${delayMs / 1000}s before trying next mirror...`,
                 );
                 await sleep(delayMs);
-                delayMs = Math.min(delayMs * 1.5, 30000);
+                delayMs = Math.min(delayMs * 1.5, 20000);
             } else {
                 throw error;
             }
@@ -116,25 +120,25 @@ async function main() {
 
         console.log(`Calculated bbox: ${bboxString}`);
 
-        const filters = getFilters();
-        // Split into batches of 4 filters to avoid 502 memory/gateway timeouts
-        const batches = chunkArray(filters, 4);
+        const placeFilters = getFilters();
+        const batches = chunkArray(placeFilters, 3);
         const elementMap = new Map();
         let baseResponseMeta = null;
 
+        // 1. Fetch place filters in small batches
         for (let b = 0; b < batches.length; b++) {
-            console.log(`\n--- Processing batch ${b + 1}/${batches.length} ---`);
+            console.log(`\n--- Processing places batch ${b + 1}/${batches.length} ---`);
             const queryStmts = batches[b]
                 .map((f) => `nwr${f}(${bboxString});`)
                 .join("\n  ");
 
-            // Note: Swap `out geom;` to `out center;` below if full polygons aren't needed
+            // Change `out center;` back to `out geom;` ONLY if your app draws polygons for places
             const overpassQuery = `
-[out:json][timeout:180][maxsize:536870912];
+[out:json][timeout:55];
 (
   ${queryStmts}
 );
-out geom;
+out center;
 `;
 
             const data = await fetchWithRetry(overpassQuery);
@@ -153,10 +157,26 @@ out geom;
                 );
             }
 
-            // Polite pause between batches to avoid rate-limiting (429)
-            if (b < batches.length - 1) {
-                await sleep(5000);
+            await sleep(3000);
+        }
+
+        // 2. Fetch admin_level=10 boundaries separately with full geometry
+        console.log(`\n--- Fetching admin_level=10 boundaries ---`);
+        const adminQuery = `
+[out:json][timeout:55];
+(
+  relation["admin_level"="10"](${bboxString});
+);
+out geom;
+`;
+        const adminData = await fetchWithRetry(adminQuery);
+        if (adminData?.elements) {
+            for (const el of adminData.elements) {
+                elementMap.set(`${el.type}/${el.id}`, el);
             }
+            console.log(
+                `Admin boundaries returned ${adminData.elements.length} elements (Total unique: ${elementMap.size})`,
+            );
         }
 
         const mergedElements = Array.from(elementMap.values());
