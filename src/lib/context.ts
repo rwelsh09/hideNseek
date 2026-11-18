@@ -229,8 +229,8 @@ export const isLoading = createLoadingStore(false);
 export const isOptionsOpenStore = atom<boolean>(false);
 
 export const baseTileLayer = persistentAtom<
-    "voyager" | "light" | "dark" | "osmcarto" | "satellite"
->("baseTileLayer", "voyager");
+    "osmcarto" | "satellite"
+>("baseTileLayer", "osmcarto");
 
 export const followMe = persistentJsonAtom<boolean>("followMe", false);
 
