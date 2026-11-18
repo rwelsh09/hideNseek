@@ -57,31 +57,8 @@ const getTileLayer = (tileLayer: string) => {
                 />
             );
 
-        case "light":
-            return (
-                <OfflineTileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors; &copy; <a href="https://carto.com/attributions">CARTO</a>; Powered by Esri and Turf.js'
-                    url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-                    subdomains="abcd"
-                    maxZoom={20} // This technically should be 6, but once the ratelimiting starts this can take over
-                    minZoom={2}
-                    noWrap
-                />
-            );
-
-        case "dark":
-            return (
-                <OfflineTileLayer
-                    attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors; &copy; <a href="https://carto.com/attributions">CARTO</a>; Powered by Esri and Turf.js'
-                    url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-                    subdomains="abcd"
-                    maxZoom={20} // This technically should be 6, but once the ratelimiting starts this can take over
-                    minZoom={2}
-                    noWrap
-                />
-            );
-
         case "osmcarto":
+        default:
             return (
                 <OfflineTileLayer
                     attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors; Powered by Esri and Turf.js'
@@ -92,17 +69,6 @@ const getTileLayer = (tileLayer: string) => {
                 />
             );
     }
-
-    return (
-        <OfflineTileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors; &copy; <a href="https://carto.com/attributions">CARTO</a>; Powered by Esri and Turf.js'
-            url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-            subdomains="abcd"
-            maxZoom={20} // This technically should be 6, but once the ratelimiting starts this can take over
-            minZoom={2}
-            noWrap
-        />
-    );
 };
 
 export const Map = ({ className }: { className?: string }) => {
