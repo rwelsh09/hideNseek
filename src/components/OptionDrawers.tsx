@@ -269,9 +269,6 @@ export const OptionDrawers = () => {
                                         <Select
                                             trigger="Map"
                                             options={{
-                                                voyager: "CARTO Voyager",
-                                                light: "CARTO Light",
-                                                dark: "CARTO Dark",
                                                 osmcarto: "OpenStreetMap Carto",
                                                 satellite: "Satellite",
                                             }}
