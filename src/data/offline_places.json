@@ -1,8 +1,8 @@
 {
     "version": 0.6,
-    "generator": "Overpass API 0.7.62.4 2390de5a",
+    "generator": "Overpass API 0.7.62.11 87bfad18",
     "osm3s": {
-        "timestamp_osm_base": "2026-11-17T17:18:49Z",
+        "timestamp_osm_base": "2026-11-23T04:39:20Z",
         "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
     },
     "elements": [
@@ -2624,14 +2624,18 @@
                 "addr:province": "Alberta",
                 "addr:street": "Northmount Drive NW",
                 "amenity": "library",
-                "building": "commercial",
-                "name": "Calgary Public Library - Nose Hill",
-                "opening_hours": "Mo-Th 09:00-21:00; Fr 09:00-18:00; Sa 09:00-17:00; Su 12:00-17:00",
+                "building": "library",
+                "check_date": "2026-11-17",
+                "internet_access": "yes",
+                "internet_access:fee": "no",
+                "name": "Nose Hill Library",
+                "opening_hours": "Mo-Th 09:00-21:00; Fr 09:00-18:00; Sa 09:00-17:00; Su 12:00-17:00; Jan 01 off; Feb Mo[3] 12:00-17:00; easter -2 days off; May 18-24 Mo off; Jul 01 off; Aug Mo[1] off; Sep Mo[1] off; Oct Mo[2] off; Dec 24,31 17:00-24:00 off; Sep 30,Nov 11,Dec 25-26 off",
                 "operator": "Calgary Public Library",
                 "operator:short": "CPL",
                 "operator:type": "public",
                 "operator:wikidata": "Q5019701",
-                "website": "https://calgarylibrary.ca/locations/NOSE/"
+                "website": "https://calgarylibrary.ca/locations/NOSE/",
+                "wheelchair": "yes"
             }
         },
         {
@@ -2963,7 +2967,9 @@
                 "building": "yes",
                 "cuisine": "burger",
                 "drive_through": "yes",
+                "indoor_seating": "yes",
                 "name": "McDonald's",
+                "outdoor_seating": "no",
                 "takeaway": "yes"
             }
         },
@@ -5561,7 +5567,9 @@
                 "brand:wikipedia": "en:Tim Hortons",
                 "cuisine": "coffee_shop",
                 "drive_through": "no",
+                "indoor_seating": "yes",
                 "name": "Tim Hortons",
+                "outdoor_seating": "no",
                 "takeaway": "yes"
             }
         },
@@ -5776,7 +5784,9 @@
                 "brand:wikipedia": "en:Tim Hortons",
                 "cuisine": "coffee_shop",
                 "drive_through": "yes",
+                "indoor_seating": "yes",
                 "name": "Tim Hortons",
+                "outdoor_seating": "no",
                 "takeaway": "yes"
             }
         },
@@ -11828,12 +11838,13 @@
         {
             "type": "node",
             "id": 1364074826,
-            "lat": 51.0957418,
-            "lon": -114.140789,
+            "lat": 51.0957478,
+            "lon": -114.1408772,
             "tags": {
                 "addr:city": "Calgary",
                 "addr:housenumber": "319 4820",
                 "addr:street": "Northland Drive NW",
+                "addr:unit": "319",
                 "amenity": "fast_food",
                 "brand": "Panago",
                 "brand:wikidata": "Q17111672",
@@ -11841,11 +11852,11 @@
                 "cuisine": "pizza",
                 "drive_through": "no",
                 "name": "Panago",
-                "opening_hours": "Su-Th 11:00-00:00; Fr-Sa 11:00-01:00; PH 11:00-00:00",
-                "phone": "+1-403-310-0001",
+                "opening_hours": "Su-Th 11:00-24:00; Fr-Sa 11:00-01:00",
+                "phone": "+1 403-310-0001",
                 "source": "http://www.panago.com/locations/",
                 "takeaway": "yes",
-                "website": "https://www.panago.com/"
+                "website": "https://www.panago.com/location/ab-calgary-4820-northland-dr-nw"
             }
         },
         {
@@ -14485,12 +14496,12 @@
                 "amenity": "fast_food",
                 "brand": "Papa John's",
                 "brand:wikidata": "Q2759586",
-                "check_date": "2025-08-13",
+                "check_date": "2026-11-18",
                 "cuisine": "pizza",
                 "delivery": "yes",
                 "drive_through": "no",
                 "name": "Papa John's",
-                "opening_hours": "Su-We 10:00-15:00; Th-Sa 10:00-16:00",
+                "opening_hours": "Mo-Su 10:00-04:00",
                 "phone": "+1 403-693-4444",
                 "takeaway": "yes",
                 "website": "https://locations.papajohns.com/canada/ab/t2m-3y7/calgary/2134-crowchild-tr-nw"
@@ -14958,9 +14969,12 @@
                 "amenity": "restaurant",
                 "check_date": "2025-09-27",
                 "cuisine": "pizza",
+                "indoor_seating": "no",
                 "name": "Great Canadian Pizza",
                 "opening_hours": "Mo-Su 10:30-23:00",
+                "outdoor_seating": "no",
                 "phone": "+1 403-723-7755",
+                "takeaway": "only",
                 "website": "https://sait.greatcanadianpizza.net/"
             }
         },
@@ -15422,9 +15436,11 @@
                 "brand": "Little Caesars",
                 "brand:wikidata": "Q1393809",
                 "cuisine": "pizza",
+                "indoor_seating": "no",
                 "name": "Little Caesars",
                 "opening_hours": "Su-We 11:00-21:00, Th 11:00-22:00, Fr,Sa 11:00-24:00",
-                "takeaway": "yes"
+                "outdoor_seating": "no",
+                "takeaway": "only"
             }
         },
         {
@@ -16329,8 +16345,10 @@
                 "brand": "Boston Pizza",
                 "brand:wikidata": "Q894578",
                 "cuisine": "pizza",
+                "indoor_seating": "yes",
                 "level": "0",
-                "name": "Boston Pizza"
+                "name": "Boston Pizza",
+                "outdoor_seating": "no"
             }
         },
         {
